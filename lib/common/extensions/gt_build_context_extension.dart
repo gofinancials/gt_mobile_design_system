@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-extension BuildContextExtension on BuildContext {
+extension ThemeContextExtension on BuildContext {
   GtScaleUtil get _scaler => GtScaleUtil.of(this);
   GtMediaQueryData get mediaQueryData => GtMediaQueryData(this);
   GtFractionalSizer get fracSizer => _scaler.fracSizer;
   GtDpiIndependentSizer get dpSizer => _scaler.dpSizer;
   GtInsets get insets => _scaler.insets;
-  GtPalette get palette => Theme.of(this).extension<GtPalette>()!;
-  GtShadows get shadows => GtShadows(this);
+  Offset get position => _scaler.position;
+  Size get size => _scaler.size;
 
   double dp(double? size) => dpSizer.dp(size);
 
@@ -21,41 +21,46 @@ extension BuildContextExtension on BuildContext {
     return fracSizer.getWidthFraction(fraction);
   }
 
-  double fractionalLongSide(double fraction) {
+  double fractionalLongest(double fraction) {
     return fracSizer.getLongestSideFraction(fraction);
   }
 
-  double fractionalShortSide(double fraction) {
+  double fractionalShortest(double fraction) {
     return fracSizer.getShortestSideFraction(fraction);
   }
 
-  GtRadii get radii => locator();
+  GtPalette get palette => Theme.of(this).extension<GtPalette>()!;
+  GtThemeData get _themeData => locator();
 
-  GtGrid get grid => locator();
+  GtGrid get grid => _themeData.grid;
+  GtFonts get fonts => _themeData.fonts;
+  GtRadii get radii => _themeData.radii(this);
+  GtShadows get shadows => _themeData.shadows(this);
+  GtSpacing get spacing => _themeData.spacing(this);
+  GtGradients get gradients => _themeData.gradients(this);
+  GtTextStyles get textStyles => _themeData.textStyles(this);
+  GtInputStyles get inputStyles => _themeData.inputStyles(this);
 
   GtScreenType get screenType => GtScreenType(this);
-
   bool get isMobile => screenType.isMobile;
-
   bool get isTab => screenType.isTablet;
-
   bool get isDesktop => screenType.isLaptop;
-
   bool get isMonitor => screenType.isMonitor;
-
-  BorderRadius get zeroBorderRadius {
-    return BorderRadius.zero;
-  }
-
-  Size get size => _scaler.size;
-
-  Offset get offset => _scaler.position;
 
   bool validateForm(
     GlobalKey<FormState> formKey, {
-    bool notifyOnFailure = true,
+    VoidCallback? onValidationFailure,
   }) {
     final isValid = (formKey.currentState?.validate() ?? false);
+    if (!isValid) onValidationFailure?.call();
     return isValid;
+  }
+
+  void clearForm(GlobalKey<FormState> formKey) {
+    formKey.currentState?.reset();
+  }
+
+  void saveForm(GlobalKey<FormState> formKey) {
+    formKey.currentState?.save();
   }
 }

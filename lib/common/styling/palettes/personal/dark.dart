@@ -1,7 +1,7 @@
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-final class PrivateDarkPalette extends GtPalette {
-  PrivateDarkPalette()
+final class PersonalDarkPalette extends GtPalette {
+  PersonalDarkPalette()
       : super(
           primary: GtPaletteBrandColors(
             darker: GtColors.teal900.value,
