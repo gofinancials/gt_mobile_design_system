@@ -1,3 +1,5 @@
+library;
+
 export 'gt_colors.dart';
 export 'gt_gradients.dart';
 export 'gt_grid.dart';

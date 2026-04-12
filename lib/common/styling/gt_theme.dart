@@ -33,14 +33,14 @@ abstract class GtThemeData {
   /// The typography font family definitions.
   GtFonts get fonts;
 
+  /// Resolves the spacing and layout gap tokens for the given [context].
+  GtSpacing get spacing;
+
   /// Resolves the border radius tokens for the given [context].
   GtRadii radii(BuildContext context);
 
   /// Resolves the shadow and elevation tokens for the given [context].
   GtShadows shadows(BuildContext context);
-
-  /// Resolves the spacing and layout gap tokens for the given [context].
-  GtSpacing spacing(BuildContext context);
 
   /// Resolves the gradient styles for the given [context].
   GtGradients gradients(BuildContext context);
