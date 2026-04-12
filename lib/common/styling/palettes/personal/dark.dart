@@ -1,7 +1,7 @@
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-final class PrivateDarkPalette extends GtPalette {
-  PrivateDarkPalette()
+final class PersonalDarkPalette extends GtPalette {
+  PersonalDarkPalette()
       : super(
           primary: GtPaletteBrandColors(
             darker: GtColors.teal900.value,
@@ -18,41 +18,41 @@ final class PrivateDarkPalette extends GtPalette {
             alpha10: GtColors.blueAlpha10.value,
           ),
           staticColors: GtPaletteStaticColors(
-            black: GtColors.neutralGray950.value,
-            white: GtColors.neutralGray0.value,
+            black: GtColors.neutral950.value,
+            white: GtColors.neutral0.value,
             shadow: GtColors.neutralGray700.dark,
           ),
           bg: GtPaletteBgColors(
-            strong: GtColors.neutralGray0.value,
-            surface: GtColors.neutralGray950.value,
-            sub: GtColors.neutralGray900.value,
-            soft: GtColors.neutralGray800.value,
-            weak: GtColors.neutralGray700.value,
-            white: GtColors.neutralGray950.value,
+            strong: GtColors.neutral950.dark,
+            surface: GtColors.neutral800.dark,
+            sub: GtColors.neutral300.dark,
+            soft: GtColors.neutral200.dark,
+            weak: GtColors.neutral50.dark,
+            white: GtColors.neutral0.dark,
           ),
           text: GtPaletteContentColors(
-            strong: GtColors.neutralGray0.value,
-            sub: GtColors.neutralGray400.value,
-            soft: GtColors.neutralGray500.value,
-            disabled: GtColors.neutralGray600.value,
-            white: GtColors.neutralGray950.value,
+            strong: GtColors.neutral950.dark,
+            sub: GtColors.neutral600.dark,
+            soft: GtColors.neutral400.dark,
+            disabled: GtColors.neutral300.dark,
+            white: GtColors.neutral0.dark,
           ),
           icon: GtPaletteContentColors(
-            strong: GtColors.neutralGray0.value,
-            sub: GtColors.neutralGray400.value,
-            soft: GtColors.neutralGray500.value,
-            disabled: GtColors.neutralGray600.value,
-            white: GtColors.neutralGray950.value,
+            strong: GtColors.neutral950.dark,
+            sub: GtColors.neutral600.dark,
+            soft: GtColors.neutral400.dark,
+            disabled: GtColors.neutral300.dark,
+            white: GtColors.neutral0.dark,
           ),
           stroke: GtPaletteStrokeColors(
-            strong: GtColors.neutralGray0.value,
-            sub: GtColors.neutralGray600.value,
-            soft: GtColors.neutralGray700.value,
-            white: GtColors.neutralGray950.value,
+            strong: GtColors.neutral950.dark,
+            sub: GtColors.neutral300.dark,
+            soft: GtColors.neutral200.dark,
+            white: GtColors.neutral0.dark,
           ),
           faded: GtPaletteStateColors(
-            dark: GtColors.neutralGray500.value,
-            base: GtColors.neutralGray500.value,
+            dark: GtColors.neutral300.value,
+            base: GtColors.neutral500.value,
             light: GtColors.neutralAlpha24.value,
             lighter: GtColors.neutralAlpha16.value,
           ),

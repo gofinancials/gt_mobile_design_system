@@ -11,6 +11,21 @@ enum GtColors {
   transparent(ColorSet(0x00000000)),
 
   // ---------------------------------------------------------------------------
+  // NEUTRAL / TEXT
+  // ---------------------------------------------------------------------------
+  neutral950(ColorSet(0xFF111111, 0xFFFFFFFF)),
+  neutral800(ColorSet(0xFF262626, 0xFFEBEBEB)),
+  neutral700(ColorSet(0xFF333333, 0xFFEBEBEB)),
+  neutral600(ColorSet(0xFF5C5C5C, 0xFFA3A3A3)),
+  neutral500(ColorSet(0xFF7B7B7B, 0xFF7B7B7B)),
+  neutral400(ColorSet(0xFFA3A3A3, 0xFF7B7B7B)),
+  neutral300(ColorSet(0xFFD1D1D1, 0xFF5C5C5C)),
+  neutral200(ColorSet(0xFFEBEBEB, 0xFF333333)),
+  neutral100(ColorSet(0xFFF5F5F5, 0x2999A0AE)),
+  neutral50(ColorSet(0xFFF7F7F7, 0xFF262626)),
+  neutral0(ColorSet(0xFFFFFFFF, 0xFF111111)),
+
+  // ---------------------------------------------------------------------------
   // NEUTRAL / GRAY
   // ---------------------------------------------------------------------------
   neutralGray950(ColorSet(0xFF171717)),
