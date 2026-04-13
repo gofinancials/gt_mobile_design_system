@@ -24,11 +24,11 @@ jobs:
         run: flutter pub get
 
       - name: Build Widgetbook
-        run: flutter build web --target lib/main.dart -t gallery --base-href "/${{ github.event.repository.name }}/"
+        run: flutter build web --target gallery/lib/main.dart --base-href "/${{ github.event.repository.name }}/"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build/web # The folder where flutter builds the web files
+          folder: gallery/build/web # The folder where flutter builds the web files
           branch: gh-pages # The branch the action should deploy to
           clean: true
