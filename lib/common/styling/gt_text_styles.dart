@@ -52,6 +52,7 @@ class GtTextStyles {
       decorationThickness: decorationThickness,
       decorationStyle: decorationStyle,
       overflow: overflow,
+      package: 'gt_mobile_ui',
     );
   }
 
