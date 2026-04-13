@@ -24,7 +24,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Widgetbook
-        run: flutter build web --target gallery/lib/main.dart --base-href "/${{ github.event.repository.name }}/"
+        run: cd gallery && flutter build web --target lib/main.dart --base-href "/${{ github.event.repository.name }}/"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
