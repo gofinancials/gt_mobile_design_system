@@ -18,14 +18,13 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          version: '3.41.6' # Specify the Flutter version you want to use
           cache: true
 
       - name: Install Dependencies
         run: flutter pub get
 
       - name: Build Widgetbook
-        run: flutter build web --target gallery/lib/main.dart -t widgetbook --base-href "/${{ github.event.repository.name }}/"
+        run: flutter build web --target lib/main.dart -t gallery --base-href "/${{ github.event.repository.name }}/"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
