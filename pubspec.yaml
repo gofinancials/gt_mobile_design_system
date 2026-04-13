@@ -44,3 +44,16 @@ flutter:
     # - path: assets/images/vector/
     #   transformers:
     #     - package: vector_graphics_compiler
+  fonts:
+    - family: Readex
+      fonts:
+        - asset: assets/fonts/ReadexPro-Regular.ttf
+        - asset: assets/fonts/ReadexPro-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/ReadexPro-Bold.ttf
+          weight: 700
+    - family: Youth
+      fonts:
+        - asset: assets/fonts/Youth-Bold.otf
+          weight: 700
+        - asset: assets/fonts/Youth-Medium.otf
