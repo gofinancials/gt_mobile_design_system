@@ -25,7 +25,7 @@ class DesignSystemCover extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: min(16, size.width * 1)),
             color: CoverColors.background,
             child: CustomPaint(
-              size: Size.fromHeight(max(300, size.height * 0.5)),
+              size: Size.fromHeight(min(700, size.height * 0.5)),
               painter: DesignSystemPainter(),
             ),
           ),
