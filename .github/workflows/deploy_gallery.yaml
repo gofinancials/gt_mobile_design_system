@@ -3,11 +3,7 @@ name: Deploy Widgetbook to GitHub Pages
 on:
   push:
     branches:
-      - main # Change to your default branch (e.g., master)
-  pull_request:
-    branches:
       - main
-    types: [closed]
 
 jobs:
   build-and-deploy:
