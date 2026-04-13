@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// An extension on [BuildContext] providing convenient access to the design system's
@@ -53,31 +52,31 @@ extension ThemeContextExtension on BuildContext {
 
   /// Retrieves the color palette defined in the current theme.
   GtPalette get palette => Theme.of(this).extension<GtPalette>()!;
-  GtThemeData get _themeData => locator();
+  GtTheme get themeData => GtThemeProvider.of(this);
 
   /// Retrieves the grid configuration from the design system theme.
-  GtGrid get grid => _themeData.grid;
+  GtGrid get grid => themeData.grid;
 
   /// Retrieves the typography and font configuration from the design system theme.
-  GtFonts get fonts => _themeData.fonts;
+  GtFonts get fonts => themeData.fonts;
 
   /// Retrieves the corner radii configurations for the current context.
-  GtRadii get radii => _themeData.radii(this);
+  GtRadii get radii => themeData.radii;
 
   /// Retrieves the spacing guidelines and dimensions for the current context.
-  GtSpacing get spacing => _themeData.spacing;
+  GtSpacing get spacing => themeData.spacing;
 
   /// Retrieves the box shadow configurations for the current context.
-  GtShadows get shadows => _themeData.shadows(this);
+  GtShadows get shadows => themeData.shadows(this);
 
   /// Retrieves the gradient definitions for the current context.
-  GtGradients get gradients => _themeData.gradients(this);
+  GtGradients get gradients => themeData.gradients(this);
 
   /// Retrieves the text style properties and variants for the current context.
-  GtTextStyles get textStyles => _themeData.textStyles(this);
+  GtTextStyles get textStyles => themeData.textStyles(this);
 
   /// Retrieves the input field style configurations for the current context.
-  GtInputStyles get inputStyles => _themeData.inputStyles(this);
+  GtInputStyles get inputStyles => themeData.inputStyles(this);
 
   /// Determines the current screen type category (e.g., mobile, tablet, desktop).
   GtScreenType get screenType => GtScreenType(this);
@@ -117,6 +116,3 @@ extension ThemeContextExtension on BuildContext {
     formKey.currentState?.save();
   }
 }
-
-// TODO: Implement GtTheme provider an InheritedValue to allow for dynamic theme switching and access to theme data without relying on a service locator, enhancing flexibility and testability.
-// TODO: Implement GtThemeSate to manage theme state and allow for runtime theme changes, including support for user-selected themes or system theme changes.

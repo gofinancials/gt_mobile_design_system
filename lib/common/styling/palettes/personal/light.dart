@@ -17,6 +17,10 @@ final class PersonalLightPalette extends GtPalette {
             alpha16: GtColors.blueAlpha16.value,
             alpha10: GtColors.blueAlpha10.value,
           ),
+          coverColors: GtPaletteCoverColors(
+            dark: GtColors.darkGreen.value,
+            light: GtColors.lemon.value,
+          ),
           staticColors: GtPaletteStaticColors(
             black: GtColors.neutral950.value,
             white: GtColors.neutral0.value,

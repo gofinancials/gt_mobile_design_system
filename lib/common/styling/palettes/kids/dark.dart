@@ -17,6 +17,10 @@ final class KidsDarkPalette extends GtPalette {
             alpha16: GtColors.purpleAlpha16.value,
             alpha10: GtColors.purpleAlpha10.value,
           ),
+          coverColors: GtPaletteCoverColors(
+            dark: GtColors.purple950.dark,
+            light: GtColors.purple200.dark,
+          ),
           staticColors: GtPaletteStaticColors(
             black: GtColors.neutral950.value,
             white: GtColors.neutral0.value,

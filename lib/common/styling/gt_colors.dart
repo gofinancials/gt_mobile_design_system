@@ -225,7 +225,10 @@ enum GtColors {
 
   blackAlpha24(ColorSet(0x3D171717)),
   blackAlpha16(ColorSet(0x29171717)),
-  blackAlpha10(ColorSet(0x1A171717));
+  blackAlpha10(ColorSet(0x1A171717)),
+
+  darkGreen(ColorSet(0xFF004045)),
+  lemon(ColorSet(0xFF26E36B));
 
   final ColorSet _color;
 

@@ -25,7 +25,10 @@ class GtPaletteBrandColors {
   });
 
   static GtPaletteBrandColors lerp(
-      GtPaletteBrandColors? a, GtPaletteBrandColors? b, double t) {
+    GtPaletteBrandColors? a,
+    GtPaletteBrandColors? b,
+    double t,
+  ) {
     return GtPaletteBrandColors(
       dark: Color.lerp(a?.dark, b?.dark, t)!,
       darker: Color.lerp(a?.darker, b?.darker, t)!,
@@ -34,6 +37,21 @@ class GtPaletteBrandColors {
       alpha10: Color.lerp(a?.alpha10, b?.alpha10, t)!,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GtPaletteBrandColors) return false;
+
+    return other.dark == dark &&
+        other.darker == darker &&
+        other.base == base &&
+        other.alpha16 == alpha16 &&
+        other.alpha10 == alpha10;
+  }
+
+  @override
+  int get hashCode => Object.hash(dark, darker, base, alpha16, alpha10);
 }
 
 /// Colors that remain absolutely constant regardless of the active theme
@@ -51,13 +69,63 @@ class GtPaletteStaticColors {
   });
 
   static GtPaletteStaticColors lerp(
-      GtPaletteStaticColors? a, GtPaletteStaticColors? b, double t) {
+    GtPaletteStaticColors? a,
+    GtPaletteStaticColors? b,
+    double t,
+  ) {
     return GtPaletteStaticColors(
       black: Color.lerp(a?.black, b?.black, t)!,
       white: Color.lerp(a?.white, b?.white, t)!,
       shadow: Color.lerp(a?.shadow, b?.shadow, t)!,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GtPaletteStaticColors) return false;
+
+    return other.black == black &&
+        other.white == white &&
+        other.shadow == shadow;
+  }
+
+  @override
+  int get hashCode => Object.hash(black, white, shadow);
+}
+
+/// Colors specifically tailored for large cover areas, marketing screens, or
+/// specialized background treatments, providing distinct light and dark variants.
+class GtPaletteCoverColors {
+  final Color light;
+  final Color dark;
+
+  const GtPaletteCoverColors({
+    required this.light,
+    required this.dark,
+  });
+
+  static GtPaletteCoverColors lerp(
+    GtPaletteCoverColors? a,
+    GtPaletteCoverColors? b,
+    double t,
+  ) {
+    return GtPaletteCoverColors(
+      light: Color.lerp(a?.light, b?.light, t)!,
+      dark: Color.lerp(a?.dark, b?.dark, t)!,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GtPaletteCoverColors) return false;
+
+    return other.light == light && other.dark == dark;
+  }
+
+  @override
+  int get hashCode => Object.hash(light, dark);
 }
 
 /// Semantic backgrounds used to establish visual hierarchy and elevation.
@@ -82,7 +150,10 @@ class GtPaletteBgColors {
   });
 
   static GtPaletteBgColors lerp(
-      GtPaletteBgColors? a, GtPaletteBgColors? b, double t) {
+    GtPaletteBgColors? a,
+    GtPaletteBgColors? b,
+    double t,
+  ) {
     return GtPaletteBgColors(
       strong: Color.lerp(a?.strong, b?.strong, t)!,
       surface: Color.lerp(a?.surface, b?.surface, t)!,
@@ -92,6 +163,22 @@ class GtPaletteBgColors {
       white: Color.lerp(a?.white, b?.white, t)!,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GtPaletteBgColors) return false;
+
+    return other.strong == strong &&
+        other.surface == surface &&
+        other.sub == sub &&
+        other.soft == soft &&
+        other.weak == weak &&
+        other.white == white;
+  }
+
+  @override
+  int get hashCode => Object.hash(strong, surface, sub, soft, weak, white);
 }
 
 /// Colors applied to foreground elements like text and icons.
@@ -114,7 +201,10 @@ class GtPaletteContentColors {
   });
 
   static GtPaletteContentColors lerp(
-      GtPaletteContentColors? a, GtPaletteContentColors? b, double t) {
+    GtPaletteContentColors? a,
+    GtPaletteContentColors? b,
+    double t,
+  ) {
     return GtPaletteContentColors(
       strong: Color.lerp(a?.strong, b?.strong, t)!,
       sub: Color.lerp(a?.sub, b?.sub, t)!,
@@ -123,6 +213,20 @@ class GtPaletteContentColors {
       white: Color.lerp(a?.white, b?.white, t)!,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GtPaletteContentColors) return false;
+    return other.strong == strong &&
+        other.sub == sub &&
+        other.soft == soft &&
+        other.disabled == disabled &&
+        other.white == white;
+  }
+
+  @override
+  int get hashCode => Object.hash(strong, sub, soft, disabled, white);
 }
 
 /// Colors used for boundaries, such as borders, dividers, and outlines.
@@ -142,7 +246,10 @@ class GtPaletteStrokeColors {
   });
 
   static GtPaletteStrokeColors lerp(
-      GtPaletteStrokeColors? a, GtPaletteStrokeColors? b, double t) {
+    GtPaletteStrokeColors? a,
+    GtPaletteStrokeColors? b,
+    double t,
+  ) {
     return GtPaletteStrokeColors(
       strong: Color.lerp(a?.strong, b?.strong, t)!,
       sub: Color.lerp(a?.sub, b?.sub, t)!,
@@ -150,6 +257,20 @@ class GtPaletteStrokeColors {
       white: Color.lerp(a?.white, b?.white, t)!,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GtPaletteStrokeColors) return false;
+
+    return other.strong == strong &&
+        other.sub == sub &&
+        other.soft == soft &&
+        other.white == white;
+  }
+
+  @override
+  int get hashCode => Object.hash(strong, sub, soft, white);
 }
 
 /// Colors representing semantic UI states and structural feedback.
@@ -170,7 +291,10 @@ class GtPaletteStateColors {
   });
 
   static GtPaletteStateColors lerp(
-      GtPaletteStateColors? a, GtPaletteStateColors? b, double t) {
+    GtPaletteStateColors? a,
+    GtPaletteStateColors? b,
+    double t,
+  ) {
     return GtPaletteStateColors(
       dark: Color.lerp(a?.dark, b?.dark, t)!,
       base: Color.lerp(a?.base, b?.base, t)!,
@@ -178,6 +302,20 @@ class GtPaletteStateColors {
       lighter: Color.lerp(a?.lighter, b?.lighter, t)!,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GtPaletteStateColors) return false;
+
+    return other.dark == dark &&
+        other.base == base &&
+        other.light == light &&
+        other.lighter == lighter;
+  }
+
+  @override
+  int get hashCode => Object.hash(dark, base, light, lighter);
 }
 
 // -----------------------------------------------------------------------------
@@ -194,6 +332,9 @@ base class GtPalette extends ThemeExtension<GtPalette> {
   // Brand
   final GtPaletteBrandColors primary;
   final GtPaletteBrandColors sterling;
+
+  // Cover
+  final GtPaletteCoverColors coverColors;
 
   // Neutral
   final GtPaletteStaticColors staticColors;
@@ -217,6 +358,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
   const GtPalette({
     required this.primary,
     required this.sterling,
+    required this.coverColors,
     required this.staticColors,
     required this.bg,
     required this.text,
@@ -244,6 +386,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
     return GtPalette(
       primary: GtPaletteBrandColors.lerp(primary, other.primary, t),
       sterling: GtPaletteBrandColors.lerp(sterling, other.sterling, t),
+      coverColors: GtPaletteCoverColors.lerp(coverColors, other.coverColors, t),
       staticColors:
           GtPaletteStaticColors.lerp(staticColors, other.staticColors, t),
       bg: GtPaletteBgColors.lerp(bg, other.bg, t),
@@ -267,4 +410,51 @@ base class GtPalette extends ThemeExtension<GtPalette> {
   ThemeExtension<GtPalette> copyWith() {
     return this;
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GtPalette) return false;
+
+    return other.primary == primary &&
+        other.sterling == sterling &&
+        other.coverColors == coverColors &&
+        other.staticColors == staticColors &&
+        other.bg == bg &&
+        other.text == text &&
+        other.stroke == stroke &&
+        other.icon == icon &&
+        other.faded == faded &&
+        other.information == information &&
+        other.warning == warning &&
+        other.error == error &&
+        other.success == success &&
+        other.away == away &&
+        other.feature == feature &&
+        other.verified == verified &&
+        other.highlighted == highlighted &&
+        other.stable == stable;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        primary,
+        sterling,
+        coverColors,
+        staticColors,
+        bg,
+        text,
+        stroke,
+        icon,
+        faded,
+        information,
+        warning,
+        error,
+        success,
+        away,
+        feature,
+        verified,
+        highlighted,
+        stable,
+      );
 }

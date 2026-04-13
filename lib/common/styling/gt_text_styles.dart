@@ -37,7 +37,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     final computedColor = color ?? context.palette.text.strong;
     return TextStyle(
@@ -67,7 +67,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.display,
@@ -91,7 +91,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.display,
@@ -115,7 +115,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.display,
@@ -139,7 +139,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.display,
@@ -167,7 +167,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.display,
@@ -191,7 +191,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.title,
@@ -215,7 +215,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.title,
@@ -239,7 +239,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.title,
@@ -263,7 +263,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.title,
@@ -287,7 +287,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.title,
@@ -315,7 +315,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -338,7 +338,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -361,7 +361,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -384,7 +384,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -407,7 +407,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -434,7 +434,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -457,7 +457,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -480,7 +480,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -503,7 +503,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -526,7 +526,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -553,7 +553,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -577,7 +577,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -601,7 +601,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,
@@ -625,7 +625,7 @@ class GtTextStyles {
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
-    TextOverflow? overflow = TextOverflow.ellipsis,
+    TextOverflow? overflow,
   }) {
     return _buildStyle(
       family: fonts.body,

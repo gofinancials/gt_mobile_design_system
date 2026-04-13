@@ -10,6 +10,10 @@ final class KidsLightPalette extends GtPalette {
             alpha16: GtColors.purpleAlpha16.value,
             alpha10: GtColors.purpleAlpha10.value,
           ),
+          coverColors: GtPaletteCoverColors(
+            dark: GtColors.purple950.value,
+            light: GtColors.purple200.value,
+          ),
           sterling: GtPaletteBrandColors(
             darker: GtColors.purple900.value,
             dark: GtColors.purple400.value,
