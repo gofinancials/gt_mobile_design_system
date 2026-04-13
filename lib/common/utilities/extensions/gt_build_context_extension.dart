@@ -117,3 +117,6 @@ extension ThemeContextExtension on BuildContext {
     formKey.currentState?.save();
   }
 }
+
+// TODO: Implement GtTheme provider an InheritedValue to allow for dynamic theme switching and access to theme data without relying on a service locator, enhancing flexibility and testability.
+// TODO: Implement GtThemeSate to manage theme state and allow for runtime theme changes, including support for user-selected themes or system theme changes.
