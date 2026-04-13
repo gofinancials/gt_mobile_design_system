@@ -10,21 +10,16 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:gallery/root_usecase.dart' as _gallery_root_usecase;
+import 'package:gallery/gallery_cover.dart' as _gallery_gallery_cover;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
-  _widgetbook.WidgetbookFolder(
-    name: 'widgets',
-    children: [
-      _widgetbook.WidgetbookComponent(
-        name: 'Text',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Default',
-            builder: _gallery_root_usecase.buildRootUseCase,
-          ),
-        ],
+  _widgetbook.WidgetbookComponent(
+    name: 'DesignSystemCover',
+    useCases: [
+      _widgetbook.WidgetbookUseCase(
+        name: 'Cover',
+        builder: _gallery_gallery_cover.buildCover,
       ),
     ],
   ),
