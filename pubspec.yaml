@@ -41,6 +41,7 @@ flutter:
 
   assets:
     - assets/images/raster/
+    - assets/images/vector/icons/
     # - path: assets/images/vector/
     #   transformers:
     #     - package: vector_graphics_compiler
