@@ -4,16 +4,18 @@ final class PersonalDarkPalette extends GtPalette {
   PersonalDarkPalette()
       : super(
           primary: GtPaletteBrandColors(
-            darker: GtColors.teal900.value,
-            dark: GtColors.teal800.value,
-            base: GtColors.blue700.value,
+            darker: GtColors.teal800.value,
+            dark: GtColors.teal700.value,
+            base: GtColors.blue600.value,
+            alpha24: GtColors.blueAlpha24.value,
             alpha16: GtColors.blueAlpha16.value,
             alpha10: GtColors.blueAlpha10.value,
           ),
           sterling: GtPaletteBrandColors(
-            darker: GtColors.teal900.value,
-            dark: GtColors.teal800.value,
-            base: GtColors.blue700.value,
+             darker: GtColors.teal800.value,
+            dark: GtColors.teal700.value,
+            base: GtColors.blue600.value,
+            alpha24: GtColors.blueAlpha24.value,
             alpha16: GtColors.blueAlpha16.value,
             alpha10: GtColors.blueAlpha10.value,
           ),

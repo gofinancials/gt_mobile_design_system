@@ -10,6 +10,13 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:gallery/atoms/borders.dart' as _gallery_atoms_borders;
+import 'package:gallery/atoms/pallette.dart' as _gallery_atoms_pallette;
+import 'package:gallery/atoms/shadows.dart' as _gallery_atoms_shadows;
+import 'package:gallery/atoms/spacers/gt_divider.dart'
+    as _gallery_atoms_spacers_gt_divider;
+import 'package:gallery/atoms/spacers/gt_gap.dart'
+    as _gallery_atoms_spacers_gt_gap;
 import 'package:gallery/gallery_cover.dart' as _gallery_gallery_cover;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
@@ -20,6 +27,62 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookUseCase(
         name: 'Cover',
         builder: _gallery_gallery_cover.buildCover,
+      ),
+    ],
+  ),
+  _widgetbook.WidgetbookCategory(
+    name: 'Atoms',
+    children: [
+      _widgetbook.WidgetbookComponent(
+        name: 'GtColors',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Palette',
+            builder: _gallery_atoms_pallette.playgroundPaletteUseCase,
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookComponent(
+        name: 'GtRadii',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Borders',
+            builder: _gallery_atoms_borders.playgroundBordersUseCase,
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookComponent(
+        name: 'GtShadows',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Shadows',
+            builder: _gallery_atoms_shadows.playgroundShadowsUseCase,
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'Spacing',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtDivider',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Dividers',
+                builder:
+                    _gallery_atoms_spacers_gt_divider.playgroundDividerUseCase,
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookComponent(
+            name: 'GtGap',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Gaps',
+                builder: _gallery_atoms_spacers_gt_gap.playgroundGapUseCase,
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   ),

@@ -13,6 +13,7 @@ class GtPaletteBrandColors {
   final Color dark;
   final Color darker;
   final Color base;
+  final Color alpha24;
   final Color alpha16;
   final Color alpha10;
 
@@ -20,9 +21,19 @@ class GtPaletteBrandColors {
     required this.dark,
     required this.darker,
     required this.base,
+    required this.alpha24,
     required this.alpha16,
     required this.alpha10,
   });
+
+  List<Color> get all => [
+        dark,
+        darker,
+        base,
+        alpha24,
+        alpha16,
+        alpha10,
+      ];
 
   static GtPaletteBrandColors lerp(
     GtPaletteBrandColors? a,
@@ -33,6 +44,7 @@ class GtPaletteBrandColors {
       dark: Color.lerp(a?.dark, b?.dark, t)!,
       darker: Color.lerp(a?.darker, b?.darker, t)!,
       base: Color.lerp(a?.base, b?.base, t)!,
+      alpha24: Color.lerp(a?.alpha24, b?.alpha24, t)!,
       alpha16: Color.lerp(a?.alpha16, b?.alpha16, t)!,
       alpha10: Color.lerp(a?.alpha10, b?.alpha10, t)!,
     );
@@ -67,6 +79,12 @@ class GtPaletteStaticColors {
     required this.white,
     required this.shadow,
   });
+
+  List<Color> get all => [
+        black,
+        white,
+        shadow,
+      ];
 
   static GtPaletteStaticColors lerp(
     GtPaletteStaticColors? a,
@@ -104,6 +122,11 @@ class GtPaletteCoverColors {
     required this.light,
     required this.dark,
   });
+
+  List<Color> get all => [
+        light,
+        dark,
+      ];
 
   static GtPaletteCoverColors lerp(
     GtPaletteCoverColors? a,
@@ -148,6 +171,15 @@ class GtPaletteBgColors {
     required this.weak,
     required this.white,
   });
+
+  List<Color> get all => [
+        strong,
+        surface,
+        sub,
+        soft,
+        weak,
+        white,
+      ];
 
   static GtPaletteBgColors lerp(
     GtPaletteBgColors? a,
@@ -200,6 +232,14 @@ class GtPaletteContentColors {
     required this.white,
   });
 
+  List<Color> get all => [
+        strong,
+        sub,
+        soft,
+        disabled,
+        white,
+      ];
+
   static GtPaletteContentColors lerp(
     GtPaletteContentColors? a,
     GtPaletteContentColors? b,
@@ -245,6 +285,13 @@ class GtPaletteStrokeColors {
     required this.white,
   });
 
+  List<Color> get all => [
+        strong,
+        sub,
+        soft,
+        white,
+      ];
+
   static GtPaletteStrokeColors lerp(
     GtPaletteStrokeColors? a,
     GtPaletteStrokeColors? b,
@@ -289,6 +336,13 @@ class GtPaletteStateColors {
     required this.light,
     required this.lighter,
   });
+
+  List<Color> get all => [
+        dark,
+        base,
+        light,
+        lighter,
+      ];
 
   static GtPaletteStateColors lerp(
     GtPaletteStateColors? a,
@@ -375,6 +429,27 @@ base class GtPalette extends ThemeExtension<GtPalette> {
     required this.highlighted,
     required this.stable,
   });
+
+  List<Color> get all => [
+        ...primary.all,
+        ...sterling.all,
+        ...coverColors.all,
+        ...staticColors.all,
+        ...bg.all,
+        ...text.all,
+        ...stroke.all,
+        ...icon.all,
+        ...faded.all,
+        ...information.all,
+        ...warning.all,
+        ...error.all,
+        ...success.all,
+        ...away.all,
+        ...feature.all,
+        ...verified.all,
+        ...highlighted.all,
+        ...stable.all,
+      ];
 
   @override
   ThemeExtension<GtPalette> lerp(
