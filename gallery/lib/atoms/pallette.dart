@@ -7,22 +7,6 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-extension on Color {
-  // ignore: deprecated_member_use
-  ColorSet get colorSet => ColorSet(value);
-
-  String get asCssHex {
-    final r = red.toRadixString(16).padLeft(2, '0');
-    final g = green.toRadixString(16).padLeft(2, '0');
-    final b = blue.toRadixString(16).padLeft(2, '0');
-    final a = alpha.toRadixString(16).padLeft(2, '0');
-    String hex = '#$r$g$b';
-    if (a != 'ff') hex += a;
-
-    return hex.upper;
-  }
-}
-
 @widgetbook.UseCase(name: 'Palette', type: GtColors, path: "[Atoms]")
 Widget playgroundPaletteUseCase(BuildContext context) {
   final delegate = SliverGridDelegateWithMaxCrossAxisExtent(
@@ -251,13 +235,13 @@ class GtColorContainer extends StatelessWidget {
         borderRadius: 8.circularBorderRadius,
       ),
       alignment: Alignment.bottomLeft,
-      child: Container(
-        decoration: BoxDecoration(
-          color: context.palette.bg.soft.withOpacity(0.8),
-          borderRadius: 4.circularBorderRadius,
+      child: Text(
+        color.asCssHex,
+        style: context.textStyles.subHeadM(
+          color: color.isBright
+              ? context.palette.text.strong
+              : context.palette.text.white,
         ),
-        padding: context.insets.allDp(2.px),
-        child: Text(color.asCssHex, style: context.textStyles.subHeadM()),
       ),
     );
   }

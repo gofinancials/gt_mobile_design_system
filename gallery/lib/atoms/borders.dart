@@ -104,12 +104,15 @@ Widget playgroundBordersUseCase(BuildContext context) {
             gridDelegate: delegate,
           ),
           SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Top Left to Bottom Right Borders"),
+            child: GalleryPageSectionHeader(
+              title: "Top Left to Bottom Right Borders",
+            ),
           ),
           SliverGrid.builder(
             itemBuilder: (_, index) {
               return GtBorderContainer(
-                borderRadius: borders[index].diagonalTopLeftBottomRightBorderRadius,
+                borderRadius:
+                    borders[index].diagonalTopLeftBottomRightBorderRadius,
                 value: borders[index],
               );
             },
@@ -117,12 +120,15 @@ Widget playgroundBordersUseCase(BuildContext context) {
             gridDelegate: delegate,
           ),
           SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Top Right to Bottom Left Borders"),
+            child: GalleryPageSectionHeader(
+              title: "Top Right to Bottom Left Borders",
+            ),
           ),
           SliverGrid.builder(
             itemBuilder: (_, index) {
               return GtBorderContainer(
-                borderRadius: borders[index].diagonalTopRightBottomLeftBorderRadius,
+                borderRadius:
+                    borders[index].diagonalTopRightBottomLeftBorderRadius,
                 value: borders[index],
               );
             },

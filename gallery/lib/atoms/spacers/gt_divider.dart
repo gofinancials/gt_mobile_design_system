@@ -5,11 +5,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(
-  name: 'Dividers',
-  type: GtDivider,
-  path: "[Atoms]/Spacing",
-)
+@widgetbook.UseCase(name: 'Dividers', type: GtDivider, path: "[Atoms]/Spacing")
 Widget playgroundDividerUseCase(BuildContext context) {
   final gapColor = context.knobs.object.dropdown<(String, Color)>(
     label: 'Divider Color',

@@ -17,6 +17,12 @@ import 'package:gallery/atoms/spacers/gt_divider.dart'
     as _gallery_atoms_spacers_gt_divider;
 import 'package:gallery/atoms/spacers/gt_gap.dart'
     as _gallery_atoms_spacers_gt_gap;
+import 'package:gallery/atoms/typography/gt_editable_text.dart'
+    as _gallery_atoms_typography_gt_editable_text;
+import 'package:gallery/atoms/typography/gt_rich_text.dart'
+    as _gallery_atoms_typography_gt_rich_text;
+import 'package:gallery/atoms/typography/gt_text.dart'
+    as _gallery_atoms_typography_gt_text;
 import 'package:gallery/gallery_cover.dart' as _gallery_gallery_cover;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
@@ -79,6 +85,41 @@ final directories = <_widgetbook.WidgetbookNode>[
               _widgetbook.WidgetbookUseCase(
                 name: 'Gaps',
                 builder: _gallery_atoms_spacers_gt_gap.playgroundGapUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookCategory(
+        name: 'Typography',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtEditableText',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtEditableText',
+                builder: _gallery_atoms_typography_gt_editable_text
+                    .playgroundGtEditableTextUseCase,
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookComponent(
+            name: 'GtRichText',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtRichText',
+                builder: _gallery_atoms_typography_gt_rich_text
+                    .playgroundGtRichTextUseCase,
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookComponent(
+            name: 'GtText',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtText',
+                builder:
+                    _gallery_atoms_typography_gt_text.playgroundGtTextUseCase,
               ),
             ],
           ),

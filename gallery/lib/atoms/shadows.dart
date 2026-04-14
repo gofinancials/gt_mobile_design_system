@@ -39,7 +39,7 @@ Widget playgroundShadowsUseCase(BuildContext context) {
           SliverGrid.builder(
             itemBuilder: (_, index) {
               return GtShadowContainer(
-                shadow: shadows[index].$1(context.palette.bg.strong),
+                shadow: shadows[index].$1(),
                 label: shadows[index].$2,
               );
             },
