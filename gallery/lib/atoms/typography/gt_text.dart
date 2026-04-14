@@ -24,10 +24,7 @@ Widget playgroundGtTextUseCase(BuildContext context) {
   final maxLines = context.knobs.object.dropdown<(String, int)>(
     label: "Max Lines",
     initialOption: ("None", 0),
-    options: [
-      ("None", 0),
-      ("1 Line", 1),
-    ],
+    options: [("None", 0), ("1 Line", 1)],
     labelBuilder: (value) => value.$1,
   );
   final alignment = context.knobs.object.dropdown<(String, TextAlign)>(
