@@ -80,4 +80,30 @@ class GtVectorIcons {
   static const ratioSquareIcon = "$_basePath/ratio_square_icon.svg";
 
   // NAV ICONS
+  static const cancelIcon = "$_basePath/cancel_icon.svg";
+  static const addIcon = "$_basePath/add_icon.svg";
+  static const circularProgressIcon = "$_basePath/circular_progress_icon.svg";
+  static const circularProgress2Icon =
+      "$_basePath/circular_progress_2_icon.svg";
+  static const circularProgress3Icon =
+      "$_basePath/circular_progress_3_icon.svg";
+  static const circularProgress4Icon =
+      "$_basePath/circular_progress_icon_4.svg";
+  static const loaderCompleteIcon = "$_basePath/loader_complete_icon.svg";
+  static const helpInfoIcon = "$_basePath/help_info_icon.svg";
+  static const helpInfoFilledIcon = "$_basePath/helper_info_filled_icon.svg";
+  static const sparkIcon = "$_basePath/spark_icon.svg";
+  static const shareIcon = "$_basePath/share_icon.svg";
+  static const gemIcon = "$_basePath/gem_icon.svg";
+  static const searchIcon = "$_basePath/search_icon.svg";
+  static const notificationIcon = "$_basePath/notification_icon.svg";
+  static const sendIcon = "$_basePath/send_icon.svg";
+  static const menuIcon = "$_basePath/menu_icon.svg";
+  static const refereshIcon = "$_basePath/referesh_icon.svg";
+  static const userIcon = "$_basePath/user_icon.svg";
+  static const cautionIcon = "$_basePath/caution_icon.svg";
+  static const scanIcon = "$_basePath/scan_icon.svg";
+  static const qrIcon = "$_basePath/qr_icon.svg";
+  static const filterIcon = "$_basePath/filter_icon.svg";
+  static const binIcon = "$_basePath/bin_icon.svg";
 }

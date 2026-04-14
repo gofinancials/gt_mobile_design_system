@@ -1,11 +1,1 @@
-<svg width="59" height="57" viewBox="0 0 59 57" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M21.666 17.4999V13.3333C21.666 9.18992 25.0227 5.83325 29.166 5.83325C33.3093 5.83325 36.666 9.18992 36.666 13.3333V17.4999" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M29.166 49.1666V40.8333" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M16.3967 41.1433C15.5 39.2867 15 37.2033 15 35V24.1667C15 20.4833 17.9833 17.5 21.6667 17.5H36.6667C37.6433 17.5 38.5733 17.71 39.41 18.09" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M43.3332 25.8333V34.9999C43.3332 42.8233 36.9899 49.1666 29.1665 49.1666C26.5665 49.1666 24.1265 48.4666 22.0332 47.2399" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15 30.8333H5" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.0007 22.4999C9.93732 22.4999 5.83398 18.3966 5.83398 13.3333" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M43.334 30.8333H53.334" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M43.334 39.1667C48.3973 39.1667 52.5007 43.2701 52.5007 48.3334" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M5.83398 51.6667L52.5006 5" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<svg fill="none" height="57" viewBox="0 0 59 57" width="59" xmlns="http://www.w3.org/2000/svg"><g stroke="#111" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"><path d="m21.666 17.4999v-4.1666c0-4.14338 3.3567-7.50005 7.5-7.50005s7.5 3.35667 7.5 7.50005v4.1666"/><path d="m29.166 49.1666v-8.3333"/><path d="m16.3967 41.1433c-.8967-1.8566-1.3967-3.94-1.3967-6.1433v-10.8333c0-3.6834 2.9833-6.6667 6.6667-6.6667h15c.9766 0 1.9066.21 2.7433.59"/><path d="m43.3332 25.8333v9.1666c0 7.8234-6.3433 14.1667-14.1667 14.1667-2.6 0-5.04-.7-7.1333-1.9267"/><path d="m15 30.8333h-10"/><path d="m15.0007 22.4999c-5.06338 0-9.16672-4.1033-9.16672-9.1666"/><path d="m43.334 30.8333h10"/><path d="m43.334 39.1667c5.0633 0 9.1667 4.1034 9.1667 9.1667"/><path d="m5.83398 51.6667 46.66662-46.6667"/></g></svg>

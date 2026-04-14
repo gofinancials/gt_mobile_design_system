@@ -1,7 +1,1 @@
-<svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M30 38.3333L38.3333 46.6666L46.6667 38.3333" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M38.334 46.6667V16.6667" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M5 28.3333H26.6667" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M5 16.6667H26.6667" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M5 5H38.3333" stroke="#111111" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<svg fill="none" height="52" viewBox="0 0 52 52" width="52" xmlns="http://www.w3.org/2000/svg"><g stroke="#111" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"><path d="m30 38.3333 8.3333 8.3333 8.3334-8.3333"/><path d="m38.334 46.6667v-30"/><path d="m5 28.3333h21.6667"/><path d="m5 16.6667h21.6667"/><path d="m5 5h33.3333"/></g></svg>
