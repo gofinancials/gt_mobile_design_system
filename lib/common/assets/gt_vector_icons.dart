@@ -1,0 +1,109 @@
+class GtVectorIcons {
+  static const _basePath = "assets/images/vector/icons";
+
+// ICONS
+  static const accessibilityIcon = "$_basePath/accessibility_icon.svg";
+  static const alarmClockIcon = "$_basePath/alarm_clock_icon.svg";
+  static const alignBottomIcon = "$_basePath/align_bottom_icon.svg";
+  static const alignHorizontalIcon = "$_basePath/align_horizontal_icon.svg";
+  static const alignLeftIcon = "$_basePath/align_left_icon.svg";
+  static const alignRight = "$_basePath/align_right.svg";
+  static const alignTopIcon = "$_basePath/align_top_icon.svg";
+  static const alignVerticalIcon = "$_basePath/align_vertical_icon.svg";
+  static const anchorIcon = "$_basePath/anchor_icon.svg";
+  static const arrowDoorInIcon = "$_basePath/arrow_door_in_icon.svg";
+  static const arrowDoorOutIcon = "$_basePath/arrow_door_out_icon.svg";
+  static const atSignIcon = "$_basePath/at_sign_icon.svg";
+  static const awardCertIcon = "$_basePath/award_cert_icon.svg";
+  static const awardIcon = "$_basePath/award_icon.svg";
+  static const bagShoppingIcon = "$_basePath/bag_shopping_icon.svg";
+  static const ballBasketIcon = "$_basePath/ball_basket_icon.svg";
+  static const basketShoppingIcon = "$_basePath/basket_shopping_icon.svg";
+  static const batteryHighIcon = "$_basePath/battery_high_icon.svg";
+  static const batteryIcon = "$_basePath/battery_icon.svg";
+  static const bellIcon = "$_basePath/bell_icon.svg";
+  static const bicycleIcon = "$_basePath/bicycle_icon.svg";
+  static const bolt = "$_basePath/bolt.svg";
+  static const boltLightningIcon = "$_basePath/bolt_lightning_icon.svg";
+  static const boltSlashIcon = "$_basePath/bolt_slash_icon.svg";
+  static const bookBookmarkIcon = "$_basePath/book_bookmark_icon.svg";
+  static const bookOpenIcon = "$_basePath/book_open_icon.svg";
+  static const bookmarkIcon = "$_basePath/bookmark_icon.svg";
+  static const bookmarkSlashIcon = "$_basePath/bookmark_slash_icon.svg";
+  static const bookmarksIcon = "$_basePath/bookmarks_icon.svg";
+  static const boxArchiveIcon = "$_basePath/box_archive_icon.svg";
+  static const boxIcon = "$_basePath/box_icon.svg";
+  static const bugIcon = "$_basePath/bug_icon.svg";
+  static const bugSlashIcon = "$_basePath/bug_slash_icon.svg";
+  static const bullhornIcon = "$_basePath/bullhorn_icon.svg";
+  static const calendarDaysIcon = "$_basePath/calendar_days_icon.svg";
+  static const calendarIcon = "$_basePath/calendar_icon.svg";
+  static const camera2Icon = "$_basePath/camera_2_icon.svg";
+  static const cameraIcon = "$_basePath/camera_icon.svg";
+  static const cartShoppingIcon = "$_basePath/cart_shopping_icon.svg";
+  static const chairIcon = "$_basePath/chair_icon.svg";
+  static const chartUpIcon = "$_basePath/chart_up_icon.svg";
+  static const checkIcon = "$_basePath/check_icon.svg";
+  static const chevyDownIcon = "$_basePath/chevy_down_icon.svg";
+  static const chevyExpandIcon = "$_basePath/chevy_expand_icon.svg";
+  static const chevyLeftIcon = "$_basePath/chevy_left_icon.svg";
+  static const chevyRightIcon = "$_basePath/chevy_right_icon.svg";
+  static const chevyUpIcon = "$_basePath/chevy_up_icon.svg";
+  static const circleComposeIcon = "$_basePath/circle_compose_icon.svg";
+  static const circleHashtagIcon = "$_basePath/circle_hashtag_icon.svg";
+  static const circleInfoIcon = "$_basePath/circle_info_icon.svg";
+  static const clipboardCheckIcon = "$_basePath/clipboard_check_icon.svg";
+  static const clipboardIcon = "$_basePath/clipboard_icon.svg";
+  static const clipboardSlashIcon = "$_basePath/clipboard_slash_icon.svg";
+  static const cloudIcon = "$_basePath/cloud_icon.svg";
+  static const computerIcon = "$_basePath/computer_icon.svg";
+  static const cookieIcon = "$_basePath/cookie_icon.svg";
+  static const creditCardIcon = "$_basePath/credit_card_icon.svg";
+  static const crosshairIcon = "$_basePath/crosshair_icon.svg";
+  static const crosshairSlashIcon = "$_basePath/crosshair_slash_icon.svg";
+  static const cryptographyIcon = "$_basePath/cryptography_icon.svg";
+  static const darkLightIcon = "$_basePath/dark_light_icon.svg";
+  static const descendingSortingIcon = "$_basePath/descending_sorting_icon.svg";
+  static const desktopArrowDownIcon = "$_basePath/desktop_arrow_down_icon.svg";
+  static const dottedArrowCircleIcon =
+      "$_basePath/dotted_arrow_circle_icon.svg";
+  static const drawCompassIcon = "$_basePath/draw_compass_icon.svg";
+  static const earthIcon = "$_basePath/earth_icon.svg";
+  static const envelopeIcon = "$_basePath/envelope_icon.svg";
+  static const envelopeOpenIcon = "$_basePath/envelope_open_icon.svg";
+  static const eyeClosedIcon = "$_basePath/eye_closed_icon.svg";
+  static const eyeOpen = "$_basePath/eye_open.svg";
+  static const facePlusIcon = "$_basePath/face_plus_icon.svg";
+  static const faceSmileIcon = "$_basePath/face_smile_icon.svg";
+  static const facialRecognitionIcon = "$_basePath/facial_recognition_icon.svg";
+  static const halfDottedCheckIcon = "$_basePath/half_dotted_check_icon.svg";
+  static const ratioSquareIcon = "$_basePath/ratio_square_icon.svg";
+
+  // NAV ICONS
+  static const cancelIcon = "$_basePath/cancel_icon.svg";
+  static const addIcon = "$_basePath/add_icon.svg";
+  static const circularProgressIcon = "$_basePath/circular_progress_icon.svg";
+  static const circularProgress2Icon =
+      "$_basePath/circular_progress_2_icon.svg";
+  static const circularProgress3Icon =
+      "$_basePath/circular_progress_3_icon.svg";
+  static const circularProgress4Icon =
+      "$_basePath/circular_progress_icon_4.svg";
+  static const loaderCompleteIcon = "$_basePath/loader_complete_icon.svg";
+  static const helpInfoIcon = "$_basePath/help_info_icon.svg";
+  static const helpInfoFilledIcon = "$_basePath/helper_info_filled_icon.svg";
+  static const sparkIcon = "$_basePath/spark_icon.svg";
+  static const shareIcon = "$_basePath/share_icon.svg";
+  static const gemIcon = "$_basePath/gem_icon.svg";
+  static const searchIcon = "$_basePath/search_icon.svg";
+  static const notificationIcon = "$_basePath/notification_icon.svg";
+  static const sendIcon = "$_basePath/send_icon.svg";
+  static const menuIcon = "$_basePath/menu_icon.svg";
+  static const refereshIcon = "$_basePath/referesh_icon.svg";
+  static const userIcon = "$_basePath/user_icon.svg";
+  static const cautionIcon = "$_basePath/caution_icon.svg";
+  static const scanIcon = "$_basePath/scan_icon.svg";
+  static const qrIcon = "$_basePath/qr_icon.svg";
+  static const filterIcon = "$_basePath/filter_icon.svg";
+  static const binIcon = "$_basePath/bin_icon.svg";
+}
