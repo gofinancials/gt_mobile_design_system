@@ -28,15 +28,33 @@ class GtShadows {
     return [
       BoxShadow(
         color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 1),
         blurRadius: 2,
         spreadRadius: 0,
-        offset: Offset(0, 1),
       ),
       BoxShadow(
         color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 2),
         blurRadius: 4,
         spreadRadius: 0,
-        offset: Offset(0, 2),
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.06),
+        offset: Offset(0, 4),
+        blurRadius: 8,
+        spreadRadius: -2,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 0),
+        blurRadius: 0,
+        spreadRadius: 1,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.06),
+        offset: Offset(0, -1),
+        blurRadius: 1,
+        spreadRadius: -0.5,
       ),
     ];
   }
@@ -60,6 +78,30 @@ class GtShadows {
         spreadRadius: -2.5,
         offset: Offset(0, 5),
       ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.02),
+        offset: Offset(0, 12),
+        blurRadius: 6,
+        spreadRadius: -6,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.01),
+        offset: Offset(0, 16),
+        blurRadius: 8,
+        spreadRadius: -8,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 0),
+        blurRadius: 0,
+        spreadRadius: 1,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.08),
+        offset: Offset(0, -0.5),
+        blurRadius: 0.5,
+        spreadRadius: 0,
+      ),
     ];
   }
 
@@ -82,6 +124,42 @@ class GtShadows {
         spreadRadius: -12,
         offset: Offset(0, 24),
       ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 12),
+        blurRadius: 12,
+        spreadRadius: -6,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 6),
+        blurRadius: 6,
+        spreadRadius: -3,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.02),
+        offset: Offset(0, 3),
+        blurRadius: 3,
+        spreadRadius: -1.5,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 1),
+        blurRadius: 1,
+        spreadRadius: 0.5,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 0),
+        blurRadius: 0,
+        spreadRadius: 1,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.06),
+        offset: Offset(0, -1),
+        blurRadius: 1,
+        spreadRadius: -0.5,
+      ),
     ];
   }
 
@@ -100,10 +178,52 @@ class GtShadows {
         offset: Offset(0, 96),
       ),
       BoxShadow(
-        color: (color ?? _shadow).setOpacity(.08),
+        color: (color ?? _shadow).setOpacity(.04),
         blurRadius: 48,
         spreadRadius: -24,
         offset: Offset(0, 48),
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 24),
+        blurRadius: 24,
+        spreadRadius: -12,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 12),
+        blurRadius: 12,
+        spreadRadius: -6,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 6),
+        blurRadius: 6,
+        spreadRadius: -3,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.02),
+        offset: Offset(0, 3),
+        blurRadius: 3,
+        spreadRadius: -1.5,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 1),
+        blurRadius: 1,
+        spreadRadius: 0.5,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.04),
+        offset: Offset(0, 0),
+        blurRadius: 0,
+        spreadRadius: 1,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.06),
+        offset: Offset(0, -1),
+        blurRadius: 1,
+        spreadRadius: -0.5,
       ),
     ];
   }

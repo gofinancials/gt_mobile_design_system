@@ -3,7 +3,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 final class KidsLightPalette extends GtPalette {
   KidsLightPalette()
       : super(
-           primary: GtPaletteBrandColors(
+          primary: GtPaletteBrandColors(
             darker: GtColors.purple800.value,
             dark: GtColors.purple700.value,
             base: GtColors.purple600.value,

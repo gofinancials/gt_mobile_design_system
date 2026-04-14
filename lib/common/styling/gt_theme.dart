@@ -284,11 +284,11 @@ final kPersonalTheme = GtTheme(
   name: "Personal",
 );
 
-  /// A comprehensive list of all available themes in the design system.
-  ///
-  /// This list includes predefined themes such as [kPersonalTheme] and [kKidsTheme].
-  List<GtTheme> kAllThemes = [kPersonalTheme, kKidsTheme];
+/// A comprehensive list of all available themes in the design system.
+///
+/// This list includes predefined themes such as [kPersonalTheme] and [kKidsTheme].
+List<GtTheme> kAllThemes = [kPersonalTheme, kKidsTheme];
 
-   /// Retrieves the default theme, which is the first theme in the list of all themes.
-   /// This can be used as a fallback or default selection when no specific theme is chosen.
-  GtTheme get kDefaultTheme => kAllThemes.first;
+/// Retrieves the default theme, which is the first theme in the list of all themes.
+/// This can be used as a fallback or default selection when no specific theme is chosen.
+GtTheme get kDefaultTheme => kAllThemes.first;

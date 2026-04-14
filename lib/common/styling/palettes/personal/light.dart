@@ -12,7 +12,7 @@ final class PersonalLightPalette extends GtPalette {
             alpha10: GtColors.blueAlpha10.value,
           ),
           sterling: GtPaletteBrandColors(
-             darker: GtColors.teal800.value,
+            darker: GtColors.teal800.value,
             dark: GtColors.teal700.value,
             base: GtColors.blue600.value,
             alpha24: GtColors.blueAlpha24.value,
