@@ -65,6 +65,12 @@ class GtRichText extends GtStatelessWidget {
         (text, attributes) => onTextTap?.call(text.value),
         style: style.copyWith(color: context.palette.error.base),
       ),
+      'ht': StyledTextActionTag(
+        (text, attributes) => onTextTap?.call(text.value),
+        style: style.copyWith(
+          color: hashTagColor ?? context.palette.highlighted.base,
+        ),
+      ),
       'h1': StyledTextActionTag(
         (text, attributes) => onTextTap?.call(text.value),
         style: context.textStyles.h1(),

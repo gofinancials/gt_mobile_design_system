@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-class AppEditableText extends GtStatefulWidget {
+class GtEditableText extends GtStatefulWidget {
   final TextStyle? style;
   final TextAlign? textAlign;
   final Locale? locale;
   final StrutStyle? strutStyle;
-  final bool? softWrap;
   final bool autofocus;
   final int? maxLines;
   final TextDirection? textDirection;
@@ -18,12 +17,11 @@ class AppEditableText extends GtStatefulWidget {
   final OnChanged<String>? onChanged;
   final TextCapitalization textCapitalization;
 
-  const AppEditableText({
+  const GtEditableText({
     this.style,
     this.textAlign,
     this.locale,
     this.maxLines,
-    this.softWrap,
     this.strutStyle,
     this.textDirection,
     this.readonly = false,
@@ -37,10 +35,10 @@ class AppEditableText extends GtStatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _AppEditableTextState();
+  State<StatefulWidget> createState() => _GtEditableTextState();
 }
 
-class _AppEditableTextState extends State<AppEditableText> {
+class _GtEditableTextState extends State<GtEditableText> {
   @override
   Widget build(BuildContext context) {
     final computedStyle =
@@ -67,8 +65,8 @@ class _AppEditableTextState extends State<AppEditableText> {
           if (widget.onSubmit == null) return;
           widget.onSubmit!(widget.controller.text);
         },
-        hintLocales: context.locales,
-        locale: context.currentLocale,
+        // hintLocales: context.locales,
+        // locale: context.currentLocale,
         readOnly: widget.readonly,
         controller: widget.controller,
         focusNode: widget.focusNode ?? FocusNode(),

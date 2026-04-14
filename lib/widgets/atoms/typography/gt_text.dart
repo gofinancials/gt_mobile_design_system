@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 class GtText extends GtStatelessWidget {
@@ -35,7 +34,7 @@ class GtText extends GtStatelessWidget {
       style: computedStyle,
       strutStyle: strutStyle,
       textAlign: textAlign ?? TextAlign.start,
-      locale: locale ?? context.currentLocale,
+      locale: locale,
       maxLines: maxLines,
       overflow: overflow,
       softWrap: softWrap,
