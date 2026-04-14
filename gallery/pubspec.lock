@@ -398,7 +398,7 @@ packages:
     source: hosted
     version: "2.3.2"
   gt_mobile_foundation:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "."
       ref: "v0.0.1"

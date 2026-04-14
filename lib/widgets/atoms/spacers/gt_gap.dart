@@ -144,7 +144,7 @@ class GtGap extends StatelessWidget {
       : _size = _GtGapSize.section4xl,
         _type = GtGapType.horizontal;
 
-  double _computedGap(BuildContext context) {
+  double getGap(BuildContext context) {
     return switch (_size) {
       _GtGapSize.xs => context.spacing.xs,
       _GtGapSize.sm => context.spacing.sm,
@@ -164,7 +164,7 @@ class GtGap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final computedGap = _computedGap(context);
+    final computedGap = getGap(context);
     final gap = context.dp(computedGap.px);
 
     return switch (_type) {

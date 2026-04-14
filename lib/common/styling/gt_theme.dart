@@ -40,7 +40,7 @@ class GtTheme {
         statusBarBrightness: Brightness.dark,
         statusBarIconBrightness: Brightness.light,
         systemNavigationBarIconBrightness: Brightness.light,
-        statusBarColor: darkPalette.primary.dark,
+        statusBarColor: darkPalette.primary.darker,
         systemNavigationBarColor: darkPalette.bg.white,
       ),
     );
@@ -61,7 +61,7 @@ class GtTheme {
         brightness: Brightness.dark,
       ),
       scaffoldBackgroundColor: darkPalette.bg.white,
-      primaryColor: darkPalette.primary.dark,
+      primaryColor: darkPalette.primary.darker,
       appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle.light,
         iconTheme: IconThemeData(color: darkPalette.text.strong),
@@ -85,7 +85,7 @@ class GtTheme {
         elevation: 0,
       ),
       buttonTheme: base.buttonTheme.copyWith(
-        buttonColor: darkPalette.primary.dark,
+        buttonColor: darkPalette.primary.darker,
         disabledColor: darkPalette.faded.light,
         textTheme: ButtonTextTheme.normal,
       ),
@@ -97,8 +97,8 @@ class GtTheme {
       ),
       textSelectionTheme: base.textSelectionTheme.copyWith(
         selectionColor: darkPalette.primary.alpha10,
-        selectionHandleColor: darkPalette.primary.dark,
-        cursorColor: darkPalette.primary.dark,
+        selectionHandleColor: darkPalette.primary.darker,
+        cursorColor: darkPalette.primary.darker,
       ),
       inputDecorationTheme: InputDecorationTheme(
         errorMaxLines: 1,
@@ -122,7 +122,7 @@ class GtTheme {
         statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.dark,
         systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarColor: lightPalette.primary.dark,
+        statusBarColor: lightPalette.primary.darker,
         systemNavigationBarColor: lightPalette.bg.white,
       ),
     );
@@ -143,7 +143,7 @@ class GtTheme {
         brightness: Brightness.dark,
       ),
       scaffoldBackgroundColor: lightPalette.bg.white,
-      primaryColor: lightPalette.primary.dark,
+      primaryColor: lightPalette.primary.darker,
       appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle.light,
         iconTheme: IconThemeData(color: lightPalette.text.strong),
@@ -167,7 +167,7 @@ class GtTheme {
         elevation: 0,
       ),
       buttonTheme: base.buttonTheme.copyWith(
-        buttonColor: lightPalette.primary.dark,
+        buttonColor: lightPalette.primary.darker,
         disabledColor: lightPalette.faded.light,
         textTheme: ButtonTextTheme.normal,
       ),
@@ -179,8 +179,8 @@ class GtTheme {
       ),
       textSelectionTheme: base.textSelectionTheme.copyWith(
         selectionColor: lightPalette.primary.alpha10,
-        selectionHandleColor: lightPalette.primary.dark,
-        cursorColor: lightPalette.primary.dark,
+        selectionHandleColor: lightPalette.primary.darker,
+        cursorColor: lightPalette.primary.darker,
       ),
       inputDecorationTheme: InputDecorationTheme(
         errorMaxLines: 1,
@@ -200,8 +200,8 @@ class GtTheme {
   CupertinoThemeData? get cupertinoLight {
     return CupertinoThemeData(
       brightness: Brightness.light,
-      barBackgroundColor: lightPalette.primary.dark,
-      primaryColor: lightPalette.primary.dark,
+      barBackgroundColor: lightPalette.primary.darker,
+      primaryColor: lightPalette.primary.darker,
       primaryContrastingColor: lightPalette.primary.alpha10,
       scaffoldBackgroundColor: lightPalette.bg.white,
       applyThemeToAll: true,
@@ -212,8 +212,8 @@ class GtTheme {
   CupertinoThemeData? get cupertinoDark {
     return CupertinoThemeData(
       brightness: Brightness.dark,
-      barBackgroundColor: lightPalette.primary.dark,
-      primaryColor: lightPalette.primary.dark,
+      barBackgroundColor: lightPalette.primary.darker,
+      primaryColor: lightPalette.primary.darker,
       primaryContrastingColor: lightPalette.primary.alpha10,
       scaffoldBackgroundColor: lightPalette.bg.white,
       applyThemeToAll: true,
