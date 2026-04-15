@@ -227,4 +227,15 @@ class GtShadows {
       ),
     ];
   }
+
+  List<BoxShadow> indicatorShadow([Color? color]) {
+    return [
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.12),
+        blurRadius: 2.4,
+        spreadRadius: 0,
+        offset: Offset(0, 2.4),
+      ),
+    ];
+  }
 }

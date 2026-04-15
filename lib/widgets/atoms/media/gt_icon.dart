@@ -39,7 +39,7 @@ class GtIcon extends GtStatelessWidget {
 
     Widget child = Icon(
       icon,
-      size: iconSize,
+      size: size ?? iconSize,
       color: iconColor,
       semanticLabel: semanticsLabel,
       shadows: shadows,

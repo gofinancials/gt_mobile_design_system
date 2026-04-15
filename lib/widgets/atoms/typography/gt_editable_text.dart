@@ -41,8 +41,9 @@ class GtEditableText extends GtStatefulWidget {
 class _GtEditableTextState extends State<GtEditableText> {
   @override
   Widget build(BuildContext context) {
-    final computedStyle =
-        widget.style != null ? widget.style! : context.textStyles.bodyM();
+    final computedStyle = widget.style != null
+        ? widget.style!
+        : context.textStyles.bodyM();
     final defaultCursorColor = Theme.of(context).textSelectionTheme.cursorColor;
     final computedCursorColor =
         defaultCursorColor ?? context.palette.primary.darker;

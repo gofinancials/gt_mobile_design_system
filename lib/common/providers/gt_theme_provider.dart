@@ -15,11 +15,7 @@ class GtThemeProvider extends InheritedWidget {
 
   /// Creates a theme provider that makes the given [theme] available to its
   /// descendants.
-  const GtThemeProvider({
-    required this.theme,
-    required super.child,
-    super.key,
-  });
+  const GtThemeProvider({required this.theme, required super.child, super.key});
 
   /// Retrieves the closest [GtTheme] instance from the widget tree.
   ///
@@ -29,10 +25,12 @@ class GtThemeProvider extends InheritedWidget {
   ///
   /// For a non-throwing version, see [maybeOf].
   static GtTheme of(BuildContext context) {
-    final provider =
-        context.dependOnInheritedWidgetOfExactType<GtThemeProvider>();
-    assert(provider != null,
-        'No GtThemeProvider found in context. Make sure to wrap your widget tree with a GtThemeProvider.');
+    final provider = context
+        .dependOnInheritedWidgetOfExactType<GtThemeProvider>();
+    assert(
+      provider != null,
+      'No GtThemeProvider found in context. Make sure to wrap your widget tree with a GtThemeProvider.',
+    );
     return provider!.theme;
   }
 
