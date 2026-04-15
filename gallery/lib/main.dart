@@ -22,6 +22,9 @@ class WidgetbookApp extends StatelessWidget {
       addons: [
         ViewportAddon(Viewports.all),
         GtThemeAddon(themes: kAllThemes),
+        InspectorAddon(),
+        TextScaleAddon(max: 1.5),
+        ZoomAddon(),
       ],
     );
   }
