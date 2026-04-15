@@ -5,7 +5,7 @@ homepage:
 publish_to: none
 
 environment:
-  sdk: ">=3.2.0 <=5.0.0"
+  sdk: ">=3.10.0 <=5.0.0"
   flutter: ">=3.16.0"
 
 dependencies:
@@ -41,6 +41,8 @@ flutter:
 
   assets:
     - assets/images/raster/
+    - assets/images/vector/
+    - assets/images/vector/icons/
     - path: assets/images/vector/icons/
       transformers:
         - package: vector_graphics_compiler
