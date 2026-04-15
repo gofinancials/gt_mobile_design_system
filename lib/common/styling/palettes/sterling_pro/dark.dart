@@ -1,27 +1,27 @@
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-final class PersonalDarkPalette extends GtPalette {
-  PersonalDarkPalette()
+final class SterlingProDarkPalette extends GtPalette {
+  SterlingProDarkPalette()
       : super(
           primary: GtPaletteBrandColors(
-            darker: GtColors.tealBlue800.value,
-            dark: GtColors.tealBlue700.value,
-            base: GtColors.blue600.value,
-            alpha24: GtColors.blueAlpha24.value,
-            alpha16: GtColors.blueAlpha16.value,
-            alpha10: GtColors.blueAlpha10.value,
+            darker: GtColors.tealOrange800.value,
+            dark: GtColors.tealOrange700.value,
+            base: GtColors.tealOrange600.value,
+            alpha24: GtColors.tealOrangeAlpha24.value,
+            alpha16: GtColors.tealOrangeAlpha16.value,
+            alpha10: GtColors.tealOrangeAlpha10.value,
           ),
           // sterling: GtPaletteBrandColors(
-          //   darker: GtColors.teal800.value,
-          //   dark: GtColors.teal700.value,
-          //   base: GtColors.blue600.value,
-          //   alpha24: GtColors.blueAlpha24.value,
-          //   alpha16: GtColors.blueAlpha16.value,
-          //   alpha10: GtColors.blueAlpha10.value,
+          //   darker: GtColors.purple800.value,
+          //   dark: GtColors.purple700.value,
+          //   base: GtColors.purple600.value,
+          //   alpha24: GtColors.purpleAlpha24.value,
+          //   alpha16: GtColors.purpleAlpha16.value,
+          //   alpha10: GtColors.purpleAlpha10.value,
           // ),
           coverColors: GtPaletteCoverColors(
-            dark: GtColors.darkGreen.dark,
-            light: GtColors.lemon.dark,
+            dark: GtColors.purple950.dark,
+            light: GtColors.purple200.dark,
           ),
           staticColors: GtPaletteStaticColors(
             black: GtColors.neutral950.value,
