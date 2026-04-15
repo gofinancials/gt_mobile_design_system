@@ -11,17 +11,9 @@ final class SterlingProDarkPalette extends GtPalette {
             alpha16: GtColors.tealOrangeAlpha16.value,
             alpha10: GtColors.tealOrangeAlpha10.value,
           ),
-          // sterling: GtPaletteBrandColors(
-          //   darker: GtColors.purple800.value,
-          //   dark: GtColors.purple700.value,
-          //   base: GtColors.purple600.value,
-          //   alpha24: GtColors.purpleAlpha24.value,
-          //   alpha16: GtColors.purpleAlpha16.value,
-          //   alpha10: GtColors.purpleAlpha10.value,
-          // ),
           coverColors: GtPaletteCoverColors(
-            dark: GtColors.purple950.dark,
-            light: GtColors.purple200.dark,
+            dark: GtColors.tealOrange800.dark,
+            light: GtColors.neutral0.value,
           ),
           staticColors: GtPaletteStaticColors(
             black: GtColors.neutral950.value,

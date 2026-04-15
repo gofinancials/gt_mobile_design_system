@@ -284,10 +284,43 @@ final kPersonalTheme = GtTheme(
   name: "Personal",
 );
 
+/// The pre-configured theme for the Flex application.
+///
+/// Uses `FlexLightPalette` and `FlexDarkPalette` for a flexible and modern look.
+final kFlexTheme = GtTheme(
+  lightPalette: FlexLightPalette(),
+  darkPalette: FlexDarkPalette(),
+  name: "Flex",
+);
+
+/// The pre-configured theme for the Sterling Pro application.
+///
+/// Uses `SterlingProLightPalette` and `SterlingProDarkPalette` for a premium, professional look.
+final kPProTheme = GtTheme(
+  lightPalette: SterlingProLightPalette(),
+  darkPalette: SterlingProDarkPalette(),
+  name: "Pro",
+);
+
+/// The pre-configured theme for the GoTech application.
+///
+/// Uses `GotechLightPalette` and `GotechDarkPalette` for a technology-focused look.
+final kGoTechTheme = GtTheme(
+  lightPalette: GotechLightPalette(),
+  darkPalette: GotechDarkPalette(),
+  name: "Gotech",
+);
+
 /// A comprehensive list of all available themes in the design system.
 ///
 /// This list includes predefined themes such as [kPersonalTheme] and [kKidsTheme].
-List<GtTheme> kAllThemes = [kPersonalTheme, kKidsTheme];
+List<GtTheme> kAllThemes = [
+  kPersonalTheme,
+  kKidsTheme,
+  kFlexTheme,
+  kPProTheme,
+  kGoTechTheme
+];
 
 /// Retrieves the default theme, which is the first theme in the list of all themes.
 /// This can be used as a fallback or default selection when no specific theme is chosen.
