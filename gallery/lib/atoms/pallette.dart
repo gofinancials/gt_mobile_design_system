@@ -227,6 +227,11 @@ class GtColorContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String hex = color.toCssHex(includeAlpha: true);
+    if (hex.length > 7 && hex.lower.endsWith('ff')) {
+      hex = hex.substring(0, hex.length - 2);
+    }
+
     return Container(
       height: context.dp(180.px),
       padding: context.insets.allDp(16.px),
@@ -236,7 +241,7 @@ class GtColorContainer extends StatelessWidget {
       ),
       alignment: Alignment.bottomLeft,
       child: Text(
-        color.asCssHex,
+        hex.upper,
         style: context.textStyles.subHeadM(
           color: color.isBright
               ? context.palette.text.strong

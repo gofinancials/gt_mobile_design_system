@@ -11,17 +11,9 @@ final class FlexDarkPalette extends GtPalette {
             alpha16: GtColors.greenAlpha16.value,
             alpha10: GtColors.greenAlpha10.value,
           ),
-          // sterling: GtPaletteBrandColors(
-          //   darker: GtColors.purple800.value,
-          //   dark: GtColors.purple700.value,
-          //   base: GtColors.purple600.value,
-          //   alpha24: GtColors.purpleAlpha24.value,
-          //   alpha16: GtColors.purpleAlpha16.value,
-          //   alpha10: GtColors.purpleAlpha10.value,
-          // ),
           coverColors: GtPaletteCoverColors(
-            dark: GtColors.purple950.dark,
-            light: GtColors.purple200.dark,
+            dark: GtColors.green950.dark,
+            light: GtColors.green200.dark,
           ),
           staticColors: GtPaletteStaticColors(
             black: GtColors.neutral950.value,

@@ -16,7 +16,7 @@ dependencies:
   gt_mobile_foundation:
       git:
         url: https://github.com/gofinancials/gt_mobile_foundation.git
-        ref: v0.0.2
+        ref: v0.0.3
 
 dev_dependencies:
   flutter_test:
@@ -24,6 +24,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   build_runner:
   widgetbook_generator: ^3.22.0
+  vector_graphics_compiler: ^1.1.19
 
 flutter:
   uses-material-design: true

@@ -385,7 +385,6 @@ class GtPaletteStateColors {
 base class GtPalette extends ThemeExtension<GtPalette> {
   // Brand
   final GtPaletteBrandColors primary;
-  // final GtPaletteBrandColors sterling;
 
   // Cover
   final GtPaletteCoverColors coverColors;
@@ -411,7 +410,6 @@ base class GtPalette extends ThemeExtension<GtPalette> {
 
   const GtPalette({
     required this.primary,
-    // required this.sterling,
     required this.coverColors,
     required this.staticColors,
     required this.bg,
@@ -432,7 +430,6 @@ base class GtPalette extends ThemeExtension<GtPalette> {
 
   List<Color> get all => [
         ...primary.all,
-        // ...sterling.all,
         ...coverColors.all,
         ...staticColors.all,
         ...bg.all,
@@ -460,7 +457,6 @@ base class GtPalette extends ThemeExtension<GtPalette> {
 
     return GtPalette(
       primary: GtPaletteBrandColors.lerp(primary, other.primary, t),
-      // sterling: GtPaletteBrandColors.lerp(sterling, other.sterling, t),
       coverColors: GtPaletteCoverColors.lerp(coverColors, other.coverColors, t),
       staticColors:
           GtPaletteStaticColors.lerp(staticColors, other.staticColors, t),
@@ -492,7 +488,6 @@ base class GtPalette extends ThemeExtension<GtPalette> {
     if (other is! GtPalette) return false;
 
     return other.primary == primary &&
-        // other.sterling == sterling &&
         other.coverColors == coverColors &&
         other.staticColors == staticColors &&
         other.bg == bg &&
@@ -514,7 +509,6 @@ base class GtPalette extends ThemeExtension<GtPalette> {
   @override
   int get hashCode => Object.hash(
         primary,
-        // sterling,
         coverColors,
         staticColors,
         bg,
