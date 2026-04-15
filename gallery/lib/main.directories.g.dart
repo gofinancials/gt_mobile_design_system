@@ -11,6 +11,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:gallery/atoms/borders.dart' as _gallery_atoms_borders;
+import 'package:gallery/atoms/media/gt_icons.dart'
+    as _gallery_atoms_media_gt_icons;
+import 'package:gallery/atoms/media/gt_images.dart'
+    as _gallery_atoms_media_gt_images;
 import 'package:gallery/atoms/pallette.dart' as _gallery_atoms_pallette;
 import 'package:gallery/atoms/shadows.dart' as _gallery_atoms_shadows;
 import 'package:gallery/atoms/spacers/gt_divider.dart'
@@ -85,6 +89,29 @@ final directories = <_widgetbook.WidgetbookNode>[
               _widgetbook.WidgetbookUseCase(
                 name: 'Gaps',
                 builder: _gallery_atoms_spacers_gt_gap.playgroundGapUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookCategory(
+        name: 'Images',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtIcon',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Vector Icons',
+                builder: _gallery_atoms_media_gt_icons.playgroundIconsUseCase,
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookComponent(
+            name: 'GtImage',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Images',
+                builder: _gallery_atoms_media_gt_images.playgroundImageUseCase,
               ),
             ],
           ),

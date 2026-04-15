@@ -256,7 +256,7 @@ class GtVectorIcons {
 
   /// Path to the circular progress 4 icon SVG.
   static const circularProgress4Icon =
-      "$_basePath/circular_progress_icon_4.svg";
+      "$_basePath/circular_progress_4_icon.svg";
 
   /// Path to the loader complete icon SVG.
   static const loaderCompleteIcon = "$_basePath/loader_complete_icon.svg";
@@ -265,7 +265,7 @@ class GtVectorIcons {
   static const helpInfoIcon = "$_basePath/help_info_icon.svg";
 
   /// Path to the filled help info icon SVG.
-  static const helpInfoFilledIcon = "$_basePath/helper_info_filled_icon.svg";
+  static const helpInfoFilledIcon = "$_basePath/help_info_filled_icon.svg";
 
   /// Path to the spark icon SVG.
   static const sparkIcon = "$_basePath/spark_icon.svg";
@@ -308,4 +308,106 @@ class GtVectorIcons {
 
   /// Path to the bin icon SVG.
   static const binIcon = "$_basePath/bin_icon.svg";
+
+  /// A list containing all available vector icon paths.
+  static List<String> get all => [
+    accessibilityIcon,
+    alarmClockIcon,
+    alignBottomIcon,
+    alignHorizontalIcon,
+    alignLeftIcon,
+    alignRight,
+    alignTopIcon,
+    alignVerticalIcon,
+    anchorIcon,
+    arrowDoorInIcon,
+    arrowDoorOutIcon,
+    atSignIcon,
+    awardCertIcon,
+    awardIcon,
+    bagShoppingIcon,
+    ballBasketIcon,
+    basketShoppingIcon,
+    batteryHighIcon,
+    batteryIcon,
+    bellIcon,
+    bicycleIcon,
+    bolt,
+    boltLightningIcon,
+    boltSlashIcon,
+    bookBookmarkIcon,
+    bookOpenIcon,
+    bookmarkIcon,
+    bookmarkSlashIcon,
+    bookmarksIcon,
+    boxArchiveIcon,
+    boxIcon,
+    bugIcon,
+    bugSlashIcon,
+    bullhornIcon,
+    calendarDaysIcon,
+    calendarIcon,
+    camera2Icon,
+    cameraIcon,
+    cartShoppingIcon,
+    chairIcon,
+    chartUpIcon,
+    checkIcon,
+    chevyDownIcon,
+    chevyExpandIcon,
+    chevyLeftIcon,
+    chevyRightIcon,
+    chevyUpIcon,
+    circleComposeIcon,
+    circleHashtagIcon,
+    circleInfoIcon,
+    clipboardCheckIcon,
+    clipboardIcon,
+    clipboardSlashIcon,
+    cloudIcon,
+    computerIcon,
+    cookieIcon,
+    creditCardIcon,
+    crosshairIcon,
+    crosshairSlashIcon,
+    cryptographyIcon,
+    darkLightIcon,
+    descendingSortingIcon,
+    desktopArrowDownIcon,
+    dottedArrowCircleIcon,
+    drawCompassIcon,
+    earthIcon,
+    envelopeIcon,
+    envelopeOpenIcon,
+    eyeClosedIcon,
+    eyeOpen,
+    facePlusIcon,
+    faceSmileIcon,
+    facialRecognitionIcon,
+    halfDottedCheckIcon,
+    ratioSquareIcon,
+    cancelIcon,
+    addIcon,
+    circularProgressIcon,
+    circularProgress2Icon,
+    circularProgress3Icon,
+    circularProgress4Icon,
+    loaderCompleteIcon,
+    helpInfoIcon,
+    helpInfoFilledIcon,
+    sparkIcon,
+    shareIcon,
+    gemIcon,
+    searchIcon,
+    notificationIcon,
+    sendIcon,
+    menuIcon,
+    refereshIcon,
+    userIcon,
+    cautionIcon,
+    scanIcon,
+    qrIcon,
+    filterIcon,
+    binIcon,
+  ];
 }

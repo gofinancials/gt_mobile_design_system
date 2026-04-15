@@ -1,17 +1,17 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-class GtFileImage extends GtStatelessWidget {
-  final File? imageFile;
+class GtMemoryImage extends GtStatelessWidget {
+  final Uint8List bytes;
   final double? width;
   final double? height;
   final BoxFit? fit;
   final Alignment alignment;
 
-  const GtFileImage(
-    this.imageFile, {
+  const GtMemoryImage(
+    this.bytes, {
     super.key,
     this.alignment = Alignment.center,
     this.fit,
@@ -21,17 +21,8 @@ class GtFileImage extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageFile == null) {
-      return Align(
-        alignment: alignment,
-        child: FittedBox(
-          fit: fit ?? BoxFit.contain,
-          child: SizedBox(height: height, width: width),
-        ),
-      );
-    }
-    return Image.file(
-      imageFile!,
+    return Image.memory(
+      bytes,
       fit: fit,
       alignment: alignment,
       width: width,
