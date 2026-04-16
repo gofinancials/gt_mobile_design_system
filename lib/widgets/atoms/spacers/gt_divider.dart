@@ -5,30 +5,43 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 enum GtDividerSize {
   /// No vertical spacing.
   none,
+
   /// Extra small vertical spacing.
   xs,
+
   /// Small vertical spacing.
   sm,
+
   /// Base vertical spacing.
   base,
+
   /// Medium vertical spacing.
   md,
+
   /// Large vertical spacing.
   lg,
+
   /// Extra large vertical spacing.
   xl,
+
   /// Small section vertical spacing.
   sectionSm,
+
   /// Medium section vertical spacing.
   sectionMd,
+
   /// Large section vertical spacing.
   sectionLg,
+
   /// Extra large section vertical spacing.
   sectionXl,
+
   /// 2x extra large section vertical spacing.
   section2Xl,
+
   /// 3x extra large section vertical spacing.
   section3Xl,
+
   /// 4x extra large section vertical spacing.
   section4Xl,
 }
@@ -95,7 +108,7 @@ class GtDivider extends StatelessWidget {
   const GtDivider.section4Xl({this.color, super.key})
     : _size = GtDividerSize.section4Xl;
 
-  /// Resolves the raw logical pixel height for the divider based on the 
+  /// Resolves the raw logical pixel height for the divider based on the
   /// selected [_size] and the current [context]'s spacing theme.
   double getDividerSize(BuildContext context) {
     return switch (_size) {

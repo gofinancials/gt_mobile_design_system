@@ -2,13 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A linear progress indicator for the Go Tech design system.
+///
+/// If [value] is null, this widget displays an indeterminate progress animation.
+/// Otherwise, it displays a determinate progress bar filling up to [value].
 class GtProgress extends GtStatelessWidget {
+  /// The color of the active progress indicator. Defaults to the primary base color.
   final Color? color;
+
+  /// The background color of the progress track. Defaults to a soft background color.
   final Color? inactiveColor;
+
+  /// The height of the progress bar. Defaults to 4dp.
   final double? size;
+
+  /// The current progress value, from 0.0 to 1.0. If null, the indicator is indeterminate.
   final double? value;
+
+  /// The border radius of the progress bar track and indicator. Defaults to [BorderRadius.zero].
   final BorderRadius borderRadius;
 
+  /// Creates a new [GtProgress].
   const GtProgress({
     this.color,
     this.inactiveColor,
@@ -34,11 +48,20 @@ class GtProgress extends GtStatelessWidget {
   }
 }
 
+/// An adaptive slider widget for the Go Tech design system.
+///
+/// Wraps [Slider.adaptive] to provide consistent styling based on the current palette.
 class GtSlider extends GtStatelessWidget {
+  /// The color of the active track and the thumb. Defaults to the primary base color.
   final Color? color;
+
+  /// The current value of the slider.
   final double? value;
+
+  /// Called when the user is selecting a new value for the slider.
   final OnChanged<double>? onChanged;
 
+  /// Creates a new [GtSlider].
   const GtSlider({this.color, this.onChanged, super.key, this.value});
 
   @override
@@ -57,16 +80,36 @@ class GtSlider extends GtStatelessWidget {
   }
 }
 
+/// A progress indicator that smoothly animates its value upon initialization.
+///
+/// This widget animates from 0 to the target [value]. It also supports an optional
+/// [isBuffering] state to display an underlying indeterminate animation.
 class GtAnimatedProgress extends StatefulWidget {
+  /// The target progress value to animate towards, from 0.0 to 1.0.
   final double value;
+
+  /// The total width of the progress bar. Defaults to [double.infinity].
   final double? width;
+
+  /// The height of the progress bar. Defaults to 4dp.
   final double? height;
+
+  /// The duration of the fill animation. Defaults to 300 milliseconds.
   final Duration? duration;
+
+  /// The color of the active progress portion. Defaults to the primary base color.
   final Color? valueColor;
+
+  /// The background color of the track.
   final Color? inActiveColor;
+
+  /// Whether to show an underlying indeterminate buffering animation.
   final bool isBuffering;
+
+  /// The border radius for the progress bar. Defaults to a fully rounded pill shape.
   final BorderRadius? borderRadius;
 
+  /// Creates a new [GtAnimatedProgress].
   const GtAnimatedProgress({
     required this.value,
     this.duration,
@@ -120,7 +163,7 @@ class _GtAnimatedProgressState extends State<GtAnimatedProgress>
       ),
       child: AnimatedBuilder(
         animation: _ctrl,
-        builder: (_, __) {
+        builder: (_, child) {
           return ClipRRect(
             borderRadius: borderRadius,
             child: Stack(

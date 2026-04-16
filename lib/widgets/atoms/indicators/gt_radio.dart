@@ -3,14 +3,37 @@ import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A highly customizable, stateless radio button component for the Go Tech design system.
+///
+/// It supports two modes of operation:
+/// 1. Standard mode using [groupValue] to compare against its [value].
+/// 2. Conditional mode using a direct boolean [condition] to determine if it is active.
 class GtRadio<T> extends GtStatelessWidget {
+  /// The value represented by this radio button.
   final T value;
+
+  /// The currently selected value for a group of radio buttons.
+  ///
+  /// If this matches [value], the radio button will be drawn as active.
   final T? groupValue;
+
+  /// A direct boolean condition to determine if the radio button is active.
+  ///
+  /// This is used exclusively when constructed with [GtRadio.conditional].
   final bool? condition;
+
+  /// Called when the user selects this radio button.
   final OnChanged<T> onChanged;
+
+  /// The color to use when the radio button is active.
+  ///
+  /// If null, defaults to the primary base color from the current palette.
   final Color? activeColor;
+
+  /// Whether the radio button is disabled and non-interactive.
   final bool disabled;
 
+  /// Creates a standard [GtRadio] that compares [value] against [groupValue].
   const GtRadio({
     super.key,
     required this.value,
@@ -20,6 +43,7 @@ class GtRadio<T> extends GtStatelessWidget {
     this.activeColor,
   }) : condition = null;
 
+  /// Creates a [GtRadio] whose active state is directly controlled by [condition].
   const GtRadio.conditional({
     super.key,
     required this.value,
@@ -78,7 +102,9 @@ class GtRadio<T> extends GtStatelessWidget {
   }
 }
 
+/// An internal widget used to render the inner circle of an active [GtRadio].
 class _ActiveInnerContainer extends StatelessWidget {
+  /// The active color of the radio button.
   final Color color;
 
   const _ActiveInnerContainer(this.color);
@@ -97,6 +123,7 @@ class _ActiveInnerContainer extends StatelessWidget {
   }
 }
 
+/// An internal widget used to render the inner container of an inactive [GtRadio].
 class _InActiveInnerContainer extends StatelessWidget {
   const _InActiveInnerContainer();
 

@@ -1,7 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -48,37 +51,54 @@ Widget playgroundGtIndicatorsUseCase(BuildContext context) {
   );
   final checkBoxType = context.knobs.object.dropdown<(String, GtCheckBoxShape)>(
     label: "CheckBox Shape",
-    initialOption:  ("Square", GtCheckBoxShape.square),
+    initialOption: ("Square", GtCheckBoxShape.square),
     options: [
       ("Square", GtCheckBoxShape.square),
       ("Circle", GtCheckBoxShape.circle),
     ],
     labelBuilder: (value) => value.$1,
   );
-  int dotLength = context.knobs.int.slider(label: "Dot Length", max: 10, initialValue: 5);
-  int countValue = context.knobs.int.slider(label: "CountValue", max: 10, initialValue: 1);
-  final countType = context.knobs.object.dropdown<(String, GtCountIndicatorType)>(
-    label: "Count Indicator Type",
-    initialOption:  ("Error", GtCountIndicatorType.error),
-    options: [
-      ("Error", GtCountIndicatorType.error),
-      ("Success", GtCountIndicatorType.success),
-      ("Info", GtCountIndicatorType.info),
-      ("Warning", GtCountIndicatorType.warning),
-      ("Neutral", GtCountIndicatorType.neutral),
-    ],
-    labelBuilder: (value) => value.$1,
+
+   double slideValue = context.knobs.double.slider(
+    label: "Slider Value",
+    max: 1,
+    divisions: 10,
+  );
+
+  int dotLength = context.knobs.int.slider(
+    label: "Dot Length",
+    max: 10,
+    initialValue: 5,
   );
   int activeDot = context.knobs.int.slider(label: "Dot Value", max: dotLength);
-  double slideValue = context.knobs.double.slider(label: "Slider Value", max: 1, divisions: 10);
 
+  int countValue = context.knobs.int.slider(
+    label: "Count Value",
+    max: 10,
+    initialValue: 1,
+  );
+  final countType = context.knobs.object
+      .dropdown<(String, GtCountIndicatorType)>(
+        label: "Count Indicator Type",
+        initialOption: ("Error", GtCountIndicatorType.error),
+        options: [
+          ("Error", GtCountIndicatorType.error),
+          ("Success", GtCountIndicatorType.success),
+          ("Info", GtCountIndicatorType.info),
+          ("Warning", GtCountIndicatorType.warning),
+          ("Neutral", GtCountIndicatorType.neutral),
+        ],
+        labelBuilder: (value) => value.$1,
+      );
 
   return Scaffold(
+    key: PageStorageKey("Indicators Playground"),
     body: Padding(
       padding: context.insets.symmetricDp(
         horizontal: context.grid.singleColumn.margins.px,
       ),
       child: CustomScrollView(
+        key: PageStorageKey("Indicators Playground Scroll View"),
         slivers: [
           SliverToBoxAdapter(
             child: GalleryPageHeader(
@@ -89,10 +109,10 @@ Widget playgroundGtIndicatorsUseCase(BuildContext context) {
             ),
           ),
           SliverToBoxAdapter(
-            child: GtIdicatorDescxriptionContainer(
+            child: GtIdicatorDescriptionContainer(
               title: "GtSwitch",
               description:
-                  "The switch indicator for Go Tech Apps, has a default active color matching <e>context.palette.success.base</e>, active color can be set via its constructor also",
+                  "A standardized switch widget used to toggle between on and off states, has a default active color matching <e>context.palette.success.base</e>, active color can be set via its constructor also",
               child: GtSwitch(
                 value: disabled ? disabled : state,
                 onChanged: (value) => state = value,
@@ -105,9 +125,10 @@ Widget playgroundGtIndicatorsUseCase(BuildContext context) {
             child: GalleryPageSectionHeader(title: "GtCheckBox"),
           ),
           SliverToBoxAdapter(
-            child: GtIdicatorDescxriptionContainer(
+            child: GtIdicatorDescriptionContainer(
               title: "GtCheckBox",
-              description: "Multi Select options with GtCheckBox",
+              description:
+                  "A highly customizable, stateless checkbox component for the Go Tech design system.",
               child: GtCheckBox(
                 value: 1,
                 onChanged: (_) {},
@@ -120,9 +141,10 @@ Widget playgroundGtIndicatorsUseCase(BuildContext context) {
           ),
           SliverToBoxAdapter(child: GalleryPageSectionHeader(title: "GtRadio")),
           SliverToBoxAdapter(
-            child: GtIdicatorDescxriptionContainer(
-              title: "GtRadio<T>/GtRadio<int>.conditional",
-              description: "Select one of a set of options with GtRadio",
+            child: GtIdicatorDescriptionContainer(
+              title: "GtRadio<T>/GtRadio<T>.conditional",
+              description:
+                  "A highly customizable, stateless radio button component for the Go Tech design system.",
               child: GtRadio<int>.conditional(
                 value: 1,
                 onChanged: (_) {},
@@ -136,43 +158,57 @@ Widget playgroundGtIndicatorsUseCase(BuildContext context) {
             child: GalleryPageSectionHeader(title: "GtSpinner"),
           ),
           SliverToBoxAdapter(
-            child: GtIdicatorDescxriptionContainer(
+            child: GtIdicatorDescriptionContainer(
               title: "GtSpinner",
               description:
-                  "Show circular progress indicators with GtSpinner, has a default active color matching <e>context.palette.primary.base</e>, active color can be set via its constructor also",
-              child: GtSpinner(size: 30),
+                  "A versatile spinner that either animates indefinitely or acts as a pie chart.",
+              child: GtSpinner(size: 30, color: color.$2),
+            ),
+          ),
+          SliverToBoxAdapter(child: GtGap.yMd()),
+          SliverToBoxAdapter(
+            child: GtIdicatorDescriptionContainer(
+              title: "GtSpinner with value",
+              child: GtSpinner(
+                size: 30,
+                color: color.$2,
+                value: progressValues.$2,
+              ),
             ),
           ),
           SliverToBoxAdapter(
             child: GalleryPageSectionHeader(title: "GtAnimatedProgress"),
           ),
           SliverToBoxAdapter(
-            child: GtIdicatorDescxriptionContainer(
+            child: GtIdicatorDescriptionContainer(
               title: "GtAnimatedProgress",
               description:
-                  "Show simple animated progress with this class, you can modify the animation duration via its constructor",
-              child: GtAnimatedProgress(value: progressValues.$2),
+                  "A progress indicator that smoothly animates its value upon initialization.",
+              child: GtAnimatedProgress(
+                value: progressValues.$2,
+                valueColor: color.$2,
+              ),
             ),
           ),
           SliverToBoxAdapter(
             child: GalleryPageSectionHeader(title: "GtProgress"),
           ),
           SliverToBoxAdapter(
-            child: GtIdicatorDescxriptionContainer(
+            child: GtIdicatorDescriptionContainer(
               title: "GtProgress",
               description:
-                  "Show simple or indeterminate progress with this class",
-              child: GtProgress(),
+                  "A linear progress indicator for the Go Tech design system.",
+              child: GtProgress(color: color.$2),
             ),
           ),
           SliverToBoxAdapter(
             child: GalleryPageSectionHeader(title: "GtSlider"),
           ),
           SliverToBoxAdapter(
-            child: GtIdicatorDescxriptionContainer(
+            child: GtIdicatorDescriptionContainer(
               title: "GtSlider",
               description:
-                  "Show simple or indeterminate progress with this class",
+                  "An adaptive slider widget for the Go Tech design system.",
               child: GtSlider(
                 value: slideValue,
                 onChanged: (value) => slideValue = value,
@@ -181,33 +217,56 @@ Widget playgroundGtIndicatorsUseCase(BuildContext context) {
           ),
           SliverToBoxAdapter(child: GalleryPageSectionHeader(title: "GtDots")),
           SliverToBoxAdapter(
-            child: GtIdicatorDescxriptionContainer(
+            child: GtIdicatorDescriptionContainer(
               title: "GtDots",
               description:
-                  "Show simple active carousel slide indicatoirs with this class",
-              child: GtDots(activeDot, activeColor: color.$2, length: dotLength),
+                  "A standard row of dot indicators, typically used for carousels or paginated content.",
+              child: GtDots(
+                min(dotLength, activeDot),
+                activeColor: color.$2,
+                length: dotLength,
+              ),
             ),
           ),
           SliverToBoxAdapter(
             child: GalleryPageSectionHeader(title: "GtScaledDots"),
           ),
           SliverToBoxAdapter(
-            child: GtIdicatorDescxriptionContainer(
+            child: GtIdicatorDescriptionContainer(
               title: "GtScaledDots",
               description:
-                  "Show simple scaled active carousel slide indicatoirs with this class",
-              child: GtScaledDots(activeDot, activeColor: color.$2, length: dotLength),
+                  "A row of dot indicators that dynamically scales down the size of dots based on their distance from the active dot.",
+              child: GtScaledDots(
+                min(dotLength, activeDot),
+                activeColor: color.$2,
+                length: dotLength,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: GalleryPageSectionHeader(title: "GtInputDots"),
+          ),
+          SliverToBoxAdapter(
+            child: GtIdicatorDescriptionContainer(
+              title: "GtInmputDots",
+              description:
+                  "A row of dot indicators that dynamically scales down the size of dots based on their distance from the active dot.",
+              child: GtInputDots(
+                maxLength: dotLength,
+                color: color.$2,
+                inputValue: "1" * min(dotLength, activeDot),
+              ),
             ),
           ),
           SliverToBoxAdapter(
             child: GalleryPageSectionHeader(title: "GtCountIndicator"),
           ),
           SliverToBoxAdapter(
-            child: GtIdicatorDescxriptionContainer(
+            child: GtIdicatorDescriptionContainer(
               title: "GtCountIndicator",
               description:
-                  "Highlight counts with GtCountIndicator",
-              child: GtCountIndicator(countValue, type: countType.$2,),
+                  "A circular badge widget used to display numeric counts, such as unread notifications.",
+              child: GtCountIndicator(countValue, type: countType.$2),
             ),
           ),
           SliverToBoxAdapter(child: GtGap.ySectionLg()),
@@ -217,14 +276,14 @@ Widget playgroundGtIndicatorsUseCase(BuildContext context) {
   );
 }
 
-class GtIdicatorDescxriptionContainer extends GtStatelessWidget {
+class GtIdicatorDescriptionContainer extends GtStatelessWidget {
   final String title;
-  final String description;
+  final String? description;
   final Widget child;
 
-  const GtIdicatorDescxriptionContainer({
+  const GtIdicatorDescriptionContainer({
     required this.title,
-    required this.description,
+    this.description,
     required this.child,
     super.key,
   });
@@ -245,7 +304,11 @@ class GtIdicatorDescxriptionContainer extends GtStatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GtText(title, style: context.textStyles.h4()),
-                GtRichText(description, textStyle: context.textStyles.bodyS()),
+                if (description.hasValue)
+                  GtRichText(
+                    description,
+                    textStyle: context.textStyles.bodyS(),
+                  ),
               ],
             ),
           ),

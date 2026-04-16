@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A standardized switch widget used to toggle between on and off states.
 ///
 /// [GtSwitch] wraps a [CupertinoSwitch] and applies the application's design
-/// system colors, triggers haptic feedback on toggle, and handles a disabled 
+/// system colors, triggers haptic feedback on toggle, and handles a disabled
 /// state using [GtDisabledOverlay].
 class GtSwitch extends GtStatelessWidget {
   /// The current state of the switch. If true, the switch is in the "on" position.
