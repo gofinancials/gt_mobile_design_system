@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
 import 'package:gt_mobile_foundation/extensions/extensions.dart';
-import 'package:gt_mobile_ui/common/assets/gt_vector_icons.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(name: 'Vector Icons', type: GtIcon, path: "[Atoms]/[Images]")
+@widgetbook.UseCase(
+  name: 'Vector Icons',
+  type: GtIcon,
+  path: "[Atoms]/[Images]",
+)
 Widget playgroundIconsUseCase(BuildContext context) {
   final allIcons = GtVectorIcons.all;
+  final allIllustrations = GtVectorIllustrations.all;
   double size = context.knobs.object.dropdown<double>(
     label: "Icon Size",
     initialOption: 10,
@@ -44,7 +48,7 @@ Widget playgroundIconsUseCase(BuildContext context) {
         slivers: [
           SliverToBoxAdapter(
             child: GalleryPageHeader(
-              title: "Vector Icons",
+              title: "Vector Icons & Illustrations",
               rider: "Vector Icon Playground",
               sectionHeader: "Default Icons [GtSvg.asIcon/GtIcon]",
             ),
@@ -67,6 +71,22 @@ Widget playgroundIconsUseCase(BuildContext context) {
               return GtSvg(icon, height: size, width: size, color: color);
             },
             itemCount: allIcons.length,
+          ),
+          SliverToBoxAdapter(
+            child: GalleryPageSectionHeader(title: "All Illustrations"),
+          ),
+          SliverGrid.builder(
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 40,
+              mainAxisExtent: 40,
+              mainAxisSpacing: context.dp(gridTemplate.gutter.px),
+              crossAxisSpacing: context.dp(gridTemplate.gutter.px),
+            ),
+            itemBuilder: (_, index) {
+              final icon = allIllustrations[index];
+              return GtSvg(icon);
+            },
+            itemCount: allIllustrations.length,
           ),
           SliverToBoxAdapter(child: GtGap.ySectionLg()),
         ],
