@@ -30,6 +30,8 @@ import 'package:gallery/atoms/typography/gt_rich_text.dart'
 import 'package:gallery/atoms/typography/gt_text.dart'
     as _gallery_atoms_typography_gt_text;
 import 'package:gallery/gallery_cover.dart' as _gallery_gallery_cover;
+import 'package:gallery/molecules/boxes/gt_boxes_usecase.dart'
+    as _gallery_molecules_boxes_gt_boxes_usecase;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -126,7 +128,7 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'GtSwitch',
             useCases: [
               _widgetbook.WidgetbookUseCase(
-                name: 'GtRichText',
+                name: 'GtIndicators',
                 builder: _gallery_atoms_indicators_gt_indicators
                     .playgroundGtIndicatorsUseCase,
               ),
@@ -164,6 +166,26 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtText',
                 builder:
                     _gallery_atoms_typography_gt_text.playgroundGtTextUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  ),
+  _widgetbook.WidgetbookCategory(
+    name: 'Molecules',
+    children: [
+      _widgetbook.WidgetbookCategory(
+        name: 'Boxes',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtSizedBox',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtBoxes',
+                builder: _gallery_molecules_boxes_gt_boxes_usecase
+                    .playgroundGtBoxesUseCase,
               ),
             ],
           ),
