@@ -67,15 +67,19 @@ class GtCountIndicator extends GtStatelessWidget {
     final bgColor = _getBgColor(palette);
     final textColor = palette.text.white;
 
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
-      constraints: BoxConstraints.tight(Size.square(size ?? context.dp(20.px))),
-      child: Center(
-        child: GtText(
-          "${count > 9 ? '9+' : count}",
-          textAlign: TextAlign.center,
-          style: context.textStyles.bodyXs(color: textColor),
+    return RepaintBoundary(
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
+        constraints: BoxConstraints.tight(
+          Size.square(size ?? context.dp(20.px)),
+        ),
+        child: Center(
+          child: GtText(
+            "${count > 9 ? '9+' : count}",
+            textAlign: TextAlign.center,
+            style: context.textStyles.bodyXs(color: textColor),
+          ),
         ),
       ),
     );

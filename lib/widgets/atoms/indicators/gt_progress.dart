@@ -36,13 +36,15 @@ class GtProgress extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.palette;
 
-    return SizedBox(
-      height: size ?? context.dp(4.px),
-      child: LinearProgressIndicator(
-        borderRadius: borderRadius,
-        valueColor: AlwaysStoppedAnimation(color ?? palette.primary.base),
-        backgroundColor: inactiveColor ?? palette.bg.soft,
-        value: value,
+    return RepaintBoundary(
+      child: SizedBox(
+        height: size ?? context.dp(4.px),
+        child: LinearProgressIndicator(
+          borderRadius: borderRadius,
+          valueColor: AlwaysStoppedAnimation(color ?? palette.primary.base),
+          backgroundColor: inactiveColor ?? palette.bg.soft,
+          value: value,
+        ),
       ),
     );
   }
@@ -70,12 +72,14 @@ class GtSlider extends GtStatelessWidget {
     final activeColor = color ?? palette.primary.base;
     final inactiveColor = palette.bg.sub;
 
-    return Slider.adaptive(
-      value: value ?? 0,
-      onChanged: onChanged,
-      activeColor: activeColor,
-      inactiveColor: inactiveColor,
-      thumbColor: activeColor,
+    return RepaintBoundary(
+      child: Slider.adaptive(
+        value: value ?? 0,
+        onChanged: onChanged,
+        activeColor: activeColor,
+        inactiveColor: inactiveColor,
+        thumbColor: activeColor,
+      ),
     );
   }
 }
@@ -156,41 +160,43 @@ class _GtAnimatedProgressState extends State<GtAnimatedProgress>
     final borderRadius = widget.borderRadius ?? 999.circularBorderRadius;
     final height = widget.height ?? context.dp(4.px);
 
-    return ConstrainedBox(
-      constraints: BoxConstraints.tightFor(
-        height: height,
-        width: widget.width ?? double.infinity,
-      ),
-      child: AnimatedBuilder(
-        animation: _ctrl,
-        builder: (_, child) {
-          return ClipRRect(
-            borderRadius: borderRadius,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: GtProgress(
-                    value: widget.isBuffering ? null : 0,
-                    color: valueColor.setOpacity(.2),
-                    inactiveColor: trackColor,
-                    borderRadius: borderRadius,
-                    size: height,
-                  ),
-                ),
-                Positioned.fill(
-                  child: CustomPaint(
-                    foregroundPainter: GtProgressPainter(
-                      borderRadius: widget.borderRadius?.bottomLeft,
-                      color: valueColor,
-                      value: _ctrl.value,
-                      height: height,
+    return RepaintBoundary(
+      child: ConstrainedBox(
+        constraints: BoxConstraints.tightFor(
+          height: height,
+          width: widget.width ?? double.infinity,
+        ),
+        child: AnimatedBuilder(
+          animation: _ctrl,
+          builder: (_, child) {
+            return ClipRRect(
+              borderRadius: borderRadius,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: GtProgress(
+                      value: widget.isBuffering ? null : 0,
+                      color: valueColor.setOpacity(.2),
+                      inactiveColor: trackColor,
+                      borderRadius: borderRadius,
+                      size: height,
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                  Positioned.fill(
+                    child: CustomPaint(
+                      foregroundPainter: GtProgressPainter(
+                        borderRadius: widget.borderRadius?.bottomLeft,
+                        color: valueColor,
+                        value: _ctrl.value,
+                        height: height,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

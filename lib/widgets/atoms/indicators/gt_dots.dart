@@ -37,12 +37,14 @@ class GtDots extends StatelessWidget {
     });
     final spacing = context.dp(context.spacing.base.px);
 
-    return Wrap(
-      alignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: spacing,
-      runSpacing: spacing,
-      children: children,
+    return RepaintBoundary(
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: spacing,
+        runSpacing: spacing,
+        children: children,
+      ),
     );
   }
 }
@@ -86,20 +88,22 @@ class GtScaledDots extends StatelessWidget {
   Widget build(BuildContext context) {
     final spacing = context.dp(context.spacing.base.px);
 
-    return Wrap(
-      alignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: spacing,
-      runSpacing: spacing,
-      children: List.generate(length, (index) {
-        final isActive = activeIndex == index;
-        return _Dot(
-          isActive,
-          activeColor: activeColor,
-          inActiveColor: inActiveColor,
-          size: _calculateSize(index, context.dp(maxSize.px)),
-        );
-      }),
+    return RepaintBoundary(
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: spacing,
+        runSpacing: spacing,
+        children: List.generate(length, (index) {
+          final isActive = activeIndex == index;
+          return _Dot(
+            isActive,
+            activeColor: activeColor,
+            inActiveColor: inActiveColor,
+            size: _calculateSize(index, context.dp(maxSize.px)),
+          );
+        }),
+      ),
     );
   }
 }
@@ -160,12 +164,14 @@ class GtInputDots extends StatelessWidget {
     });
     final spacing = context.dp(context.spacing.base.px);
 
-    return Wrap(
-      alignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      spacing: spacing,
-      runSpacing: spacing,
-      children: children,
+    return RepaintBoundary(
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: spacing,
+        runSpacing: spacing,
+        children: children,
+      ),
     );
   }
 }

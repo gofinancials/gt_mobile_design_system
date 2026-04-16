@@ -46,22 +46,24 @@ class GtSwitch extends GtStatelessWidget {
     final thumbColor = palette.staticColors.white;
     final computedColor = !value ? inActiveColor : color;
 
-    return GtDisabledOverlay(
-      disabled,
-      child: CupertinoSwitch(
-        value: value,
-        onChanged: (value) {
-          if (disabled) return;
-          HapticFeedback.selectionClick();
-          onChanged(value);
-        },
-        focusNode: focusNode,
-        activeTrackColor: color,
-        inactiveTrackColor: inActiveColor,
-        inactiveThumbColor: thumbColor,
-        thumbColor: thumbColor,
-        trackOutlineColor: WidgetStatePropertyAll(computedColor),
-        trackOutlineWidth: const WidgetStatePropertyAll(0),
+    return RepaintBoundary(
+      child: GtDisabledOverlay(
+        disabled,
+        child: CupertinoSwitch(
+          value: value,
+          onChanged: (value) {
+            if (disabled) return;
+            HapticFeedback.selectionClick();
+            onChanged(value);
+          },
+          focusNode: focusNode,
+          activeTrackColor: color,
+          inactiveTrackColor: inActiveColor,
+          inactiveThumbColor: thumbColor,
+          thumbColor: thumbColor,
+          trackOutlineColor: WidgetStatePropertyAll(computedColor),
+          trackOutlineWidth: const WidgetStatePropertyAll(0),
+        ),
       ),
     );
   }
