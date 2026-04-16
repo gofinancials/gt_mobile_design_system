@@ -7,7 +7,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 @widgetbook.UseCase(
   name: 'GtBoxes',
   type: GtSizedBox,
-  path: "[Molecules]/[Boxes]",
+  path: "[Molecules]/GtBoxes",
 )
 Widget playgroundGtBoxesUseCase(BuildContext context) {
   // Knobs for GtSizedBox
@@ -217,7 +217,7 @@ class GtBoxDescriptionContainer extends GtStatelessWidget {
         borderRadius: context.radii.md.circularBorderRadius,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           GtText(title, style: context.textStyles.h4()),
           GtGap.yXs(),

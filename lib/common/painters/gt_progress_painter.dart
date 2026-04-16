@@ -12,7 +12,7 @@ class GtProgressPainter extends CustomPainter {
   GtProgressPainter({
     required this.color,
     this.value = 0,
-    this.height = 4,
+    this.height = 6,
     this.borderRadius,
   });
 

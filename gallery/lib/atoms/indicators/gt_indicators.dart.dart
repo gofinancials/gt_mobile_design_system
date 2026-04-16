@@ -248,7 +248,7 @@ Widget playgroundGtIndicatorsUseCase(BuildContext context) {
           ),
           SliverToBoxAdapter(
             child: GtIdicatorDescriptionContainer(
-              title: "GtInmputDots",
+              title: "GtInputDots",
               description:
                   "A row of dot indicators that dynamically scales down the size of dots based on their distance from the active dot.",
               child: GtInputDots(

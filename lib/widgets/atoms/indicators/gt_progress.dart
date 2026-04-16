@@ -19,15 +19,11 @@ class GtProgress extends GtStatelessWidget {
   /// The current progress value, from 0.0 to 1.0. If null, the indicator is indeterminate.
   final double? value;
 
-  /// The border radius of the progress bar track and indicator. Defaults to [BorderRadius.zero].
-  final BorderRadius borderRadius;
-
   /// Creates a new [GtProgress].
   const GtProgress({
     this.color,
     this.inactiveColor,
     this.size,
-    this.borderRadius = BorderRadius.zero,
     super.key,
     this.value,
   });
@@ -38,9 +34,9 @@ class GtProgress extends GtStatelessWidget {
 
     return RepaintBoundary(
       child: SizedBox(
-        height: size ?? context.dp(4.px),
+        height: size ?? context.dp(6.px),
         child: LinearProgressIndicator(
-          borderRadius: borderRadius,
+          borderRadius: 999.circularBorderRadius,
           valueColor: AlwaysStoppedAnimation(color ?? palette.primary.base),
           backgroundColor: inactiveColor ?? palette.bg.soft,
           value: value,
@@ -110,15 +106,11 @@ class GtAnimatedProgress extends StatefulWidget {
   /// Whether to show an underlying indeterminate buffering animation.
   final bool isBuffering;
 
-  /// The border radius for the progress bar. Defaults to a fully rounded pill shape.
-  final BorderRadius? borderRadius;
-
   /// Creates a new [GtAnimatedProgress].
   const GtAnimatedProgress({
     required this.value,
     this.duration,
     this.valueColor,
-    this.borderRadius,
     this.isBuffering = false,
     this.width,
     this.height,
@@ -157,8 +149,8 @@ class _GtAnimatedProgressState extends State<GtAnimatedProgress>
     final palette = context.palette;
     final valueColor = widget.valueColor ?? palette.primary.base;
     final trackColor = palette.bg.soft;
-    final borderRadius = widget.borderRadius ?? 999.circularBorderRadius;
-    final height = widget.height ?? context.dp(4.px);
+    final borderRadius = 999.circularBorderRadius;
+    final height = widget.height ?? context.dp(6.px);
 
     return RepaintBoundary(
       child: ConstrainedBox(
@@ -178,14 +170,13 @@ class _GtAnimatedProgressState extends State<GtAnimatedProgress>
                       value: widget.isBuffering ? null : 0,
                       color: valueColor.setOpacity(.2),
                       inactiveColor: trackColor,
-                      borderRadius: borderRadius,
                       size: height,
                     ),
                   ),
                   Positioned.fill(
                     child: CustomPaint(
                       foregroundPainter: GtProgressPainter(
-                        borderRadius: widget.borderRadius?.bottomLeft,
+                        borderRadius: 999.radius,
                         color: valueColor,
                         value: _ctrl.value,
                         height: height,
