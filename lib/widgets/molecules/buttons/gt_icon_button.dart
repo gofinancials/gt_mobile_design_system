@@ -3,12 +3,28 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// An icon-only button component for the Go Tech design system.
+///
+/// This button displays a single vector graphic icon without text. It automatically
+/// constrains its size to a square based on the specified [GtButtonSize] and 
+/// manages hover, pressed, and focused states. It extends [GtButtonBase] to 
+/// inherit standard sizing and interaction logic.
 class GtIconButton extends GtButtonBase {
+  /// The path to the vector graphic icon to display inside the button.
   final String iconPath;
+
+  /// The visual style variant of the button, determining its color scheme.
   final GtButtonVariant variant;
+
+  /// An optional custom widget.
+  /// 
+  /// *Note: This property is declared but currently unused in the standard build method.*
   final Widget? leading;
+
+  /// Custom padding to apply inside the button, overriding the default zero padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// Creates a [GtIconButton].
   const GtIconButton({
     required this.iconPath,
     required super.onPressed,

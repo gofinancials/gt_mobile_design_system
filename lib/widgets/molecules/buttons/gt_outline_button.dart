@@ -3,19 +3,37 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// An outline button component for the Go Tech design system.
+///
+/// Outline buttons (also known as stroked or bordered buttons) feature a transparent
+/// background with a visible border. They are typically used for secondary actions
+/// that are important but not the primary focus of the view.
+/// It extends [GtButtonBase] to inherit standard sizing, layout, and state management.
 class GtOutlineButton extends GtButtonBase {
+  /// The text label displayed on the button.
   final String? text;
+
+  /// The visual style variant of the button, determining its border and text color scheme.
   final GtButtonVariant variant;
+
+  /// An optional custom widget to display before the button's [text].
   final Widget? leading;
+
+  /// An optional vector graphic icon path to display before the button's [text].
   final String? icon;
+
+  /// An optional vector graphic icon path to display after the button's [text].
   final String? trailingIcon;
+
+  /// Custom padding to apply inside the button, overriding the default size-based padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// Creates a [GtOutlineButton].
   const GtOutlineButton({
     this.text,
     required super.onPressed,
     super.minSize,
-    this.variant = .primary,
+    this.variant = .white,
     super.size = .large,
     this.icon,
     this.leading,

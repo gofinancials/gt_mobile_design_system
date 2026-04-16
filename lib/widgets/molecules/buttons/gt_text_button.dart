@@ -3,16 +3,38 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// A text button component for the Go Tech design system.
+///
+/// Text buttons have no visible boundary or background by default, making them 
+/// ideal for less prominent actions, such as "Cancel" or secondary links. 
+/// It extends [GtButtonBase] to inherit standard sizing and interaction states.
 class GtTextButton extends GtButtonBase {
+  /// The text label displayed on the button.
   final String? text;
+
+  /// The visual style variant of the button, determining its default color scheme.
   final GtButtonVariant variant;
+
+  /// An optional custom widget to display before the button's [text].
   final Widget? leading;
+
+  /// An optional vector graphic icon path to display before the button's [text].
   final String? icon;
+
+  /// An optional vector graphic icon path to display after the button's [text].
   final String? trailingIcon;
+
+  /// An optional color to explicitly override the default text and icon color.
   final Color? textColor;
+
+  /// An optional color for a border (Note: typically unused in a standard text button, 
+  /// but included for API consistency across button types).
   final Color? borderColor;
+
+  /// Custom padding to apply inside the button, overriding the default size-based padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// Creates a [GtTextButton].
   const GtTextButton({
     this.text,
     required super.onPressed,

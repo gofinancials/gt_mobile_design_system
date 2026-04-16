@@ -3,14 +3,31 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// A primary elevated button component for the Go Tech design system.
+///
+/// This button uses [ElevatedButton] under the hood and provides a prominent
+/// visual style suitable for main actions in the application. It extends
+/// [GtButtonBase] to inherit standard sizing, layout, and state management.
 class GtButton extends GtButtonBase {
+  /// The text label displayed on the button.
   final String? text;
+
+  /// The visual style variant of the button, determining its color scheme.
   final GtButtonVariant variant;
+
+  /// An optional custom widget to display before the button's [text].
   final Widget? leading;
+
+  /// An optional vector graphic icon path to display before the button's [text].
   final String? icon;
+
+  /// An optional vector graphic icon path to display after the button's [text].
   final String? trailingIcon;
+
+  /// Custom padding to apply inside the button, overriding the default size-based padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// Creates a [GtButton].
   const GtButton({
     this.text,
     required super.onPressed,
