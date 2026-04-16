@@ -3,16 +3,41 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:styled_text/styled_text.dart';
 
+/// A versatile rich text widget that parses and renders HTML-like tags using the Go Tech design system.
+///
+/// This widget uses the `styled_text` package under the hood to apply custom text styles
+/// to specific tags within the [text] string. It comes pre-configured with standard tags
+/// like `<b>`, `<i>`, `<a>`, `<p>`, headings (`<h1>`-`<h6>`), and custom tags like `<ht>`
+/// for hashtags and `<e>` for error styling.
+///
+/// Additionally, it automatically detects hashtags in the raw [text] and wraps them
+/// in `<ht>` tags.
 class GtRichText extends GtStatelessWidget {
+  /// How the text should be aligned horizontally.
   final TextAlign? textAlign;
+
+  /// The base text style applied to the text. Defaults to the `bodyM` style from the current context.
   final TextStyle? textStyle;
+
+  /// How visual overflow should be handled.
   final TextOverflow? textOverflow;
+
+  /// The raw string containing the text and any HTML-like styling tags.
   final String? text;
+
+  /// The color used to style automatically detected hashtags (`<ht>` tags). Defaults to the highlighted base color.
   final Color? hashTagColor;
+
+  /// The maximum number of lines for the text to span, wrapping if necessary.
   final int? maxLines;
+
+  /// A callback triggered when interactive text elements (like links or specific tags) are tapped.
   final OnChanged<String>? onTextTap;
+
+  /// Additional custom styling tags to merge with the default set.
   final Map<String, StyledTextActionTag>? tags;
 
+  /// Creates a new [GtRichText] widget.
   const GtRichText(
     this.text, {
     this.textStyle,

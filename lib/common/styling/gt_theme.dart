@@ -319,7 +319,7 @@ List<GtTheme> kAllThemes = [
   kKidsTheme,
   kFlexTheme,
   kPProTheme,
-  kGoTechTheme
+  kGoTechTheme,
 ];
 
 /// Retrieves the default theme, which is the first theme in the list of all themes.
