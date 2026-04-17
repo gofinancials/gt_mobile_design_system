@@ -29,20 +29,22 @@ Widget playgroundButtonsUseCase(BuildContext context) {
 
   final iconOptions = [
     ("None", null),
-    ("Add", GtVectorIcons.addIcon),
-    ("Settings", GtVectorIcons.accessibilityIcon),
-    ("Chevron Left", GtVectorIcons.chevyLeftIcon),
-    ("Chevron Right", GtVectorIcons.chevyRightIcon),
+    ("Add", GtIcons.add),
+    ("Mobile", GtIcons.mobile),
+    ("Chevron Left", GtIcons.chevronLeft),
+    ("Chevron Right", GtIcons.chevronRight),
+    ("Close", GtIcons.cancel),
+    ("Delete", GtIcons.trash),
   ];
 
-  final leadingIcon = context.knobs.object.dropdown<(String, String?)>(
+  final leadingIcon = context.knobs.object.dropdown<(String, IconData?)>(
     label: "Leading Icon",
     options: iconOptions,
     labelBuilder: (value) => value.$1,
     initialOption: iconOptions.first,
   );
 
-  final trailingIcon = context.knobs.object.dropdown<(String, String?)>(
+  final trailingIcon = context.knobs.object.dropdown<(String, IconData?)>(
     label: "Trailing Icon",
     options: iconOptions,
     labelBuilder: (value) => value.$1,
@@ -50,14 +52,14 @@ Widget playgroundButtonsUseCase(BuildContext context) {
   );
 
   // --- GtIconButton Specific Knob ---
-  final iconButtonIcon = context.knobs.object.dropdown<(String, String)>(
+  final iconButtonIcon = context.knobs.object.dropdown<(String, IconData)>(
     label: "IconButton Icon",
     options: iconOptions
         .where((e) => e.$2 != null)
         .map((e) => (e.$1, e.$2!))
         .toList(),
     labelBuilder: (value) => value.$1,
-    initialOption: ("Add", GtVectorIcons.addIcon),
+    initialOption: ("Mobile", GtIcons.add),
   );
 
   // --- GtCancelButton Specific Knob ---
@@ -121,8 +123,8 @@ Widget playgroundButtonsUseCase(BuildContext context) {
               text: text,
               isDisabled: isDisabled,
               isLoading: isLoading,
-              leadingIcon: leadingIcon,
-              trailingIcon: trailingIcon,
+              leading: leadingIcon,
+              trailing: trailingIcon,
               buttonBuilder: (variant, size) {
                 return GtButton(
                   text: text,
@@ -130,8 +132,8 @@ Widget playgroundButtonsUseCase(BuildContext context) {
                   size: size,
                   isDisabled: isDisabled,
                   isLoading: isLoading,
-                  icon: leadingIcon.$2,
-                  trailingIcon: trailingIcon.$2,
+                  leading: leadingIcon.$2,
+                  trailing: trailingIcon.$2,
                   onPressed: () =>
                       debugPrint("GtButton ($variant, $size) pressed"),
                 );
@@ -161,8 +163,8 @@ Widget playgroundButtonsUseCase(BuildContext context) {
               text: text,
               isDisabled: isDisabled,
               isLoading: isLoading,
-              leadingIcon: leadingIcon,
-              trailingIcon: trailingIcon,
+              leading: leadingIcon,
+              trailing: trailingIcon,
               buttonBuilder: (variant, size) {
                 return GtOutlineButton(
                   text: text,
@@ -170,8 +172,8 @@ Widget playgroundButtonsUseCase(BuildContext context) {
                   size: size,
                   isDisabled: isDisabled,
                   isLoading: isLoading,
-                  icon: leadingIcon.$2,
-                  trailingIcon: trailingIcon.$2,
+                  leading: leadingIcon.$2,
+                  trailing: trailingIcon.$2,
                   onPressed: () => debugPrint("GtOutlineButton pressed"),
                 );
               },
@@ -200,8 +202,8 @@ Widget playgroundButtonsUseCase(BuildContext context) {
               text: text,
               isDisabled: isDisabled,
               isLoading: isLoading,
-              leadingIcon: leadingIcon,
-              trailingIcon: trailingIcon,
+              leading: leadingIcon,
+              trailing: trailingIcon,
               buttonBuilder: (variant, size) {
                 return GtTextButton(
                   text: text,
@@ -209,8 +211,8 @@ Widget playgroundButtonsUseCase(BuildContext context) {
                   size: size,
                   isDisabled: isDisabled,
                   isLoading: isLoading,
-                  icon: leadingIcon.$2,
-                  trailingIcon: trailingIcon.$2,
+                  leading: leadingIcon.$2,
+                  trailing: trailingIcon.$2,
                   onPressed: () => debugPrint("GtTextButton pressed"),
                 );
               },
@@ -240,15 +242,15 @@ Widget playgroundButtonsUseCase(BuildContext context) {
               text: text,
               isDisabled: isDisabled,
               isLoading: isLoading,
-              leadingIcon: leadingIcon,
-              trailingIcon: trailingIcon,
+              leading: leadingIcon,
+              trailing: trailingIcon,
               buttonBuilder: (variant, size) {
                 return GtIconButton(
                   variant: variant,
                   size: size,
                   isDisabled: isDisabled,
                   isLoading: isLoading,
-                  iconPath: iconButtonIcon.$2,
+                  icon: iconButtonIcon.$2,
                   onPressed: () => debugPrint("GtIconButton pressed"),
                 );
               },
@@ -267,7 +269,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
                 alignment: interactiveAlignment.$2,
                 isDisabled: isDisabled,
                 isLoading: isLoading,
-                iconPath: iconButtonIcon.$2,
+                icon: iconButtonIcon.$2,
                 onPressed: () => debugPrint("Interactive GtIconButton pressed"),
               ),
             ),
@@ -328,16 +330,16 @@ class _ButtonGrid extends GtStatelessWidget {
   final String text;
   final bool isDisabled;
   final bool isLoading;
-  final (String, String?) leadingIcon;
-  final (String, String?) trailingIcon;
+  final (String, IconData?) leading;
+  final (String, IconData?) trailing;
   final ButtonBuilder buttonBuilder;
 
   const _ButtonGrid({
     required this.text,
     required this.isDisabled,
     required this.isLoading,
-    required this.leadingIcon,
-    required this.trailingIcon,
+    required this.leading,
+    required this.trailing,
     required this.buttonBuilder,
   });
 

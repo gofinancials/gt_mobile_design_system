@@ -5,19 +5,19 @@ import 'package:flutter/services.dart';
 
 /// An icon-only button component for the Go Tech design system.
 ///
-/// This button displays a single vector graphic icon without text. It automatically
-/// constrains its size to a square based on the specified [GtButtonSize] and 
-/// manages hover, pressed, and focused states. It extends [GtButtonBase] to 
+/// This button displays a single icon without text. It automatically
+/// constrains its size to a square based on the specified [GtButtonSize] and
+/// manages hover, pressed, and focused states. It extends [GtButtonBase] to
 /// inherit standard sizing and interaction logic.
 class GtIconButton extends GtButtonBase {
-  /// The path to the vector graphic icon to display inside the button.
-  final String iconPath;
+  /// The icon to display inside the button.
+  final IconData icon;
 
   /// The visual style variant of the button, determining its color scheme.
   final GtButtonVariant variant;
 
   /// An optional custom widget.
-  /// 
+  ///
   /// *Note: This property is declared but currently unused in the standard build method.*
   final Widget? leading;
 
@@ -26,7 +26,7 @@ class GtIconButton extends GtButtonBase {
 
   /// Creates a [GtIconButton].
   const GtIconButton({
-    required this.iconPath,
+    required this.icon,
     required super.onPressed,
     super.minSize,
     this.variant = .primary,
@@ -86,18 +86,17 @@ class GtIconButton extends GtButtonBase {
     final style = baseStyle(context);
 
     Widget child = IconButton(
-      icon: Center(
-        child: GtSquareBox(
+      icon: GtAnimatedFade(
+        child1: GtIcon.withColor(
+          icon,
+          color: iconColor,
           size: 20,
-          child: FittedBox(
-            child: GtAnimatedFade(
-              child1: GtSvg(iconPath, color: iconColor),
-              child2: GtSpinner(color: iconColor),
-              showFirst: !isLoading,
-            ),
-          ),
+          alignment: alignment,
         ),
+        child2: GtSpinner(color: iconColor),
+        showFirst: !isLoading,
       ),
+      alignment: alignment,
       style: style.copyWith(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.containsAll([

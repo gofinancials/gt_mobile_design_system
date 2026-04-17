@@ -16,14 +16,11 @@ class GtOutlineButton extends GtButtonBase {
   /// The visual style variant of the button, determining its border and text color scheme.
   final GtButtonVariant variant;
 
-  /// An optional custom widget to display before the button's [text].
-  final Widget? leading;
+  /// An optional icon to display before the button's [text].
+  final IconData? leading;
 
-  /// An optional vector graphic icon path to display before the button's [text].
-  final String? icon;
-
-  /// An optional vector graphic icon path to display after the button's [text].
-  final String? trailingIcon;
+  /// An optional icon to display after the button's [text].
+  final IconData? trailing;
 
   /// Custom padding to apply inside the button, overriding the default size-based padding.
   final EdgeInsetsGeometry? contentPadding;
@@ -35,13 +32,12 @@ class GtOutlineButton extends GtButtonBase {
     super.minSize,
     this.variant = .white,
     super.size = .large,
-    this.icon,
-    this.leading,
     super.color,
     super.isDisabled = false,
     super.isLoading = false,
     this.contentPadding,
-    this.trailingIcon,
+    this.leading,
+    this.trailing,
     super.alignment,
     super.key,
   });
@@ -91,26 +87,24 @@ class GtOutlineButton extends GtButtonBase {
     final focusColor = _focusColor(palette);
     final style = baseStyle(context);
 
-    Widget? leading = this.leading;
-    Widget? trailing;
+    Widget? leadingIcon;
+    Widget? trailingIcon;
 
-    final iconSize = context.dp(20.px);
+    final iconSize = context.dp(16.px);
 
-    if (icon != null) {
-      leading = GtSvg(
-        icon!,
+    if (leading != null) {
+      leadingIcon = GtIcon.withColor(
+        leading!,
         color: textColor,
-        height: iconSize,
-        width: iconSize,
+        size: iconSize,
       );
     }
 
-    if (trailingIcon != null) {
-      trailing = GtSvg(
-        trailingIcon!,
+    if (trailing != null) {
+      trailingIcon = GtIcon.withColor(
+        trailing!,
         color: textColor,
-        height: iconSize,
-        width: iconSize,
+        size: iconSize,
       );
     }
 
@@ -152,8 +146,8 @@ class GtOutlineButton extends GtButtonBase {
           alignment: alignment,
           text.value,
           disabled: isDisabled,
-          icon: isLoading ? const GtSpinner() : leading,
-          trailingIcon: trailing,
+          icon: leadingIcon,
+          trailingIcon: trailingIcon,
           textColor: textColor,
         ),
         child2: GtSpinner(color: textColor),

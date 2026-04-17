@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 
 /// A text button component for the Go Tech design system.
 ///
-/// Text buttons have no visible boundary or background by default, making them 
-/// ideal for less prominent actions, such as "Cancel" or secondary links. 
+/// Text buttons have no visible boundary or background by default, making them
+/// ideal for less prominent actions, such as "Cancel" or secondary links.
 /// It extends [GtButtonBase] to inherit standard sizing and interaction states.
 class GtTextButton extends GtButtonBase {
   /// The text label displayed on the button.
@@ -15,19 +15,16 @@ class GtTextButton extends GtButtonBase {
   /// The visual style variant of the button, determining its default color scheme.
   final GtButtonVariant variant;
 
-  /// An optional custom widget to display before the button's [text].
-  final Widget? leading;
+  /// An optional icon to display before the button's [text].
+  final IconData? leading;
 
-  /// An optional vector graphic icon path to display before the button's [text].
-  final String? icon;
-
-  /// An optional vector graphic icon path to display after the button's [text].
-  final String? trailingIcon;
+  /// An optional icon to display after the button's [text].
+  final IconData? trailing;
 
   /// An optional color to explicitly override the default text and icon color.
   final Color? textColor;
 
-  /// An optional color for a border (Note: typically unused in a standard text button, 
+  /// An optional color for a border (Note: typically unused in a standard text button,
   /// but included for API consistency across button types).
   final Color? borderColor;
 
@@ -41,14 +38,13 @@ class GtTextButton extends GtButtonBase {
     super.minSize,
     this.variant = .primary,
     super.size = .large,
-    this.icon,
-    this.leading,
     this.textColor,
     this.borderColor,
     super.isDisabled = false,
     super.isLoading = false,
     this.contentPadding,
-    this.trailingIcon,
+    this.leading,
+    this.trailing,
     super.alignment,
     super.key,
   });
@@ -82,26 +78,24 @@ class GtTextButton extends GtButtonBase {
     final focusColor = _focusColor(palette);
     final style = baseStyle(context);
 
-    Widget? leading = this.leading;
-    Widget? trailing;
+    Widget? leadingIcon;
+    Widget? trailingIcon;
 
-    final iconSize = context.dp(20.px);
+    final iconSize = context.dp(16.px);
 
-    if (icon != null) {
-      leading = GtSvg(
-        icon!,
+    if (leading != null) {
+      leadingIcon = GtIcon.withColor(
+        leading!,
         color: textColor,
-        height: iconSize,
-        width: iconSize,
+        size: iconSize,
       );
     }
 
-    if (trailingIcon != null) {
-      trailing = GtSvg(
-        trailingIcon!,
+    if (trailing != null) {
+      trailingIcon = GtIcon.withColor(
+        trailing!,
         color: textColor,
-        height: iconSize,
-        width: iconSize,
+        size: iconSize,
       );
     }
 
@@ -132,8 +126,8 @@ class GtTextButton extends GtButtonBase {
         child1: GtButtonText(
           text.value,
           disabled: isDisabled,
-          icon: leading,
-          trailingIcon: trailing,
+          icon: leadingIcon,
+          trailingIcon: trailingIcon,
           textColor: textColor,
           alignment: alignment,
         ),

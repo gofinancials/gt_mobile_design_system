@@ -61,3 +61,6 @@ flutter:
         - asset: assets/fonts/Youth-Bold.otf
           weight: 700
         - asset: assets/fonts/Youth-Medium.otf
+    - family: GtIconFont
+      fonts:
+        - asset: assets/fonts/GtIconFont.otf
