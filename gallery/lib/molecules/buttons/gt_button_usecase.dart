@@ -14,7 +14,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
   // --- Shared Knobs ---
   final text = context.knobs.string(
     label: "Button Text",
-    initialValue: "SUBMIT ME TO HR",
+    initialValue: "LOGIN WITH CODE",
   );
 
   final isDisabled = context.knobs.boolean(
@@ -231,7 +231,9 @@ Widget playgroundButtonsUseCase(BuildContext context) {
           ),
           // --- GtIconButton ---
           const SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "GtIconButton (NB: Tentative implementation)"),
+            child: GalleryPageSectionHeader(
+              title: "GtIconButton (NB: Tentative implementation)",
+            ),
           ),
           SliverToBoxAdapter(
             child: _ButtonGrid(
@@ -255,7 +257,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
 
           // --- Interactive GtIconButton ---
           SliverToBoxAdapter(
-            child: GtButtonDescriptionContainer(
+            child: GtBoxDescriptionContainer(
               title: "Interactive GtIconButton",
               description:
                   "Use the 'Interactive' knobs to customize this button.",
@@ -276,7 +278,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
             child: GalleryPageSectionHeader(title: "Navigation Buttons"),
           ),
           SliverToBoxAdapter(
-            child: GtButtonDescriptionContainer(
+            child: GtBoxDescriptionContainer(
               title: "GtBackButton & GtCancelButton",
               description:
                   "Specialized icon buttons for navigation actions like returning to a previous screen or dismissing a modal.",
@@ -341,91 +343,42 @@ class _ButtonGrid extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: context.insets.allDp(16.px),
-      margin: context.insets.onlyDp(bottom: 10.px),
-      decoration: BoxDecoration(
-        color: context.palette.bg.strong.setOpacity(0.1),
-        borderRadius: context.radii.md.circularBorderRadius,
-      ),
-      child: Wrap(
-        spacing: context.dp(16.px),
-        runSpacing: context.dp(16.px),
-        alignment: WrapAlignment.spaceEvenly,
-        crossAxisAlignment: WrapCrossAlignment.start,
-        children: GtButtonVariant.values.map((variant) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              GtText(
-                variant.name.toUpperCase(),
-                style: context.textStyles.bodyS(
-                  color: context.palette.text.sub,
-                ),
-              ),
-              GtGap.yMd(),
-              Column(
-                children: GtButtonSize.values.map((size) {
-                  return Padding(
-                    padding: context.insets.onlyDp(bottom: 16.px),
-                    child: Column(
-                      children: [
-                        buttonBuilder(variant, size),
-                        GtGap.yXs(),
-                        GtText(
-                          size.name,
-                          style: context.textStyles.bodyXs(
-                            color: context.palette.text.sub,
-                          ),
+    return Wrap(
+      spacing: context.dp(16.px),
+      runSpacing: context.dp(16.px),
+      alignment: WrapAlignment.spaceEvenly,
+      crossAxisAlignment: WrapCrossAlignment.start,
+      children: GtButtonVariant.values.mapList((variant) {
+        return Column(
+          children: [
+            GtText(
+              variant.name.toUpperCase(),
+              style: context.textStyles.bodyS(color: context.palette.text.sub),
+            ),
+            GtGap.yMd(),
+            Column(
+              children: GtButtonSize.values.map((size) {
+                return Padding(
+                  padding: context.insets.onlyDp(bottom: 16.px),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      buttonBuilder(variant, size),
+                      GtGap.yXs(),
+                      GtText(
+                        size.name.capitalise(),
+                        style: context.textStyles.bodyXs(
+                          color: context.palette.text.sub,
                         ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class GtButtonDescriptionContainer extends GtStatelessWidget {
-  final String title;
-  final String description;
-  final Widget child;
-
-  const GtButtonDescriptionContainer({
-    required this.title,
-    required this.description,
-    required this.child,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: context.insets.allDp(16.px),
-      decoration: BoxDecoration(
-        border: Border.all(color: context.palette.bg.sub, width: 1),
-        borderRadius: context.radii.md.circularBorderRadius,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          GtText(title, style: context.textStyles.h4()),
-          GtGap.yXs(),
-          GtText(description, style: context.textStyles.bodyS()),
-          GtGap.yMd(),
-          Container(
-            alignment: Alignment.center,
-            padding: context.insets.allDp(8.px),
-            width: double.infinity,
-            child: child,
-          ),
-        ],
-      ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
+        );
+      }),
     );
   }
 }
