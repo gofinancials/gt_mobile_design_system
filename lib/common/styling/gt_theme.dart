@@ -51,7 +51,7 @@ class GtTheme {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       splashFactory: NoSplash.splashFactory,
       brightness: Brightness.dark,
-      dividerColor: darkPalette.faded.light,
+      dividerColor: darkPalette.stroke.soft,
       dialogTheme: base.dialogTheme.copyWith(
         backgroundColor: darkPalette.staticColors.black.setOpacity(0.3),
       ),
@@ -133,7 +133,7 @@ class GtTheme {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       splashFactory: NoSplash.splashFactory,
       brightness: Brightness.light,
-      dividerColor: lightPalette.faded.light,
+      dividerColor: lightPalette.stroke.soft,
       dialogTheme: base.dialogTheme.copyWith(
         backgroundColor: lightPalette.staticColors.black.setOpacity(0.3),
       ),

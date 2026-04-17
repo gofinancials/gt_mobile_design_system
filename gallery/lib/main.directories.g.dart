@@ -30,6 +30,10 @@ import 'package:gallery/atoms/typography/gt_rich_text.dart'
 import 'package:gallery/atoms/typography/gt_text.dart'
     as _gallery_atoms_typography_gt_text;
 import 'package:gallery/gallery_cover.dart' as _gallery_gallery_cover;
+import 'package:gallery/molecules/boxes/gt_boxes_usecase.dart'
+    as _gallery_molecules_boxes_gt_boxes_usecase;
+import 'package:gallery/molecules/buttons/gt_button_usecase.dart'
+    as _gallery_molecules_buttons_gt_button_usecase;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -99,21 +103,33 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookCategory(
         name: 'Images',
         children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtIcon',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Vector Icons',
-                builder: _gallery_atoms_media_gt_icons.playgroundIconsUseCase,
+          _widgetbook.WidgetbookFolder(
+            name: 'Images',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtImage',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Images',
+                    builder:
+                        _gallery_atoms_media_gt_images.playgroundImageUseCase,
+                  ),
+                ],
               ),
             ],
           ),
-          _widgetbook.WidgetbookComponent(
-            name: 'GtImage',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Images',
-                builder: _gallery_atoms_media_gt_images.playgroundImageUseCase,
+          _widgetbook.WidgetbookFolder(
+            name: 'Vectors',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtIcon',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Vector Icons',
+                    builder:
+                        _gallery_atoms_media_gt_icons.playgroundIconsUseCase,
+                  ),
+                ],
               ),
             ],
           ),
@@ -126,7 +142,7 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'GtSwitch',
             useCases: [
               _widgetbook.WidgetbookUseCase(
-                name: 'GtRichText',
+                name: 'GtIndicators',
                 builder: _gallery_atoms_indicators_gt_indicators
                     .playgroundGtIndicatorsUseCase,
               ),
@@ -164,6 +180,41 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtText',
                 builder:
                     _gallery_atoms_typography_gt_text.playgroundGtTextUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  ),
+  _widgetbook.WidgetbookCategory(
+    name: 'Molecules',
+    children: [
+      _widgetbook.WidgetbookFolder(
+        name: 'GtBoxes',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtSizedBox',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtBoxes',
+                builder: _gallery_molecules_boxes_gt_boxes_usecase
+                    .playgroundGtBoxesUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'GtButtons',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtButton',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Buttons',
+                builder: _gallery_molecules_buttons_gt_button_usecase
+                    .playgroundButtonsUseCase,
               ),
             ],
           ),

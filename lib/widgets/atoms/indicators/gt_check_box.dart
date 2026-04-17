@@ -81,11 +81,11 @@ class GtCheckBox<T> extends GtStatelessWidget {
               child: Builder(
                 builder: (context) {
                   if (isActive) {
-                    return GtIcon(
-                      Icons.check,
+                    return GtSvg(
+                      GtVectorIcons.checkIcon,
                       alignment: Alignment.center,
-                      size: context.dp(15.px),
-                      variant: GtIconVariant.white,
+                      width: context.dp(10.px),
+                      color: context.palette.staticColors.white,
                     );
                   }
                   return _InActiveInnerContainer(

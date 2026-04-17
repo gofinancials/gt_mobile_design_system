@@ -641,4 +641,28 @@ class GtTextStyles {
       overflow: overflow,
     );
   }
+
+  /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
+  TextStyle buttonM({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.display,
+      size: 18,
+      heightPx: 32,
+      widthPct: 1,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
 }

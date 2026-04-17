@@ -26,6 +26,7 @@ class GtPiePainter extends CustomPainter {
     final trackPaint = Paint()
       ..color = trackColor
       ..style = PaintingStyle.stroke
+      ..isAntiAlias = true
       ..strokeWidth = strokeWidth;
 
     canvas.drawCircle(center, radius, trackPaint);
@@ -35,6 +36,8 @@ class GtPiePainter extends CustomPainter {
       ..color = valueColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
+      ..isAntiAlias = true
+      ..maskFilter = MaskFilter.blur(BlurStyle.inner, 0.6)
       ..strokeCap = StrokeCap.square; // Added round caps for a polished look
 
     // Ensure value is between 0 and 1
