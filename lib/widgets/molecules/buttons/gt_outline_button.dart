@@ -46,6 +46,7 @@ class GtOutlineButton extends GtButtonBase {
     if (isDisabled) return palette.text.disabled;
     final color = _borderColor(palette);
     return switch (variant) {
+      .destructiveAlt => GtColors.red600.value,
       .secondary => palette.primary.base,
       _ => color,
     };
@@ -57,7 +58,17 @@ class GtOutlineButton extends GtButtonBase {
     return switch (variant) {
       .white => palette.staticColors.white,
       .secondary => palette.primary.alpha10,
+      .neutral => palette.text.sub,
       .destructive => palette.error.base,
+      .destructiveAlt => GtColors.red100.value,
+      .away => GtColors.yellow700.value,
+      .featured => palette.feature.base,
+      .info => palette.information.base,
+      .success => palette.success.base,
+      .warning => palette.warning.base,
+      .highlighted => palette.highlighted.base,
+      .stable => palette.stable.base,
+      .verified => palette.verified.base,
       _ => palette.primary.base,
     };
   }
@@ -65,17 +76,7 @@ class GtOutlineButton extends GtButtonBase {
   Color _bgColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
     final color = _borderColor(palette);
-    return color.setOpacity(0.2);
-  }
-
-  Color _focusColor(GtPalette palette) {
-    if (isDisabled) return palette.bg.weak;
-    return switch (variant) {
-      .white => palette.staticColors.white,
-      .secondary => palette.primary.alpha16,
-      .destructive => palette.error.dark,
-      _ => palette.primary.dark,
-    };
+    return color.setOpacity(.01);
   }
 
   @override
@@ -84,7 +85,6 @@ class GtOutlineButton extends GtButtonBase {
     final textColor = _textColor(palette);
     final borderColor = _borderColor(palette);
     final bgColor = _bgColor(palette);
-    final focusColor = _focusColor(palette);
     final style = baseStyle(context);
 
     Widget? leadingIcon;
@@ -111,25 +111,13 @@ class GtOutlineButton extends GtButtonBase {
     Widget child = OutlinedButton(
       style: style.copyWith(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.containsAll([
-            WidgetState.hovered,
-            WidgetState.pressed,
-            WidgetState.focused,
-          ])) {
+          if (isActive(states)) {
             return bgColor;
           }
           return GtColors.transparent.value;
         }),
         side: WidgetStateProperty.resolveWith((states) {
-          Color color = borderColor;
-          if (states.containsAll([
-            WidgetState.hovered,
-            WidgetState.pressed,
-            WidgetState.focused,
-          ])) {
-            color = focusColor;
-          }
-          return BorderSide(color: color, width: 2);
+          return BorderSide(color: borderColor, width: 2);
         }),
         padding: WidgetStatePropertyAll(contentPadding ?? padding(context)),
       ),
@@ -144,6 +132,7 @@ class GtOutlineButton extends GtButtonBase {
       child: GtAnimatedFade(
         child1: GtButtonText(
           alignment: alignment,
+          size: size,
           text.value,
           disabled: isDisabled,
           icon: leadingIcon,

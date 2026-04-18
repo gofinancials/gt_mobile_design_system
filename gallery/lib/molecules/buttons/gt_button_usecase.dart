@@ -111,12 +111,8 @@ Widget playgroundButtonsUseCase(BuildContext context) {
             child: GalleryPageHeader(
               title: "Buttons",
               rider: "A showcase of all button types in the design system.",
+              sectionHeader: "GtButton (Filled)",
             ),
-          ),
-
-          // --- GtButton ---
-          const SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "GtButton (Filled)"),
           ),
           SliverToBoxAdapter(
             child: _ButtonGrid(

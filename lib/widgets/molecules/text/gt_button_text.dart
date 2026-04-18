@@ -32,11 +32,14 @@ class GtButtonText extends GtStatelessWidget {
   /// An optional color to override the default disabled text color.
   final Color? disabledTextColor;
 
+  final GtButtonSize size;
+
   /// Creates a [GtButtonText] widget.
   const GtButtonText(
     this.text, {
     super.key,
     required this.disabled,
+    required this.size,
     this.alignment = Alignment.center,
     this.icon,
     this.trailingIcon,
@@ -47,7 +50,12 @@ class GtButtonText extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle btnStyle = context.textStyles.buttonM(color: textColor, decorationColor: textColor);
+    final textStyles = context.textStyles;
+    TextStyle btnStyle = switch (size) {
+      .pill => textStyles.buttonXs(color: textColor),
+      .xsmall => textStyles.buttonS(color: textColor),
+      _ => textStyles.button(color: textColor),
+    };
 
     if (disabled) {
       final disabledColor = disabledTextColor ?? context.palette.text.disabled;

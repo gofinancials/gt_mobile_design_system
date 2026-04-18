@@ -55,20 +55,24 @@ class GtTextButton extends GtButtonBase {
     return switch (variant) {
       .white => palette.staticColors.white,
       .secondary => palette.primary.base,
-      .destructive => palette.error.base,
+      .neutral => palette.text.sub,
+      .destructive || .destructiveAlt => palette.error.base,
+      .away => GtColors.yellow700.value,
+      .featured => palette.feature.base,
+      .info => palette.information.base,
+      .success => palette.success.base,
+      .warning => palette.warning.base,
+      .highlighted => palette.highlighted.base,
+      .stable => palette.stable.base,
+      .verified => palette.verified.base,
       _ => palette.text.strong,
     };
   }
 
   Color _focusColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
-    if (textColor != null) return textColor!.setOpacity(.16);
-    return switch (variant) {
-      .white => palette.staticColors.white.setOpacity(.16),
-      .secondary => palette.primary.alpha16,
-      .destructive => palette.error.lighter,
-      _ => palette.bg.soft,
-    };
+    final color = _textColor(palette);
+    return color.setOpacity(.01);
   }
 
   @override
@@ -102,11 +106,7 @@ class GtTextButton extends GtButtonBase {
     Widget child = TextButton(
       style: style.copyWith(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.containsAll([
-            WidgetState.hovered,
-            WidgetState.pressed,
-            WidgetState.focused,
-          ])) {
+          if (isActive(states)) {
             return focusColor;
           }
           return GtColors.transparent.value;
@@ -125,6 +125,7 @@ class GtTextButton extends GtButtonBase {
       child: GtAnimatedFade(
         child1: GtButtonText(
           text.value,
+          size: size,
           disabled: isDisabled,
           icon: leadingIcon,
           trailingIcon: trailingIcon,

@@ -4,10 +4,18 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Defines the standard sizes available for Go Tech buttons.
 enum GtButtonSize {
+  /// A pill style extra small button with a baseline height of 20.
+  pill(20),
+
+  /// An extra small button with a baseline height of 36.
+  xsmall(28),
+
   /// A small button with a baseline height of 36.
   small(36),
+
   /// A medium button with a baseline height of 40.
   medium(40),
+
   /// A large button with a baseline height of 48.
   large(48);
 
@@ -18,27 +26,59 @@ enum GtButtonSize {
 }
 
 /// Defines the standard visual styles or variants available for Go Tech buttons.
-enum GtButtonVariant { 
+enum GtButtonVariant {
   /// The primary button style, typically used for the most important actions.
-  primary, 
+  primary,
+
   /// A destructive button style, used for critical actions like delete or remove.
-  destructive, 
+  destructive,
+
   /// A secondary button style for alternative or less important actions.
-  secondary, 
+  secondary,
+
+  /// A secondary destructive button style, used actions like delete or remove.
+  destructiveAlt,
+
   /// A white button style, often used on dark backgrounds or for high contrast.
-  white 
+  white,
+
+  /// A featured button style, used to highlight special or premium actions.
+  featured,
+
+  /// An informational button style, used to convey neutral or general information.
+  info,
+
+  /// A success button style, used to confirm positive or successful actions.
+  success,
+
+  /// A warning button style, used to indicate caution or potential issues.
+  warning,
+
+  /// A highlighted button style, used to draw extra attention to an action.
+  highlighted,
+
+  /// A stable button style, used to indicate a neutral, grounded state.
+  stable,
+
+  /// A verified button style, used in contexts involving trust or authentication.
+  verified,
+
+  /// An away button style, used to indicate an inactive, paused, or absent state.
+  away,
+
+  neutral,
 }
 
-/// An abstract base class providing common properties and structural styling 
+/// An abstract base class providing common properties and structural styling
 /// logic for Go Tech buttons.
 ///
-/// This class centralizes the calculation of button dimensions, padding, and 
+/// This class centralizes the calculation of button dimensions, padding, and
 /// basic shape characteristics to ensure consistency across different button types.
 abstract class GtButtonBase extends GtStatelessWidget {
   /// The callback that is called when the button is tapped or otherwise activated.
   final OnPressed onPressed;
 
-  /// The size category of the button, determining its height and default padding. 
+  /// The size category of the button, determining its height and default padding.
   /// Defaults to [GtButtonSize.medium].
   final GtButtonSize size;
 
@@ -48,7 +88,7 @@ abstract class GtButtonBase extends GtStatelessWidget {
   /// Whether the button is currently disabled, preventing user interaction.
   final bool isDisabled;
 
-  /// Whether the button is in a loading state. 
+  /// Whether the button is in a loading state.
   /// Typically used to display a progress indicator instead of its label.
   final bool isLoading;
 
@@ -62,7 +102,7 @@ abstract class GtButtonBase extends GtStatelessWidget {
   const GtButtonBase({
     required this.onPressed,
     this.minSize,
-    this.size = .medium,
+    this.size = .large,
     this.color,
     this.isDisabled = false,
     this.isLoading = false,
@@ -70,7 +110,23 @@ abstract class GtButtonBase extends GtStatelessWidget {
     super.key,
   });
 
-  /// Calculates the required height of the button based on its [size] and the 
+  bool isFocused(Set<WidgetState> states) {
+    return states.contains(WidgetState.focused);
+  }
+
+  bool isHovered(Set<WidgetState> states) {
+    return states.contains(WidgetState.hovered);
+  }
+
+  bool isPressed(Set<WidgetState> states) {
+    return states.contains(WidgetState.pressed);
+  }
+
+  bool isActive(Set<WidgetState> states) {
+    return isFocused(states) || isHovered(states) || isPressed(states);
+  }
+
+  /// Calculates the required height of the button based on its [size] and the
   /// current device pixel ratio using Go Tech's layout utilities.
   double buttonHeight(BuildContext context) {
     return context.dp(size.value.px);
@@ -81,6 +137,8 @@ abstract class GtButtonBase extends GtStatelessWidget {
     final height = buttonHeight(context);
     final width = minSize?.width;
     return switch (size) {
+      .pill => Size(width ?? context.dp(52.px), height),
+      .xsmall => Size(width ?? context.dp(67.px), height),
       .small => Size(width ?? context.dp(68.px), height),
       .medium => Size(width ?? context.dp(80.px), height),
       .large => Size(width ?? context.dp(120.px), height),
@@ -97,20 +155,27 @@ abstract class GtButtonBase extends GtStatelessWidget {
   EdgeInsetsGeometry padding(BuildContext context) {
     final i = context.insets;
     return switch (size) {
+      .pill => i.symmetricDp(vertical: 4.px, horizontal: 6.px),
+      .xsmall => i.allDp(6.px),
       .small => i.symmetricDp(vertical: 4.px, horizontal: 8.px),
       .medium => i.symmetricDp(vertical: 8.px, horizontal: 16.px),
       .large => i.symmetricDp(vertical: 10.px, horizontal: 20.px),
     };
   }
 
-  /// Generates the base [ButtonStyle] containing the standard size, padding, 
+  /// Generates the base [ButtonStyle] containing the standard size, padding,ß
   /// and shape constraints for Go Tech buttons.
   ButtonStyle baseStyle(BuildContext context) {
     final height = buttonHeight(context);
     final minSize = minimumSize(context);
     final maxSize = maximumSize(context);
     final hPadding = padding(context);
-    final shape = RoundedRectangleBorder(borderRadius: 10.circularBorderRadius);
+    final borderRadius = switch (size) {
+      .pill => 6.8.circularBorderRadius,
+      .xsmall => 8.circularBorderRadius,
+      _ => 10.circularBorderRadius,
+    };
+    final shape = RoundedRectangleBorder(borderRadius: borderRadius);
 
     return ButtonStyle(
       minimumSize: WidgetStatePropertyAll(minSize),

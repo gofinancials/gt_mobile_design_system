@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart'
     show BuildContext, MediaQuery, EdgeInsets, RenderBox, Size, Offset;
+import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A utility class that extracts and caches common [MediaQuery] properties
 /// for the given context, simplifying access to screen dimensions, pixel ratios,
@@ -184,7 +185,17 @@ class GtInsets {
 
   /// Returns the default horizontal fractional insets for the design system.
   EdgeInsets get defaultHorizontalInsets {
-    return symmetric(horizontal: 5);
+    return symmetricDp(horizontal: 16.px);
+  }
+
+  /// Returns the default vertical fractional insets for the design system.
+  EdgeInsets get defaultVerticalInsets {
+    return symmetricDp(vertical: 8.px);
+  }
+
+  /// Returns the default horizontal and vertical fractional insets for the design system.
+  EdgeInsets get defaultAllInsets {
+    return symmetricDp(vertical: 8.px, horizontal: 16.px);
   }
 
   /// Creates insets with the specified fractional values applied to each edge.

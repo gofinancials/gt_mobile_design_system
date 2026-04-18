@@ -77,6 +77,7 @@ class GtIcons {
   static const files = GtIconData(0xf00d);
   static const rocket = GtIconData(0xf00e);
   static const file = GtIconData(0xf00f);
+  static const copyFilled = GtIconData(0xf109);
   static const roadmap = GtIconData(0xf010);
   static const fileContent = GtIconData(0xf011);
   static const refresh = GtIconData(0xf012);
@@ -101,6 +102,9 @@ class GtIcons {
   static const envelopCheck = GtIconData(0xf025);
   static const plug = GtIconData(0xf026);
   static const calendarEmpty = GtIconData(0xf027);
+  static const calendarEmptyFilled = GtIconData(0xf108);
+  static const reorder = GtIconData(0xf13e);
+  static const switchOutline = GtIconData(0xf107);
   static const pizzaSlice = GtIconData(0xf028);
   static const editDoc = GtIconData(0xf029);
   static const pinTack = GtIconData(0xf02a);
@@ -124,6 +128,7 @@ class GtIcons {
   static const penNib = GtIconData(0xf03c);
   static const crosshairsSlash = GtIconData(0xf03d);
   static const pen = GtIconData(0xf03e);
+  static const pencil = GtIconData(0xf106);
   static const creditCard = GtIconData(0xf03f);
   static const password = GtIconData(0xf040);
   static const copy = GtIconData(0xf041);

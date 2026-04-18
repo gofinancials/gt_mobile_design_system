@@ -53,8 +53,8 @@ class GtCancelButton extends GtStatelessWidget {
         }
         Navigator.of(context).pop();
       },
-      child: GtSvg.asIcon(
-        GtVectorIcons.cancelIcon,
+      child: GtIcon(
+        GtIcons.cancel,
         size: context.dp(size.px),
         alignment: alignment,
       ),

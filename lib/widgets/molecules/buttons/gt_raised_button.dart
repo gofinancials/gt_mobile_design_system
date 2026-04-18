@@ -45,8 +45,18 @@ class GtButton extends GtButtonBase {
     if (isDisabled) return palette.text.disabled;
     return switch (variant) {
       .white => palette.staticColors.black,
+      .neutral => palette.text.strong,
       .secondary => palette.primary.base,
+      .destructiveAlt => GtColors.red600.value,
       _ => palette.staticColors.white,
+    };
+  }
+
+  Color _iconColor(GtPalette palette) {
+    if (isDisabled) return palette.text.disabled;
+    return switch (variant) {
+      .neutral => palette.text.disabled,
+      _ => _textColor(palette),
     };
   }
 
@@ -55,19 +65,40 @@ class GtButton extends GtButtonBase {
     if (color != null) return color!;
     return switch (variant) {
       .white => palette.staticColors.white,
+      .neutral => palette.bg.soft,
       .secondary => palette.primary.alpha10,
+      .destructiveAlt => GtColors.red100.value,
       .destructive => palette.error.base,
+      .away => GtColors.yellow700.value,
+      .featured => palette.feature.base,
+      .info => palette.information.base,
+      .success => palette.success.base,
+      .warning => palette.warning.base,
+      .highlighted => palette.highlighted.base,
+      .stable => palette.stable.base,
+      .verified => palette.verified.base,
       _ => palette.primary.base,
     };
   }
 
   Color _focusColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
+    final color = _bgColor(palette);
     return switch (variant) {
-      .white => palette.staticColors.white,
+      .primary => palette.primary.dark,
+      .neutral => palette.bg.sub,
       .secondary => palette.primary.alpha16,
+      .destructiveAlt => GtColors.red200.value,
       .destructive => palette.error.dark,
-      _ => palette.primary.darker,
+      .away => GtColors.yellow800.value,
+      .featured => palette.feature.dark,
+      .info => palette.information.dark,
+      .success => palette.success.dark,
+      .warning => palette.warning.dark,
+      .highlighted => palette.highlighted.dark,
+      .stable => palette.stable.dark,
+      .verified => palette.verified.dark,
+      _ => color,
     };
   }
 
@@ -75,6 +106,7 @@ class GtButton extends GtButtonBase {
   Widget build(BuildContext context) {
     final palette = context.palette;
     final textColor = _textColor(palette);
+    final iconColor = _iconColor(palette);
     final bgColor = _bgColor(palette);
     final focusColor = _focusColor(palette);
     final style = baseStyle(context);
@@ -87,7 +119,7 @@ class GtButton extends GtButtonBase {
     if (leading != null) {
       leadingIcon = GtIcon.withColor(
         leading!,
-        color: textColor,
+        color: iconColor,
         size: iconSize,
         alignment: alignment,
       );
@@ -96,7 +128,7 @@ class GtButton extends GtButtonBase {
     if (trailing != null) {
       trailingIcon = GtIcon.withColor(
         trailing!,
-        color: textColor,
+        color: iconColor,
         size: iconSize,
         alignment: alignment,
       );
@@ -105,11 +137,7 @@ class GtButton extends GtButtonBase {
     Widget child = ElevatedButton(
       style: style.copyWith(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.containsAll([
-            WidgetState.hovered,
-            WidgetState.pressed,
-            WidgetState.focused,
-          ])) {
+          if (isActive(states)) {
             return focusColor;
           }
           return bgColor;
@@ -129,6 +157,7 @@ class GtButton extends GtButtonBase {
         child1: GtButtonText(
           alignment: alignment,
           text.value,
+          size: size,
           disabled: isDisabled,
           icon: leadingIcon,
           trailingIcon: trailingIcon,

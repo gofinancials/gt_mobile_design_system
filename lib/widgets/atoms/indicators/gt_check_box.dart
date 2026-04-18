@@ -81,10 +81,10 @@ class GtCheckBox<T> extends GtStatelessWidget {
               child: Builder(
                 builder: (context) {
                   if (isActive) {
-                    return GtSvg(
-                      GtVectorIcons.checkIcon,
+                    return GtIcon.withColor(
+                      GtIcons.checkSolid,
                       alignment: Alignment.center,
-                      width: context.dp(10.px),
+                      size: context.dp(14.px),
                       color: context.palette.staticColors.white,
                     );
                   }
@@ -116,8 +116,9 @@ class _InActiveInnerContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      fit: BoxFit.scaleDown,
+    return Center(
+      heightFactor: 1,
+      widthFactor: 1,
       child: Container(
         decoration: BoxDecoration(
           color: context.palette.icon.white,

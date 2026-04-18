@@ -28,9 +28,10 @@ final class SterlingProDarkPalette extends GtPalette {
           weak: GtColors.neutral50.dark,
           white: GtColors.neutral0.dark,
         ),
-        text: GtPaletteContentColors(
+        text: GtPaletteTextColors(
           strong: GtColors.neutral950.dark,
-          sub: GtColors.neutral600.dark,
+          sub: GtColors.neutral500.dark,
+          darkerSub: GtColors.neutral600.dark,
           soft: GtColors.neutral400.dark,
           disabled: GtColors.neutral300.dark,
           white: GtColors.neutral0.dark,

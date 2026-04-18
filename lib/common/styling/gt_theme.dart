@@ -46,10 +46,10 @@ class GtTheme {
     );
     return base.copyWith(
       extensions: [darkPalette],
-      splashColor: GtColors.transparent.value,
+      splashColor: darkPalette.primary.alpha16,
+      splashFactory: InkSplash.splashFactory,
       pageTransitionsTheme: PageTransitionsTheme(builders: defaultTransitions),
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      splashFactory: NoSplash.splashFactory,
       brightness: Brightness.dark,
       dividerColor: darkPalette.stroke.soft,
       dialogTheme: base.dialogTheme.copyWith(
@@ -128,10 +128,10 @@ class GtTheme {
     );
     return base.copyWith(
       extensions: [lightPalette],
-      splashColor: GtColors.transparent.value,
+      splashColor: lightPalette.primary.alpha16,
+      splashFactory: InkSplash.splashFactory,
       pageTransitionsTheme: PageTransitionsTheme(builders: defaultTransitions),
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      splashFactory: NoSplash.splashFactory,
       brightness: Brightness.light,
       dividerColor: lightPalette.stroke.soft,
       dialogTheme: base.dialogTheme.copyWith(

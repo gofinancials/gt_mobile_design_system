@@ -11,7 +11,7 @@ class GtDisabledOverlay extends GtStatelessWidget {
     this.disabled, {
     super.key,
     required this.child,
-    this.disabledOpacity = .7,
+    this.disabledOpacity = .5,
   }) : assert(disabledOpacity >= 0 && disabledOpacity <= 1);
 
   @override
