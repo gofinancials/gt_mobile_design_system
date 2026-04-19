@@ -157,11 +157,11 @@ abstract class GtButton extends GtStatelessWidget {
   EdgeInsetsGeometry padding(BuildContext context) {
     final i = context.insets;
     return switch (size) {
-      .pill => i.symmetricDp(vertical: 4.px, horizontal: 6.px),
+      .pill => i.symmetricDp(horizontal: 6.px),
       .xsmall => i.allDp(6.px),
-      .small => i.symmetricDp(vertical: 4.px, horizontal: 8.px),
-      .medium => i.symmetricDp(vertical: 8.px, horizontal: 16.px),
-      .large => i.symmetricDp(vertical: 10.px, horizontal: 20.px),
+      .small => i.symmetricDp(horizontal: 8.px),
+      .medium => i.symmetricDp(horizontal: 16.px),
+      .large => i.symmetricDp(horizontal: 20.px),
     };
   }
 
@@ -172,11 +172,12 @@ abstract class GtButton extends GtStatelessWidget {
     final minSize = minimumSize(context);
     final maxSize = maximumSize(context);
     final hPadding = padding(context);
-    final borderRadius = switch (size) {
-      .pill => 6.8.circularBorderRadius,
-      .xsmall => 8.circularBorderRadius,
-      _ => 10.circularBorderRadius,
+    final radius = switch (size) {
+      .pill => 6.8,
+      .xsmall => 8,
+      _ => 10,
     };
+    final borderRadius = BorderRadius.circular(context.dp(radius.px));
     final shape = RoundedRectangleBorder(borderRadius: borderRadius);
 
     return ButtonStyle(
