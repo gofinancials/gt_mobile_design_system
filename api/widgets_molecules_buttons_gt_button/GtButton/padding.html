@@ -73,11 +73,11 @@
   <pre class="language-dart"><code class="language-dart">EdgeInsetsGeometry padding(BuildContext context) {
   final i = context.insets;
   return switch (size) {
-    .pill =&gt; i.symmetricDp(vertical: 4.px, horizontal: 6.px),
+    .pill =&gt; i.symmetricDp(horizontal: 6.px),
     .xsmall =&gt; i.allDp(6.px),
-    .small =&gt; i.symmetricDp(vertical: 4.px, horizontal: 8.px),
-    .medium =&gt; i.symmetricDp(vertical: 8.px, horizontal: 16.px),
-    .large =&gt; i.symmetricDp(vertical: 10.px, horizontal: 20.px),
+    .small =&gt; i.symmetricDp(horizontal: 8.px),
+    .medium =&gt; i.symmetricDp(horizontal: 16.px),
+    .large =&gt; i.symmetricDp(horizontal: 20.px),
   };
 }</code></pre>
 </section>

@@ -76,11 +76,12 @@ and shape constraints for Go Tech buttons.</p>
   final minSize = minimumSize(context);
   final maxSize = maximumSize(context);
   final hPadding = padding(context);
-  final borderRadius = switch (size) {
-    .pill =&gt; 6.8.circularBorderRadius,
-    .xsmall =&gt; 8.circularBorderRadius,
-    _ =&gt; 10.circularBorderRadius,
+  final radius = switch (size) {
+    .pill =&gt; 6.8,
+    .xsmall =&gt; 8,
+    _ =&gt; 10,
   };
+  final borderRadius = BorderRadius.circular(context.dp(radius.px));
   final shape = RoundedRectangleBorder(borderRadius: borderRadius);
 
   return ButtonStyle(
