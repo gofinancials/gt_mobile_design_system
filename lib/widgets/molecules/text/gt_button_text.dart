@@ -53,8 +53,9 @@ class GtButtonText extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final textStyles = context.textStyles;
     TextStyle btnStyle = switch (size) {
-      .pill => textStyles.buttonXs(color: textColor),
-      .xsmall || .small => textStyles.buttonS(color: textColor),
+      .pill => textStyles.buttonXxs(color: textColor),
+      .xsmall => textStyles.buttonXs(color: textColor),
+      .small => textStyles.buttonS(color: textColor),
       _ => textStyles.button(color: textColor),
     };
 
@@ -179,14 +180,11 @@ class _ButtonText extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      fit: BoxFit.scaleDown,
-      child: GtText(
-        text.upper,
-        textAlign: TextAlign.center,
-        style: style,
-        maxLines: 1,
-      ),
+    return GtText(
+      text.upper,
+      textAlign: TextAlign.center,
+      style: style,
+      maxLines: 1,
     );
   }
 }
