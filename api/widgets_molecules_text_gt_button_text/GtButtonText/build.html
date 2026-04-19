@@ -111,8 +111,9 @@ and</li>
 Widget build(BuildContext context) {
   final textStyles = context.textStyles;
   TextStyle btnStyle = switch (size) {
-    .pill =&gt; textStyles.buttonXs(color: textColor),
-    .xsmall || .small =&gt; textStyles.buttonS(color: textColor),
+    .pill =&gt; textStyles.buttonXxs(color: textColor),
+    .xsmall =&gt; textStyles.buttonXs(color: textColor),
+    .small =&gt; textStyles.buttonS(color: textColor),
     _ =&gt; textStyles.button(color: textColor),
   };
 
