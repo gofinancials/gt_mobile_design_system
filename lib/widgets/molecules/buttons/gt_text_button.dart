@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 ///
 /// Text buttons have no visible boundary or background by default, making them
 /// ideal for less prominent actions, such as "Cancel" or secondary links.
-/// It extends [GtButtonBase] to inherit standard sizing and interaction states.
-class GtTextButton extends GtButtonBase {
+/// It extends [GtButton] to inherit standard sizing and interaction states.
+class GtTextButton extends GtButton {
   /// The text label displayed on the button.
   final String? text;
 
@@ -54,8 +54,9 @@ class GtTextButton extends GtButtonBase {
     if (textColor != null) return textColor!;
     return switch (variant) {
       .white => palette.staticColors.white,
-      .secondary => palette.primary.base,
+      .secondary => palette.primary.darker,
       .neutral => palette.text.sub,
+      .neutralAlt => palette.text.darkerSub,
       .destructive || .destructiveAlt => palette.error.base,
       .away => GtColors.yellow700.value,
       .featured => palette.feature.base,

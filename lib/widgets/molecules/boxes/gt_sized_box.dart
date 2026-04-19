@@ -49,6 +49,29 @@ class GtSquareBox extends GtStatelessWidget {
   }
 }
 
+/// A constrained square box that forces its child to exactly match the given [size].
+///
+/// Unlike [GtSquareBox], this widget uses a [ConstrainedBox] with tight constraints
+/// to strictly enforce the square dimensions. Note that [size] is not automatically scaled to DP.
+class GtSquareConstrainedBox extends GtStatelessWidget {
+  /// The exact dimension for both the width and height.
+  final double size;
+
+  /// The widget below this widget in the tree.
+  final Widget? child;
+
+  /// Creates a new [GtSquareConstrainedBox].
+  const GtSquareConstrainedBox(this.size, {super.key, this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints.tight(Size.square(size)),
+      child: child,
+    );
+  }
+}
+
 /// A widget that sizes its child to a fraction of the total available space.
 ///
 /// This is useful for creating responsive layouts where a widget needs to take up

@@ -9,9 +9,9 @@ enum GtIconButtonShape { square, round }
 ///
 /// This button displays a single icon without text. It automatically
 /// constrains its size to a square based on the specified [GtButtonSize] and
-/// manages hover, pressed, and focused states. It extends [GtButtonBase] to
+/// manages hover, pressed, and focused states. It extends [GtButton] to
 /// inherit standard sizing and interaction logic.
-class GtIconButton extends GtButtonBase {
+class GtIconButton extends GtButton {
   /// The icon to display inside the button.
   final IconData icon;
 
@@ -66,8 +66,9 @@ class GtIconButton extends GtButtonBase {
     if (isDisabled) return palette.text.disabled;
     return switch (variant) {
       .white => palette.staticColors.black,
-      .secondary => palette.primary.base,
+      .secondary => palette.primary.darker,
       .neutral => palette.text.strong,
+      .neutralAlt => palette.text.darkerSub,
       .stable => palette.icon.sub,
       .destructiveAlt => GtColors.red600.value,
       _ => palette.staticColors.white,
@@ -81,6 +82,7 @@ class GtIconButton extends GtButtonBase {
       .white => palette.staticColors.white,
       .secondary => palette.primary.alpha10,
       .neutral => palette.bg.soft,
+      .neutralAlt => palette.bg.soft,
       .destructive => palette.error.base,
       .destructiveAlt => GtColors.red100.value,
       .away => GtColors.yellow700.value,
@@ -97,11 +99,23 @@ class GtIconButton extends GtButtonBase {
 
   Color _focusColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
+    final color = _bgColor(palette);
     return switch (variant) {
-      .white => palette.staticColors.white,
+      .primary => palette.primary.dark,
+      .neutral => palette.bg.sub,
+      .neutralAlt => palette.bg.sub,
       .secondary => palette.primary.alpha16,
+      .destructiveAlt => GtColors.red200.value,
       .destructive => palette.error.dark,
-      _ => palette.primary.darker,
+      .away => GtColors.yellow800.value,
+      .featured => palette.feature.dark,
+      .info => palette.information.dark,
+      .success => palette.success.dark,
+      .warning => palette.warning.dark,
+      .highlighted => palette.highlighted.dark,
+      .stable => palette.stable.dark,
+      .verified => palette.verified.dark,
+      _ => color,
     };
   }
 
@@ -115,7 +129,9 @@ class GtIconButton extends GtButtonBase {
     final iconSize = switch (size) {
       .pill => 12.0,
       .xsmall => 14.0,
-      _ => 20.0,
+      .small => 16.0,
+      .medium => 20.0,
+      _ => 24.0,
     };
 
     Widget child = IconButton(
@@ -132,11 +148,9 @@ class GtIconButton extends GtButtonBase {
       ),
       alignment: alignment,
       style: style.copyWith(
-        shape: WidgetStateProperty.resolveWith((_) {
+        shape: WidgetStateProperty.resolveWith((states) {
           return switch (shape) {
-            GtIconButtonShape.square => RoundedRectangleBorder(
-              borderRadius: context.borderRadiusXl,
-            ),
+            GtIconButtonShape.square => style.shape?.resolve(states),
             GtIconButtonShape.round => const CircleBorder(),
           };
         }),

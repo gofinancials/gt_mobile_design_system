@@ -16,9 +16,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   cached_network_image: ^3.3.0
   gt_mobile_foundation:
-      git:
-        url: https://github.com/gofinancials/gt_mobile_foundation.git
-        ref: v0.0.4
+    git:
+      url: https://github.com/gofinancials/gt_mobile_foundation.git
+      ref: v0.0.5
   lottie: ^3.0.0
   provider: ^6.0.3
   shimmer: ^3.0.0

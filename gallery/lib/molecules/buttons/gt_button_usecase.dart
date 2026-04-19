@@ -29,7 +29,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
 
   final iconOptions = [
     ("None", null),
-    ("Add", GtIcons.add),
+    ("Calendar", GtIcons.calendar),
     ("Mobile", GtIcons.mobile),
     ("Chevron Left", GtIcons.chevronLeft),
     ("Chevron Right", GtIcons.chevronRight),
@@ -61,6 +61,16 @@ Widget playgroundButtonsUseCase(BuildContext context) {
     labelBuilder: (value) => value.$1,
     initialOption: ("Mobile", GtIcons.add),
   );
+  final iconButtonShape = context.knobs.object
+      .dropdown<(String, GtIconButtonShape)>(
+        label: "IconButton Shape",
+        options: [
+          ("Square", GtIconButtonShape.square),
+          ("Round", GtIconButtonShape.round),
+        ],
+        labelBuilder: (value) => value.$1,
+        initialOption: ("Round", GtIconButtonShape.round),
+      );
 
   // --- GtCancelButton Specific Knob ---
   final asHero = context.knobs.boolean(
@@ -111,7 +121,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
             child: GalleryPageHeader(
               title: "Buttons",
               rider: "A showcase of all button types in the design system.",
-              sectionHeader: "GtButton (Filled)",
+              sectionHeader: "GtRaisedButton (Filled)",
             ),
           ),
           SliverToBoxAdapter(
@@ -122,7 +132,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
               leading: leadingIcon,
               trailing: trailingIcon,
               buttonBuilder: (variant, size) {
-                return GtButton(
+                return GtRaisedButton(
                   text: text,
                   variant: variant,
                   size: size,
@@ -131,22 +141,22 @@ Widget playgroundButtonsUseCase(BuildContext context) {
                   leading: leadingIcon.$2,
                   trailing: trailingIcon.$2,
                   onPressed: () =>
-                      debugPrint("GtButton ($variant, $size) pressed"),
+                      debugPrint("GtRaisedButton ($variant, $size) pressed"),
                 );
               },
             ),
           ),
 
-          // --- Interactive GtButton ---
+          // --- Interactive GtRaisedButton ---
           SliverToBoxAdapter(
-            child: GtButton(
+            child: GtRaisedButton(
               text: text,
               variant: interactiveVariant,
               size: interactiveSize,
               alignment: interactiveAlignment.$2,
               isDisabled: isDisabled,
               isLoading: isLoading,
-              onPressed: () => debugPrint("Interactive GtButton pressed"),
+              onPressed: () => debugPrint("Interactive GtRaisedButton pressed"),
             ),
           ),
 
@@ -247,6 +257,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
                   isDisabled: isDisabled,
                   isLoading: isLoading,
                   icon: iconButtonIcon.$2,
+                  shape: iconButtonShape.$2,
                   onPressed: () => debugPrint("GtIconButton pressed"),
                 );
               },
@@ -263,6 +274,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
                 variant: interactiveVariant,
                 size: interactiveSize,
                 alignment: interactiveAlignment.$2,
+                shape: iconButtonShape.$2,
                 isDisabled: isDisabled,
                 isLoading: isLoading,
                 icon: iconButtonIcon.$2,

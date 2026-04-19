@@ -36,6 +36,8 @@ import 'package:gallery/molecules/buttons/gt_button_usecase.dart'
     as _gallery_molecules_buttons_gt_button_usecase;
 import 'package:gallery/molecules/tiles/gt_list_tile.dart'
     as _gallery_molecules_tiles_gt_list_tile;
+import 'package:gallery/molecules/tiles/gt_list_tile_template.dart'
+    as _gallery_molecules_tiles_gt_list_tile_template_usecase;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -210,26 +212,26 @@ final directories = <_widgetbook.WidgetbookNode>[
           ),
         ],
       ),
-    ],
-  ),
-  _widgetbook.WidgetbookFolder(
-    name: 'widgets',
-    children: [
-      _widgetbook.WidgetbookFolder(
-        name: 'molecules',
+      _widgetbook.WidgetbookCategory(
+        name: 'Tiles',
         children: [
-          _widgetbook.WidgetbookFolder(
-            name: 'tiles',
-            children: [
-              _widgetbook.WidgetbookComponent(
-                name: 'GtListTile',
-                useCases: [
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'All Variants',
-                    builder: _gallery_molecules_tiles_gt_list_tile
-                        .gtListTileAllUseCase,
-                  ),
-                ],
+          _widgetbook.WidgetbookComponent(
+            name: 'GtBaseListTileTemplate',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'ListTileTemplates',
+                builder: _gallery_molecules_tiles_gt_list_tile_template_usecase
+                    .gtListTileTemplateUseCase,
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookComponent(
+            name: 'GtListTile',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtListTiles',
+                builder:
+                    _gallery_molecules_tiles_gt_list_tile.gtListTileAllUseCase,
               ),
             ],
           ),

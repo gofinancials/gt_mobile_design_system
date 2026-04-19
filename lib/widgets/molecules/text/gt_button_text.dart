@@ -32,6 +32,7 @@ class GtButtonText extends GtStatelessWidget {
   /// An optional color to override the default disabled text color.
   final Color? disabledTextColor;
 
+  /// The size category of the button, which determines the text style and icon scaling.
   final GtButtonSize size;
 
   /// Creates a [GtButtonText] widget.
@@ -53,7 +54,7 @@ class GtButtonText extends GtStatelessWidget {
     final textStyles = context.textStyles;
     TextStyle btnStyle = switch (size) {
       .pill => textStyles.buttonXs(color: textColor),
-      .xsmall => textStyles.buttonS(color: textColor),
+      .xsmall || .small => textStyles.buttonS(color: textColor),
       _ => textStyles.button(color: textColor),
     };
 
@@ -73,6 +74,7 @@ class GtButtonText extends GtStatelessWidget {
         style: btnStyle,
         leadingIcon: icon,
         trailingIcon: trailingIcon,
+        size: size,
       );
     }
     return _ButtonText(text: text, style: btnStyle);
@@ -96,6 +98,9 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
   /// The alignment for the row of content.
   final AlignmentGeometry? alignment;
 
+  /// The size category used to scale the icons appropriately.
+  final GtButtonSize size;
+
   /// Creates a [_ButtonTextWithIcon].
   const _ButtonTextWithIcon({
     required this.text,
@@ -103,6 +108,7 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
     this.style,
     this.leadingIcon,
     this.trailingIcon,
+    required this.size,
   });
 
   @override
@@ -117,16 +123,11 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
+      spacing: context.spacingBase,
       children: [
-        if (leadingIcon != null) ...[
-          _ButtonIconContainer(leadingIcon),
-          if (child != null || trailingIcon != null) const GtGap.hMd(),
-        ],
+        if (leadingIcon != null) _ButtonIconContainer(leadingIcon, size),
         ?child,
-        if (trailingIcon != null) ...[
-          if (child != null || leadingIcon != null) const GtGap.hMd(),
-          _ButtonIconContainer(trailingIcon),
-        ],
+        if (trailingIcon != null) _ButtonIconContainer(trailingIcon, size),
       ],
     );
 
@@ -143,13 +144,25 @@ class _ButtonIconContainer extends GtStatelessWidget {
   /// The icon widget to display.
   final Widget? icon;
 
+  /// The size category used to determine the exact pixel constraints for the icon.
+  final GtButtonSize size;
+
   /// Creates a [_ButtonIconContainer].
-  const _ButtonIconContainer(this.icon);
+  const _ButtonIconContainer(this.icon, this.size);
 
   @override
   Widget build(BuildContext context) {
     if (icon == null) return const Offstage();
-    return GtSquareBox(size: 20, child: FittedBox(child: icon));
+    final iconSize = switch (size) {
+      .pill => 11.0,
+      .xsmall => 14.0,
+      .small => 18.0,
+      _ => 20.0,
+    };
+    return ConstrainedBox(
+      constraints: BoxConstraints.tight(Size.square(iconSize)),
+      child: FittedBox(fit: BoxFit.cover, child: icon),
+    );
   }
 }
 

@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A highly customizable list tile containing a [GtCheckBox] alongside text and other widgets.
+///
+/// This widget combines a [GtIndicatorTile] with a [GtCheckBox] to create a standard
+/// selection row. Tapping anywhere on the tile will trigger the [onChanged] callback
+/// with the associated [value], provided it is not [disabled].
 class GtCheckBoxTile<T> extends GtStatelessWidget {
   /// The value represented by this checkbox.
   final T value;
@@ -23,12 +28,19 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
   /// The visual shape of the checkbox. Defaults to [GtCheckBoxShape.square].
   final GtCheckBoxShape shape;
 
+  /// An optional widget (typically an icon or image) to display at the start of the tile.
   final Widget? leading;
+
+  /// An optional widget to display below the main content of the tile.
   final Widget? footer;
+
+  /// The primary text to display in the tile.
   final String title;
+
+  /// Optional secondary text to display below the [title].
   final String? subtitle;
 
-  /// Creates a new [GtCheckBox] instance.
+  /// Creates a [GtCheckBoxTile].
   const GtCheckBoxTile(
     this.title, {
     required this.value,

@@ -8,8 +8,8 @@ import 'package:flutter/services.dart';
 /// Outline buttons (also known as stroked or bordered buttons) feature a transparent
 /// background with a visible border. They are typically used for secondary actions
 /// that are important but not the primary focus of the view.
-/// It extends [GtButtonBase] to inherit standard sizing, layout, and state management.
-class GtOutlineButton extends GtButtonBase {
+/// It extends [GtButton] to inherit standard sizing, layout, and state management.
+class GtOutlineButton extends GtButton {
   /// The text label displayed on the button.
   final String? text;
 
@@ -47,7 +47,7 @@ class GtOutlineButton extends GtButtonBase {
     final color = _borderColor(palette);
     return switch (variant) {
       .destructiveAlt => GtColors.red600.value,
-      .secondary => palette.primary.base,
+      .secondary => palette.primary.darker,
       _ => color,
     };
   }
@@ -59,6 +59,7 @@ class GtOutlineButton extends GtButtonBase {
       .white => palette.staticColors.white,
       .secondary => palette.primary.alpha10,
       .neutral => palette.text.sub,
+      .neutralAlt => palette.text.darkerSub,
       .destructive => palette.error.base,
       .destructiveAlt => GtColors.red100.value,
       .away => GtColors.yellow700.value,

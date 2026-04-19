@@ -5,13 +5,13 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Defines the standard sizes available for Go Tech buttons.
 enum GtButtonSize {
   /// A pill style extra small button with a baseline height of 20.
-  pill(20),
+  pill(24),
 
   /// An extra small button with a baseline height of 36.
   xsmall(28),
 
   /// A small button with a baseline height of 36.
-  small(36),
+  small(32),
 
   /// A medium button with a baseline height of 40.
   medium(40),
@@ -67,6 +67,8 @@ enum GtButtonVariant {
   away,
 
   neutral,
+
+  neutralAlt,
 }
 
 /// An abstract base class providing common properties and structural styling
@@ -74,7 +76,7 @@ enum GtButtonVariant {
 ///
 /// This class centralizes the calculation of button dimensions, padding, and
 /// basic shape characteristics to ensure consistency across different button types.
-abstract class GtButtonBase extends GtStatelessWidget {
+abstract class GtButton extends GtStatelessWidget {
   /// The callback that is called when the button is tapped or otherwise activated.
   final OnPressed onPressed;
 
@@ -98,8 +100,8 @@ abstract class GtButtonBase extends GtStatelessWidget {
   /// The alignment of the button's content (e.g., text and icons) within the button's bounds.
   final AlignmentGeometry? alignment;
 
-  /// Creates a [GtButtonBase].
-  const GtButtonBase({
+  /// Creates a [GtButton].
+  const GtButton({
     required this.onPressed,
     this.minSize,
     this.size = .large,

@@ -3,6 +3,20 @@ import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// Defines the visual style of the [GtRadio] component.
+enum GtRadioStyle {
+  /// The standard radio style featuring a filled inner circle when active.
+  standard,
+
+  /// A donut-shaped style featuring a thicker border and hollow center when active.
+  donut;
+
+  const GtRadioStyle();
+
+  /// Returns `true` if the style is [GtRadioStyle.donut].
+  bool get isDonut => this == .donut;
+}
+
 /// A highly customizable, stateless radio button component for the Go Tech design system.
 ///
 /// It supports two modes of operation:
@@ -33,6 +47,11 @@ class GtRadio<T> extends GtStatelessWidget {
   /// Whether the radio button is disabled and non-interactive.
   final bool disabled;
 
+  /// The visual style variant of the radio button.
+  ///
+  /// Defaults to [GtRadioStyle.standard].
+  final GtRadioStyle style;
+
   /// Creates a standard [GtRadio] that compares [value] against [groupValue].
   const GtRadio({
     super.key,
@@ -41,6 +60,7 @@ class GtRadio<T> extends GtStatelessWidget {
     required this.onChanged,
     this.disabled = false,
     this.activeColor,
+    this.style = .standard,
   }) : condition = null;
 
   /// Creates a [GtRadio] whose active state is directly controlled by [condition].
@@ -51,8 +71,10 @@ class GtRadio<T> extends GtStatelessWidget {
     required this.onChanged,
     this.activeColor,
     this.disabled = false,
+    this.style = .standard,
   }) : groupValue = null;
 
+  /// Determines if the radio button is currently in the active state.
   bool get _isActive {
     if (condition != null) {
       return condition!;
@@ -66,6 +88,11 @@ class GtRadio<T> extends GtStatelessWidget {
 
     final color = activeColor ?? palette.primary.base;
     final borderColor = _isActive ? color : palette.bg.soft;
+    final borderWidth = switch (_isActive) {
+      true => style.isDonut ? 4.0 : 1.8,
+      _ => 1.8,
+    };
+
     final size = context.dp(20.px);
 
     return RepaintBoundary(
@@ -82,14 +109,17 @@ class GtRadio<T> extends GtStatelessWidget {
             width: size,
             constraints: BoxConstraints.tightFor(height: size, width: size),
             decoration: BoxDecoration(
-              border: Border.all(color: borderColor, width: 1.8),
+              border: Border.all(color: borderColor, width: borderWidth),
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
             child: GtAnimatedSwitcher(
               child: Builder(
                 builder: (context) {
-                  if (_isActive) return _ActiveInnerContainer(color);
+                  if (_isActive && !style.isDonut) {
+                    return _ActiveInnerContainer(color);
+                  }
+                  if (_isActive && style.isDonut) return const Offstage();
                   return const _InActiveInnerContainer();
                 },
                 key: ValueKey<T>(value),

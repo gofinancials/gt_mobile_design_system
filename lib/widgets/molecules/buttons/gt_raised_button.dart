@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 ///
 /// This button uses [ElevatedButton] under the hood and provides a prominent
 /// visual style suitable for main actions in the application. It extends
-/// [GtButtonBase] to inherit standard sizing, layout, and state management.
-class GtButton extends GtButtonBase {
+/// [GtButton] to inherit standard sizing, layout, and state management.
+class GtRaisedButton extends GtButton {
   /// The text label displayed on the button.
   final String? text;
 
@@ -24,8 +24,8 @@ class GtButton extends GtButtonBase {
   /// Custom padding to apply inside the button, overriding the default size-based padding.
   final EdgeInsetsGeometry? contentPadding;
 
-  /// Creates a [GtButton].
-  const GtButton({
+  /// Creates a [GtRaisedButton].
+  const GtRaisedButton({
     this.text,
     required super.onPressed,
     super.minSize,
@@ -46,7 +46,8 @@ class GtButton extends GtButtonBase {
     return switch (variant) {
       .white => palette.staticColors.black,
       .neutral => palette.text.strong,
-      .secondary => palette.primary.base,
+      .neutralAlt => palette.text.darkerSub,
+      .secondary => palette.primary.darker,
       .destructiveAlt => GtColors.red600.value,
       _ => palette.staticColors.white,
     };
@@ -66,6 +67,7 @@ class GtButton extends GtButtonBase {
     return switch (variant) {
       .white => palette.staticColors.white,
       .neutral => palette.bg.soft,
+      .neutralAlt => palette.bg.soft,
       .secondary => palette.primary.alpha10,
       .destructiveAlt => GtColors.red100.value,
       .destructive => palette.error.base,
@@ -87,6 +89,7 @@ class GtButton extends GtButtonBase {
     return switch (variant) {
       .primary => palette.primary.dark,
       .neutral => palette.bg.sub,
+      .neutralAlt => palette.bg.sub,
       .secondary => palette.primary.alpha16,
       .destructiveAlt => GtColors.red200.value,
       .destructive => palette.error.dark,
