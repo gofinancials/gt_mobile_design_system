@@ -51,7 +51,7 @@ class GtText extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final computedStyle = style != null ? style! : context.textStyles.bodyM();
+    final computedStyle = style != null ? style! : context.textStyles.bodyS();
 
     return Text(
       data ?? "",

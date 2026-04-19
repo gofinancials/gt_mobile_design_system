@@ -186,11 +186,11 @@ enum GtColors {
   tealBlue600(ColorSet(0xFF01CBEA)),
 
   // ---------------------------------------------------------------------------
-  // VIBRANTS - TEAL ORANGE
+  // VIBRANTS - MAROON
   // ---------------------------------------------------------------------------
-  tealOrange800(ColorSet(0xFF6F0F11)),
-  tealOrange700(ColorSet(0xFF9C191C)),
-  tealOrange600(ColorSet(0xFFCB0828)),
+  maroon800(ColorSet(0xFF6F0F11)),
+  maroon700(ColorSet(0xFF9C191C)),
+  maroon600(ColorSet(0xFFCB0828)),
 
   // ---------------------------------------------------------------------------
   // ALPHA ColorSetS
@@ -247,9 +247,9 @@ enum GtColors {
   blackAlpha16(ColorSet(0x29171717)),
   blackAlpha10(ColorSet(0x1A171717)),
 
-  tealOrangeAlpha24(ColorSet(0x3DCB0828)),
-  tealOrangeAlpha16(ColorSet(0x29CB0828)),
-  tealOrangeAlpha10(ColorSet(0x1ACB0828)),
+  maroonAlpha24(ColorSet(0x3DCB0828)),
+  maroonAlpha16(ColorSet(0x29CB0828)),
+  maroonAlpha10(ColorSet(0x1ACB0828)),
 
   darkGreen(ColorSet(0xFF004045)),
   lemon(ColorSet(0xFF26E36B));

@@ -239,6 +239,52 @@ class GtPaletteContentColors {
   int get hashCode => Object.hash(strong, sub, soft, disabled, white);
 }
 
+class GtPaletteTextColors extends GtPaletteContentColors {
+  final Color darkerSub;
+
+  const GtPaletteTextColors({
+    required super.strong,
+    required super.sub,
+    required super.soft,
+    required super.disabled,
+    required super.white,
+    required this.darkerSub,
+  });
+
+  @override
+  List<Color> get all => [...super.all, darkerSub];
+
+  static GtPaletteTextColors lerp(
+    GtPaletteTextColors? a,
+    GtPaletteTextColors? b,
+    double t,
+  ) {
+    return GtPaletteTextColors(
+      strong: Color.lerp(a?.strong, b?.strong, t)!,
+      sub: Color.lerp(a?.sub, b?.sub, t)!,
+      soft: Color.lerp(a?.soft, b?.soft, t)!,
+      disabled: Color.lerp(a?.disabled, b?.disabled, t)!,
+      white: Color.lerp(a?.white, b?.white, t)!,
+      darkerSub: Color.lerp(a?.darkerSub, b?.darkerSub, t)!,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GtPaletteTextColors) return false;
+    return other.strong == strong &&
+        other.sub == sub &&
+        other.soft == soft &&
+        other.disabled == disabled &&
+        other.darkerSub == darkerSub &&
+        other.white == white;
+  }
+
+  @override
+  int get hashCode => Object.hash(strong, sub, soft, disabled, white);
+}
+
 /// Colors used for boundaries, such as borders, dividers, and outlines.
 ///
 /// Helps delineate structural areas without visually overwhelming the core content.
@@ -352,7 +398,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
   // Neutral
   final GtPaletteStaticColors staticColors;
   final GtPaletteBgColors bg;
-  final GtPaletteContentColors text;
+  final GtPaletteTextColors text;
   final GtPaletteStrokeColors stroke;
   final GtPaletteContentColors icon;
 
@@ -424,7 +470,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
         t,
       ),
       bg: GtPaletteBgColors.lerp(bg, other.bg, t),
-      text: GtPaletteContentColors.lerp(text, other.text, t),
+      text: GtPaletteTextColors.lerp(text, other.text, t),
       stroke: GtPaletteStrokeColors.lerp(stroke, other.stroke, t),
       icon: GtPaletteContentColors.lerp(icon, other.icon, t),
       faded: GtPaletteStateColors.lerp(faded, other.faded, t),

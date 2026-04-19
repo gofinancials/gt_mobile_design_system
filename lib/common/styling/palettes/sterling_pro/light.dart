@@ -4,15 +4,15 @@ final class SterlingProLightPalette extends GtPalette {
   SterlingProLightPalette()
     : super(
         primary: GtPaletteBrandColors(
-          darker: GtColors.tealOrange800.value,
-          dark: GtColors.tealOrange700.value,
-          base: GtColors.tealOrange600.value,
-          alpha24: GtColors.tealOrangeAlpha24.value,
-          alpha16: GtColors.tealOrangeAlpha16.value,
-          alpha10: GtColors.tealOrangeAlpha10.value,
+          darker: GtColors.maroon800.value,
+          dark: GtColors.maroon700.value,
+          base: GtColors.maroon600.value,
+          alpha24: GtColors.maroonAlpha24.value,
+          alpha16: GtColors.maroonAlpha16.value,
+          alpha10: GtColors.maroonAlpha10.value,
         ),
         coverColors: GtPaletteCoverColors(
-          dark: GtColors.tealOrange800.value,
+          dark: GtColors.maroon800.value,
           light: GtColors.neutral0.value,
         ),
         staticColors: GtPaletteStaticColors(
@@ -28,9 +28,10 @@ final class SterlingProLightPalette extends GtPalette {
           weak: GtColors.neutral50.value,
           white: GtColors.neutral0.value,
         ),
-        text: GtPaletteContentColors(
+        text: GtPaletteTextColors(
           strong: GtColors.neutral950.value,
-          sub: GtColors.neutral600.value,
+          sub: GtColors.neutral500.value,
+          darkerSub: GtColors.neutral600.value,
           soft: GtColors.neutral400.value,
           disabled: GtColors.neutral300.value,
           white: GtColors.neutral0.value,

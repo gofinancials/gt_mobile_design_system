@@ -63,8 +63,46 @@ extension ThemeContextExtension on BuildContext {
   /// Retrieves the corner radii configurations for the current context.
   GtRadii get radii => themeData.radii;
 
+  Radius get radiusXxs => dp(radii.xxs.px).radius;
+  Radius get radiusXs => dp(radii.xs.px).radius;
+  Radius get radiusSm => dp(radii.sm.px).radius;
+  Radius get radiusMd => dp(radii.md.px).radius;
+  Radius get radiusLg => dp(radii.lg.px).radius;
+  Radius get radiusXl => dp(radii.xl.px).radius;
+  Radius get radius2Xl => dp(radii.xxl.px).radius;
+  Radius get radius3Xl => dp(radii.xxxl.px).radius;
+  Radius get radius4Xl => dp(radii.xxxxl.px).radius;
+  Radius get radius5Xl => dp(radii.xxl.px).radius;
+  Radius get radiusFull => dp(radii.full.px).radius;
+
+  BorderRadius get borderRadiusXxs => BorderRadius.all(radiusXxs);
+  BorderRadius get borderRadiusXs => BorderRadius.all(radiusXs);
+  BorderRadius get borderRadiusSm => BorderRadius.all(radiusSm);
+  BorderRadius get borderRadiusMd => BorderRadius.all(radiusMd);
+  BorderRadius get borderRadiusLg => BorderRadius.all(radiusLg);
+  BorderRadius get borderRadiusXl => BorderRadius.all(radiusXl);
+  BorderRadius get borderRadius2Xl => BorderRadius.all(radius2Xl);
+  BorderRadius get borderRadius3Xl => BorderRadius.all(radius3Xl);
+  BorderRadius get borderRadius4Xl => BorderRadius.all(radius4Xl);
+  BorderRadius get borderRadius5Xl => BorderRadius.all(radius5Xl);
+  BorderRadius get borderRadiusFull => BorderRadius.all(radiusFull);
+
   /// Retrieves the spacing guidelines and dimensions for the current context.
   GtSpacing get spacing => themeData.spacing;
+
+  double get spacingXs => dp(spacing.xs.px);
+  double get spacingSm => dp(spacing.sm.px);
+  double get spacingBase => dp(spacing.base.px);
+  double get spacingMd => dp(spacing.md.px);
+  double get spacingLg => dp(spacing.lg.px);
+  double get spacingXl => dp(spacing.xl.px);
+  double get spacingSectionSm => dp(spacing.sectionSm.px);
+  double get spacingsectionMd => dp(spacing.sectionMd.px);
+  double get spacingSectionLg => dp(spacing.sectionLg.px);
+  double get spacingsectionXl => dp(spacing.sectionXl.px);
+  double get spacingsection2xl => dp(spacing.section2xl.px);
+  double get spacingsection3xl => dp(spacing.section3xl.px);
+  double get spacingsection4xl => dp(spacing.section4xl.px);
 
   /// Retrieves the box shadow configurations for the current context.
   GtShadows get shadows => themeData.shadows(this);

@@ -49,20 +49,23 @@ class GtSwitch extends GtStatelessWidget {
     return RepaintBoundary(
       child: GtDisabledOverlay(
         disabled,
-        child: CupertinoSwitch(
-          value: value,
-          onChanged: (value) {
-            if (disabled) return;
-            HapticFeedback.selectionClick();
-            onChanged(value);
-          },
-          focusNode: focusNode,
-          activeTrackColor: color,
-          inactiveTrackColor: inActiveColor,
-          inactiveThumbColor: thumbColor,
-          thumbColor: thumbColor,
-          trackOutlineColor: WidgetStatePropertyAll(computedColor),
-          trackOutlineWidth: const WidgetStatePropertyAll(0),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: context.dp(28.px)),
+          child: CupertinoSwitch(
+            value: value,
+            onChanged: (value) {
+              if (disabled) return;
+              HapticFeedback.selectionClick();
+              onChanged(value);
+            },
+            focusNode: focusNode,
+            activeTrackColor: color,
+            inactiveTrackColor: inActiveColor,
+            inactiveThumbColor: thumbColor,
+            thumbColor: thumbColor,
+            trackOutlineColor: WidgetStatePropertyAll(computedColor),
+            trackOutlineWidth: const WidgetStatePropertyAll(0),
+          ),
         ),
       ),
     );
