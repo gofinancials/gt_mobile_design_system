@@ -31,6 +31,11 @@ class GtIcon extends GtStatelessWidget {
   /// The internal explicit color, used only if instantiated via [GtIcon.withColor].
   final Color? _color;
 
+  /// The stroke weight of the icon.
+  ///
+  /// This property is passed directly to the underlying Flutter [Icon] widget.
+  final double? weight;
+
   /// Creates a [GtIcon] using a semantic color [variant].
   ///
   /// The [variant] defaults to [GtIconVariant.strong]. This is the preferred
@@ -41,6 +46,7 @@ class GtIcon extends GtStatelessWidget {
     this.size,
     this.shadows,
     this.alignment,
+    this.weight,
     GtIconVariant variant = GtIconVariant.strong,
     this.semanticsLabel,
   }) : _color = null,
@@ -56,6 +62,7 @@ class GtIcon extends GtStatelessWidget {
     this.size,
     this.shadows,
     this.alignment,
+    this.weight,
     Color? color,
     this.semanticsLabel,
   }) : _variant = GtIconVariant.strong,
@@ -72,6 +79,7 @@ class GtIcon extends GtStatelessWidget {
       color: iconColor,
       semanticLabel: semanticsLabel,
       shadows: shadows,
+      weight: weight,
     );
     if (alignment != null) {
       child = Align(alignment: alignment!, child: child);

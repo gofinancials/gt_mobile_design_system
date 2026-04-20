@@ -57,8 +57,8 @@ class GtBackButton extends GtStatelessWidget {
 
             Navigator.of(context).pop();
           },
-          child: GtSvg.asIcon(
-            GtVectorIcons.chevyLeftIcon,
+          child: GtIcon(
+            GtIcons.chevronLeft,
             size: context.dp(24.px),
             alignment: alignment,
           ),

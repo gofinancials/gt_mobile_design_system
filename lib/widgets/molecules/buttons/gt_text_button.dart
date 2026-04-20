@@ -5,29 +5,26 @@ import 'package:flutter/services.dart';
 
 /// A text button component for the Go Tech design system.
 ///
-/// Text buttons have no visible boundary or background by default, making them 
-/// ideal for less prominent actions, such as "Cancel" or secondary links. 
-/// It extends [GtButtonBase] to inherit standard sizing and interaction states.
-class GtTextButton extends GtButtonBase {
+/// Text buttons have no visible boundary or background by default, making them
+/// ideal for less prominent actions, such as "Cancel" or secondary links.
+/// It extends [GtButton] to inherit standard sizing and interaction states.
+class GtTextButton extends GtButton {
   /// The text label displayed on the button.
   final String? text;
 
   /// The visual style variant of the button, determining its default color scheme.
   final GtButtonVariant variant;
 
-  /// An optional custom widget to display before the button's [text].
-  final Widget? leading;
+  /// An optional icon to display before the button's [text].
+  final IconData? leading;
 
-  /// An optional vector graphic icon path to display before the button's [text].
-  final String? icon;
-
-  /// An optional vector graphic icon path to display after the button's [text].
-  final String? trailingIcon;
+  /// An optional icon to display after the button's [text].
+  final IconData? trailing;
 
   /// An optional color to explicitly override the default text and icon color.
   final Color? textColor;
 
-  /// An optional color for a border (Note: typically unused in a standard text button, 
+  /// An optional color for a border (Note: typically unused in a standard text button,
   /// but included for API consistency across button types).
   final Color? borderColor;
 
@@ -41,14 +38,13 @@ class GtTextButton extends GtButtonBase {
     super.minSize,
     this.variant = .primary,
     super.size = .large,
-    this.icon,
-    this.leading,
     this.textColor,
     this.borderColor,
     super.isDisabled = false,
     super.isLoading = false,
     this.contentPadding,
-    this.trailingIcon,
+    this.leading,
+    this.trailing,
     super.alignment,
     super.key,
   });
@@ -58,21 +54,26 @@ class GtTextButton extends GtButtonBase {
     if (textColor != null) return textColor!;
     return switch (variant) {
       .white => palette.staticColors.white,
-      .secondary => palette.primary.base,
-      .destructive => palette.error.base,
+      .secondary => palette.primary.darker,
+      .neutral => palette.text.sub,
+      .neutralAlt => palette.text.darkerSub,
+      .destructive || .destructiveAlt => palette.error.base,
+      .away => GtColors.yellow700.value,
+      .featured => palette.feature.base,
+      .info => palette.information.base,
+      .success => palette.success.base,
+      .warning => palette.warning.base,
+      .highlighted => palette.highlighted.base,
+      .stable => palette.stable.base,
+      .verified => palette.verified.base,
       _ => palette.text.strong,
     };
   }
 
   Color _focusColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
-    if (textColor != null) return textColor!.setOpacity(.16);
-    return switch (variant) {
-      .white => palette.staticColors.white.setOpacity(.16),
-      .secondary => palette.primary.alpha16,
-      .destructive => palette.error.lighter,
-      _ => palette.bg.soft,
-    };
+    final color = _textColor(palette);
+    return color.setOpacity(.01);
   }
 
   @override
@@ -82,37 +83,31 @@ class GtTextButton extends GtButtonBase {
     final focusColor = _focusColor(palette);
     final style = baseStyle(context);
 
-    Widget? leading = this.leading;
-    Widget? trailing;
+    Widget? leadingIcon;
+    Widget? trailingIcon;
 
-    final iconSize = context.dp(20.px);
+    final iconSize = context.dp(16.px);
 
-    if (icon != null) {
-      leading = GtSvg(
-        icon!,
+    if (leading != null) {
+      leadingIcon = GtIcon.withColor(
+        leading!,
         color: textColor,
-        height: iconSize,
-        width: iconSize,
+        size: iconSize,
       );
     }
 
-    if (trailingIcon != null) {
-      trailing = GtSvg(
-        trailingIcon!,
+    if (trailing != null) {
+      trailingIcon = GtIcon.withColor(
+        trailing!,
         color: textColor,
-        height: iconSize,
-        width: iconSize,
+        size: iconSize,
       );
     }
 
     Widget child = TextButton(
       style: style.copyWith(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.containsAll([
-            WidgetState.hovered,
-            WidgetState.pressed,
-            WidgetState.focused,
-          ])) {
+          if (isActive(states)) {
             return focusColor;
           }
           return GtColors.transparent.value;
@@ -131,9 +126,10 @@ class GtTextButton extends GtButtonBase {
       child: GtAnimatedFade(
         child1: GtButtonText(
           text.value,
+          size: size,
           disabled: isDisabled,
-          icon: leading,
-          trailingIcon: trailing,
+          icon: leadingIcon,
+          trailingIcon: trailingIcon,
           textColor: textColor,
           alignment: alignment,
         ),

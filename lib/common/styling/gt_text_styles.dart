@@ -304,6 +304,30 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Heading 7 (H6) text style.
+  TextStyle h7({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.title,
+      size: 16,
+      heightPx: 20,
+      widthPct: 0.0,
+      weight: FontWeight.bold,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   // ---------------------------------------------------------------------------
   // PARAGRAPHS (body prefix) | Inter, Regular (400)
   // ---------------------------------------------------------------------------
@@ -413,6 +437,29 @@ class GtTextStyles {
       family: fonts.body,
       size: 12,
       heightPx: 16,
+      widthPct: 0.0,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Extra Small Body (Body XS) paragraph text style.
+  TextStyle body2Xs({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 11,
+      heightPx: 12,
       widthPct: 0.0,
       color: color,
       decoration: decoration,
@@ -543,6 +590,106 @@ class GtTextStyles {
   }
 
   // ---------------------------------------------------------------------------
+  // TITLES (subHead prefix) | Inter, Medium (500), High Tracking
+  // ---------------------------------------------------------------------------
+
+  /// Generates the Medium Subheading (Subhead M) text style.
+  TextStyle titleM({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 16,
+      heightPx: 24,
+      widthPct: 6.0,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Small Subheading (Subhead S) text style.
+  TextStyle titleS({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 14,
+      heightPx: 20,
+      widthPct: 6.0,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Extra Small Subheading (Subhead XS) text style.
+  TextStyle titleXs({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 12,
+      heightPx: 16,
+      widthPct: 4.0,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
+  TextStyle title2xs({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 11,
+      heightPx: 12,
+      widthPct: 2.0,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  // ---------------------------------------------------------------------------
   // SUBHEADINGS (subHead prefix) | Inter, Medium (500), High Tracking
   // ---------------------------------------------------------------------------
 
@@ -643,7 +790,7 @@ class GtTextStyles {
   }
 
   /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
-  TextStyle buttonM({
+  TextStyle button({
     Color? color,
     TextDecoration? decoration,
     Color? decorationColor,
@@ -656,6 +803,78 @@ class GtTextStyles {
       size: 18,
       heightPx: 32,
       widthPct: 1,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
+  TextStyle buttonS({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.display,
+      size: 14,
+      heightPx: 16,
+      widthPct: 0,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
+  TextStyle buttonXs({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.display,
+      size: 10,
+      heightPx: 12,
+      widthPct: 0,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
+  TextStyle buttonXxs({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.display,
+      size: 8,
+      heightPx: 8,
+      widthPct: 0,
       weight: FontWeight.w700,
       color: color,
       decoration: decoration,

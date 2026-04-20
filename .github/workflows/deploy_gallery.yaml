@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - 25-implement-tile-molecules
 
 jobs:
   build-and-deploy:
@@ -24,7 +25,10 @@ jobs:
         run: flutter pub get
 
       - name: Build Widgetbook
-        run: cd gallery && dart run build_runner build -d && flutter build web --target lib/main.dart --base-href "/${{ github.event.repository.name }}/"
+        run: cd gallery && dart run build_runner build -d && flutter build web --wasm --target lib/main.dart --base-href "/${{ github.event.repository.name }}/"
+
+      - name: Build Docs
+        run: pwd && dart doc --output=gallery/build/web/api
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
