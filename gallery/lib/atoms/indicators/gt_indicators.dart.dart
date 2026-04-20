@@ -59,7 +59,7 @@ Widget playgroundGtIndicatorsUseCase(BuildContext context) {
     labelBuilder: (value) => value.$1,
   );
 
-   double slideValue = context.knobs.double.slider(
+  double slideValue = context.knobs.double.slider(
     label: "Slider Value",
     max: 1,
     divisions: 10,
@@ -163,6 +163,15 @@ Widget playgroundGtIndicatorsUseCase(BuildContext context) {
               description:
                   "A versatile spinner that either animates indefinitely or acts as a pie chart.",
               child: GtSpinner(size: 30, color: color.$2),
+            ),
+          ),
+          SliverToBoxAdapter(child: GtGap.yMd()),
+          SliverToBoxAdapter(
+            child: GtIdicatorDescriptionContainer(
+              title: "GtCountdownPie",
+              description:
+                  "A circular countdown indicator that acts as a shrinking pie chart.This widget smoothly animates a pie chart shrinking over a specified [duration], displaying the remaining seconds in the center.",
+              child: GtCountdownPie(key: PageStorageKey("Count down")),
             ),
           ),
           SliverToBoxAdapter(child: GtGap.yMd()),

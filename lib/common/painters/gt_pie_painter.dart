@@ -8,11 +8,15 @@ class GtPiePainter extends CustomPainter {
   final Color trackColor;
   final Color valueColor;
   final double strokeWidth;
+  final StrokeCap strokeCap;
+  final bool clockWise;
 
   GtPiePainter({
     required this.value,
     required this.trackColor,
     required this.valueColor,
+    this.strokeCap = StrokeCap.square,
+    this.clockWise = false,
     this.strokeWidth = 4.0, // Matches the default spinner width
   });
 
@@ -26,6 +30,7 @@ class GtPiePainter extends CustomPainter {
     final trackPaint = Paint()
       ..color = trackColor
       ..style = PaintingStyle.stroke
+      ..strokeCap = strokeCap
       ..isAntiAlias = true
       ..strokeWidth = strokeWidth;
 
@@ -38,7 +43,7 @@ class GtPiePainter extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..isAntiAlias = true
       ..maskFilter = MaskFilter.blur(BlurStyle.inner, 0.6)
-      ..strokeCap = StrokeCap.square; // Added round caps for a polished look
+      ..strokeCap = strokeCap; // Added round caps for a polished look
 
     // Ensure value is between 0 and 1
     final clampedValue = value.clamp(0.0, 1.0);
@@ -47,7 +52,7 @@ class GtPiePainter extends CustomPainter {
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       -pi / 2, // Start at the top (12 o'clock)
-      sweepAngle,
+      clockWise ? -sweepAngle : sweepAngle,
       false, // MUST be false for a hollow ring
       valuePaint,
     );

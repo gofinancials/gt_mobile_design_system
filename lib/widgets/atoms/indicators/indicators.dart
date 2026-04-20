@@ -1,5 +1,6 @@
 export 'gt_check_box.dart';
 export 'gt_count_indicator.dart';
+export 'gt_countdown_pie.dart';
 export 'gt_dots.dart';
 export 'gt_progress.dart';
 export 'gt_radio.dart';
