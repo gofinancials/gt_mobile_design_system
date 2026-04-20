@@ -37,7 +37,9 @@ import 'package:gallery/molecules/buttons/gt_button_usecase.dart'
 import 'package:gallery/molecules/tiles/gt_list_tile.dart'
     as _gallery_molecules_tiles_gt_list_tile;
 import 'package:gallery/molecules/tiles/gt_list_tile_template.dart'
-    as _gallery_molecules_tiles_gt_list_tile_template_usecase;
+    as _gallery_molecules_tiles_gt_list_tile_template;
+import 'package:gallery/organisms/headers/gt_page_header.dart'
+    as _gallery_organisms_headers_gt_page_header;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -220,7 +222,7 @@ final directories = <_widgetbook.WidgetbookNode>[
             useCases: [
               _widgetbook.WidgetbookUseCase(
                 name: 'ListTileTemplates',
-                builder: _gallery_molecules_tiles_gt_list_tile_template_usecase
+                builder: _gallery_molecules_tiles_gt_list_tile_template
                     .gtListTileTemplateUseCase,
               ),
             ],
@@ -232,6 +234,36 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtListTiles',
                 builder:
                     _gallery_molecules_tiles_gt_list_tile.gtListTileAllUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  ),
+  _widgetbook.WidgetbookCategory(
+    name: 'Organisms',
+    children: [
+      _widgetbook.WidgetbookFolder(
+        name: 'Headers',
+        children: [
+          // _widgetbook.WidgetbookComponent(
+          //   name: 'GtFormLegend',
+          //   useCases: [
+          //     _widgetbook.WidgetbookUseCase(
+          //       name: 'Form legend',
+          //       builder: _gallery_organisms_headers_gt_page_header
+          //           .playgroundGtFormLegendUseCase,
+          //     ),
+          //   ],
+          // ),
+          _widgetbook.WidgetbookComponent(
+            name: 'GtPageHeader',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Page header',
+                builder: _gallery_organisms_headers_gt_page_header
+                    .playgroundGtPageHeaderUseCase,
               ),
             ],
           ),
