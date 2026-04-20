@@ -22,11 +22,17 @@ Widget gtListTileTemplateUseCase(BuildContext context) {
         const SizedBox(height: 8),
         GtBaseListTileTemplate(
           title: GtText(
-            context.knobs.string(label: 'Base Title', initialValue: 'Custom Base Title'),
+            context.knobs.string(
+              label: 'Base Title',
+              initialValue: 'Custom Base Title',
+            ),
             style: context.textStyles.h6(),
           ),
           subtitle: GtText(
-            context.knobs.string(label: 'Base Subtitle', initialValue: 'Custom Base Subtitle'),
+            context.knobs.string(
+              label: 'Base Subtitle',
+              initialValue: 'Custom Base Subtitle',
+            ),
             style: context.textStyles.bodyS(),
           ),
           leading: GtSquareConstrainedBox(
@@ -37,7 +43,10 @@ Widget gtListTileTemplateUseCase(BuildContext context) {
             ),
           ),
           trailing: const GtIcon(GtIcons.chevronRight),
-          asCard: context.knobs.boolean(label: 'Base As Card', initialValue: true),
+          asCard: context.knobs.boolean(
+            label: 'Base As Card',
+            initialValue: true,
+          ),
           cardColor: context.palette.bg.weak,
           onTap: () {},
         ),

@@ -8,7 +8,7 @@ enum CornerStyle {
   continous,
 
   /// A standard rounded rectangle border.
-  rounded
+  rounded,
 }
 
 /// Defines the visual semantic variants for [GtCard] backgrounds.
@@ -148,6 +148,82 @@ class GtCard extends GtStatelessWidget {
       padding: padding ?? context.insets.defaultAllInsets,
       duration: 500.milliseconds,
       child: child,
+    );
+  }
+}
+
+class GtBannerCard extends GtStatefulWidget {
+  final String title;
+  final String subtitle;
+  final bool hidden;
+  final GtCardVariant variant;
+  final OnPressed onClose;
+
+  const GtBannerCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    this.hidden = false,
+    this.variant = .normal,
+    required this.onClose,
+  });
+
+  @override
+  State<StatefulWidget> createState() => _GtBannerCardState();
+}
+
+class _GtBannerCardState extends State<GtBannerCard> {
+  Color get _varianTextColor {
+    final palette = context.palette;
+    return switch (widget.variant) {
+      .away => palette.away.dark,
+      .error => palette.error.dark,
+      .featured => palette.feature.dark,
+      .highlighted => palette.highlighted.dark,
+      .info => palette.information.dark,
+      .stable => palette.stable.dark,
+      .success => palette.success.dark,
+      .verified => palette.success.dark,
+      .warning => palette.warning.dark,
+      _ => palette.text.strong,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GtAnimatedFade(
+      child1: GtCard(
+        borderRadius: context.borderRadiusXl,
+        padding: context.insets.allDp(16.px),
+        variant: widget.variant,
+        child: Column(
+          spacing: context.spacingBase,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              spacing: context.spacingSectionLg,
+              crossAxisAlignment: .start,
+              children: [
+                Expanded(
+                  child: GtText(
+                    widget.title,
+                    style: context.textStyles.h6(color: _varianTextColor),
+                  ),
+                ),
+                GtCancelButton(onTap: widget.onClose),
+              ],
+            ),
+            GtText(
+              widget.subtitle,
+              style: context.textStyles.bodyXs(
+                color: context.palette.text.darkerSub,
+              ),
+            ),
+          ],
+        ),
+      ),
+      child2: const Offstage(),
+      showFirst: !widget.hidden,
     );
   }
 }

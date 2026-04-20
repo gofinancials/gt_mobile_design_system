@@ -59,7 +59,7 @@ Widget playgroundGtBoxesUseCase(BuildContext context) {
   ];
 
   // Knobs for alignment of the fractional box
-  
+
   final alignmentOptions = [
     ("Center", Alignment.center),
     ("Top Left", Alignment.topLeft),
