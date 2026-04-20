@@ -247,16 +247,6 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookFolder(
         name: 'Headers',
         children: [
-          // _widgetbook.WidgetbookComponent(
-          //   name: 'GtFormLegend',
-          //   useCases: [
-          //     _widgetbook.WidgetbookUseCase(
-          //       name: 'Form legend',
-          //       builder: _gallery_organisms_headers_gt_page_header
-          //           .playgroundGtFormLegendUseCase,
-          //     ),
-          //   ],
-          // ),
           _widgetbook.WidgetbookComponent(
             name: 'GtPageHeader',
             useCases: [
