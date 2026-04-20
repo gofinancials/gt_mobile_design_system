@@ -52,8 +52,8 @@ class GtPageHeader extends GtStatelessWidget {
   TextStyle _subtitleStyle(BuildContext context) {
     const lineHeightPx = 24.0;
     final base = context.textStyles.bodyS(color: titleColor);
-    final size = base.fontSize ?? 14.0;
-    return base.copyWith(height: lineHeightPx / size);
+    final size = base.fontSize;
+    return base.copyWith(height: lineHeightPx / size!);
   }
 
   @override
