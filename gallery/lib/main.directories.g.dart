@@ -52,6 +52,8 @@ import 'package:gallery/organisms/headers/gt_page_header.dart'
     as _gallery_organisms_headers_gt_page_header;
 import 'package:gallery/organisms/cards/gt_card.dart'
     as _gallery_organisms_cards_gt_card;
+import 'package:gallery/organisms/headers/gt_page_header.dart'
+    as _gallery_organisms_headers_gt_page_header;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
