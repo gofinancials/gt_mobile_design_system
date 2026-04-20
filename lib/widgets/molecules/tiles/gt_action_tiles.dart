@@ -29,7 +29,7 @@ class GtExportListTile extends GtStatelessWidget {
     TextStyle titleStyle = context.textStyles.subHeadM();
     TextStyle? subStyle;
 
-    if (subtitle != null) {
+    if (subtitle.hasValue) {
       titleStyle = context.textStyles.subHeadS();
       subStyle = context.textStyles.bodyXs(color: palette.text.soft);
     }
@@ -50,7 +50,7 @@ class GtExportListTile extends GtStatelessWidget {
                 spacing: context.spacingXs,
                 children: [
                   GtText(title, style: titleStyle),
-                  if (subtitle != null) GtText(subtitle, style: subStyle),
+                  if (subtitle.hasValue) GtText(subtitle, style: subStyle),
                 ],
               ),
             ),

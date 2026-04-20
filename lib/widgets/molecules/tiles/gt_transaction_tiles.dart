@@ -156,7 +156,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
                 style: context.textStyles.titleXs(color: palette.text.disabled),
               ),
               GtText(title, style: context.textStyles.h7()),
-              if (subtitle != null) ...[
+              if (subtitle.hasValue) ...[
                 const GtGap.ySm(),
                 GtText(
                   subtitle,

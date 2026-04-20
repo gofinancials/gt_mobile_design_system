@@ -163,8 +163,8 @@ class GtStandardTextTileTemplate extends GtStatelessWidget {
 
     return GtBaseListTileTemplate(
       title: GtText(title, style: titleStyle ?? defaultTitleStyle),
-      subtitle: subtitle != null
-          ? GtText(subtitle!, style: subtitleStyle ?? defaultSubStyle)
+      subtitle: subtitle.hasValue
+          ? GtText(subtitle, style: subtitleStyle ?? defaultSubStyle)
           : null,
       leading: leading,
       trailing: trailing,

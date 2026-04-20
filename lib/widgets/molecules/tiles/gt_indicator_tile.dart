@@ -61,7 +61,7 @@ class GtIndicatorTile extends GtStatelessWidget {
       child: text,
     );
 
-    if (subtitle != null) {
+    if (subtitle.hasValue) {
       leading = Column(
         spacing: context.spacingXs,
         crossAxisAlignment: CrossAxisAlignment.start,
