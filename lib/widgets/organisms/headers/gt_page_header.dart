@@ -7,7 +7,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Typography is fixed to the design spec:
 /// - **Title:** uppercase, 24px, weight 700 ([GtTextStyles.h5]).
-/// - **Subtitle:** 14px, weight 400, 24px line height ([GtTextStyles.bodyS]), same
+/// - **Subtitle:** 14px, weight 400 ([GtTextStyles.bodyS]), same
 ///   color as the title.
 ///
 /// Uses [GtTextStyles] via [BuildContext] only. Vertical space between title and
@@ -48,12 +48,9 @@ class GtPageHeader extends GtStatelessWidget {
     return context.textStyles.h5(color: titleColor);
   }
 
-  /// Body S: 14px, regular (400) via [GtTextStyles] defaults, 24px line height.
+  /// Body S: 14px, regular (400) via [GtTextStyles] defaults.
   TextStyle _subtitleStyle(BuildContext context) {
-    const lineHeightPx = 24.0;
-    final base = context.textStyles.bodyS(color: titleColor);
-    final size = base.fontSize;
-    return base.copyWith(height: lineHeightPx / size!);
+    return context.textStyles.bodyS(color: titleColor);
   }
 
   @override
