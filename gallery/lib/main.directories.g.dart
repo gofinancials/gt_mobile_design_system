@@ -40,16 +40,6 @@ import 'package:gallery/molecules/tiles/gt_list_tile.dart'
     as _gallery_molecules_tiles_gt_list_tile;
 import 'package:gallery/molecules/tiles/gt_list_tile_template.dart'
     as _gallery_molecules_tiles_gt_list_tile_template;
-import 'package:gallery/organisms/headers/gt_page_header.dart'
-    as _gallery_organisms_headers_gt_page_header;
-import 'package:gallery/organisms/cards/gt_card.dart'
-    as _gallery_organisms_cards_gt_card;
-import 'package:gallery/organisms/headers/gt_page_header.dart'
-    as _gallery_organisms_headers_gt_page_header;
-import 'package:gallery/organisms/cards/gt_card.dart'
-    as _gallery_organisms_cards_gt_card;
-import 'package:gallery/organisms/headers/gt_page_header.dart'
-    as _gallery_organisms_headers_gt_page_header;
 import 'package:gallery/organisms/cards/gt_card.dart'
     as _gallery_organisms_cards_gt_card;
 import 'package:gallery/organisms/headers/gt_page_header.dart'
