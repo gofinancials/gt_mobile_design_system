@@ -48,6 +48,8 @@ import 'package:gallery/organisms/headers/gt_page_header.dart'
     as _gallery_organisms_headers_gt_page_header;
 import 'package:gallery/organisms/cards/gt_card.dart'
     as _gallery_organisms_cards_gt_card;
+import 'package:gallery/organisms/headers/gt_page_header.dart'
+    as _gallery_organisms_headers_gt_page_header;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -257,6 +259,26 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtListTiles',
                 builder:
                     _gallery_molecules_tiles_gt_list_tile.gtListTileAllUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  ),
+  _widgetbook.WidgetbookCategory(
+    name: 'Organisms',
+    children: [
+      _widgetbook.WidgetbookFolder(
+        name: 'Headers',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtPageHeader',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Page header',
+                builder: _gallery_organisms_headers_gt_page_header
+                    .playgroundGtPageHeaderUseCase,
               ),
             ],
           ),
