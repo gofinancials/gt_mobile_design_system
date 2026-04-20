@@ -34,6 +34,8 @@ import 'package:gallery/molecules/boxes/gt_boxes_usecase.dart'
     as _gallery_molecules_boxes_gt_boxes_usecase;
 import 'package:gallery/molecules/buttons/gt_button_usecase.dart'
     as _gallery_molecules_buttons_gt_button_usecase;
+import 'package:gallery/molecules/text/gt_balance_text.dart'
+    as _gallery_molecules_text_gt_balance_text;
 import 'package:gallery/molecules/tiles/gt_list_tile.dart'
     as _gallery_molecules_tiles_gt_list_tile;
 import 'package:gallery/molecules/tiles/gt_list_tile_template.dart'
@@ -209,6 +211,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'Buttons',
                 builder: _gallery_molecules_buttons_gt_button_usecase
                     .playgroundButtonsUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'GtText',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtBalanceText',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Balance',
+                builder: _gallery_molecules_text_gt_balance_text
+                    .playgroundGtBalanceTextUseCase,
               ),
             ],
           ),
