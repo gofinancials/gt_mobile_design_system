@@ -44,6 +44,8 @@ import 'package:gallery/organisms/headers/gt_page_header.dart'
     as _gallery_organisms_headers_gt_page_header;
 import 'package:gallery/organisms/cards/gt_card.dart'
     as _gallery_organisms_cards_gt_card;
+import 'package:gallery/organisms/headers/gt_page_header.dart'
+    as _gallery_organisms_headers_gt_page_header;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -266,6 +268,16 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookFolder(
         name: 'Headers',
         children: [
+          // _widgetbook.WidgetbookComponent(
+          //   name: 'GtFormLegend',
+          //   useCases: [
+          //     _widgetbook.WidgetbookUseCase(
+          //       name: 'Form legend',
+          //       builder: _gallery_organisms_headers_gt_page_header
+          //           .playgroundGtFormLegendUseCase,
+          //     ),
+          //   ],
+          // ),
           _widgetbook.WidgetbookComponent(
             name: 'GtPageHeader',
             useCases: [
@@ -273,24 +285,6 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'Page header',
                 builder: _gallery_organisms_headers_gt_page_header
                     .playgroundGtPageHeaderUseCase,
-  _widgetbook.WidgetbookFolder(
-    name: 'widgets',
-    children: [
-      _widgetbook.WidgetbookFolder(
-        name: 'organisms',
-        children: [
-          _widgetbook.WidgetbookFolder(
-            name: 'cards',
-            children: [
-              _widgetbook.WidgetbookComponent(
-                name: 'GtCard',
-                useCases: [
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'Cards Gallery',
-                    builder:
-                        _gallery_organisms_cards_gt_card.buildGtCardUseCase,
-                  ),
-                ],
               ),
             ],
           ),
