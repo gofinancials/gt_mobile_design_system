@@ -118,6 +118,7 @@ void paint(Canvas canvas, Size size) {
   final trackPaint = Paint()
     ..color = trackColor
     ..style = PaintingStyle.stroke
+    ..strokeCap = strokeCap
     ..isAntiAlias = true
     ..strokeWidth = strokeWidth;
 
@@ -130,7 +131,7 @@ void paint(Canvas canvas, Size size) {
     ..strokeWidth = strokeWidth
     ..isAntiAlias = true
     ..maskFilter = MaskFilter.blur(BlurStyle.inner, 0.6)
-    ..strokeCap = StrokeCap.square; &#47;&#47; Added round caps for a polished look
+    ..strokeCap = strokeCap; &#47;&#47; Added round caps for a polished look
 
   &#47;&#47; Ensure value is between 0 and 1
   final clampedValue = value.clamp(0.0, 1.0);
@@ -139,7 +140,7 @@ void paint(Canvas canvas, Size size) {
   canvas.drawArc(
     Rect.fromCircle(center: center, radius: radius),
     -pi &#47; 2, &#47;&#47; Start at the top (12 o&#39;clock)
-    sweepAngle,
+    clockWise ? -sweepAngle : sweepAngle,
     false, &#47;&#47; MUST be false for a hollow ring
     valuePaint,
   );
