@@ -7,11 +7,9 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [gt_mobile_foundation] exposes [AppTextFormatter.formatCurrency] and
 /// [num.asCurrency] with a configurable `symbol`; this default matches common
 /// in-app Naira shorthand.
-const String kGtDefaultCurrencySymbol = 'N';
 
 /// Balance line: **currency** and **amount** use distinct [TextStyle]s in a
-/// [Row] with [CrossAxisAlignment.center] so the currency and amount align
-/// vertically.
+/// [Wrap] so the amount can flow to the next line on smaller widths.
 ///
 /// The numeric portion uses [AppTextFormatter.formatCurrency] with
 /// [ignoreSymbol] so the symbol is shown only in the leading cell (with a
@@ -24,7 +22,7 @@ const String kGtDefaultCurrencySymbol = 'N';
 /// The default currency **N** uses a double strikethrough ([TextDecorationStyle.double]
 /// with [TextDecoration.lineThrough]) per design.
 class GtBalanceText extends GtStatelessWidget {
-  /// Raw balance; when `null`, an em dash is shown instead of the row.
+  /// Raw balance; when `null`, an em dash is shown instead of the balance line.
   final num? amount;
 
   /// Currency symbol passed through to [AppTextFormatter.formatCurrency].
@@ -45,7 +43,7 @@ class GtBalanceText extends GtStatelessWidget {
   const GtBalanceText({
     super.key,
     required this.amount,
-    this.currencySymbol = kGtDefaultCurrencySymbol,
+    this.currencySymbol = "N",
     this.hidden = false,
     this.textAlign = TextAlign.center,
     this.maxLines = 1,
@@ -58,9 +56,8 @@ class GtBalanceText extends GtStatelessWidget {
       color: context.palette.text.strong,
       decoration: TextDecoration.lineThrough,
       decorationStyle: TextDecorationStyle.double,
-      decorationColor: context.palette.text.strong,
     );
-    final amtStyle = context.textStyles.d3(color: context.palette.text.strong);
+    final amtStyle = context.textStyles.d3();
 
     if (amount == null) {
       return GtText(
@@ -79,19 +76,32 @@ class GtBalanceText extends GtStatelessWidget {
             ignoreSymbol: true,
           );
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Wrap(
+      alignment: _textAlign(textAlign),
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         GtText('$currencySymbol ', style: currencyStyle),
-        Expanded(
-          child: GtText(
-            amtDisplay,
-            style: amtStyle,
-            maxLines: maxLines,
-            overflow: TextOverflow.ellipsis,
-          ),
+        GtText(
+          amtDisplay,
+          style: amtStyle,
+          maxLines: maxLines,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
+  }
+}
+
+WrapAlignment _textAlign(TextAlign align) {
+  switch (align) {
+    case TextAlign.center:
+      return WrapAlignment.center;
+    case TextAlign.end:
+    case TextAlign.right:
+      return WrapAlignment.end;
+    case TextAlign.start:
+    case TextAlign.left:
+    case TextAlign.justify:
+      return WrapAlignment.start;
   }
 }

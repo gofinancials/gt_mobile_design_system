@@ -20,7 +20,7 @@ Widget playgroundGtBalanceTextUseCase(BuildContext context) {
   );
   final currencySymbol = context.knobs.string(
     label: 'Currency symbol',
-    initialValue: kGtDefaultCurrencySymbol,
+    initialValue: "N",
   );
 
   return Scaffold(
