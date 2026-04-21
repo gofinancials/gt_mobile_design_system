@@ -78,7 +78,7 @@ class GtBalanceText extends GtStatelessWidget {
 
     return Wrap(
       alignment: _textAlign(textAlign),
-      crossAxisAlignment: WrapCrossAlignment.center,
+      crossAxisAlignment: .start,
       children: [
         GtText('$currencySymbol ', style: currencyStyle),
         GtText(

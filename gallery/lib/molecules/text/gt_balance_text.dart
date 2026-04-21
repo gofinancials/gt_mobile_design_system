@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gallery/widgets/gallery_page_header.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
@@ -24,17 +25,25 @@ Widget playgroundGtBalanceTextUseCase(BuildContext context) {
   );
 
   return Scaffold(
-    body: SafeArea(
-      child: SingleChildScrollView(
-        padding: context.insets.symmetricDp(
-          horizontal: context.grid.singleColumn.margins.px,
-          vertical: 16.px,
-        ),
-        child: GtBalanceText(
-          amount: amount,
-          hidden: hidden,
-          currencySymbol: currencySymbol,
-        ),
+    body: Padding(
+      padding: context.insets.symmetricDp(
+        horizontal: context.grid.singleColumn.margins.px,
+      ),
+      child: Column(
+        crossAxisAlignment: .stretch,
+        children: [
+          GalleryPageHeader(
+            title: "Balance Text",
+            rider: "Balance text Playground",
+          ),
+          const GtGap.yXl(),
+          GtBalanceText(
+            amount: amount,
+            hidden: hidden,
+            currencySymbol: currencySymbol,
+            textAlign: .start,
+          ),
+        ],
       ),
     ),
   );
