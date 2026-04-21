@@ -54,8 +54,7 @@ class GtButtonText extends GtStatelessWidget {
     final textStyles = context.textStyles;
     TextStyle btnStyle = switch (size) {
       .pill => textStyles.buttonXxs(color: textColor),
-      .xsmall => textStyles.buttonXs(color: textColor),
-      .small => textStyles.buttonS(color: textColor),
+      .xsmall || .small => textStyles.buttonS(color: textColor),
       _ => textStyles.button(color: textColor),
     };
 

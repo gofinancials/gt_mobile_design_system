@@ -66,8 +66,13 @@ enum GtButtonVariant {
   /// An away button style, used to indicate an inactive, paused, or absent state.
   away,
 
+  /// A neutral button style, typically used for less prominent or background actions.
   neutral,
 
+  /// A solid black button style, used for high contrast or specific branding requirements.
+  black,
+
+  /// An alternative neutral button style, offering a subtle variation from the standard neutral.
   neutralAlt,
 }
 
@@ -81,7 +86,7 @@ abstract class GtButton extends GtStatelessWidget {
   final OnPressed onPressed;
 
   /// The size category of the button, determining its height and default padding.
-  /// Defaults to [GtButtonSize.medium].
+  /// Defaults to [GtButtonSize.large].
   final GtButtonSize size;
 
   /// An optional custom minimum size for the button. If null, a default is calculated.
@@ -112,18 +117,22 @@ abstract class GtButton extends GtStatelessWidget {
     super.key,
   });
 
+  /// Returns true if the button is currently in a focused state.
   bool isFocused(Set<WidgetState> states) {
     return states.contains(WidgetState.focused);
   }
 
+  /// Returns true if the button is currently being hovered over by a pointer.
   bool isHovered(Set<WidgetState> states) {
     return states.contains(WidgetState.hovered);
   }
 
+  /// Returns true if the button is currently being pressed down.
   bool isPressed(Set<WidgetState> states) {
     return states.contains(WidgetState.pressed);
   }
 
+  /// Returns true if the button is in any active state (focused, hovered, or pressed).
   bool isActive(Set<WidgetState> states) {
     return isFocused(states) || isHovered(states) || isPressed(states);
   }
@@ -158,14 +167,13 @@ abstract class GtButton extends GtStatelessWidget {
     final i = context.insets;
     return switch (size) {
       .pill => i.symmetricDp(horizontal: 6.px),
-      .xsmall => i.allDp(6.px),
-      .small => i.symmetricDp(horizontal: 8.px),
+      .xsmall || .small => i.symmetricDp(horizontal: 10.px),
       .medium => i.symmetricDp(horizontal: 16.px),
       .large => i.symmetricDp(horizontal: 20.px),
     };
   }
 
-  /// Generates the base [ButtonStyle] containing the standard size, padding,ß
+  /// Generates the base [ButtonStyle] containing the standard size, padding,
   /// and shape constraints for Go Tech buttons.
   ButtonStyle baseStyle(BuildContext context) {
     final height = buttonHeight(context);

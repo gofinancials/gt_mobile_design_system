@@ -3,7 +3,13 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-enum GtIconButtonShape { square, round }
+/// Defines the shape of a [GtIconButton].
+enum GtIconButtonShape {
+  /// A button with squared corners, respecting the theme's border radius.
+  square,
+  /// A perfectly circular button.
+  round,
+}
 
 /// An icon-only button component for the Go Tech design system.
 ///
@@ -26,6 +32,8 @@ class GtIconButton extends GtButton {
   /// Custom padding to apply inside the button, overriding the default zero padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// The shape of the button, either square or round.
+  /// Defaults to [GtIconButtonShape.round].
   final GtIconButtonShape shape;
 
   /// Creates a [GtIconButton].
@@ -46,26 +54,34 @@ class GtIconButton extends GtButton {
   });
 
   @override
+  /// Overrides the base implementation to set a minimum size of zero, as the
+  /// size is constrained by [maximumSize] to create a square shape.
   Size minimumSize(BuildContext context) {
     return Size.square(0);
   }
 
   @override
+  /// Overrides the base implementation to enforce a square shape based on the
+  /// button's calculated height. A small adjustment is added for visual balance.
   Size maximumSize(BuildContext context) {
     final height = buttonHeight(context) + 4;
     return Size.square(height);
   }
 
   @override
+  /// Overrides the base implementation to remove default horizontal padding,
+  /// as this is an icon-only button where content is centered.
   EdgeInsetsGeometry padding(BuildContext context) {
-    final i = context.insets;
-    return i.zero;
+    return context.insets.zero;
   }
 
+  /// Determines the icon color based on the button's [variant] and [isDisabled]
+  /// state.
   Color _iconColor(GtPalette palette) {
     if (isDisabled) return palette.text.disabled;
     return switch (variant) {
       .white => palette.staticColors.black,
+      .black => palette.text.white,
       .secondary => palette.primary.darker,
       .neutral => palette.text.strong,
       .neutralAlt => palette.text.darkerSub,
@@ -75,11 +91,14 @@ class GtIconButton extends GtButton {
     };
   }
 
+  /// Determines the background color based on the button's [variant], [isDisabled]
+  /// state, and whether a custom [color] is provided.
   Color _bgColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
     if (color != null) return color!;
     return switch (variant) {
       .white => palette.staticColors.white,
+      .black => palette.text.strong,
       .secondary => palette.primary.alpha10,
       .neutral => palette.bg.soft,
       .neutralAlt => palette.bg.soft,
@@ -97,6 +116,8 @@ class GtIconButton extends GtButton {
     };
   }
 
+  /// Determines the background color for focus/hover/pressed states based on
+  /// the button's [variant] and [isDisabled] state.
   Color _focusColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
     final color = _bgColor(palette);

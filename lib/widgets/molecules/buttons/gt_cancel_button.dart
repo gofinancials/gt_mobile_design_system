@@ -25,9 +25,12 @@ class GtCancelButton extends GtStatelessWidget {
   final bool asHero;
 
   /// Indicates whether the button should use primary thematic styling.
-  /// 
+  ///
   /// *Note: This property is declared but currently unused in the standard build method.*
   final bool primary;
+
+  /// An optional custom color to override the default color of the cancel icon.
+  final Color? color;
 
   /// Creates a [GtCancelButton].
   const GtCancelButton({
@@ -38,6 +41,7 @@ class GtCancelButton extends GtStatelessWidget {
     this.size = 24,
     this.asHero = false,
     this.primary = false,
+    this.color,
   });
 
   @override
@@ -53,10 +57,11 @@ class GtCancelButton extends GtStatelessWidget {
         }
         Navigator.of(context).pop();
       },
-      child: GtIcon(
+      child: GtIcon.withColor(
         GtIcons.cancel,
         size: context.dp(size.px),
         alignment: alignment,
+        color: color,
       ),
     );
 

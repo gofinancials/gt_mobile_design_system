@@ -111,10 +111,13 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   final String? subtitle;
 
   /// A small label displayed above the title, indicating the role or direction (e.g., 'to', 'from').
-  final String superscript;
+  final String? superscript;
 
   /// An optional widget to display at the start of the tile, typically an avatar or logo.
   final Widget? leading;
+
+  /// An optional widget to display at the end of the tile, typically an action icon.
+  final Widget? trailing;
 
   /// How the children should be placed along the cross axis. Defaults to [CrossAxisAlignment.end].
   final CrossAxisAlignment crossAxisAlignment;
@@ -126,7 +129,8 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
     this.subtitle,
     this.leading,
     this.crossAxisAlignment = CrossAxisAlignment.end,
-    required this.superscript,
+    this.trailing,
+    this.superscript,
   });
 
   @override
@@ -151,10 +155,13 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
               _ => MainAxisAlignment.end,
             },
             children: [
-              GtText(
-                superscript.upper,
-                style: context.textStyles.titleXs(color: palette.text.disabled),
-              ),
+              if (superscript.hasValue)
+                GtText(
+                  superscript?.upper,
+                  style: context.textStyles.titleXs(
+                    color: palette.text.disabled,
+                  ),
+                ),
               GtText(title, style: context.textStyles.h7()),
               if (subtitle.hasValue) ...[
                 const GtGap.ySm(),
@@ -168,6 +175,11 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
             ],
           ),
         ),
+        if (trailing != null)
+          ConstrainedBox(
+            constraints: BoxConstraints.tight(Size.square(24)),
+            child: trailing,
+          ),
       ],
     );
   }

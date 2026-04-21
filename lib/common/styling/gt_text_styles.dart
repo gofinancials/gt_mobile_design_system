@@ -470,6 +470,29 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Extra Small Body (Body XS) paragraph text style.
+  TextStyle body3Xs({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 8,
+      heightPx: 12,
+      widthPct: 0.0,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   // ---------------------------------------------------------------------------
   // LABELS (label prefix) | Inter, Medium (500)
   // ---------------------------------------------------------------------------
@@ -731,6 +754,30 @@ class GtTextStyles {
       size: 14,
       heightPx: 20,
       widthPct: 6.0,
+      weight: FontWeight.w500,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Small Subheading (Subhead S) text style.
+  TextStyle subHead2s({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 13,
+      heightPx: 16,
+      widthPct: 0,
       weight: FontWeight.w500,
       color: color,
       decoration: decoration,
