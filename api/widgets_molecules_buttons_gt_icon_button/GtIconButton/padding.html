@@ -68,7 +68,8 @@
     </section>
     
 <section class="desc markdown">
-  <p>Calculates the internal padding for the button based on its <a href="../../widgets_molecules_buttons_gt_button/GtButton/size.html">size</a>.</p>
+  <p>Overrides the base implementation to remove default horizontal padding,
+as this is an icon-only button where content is centered.</p>
 </section>
 
 
@@ -76,9 +77,10 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
+&#47;&#47;&#47; Overrides the base implementation to remove default horizontal padding,
+&#47;&#47;&#47; as this is an icon-only button where content is centered.
 EdgeInsetsGeometry padding(BuildContext context) {
-  final i = context.insets;
-  return i.zero;
+  return context.insets.zero;
 }</code></pre>
 </section>
 

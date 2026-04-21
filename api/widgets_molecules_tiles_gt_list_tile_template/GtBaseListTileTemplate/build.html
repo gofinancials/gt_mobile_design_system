@@ -114,8 +114,14 @@ Widget build(BuildContext context) {
     mainAxisSize: MainAxisSize.min,
     children: [
       title,
-      if (subtitle != null) ...[const GtGap.yXs(), subtitle!],
-      if (footer != null) ...[const GtGap.ySm(), footer!],
+      if (subtitle != null) ...[
+        GtSizedBox(height: spacingToSubTitle ?? context.spacingXs),
+        subtitle!,
+      ],
+      if (footer != null) ...[
+        GtSizedBox(height: spacingToFooter ?? context.spacingSm),
+        footer!,
+      ],
     ],
   );
 

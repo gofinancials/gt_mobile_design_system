@@ -120,10 +120,11 @@ Widget build(BuildContext context) {
       }
       Navigator.of(context).pop();
     },
-    child: GtIcon(
+    child: GtIcon.withColor(
       GtIcons.cancel,
       size: context.dp(size.px),
       alignment: alignment,
+      color: color,
     ),
   );
 

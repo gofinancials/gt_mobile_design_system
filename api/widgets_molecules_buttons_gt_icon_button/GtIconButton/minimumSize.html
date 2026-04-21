@@ -68,7 +68,8 @@
     </section>
     
 <section class="desc markdown">
-  <p>Calculates the minimum size constraints for the button.</p>
+  <p>Overrides the base implementation to set a minimum size of zero, as the
+size is constrained by <a href="../../widgets_molecules_buttons_gt_icon_button/GtIconButton/maximumSize.html">maximumSize</a> to create a square shape.</p>
 </section>
 
 
@@ -76,6 +77,8 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
+&#47;&#47;&#47; Overrides the base implementation to set a minimum size of zero, as the
+&#47;&#47;&#47; size is constrained by [maximumSize] to create a square shape.
 Size minimumSize(BuildContext context) {
   return Size.square(0);
 }</code></pre>

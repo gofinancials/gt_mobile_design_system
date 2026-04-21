@@ -276,7 +276,8 @@ Typically used to display a progress indicator instead of its label.
 
 </dt>
 <dd>
-  
+  The shape of the button, either square or round.
+Defaults to <a href="../widgets_molecules_buttons_gt_icon_button/GtIconButtonShape.html">GtIconButtonShape.round</a>.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -289,7 +290,7 @@ Typically used to display a progress indicator instead of its label.
 </dt>
 <dd class="inherited">
   The size category of the button, determining its height and default padding.
-Defaults to <a href="../widgets_molecules_buttons_gt_button/GtButtonSize.html">GtButtonSize.medium</a>.
+Defaults to <a href="../widgets_molecules_buttons_gt_button/GtButtonSize.html">GtButtonSize.large</a>.
   <div class="features"><span class="feature">final</span><span class="feature">inherited</span></div>
 
 </dd>
@@ -323,7 +324,7 @@ Defaults to <a href="../widgets_molecules_buttons_gt_button/GtButtonSize.html">G
 
 </dt>
 <dd class="inherited">
-  Generates the base <a href="https://api.flutter.dev/flutter/material/ButtonStyle-class.html">ButtonStyle</a> containing the standard size, padding,ß
+  Generates the base <a href="https://api.flutter.dev/flutter/material/ButtonStyle-class.html">ButtonStyle</a> containing the standard size, padding,
 and shape constraints for Go Tech buttons.
   <div class="features"><span class="feature">inherited</span></div>
 
@@ -404,7 +405,7 @@ children.
 
 </dt>
 <dd class="inherited">
-  
+  Returns true if the button is in any active state (focused, hovered, or pressed).
   <div class="features"><span class="feature">inherited</span></div>
 
 </dd>
@@ -417,7 +418,7 @@ children.
 
 </dt>
 <dd class="inherited">
-  
+  Returns true if the button is currently in a focused state.
   <div class="features"><span class="feature">inherited</span></div>
 
 </dd>
@@ -430,7 +431,7 @@ children.
 
 </dt>
 <dd class="inherited">
-  
+  Returns true if the button is currently being hovered over by a pointer.
   <div class="features"><span class="feature">inherited</span></div>
 
 </dd>
@@ -443,7 +444,7 @@ children.
 
 </dt>
 <dd class="inherited">
-  
+  Returns true if the button is currently being pressed down.
   <div class="features"><span class="feature">inherited</span></div>
 
 </dd>
@@ -456,7 +457,8 @@ children.
 
 </dt>
 <dd>
-  Calculates the maximum size constraints, restricting the height while allowing infinite width.
+  Overrides the base implementation to enforce a square shape based on the
+button's calculated height. A small adjustment is added for visual balance.
   <div class="features"><span class="feature">override</span></div>
 
 </dd>
@@ -469,7 +471,8 @@ children.
 
 </dt>
 <dd>
-  Calculates the minimum size constraints for the button.
+  Overrides the base implementation to set a minimum size of zero, as the
+size is constrained by <a href="../widgets_molecules_buttons_gt_icon_button/GtIconButton/maximumSize.html">maximumSize</a> to create a square shape.
   <div class="features"><span class="feature">override</span></div>
 
 </dd>
@@ -495,7 +498,8 @@ children.
 
 </dt>
 <dd>
-  Calculates the internal padding for the button based on its <a href="../widgets_molecules_buttons_gt_button/GtButton/size.html">size</a>.
+  Overrides the base implementation to remove default horizontal padding,
+as this is an icon-only button where content is centered.
   <div class="features"><span class="feature">override</span></div>
 
 </dd>

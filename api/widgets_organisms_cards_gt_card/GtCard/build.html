@@ -110,7 +110,7 @@ and</li>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   final palette = context.palette;
-  final computedColor = _getVariantColor(palette);
+  final computedColor = color ?? variant.getBgColor(palette);
 
   final shape = switch (cornerStyle) {
     CornerStyle.continous =&gt; ContinuousRectangleBorder(

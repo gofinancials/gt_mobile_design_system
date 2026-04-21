@@ -68,7 +68,8 @@
     </section>
     
 <section class="desc markdown">
-  <p>Calculates the maximum size constraints, restricting the height while allowing infinite width.</p>
+  <p>Overrides the base implementation to enforce a square shape based on the
+button's calculated height. A small adjustment is added for visual balance.</p>
 </section>
 
 
@@ -76,6 +77,8 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
+&#47;&#47;&#47; Overrides the base implementation to enforce a square shape based on the
+&#47;&#47;&#47; button&#39;s calculated height. A small adjustment is added for visual balance.
 Size maximumSize(BuildContext context) {
   final height = buttonHeight(context) + 4;
   return Size.square(height);

@@ -129,12 +129,15 @@ Widget build(BuildContext context) {
             _ =&gt; MainAxisAlignment.end,
           },
           children: [
-            GtText(
-              superscript.upper,
-              style: context.textStyles.titleXs(color: palette.text.disabled),
-            ),
+            if (superscript.hasValue)
+              GtText(
+                superscript?.upper,
+                style: context.textStyles.titleXs(
+                  color: palette.text.disabled,
+                ),
+              ),
             GtText(title, style: context.textStyles.h7()),
-            if (subtitle != null) ...[
+            if (subtitle.hasValue) ...[
               const GtGap.ySm(),
               GtText(
                 subtitle,
@@ -146,6 +149,11 @@ Widget build(BuildContext context) {
           ],
         ),
       ),
+      if (trailing != null)
+        ConstrainedBox(
+          constraints: BoxConstraints.tight(Size.square(24)),
+          child: trailing,
+        ),
     ],
   );
 }</code></pre>

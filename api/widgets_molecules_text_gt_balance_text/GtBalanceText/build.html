@@ -136,14 +136,15 @@ Widget build(BuildContext context) {
 
   return Wrap(
     alignment: _textAlign(textAlign),
-    crossAxisAlignment: WrapCrossAlignment.center,
+    crossAxisAlignment: .center,
+    runAlignment: .start,
     children: [
       GtText(&#39;$currencySymbol &#39;, style: currencyStyle),
       GtText(
         amtDisplay,
         style: amtStyle,
         maxLines: maxLines,
-        overflow: TextOverflow.ellipsis,
+        softWrap: true,
       ),
     ],
   );
