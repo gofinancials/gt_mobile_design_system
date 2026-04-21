@@ -36,7 +36,10 @@ class GtHelpCard extends GtStatelessWidget {
     Widget? footer;
 
     if (subtitle.hasValue) {
-      footer = GtText(subtitle, style: context.textStyles.bodyXs(color: palette.text.soft));
+      footer = GtText(
+        subtitle,
+        style: context.textStyles.bodyXs(color: palette.text.soft),
+      );
     }
 
     return InkWell(
@@ -55,7 +58,11 @@ class GtHelpCard extends GtStatelessWidget {
           subtitle: footer,
           crossAxisAlignment: .center,
           title: GtText(title, style: context.textStyles.bodyM()),
-          leading: GtIcon.withColor(GtIcons.messages, size: 24, color: iconColor),
+          leading: GtIcon.withColor(
+            GtIcons.messages,
+            size: 24,
+            color: iconColor,
+          ),
         ),
       ),
     );

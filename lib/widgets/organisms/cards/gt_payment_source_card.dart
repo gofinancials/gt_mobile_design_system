@@ -54,8 +54,19 @@ class GtPaymentSourceCard extends GtStatelessWidget {
           spacing: context.spacingLg,
           mainAxisSize: .min,
           children: [
-            GtText(title, style: context.textStyles.subHead2s(color: context.palette.text.sub)),
-            GtTransactionParticipantListTile(accountDetail, subtitle: balance, crossAxisAlignment: .center, leading: icon),
+            GtText(
+              title,
+              style: context.textStyles.subHead2s(
+                color: context.palette.text.sub,
+              ),
+            ),
+            GtTransactionParticipantListTile(
+              accountDetail,
+              subtitle: balance,
+              crossAxisAlignment: .center,
+              leading: icon,
+              trailing: GtIcon(GtIcons.chevronDown, size: 16),
+            ),
           ],
         ),
       ),

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 enum GtIconButtonShape {
   /// A button with squared corners, respecting the theme's border radius.
   square,
+
   /// A perfectly circular button.
   round,
 }
@@ -104,7 +105,7 @@ class GtIconButton extends GtButton {
       .neutralAlt => palette.bg.soft,
       .destructive => palette.error.base,
       .destructiveAlt => GtColors.red100.value,
-      .away => GtColors.yellow700.value,
+      .away => palette.away.darker,
       .featured => palette.feature.base,
       .info => palette.information.base,
       .success => palette.success.base,

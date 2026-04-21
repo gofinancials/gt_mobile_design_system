@@ -58,7 +58,7 @@ class GtTextButton extends GtButton {
       .neutral => palette.text.sub,
       .neutralAlt => palette.text.darkerSub,
       .destructive || .destructiveAlt => palette.error.base,
-      .away => GtColors.yellow700.value,
+      .away => palette.away.darker,
       .featured => palette.feature.base,
       .info => palette.information.base,
       .success => palette.success.base,

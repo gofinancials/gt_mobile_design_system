@@ -188,7 +188,7 @@ abstract class GtButton extends GtStatelessWidget {
     final borderRadius = BorderRadius.circular(context.dp(radius.px));
     final shape = RoundedRectangleBorder(borderRadius: borderRadius);
 
-    return ButtonStyle (
+    return ButtonStyle(
       minimumSize: WidgetStatePropertyAll(minSize),
       fixedSize: WidgetStatePropertyAll(Size.fromHeight(height)),
       maximumSize: WidgetStatePropertyAll(maxSize),

@@ -42,8 +42,8 @@ class GtActionCard extends GtStatelessWidget {
     this.variant = .away,
     required this.onActionTap,
     required this.actionText,
-  })  : dismissText = null,
-        onDismiss = null;
+  }) : dismissText = null,
+       onDismiss = null;
 
   /// Creates an action card with both a primary action button and a dismissible text button.
   const GtActionCard.dismissible({
@@ -62,7 +62,10 @@ class GtActionCard extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final iconColor = variant.getIconColor(palette);
+    final iconColor = switch (variant) {
+      .away => palette.away.darker,
+      _ => variant.getIconColor(palette),
+    };
 
     return GtAnimatedFade(
       showFirst: !hidden,
@@ -80,21 +83,39 @@ class GtActionCard extends GtStatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   GtText(title, style: context.textStyles.subHeadS()),
-                  GtText(subtitle, style: context.textStyles.bodyS(color: palette.text.sub)),
+                  GtText(
+                    subtitle,
+                    style: context.textStyles.bodyS(color: palette.text.sub),
+                  ),
                   const GtGap.yXl(),
                   Row(
                     spacing: context.spacingSm,
                     mainAxisAlignment: .start,
                     children: [
-                      GtRaisedButton(onPressed: onActionTap, variant: variant.buttonVariant, text: actionText, size: .xsmall),
+                      GtRaisedButton(
+                        onPressed: onActionTap,
+                        variant: variant.buttonVariant,
+                        text: actionText,
+                        size: .xsmall,
+                      ),
                       if (onDismiss != null)
-                        GtTextButton(onPressed: onDismiss!, variant: variant.buttonVariant, text: dismissText, size: .xsmall),
+                        GtTextButton(
+                          onPressed: onDismiss!,
+                          variant: variant.buttonVariant,
+                          text: dismissText,
+                          size: .xsmall,
+                        ),
                     ],
                   ),
                 ],
               ),
             ),
-            GtIcon.withColor(icon, color: iconColor, size: 32, alignment: .topLeft),
+            GtIcon.withColor(
+              icon,
+              color: iconColor,
+              size: 32,
+              alignment: .topLeft,
+            ),
           ],
         ),
       ),

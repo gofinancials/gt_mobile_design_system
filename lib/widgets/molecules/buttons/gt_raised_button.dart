@@ -73,7 +73,7 @@ class GtRaisedButton extends GtButton {
       .secondary => palette.primary.alpha10,
       .destructiveAlt => GtColors.red100.value,
       .destructive => palette.error.base,
-      .away => GtColors.yellow700.value,
+      .away => palette.away.darker,
       .featured => palette.feature.base,
       .info => palette.information.base,
       .success => palette.success.base,

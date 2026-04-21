@@ -54,14 +54,19 @@ class _GtBannerCardState extends State<GtBannerCard> {
               crossAxisAlignment: .start,
               children: [
                 Expanded(
-                  child: GtText(widget.title, style: context.textStyles.h6(color: textColor)),
+                  child: GtText(
+                    widget.title,
+                    style: context.textStyles.h6(color: textColor),
+                  ),
                 ),
                 GtCancelButton(onTap: widget.onClose),
               ],
             ),
             GtText(
               widget.subtitle,
-              style: context.textStyles.bodyXs(color: context.palette.text.darkerSub),
+              style: context.textStyles.bodyXs(
+                color: context.palette.text.darkerSub,
+              ),
             ),
           ],
         ),
