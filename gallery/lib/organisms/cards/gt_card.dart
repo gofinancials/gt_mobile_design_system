@@ -85,6 +85,12 @@ Widget buildGtCardUseCase(BuildContext context) {
     initialOption: GtCardVariant.away,
     labelBuilder: (value) => value.name.capitalise(),
   );
+  final notificationVariant = context.knobs.object.dropdown(
+    label: 'Notification Variant',
+    options: GtNotificationVariant.values,
+    initialOption: GtNotificationVariant.error,
+    labelBuilder: (value) => value.name.capitalise(),
+  );
 
   return Scaffold(
     key: PageStorageKey("Cards Playground"),
@@ -192,6 +198,19 @@ Widget buildGtCardUseCase(BuildContext context) {
                 balance: "Balance ₦200,015.00",
                 variant: alertVariant,
                 icon: GtNetworkImage(GtNetworkImages.savings),
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: [
+              const GalleryPageSectionHeader(title: "GtNotificationCard"),
+              GtNotificationCard(
+                title: "Unauthorized access",
+                subtitle: "You don't have the permission to do this",
+                variant: notificationVariant,
+                onClose: () {
+                  
+                },
               ),
             ],
           ),

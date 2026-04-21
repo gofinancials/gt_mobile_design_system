@@ -83,10 +83,11 @@ class GtIconButton extends GtButton {
     return switch (variant) {
       .white => palette.staticColors.black,
       .black => palette.text.white,
-      .secondary => palette.primary.darker,
+      .secondary => palette.primary.dark,
       .neutral => palette.text.strong,
       .neutralAlt => palette.text.darkerSub,
       .stable => palette.icon.sub,
+      .away => palette.text.white,
       .destructiveAlt => GtColors.red600.value,
       _ => palette.staticColors.white,
     };

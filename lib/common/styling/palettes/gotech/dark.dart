@@ -81,7 +81,7 @@ final class GotechDarkPalette extends GtPalette {
           darker: GtColors.green200.value,
           dark: GtColors.green400.value,
           base: GtColors.green600.value,
-          light: GtColors.blueAlpha24.value,
+          light: GtColors.greenAlpha24.value,
           lighter: GtColors.greenAlpha16.value,
         ),
         away: GtPaletteStateColors(
