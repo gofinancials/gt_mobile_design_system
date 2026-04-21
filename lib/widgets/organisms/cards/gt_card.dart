@@ -8,7 +8,7 @@ enum CornerStyle {
   continous,
 
   /// A standard rounded rectangle border.
-  rounded
+  rounded,
 }
 
 /// Defines the visual semantic variants for [GtCard] backgrounds.
@@ -41,7 +41,86 @@ enum GtCardVariant {
   verified,
 
   /// An away variant, typically indicating offline or inactive status.
-  away,
+  away;
+
+  /// Gets the background color associated with the card variant from the theme [palette].
+  Color getBgColor(GtPalette palette) {
+    return switch (this) {
+      .away => palette.away.lighter,
+      .error => palette.error.lighter,
+      .featured => palette.feature.lighter,
+      .highlighted => palette.highlighted.lighter,
+      .info => palette.information.lighter,
+      .stable => palette.stable.lighter,
+      .success => palette.success.lighter,
+      .verified => palette.success.lighter,
+      .warning => palette.warning.lighter,
+      _ => palette.bg.weak,
+    };
+  }
+
+  /// Gets the primary text color associated with the card variant from the theme [palette].
+  Color getTextColor(GtPalette palette) {
+    return switch (this) {
+      .away => palette.away.dark,
+      .error => palette.error.dark,
+      .featured => palette.feature.dark,
+      .highlighted => palette.highlighted.dark,
+      .info => palette.information.dark,
+      .stable => palette.stable.dark,
+      .success => palette.success.dark,
+      .verified => palette.success.dark,
+      .warning => palette.warning.dark,
+      _ => palette.text.strong,
+    };
+  }
+
+  /// Gets the icon color associated with the card variant from the theme [palette].
+  Color getIconColor(GtPalette palette) {
+    return switch (this) {
+      .away => palette.away.base,
+      .error => palette.error.base,
+      .featured => palette.feature.base,
+      .highlighted => palette.highlighted.base,
+      .info => palette.information.base,
+      .stable => palette.stable.base,
+      .success => palette.success.base,
+      .verified => palette.success.base,
+      .warning => palette.warning.base,
+      _ => palette.text.darkerSub,
+    };
+  }
+
+  /// Gets the border color associated with the card variant from the theme [palette].
+  Color getBorderColor(GtPalette palette) {
+    return switch (this) {
+      .away => palette.away.light,
+      .error => palette.error.light,
+      .featured => palette.feature.light,
+      .highlighted => palette.highlighted.light,
+      .info => palette.information.light,
+      .stable => palette.stable.light,
+      .success => palette.success.light,
+      .verified => palette.success.light,
+      .warning => palette.warning.light,
+      _ => palette.bg.weak,
+    };
+  }
+
+  /// Gets the corresponding [GtButtonVariant] for the card variant, used for
+  /// buttons inside the card to ensure a consistent theme.
+  GtButtonVariant get buttonVariant => switch (this) {
+    .away => .away,
+    .error => .destructive,
+    .featured => .featured,
+    .highlighted => .highlighted,
+    .info => .info,
+    .stable => .stable,
+    .success => .success,
+    .verified => .verified,
+    .warning => .warning,
+    _ => .black,
+  };
 }
 
 /// A highly customizable card widget that provides a stylized container for content.
@@ -103,26 +182,10 @@ class GtCard extends GtStatelessWidget {
     required this.child,
   });
 
-  Color _getVariantColor(GtPalette palette) {
-    if (color != null) return color!;
-    return switch (variant) {
-      .away => palette.away.lighter,
-      .error => palette.error.lighter,
-      .featured => palette.feature.lighter,
-      .highlighted => palette.highlighted.lighter,
-      .info => palette.information.lighter,
-      .stable => palette.stable.lighter,
-      .success => palette.success.lighter,
-      .verified => palette.success.lighter,
-      .warning => palette.warning.lighter,
-      _ => palette.bg.weak,
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final computedColor = _getVariantColor(palette);
+    final computedColor = color ?? variant.getBgColor(palette);
 
     final shape = switch (cornerStyle) {
       CornerStyle.continous => ContinuousRectangleBorder(

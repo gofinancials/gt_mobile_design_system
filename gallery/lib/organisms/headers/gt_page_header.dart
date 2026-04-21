@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gallery/widgets/gallery_page_header.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
@@ -24,16 +25,22 @@ Widget playgroundGtPageHeaderUseCase(BuildContext context) {
   );
 
   return Scaffold(
-    body: SafeArea(
-      child: SingleChildScrollView(
-        padding: context.insets.symmetricDp(
-          horizontal: context.grid.singleColumn.margins.px,
-          vertical: 16.px,
-        ),
-        child: GtPageHeader(
-          title: title,
-          subtitle: hasSubtitle && subtitle.trim().isNotEmpty ? subtitle : null,
-        ),
+    body: Padding(
+      padding: context.insets.symmetricDp(
+        horizontal: context.grid.singleColumn.margins.px,
+      ),
+      child: Column(
+        crossAxisAlignment: .stretch,
+        children: [
+          GalleryPageHeader(title: "Headers", rider: "headers Playground"),
+          const GtGap.yXl(),
+          GtPageHeader(
+            title: title,
+            subtitle: hasSubtitle && subtitle.trim().isNotEmpty
+                ? subtitle
+                : null,
+          ),
+        ],
       ),
     ),
   );

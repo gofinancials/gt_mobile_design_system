@@ -34,6 +34,12 @@ class GtBaseListTileTemplate extends GtStatelessWidget {
   /// Spacing between the leading, middle content, and trailing elements.
   final double? spacing;
 
+  /// Spacing between the title and subtitle, if provided.
+  final double? spacingToSubTitle;
+
+  /// Spacing between the title/subtitle to footer, if provided.
+  final double? spacingToFooter;
+
   /// Padding around the entire tile content.
   final EdgeInsetsGeometry? padding;
 
@@ -65,6 +71,8 @@ class GtBaseListTileTemplate extends GtStatelessWidget {
     this.cardColor,
     this.cardBorderRadius,
     this.cardPadding,
+    this.spacingToFooter,
+    this.spacingToSubTitle,
   });
 
   @override
@@ -74,8 +82,14 @@ class GtBaseListTileTemplate extends GtStatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         title,
-        if (subtitle != null) ...[const GtGap.yXs(), subtitle!],
-        if (footer != null) ...[const GtGap.ySm(), footer!],
+        if (subtitle != null) ...[
+          GtSizedBox(height: spacingToSubTitle ?? context.spacingXs),
+          subtitle!,
+        ],
+        if (footer != null) ...[
+          GtSizedBox(height: spacingToFooter ?? context.spacingSm),
+          footer!,
+        ],
       ],
     );
 
@@ -163,8 +177,8 @@ class GtStandardTextTileTemplate extends GtStatelessWidget {
 
     return GtBaseListTileTemplate(
       title: GtText(title, style: titleStyle ?? defaultTitleStyle),
-      subtitle: subtitle != null
-          ? GtText(subtitle!, style: subtitleStyle ?? defaultSubStyle)
+      subtitle: subtitle.hasValue
+          ? GtText(subtitle, style: subtitleStyle ?? defaultSubStyle)
           : null,
       leading: leading,
       trailing: trailing,

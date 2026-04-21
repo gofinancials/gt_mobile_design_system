@@ -45,6 +45,7 @@ class GtRaisedButton extends GtButton {
     if (isDisabled) return palette.text.disabled;
     return switch (variant) {
       .white => palette.staticColors.black,
+      .black => palette.text.white,
       .neutral => palette.text.strong,
       .neutralAlt => palette.text.darkerSub,
       .secondary => palette.primary.darker,
@@ -66,6 +67,7 @@ class GtRaisedButton extends GtButton {
     if (color != null) return color!;
     return switch (variant) {
       .white => palette.staticColors.white,
+      .black => palette.text.strong,
       .neutral => palette.bg.soft,
       .neutralAlt => palette.bg.soft,
       .secondary => palette.primary.alpha10,

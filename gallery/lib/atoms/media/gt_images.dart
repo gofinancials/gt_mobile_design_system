@@ -124,19 +124,31 @@ Widget playgroundImageUseCase(BuildContext context) {
                     DataRow(
                       cells: [
                         DataCell(GtText('GtImage')),
-                        DataCell(GtText('Conditionally Renders all Raster image types (i.e Network, File, Asset and Memory images)')),
+                        DataCell(
+                          GtText(
+                            'Conditionally Renders all Raster image types (i.e Network, File, Asset and Memory images)',
+                          ),
+                        ),
                       ],
                     ),
                     DataRow(
                       cells: [
                         DataCell(GtText('GtSvg')),
-                        DataCell(GtText('Renders Network and Asset SVGs, has an asIcon constructor for rendering SVGs like icons')),
+                        DataCell(
+                          GtText(
+                            'Renders Network and Asset SVGs, has an asIcon constructor for rendering SVGs like icons',
+                          ),
+                        ),
                       ],
                     ),
                     DataRow(
                       cells: [
                         DataCell(GtText('GtNetworkImage')),
-                        DataCell(GtText('Renders Network Images from URLs; internally parses data URLs into bytes to be rendered as memory images')),
+                        DataCell(
+                          GtText(
+                            'Renders Network Images from URLs; internally parses data URLs into bytes to be rendered as memory images',
+                          ),
+                        ),
                       ],
                     ),
                     DataRow(
@@ -154,13 +166,21 @@ Widget playgroundImageUseCase(BuildContext context) {
                     DataRow(
                       cells: [
                         DataCell(GtText('GtIcon')),
-                        DataCell(GtText('Renders IconData following our Icon color pallete by default, has a withColor constructor for passing custom colou rs')),
+                        DataCell(
+                          GtText(
+                            'Renders IconData following our Icon color pallete by default, has a withColor constructor for passing custom colou rs',
+                          ),
+                        ),
                       ],
                     ),
                     DataRow(
                       cells: [
                         DataCell(GtText('GtLottie')),
-                        DataCell(GtText('Conditionally renders Nestwork or Asset Lottie files')),
+                        DataCell(
+                          GtText(
+                            'Conditionally renders Nestwork or Asset Lottie files',
+                          ),
+                        ),
                       ],
                     ),
                   ],

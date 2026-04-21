@@ -86,9 +86,17 @@ class GtLimitEditListTile extends GtStatelessWidget {
     this.onEdit,
   });
 
+  /// Calculates the ratio of the utilized value to the maximum, capped at 1.0
+  /// for the progress bar.
   double get _fraction => min((value / max), 1);
+
+  /// Calculates the remaining available amount of the limit.
   num get _remainder => max - value;
+
+  /// The localized, currency-formatted string of the current utilized value.
   String get _formattedValue => AppTextFormatter.formatCurrency(value);
+
+  /// The localized, currency-formatted string of the remaining available amount.
   String get _formattedRemainder => AppTextFormatter.formatCurrency(_remainder);
 
   @override
@@ -146,7 +154,7 @@ class GtLimitEditListTile extends GtStatelessWidget {
         const GtGap.ySm(),
         GtAnimatedProgress(
           value: _fraction,
-          valueColor: context.palette.verified.base,
+          valueColor: context.palette.primary.base,
         ),
         const GtGap.ySm(),
         Align(

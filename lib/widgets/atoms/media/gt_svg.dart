@@ -93,7 +93,7 @@ class GtSvg extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return VectorGraphic(
-      loader: path.vectorBytes(package ?? 'gt_mobile_ui'),
+      loader: path.vectorBytes(package),
       width: width,
       height: height,
       fit: fit,

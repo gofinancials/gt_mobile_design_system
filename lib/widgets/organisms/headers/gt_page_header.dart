@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_foundation/extensions/string_extensions.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -64,9 +63,9 @@ class GtPageHeader extends GtStatelessWidget {
       spacing: spacing,
       children: [
         GtText(title.upper, style: _titleStyle(context), textAlign: textAlign),
-        if (subtitle != null)
+        if (subtitle.hasValue)
           GtText(
-            subtitle!,
+            subtitle.value,
             style: _subtitleStyle(context),
             textAlign: textAlign,
           ),

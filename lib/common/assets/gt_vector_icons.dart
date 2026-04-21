@@ -4,7 +4,7 @@
 /// throughout the app.
 class GtVectorIcons {
   // ignore: unused_field
-  static const _basePath = "assets/images/vector/icons";
+  static const _basePath = "packages/gt_mobile_ui/assets/images/vector/icons";
 
   static List<String> get all => [];
 }

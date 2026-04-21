@@ -57,6 +57,7 @@ class GtOutlineButton extends GtButton {
     if (color != null) return color!;
     return switch (variant) {
       .white => palette.staticColors.white,
+      .black => palette.text.strong,
       .secondary => palette.primary.alpha10,
       .neutral => palette.text.sub,
       .neutralAlt => palette.text.darkerSub,
