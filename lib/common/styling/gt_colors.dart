@@ -39,6 +39,7 @@ enum GtColors {
   neutralGray200(ColorSet(0xFFEBEBEB)),
   neutralGray100(ColorSet(0xFFF5F5F5)),
   neutralGray50(ColorSet(0xFFF7F7F7)),
+  neutralWarm50(ColorSet(0xFFF7F5F1)),
   neutralGray0(ColorSet(0xFFFFFFFF)),
 
   // ---------------------------------------------------------------------------

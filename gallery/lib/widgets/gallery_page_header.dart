@@ -17,7 +17,7 @@ class GalleryPageHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: .stretch,
       children: [
         const GtGap.ySectionXl(),
         Text(title.upper, style: context.textStyles.d1()),

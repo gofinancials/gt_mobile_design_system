@@ -13,6 +13,9 @@ class GtFonts {
   /// The 'Readex' font family.
   static const String _readex = 'Readex';
 
+  /// The 'SF Pro Rounded' font family.
+  static const String _sfProRounded = 'SF Pro Rounded';
+
   /// The font family used for title text.
   final String title;
 
@@ -22,6 +25,9 @@ class GtFonts {
   /// The font family used for large display text.
   final String display;
 
+  /// The font family used for navigation text.
+  final String bottomNav;
+
   /// Creates a new [GtFonts] configuration.
   ///
   /// Defaults to [readex] for titles, [youth] for displays, and [inter] for body text.
@@ -29,5 +35,6 @@ class GtFonts {
     this.title = _youth,
     this.display = _youth,
     this.body = _readex,
+    this.bottomNav = _sfProRounded,
   });
 }

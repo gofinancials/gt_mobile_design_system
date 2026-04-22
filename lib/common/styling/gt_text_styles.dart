@@ -931,4 +931,32 @@ class GtTextStyles {
       overflow: overflow,
     );
   }
+
+  // ---------------------------------------------------------------------------
+  // NAVIGATION
+  // ---------------------------------------------------------------------------
+
+  /// Generates the default Bottom Navigation label text style.
+  TextStyle navBarLabel({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.bottomNav,
+      size: 9,
+      heightPx: 12,
+      widthPct: 0,
+      weight: FontWeight.w600,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
 }

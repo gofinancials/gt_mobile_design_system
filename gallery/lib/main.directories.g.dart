@@ -44,6 +44,8 @@ import 'package:gallery/organisms/cards/gt_card.dart'
     as _gallery_organisms_cards_gt_card;
 import 'package:gallery/organisms/headers/gt_page_header.dart'
     as _gallery_organisms_headers_gt_page_header;
+import 'package:gallery/organisms/navigation/gt_bottom_navigation_bar.dart'
+    as _gallery_organisms_navigation_gt_bottom_navigation_bar;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -273,6 +275,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'Page header',
                 builder: _gallery_organisms_headers_gt_page_header
                     .playgroundGtPageHeaderUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'Navigation',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtBottomNavigationBar',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Bottom Navigation Bar',
+                builder: _gallery_organisms_navigation_gt_bottom_navigation_bar
+                    .playgroundGtBottomNavigationBarUseCase,
               ),
             ],
           ),
