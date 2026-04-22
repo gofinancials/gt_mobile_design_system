@@ -110,7 +110,10 @@ and</li>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   final palette = context.palette;
-  final iconColor = variant.getIconColor(palette);
+  final iconColor = switch (variant) {
+    .away =&gt; palette.away.darker,
+    _ =&gt; variant.getIconColor(palette),
+  };
 
   return GtAnimatedFade(
     showFirst: !hidden,
@@ -128,21 +131,39 @@ Widget build(BuildContext context) {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 GtText(title, style: context.textStyles.subHeadS()),
-                GtText(subtitle, style: context.textStyles.bodyS(color: palette.text.sub)),
+                GtText(
+                  subtitle,
+                  style: context.textStyles.bodyS(color: palette.text.sub),
+                ),
                 const GtGap.yXl(),
                 Row(
                   spacing: context.spacingSm,
                   mainAxisAlignment: .start,
                   children: [
-                    GtRaisedButton(onPressed: onActionTap, variant: variant.buttonVariant, text: actionText, size: .xsmall),
+                    GtRaisedButton(
+                      onPressed: onActionTap,
+                      variant: variant.buttonVariant,
+                      text: actionText,
+                      size: .xsmall,
+                    ),
                     if (onDismiss != null)
-                      GtTextButton(onPressed: onDismiss!, variant: variant.buttonVariant, text: dismissText, size: .xsmall),
+                      GtTextButton(
+                        onPressed: onDismiss!,
+                        variant: variant.buttonVariant,
+                        text: dismissText,
+                        size: .xsmall,
+                      ),
                   ],
                 ),
               ],
             ),
           ),
-          GtIcon.withColor(icon, color: iconColor, size: 32, alignment: .topLeft),
+          GtIcon.withColor(
+            icon,
+            color: iconColor,
+            size: 32,
+            alignment: .topLeft,
+          ),
         ],
       ),
     ),

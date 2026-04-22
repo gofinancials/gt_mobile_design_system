@@ -118,7 +118,7 @@ Widget build(BuildContext context) {
     .pill =&gt; 12.0,
     .xsmall =&gt; 14.0,
     .small =&gt; 16.0,
-    .medium =&gt; 20.0,
+    .medium =&gt; 22.0,
     _ =&gt; 24.0,
   };
 
@@ -129,7 +129,6 @@ Widget build(BuildContext context) {
         color: iconColor,
         size: iconSize,
         alignment: alignment,
-        weight: 1,
       ),
       child2: GtSpinner(color: iconColor),
       showFirst: !isLoading,
@@ -142,6 +141,20 @@ Widget build(BuildContext context) {
           GtIconButtonShape.round =&gt; const CircleBorder(),
         };
       }),
+      backgroundBuilder: (context, states, child) {
+        if (gradient == null) return child ?? const Offstage();
+        final background = DecoratedBox(
+          decoration: BoxDecoration(gradient: gradient),
+          child: child,
+        );
+        return switch (shape) {
+          .round =&gt; ClipOval(child: background),
+          _ =&gt; ClipRRect(
+            borderRadius: borderRadius(context),
+            child: background,
+          ),
+        };
+      },
       backgroundColor: WidgetStateProperty.resolveWith((states) {
         if (states.containsAll([
           WidgetState.hovered,

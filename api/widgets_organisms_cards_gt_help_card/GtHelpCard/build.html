@@ -117,7 +117,10 @@ Widget build(BuildContext context) {
   Widget? footer;
 
   if (subtitle.hasValue) {
-    footer = GtText(subtitle, style: context.textStyles.bodyXs(color: palette.text.soft));
+    footer = GtText(
+      subtitle,
+      style: context.textStyles.bodyXs(color: palette.text.soft),
+    );
   }
 
   return InkWell(
@@ -136,7 +139,11 @@ Widget build(BuildContext context) {
         subtitle: footer,
         crossAxisAlignment: .center,
         title: GtText(title, style: context.textStyles.bodyM()),
-        leading: GtIcon.withColor(GtIcons.messages, size: 24, color: iconColor),
+        leading: GtIcon.withColor(
+          GtIcons.messages,
+          size: 24,
+          color: iconColor,
+        ),
       ),
     ),
   );

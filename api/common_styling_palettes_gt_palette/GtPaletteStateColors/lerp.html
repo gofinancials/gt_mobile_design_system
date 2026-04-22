@@ -75,6 +75,7 @@
   double t,
 ) {
   return GtPaletteStateColors(
+    darker: Color.lerp(a?.darker, b?.darker, t)!,
     dark: Color.lerp(a?.dark, b?.dark, t)!,
     base: Color.lerp(a?.base, b?.base, t)!,
     light: Color.lerp(a?.light, b?.light, t)!,

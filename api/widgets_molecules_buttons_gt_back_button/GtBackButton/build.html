@@ -109,6 +109,8 @@ and</li>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
+  final canPop = context.canPop;
+
   if (!canPop &amp;&amp; routeStackSensitive) {
     return const Offstage();
   }
@@ -119,15 +121,14 @@ Widget build(BuildContext context) {
       tag: &quot;gt-back-button&quot;,
       child: InkWell(
         onTap: () {
-          if (!canPop &amp;&amp; routeStackSensitive) return;
           if (action != null) return action!();
-          if (!canPop) return;
+          if (!canPop &amp;&amp; routeStackSensitive) return;
 
-          Navigator.of(context).pop();
+          Navigator.of(context).maybePop();
         },
         child: GtIcon(
           GtIcons.chevronLeft,
-          size: context.dp(24.px),
+          size: context.dp(32.px),
           alignment: alignment,
         ),
       ),
