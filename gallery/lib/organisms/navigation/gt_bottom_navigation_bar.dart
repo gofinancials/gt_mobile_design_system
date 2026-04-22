@@ -39,6 +39,13 @@ enum _BottomNavTabsPreset {
   }
 }
 
+String _styleLabel(GtBottomNavigationStyle s) {
+  return switch (s) {
+    GtBottomNavigationStyle.ios => 'iOS (floating)',
+    GtBottomNavigationStyle.android => 'Android (Material)',
+  };
+}
+
 @widgetbook.UseCase(
   name: 'Bottom Navigation Bar',
   type: GtBottomNavigationBar,
@@ -51,7 +58,17 @@ Widget playgroundGtBottomNavigationBarUseCase(BuildContext context) {
     initialOption: _BottomNavTabsPreset.fourTabs,
     labelBuilder: (value) => value.label,
   );
+  final style = context.knobs.object.dropdown<GtBottomNavigationStyle>(
+    label: 'Platform style',
+    options: GtBottomNavigationStyle.values,
+    initialOption: GtBottomNavigationStyle.ios,
+    labelBuilder: _styleLabel,
+  );
   final tabs = preset.items;
+
+  final rider = style == GtBottomNavigationStyle.ios
+      ? 'iOS-style floating bottom navigation playground.'
+      : 'Android-style bottom navigation playground.';
 
   return Scaffold(
     backgroundColor: context.palette.bg.neutralWarm50,
@@ -60,50 +77,77 @@ Widget playgroundGtBottomNavigationBarUseCase(BuildContext context) {
         horizontal: context.grid.singleColumn.margins.px,
       ),
       child: Column(
-        crossAxisAlignment: .stretch,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const GalleryPageHeader(
-            title: 'Bottom Navigation Bar',
-            rider: 'iOS-style floating bottom navigation playground.',
-          ),
+          GalleryPageHeader(title: 'Bottom Navigation Bar', rider: rider),
           const GtGap.yXl(),
-          // Use case 1: Bottom nav with trailing help action.
-          _BottomNavPreview(
-            items: tabs,
-            initialIndex: 0,
-            withTrailingAction: true,
-          ),
+          if (style == GtBottomNavigationStyle.ios)
+            _BottomNavPreviewIos(
+              items: tabs,
+              initialIndex: 0,
+              withTrailingAction: true,
+            ),
         ],
       ),
     ),
+    bottomNavigationBar: style == GtBottomNavigationStyle.android
+        ? _BottomNavAndroidPreview(items: tabs, initialIndex: 0)
+        : null,
   );
 }
 
-class _BottomNavPreview extends StatefulWidget {
+/// iOS floating bar preview (in-page, optional trailing pill).
+class _BottomNavPreviewIos extends StatefulWidget {
   final List<GtBottomNavigationItem> items;
   final int initialIndex;
   final bool withTrailingAction;
 
-  const _BottomNavPreview({
+  const _BottomNavPreviewIos({
     required this.items,
     this.initialIndex = 0,
     this.withTrailingAction = false,
   });
 
   @override
-  State<_BottomNavPreview> createState() => _BottomNavPreviewState();
+  State<_BottomNavPreviewIos> createState() => _BottomNavPreviewIosState();
 }
 
-class _BottomNavPreviewState extends State<_BottomNavPreview> {
+class _BottomNavPreviewIosState extends State<_BottomNavPreviewIos> {
   late int _index = widget.initialIndex;
 
   @override
   Widget build(BuildContext context) {
     return GtBottomNavigationBar(
+      style: GtBottomNavigationStyle.ios,
       items: widget.items,
       currentIndex: _index,
       onIndexChanged: (index) => setState(() => _index = index),
       onTrailingTap: widget.withTrailingAction ? () {} : null,
+    );
+  }
+}
+
+/// Android [BottomNavigationBar] host for gallery [Scaffold.bottomNavigationBar].
+class _BottomNavAndroidPreview extends StatefulWidget {
+  final List<GtBottomNavigationItem> items;
+  final int initialIndex;
+
+  const _BottomNavAndroidPreview({required this.items, this.initialIndex = 0});
+
+  @override
+  State<_BottomNavAndroidPreview> createState() =>
+      _BottomNavAndroidPreviewState();
+}
+
+class _BottomNavAndroidPreviewState extends State<_BottomNavAndroidPreview> {
+  late int _index = widget.initialIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return GtAndroidBottomNavigationBar(
+      items: widget.items,
+      currentIndex: _index,
+      onIndexChanged: (index) => setState(() => _index = index),
     );
   }
 }

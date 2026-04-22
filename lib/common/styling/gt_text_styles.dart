@@ -936,8 +936,13 @@ class GtTextStyles {
   // NAVIGATION
   // ---------------------------------------------------------------------------
 
-  /// Generates the default Bottom Navigation label text style.
+  /// Bottom navigation label text for the floating **iOS** bar or Material
+  /// **Android** [BottomNavigationBar].
+  ///
+  /// When [isAndroid] is true, [GtFonts.bottomNav] is used; iOS uses an empty
+  /// family so the platform/theme default applies.
   TextStyle navBarLabel({
+    bool isAndroid = false,
     Color? color,
     TextDecoration? decoration,
     Color? decorationColor,
@@ -946,7 +951,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: '',
+      family: isAndroid ? fonts.bottomNav : '',
       size: 9,
       heightPx: 12,
       widthPct: 0,
