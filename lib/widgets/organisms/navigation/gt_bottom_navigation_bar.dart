@@ -48,14 +48,12 @@ class GtBottomNavigationBar extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final radius = BorderRadius.circular(context.dp(99.px));
+    final radius = context.borderRadiusFull;
 
     final boxDecoration = BoxDecoration(
-      color: palette.staticColors.white,
+      color: palette.bg.white,
       borderRadius: radius,
-      border: Border.all(
-        color: palette.staticColors.white.withValues(alpha: 0.20),
-      ),
+      border: Border.all(color: palette.bg.white.withValues(alpha: 0.20)),
       boxShadow: context.shadows.bottomNavInnerGlass(),
     );
 
@@ -75,9 +73,7 @@ class GtBottomNavigationBar extends GtStatelessWidget {
                     Positioned.fill(
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: palette.staticColors.black.withValues(
-                            alpha: 0.01,
-                          ),
+                          color: palette.bg.strong.withValues(alpha: 0.01),
                         ),
                       ),
                     ),
@@ -168,7 +164,7 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
               size: context.dp(22.px),
               variant: selected ? GtIconVariant.strong : GtIconVariant.disabled,
             ),
-            SizedBox(height: context.dp(4.px)),
+            const GtGap.ySm(),
             // Label uses navBarLabel token with active/inactive color states.
             GtText(
               item.label,
@@ -198,14 +194,12 @@ class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final radius = BorderRadius.circular(context.dp(99.px));
+    final radius = context.borderRadiusFull;
 
     final boxDecoration = BoxDecoration(
-      color: palette.staticColors.white,
+      color: palette.bg.white,
       borderRadius: radius,
-      border: Border.all(
-        color: palette.staticColors.white.withValues(alpha: 0.20),
-      ),
+      border: Border.all(color: palette.bg.white.withValues(alpha: 0.20)),
       boxShadow: context.shadows.bottomNavInnerGlass(),
     );
 
