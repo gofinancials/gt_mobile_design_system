@@ -57,7 +57,6 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GtIndicatorTile(
       onTap: () {
         if (disabled) return;

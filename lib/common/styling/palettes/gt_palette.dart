@@ -282,7 +282,8 @@ class GtPaletteTextColors extends GtPaletteContentColors {
   }
 
   @override
-  int get hashCode => Object.hash(strong, sub, soft, disabled, white);
+  int get hashCode =>
+      Object.hash(strong, sub, soft, disabled, white, darkerSub);
 }
 
 /// Colors used for boundaries, such as borders, dividers, and outlines.
@@ -336,19 +337,21 @@ class GtPaletteStrokeColors {
 /// Includes various shades (dark to lighter) to support different component
 /// architectures, such as subtle backgrounds for alerts or strong fills for badges.
 class GtPaletteStateColors {
+  final Color darker;
   final Color dark;
   final Color base;
   final Color light;
   final Color lighter;
 
   const GtPaletteStateColors({
+    required this.darker,
     required this.dark,
     required this.base,
     required this.light,
     required this.lighter,
   });
 
-  List<Color> get all => [dark, base, light, lighter];
+  List<Color> get all => [darker, dark, base, light, lighter];
 
   static GtPaletteStateColors lerp(
     GtPaletteStateColors? a,
@@ -356,6 +359,7 @@ class GtPaletteStateColors {
     double t,
   ) {
     return GtPaletteStateColors(
+      darker: Color.lerp(a?.darker, b?.darker, t)!,
       dark: Color.lerp(a?.dark, b?.dark, t)!,
       base: Color.lerp(a?.base, b?.base, t)!,
       light: Color.lerp(a?.light, b?.light, t)!,
@@ -370,12 +374,13 @@ class GtPaletteStateColors {
 
     return other.dark == dark &&
         other.base == base &&
+        other.darker == darker &&
         other.light == light &&
         other.lighter == lighter;
   }
 
   @override
-  int get hashCode => Object.hash(dark, base, light, lighter);
+  int get hashCode => Object.hash(darker, dark, base, light, lighter);
 }
 
 // -----------------------------------------------------------------------------

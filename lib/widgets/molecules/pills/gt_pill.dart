@@ -187,7 +187,6 @@ class GtStatusPill extends StatelessWidget {
 
     return GtPill(
       text: text,
-
       bgColor: bgColor,
       icon: iconWidget,
       textColor: textColor,

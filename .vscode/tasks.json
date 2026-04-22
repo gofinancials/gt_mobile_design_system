@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "GenerateDirectories",
+            "type": "shell",
+            "command": "cd gallery && flutter pub run build_runner build -d --verbose", // Replace with your command or script
+            "problemMatcher": []
+        }
+    ]
+}

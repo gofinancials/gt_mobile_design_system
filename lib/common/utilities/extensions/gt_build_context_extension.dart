@@ -154,3 +154,8 @@ extension ThemeContextExtension on BuildContext {
     formKey.currentState?.save();
   }
 }
+
+extension NavigatorExtension on BuildContext {
+  bool get canPop => Navigator.of(this).canPop();
+  Future pop() async => Navigator.of(this).pop();
+}

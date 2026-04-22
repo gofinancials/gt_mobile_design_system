@@ -61,7 +61,7 @@ class DesignSystemCover extends StatelessWidget {
                 SizedBox(height: context.dp(10.px)),
                 Text(
                   'FOUNDATION',
-                  style: context.textStyles.d1(
+                  style: context.textStyles.d2(
                     color: context.palette.coverColors.light,
                   ),
                 ),

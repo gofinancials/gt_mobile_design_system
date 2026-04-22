@@ -31,6 +31,11 @@ class GtSpinner extends GtStatefulWidget {
   /// The bounding size (width and height) of the spinner.
   final double size;
 
+  /// The position of the spinner on the cartesian plane.
+  ///
+  /// Defaults to [Alignment.center].
+  final Alignment alignment;
+
   /// Creates a new [GtSpinner].
   const GtSpinner({
     this.value,
@@ -39,6 +44,7 @@ class GtSpinner extends GtStatefulWidget {
     this.strokeWidth = 4.0,
     this.size = 22,
     super.key,
+    this.alignment = .center,
   });
 
   @override
@@ -57,45 +63,48 @@ class _GtSpinnerState extends State<GtSpinner> {
     final trackColor = widget.trackColor;
     final color = widget.color ?? palette.text.strong;
 
-    return RepaintBoundary(
-      child: SizedBox(
-        width: widget.size,
-        height: widget.size,
-        child: Builder(
-          builder: (context) {
-            if (widget.value == null) {
-              return RepeatingAnimationBuilder(
-                animatable: Tween<double>(begin: 0.0, end: 360),
-                duration: 1.seconds,
-                builder: (context, value, child) {
-                  return Transform.rotate(
-                    angle: value * math.pi / 180,
-                    child: child,
-                  );
-                },
-                child: CustomPaint(
-                  painter: GtCircularProgressPainter(
-                    color: color,
-                    strokeWidth: widget.strokeWidth,
-                  ),
-                ),
-              );
-            }
-            return TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0.0, end: widget.value),
-              duration: 1.seconds,
-              builder: (context, value, child) {
-                return CustomPaint(
-                  painter: GtPiePainter(
-                    value: value,
-                    strokeWidth: widget.strokeWidth,
-                    trackColor: trackColor ?? color.setOpacity(0.1),
-                    valueColor: color,
+    return Align(
+      alignment: widget.alignment,
+      child: RepaintBoundary(
+        child: SizedBox(
+          width: widget.size,
+          height: widget.size,
+          child: Builder(
+            builder: (context) {
+              if (widget.value == null) {
+                return RepeatingAnimationBuilder(
+                  animatable: Tween<double>(begin: 0.0, end: 360),
+                  duration: 1.seconds,
+                  builder: (context, value, child) {
+                    return Transform.rotate(
+                      angle: value * math.pi / 180,
+                      child: child,
+                    );
+                  },
+                  child: CustomPaint(
+                    painter: GtCircularProgressPainter(
+                      color: color,
+                      strokeWidth: widget.strokeWidth,
+                    ),
                   ),
                 );
-              },
-            );
-          },
+              }
+              return TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0.0, end: widget.value),
+                duration: 1.seconds,
+                builder: (context, value, child) {
+                  return CustomPaint(
+                    painter: GtPiePainter(
+                      value: value,
+                      strokeWidth: widget.strokeWidth,
+                      trackColor: trackColor ?? color.setOpacity(0.1),
+                      valueColor: color,
+                    ),
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

@@ -7,6 +7,7 @@ export 'gt_bill_card.dart';
 export 'gt_card.dart';
 export 'gt_debit_card.dart';
 export 'gt_help_card.dart';
+export 'gt_notification_card.dart';
 export 'gt_payment_source_card.dart';
 export 'gt_product_card.dart';
 export 'gt_reminder_banner.dart';

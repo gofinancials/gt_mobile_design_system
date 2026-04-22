@@ -40,6 +40,8 @@ import 'package:gallery/molecules/tiles/gt_list_tile.dart'
     as _gallery_molecules_tiles_gt_list_tile;
 import 'package:gallery/molecules/tiles/gt_list_tile_template.dart'
     as _gallery_molecules_tiles_gt_list_tile_template;
+import 'package:gallery/organisms/app_bars/gt_home_app_bar.dart'
+    as _gallery_organisms_app_bars_gt_home_app_bar;
 import 'package:gallery/organisms/cards/gt_card.dart'
     as _gallery_organisms_cards_gt_card;
 import 'package:gallery/organisms/headers/gt_page_header.dart'
@@ -286,6 +288,61 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookFolder(
         name: 'organisms',
         children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'app_bars',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtActionAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtActionAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtActionAppbarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtAppbarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtHomeAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtHomeAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtHomeAppbarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtModalAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTitleAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtModalAppbarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTitleAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTitleAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtTitleAppbarUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
           _widgetbook.WidgetbookFolder(
             name: 'cards',
             children: [

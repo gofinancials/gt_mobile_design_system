@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
+import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A centralized styling class that provides access to the application's
 /// standard gradient styles.
@@ -14,4 +16,24 @@ class GtGradients {
   ///
   /// Requires a [BuildContext] to accurately resolve context-dependent gradient colors.
   const GtGradients(this.context);
+
+  Gradient get avatarGradient {
+    return LinearGradient(
+      colors: [context.palette.primary.alpha24, context.palette.primary.base],
+      stops: [0, .6],
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+    );
+  }
+
+  Gradient get ghostGradient {
+    return LinearGradient(
+      colors: [
+        context.palette.bg.white,
+        context.palette.bg.white.setOpacity(.16),
+      ],
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+    );
+  }
 }

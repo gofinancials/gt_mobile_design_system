@@ -35,12 +35,10 @@ class GtBackButton extends GtStatelessWidget {
     this.alignment = Alignment.centerLeft,
   });
 
-  /// Determines whether the current navigation stack can be popped.
-  // TODO: implement GtRouter can pop method
-  bool get canPop => true;
-
   @override
   Widget build(BuildContext context) {
+    final canPop = context.canPop;
+
     if (!canPop && routeStackSensitive) {
       return const Offstage();
     }
@@ -51,15 +49,14 @@ class GtBackButton extends GtStatelessWidget {
         tag: "gt-back-button",
         child: InkWell(
           onTap: () {
-            if (!canPop && routeStackSensitive) return;
             if (action != null) return action!();
-            if (!canPop) return;
+            if (!canPop && routeStackSensitive) return;
 
-            Navigator.of(context).pop();
+            Navigator.of(context).maybePop();
           },
           child: GtIcon(
             GtIcons.chevronLeft,
-            size: context.dp(24.px),
+            size: context.dp(32.px),
             alignment: alignment,
           ),
         ),

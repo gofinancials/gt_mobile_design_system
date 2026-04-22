@@ -82,12 +82,7 @@ class GtBalanceText extends GtStatelessWidget {
       runAlignment: .start,
       children: [
         GtText('$currencySymbol ', style: currencyStyle),
-        GtText(
-          amtDisplay,
-          style: amtStyle,
-          maxLines: maxLines,
-          softWrap: true,
-        ),
+        GtText(amtDisplay, style: amtStyle, maxLines: maxLines, softWrap: true),
       ],
     );
   }

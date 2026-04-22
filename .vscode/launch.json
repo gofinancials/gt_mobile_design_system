@@ -9,6 +9,7 @@
             "cwd": "gallery",
             "request": "launch",
             "type": "dart",
+            "preLaunchTask": "GenerateDirectories",
             "args": [
                 "--verbose",
                 "--enable-experiment=dot-shorthands"
@@ -20,6 +21,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
+            "preLaunchTask": "GenerateDirectories",
             "args": [
                 "--verbose",
                 "--enable-experiment=dot-shorthands"
@@ -31,6 +33,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
+            "preLaunchTask": "GenerateDirectories",
             "args": [
                 "--verbose",
                 "--enable-experiment=dot-shorthands"

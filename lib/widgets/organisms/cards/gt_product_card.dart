@@ -38,7 +38,10 @@ class GtProductCard extends GtStatelessWidget {
     Widget? footer;
 
     if (description.hasValue) {
-      footer = GtText(description, style: context.textStyles.body3Xs(color: palette.text.sub));
+      footer = GtText(
+        description,
+        style: context.textStyles.body3Xs(color: palette.text.sub),
+      );
     }
 
     return InkWell(

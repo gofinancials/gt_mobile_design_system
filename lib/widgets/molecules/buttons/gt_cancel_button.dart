@@ -49,13 +49,11 @@ class GtCancelButton extends GtStatelessWidget {
     Widget child = InkWell(
       onTap: () {
         HapticFeedback.lightImpact();
-        if (subAction != null) {
-          subAction!();
-        }
-        if (onTap != null) {
-          return onTap!();
-        }
-        Navigator.of(context).pop();
+        if (subAction != null) subAction!();
+        if (onTap != null) return onTap!();
+        if (!context.canPop) return;
+
+        Navigator.of(context).maybePop();
       },
       child: GtIcon.withColor(
         GtIcons.cancel,

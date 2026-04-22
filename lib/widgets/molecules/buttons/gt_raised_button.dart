@@ -48,8 +48,9 @@ class GtRaisedButton extends GtButton {
       .black => palette.text.white,
       .neutral => palette.text.strong,
       .neutralAlt => palette.text.darkerSub,
-      .secondary => palette.primary.darker,
+      .secondary => palette.primary.dark,
       .destructiveAlt => GtColors.red600.value,
+      .away => palette.text.white,
       _ => palette.staticColors.white,
     };
   }
@@ -73,7 +74,7 @@ class GtRaisedButton extends GtButton {
       .secondary => palette.primary.alpha10,
       .destructiveAlt => GtColors.red100.value,
       .destructive => palette.error.base,
-      .away => GtColors.yellow700.value,
+      .away => palette.away.darker,
       .featured => palette.feature.base,
       .info => palette.information.base,
       .success => palette.success.base,

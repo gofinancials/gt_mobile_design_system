@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 enum GtIconButtonShape {
   /// A button with squared corners, respecting the theme's border radius.
   square,
+
   /// A perfectly circular button.
   round,
 }
@@ -36,6 +37,8 @@ class GtIconButton extends GtButton {
   /// Defaults to [GtIconButtonShape.round].
   final GtIconButtonShape shape;
 
+  final Gradient? gradient;
+
   /// Creates a [GtIconButton].
   const GtIconButton({
     required this.icon,
@@ -50,6 +53,7 @@ class GtIconButton extends GtButton {
     this.contentPadding,
     this.shape = .round,
     super.alignment,
+    this.gradient,
     super.key,
   });
 
@@ -82,10 +86,11 @@ class GtIconButton extends GtButton {
     return switch (variant) {
       .white => palette.staticColors.black,
       .black => palette.text.white,
-      .secondary => palette.primary.darker,
+      .secondary => palette.primary.dark,
       .neutral => palette.text.strong,
       .neutralAlt => palette.text.darkerSub,
       .stable => palette.icon.sub,
+      .away => palette.text.white,
       .destructiveAlt => GtColors.red600.value,
       _ => palette.staticColors.white,
     };
@@ -104,7 +109,7 @@ class GtIconButton extends GtButton {
       .neutralAlt => palette.bg.soft,
       .destructive => palette.error.base,
       .destructiveAlt => GtColors.red100.value,
-      .away => GtColors.yellow700.value,
+      .away => palette.away.darker,
       .featured => palette.feature.base,
       .info => palette.information.base,
       .success => palette.success.base,
@@ -151,7 +156,7 @@ class GtIconButton extends GtButton {
       .pill => 12.0,
       .xsmall => 14.0,
       .small => 16.0,
-      .medium => 20.0,
+      .medium => 22.0,
       _ => 24.0,
     };
 
@@ -162,7 +167,6 @@ class GtIconButton extends GtButton {
           color: iconColor,
           size: iconSize,
           alignment: alignment,
-          weight: 1,
         ),
         child2: GtSpinner(color: iconColor),
         showFirst: !isLoading,
@@ -175,6 +179,20 @@ class GtIconButton extends GtButton {
             GtIconButtonShape.round => const CircleBorder(),
           };
         }),
+        backgroundBuilder: (context, states, child) {
+          if (gradient == null) return child ?? const Offstage();
+          final background = DecoratedBox(
+            decoration: BoxDecoration(gradient: gradient),
+            child: child,
+          );
+          return switch (shape) {
+            .round => ClipOval(child: background),
+            _ => ClipRRect(
+              borderRadius: borderRadius(context),
+              child: background,
+            ),
+          };
+        },
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (states.containsAll([
             WidgetState.hovered,
