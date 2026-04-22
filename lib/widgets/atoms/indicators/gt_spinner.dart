@@ -32,7 +32,7 @@ class GtSpinner extends GtStatefulWidget {
   final double size;
 
   /// The position of the spinner on the cartesian plane.
-  ///  
+  ///
   /// Defaults to [Alignment.center].
   final Alignment alignment;
 
