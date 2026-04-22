@@ -98,7 +98,7 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.palette;
     final inactive = GtColors.neutralGray600.value;
-    final activeIcon = palette.primary.base;
+    final activeIcon = palette.text.strong;
     final selectedLabelStyle = context.textStyles.navBarLabel(
       isAndroid: true,
       color: palette.primary.dark,
