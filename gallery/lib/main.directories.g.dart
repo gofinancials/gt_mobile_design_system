@@ -292,12 +292,52 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'app_bars',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtActionAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtActionAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtActionAppbarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtAppbarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtHomeAppBar',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtHomeAppbar',
                     builder: _gallery_organisms_app_bars_gt_home_app_bar
                         .buildGtHomeAppbarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtModalAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTitleAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtModalAppbarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTitleAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTitleAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtTitleAppbarUsecase,
                   ),
                 ],
               ),

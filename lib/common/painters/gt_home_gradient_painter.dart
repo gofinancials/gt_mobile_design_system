@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 
-/// Paints a circular progress indicator with a sweep gradient.
+/// A custom painter that draws a top-to-bottom linear gradient background.
+///
+/// The gradient starts with the provided [color] at the top and fades to
+/// transparent, spanning across the top 40% of the canvas height.
 class GtHomeGradientPainter extends CustomPainter {
+  /// The starting color of the gradient at the top edge.
   final Color color;
 
+  /// Creates a [GtHomeGradientPainter] with the specified starting [color].
   GtHomeGradientPainter({required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Rect.fromLTRB(0, 0, size.width, size.height * 0.4);
-    // Create a sweep gradient from transparent to the target color
+    // Create a linear gradient from the target color to transparent
     final gradient = LinearGradient(
       colors: [color, Colors.transparent],
       begin: Alignment.topCenter,
@@ -18,7 +23,7 @@ class GtHomeGradientPainter extends CustomPainter {
 
     final paint = Paint()..shader = gradient.createShader(rect);
 
-    // Draw a full circle; the gradient shader handles the fading tail effect
+    // Draw the rectangle; the gradient shader handles the fading effect
     canvas.drawRect(rect, paint);
   }
 
