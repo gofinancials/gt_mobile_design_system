@@ -349,6 +349,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               ),
               _widgetbook.WidgetbookComponent(
+                name: 'GtProAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtProAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtProAppbarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtTitleAppBar',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
