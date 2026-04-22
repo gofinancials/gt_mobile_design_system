@@ -173,6 +173,16 @@ abstract class GtButton extends GtStatelessWidget {
     };
   }
 
+  /// Calculates the internal padding for the button based on its [size].
+  BorderRadius borderRadius(BuildContext context) {
+    final radius = switch (size) {
+      .pill => 6.8,
+      .xsmall => 8,
+      _ => 10,
+    };
+    return BorderRadius.circular(context.dp(radius.px));
+  }
+
   /// Generates the base [ButtonStyle] containing the standard size, padding,
   /// and shape constraints for Go Tech buttons.
   ButtonStyle baseStyle(BuildContext context) {
@@ -180,13 +190,8 @@ abstract class GtButton extends GtStatelessWidget {
     final minSize = minimumSize(context);
     final maxSize = maximumSize(context);
     final hPadding = padding(context);
-    final radius = switch (size) {
-      .pill => 6.8,
-      .xsmall => 8,
-      _ => 10,
-    };
-    final borderRadius = BorderRadius.circular(context.dp(radius.px));
-    final shape = RoundedRectangleBorder(borderRadius: borderRadius);
+    final borderRadii = borderRadius(context);
+    final shape = RoundedRectangleBorder(borderRadius: borderRadii);
 
     return ButtonStyle(
       minimumSize: WidgetStatePropertyAll(minSize),
