@@ -107,6 +107,9 @@ extension ThemeContextExtension on BuildContext {
   /// Retrieves the box shadow configurations for the current context.
   GtShadows get shadows => themeData.shadows(this);
 
+  /// Retrieves standardized [ImageFilter] presets for backdrop blur effects.
+  GtBackdropFilters get backdropFilters => themeData.backdropFilters(this);
+
   /// Retrieves the gradient definitions for the current context.
   GtGradients get gradients => themeData.gradients(this);
 

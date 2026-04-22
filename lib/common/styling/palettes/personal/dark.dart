@@ -27,6 +27,7 @@ final class PersonalDarkPalette extends GtPalette {
           soft: GtColors.neutral200.dark,
           weak: GtColors.neutral50.dark,
           white: GtColors.neutral0.dark,
+          neutralWarm50: GtColors.neutralWarm50.dark,
         ),
         text: GtPaletteTextColors(
           strong: GtColors.neutral950.dark,

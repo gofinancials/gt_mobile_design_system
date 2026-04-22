@@ -235,6 +235,10 @@ class GtTheme {
   /// Resolves the shadow and elevation tokens for the given [context].
   GtShadows shadows(BuildContext context) => GtShadows(context);
 
+  /// Resolves backdrop blur and related [ImageFilter] presets for [context].
+  GtBackdropFilters backdropFilters(BuildContext context) =>
+      GtBackdropFilters(context);
+
   /// Resolves the gradient styles for the given [context].
   GtGradients gradients(BuildContext context) => GtGradients(context);
 

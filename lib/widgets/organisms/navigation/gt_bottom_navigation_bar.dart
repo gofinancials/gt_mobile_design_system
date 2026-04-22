@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/typedefs/app_typedefs.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -52,23 +50,13 @@ class GtBottomNavigationBar extends GtStatelessWidget {
     final palette = context.palette;
     final radius = BorderRadius.circular(context.dp(99.px));
 
-    List<BoxShadow> boxShadow = [
-      BoxShadow(
-        spreadRadius: context.dp((-5).px),
-        offset: Offset(context.dp(5.px), context.dp((-10).px)),
-        blurRadius: context.dp(6.px),
-        color: palette.staticColors.black.withValues(alpha: 0.10),
-        blurStyle: BlurStyle.inner,
-      ),
-    ];
-
     final boxDecoration = BoxDecoration(
       color: palette.staticColors.white,
       borderRadius: radius,
       border: Border.all(
         color: palette.staticColors.white.withValues(alpha: 0.20),
       ),
-      boxShadow: boxShadow,
+      boxShadow: context.shadows.bottomNavInnerGlass(),
     );
 
     return Row(
@@ -78,10 +66,7 @@ class GtBottomNavigationBar extends GtStatelessWidget {
           child: ClipRRect(
             borderRadius: radius,
             child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: context.dp(18.px),
-                sigmaY: context.dp(18.px),
-              ),
+              filter: context.backdropFilters.bottomNavFrost(),
               child: Container(
                 height: context.dp(68.px),
                 decoration: boxDecoration,
@@ -215,33 +200,20 @@ class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
     final palette = context.palette;
     final radius = BorderRadius.circular(context.dp(99.px));
 
-    List<BoxShadow> boxShadow = [
-      BoxShadow(
-        spreadRadius: context.dp((-5).px),
-        offset: Offset(context.dp(5.px), context.dp((-10).px)),
-        blurRadius: context.dp(6.px),
-        color: palette.staticColors.black.withValues(alpha: 0.10),
-        blurStyle: BlurStyle.inner,
-      ),
-    ];
-
     final boxDecoration = BoxDecoration(
       color: palette.staticColors.white,
       borderRadius: radius,
       border: Border.all(
         color: palette.staticColors.white.withValues(alpha: 0.20),
       ),
-      boxShadow: boxShadow,
+      boxShadow: context.shadows.bottomNavInnerGlass(),
     );
 
     // Circular frosted action button (typically help/info).
     return ClipRRect(
       borderRadius: radius,
       child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: context.dp(18.px),
-          sigmaY: context.dp(18.px),
-        ),
+        filter: context.backdropFilters.bottomNavFrost(),
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           // Kept as callback-only to let host screen define action behavior.

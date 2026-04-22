@@ -54,7 +54,7 @@ Widget playgroundGtBottomNavigationBarUseCase(BuildContext context) {
   final tabs = preset.items;
 
   return Scaffold(
-    backgroundColor: GtColors.neutralWarm50.value,
+    backgroundColor: context.palette.bg.neutralWarm50,
     body: Padding(
       padding: context.insets.symmetricDp(
         horizontal: context.grid.singleColumn.margins.px,

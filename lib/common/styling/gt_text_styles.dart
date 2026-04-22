@@ -946,7 +946,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.bottomNav,
+      family: '',
       size: 9,
       heightPx: 12,
       widthPct: 0,
