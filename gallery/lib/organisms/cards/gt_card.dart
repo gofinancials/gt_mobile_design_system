@@ -147,6 +147,22 @@ Widget buildGtCardUseCase(BuildContext context) {
                 onDismiss: () {},
                 dismissText: "DISMISS",
               ),
+              const GtGap.yBase(),
+              GtActionCard.dismissibleTrailing(
+                title: "POS Dispute Update",
+                subtitle: "We have an update on your disputed POS transaction.",
+                trailing: GtSvg(
+                  GtVectorIllustrations.serviceStatus,
+                  width: 80,
+                  height: 80,
+                  alignment: .topRight,
+                ),
+                onActionTap: () {},
+                actionText: "View",
+                variant: actionVariant,
+                onDismiss: () {},
+                dismissText: "DISMISS",
+              ),
             ],
           ),
           SliverList.list(
@@ -208,9 +224,7 @@ Widget buildGtCardUseCase(BuildContext context) {
                 title: "Unauthorized access",
                 subtitle: "You don't have the permission to do this",
                 variant: notificationVariant,
-                onClose: () {
-                  
-                },
+                onClose: () {},
               ),
             ],
           ),
@@ -294,6 +308,71 @@ Widget buildGtCardUseCase(BuildContext context) {
                 name: "Referrals",
                 icon: GtIcons.gift,
                 variant: .away,
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: [
+              const GalleryPageSectionHeader(title: "GtEmptyStateCard"),
+              GtEmptyStateCard(
+                icon: context.knobs.objectOrNull.dropdown<IconData?>(
+                  label: "State Icon",
+                  options: [GtIcons.userSearch, null],
+                  initialOption: GtIcons.userSearch,
+                ),
+                description: "You currently do not have any team member here",
+                variant: context.knobs.object.dropdown<GtCardVariant>(
+                  label: "State Variant",
+                  options: GtCardVariant.values,
+                  initialOption: .normal,
+                  labelBuilder: (value) => value.name,
+                ),
+              ),
+              const GtGap.yBase(),
+              GtActionableEmptyStateCard(
+                icon: GtIcons.fileContent,
+                title: "No transfers yet",
+                description:
+                    "Your bulk transfers will appear after you create one",
+                buttontext: "NEW bulk transfer",
+                onPressed: () {},
+                variant: context.knobs.object.dropdown<GtCardVariant>(
+                  label: "State Variant",
+                  options: GtCardVariant.values,
+                  initialOption: .normal,
+                  labelBuilder: (value) => value.name,
+                ),
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: [
+              const GalleryPageSectionHeader(title: "GtInStructionCard"),
+              GtInstructionCard(
+                icon: GtIcon(GtIcons.camera, variant: .soft, size: 24),
+                description: "JPEG, JPG and PNG formats, up to 10 MB.",
+                variant: context.knobs.object.dropdown<GtCardVariant>(
+                  label: "Instruction Variant",
+                  options: GtCardVariant.values,
+                  initialOption: .normal,
+                  labelBuilder: (value) => value.name,
+                ),
+                title: "Take picture of front of ID",
+                onPressed: () {},
+              ),
+              const GtGap.yBase(),
+              GtInstructionCard(
+                icon: GtIcon(GtIcons.uploadFolder, size: 32),
+                description: "Upload a scan or PDF of your CAC certificate",
+                variant: context.knobs.object.dropdown<GtCardVariant>(
+                  label: "Instruction Variant",
+                  options: GtCardVariant.values,
+                  initialOption: .normal,
+                  labelBuilder: (value) => value.name,
+                ),
+                title: "Upload documents",
+                onPressed: () {},
+                isFilled: true,
               ),
             ],
           ),

@@ -12,7 +12,10 @@ class GtActionCard extends GtStatelessWidget {
   final String subtitle;
 
   /// The icon to display in the action card.
-  final IconData icon;
+  final IconData? _icon;
+
+  /// The icon to display in the action card.
+  final Widget? _trailing;
 
   /// If true, the card will be hidden (faded out).
   final bool hidden;
@@ -37,12 +40,14 @@ class GtActionCard extends GtStatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
-    required this.icon,
+    required IconData icon,
     this.hidden = false,
     this.variant = .away,
     required this.onActionTap,
     required this.actionText,
-  }) : dismissText = null,
+  }) : _icon = icon,
+       _trailing = null,
+       dismissText = null,
        onDismiss = null;
 
   /// Creates an action card with both a primary action button and a dismissible text button.
@@ -50,14 +55,30 @@ class GtActionCard extends GtStatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
-    required this.icon,
+    required IconData icon,
     this.hidden = false,
     this.variant = .away,
     required this.onActionTap,
     required this.actionText,
     required this.onDismiss,
     required this.dismissText,
-  });
+  }) : _icon = icon,
+       _trailing = null;
+
+  /// Creates an action card with both a primary action button and a dismissible text button.
+  const GtActionCard.dismissibleTrailing({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required Widget trailing,
+    this.hidden = false,
+    this.variant = .away,
+    required this.onActionTap,
+    required this.actionText,
+    required this.onDismiss,
+    required this.dismissText,
+  }) : _icon = null,
+       _trailing = trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -110,12 +131,14 @@ class GtActionCard extends GtStatelessWidget {
                 ],
               ),
             ),
-            GtIcon.withColor(
-              icon,
-              color: iconColor,
-              size: 32,
-              alignment: .topLeft,
-            ),
+            if (_icon != null)
+              GtIcon.withColor(
+                _icon,
+                color: iconColor,
+                size: 32,
+                alignment: .topLeft,
+              ),
+            ?_trailing,
           ],
         ),
       ),

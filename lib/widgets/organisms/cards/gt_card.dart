@@ -103,7 +103,7 @@ enum GtCardVariant {
       .success => palette.success.light,
       .verified => palette.success.light,
       .warning => palette.warning.light,
-      _ => palette.bg.weak,
+      _ => palette.stroke.sub,
     };
   }
 
