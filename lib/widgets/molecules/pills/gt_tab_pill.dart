@@ -90,7 +90,11 @@ class GtTabPill<T> extends StatelessWidget {
   void scrollIntoView(BuildContext context) {
     if (!isSelected) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Scrollable.ensureVisible(context);
+      Scrollable.ensureVisible(
+        context,
+        curve: Curves.decelerate,
+        duration: 500.milliseconds,
+      );
     });
   }
 

@@ -62,25 +62,31 @@ Widget buildGtPillUseCase(BuildContext context) {
     labelBuilder: (value) => value.$1,
   );
   final tabs = [
-    ("All", GtIcons.alignLeft),
-    ("network providers", GtIcons.phone),
-    ("internet providers", GtIcons.signal),
-    ("pay AGAIN", GtIcons.arrowBottomRight),
-    ("VIEW RECEIPT", GtIcons.hide),
+    GtTabData(value: "all", label: "All", icon: GtIcons.alignLeft),
+    GtTabData(
+      value: "networks",
+      label: "network providers",
+      icon: GtIcons.phone,
+    ),
+    GtTabData(
+      value: "internets",
+      label: "internet providers",
+      icon: GtIcons.signal,
+    ),
+    GtTabData(value: "pay", label: "pay AGAIN", icon: GtIcons.arrowBottomRight),
+    GtTabData(
+      value: "view",
+      label: "VIEW RECEIPT",
+      icon: GtIcons.arrowBottomRight,
+    ),
   ];
-  final selections = ["Savings", "Current", "Business"];
-  (String, IconData) activeTab = context.knobs.object
-      .dropdown<(String, IconData)>(
-        label: "Active Pill Tab",
-        options: tabs,
-        initialOption: tabs.first,
-        labelBuilder: (value) => value.$1,
-      );
-  String activeSelection = context.knobs.object.dropdown<String>(
-    label: "Active Pill Selection",
-    options: selections,
-    initialOption: selections.first,
-  );
+  final selections = [
+    GtTabData(value: "savings", label: "savings"),
+    GtTabData(value: "savings", label: "current"),
+    GtTabData(value: "business", label: "business"),
+  ];
+  final activeTab = GtTabController(initialValue: tabs.first);
+  final activeSelection = GtTabController(initialValue: selections.first);
   final showShadow = context.knobs.boolean(label: "Show Shadow");
   return StatefulBuilder(
     builder: (context, setState) {
@@ -136,52 +142,27 @@ Widget buildGtPillUseCase(BuildContext context) {
               ),
               SliverList.list(
                 children: [
-                  const GalleryPageSectionHeader(title: "GtTabPill"),
-                  SingleChildScrollView(
-                    scrollDirection: .horizontal,
-                    child: Row(
-                      spacing: context.spacingBase,
-                      crossAxisAlignment: .center,
-                      children: [
-                        for (final tab in tabs)
-                          GtTabPill(
-                            text: tab.$1,
-                            value: tab,
-                            activeValue: activeTab,
-                            icon: tab.$2,
-                            onSelect: (newTab) {
-                              setState(() {
-                                activeTab = newTab;
-                              });
-                            },
-                            variant: pillVariant,
-                          ),
-                      ],
-                    ),
+                  const GalleryPageSectionHeader(
+                    title: "GtTabPill [GtSelectionTab]",
                   ),
+                  GtSelectionTabbar(tabs: tabs, controller: activeTab),
                   const GalleryPageSectionHeader(
                     title: "GtTabPill [selection]",
                   ),
-                  SingleChildScrollView(
-                    scrollDirection: .horizontal,
-                    child: Row(
-                      spacing: context.spacingSm,
-                      crossAxisAlignment: .center,
-                      children: [
-                        for (final selection in selections)
-                          GtTabPill.selection(
-                            text: selection,
-                            value: selection,
-                            activeValue: activeSelection,
-                            onSelect: (newTab) {
-                              setState(() {
-                                activeSelection = newTab;
-                              });
-                            },
-                            variant: pillVariant,
-                          ),
-                      ],
-                    ),
+                  GtSelectionTabbar(
+                    tabs: selections,
+                    controller: activeSelection,
+                    useAlternateStyle: true,
+                  ),
+                  GtTabbarView(
+                    controller: activeSelection,
+                    tabViews: {
+                      for (final selection in selections)
+                        selection: Padding(
+                          padding: context.insets.symmetricDp(vertical: 20.px),
+                          child: GtText(selection.label.upper, textAlign: .center),
+                        ),
+                    },
                   ),
                 ],
               ),
