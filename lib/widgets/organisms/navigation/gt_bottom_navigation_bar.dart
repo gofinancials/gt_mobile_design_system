@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gt_mobile_foundation/extensions/string_extensions.dart';
 import 'package:gt_mobile_foundation/typedefs/app_typedefs.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -111,7 +112,7 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
     // Top inset matches host padding; bottom adds clear space before the label.
     final iconPadding = EdgeInsets.only(
       top: context.spacingBase,
-      bottom: context.spacingSm,
+      bottom: context.spacingBase,
     );
 
     return BottomNavigationBar(
@@ -144,7 +145,7 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
                 color: activeIcon,
               ),
             ),
-            label: item.label,
+            label: item.label.upper,
           ),
       ],
     );

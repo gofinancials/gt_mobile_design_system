@@ -58,10 +58,6 @@ flutter:
         - asset: assets/fonts/Youth-Bold.otf
           weight: 700
         - asset: assets/fonts/Youth-Medium.otf
-    - family: SF Pro Rounded
-      fonts:
-        - asset: assets/fonts/sf-pro-display-medium.otf
-          weight: 500
     - family: GtIconFont
       fonts:
         - asset: assets/fonts/GtIconFont.otf

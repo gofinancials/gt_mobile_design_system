@@ -951,11 +951,11 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: isAndroid ? fonts.bottomNav : '',
-      size: 9,
+      family: isAndroid ? fonts.display : '',
+      size: isAndroid ? 11 : 9,
       heightPx: 12,
       widthPct: 0,
-      weight: FontWeight.w600,
+      weight: isAndroid ? FontWeight.w700 : FontWeight.w600,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
