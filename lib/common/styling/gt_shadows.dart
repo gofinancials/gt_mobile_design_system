@@ -238,4 +238,18 @@ class GtShadows {
       ),
     ];
   }
+
+  /// Inner glass shadow used by  bottom navigation containers/buttons.
+  ///
+  List<BoxShadow> bottomNavInnerGlass([Color? color]) {
+    return [
+      BoxShadow(
+        spreadRadius: -5,
+        offset: Offset(5, -10),
+        blurRadius: 6,
+        color: (color ?? context.palette.staticColors.black).setOpacity(.10),
+        blurStyle: BlurStyle.inner,
+      ),
+    ];
+  }
 }

@@ -1,3 +1,4 @@
+export 'gt_background_filter.dart';
 export 'gt_colors.dart';
 export 'gt_gradients.dart';
 export 'gt_grid.dart';

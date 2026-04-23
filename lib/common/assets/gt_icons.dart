@@ -324,6 +324,19 @@ class GtIcons {
   static const folderOpen = GtIconData(0xf0ff);
   static const alarmClock = GtIconData(0xf100);
 
+  /// ---------------------------------------------------------------------------
+  /// BOTTOM NAVIGATION ICONS (Outline / Standard)
+  /// ---------------------------------------------------------------------------
+  static const home = GtIconData(0xf111);
+  static const homeFilled = GtIconData(0xf10f);
+  static const payment = GtIconData(0xf10d);
+  static const paymentFilled = GtIconData(0xf10c);
+  static const product = GtIconData(0xf10b);
+  static const productFilled = GtIconData(0xf10a);
+  static const card = GtIconData(0xf12e);
+  static const cardFilled = GtIconData(0xf12d);
+  static const helpInfo = GtIconData(0xf10e);
+
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
   /// This is particularly useful for cataloging, testing, or building
@@ -624,5 +637,14 @@ class GtIcons {
     shapes,
     folderOpen,
     alarmClock,
+    home,
+    homeFilled,
+    payment,
+    paymentFilled,
+    product,
+    productFilled,
+    card,
+    cardFilled,
+    helpInfo,
   ];
 }
