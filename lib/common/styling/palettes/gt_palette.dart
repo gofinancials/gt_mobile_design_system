@@ -157,7 +157,15 @@ class GtPaletteBgColors {
     required this.neutralWarm50,
   });
 
-  List<Color> get all => [strong, surface, sub, soft, weak, white, neutralWarm50];
+  List<Color> get all => [
+    strong,
+    surface,
+    sub,
+    soft,
+    weak,
+    white,
+    neutralWarm50,
+  ];
 
   static GtPaletteBgColors lerp(
     GtPaletteBgColors? a,
@@ -190,7 +198,8 @@ class GtPaletteBgColors {
   }
 
   @override
-  int get hashCode => Object.hash(strong, surface, sub, soft, weak, white, neutralWarm50);
+  int get hashCode =>
+      Object.hash(strong, surface, sub, soft, weak, white, neutralWarm50);
 }
 
 /// Colors applied to foreground elements like text and icons.

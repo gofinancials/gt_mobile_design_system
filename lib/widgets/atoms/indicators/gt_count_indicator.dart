@@ -78,7 +78,7 @@ class GtCountIndicator extends GtStatelessWidget {
           child: GtText(
             "${count > 9 ? '9+' : count}",
             textAlign: TextAlign.center,
-            style: context.textStyles.bodyXs(color: textColor),
+            style: context.textStyles.body2Xs(color: textColor),
           ),
         ),
       ),

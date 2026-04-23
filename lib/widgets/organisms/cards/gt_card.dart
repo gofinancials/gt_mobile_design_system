@@ -53,7 +53,7 @@ enum GtCardVariant {
       .info => palette.information.lighter,
       .stable => palette.stable.lighter,
       .success => palette.success.lighter,
-      .verified => palette.success.lighter,
+      .verified => palette.verified.lighter,
       .warning => palette.warning.lighter,
       _ => palette.bg.weak,
     };
@@ -69,7 +69,7 @@ enum GtCardVariant {
       .info => palette.information.dark,
       .stable => palette.stable.dark,
       .success => palette.success.dark,
-      .verified => palette.success.dark,
+      .verified => palette.verified.dark,
       .warning => palette.warning.dark,
       _ => palette.text.strong,
     };
@@ -85,7 +85,7 @@ enum GtCardVariant {
       .info => palette.information.base,
       .stable => palette.stable.base,
       .success => palette.success.base,
-      .verified => palette.success.base,
+      .verified => palette.verified.base,
       .warning => palette.warning.base,
       _ => palette.text.darkerSub,
     };
@@ -101,9 +101,25 @@ enum GtCardVariant {
       .info => palette.information.light,
       .stable => palette.stable.light,
       .success => palette.success.light,
-      .verified => palette.success.light,
+      .verified => palette.verified.light,
       .warning => palette.warning.light,
       _ => palette.stroke.sub,
+    };
+  }
+
+  /// Gets the border color associated with the card variant from the theme [palette].
+  Color getProgressColor(GtPalette palette) {
+    return switch (this) {
+      .away => palette.away.darker,
+      .error => palette.error.darker,
+      .featured => palette.feature.darker,
+      .highlighted => palette.highlighted.darker,
+      .info => palette.information.darker,
+      .stable => palette.stable.darker,
+      .success => palette.success.darker,
+      .verified => palette.verified.darker,
+      .warning => palette.warning.darker,
+      _ => palette.stroke.strong,
     };
   }
 

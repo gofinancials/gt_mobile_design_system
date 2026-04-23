@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
@@ -85,6 +87,19 @@ Widget buildGtCardUseCase(BuildContext context) {
     initialOption: GtCardVariant.away,
     labelBuilder: (value) => value.name.capitalise(),
   );
+  final maxProgress = context.knobs.double.slider(
+    label: "Max Progress value",
+    min: 20,
+    max: 200,
+    initialValue: 20,
+    divisions: 10,
+  );
+  final currentProgress = context.knobs.double.slider(
+    label: "Current Progress value",
+    max: maxProgress,
+    min: 0,
+    initialValue: 18,
+  );
   final notificationVariant = context.knobs.object.dropdown(
     label: 'Notification Variant',
     options: GtNotificationVariant.values,
@@ -120,6 +135,21 @@ Widget buildGtCardUseCase(BuildContext context) {
                 variant: tipVariant,
                 hidden: bannerVisibility,
                 onClose: () => bannerVisibility = true,
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: [
+              const GalleryPageSectionHeader(title: "GtProgressCard"),
+              GtProgressCard(
+                title: "complete your onboarding",
+                subtitle: "Reference form is still missing",
+                variant: actionVariant,
+                maxValue: maxProgress,
+                currentValue: min(currentProgress, maxProgress),
+                continueText: 'continue',
+                onContinue: () {},
+                percentSubtext: "COMPLETED",
               ),
             ],
           ),
@@ -373,6 +403,27 @@ Widget buildGtCardUseCase(BuildContext context) {
                 title: "Upload documents",
                 onPressed: () {},
                 isFilled: true,
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: [
+              const GalleryPageSectionHeader(title: "GtInboxCard"),
+              GtInboxCard(
+                ureadCount: context.knobs.int.slider(
+                  label: "Unread Count",
+                  min: 0,
+                  max: 10,
+                  initialValue: 1,
+                ),
+                messageCount: context.knobs.int.slider(
+                  label: "Message Count",
+                  min: 0,
+                  max: 10,
+                  initialValue: 1,
+                ),
+                title: "Inbox",
+                subtitle: "Hi Alex, how can we help you?",
               ),
             ],
           ),
