@@ -304,7 +304,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Heading 7 (H6) text style.
+  /// Generates the Heading 7 (H7) text style.
   TextStyle h7({
     Color? color,
     TextDecoration? decoration,
@@ -447,7 +447,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Extra Small Body (Body XS) paragraph text style.
+  /// Generates the Double Extra Small Body (Body 2XS) paragraph text style.
   TextStyle body2Xs({
     Color? color,
     TextDecoration? decoration,
@@ -470,7 +470,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Extra Small Body (Body XS) paragraph text style.
+  /// Generates the Triple Extra Small Body (Body 3XS) paragraph text style.
   TextStyle body3Xs({
     Color? color,
     TextDecoration? decoration,
@@ -613,10 +613,10 @@ class GtTextStyles {
   }
 
   // ---------------------------------------------------------------------------
-  // TITLES (subHead prefix) | Inter, Medium (500), High Tracking
+  // TITLES (title prefix) | Inter, Bold (700), High Tracking
   // ---------------------------------------------------------------------------
 
-  /// Generates the Medium Subheading (Subhead M) text style.
+  /// Generates the Medium Title (Title M) text style.
   TextStyle titleM({
     Color? color,
     TextDecoration? decoration,
@@ -640,7 +640,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Small Subheading (Subhead S) text style.
+  /// Generates the Small Title (Title S) text style.
   TextStyle titleS({
     Color? color,
     TextDecoration? decoration,
@@ -664,7 +664,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Extra Small Subheading (Subhead XS) text style.
+  /// Generates the Extra Small Title (Title XS) text style.
   TextStyle titleXs({
     Color? color,
     TextDecoration? decoration,
@@ -688,7 +688,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
+  /// Generates the Double Extra Small Title (Title 2XS) text style.
   TextStyle title2xs({
     Color? color,
     TextDecoration? decoration,
@@ -764,7 +764,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Small Subheading (Subhead S) text style.
+  /// Generates the Secondary Small Subheading (Subhead 2S) text style.
   TextStyle subHead2s({
     Color? color,
     TextDecoration? decoration,
@@ -836,7 +836,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
+  /// Generates the standard Button text style.
   TextStyle button({
     Color? color,
     TextDecoration? decoration,
@@ -860,7 +860,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
+  /// Generates the Small Button (Button S) text style.
   TextStyle buttonS({
     Color? color,
     TextDecoration? decoration,
@@ -884,7 +884,31 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
+  /// Generates the Secondary Small Button (Button 2S) text style.
+  TextStyle button2s({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.display,
+      size: 12,
+      heightPx: 16,
+      widthPct: 0,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Extra Small Button (Button XS) text style.
   TextStyle buttonXs({
     Color? color,
     TextDecoration? decoration,
@@ -908,7 +932,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
+  /// Generates the Double Extra Small Button (Button XXS) text style.
   TextStyle buttonXxs({
     Color? color,
     TextDecoration? decoration,
