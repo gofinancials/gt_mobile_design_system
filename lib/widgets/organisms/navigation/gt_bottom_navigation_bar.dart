@@ -60,14 +60,14 @@ class GtBottomNavigationBar extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (style) {
-      GtBottomNavigationStyle.ios => _GtIosFloatingBottomNavigationBar(
+      .ios => _GtIosFloatingBottomNavigationBar(
         items: items,
         currentIndex: currentIndex,
         onIndexChanged: onIndexChanged,
         onTrailingTap: onTrailingTap,
         trailingIcon: trailingIcon,
       ),
-      GtBottomNavigationStyle.android => GtAndroidBottomNavigationBar(
+      .android => GtAndroidBottomNavigationBar(
         items: items,
         currentIndex: currentIndex,
         onIndexChanged: onIndexChanged,
@@ -108,11 +108,9 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
       isAndroid: true,
       color: inactive,
     );
-    final iconSize = context.dp(22.px);
     // Top inset matches host padding; bottom adds clear space before the label.
-    final iconPadding = EdgeInsets.only(
-      top: context.spacingBase,
-      bottom: context.spacingBase,
+    final iconPadding = context.insets.symmetricDp(
+      vertical: context.spacing.base.px,
     );
 
     return BottomNavigationBar(
@@ -131,19 +129,11 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
           BottomNavigationBarItem(
             icon: Padding(
               padding: iconPadding,
-              child: GtIcon.withColor(
-                item.unselectedIcon,
-                size: iconSize,
-                color: inactive,
-              ),
+              child: GtBottomNavIcon(item.unselectedIcon, selected: false),
             ),
             activeIcon: Padding(
               padding: iconPadding,
-              child: GtIcon.withColor(
-                item.selectedIcon,
-                size: iconSize,
-                color: activeIcon,
-              ),
+              child: GtBottomNavIcon(item.selectedIcon, selected: true),
             ),
             label: item.label.upper,
           ),
@@ -260,6 +250,25 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
   }
 }
 
+class GtBottomNavIcon extends GtStatelessWidget {
+  final IconData icon;
+  final bool selected;
+
+  const GtBottomNavIcon(this.icon, {required this.selected, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+
+    return GtIcon.withColor(
+      icon,
+      size: context.dp(22.px),
+      color: selected ? palette.primary.dark : palette.icon.soft,
+      alignment: .center,
+    );
+  }
+}
+
 class _GtBottomNavigationTab extends GtStatelessWidget {
   final GtBottomNavigationItem item;
   final bool selected;
@@ -281,20 +290,18 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
         child: Column(
           mainAxisSize: .min,
           mainAxisAlignment: .center,
+          crossAxisAlignment: .center,
           children: [
-            GtIcon(
+            GtBottomNavIcon(
               selected ? item.selectedIcon : item.unselectedIcon,
-              size: context.dp(22.px),
-              variant: selected ? GtIconVariant.strong : GtIconVariant.disabled,
+              selected: selected,
             ),
             const GtGap.ySm(),
             GtText(
               item.label,
               textAlign: TextAlign.center,
               style: context.textStyles.navBarLabel(
-                color: selected
-                    ? palette.text.strong
-                    : GtColors.neutralGray600.value,
+                color: selected ? palette.primary.darker : palette.text.soft,
               ),
             ),
           ],
@@ -321,7 +328,7 @@ class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
     final boxDecoration = BoxDecoration(
       color: palette.bg.white,
       borderRadius: radius,
-      border: Border.all(color: palette.bg.white.withValues(alpha: 0.20)),
+      border: Border.all(color: palette.bg.weak),
       boxShadow: context.shadows.bottomNavInnerGlass(),
     );
 
@@ -333,16 +340,11 @@ class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
           behavior: HitTestBehavior.translucent,
           onTap: () => onTap(),
           child: Container(
+            alignment: .center,
             height: context.dp(68.px),
             width: context.dp(68.px),
             decoration: boxDecoration,
-            child: Center(
-              child: GtIcon(
-                icon,
-                size: context.dp(25.px),
-                variant: GtIconVariant.sub,
-              ),
-            ),
+            child: Center(child: GtIcon(icon, size: 28)),
           ),
         ),
       ),
