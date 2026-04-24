@@ -34,6 +34,8 @@ import 'package:gallery/molecules/boxes/gt_boxes_usecase.dart'
     as _gallery_molecules_boxes_gt_boxes_usecase;
 import 'package:gallery/molecules/buttons/gt_button_usecase.dart'
     as _gallery_molecules_buttons_gt_button_usecase;
+import 'package:gallery/molecules/media/gt_avatar.dart'
+    as _gallery_molecules_media_gt_avatar;
 import 'package:gallery/molecules/pills/gt_pill.dart'
     as _gallery_molecules_pills_gt_pill;
 import 'package:gallery/molecules/text/gt_balance_text.dart'
@@ -336,6 +338,31 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookFolder(
         name: 'molecules',
         children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'media',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAvatar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAvatar',
+                    builder:
+                        _gallery_molecules_media_gt_avatar.buildGtAvatarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtEditAvatar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtEditAvatar',
+                    builder: _gallery_molecules_media_gt_avatar
+                        .buildGtEditAvatarUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
           _widgetbook.WidgetbookFolder(
             name: 'pills',
             children: [

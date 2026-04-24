@@ -13,6 +13,7 @@ class GtAvatar extends GtStatelessWidget {
   final bool isUserAvatar;
   final String? initials;
   final Widget? tag;
+  final bool showBorder;
 
   const GtAvatar({
     this.avatar,
@@ -24,15 +25,16 @@ class GtAvatar extends GtStatelessWidget {
     this.initials,
     this.isUserAvatar = false,
     this.tag,
+    this.showBorder = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final defaultSize = context.dp(36.px);
     final computedSize = size ?? defaultSize;
-    BoxFit defaultFit = BoxFit.cover;
     final hasAvatar = avatar != null;
 
+    Border? border;
     ImageProvider? image;
     DecorationImage? decoration;
 
@@ -51,10 +53,12 @@ class GtAvatar extends GtStatelessWidget {
     if (image != null) {
       decoration = DecorationImage(
         image: image,
-        fit: fit ?? defaultFit,
+        fit: fit ?? .cover,
         alignment: alignment,
       );
     }
+
+    if (showBorder) border = Border.all(color: context.palette.stroke.white);
 
     Widget child = Align(
       alignment: alignment,
@@ -72,6 +76,7 @@ class GtAvatar extends GtStatelessWidget {
             shape: BoxShape.circle,
             gradient: context.gradients.avatarGradient,
             image: decoration,
+            border: border,
           ),
           child: Stack(
             children: [
@@ -87,16 +92,18 @@ class GtAvatar extends GtStatelessWidget {
                     ),
                   ),
                 ),
-              if (tag != null) Positioned(right: 0, bottom: 5, child: tag!),
+              if (tag != null)
+                FractionalTranslation(
+                  translation: Offset(.9, .8),
+                  child: GtSquareConstrainedBox(computedSize * 0.4, child: tag),
+                ),
             ],
           ),
         ),
       ),
     );
 
-    if (isUserAvatar) {
-      child = Hero(tag: "user-avatar", child: child);
-    }
+    if (isUserAvatar) child = Hero(tag: "user-avatar", child: child);
 
     return child;
   }

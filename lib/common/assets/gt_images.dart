@@ -27,4 +27,42 @@ class GtNetworkImages {
   static const String vault = '$_baseUrl/Vault.png';
   static const String wallet1 = '$_baseUrl/Wallet-1.png';
   static const String wallet = '$_baseUrl/Wallet.png';
+  static const String sampleAvatar1 = '$_baseUrl/sample_avatar_1.png';
+  static const String sampleAvatar2 = '$_baseUrl/sample_avatar_2.png';
+
+  static const String avatar3d1 = '$_baseUrl/avatar_templates/3d_1.png';
+  static const String avatar3d2 = '$_baseUrl/avatar_templates/3d_2.png';
+  static const String avatar3d3 = '$_baseUrl/avatar_templates/3d_3.png';
+  static const String avatar3d4 = '$_baseUrl/avatar_templates/3d_4.png';
+  static const String avatar3d5 = '$_baseUrl/avatar_templates/3d_5.png';
+  static const String avatar3d6 = '$_baseUrl/avatar_templates/3d_6.png';
+  static const String avatarTexture1 =
+      '$_baseUrl/avatar_templates/texture_1.png';
+  static const String avatarTexture2 =
+      '$_baseUrl/avatar_templates/texture_2.png';
+  static const String avatarTexture3 =
+      '$_baseUrl/avatar_templates/texture_3.png';
+  static const String avatarTexture4 =
+      '$_baseUrl/avatar_templates/texture_4.png';
+  static const String avatarTexture5 =
+      '$_baseUrl/avatar_templates/texture_5.png';
+
+  static const threeDAvatars = [
+    avatar3d1,
+    avatar3d2,
+    avatar3d3,
+    avatar3d4,
+    avatar3d5,
+    avatar3d6,
+  ];
+
+  static const textureAvatars = [
+    avatarTexture1,
+    avatarTexture2,
+    avatarTexture3,
+    avatarTexture4,
+    avatarTexture5,
+  ];
+
+  static const allAvatars = [...threeDAvatars, ...textureAvatars];
 }

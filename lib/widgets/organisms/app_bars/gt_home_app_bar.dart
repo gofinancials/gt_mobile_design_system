@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:gt_mobile_ui/widgets/molecules/media/gt_avatar.dart';
 
 /// A specialized app bar for the home screen featuring a user avatar and quick action icons.
 class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
