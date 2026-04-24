@@ -357,6 +357,9 @@ class GtIcons {
   static const cardFilled = GtIconData(0xf131);
   static const helpInfo = GtIconData(0xf10e);
 
+  static const delete = GtIconData(0xf129);
+  static const faceId = GtIconData(0xf128);
+
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
   /// This is particularly useful for cataloging, testing, or building
@@ -683,5 +686,7 @@ class GtIcons {
     amex,
     amazon,
     alipay,
+    delete,
+    faceId,
   ];
 }

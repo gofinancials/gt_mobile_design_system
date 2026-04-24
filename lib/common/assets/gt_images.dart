@@ -66,3 +66,11 @@ class GtNetworkImages {
 
   static const allAvatars = [...threeDAvatars, ...textureAvatars];
 }
+
+class GtAssetImages {
+  static const _basePath = "packages/gt_mobile_ui/assets/images/raster";
+
+  static const String avatar = '$_basePath/avatar.png';
+
+  static const all = [avatar];
+}

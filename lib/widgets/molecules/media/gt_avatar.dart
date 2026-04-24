@@ -38,6 +38,10 @@ class GtAvatar extends GtStatelessWidget {
     ImageProvider? image;
     DecorationImage? decoration;
 
+    if (!hasAvatar && isUserAvatar) {
+      image = AssetImage(GtAssetImages.avatar);
+    }
+
     if (hasAvatar && avatar!.isString) {
       image = AssetImage(avatar?.filePath ?? "");
     }
@@ -75,6 +79,7 @@ class GtAvatar extends GtStatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: context.gradients.avatarGradient,
+            color: isUserAvatar ? context.palette.bg.sub : null,
             image: decoration,
             border: border,
           ),

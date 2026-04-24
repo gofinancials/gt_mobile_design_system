@@ -27,6 +27,9 @@ extension ThemeContextExtension on BuildContext {
   /// Retrieves the total size of the current screen.
   Size get size => _scaler.size;
 
+  double get width => fracSizer.width;
+  double get height => fracSizer.height;
+
   /// Converts a given [size] into device-independent pixels (DP) based on the screen's density.
   double dp(double? size) => dpSizer.dp(size);
 
