@@ -51,6 +51,8 @@ import 'package:gallery/organisms/headers/gt_page_header.dart'
 import 'package:gallery/organisms/navigation/gt_bottom_navigation_bar.dart'
     as _gallery_organisms_navigation_gt_bottom_navigation_bar;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
+import 'package:gallery/organisms/view_state/gt_status_state.dart'
+    as _gallery_organisms_view_state_gt_status_state;
 
 final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookComponent(
@@ -294,6 +296,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'Bottom Navigation Bar',
                 builder: _gallery_organisms_navigation_gt_bottom_navigation_bar
                     .playgroundGtBottomNavigationBarUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'View State',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtStatusState',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Status State',
+                builder: _gallery_organisms_view_state_gt_status_state
+                    .playgroundGtStatusStateUseCase,
               ),
             ],
           ),
