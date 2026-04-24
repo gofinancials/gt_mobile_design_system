@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gallery/templates/modals/gt_sheet_modal.dart';
 import 'package:gallery/widgets/gallery_page_header.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
@@ -7,66 +8,90 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 /// Opens a rounded bottom sheet tall enough for [GtStatusState]’s [Expanded]
 /// layout, matching the modal pattern from [playgroundGtStatusStateUseCase].
 
+String _sheetPlatformLabel(GtSheetModalPlatform platform) {
+  return switch (platform) {
+    GtSheetModalPlatform.android => 'Android',
+    GtSheetModalPlatform.ios => 'iOS',
+  };
+}
+
 @widgetbook.UseCase(
   name: 'Status state',
   type: GtStatusState,
   path: '[Organisms]/View state',
 )
 Widget playgroundGtStatusStateUseCase(BuildContext context) {
-  /// Success state
-  final successTitle = context.knobs.string(
-    label: 'Success message title',
-    initialValue: 'Payment Approved',
-  );
-  final successSubtitle = context.knobs.string(
-    label: 'Success subtitle',
-    initialValue:
-        'You’ve approved the money request of ₦20,000 from Fola Lobalobs. The money has been sent.',
+  final palette = context.palette;
+  final platform = context.knobs.object.dropdown<GtSheetModalPlatform>(
+    label: 'Sheet platform',
+    options: GtSheetModalPlatform.values,
+    initialOption: GtSheetModalPlatform.android,
+    labelBuilder: _sheetPlatformLabel,
   );
 
-  /// Error state
-  final errorTitle = context.knobs.string(
-    label: 'Error message title',
-    initialValue: 'Verification failed',
-  );
-  final errorSubtitle = context.knobs.string(
-    label: 'Error subtitle',
-    initialValue:
-        'We could not verify your identity at this moment. Please try again in an hour.',
-  );
-
-  showModal({
-    required bool success,
-    required String messageTitle,
-    required String subtitle,
-    required String actionLabel,
-  }) {
-    showModalBottomSheet(
+  showStatusModal({required bool success, required String actionLabel}) {
+    showGtSheetModal<void>(
       context: context,
+      platform: platform,
       isScrollControlled: true,
-      builder: (context) {
-        final height = MediaQuery.sizeOf(context).height * 0.99;
+      builder: (sheetContext) {
+        final height = MediaQuery.sizeOf(sheetContext).height * 0.99;
         return Material(
           type: .transparency,
           child: Container(
             height: height,
             decoration: BoxDecoration(
-              borderRadius: 50.topBorderRadius,
-              color: context.palette.bg.white,
+              borderRadius: 32.topBorderRadius,
+              color: palette.bg.white,
             ),
             child: success
                 ? GtStatusState.success(
-                    messageTitle: messageTitle,
-                    subtitle: subtitle,
+                    messageTitle: "successful !",
+                    subtitle:
+                        "Your BVN was added successfully. You can now initiate transactions.",
                     actionLabel: actionLabel,
-                    onActionPressed: () => Navigator.of(context).pop(),
+                    onActionPressed: () => Navigator.of(sheetContext).pop(),
                   )
                 : GtStatusState.error(
-                    messageTitle: messageTitle,
-                    subtitle: subtitle,
+                    messageTitle: "Verification failed",
+                    subtitle:
+                        "We could not verify your identity at this moment. Please try again in an hour.",
                     actionLabel: actionLabel,
-                    onActionPressed: () => Navigator.of(context).pop(),
+                    onActionPressed: () => Navigator.of(sheetContext).pop(),
                   ),
+          ),
+        );
+      },
+    );
+  }
+
+  showOtherModal({
+    required String stausIcon,
+    required String actionLabel,
+    required String messageTitle,
+    required String subtitle,
+  }) {
+    showGtSheetModal<void>(
+      context: context,
+      platform: platform,
+      isScrollControlled: true,
+      builder: (sheetContext) {
+        final height = MediaQuery.sizeOf(sheetContext).height * 0.99;
+        return Material(
+          type: .transparency,
+          child: Container(
+            height: height,
+            decoration: BoxDecoration(
+              borderRadius: 32.topBorderRadius,
+              color: palette.bg.white,
+            ),
+            child: GtStatusState.other(
+              messageTitle: messageTitle,
+              subtitle: subtitle,
+              statusIcon: stausIcon,
+              actionLabel: actionLabel,
+              onActionPressed: () => Navigator.of(sheetContext).pop(),
+            ),
           ),
         );
       },
@@ -86,23 +111,56 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
           ),
           const GtGap.yXl(),
           GtRaisedButton(
-            onPressed: () => showModal(
-              success: true,
-              messageTitle: successTitle,
-              subtitle: successSubtitle,
-              actionLabel: 'Done',
-            ),
+            onPressed: () =>
+                showStatusModal(success: true, actionLabel: 'Go Home'),
             text: 'Show success status',
           ),
           GtRaisedButton(
-            onPressed: () => showModal(
-              success: false,
-              messageTitle: errorTitle,
-              subtitle: errorSubtitle,
-              actionLabel: 'Try again',
-            ),
+            onPressed: () =>
+                showStatusModal(success: false, actionLabel: 'Try again'),
             text: 'Show error status',
-            variant: GtButtonVariant.destructive,
+            variant: .destructive,
+          ),
+          GtRaisedButton(
+            onPressed: () => showOtherModal(
+              stausIcon: GtVectorIllustrations.search,
+              messageTitle: "not found !",
+              subtitle: "The system couldn't find what you asked for.",
+              actionLabel: 'Go Home',
+            ),
+            text: "Show other status - Not Found",
+            variant: .away,
+          ),
+          GtRaisedButton(
+            onPressed: () => showOtherModal(
+              stausIcon: GtVectorIllustrations.unauthorizedDevice,
+              messageTitle: "Unauthorized Device",
+              subtitle: "The device used isn’t approved.",
+              actionLabel: 'Contact Support',
+            ),
+            text: "Show other status - Unauthorized",
+            variant: .black,
+          ),
+          GtRaisedButton(
+            onPressed: () => showOtherModal(
+              stausIcon: GtVectorIllustrations.disconnected,
+              messageTitle: "Session Timeout",
+              subtitle: "Your session expired; you need to log in again.",
+              actionLabel: 'Login',
+            ),
+            text: "Show other status - Session",
+            variant: .featured,
+          ),
+          GtRaisedButton(
+            onPressed: () => showOtherModal(
+              stausIcon: GtVectorIllustrations.maintenance,
+              messageTitle: "Force update",
+              subtitle:
+                  "You are currently using an outdated version of OneBank with limited functionality, kindly download the latest version from Google Play Store or the App Store for a better experience.",
+              actionLabel: 'Download App',
+            ),
+            text: "Show other status - Force update",
+            variant: .verified,
           ),
         ],
       ),
