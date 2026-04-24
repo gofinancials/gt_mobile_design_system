@@ -2,15 +2,38 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:flutter/material.dart';
 
+/// A form field widget that displays input as a series of dots.
+///
+/// This widget is commonly used for secure inputs like PINs, passcodes, or OTPs.
+/// It integrates with Flutter's [Form] system, supporting validation, error states,
+/// and disabled states via an internal [FormField].
 class GtDotFormField extends GtStatefulWidget {
+  /// Whether the form field is interactive.
+  ///
+  /// When false, the widget visually indicates it is disabled and ignores input.
   final bool isEnabled;
+
+  /// Optional text displayed below the input dots to guide the user.
   final String? helperText;
+
+  /// Optional text displayed below the input dots to indicate an error.
+  ///
+  /// If provided, this overrides [helperText] and styles the text as an error.
   final String? errorText;
+
+  /// An optional function that validates the input text.
   final OnValidate<String?>? validator;
+
+  /// Controls the text being edited and represented by the dots.
   final TextEditingController controller;
+
+  /// An optional focus node to control the focus state of the input.
   final FocusNode? focusNode;
+
+  /// The total number of dots (characters) expected in this field.
   final int length;
 
+  /// Creates a [GtDotFormField].
   const GtDotFormField({
     super.key,
     this.isEnabled = true,

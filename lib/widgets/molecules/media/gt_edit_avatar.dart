@@ -4,14 +4,33 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+/// A specialized avatar widget that includes an overlay icon for editing.
+///
+/// This widget is typically used in profile editing screens where the user
+/// needs a visual indicator that their avatar can be tapped and changed.
 class GtEditAvatar extends GtStatelessWidget {
+  /// The optional image data to display. If null, a default placeholder is used.
   final AppImageData? avatar;
+
+  /// How the image should be inscribed into the avatar's bounding box.
   final BoxFit? fit;
+
+  /// The alignment of the image within its bounding box. Defaults to [Alignment.center].
   final Alignment alignment;
+
+  /// Callback invoked when the avatar is tapped to initiate an edit action.
   final OnPressed onEdit;
+
+  /// Indicates if this represents the primary user avatar.
+  ///
+  /// If `true`, the widget is wrapped in a [Hero] widget with the tag "user-avatar"
+  /// for smooth transition animations across screens.
   final bool isUserAvatar;
+
+  /// The size (width and height) of the square avatar box. Defaults to 180dp.
   final double? size;
 
+  /// Creates a [GtEditAvatar].
   const GtEditAvatar({
     this.avatar,
     super.key,

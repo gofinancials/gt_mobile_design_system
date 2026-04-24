@@ -3,14 +3,33 @@ import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A grid-based virtual keypad widget for numeric input.
+///
+/// This widget displays a standard numeric keypad (0-9) along with a backspace
+/// button and an optional biometric authentication button. It is commonly used
+/// for PIN entry, passcodes, or entering monetary amounts.
 class GtKeyPadGrid extends GtStatefulWidget {
+  /// Controls the text being edited by the keypad.
   final TextEditingController controller;
+
+  /// Optional callback triggered when the biometric authentication button is pressed.
+  ///
+  /// If this is null, the biometric button in the grid will be hidden.
   final OnPressed? onBioAuth;
+
+  /// The maximum number of characters allowed in the input.
   final int limit;
+
+  /// The alignment of the grid within its parent. Defaults to [Alignment.center].
   final AlignmentGeometry alignment;
+
+  /// Callback invoked whenever the input text changes.
   final OnChanged<String>? onChanged;
+
+  /// Callback invoked when the input length reaches the specified [limit].
   final OnChanged<String>? onCompleted;
 
+  /// Creates a [GtKeyPadGrid].
   const GtKeyPadGrid({
     required this.controller,
     required this.limit,
@@ -85,11 +104,20 @@ class _GtKeyPadGridState extends State<GtKeyPadGrid> {
   }
 }
 
+/// A single key cell within the [GtKeyPadGrid].
+///
+/// Displays either a text value (e.g., numbers) or an icon (e.g., backspace, biometrics).
 class GtKeyCell extends GtStatelessWidget {
+  /// The data representing this key's value and optional icon.
   final GtKeyCellData data;
+
+  /// Callback invoked with the key's string value when it is tapped.
   final OnChanged<String> onSelected;
+
+  /// Callback invoked when a biometric key is tapped.
   final OnPressed? onBioAuth;
 
+  /// Creates a [GtKeyCell].
   const GtKeyCell({
     required this.data,
     required this.onSelected,
