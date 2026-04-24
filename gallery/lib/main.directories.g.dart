@@ -52,13 +52,13 @@ import 'package:gallery/organisms/headers/gt_page_header.dart'
     as _gallery_organisms_headers_gt_page_header;
 import 'package:gallery/organisms/navigation/gt_bottom_navigation_bar.dart'
     as _gallery_organisms_navigation_gt_bottom_navigation_bar;
+import 'package:gallery/organisms/view_state/gt_empty_state.dart'
+    as _gallery_organisms_view_state_gt_empty_state;
+import 'package:gallery/organisms/view_state/gt_status_state.dart'
+    as _gallery_organisms_view_state_gt_status_state;
 import 'package:gallery/templates/forms/gt_form.dart'
     as _gallery_templates_forms_gt_form;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
-import 'package:gallery/organisms/view_state/gt_status_state.dart'
-    as _gallery_organisms_view_state_gt_status_state;
-import 'package:gallery/organisms/view_state/gt_empty_state.dart'
-    as _gallery_organisms_view_state_gt_empty_state;
 
 final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookComponent(
@@ -308,25 +308,25 @@ final directories = <_widgetbook.WidgetbookNode>[
         ],
       ),
       _widgetbook.WidgetbookFolder(
-        name: 'View State',
+        name: 'View state',
         children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtStatusState',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Status State',
-                builder: _gallery_organisms_view_state_gt_status_state
-                    .playgroundGtStatusStateUseCase,
-              ),
-            ],
-          ),
           _widgetbook.WidgetbookComponent(
             name: 'GtEmptyState',
             useCases: [
               _widgetbook.WidgetbookUseCase(
-                name: 'Empty State',
+                name: 'Empty state',
                 builder: _gallery_organisms_view_state_gt_empty_state
                     .playgroundGtEmptyStateUseCase,
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookComponent(
+            name: 'GtStatusState',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Status state',
+                builder: _gallery_organisms_view_state_gt_status_state
+                    .playgroundGtStatusStateUseCase,
               ),
             ],
           ),

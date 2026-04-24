@@ -58,6 +58,7 @@ class _GtDotFormFieldState extends State<GtDotFormField> {
                 spacing: context.spacingLg,
                 children: [
                   Focus(
+                    focusNode: widget.focusNode,
                     child: GtInputDots(
                       inputValue: text,
                       maxLength: widget.length,
