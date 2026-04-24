@@ -53,11 +53,8 @@ Widget buildGtVirtualKeypadFormAvatarUsecase(BuildContext context) {
     label: "Avatar",
     options: [
       ("None", null),
-      ("Simple Image", AppImageData(imageData: GtNetworkImages.sampleAvatar1)),
-      (
-        "Avatar with border and tag",
-        AppImageData(imageData: GtNetworkImages.sampleAvatar2),
-      ),
+      ("Avatar 1", AppImageData(imageData: GtNetworkImages.sampleAvatar1)),
+      ("Avatar 2", AppImageData(imageData: GtNetworkImages.sampleAvatar2)),
     ],
     labelBuilder: (value) => value.$1,
   );
@@ -78,6 +75,26 @@ Widget buildGtVirtualKeypadFormAvatarUsecase(BuildContext context) {
     ],
     labelBuilder: (value) => value.$1,
   );
+  final trailing = context.knobs.object.dropdown<(String, Widget?)>(
+    label: "Action",
+    options: [
+      ("None", null),
+      (
+        "Logout",
+        GtRaisedButton(
+          onPressed: () {
+            showToast("Clicked logout", context);
+          },
+          alignment: .centerRight,
+          text: "logout",
+          size: .small,
+          variant: .secondary,
+          leading: GtIcons.circleInfo,
+        ),
+      ),
+    ],
+    labelBuilder: (value) => value.$1,
+  );
 
   return GtVirtualKeypadForm.withAvatar(
     name: context.knobs.string(label: "Name", initialValue: "Hi, Tyson"),
@@ -90,6 +107,7 @@ Widget buildGtVirtualKeypadFormAvatarUsecase(BuildContext context) {
     onChanged: (value) => AppLogger.info("UPDATED VALUE: $value"),
     onCompleted: (value) => showToast("Complete VALUE: $value", context),
     footer: footer.$2,
+    action: trailing.$2,
     onBioAuth: () {
       showToast("Biometric Auth Attempted", context);
     },

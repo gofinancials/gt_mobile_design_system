@@ -28,7 +28,7 @@ final class GtOptionalWidgetPair {
   final Widget? tail;
 
   /// Creates a [GtOptionalWidgetPair] with the provided [head] and [tail].
-  const GtOptionalWidgetPair({required this.head, required this.tail});
+  const GtOptionalWidgetPair({this.head, this.tail});
 
   /// Returns `true` if at least one of the widgets ([head] or [tail]) is not null.
   bool get hasValue => head != null || tail != null;

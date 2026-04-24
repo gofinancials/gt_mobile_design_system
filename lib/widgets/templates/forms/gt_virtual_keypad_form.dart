@@ -44,6 +44,9 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
   /// An optional widget to display at the bottom of the screen (e.g., action buttons).
   final Widget? footer;
 
+  /// An optional trailing action in the app bar (e.g., action buttons).
+  final Widget? action;
+
   /// Creates a standard virtual keypad form.
   ///
   /// Use this constructor when you need a simple title and subtitle layout
@@ -61,6 +64,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.onChanged,
     this.onCompleted,
     this.footer,
+    this.action,
   }) : _subtitle = subtitle,
        _onBioAuth = null,
        _avatar = null;
@@ -83,6 +87,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.onChanged,
     this.onCompleted,
     this.footer,
+    this.action,
   }) : _subtitle = null,
        _onBioAuth = onBioAuth,
        title = name,
@@ -108,10 +113,16 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
 class _GtVirtualKeypadFormState extends State<GtVirtualKeypadForm> {
   @override
   Widget build(BuildContext context) {
+    GtOptionalWidgetPair? trailing;
+
+    if (widget.action != null) {
+      trailing = GtOptionalWidgetPair(tail: widget.action);
+    }
+
     return GtForm(
       formKey: widget.formKey,
       child: Scaffold(
-        appBar: const GtAppBar(),
+        appBar: GtActionAppBar(trailing: trailing),
         key: Key("gt-virtual-keypad-form"),
         body: Padding(
           padding: context.insets.defaultAllInsets,
@@ -127,7 +138,7 @@ class _GtVirtualKeypadFormState extends State<GtVirtualKeypadForm> {
                 GtGap.ySection3xl(),
                 GtGap.yBase(),
               ] else ...[
-                GtGap.ySectionXl(),
+                GtGap.ySectionSm(),
                 GtAvatar(
                   avatar: widget.avatar,
                   size: context.dp(64.px),
