@@ -53,6 +53,12 @@
 </h1></div>
 
     
+<section class="desc markdown">
+  <p>A versatile circular avatar widget for displaying user profile pictures, initials, or placeholders.</p>
+<p><a href="../widgets_molecules_media_gt_avatar/GtAvatar-class.html">GtAvatar</a> supports multiple image sources via <code>AppImageData</code>, including network URLs,
+local files, and asset strings. It can also display text <a href="../widgets_molecules_media_gt_avatar/GtAvatar/initials.html">initials</a> as a fallback,
+and optionally overlay a <a href="../widgets_molecules_media_gt_avatar/GtAvatar/tag.html">tag</a> widget (like a status badge) at the bottom-right corner.</p>
+</section>
 
 
     <section>
@@ -90,10 +96,10 @@
     <h2>Constructors</h2>
     <dl class="constructor-summary-list">
         <dt id="GtAvatar.new" class="callable">
-          <span class="name"><a href="../widgets_molecules_media_gt_avatar/GtAvatar/GtAvatar.html">GtAvatar</a></span><span class="signature">({<span class="parameter" id="-param-avatar"><span class="type-annotation">AppImageData?</span> <span class="parameter-name">avatar</span>, </span><span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="-param-alignment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/Alignment-class.html">Alignment</a></span> <span class="parameter-name">alignment</span> = <span class="default-value">Alignment.center</span>, </span><span class="parameter" id="-param-fit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxFit.html">BoxFit</a>?</span> <span class="parameter-name">fit</span>, </span><span class="parameter" id="-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">size</span>, </span><span class="parameter" id="-param-onPressed"><span class="type-annotation">OnPressed?</span> <span class="parameter-name">onPressed</span>, </span><span class="parameter" id="-param-initials"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">initials</span>, </span><span class="parameter" id="-param-isUserAvatar"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isUserAvatar</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">tag</span></span>})</span>
+          <span class="name"><a href="../widgets_molecules_media_gt_avatar/GtAvatar/GtAvatar.html">GtAvatar</a></span><span class="signature">({<span class="parameter" id="-param-avatar"><span class="type-annotation">AppImageData?</span> <span class="parameter-name">avatar</span>, </span><span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="-param-alignment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/Alignment-class.html">Alignment</a></span> <span class="parameter-name">alignment</span> = <span class="default-value">Alignment.center</span>, </span><span class="parameter" id="-param-fit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxFit.html">BoxFit</a>?</span> <span class="parameter-name">fit</span>, </span><span class="parameter" id="-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">size</span>, </span><span class="parameter" id="-param-onPressed"><span class="type-annotation">OnPressed?</span> <span class="parameter-name">onPressed</span>, </span><span class="parameter" id="-param-initials"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">initials</span>, </span><span class="parameter" id="-param-isUserAvatar"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isUserAvatar</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-tag"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">tag</span>, </span><span class="parameter" id="-param-showBorder"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">showBorder</span> = <span class="default-value">false</span></span>})</span>
         </dt>
         <dd>
-          
+          Creates a <a href="../widgets_molecules_media_gt_avatar/GtAvatar-class.html">GtAvatar</a>.
             <div class="constructor-modifier features">const</div>
         </dd>
     </dl>
@@ -111,7 +117,7 @@
 
 </dt>
 <dd>
-  
+  The alignment of the widget within its parent. Defaults to <a href="https://api.flutter.dev/flutter/painting/Alignment/center-constant.html">Alignment.center</a>.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -135,7 +141,7 @@
 
 </dt>
 <dd>
-  
+  The image data to display in the avatar. If null, <a href="../widgets_molecules_media_gt_avatar/GtAvatar/initials.html">initials</a> or a placeholder is shown.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -147,7 +153,7 @@
 
 </dt>
 <dd>
-  
+  How the image should be inscribed into the circular bounding box. Defaults to <a href="https://api.flutter.dev/flutter/painting/BoxFit.html">BoxFit.cover</a>.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -171,7 +177,7 @@
 
 </dt>
 <dd>
-  
+  The text initials to display centered in the avatar if <a href="../widgets_molecules_media_gt_avatar/GtAvatar/avatar.html">avatar</a> is null.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -183,7 +189,7 @@
 
 </dt>
 <dd>
-  
+  Indicates whether this avatar represents the primary user.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -207,7 +213,7 @@
 
 </dt>
 <dd>
-  
+  Optional callback invoked when the avatar is tapped.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -224,6 +230,18 @@
 
 </dd>
 
+        <dt id="showBorder" class="property">
+  <span class="name"><a href="../widgets_molecules_media_gt_avatar/GtAvatar/showBorder.html">showBorder</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Whether to draw a white border around the outer edge of the avatar.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="size" class="property">
   <span class="name"><a href="../widgets_molecules_media_gt_avatar/GtAvatar/size.html">size</a></span>
   <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span>
@@ -231,7 +249,7 @@
 
 </dt>
 <dd>
-  
+  The diameter of the circular avatar. Defaults to 36dp if not provided.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -243,7 +261,7 @@
 
 </dt>
 <dd>
-  
+  An optional miniature widget to overlay at the bottom-right corner of the avatar.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>

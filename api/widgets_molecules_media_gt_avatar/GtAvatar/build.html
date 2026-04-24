@@ -111,11 +111,15 @@ and</li>
 Widget build(BuildContext context) {
   final defaultSize = context.dp(36.px);
   final computedSize = size ?? defaultSize;
-  BoxFit defaultFit = BoxFit.cover;
   final hasAvatar = avatar != null;
 
+  Border? border;
   ImageProvider? image;
   DecorationImage? decoration;
+
+  if (!hasAvatar &amp;&amp; isUserAvatar) {
+    image = AssetImage(GtAssetImages.avatar);
+  }
 
   if (hasAvatar &amp;&amp; avatar!.isString) {
     image = AssetImage(avatar?.filePath ?? &quot;&quot;);
@@ -132,10 +136,12 @@ Widget build(BuildContext context) {
   if (image != null) {
     decoration = DecorationImage(
       image: image,
-      fit: fit ?? defaultFit,
+      fit: fit ?? .cover,
       alignment: alignment,
     );
   }
+
+  if (showBorder) border = Border.all(color: context.palette.stroke.white);
 
   Widget child = Align(
     alignment: alignment,
@@ -152,7 +158,9 @@ Widget build(BuildContext context) {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           gradient: context.gradients.avatarGradient,
+          color: isUserAvatar ? context.palette.bg.sub : null,
           image: decoration,
+          border: border,
         ),
         child: Stack(
           children: [
@@ -168,16 +176,18 @@ Widget build(BuildContext context) {
                   ),
                 ),
               ),
-            if (tag != null) Positioned(right: 0, bottom: 5, child: tag!),
+            if (tag != null)
+              FractionalTranslation(
+                translation: Offset(.9, .8),
+                child: GtSquareConstrainedBox(computedSize * 0.4, child: tag),
+              ),
           ],
         ),
       ),
     ),
   );
 
-  if (isUserAvatar) {
-    child = Hero(tag: &quot;user-avatar&quot;, child: child);
-  }
+  if (isUserAvatar) child = Hero(tag: &quot;user-avatar&quot;, child: child);
 
   return child;
 }</code></pre>
