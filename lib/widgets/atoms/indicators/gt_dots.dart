@@ -188,19 +188,17 @@ class _InputDot extends StatelessWidget {
     final computedColor = color ?? palette.text.strong;
     final borderColor = computedColor;
     final contentColor = active ? computedColor : GtColors.transparent.value;
+    final size = 24 * (active ? 1.2 : 1);
 
-    return Transform.scale(
-      scale: active ? 1.1 : 1,
-      child: AnimatedContainer(
-        duration: 300.milliseconds,
-        curve: Curves.easeIn,
-        height: context.dp(24.px),
-        width: context.dp(24.px),
-        decoration: BoxDecoration(
-          color: contentColor,
-          shape: BoxShape.circle,
-          border: Border.all(color: borderColor, width: 4),
-        ),
+    return AnimatedContainer(
+      duration: 300.milliseconds,
+      curve: Curves.easeIn,
+      height: context.dp(size.px),
+      width: context.dp(size.px),
+      decoration: BoxDecoration(
+        color: contentColor,
+        shape: BoxShape.circle,
+        border: Border.all(color: borderColor, width: 4),
       ),
     );
   }

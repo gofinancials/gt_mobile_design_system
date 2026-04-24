@@ -69,8 +69,8 @@ class GtFractionalSizer {
 
   double get _shortest => _queryData.shortestSide;
   double get _longest => _queryData.longestSide;
-  double get _height => _queryData.height;
-  double get _width => _queryData.width;
+  double get height => _queryData.height;
+  double get width => _queryData.width;
 
   double _resolveFraction(double value) => value * breakPointFraction;
 
@@ -89,13 +89,13 @@ class GtFractionalSizer {
   /// Calculates a dimension based on a [fraction] of the screen's total height.
   double getHeightFraction(double fraction) {
     if (fraction == 0) return 0;
-    return _resolveFraction(_height * fraction);
+    return _resolveFraction(height * fraction);
   }
 
   /// Calculates a dimension based on a [fraction] of the screen's total width.
   double getWidthFraction(double fraction) {
     if (fraction == 0) return 0;
-    return _resolveFraction(_width * fraction);
+    return _resolveFraction(width * fraction);
   }
 }
 
