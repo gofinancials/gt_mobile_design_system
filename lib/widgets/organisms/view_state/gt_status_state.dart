@@ -13,6 +13,9 @@ enum GtStatusStateVariant {
 
   /// Failure or blocking error — error palette on the status glyph.
   error,
+
+  /// Custom state that must provide its own [GtStatusState.statusIcon].
+  other,
 }
 
 // -----------------------------------------------------------------------------
@@ -20,7 +23,7 @@ enum GtStatusStateVariant {
 // -----------------------------------------------------------------------------
 
 class GtStatusState extends GtStatelessWidget {
-  /// Success vs error — controls icon choice and semantic icon color.
+  /// Success, error, or custom state — controls icon resolution behavior.
   final GtStatusStateVariant variant;
 
   /// Optional app bar line; forwarded to [GtModalAppBar] (leading title image
@@ -32,6 +35,11 @@ class GtStatusState extends GtStatelessWidget {
 
   /// Supporting copy under [messageTitle].
   final String subtitle;
+
+  /// Optional illustration override for the status glyph.
+  ///
+  /// When null, a default illustration is resolved from [variant].
+  final String? statusIcon;
 
   /// Label for the footer [GtRaisedButton] (e.g. "Done", "Try again").
   final String actionLabel;
@@ -49,10 +57,15 @@ class GtStatusState extends GtStatelessWidget {
     this.appBarTitle,
     required this.messageTitle,
     required this.subtitle,
+    this.statusIcon,
     required this.actionLabel,
     required this.onActionPressed,
     this.actionVariant = GtButtonVariant.primary,
-  });
+  }) : assert(
+         variant != GtStatusStateVariant.other ||
+             (statusIcon != null && statusIcon != ''),
+         'statusIcon is required when variant is GtStatusStateVariant.other',
+       );
 
   /// Convenience constructor for [GtStatusStateVariant.success].
   const GtStatusState.success({
@@ -60,6 +73,7 @@ class GtStatusState extends GtStatelessWidget {
     String? appBarTitle,
     required String messageTitle,
     required String subtitle,
+    String? statusIcon,
     required String actionLabel,
     required OnPressed onActionPressed,
     GtButtonVariant actionVariant = GtButtonVariant.primary,
@@ -69,6 +83,7 @@ class GtStatusState extends GtStatelessWidget {
          appBarTitle: appBarTitle,
          messageTitle: messageTitle,
          subtitle: subtitle,
+         statusIcon: statusIcon,
          actionLabel: actionLabel,
          onActionPressed: onActionPressed,
          actionVariant: actionVariant,
@@ -80,6 +95,7 @@ class GtStatusState extends GtStatelessWidget {
     String? appBarTitle,
     required String messageTitle,
     required String subtitle,
+    String? statusIcon,
     required String actionLabel,
     required OnPressed onActionPressed,
     GtButtonVariant actionVariant = GtButtonVariant.primary,
@@ -89,16 +105,45 @@ class GtStatusState extends GtStatelessWidget {
          appBarTitle: appBarTitle,
          messageTitle: messageTitle,
          subtitle: subtitle,
+         statusIcon: statusIcon,
          actionLabel: actionLabel,
          onActionPressed: onActionPressed,
          actionVariant: actionVariant,
        );
 
-  /// Maps [variant] to the status glyph shown above the titles.
+  /// Convenience constructor for [GtStatusStateVariant.other].
+  ///
+  /// [statusIcon] is required for this variant.
+  const GtStatusState.other({
+    Key? key,
+    String? appBarTitle,
+    required String messageTitle,
+    required String subtitle,
+    required String statusIcon,
+    required String actionLabel,
+    required OnPressed onActionPressed,
+    GtButtonVariant actionVariant = GtButtonVariant.primary,
+  }) : this(
+         key: key,
+         variant: GtStatusStateVariant.other,
+         appBarTitle: appBarTitle,
+         messageTitle: messageTitle,
+         subtitle: subtitle,
+         statusIcon: statusIcon,
+         actionLabel: actionLabel,
+         onActionPressed: onActionPressed,
+         actionVariant: actionVariant,
+       );
+
+  /// Resolves the status illustration shown above the titles.
+  ///
+  /// Uses [statusIcon] when provided, otherwise falls back to
+  /// the default asset mapped from [variant].
   String _statusIcon() {
     return switch (variant) {
       GtStatusStateVariant.success => GtVectorIllustrations.success,
       GtStatusStateVariant.error => GtVectorIllustrations.failed,
+      GtStatusStateVariant.other => statusIcon!,
     };
   }
 
@@ -155,7 +200,7 @@ class GtStatusState extends GtStatelessWidget {
                             subtitle,
                             textAlign: TextAlign.center,
                             style: context.textStyles.bodyS(
-                              color: palette.text.strong,
+                              color: GtColors.neutral600.value,
                             ),
                           ),
                         ],
@@ -164,7 +209,7 @@ class GtStatusState extends GtStatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: context.spacingLg),
+                  padding: EdgeInsets.only(bottom: context.spacingsectionMd),
                   child: GtRaisedButton(
                     text: actionLabel,
                     onPressed: onActionPressed,
