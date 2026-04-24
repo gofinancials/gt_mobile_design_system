@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
@@ -85,6 +87,19 @@ Widget buildGtCardUseCase(BuildContext context) {
     initialOption: GtCardVariant.away,
     labelBuilder: (value) => value.name.capitalise(),
   );
+  final maxProgress = context.knobs.double.slider(
+    label: "Max Progress value",
+    min: 20,
+    max: 200,
+    initialValue: 20,
+    divisions: 10,
+  );
+  final currentProgress = context.knobs.double.slider(
+    label: "Current Progress value",
+    max: maxProgress,
+    min: 0,
+    initialValue: 18,
+  );
   final notificationVariant = context.knobs.object.dropdown(
     label: 'Notification Variant',
     options: GtNotificationVariant.values,
@@ -125,6 +140,21 @@ Widget buildGtCardUseCase(BuildContext context) {
           ),
           SliverList.list(
             children: [
+              const GalleryPageSectionHeader(title: "GtProgressCard"),
+              GtProgressCard(
+                title: "complete your onboarding",
+                subtitle: "Reference form is still missing",
+                variant: actionVariant,
+                maxValue: maxProgress,
+                currentValue: min(currentProgress, maxProgress),
+                continueText: 'continue',
+                onContinue: () {},
+                percentSubtext: "COMPLETED",
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: [
               const GalleryPageSectionHeader(
                 title: "GtActionCard [.dismisible]",
               ),
@@ -143,6 +173,22 @@ Widget buildGtCardUseCase(BuildContext context) {
                 icon: GtIcons.gemSparkle,
                 onActionTap: () {},
                 actionText: "ADD MONEY",
+                variant: actionVariant,
+                onDismiss: () {},
+                dismissText: "DISMISS",
+              ),
+              const GtGap.yBase(),
+              GtActionCard.dismissibleTrailing(
+                title: "POS Dispute Update",
+                subtitle: "We have an update on your disputed POS transaction.",
+                trailing: GtSvg(
+                  GtVectorIllustrations.serviceStatus,
+                  width: 80,
+                  height: 80,
+                  alignment: .topRight,
+                ),
+                onActionTap: () {},
+                actionText: "View",
                 variant: actionVariant,
                 onDismiss: () {},
                 dismissText: "DISMISS",
@@ -208,9 +254,7 @@ Widget buildGtCardUseCase(BuildContext context) {
                 title: "Unauthorized access",
                 subtitle: "You don't have the permission to do this",
                 variant: notificationVariant,
-                onClose: () {
-                  
-                },
+                onClose: () {},
               ),
             ],
           ),
@@ -294,6 +338,92 @@ Widget buildGtCardUseCase(BuildContext context) {
                 name: "Referrals",
                 icon: GtIcons.gift,
                 variant: .away,
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: [
+              const GalleryPageSectionHeader(title: "GtEmptyStateCard"),
+              GtEmptyStateCard(
+                icon: context.knobs.objectOrNull.dropdown<IconData?>(
+                  label: "State Icon",
+                  options: [GtIcons.userSearch, null],
+                  initialOption: GtIcons.userSearch,
+                ),
+                description: "You currently do not have any team member here",
+                variant: context.knobs.object.dropdown<GtCardVariant>(
+                  label: "State Variant",
+                  options: GtCardVariant.values,
+                  initialOption: .normal,
+                  labelBuilder: (value) => value.name,
+                ),
+              ),
+              const GtGap.yBase(),
+              GtActionableEmptyStateCard(
+                icon: GtIcons.fileContent,
+                title: "No transfers yet",
+                description:
+                    "Your bulk transfers will appear after you create one",
+                buttontext: "NEW bulk transfer",
+                onPressed: () {},
+                variant: context.knobs.object.dropdown<GtCardVariant>(
+                  label: "State Variant",
+                  options: GtCardVariant.values,
+                  initialOption: .normal,
+                  labelBuilder: (value) => value.name,
+                ),
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: [
+              const GalleryPageSectionHeader(title: "GtInStructionCard"),
+              GtInstructionCard(
+                icon: GtIcon(GtIcons.camera, variant: .soft, size: 24),
+                description: "JPEG, JPG and PNG formats, up to 10 MB.",
+                variant: context.knobs.object.dropdown<GtCardVariant>(
+                  label: "Instruction Variant",
+                  options: GtCardVariant.values,
+                  initialOption: .normal,
+                  labelBuilder: (value) => value.name,
+                ),
+                title: "Take picture of front of ID",
+                onPressed: () {},
+              ),
+              const GtGap.yBase(),
+              GtInstructionCard(
+                icon: GtIcon(GtIcons.uploadFolder, size: 32),
+                description: "Upload a scan or PDF of your CAC certificate",
+                variant: context.knobs.object.dropdown<GtCardVariant>(
+                  label: "Instruction Variant",
+                  options: GtCardVariant.values,
+                  initialOption: .normal,
+                  labelBuilder: (value) => value.name,
+                ),
+                title: "Upload documents",
+                onPressed: () {},
+                isFilled: true,
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: [
+              const GalleryPageSectionHeader(title: "GtInboxCard"),
+              GtInboxCard(
+                ureadCount: context.knobs.int.slider(
+                  label: "Unread Count",
+                  min: 0,
+                  max: 10,
+                  initialValue: 1,
+                ),
+                messageCount: context.knobs.int.slider(
+                  label: "Message Count",
+                  min: 0,
+                  max: 10,
+                  initialValue: 1,
+                ),
+                title: "Inbox",
+                subtitle: "Hi Alex, how can we help you?",
               ),
             ],
           ),

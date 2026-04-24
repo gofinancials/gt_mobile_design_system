@@ -34,6 +34,8 @@ import 'package:gallery/molecules/boxes/gt_boxes_usecase.dart'
     as _gallery_molecules_boxes_gt_boxes_usecase;
 import 'package:gallery/molecules/buttons/gt_button_usecase.dart'
     as _gallery_molecules_buttons_gt_button_usecase;
+import 'package:gallery/molecules/pills/gt_pill.dart'
+    as _gallery_molecules_pills_gt_pill;
 import 'package:gallery/molecules/text/gt_balance_text.dart'
     as _gallery_molecules_text_gt_balance_text;
 import 'package:gallery/molecules/tiles/gt_list_tile.dart'
@@ -303,6 +305,26 @@ final directories = <_widgetbook.WidgetbookNode>[
     name: 'widgets',
     children: [
       _widgetbook.WidgetbookFolder(
+        name: 'molecules',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'pills',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtPill',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Pills Gallery',
+                    builder:
+                        _gallery_molecules_pills_gt_pill.buildGtPillUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
         name: 'organisms',
         children: [
           _widgetbook.WidgetbookFolder(
@@ -345,6 +367,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtTitleAppbar',
                     builder: _gallery_organisms_app_bars_gt_home_app_bar
                         .buildGtModalAppbarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtProAppBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtProAppbar',
+                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                        .buildGtProAppbarUsecase,
                   ),
                 ],
               ),

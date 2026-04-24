@@ -228,6 +228,9 @@ class GtShadows {
     ];
   }
 
+  /// A compact shadow typically used for small circular indicators, checkboxes, or toggles.
+  ///
+  /// Accepts an optional [color] to override the default theme shadow color.
   List<BoxShadow> indicatorShadow([Color? color]) {
     return [
       BoxShadow(
@@ -239,8 +242,29 @@ class GtShadows {
     ];
   }
 
-  /// Inner glass shadow used by  bottom navigation containers/buttons.
+  /// A specialized shadow used specifically for pill-shaped widgets.
   ///
+  /// Accepts an optional [color] to override the default theme shadow color.
+  List<BoxShadow> pillShadow([Color? color]) {
+    return [
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.15),
+        offset: const Offset(0, 6),
+        blurRadius: 24,
+        spreadRadius: 0,
+      ),
+      BoxShadow(
+        color: (color ?? _shadow).setOpacity(.03),
+        offset: const Offset(0, 2),
+        blurRadius: 4,
+        spreadRadius: 0,
+      ),
+    ];
+  }
+
+  /// Inner glass shadow used by bottom navigation containers and buttons.
+  ///
+  /// Accepts an optional [color] to override the default theme shadow color.
   List<BoxShadow> bottomNavInnerGlass([Color? color]) {
     return [
       BoxShadow(

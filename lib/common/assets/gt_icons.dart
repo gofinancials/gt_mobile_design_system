@@ -39,24 +39,44 @@ class GtIcons {
   static const chevronDown = GtIconData(0xf123);
 
   static const checkSolid = GtIconData(0xf124);
-  static const cautionSolid = GtIconData(0xf125);
+  static const cautionSolid = GtIconData(0xf109);
   static const cancel = GtIconData(0xf126);
   static const add = GtIconData(0xf127);
-
-  static const rotate360 = GtIconData(0xf128);
-  static const rotate270 = GtIconData(0xf129);
-  static const rotate180 = GtIconData(0xf12a);
-  static const rotate90 = GtIconData(0xf12b);
-  static const rotate0 = GtIconData(0xf12c);
 
   /// ---------------------------------------------------------------------------
   /// DECORATIVE ICONS
   /// ---------------------------------------------------------------------------
-  static const transferSolid = GtIconData(0xf101);
-  static const send = GtIconData(0xf102);
-  static const docDecorative1 = GtIconData(0xf103);
-  static const docDecorative2 = GtIconData(0xf104);
-  static const docDecorative3 = GtIconData(0xf105);
+  static const swapCircle = GtIconData(0xf13d);
+  static const sendCircle = GtIconData(0xf13c);
+  static const billCircle = GtIconData(0xf13b);
+
+  /// ---------------------------------------------------------------------------
+  /// CREDIT CARD ICONS
+  /// ---------------------------------------------------------------------------
+  static const wechat = GtIconData(0xf102);
+  static const visaLight = GtIconData(0xf103);
+  static const visa = GtIconData(0xf104);
+  static const unionpay = GtIconData(0xf105);
+  static const shoppay = GtIconData(0xf107);
+  static const paypal = GtIconData(0xf108);
+  static const paypalAlt = GtIconData(0xf10A);
+  static const mastercard = GtIconData(0xf10B);
+  static const mastercardLight = GtIconData(0xf10C);
+  static const masterCardDuoTone = GtIconData(0xf10D);
+  static const jcbGrey = GtIconData(0xf10F);
+  static const gpay = GtIconData(0xf111);
+  static const eftpos = GtIconData(0xf12D);
+  static const discover = GtIconData(0xf12E);
+  static const dinersclub = GtIconData(0xf139);
+  static const cvv = GtIconData(0xf13A);
+  static const cardLight = GtIconData(0xf13E);
+  static const cardDark = GtIconData(0xf13F);
+  static const bitcoin = GtIconData(0xf140);
+  static const bankCard = GtIconData(0xf141);
+  static const applepay = GtIconData(0xf142);
+  static const amex = GtIconData(0xf143);
+  static const amazon = GtIconData(0xf144);
+  static const alipay = GtIconData(0xf145);
 
   /// ---------------------------------------------------------------------------
   /// DEFAULT ICONS (Outline / Standard)
@@ -77,7 +97,7 @@ class GtIcons {
   static const files = GtIconData(0xf00d);
   static const rocket = GtIconData(0xf00e);
   static const file = GtIconData(0xf00f);
-  static const copyFilled = GtIconData(0xf109);
+  static const copyFilled = GtIconData(0xf125);
   static const roadmap = GtIconData(0xf010);
   static const fileContent = GtIconData(0xf011);
   static const refresh = GtIconData(0xf012);
@@ -102,9 +122,9 @@ class GtIcons {
   static const envelopCheck = GtIconData(0xf025);
   static const plug = GtIconData(0xf026);
   static const calendarEmpty = GtIconData(0xf027);
-  static const calendarEmptyFilled = GtIconData(0xf108);
-  static const reorder = GtIconData(0xf13e);
-  static const switchOutline = GtIconData(0xf107);
+  static const calendarEmptyFilled = GtIconData(0xf137);
+  static const reorder = GtIconData(0xf12f);
+  static const switchOutline = GtIconData(0xf138);
   static const pizzaSlice = GtIconData(0xf028);
   static const editDoc = GtIconData(0xf029);
   static const pinTack = GtIconData(0xf02a);
@@ -327,14 +347,14 @@ class GtIcons {
   /// ---------------------------------------------------------------------------
   /// BOTTOM NAVIGATION ICONS (Outline / Standard)
   /// ---------------------------------------------------------------------------
-  static const home = GtIconData(0xf111);
-  static const homeFilled = GtIconData(0xf10f);
-  static const payment = GtIconData(0xf10d);
-  static const paymentFilled = GtIconData(0xf10c);
-  static const product = GtIconData(0xf10b);
-  static const productFilled = GtIconData(0xf10a);
-  static const card = GtIconData(0xf12e);
-  static const cardFilled = GtIconData(0xf12d);
+  static const home = GtIconData(0xf101);
+  static const homeFilled = GtIconData(0xf132);
+  static const payment = GtIconData(0xf133);
+  static const paymentFilled = GtIconData(0xf134);
+  static const product = GtIconData(0xf135);
+  static const productFilled = GtIconData(0xf136);
+  static const card = GtIconData(0xf130);
+  static const cardFilled = GtIconData(0xf131);
   static const helpInfo = GtIconData(0xf10e);
 
   /// A list containing all available [IconData] constants defined in [GtIcons].
@@ -365,16 +385,9 @@ class GtIcons {
     cautionSolid,
     cancel,
     add,
-    rotate360,
-    rotate270,
-    rotate180,
-    rotate90,
-    rotate0,
-    transferSolid,
-    send,
-    docDecorative1,
-    docDecorative2,
-    docDecorative3,
+    billCircle,
+    sendCircle,
+    swapCircle,
     scribble,
     flame,
     scissors,
@@ -646,5 +659,29 @@ class GtIcons {
     card,
     cardFilled,
     helpInfo,
+    wechat,
+    visaLight,
+    visa,
+    unionpay,
+    shoppay,
+    paypal,
+    paypalAlt,
+    mastercard,
+    mastercardLight,
+    masterCardDuoTone,
+    jcbGrey,
+    gpay,
+    eftpos,
+    discover,
+    dinersclub,
+    cvv,
+    cardLight,
+    cardDark,
+    bitcoin,
+    bankCard,
+    applepay,
+    amex,
+    amazon,
+    alipay,
   ];
 }

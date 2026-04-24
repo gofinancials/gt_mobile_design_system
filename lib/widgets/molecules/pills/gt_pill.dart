@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-/// Defines the visual variants available for status and button pills.
-enum GtStatusPillVariant {
-  /// A strong emphasis variant, typically using solid, bold colors.
+/// Defines the visual variants available for status, button, and other pills.
+/// Each variant determines the background, border, and text colors applied to the pill.
+enum GtPillVariant {
+  /// A strong emphasis variant, typically using solid, bold brand colors.
   strong,
 
   /// A neutral variant, typically using subdued gray or muted tones.
@@ -41,31 +42,31 @@ enum GtStatusPillVariant {
   primary,
 }
 
-/// Internal extension to compute color schemes for pill variants.
-extension on GtStatusPillVariant? {
-  /// Returns the appropriate text color for the pill variant based on the provided [palette].
+/// Internal extension to compute color schemes for [GtPillVariant] elements.
+extension GtPillExtension on GtPillVariant? {
+  /// Returns the appropriate text color for this pill variant based on the provided [palette].
   Color getTextColor(GtPalette palette) {
     return switch (this) {
       .primary => palette.primary.dark,
       .neutral => palette.text.sub,
-      .featured => palette.feature.base,
-      .info => palette.information.base,
+      .featured => palette.feature.dark,
+      .info => palette.information.dark,
       .success => palette.success.dark,
       .warning => palette.warning.dark,
       .error => palette.error.base,
-      .highlighted => palette.highlighted.base,
-      .stable => palette.stable.base,
-      .verified => palette.success.base,
-      .away => palette.away.base,
+      .highlighted => palette.highlighted.dark,
+      .stable => palette.stable.dark,
+      .verified => palette.success.dark,
+      .away => palette.away.dark,
       _ => palette.text.strong,
     };
   }
 
-  /// Returns the appropriate border color for the pill variant based on the provided [palette].
+  /// Returns the appropriate border color for this pill variant based on the provided [palette].
   Color getBorderColor(GtPalette palette) {
     return switch (this) {
       .primary => palette.primary.alpha16,
-      .neutral => palette.text.soft,
+      .neutral => palette.stroke.sub,
       .featured => palette.feature.light,
       .info => palette.information.light,
       .success => palette.success.light,
@@ -74,12 +75,12 @@ extension on GtStatusPillVariant? {
       .highlighted => palette.highlighted.light,
       .stable => palette.stable.light,
       .verified => palette.success.light,
-      .away => palette.away.light,
-      _ => palette.text.strong.setOpacity(0.4),
+      .away => palette.away.base,
+      _ => palette.bg.sub,
     };
   }
 
-  /// Returns the appropriate background color for the pill variant based on the provided [palette].
+  /// Returns the appropriate background color for this pill variant based on the provided [palette].
   Color getBgColor(GtPalette palette) {
     return switch (this) {
       .primary => palette.primary.alpha10,
@@ -93,143 +94,121 @@ extension on GtStatusPillVariant? {
       .stable => palette.stable.lighter,
       .verified => palette.success.lighter,
       .away => palette.away.lighter,
-      _ => palette.text.strong.setOpacity(0.2),
+      _ => palette.bg.soft,
     };
   }
 }
 
+/// Defines the available sizes for pill widgets, influencing padding and overall scale.
+enum GtPillSize {
+  /// The standard, default pill size used in most standard contexts.
+  normal,
+
+  /// A slightly larger pill size for better visibility or touch area.
+  larger,
+}
+
 /// A foundational pill widget that displays text and an optional icon within a rounded container.
+///
+/// This serves as the base structure for other specialized pills (e.g., [GtStatusPill], [GtButtonPill]).
 class GtPill extends StatelessWidget {
-  /// The text to display inside the pill. It will be automatically converted to uppercase.
+  /// The text to display inside the pill. In some implementations, this may be automatically converted to uppercase.
   final String text;
 
   /// An optional icon widget to display alongside the text.
   final Widget? icon;
 
-  /// The internal padding of the pill. Defaults to 4.px on all sides.
+  /// An optional icon widget to display after the text.
+  final Widget? trailing;
+
+  /// The internal padding of the pill. Defaults to 4 pixels on all sides if not provided.
   final EdgeInsets? padding;
 
-  /// The background color of the pill.
+  /// The fill or background color of the pill's container.
   final Color bgColor;
 
-  /// The optional border color. If null, the border defaults to [bgColor].
+  /// The border color. If null, the border color defaults to the [bgColor], effectively hiding the border.
   final Color? borderColor;
 
-  /// The color of the text and potentially the icon (if it inherits the text color).
-  final Color textColor;
+  /// The color of the text. Icons will inherit this color unless overridden.
+  final Color? textColor;
+
+  /// The alignment of the content within the pill's internal bounds.
+  final Alignment? alignment;
+
+  /// Determines if a drop shadow is rendered beneath the pill container.
+  final bool showShadow;
+
+  /// The visual variant that informs context-based color calculations.
+  final GtPillVariant variant;
+
+  /// The custom border radius of the pill. Defaults to the theme's small border radius.
+  final BorderRadius? borderRadius;
+
+  /// The custom text style for the pill's text.
+  final TextStyle? textStyle;
 
   /// Creates a [GtPill].
   const GtPill({
     super.key,
     required this.text,
+    required this.variant,
     this.icon,
+    this.trailing,
     this.padding,
     required this.bgColor,
     this.borderColor,
-    required this.textColor,
+    this.textColor,
+    this.alignment,
+    this.showShadow = false,
+    this.borderRadius,
+    this.textStyle,
   });
 
   @override
   Widget build(BuildContext context) {
-    Widget child = GtText(
-      text.upper,
-      style: context.textStyles.buttonXs(color: textColor),
-      textAlign: TextAlign.center,
+    List<BoxShadow>? shadow;
+
+    if (showShadow) {
+      final shadowColor = variant.getTextColor(context.palette);
+      shadow = context.shadows.pillShadow(shadowColor);
+    }
+
+    Widget child = Text.rich(
+      TextSpan(
+        children: [
+          if (icon != null) ...[
+            WidgetSpan(child: icon!),
+            WidgetSpan(child: const GtGap.hSm()),
+          ],
+          TextSpan(text: text),
+          if (trailing != null) ...[
+            WidgetSpan(child: const GtGap.hSm()),
+            WidgetSpan(child: trailing!),
+          ],
+        ],
+        style: textStyle ?? context.textStyles.buttonXs(color: textColor),
+      ),
       maxLines: 1,
     );
 
-    if (icon != null) {
-      child = Row(
-        spacing: context.spacingSm,
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [?icon, child],
-      );
-    }
-
-    return Container(
+    child = AnimatedContainer(
+      duration: 500.milliseconds,
+      alignment: alignment == null ? .center : null,
       padding: padding ?? context.insets.allDp(4.px),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: context.borderRadiusSm,
+        borderRadius: borderRadius ?? context.borderRadiusSm,
         border: Border.all(color: borderColor ?? bgColor),
+        boxShadow: shadow,
       ),
       child: child,
     );
-  }
-}
 
-/// A specialized pill widget used to indicate status, featuring predefined color variants and a compact layout.
-class GtStatusPill extends StatelessWidget {
-  /// The status text to display.
-  final String text;
-
-  /// The visual variant determining the colors of the pill.
-  final GtStatusPillVariant? variant;
-
-  /// An optional icon data to display. Rendered at size 11.
-  final IconData? icon;
-
-  /// Creates a [GtStatusPill].
-  const GtStatusPill({super.key, required this.text, this.variant, this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.palette;
-    final textColor = variant.getTextColor(palette);
-    final bgColor = variant.getBgColor(palette);
-    final borderColor = variant.getBorderColor(palette);
-    Widget? iconWidget;
-
-    if (icon != null) {
-      iconWidget = GtIcon.withColor(icon!, color: textColor, size: 11);
+    if (alignment != null) {
+      child = Align(alignment: alignment!, child: child);
     }
 
-    return GtPill(
-      text: text,
-      bgColor: bgColor,
-      icon: iconWidget,
-      textColor: textColor,
-      borderColor: borderColor,
-      padding: context.insets.allDp(4.px),
-    );
-  }
-}
-
-/// A specialized pill widget intended for tags or interactive-looking badges.
-///
-/// Features slightly larger padding and a larger icon size compared to [GtStatusPill].
-class GtButtonPill extends StatelessWidget {
-  /// The text to display.
-  final String text;
-
-  /// The visual variant determining the colors of the pill.
-  final GtStatusPillVariant? variant;
-
-  /// An optional icon data to display. Rendered at size 14.
-  final IconData? icon;
-
-  /// Creates a [GtButtonPill].
-  const GtButtonPill({super.key, required this.text, this.variant, this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = context.palette;
-    final textColor = variant.getTextColor(palette);
-    final bgColor = variant.getBgColor(palette);
-
-    Widget? iconWidget;
-
-    if (icon != null) {
-      iconWidget = GtIcon.withColor(icon!, color: textColor, size: 14);
-    }
-
-    return GtPill(
-      text: text,
-      bgColor: bgColor,
-      icon: iconWidget,
-      textColor: textColor,
-      padding: context.insets.allDp(6.px),
-    );
+    return child;
   }
 }

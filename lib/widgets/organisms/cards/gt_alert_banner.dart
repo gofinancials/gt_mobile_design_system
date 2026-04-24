@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -22,6 +23,9 @@ class GtAlertBanner extends GtStatelessWidget {
   /// A callback function that is invoked when the close button is tapped.
   final OnPressed onClose;
 
+  /// A callback function that is invoked when the card is tapped
+  final OnPressed? onTap;
+
   /// Creates a [GtAlertBanner].
   const GtAlertBanner({
     super.key,
@@ -31,6 +35,7 @@ class GtAlertBanner extends GtStatelessWidget {
     this.variant = .away,
     required this.icon,
     required this.onClose,
+    this.onTap,
   });
 
   @override
@@ -41,25 +46,36 @@ class GtAlertBanner extends GtStatelessWidget {
     return GtAnimatedFade(
       showFirst: !hidden,
       child2: const Offstage(),
-      child1: GtCard(
-        padding: context.insets.allDp(12.px),
-        color: bgColor,
-        child: Column(
-          spacing: context.spacingSm,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              spacing: context.spacingBase,
-              crossAxisAlignment: .start,
-              mainAxisAlignment: .spaceBetween,
-              children: [
-                GtSquareConstrainedBox(84, child: icon),
-                GtCancelButton(onTap: onClose, size: 20, alignment: .topRight),
-              ],
-            ),
-            GtText(title.upper, style: context.textStyles.buttonS()),
-            GtText(subtitle, style: context.textStyles.subHeadS()),
-          ],
+      child1: InkWell(
+        onTap: () {
+          if (onTap == null) return;
+          HapticFeedback.lightImpact();
+          onTap!();
+        },
+        child: GtCard(
+          padding: context.insets.allDp(12.px),
+          color: bgColor,
+          child: Column(
+            spacing: context.spacingSm,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                spacing: context.spacingBase,
+                crossAxisAlignment: .start,
+                mainAxisAlignment: .spaceBetween,
+                children: [
+                  GtSquareConstrainedBox(84, child: icon),
+                  GtCancelButton(
+                    onTap: onClose,
+                    size: 20,
+                    alignment: .topRight,
+                  ),
+                ],
+              ),
+              GtText(title.upper, style: context.textStyles.buttonS()),
+              GtText(subtitle, style: context.textStyles.subHeadS()),
+            ],
+          ),
         ),
       ),
     );

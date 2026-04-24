@@ -24,6 +24,37 @@ Widget buildGtHomeAppbarUsecase(BuildContext context) {
   );
 }
 
+@widgetbook.UseCase(name: 'GtProAppbar', type: GtProAppBar)
+Widget buildGtProAppbarUsecase(BuildContext context) {
+  final showGradient = context.knobs.boolean(label: "Show Gradient");
+  final color = showGradient
+      ? context.palette.primary.alpha24
+      : Colors.transparent;
+  return Scaffold(
+    appBar: GtProAppBar(
+      onClickStat: () {},
+      onClickNotification: () {},
+      verified: context.knobs.boolean(label: "Verified"),
+      fullName: context.knobs.string(
+        label: "Full Name",
+        initialValue: "Alex Doe",
+      ),
+      businessName: context.knobs.string(
+        label: "Business Name",
+        initialValue: "funmi consulting",
+      ),
+    ),
+    extendBodyBehindAppBar: true,
+    body: CustomPaint(
+      painter: GtHomeGradientPainter(color: color),
+      child: Container(
+        alignment: .center,
+        child: GtText("This is a tentative implementation"),
+      ),
+    ),
+  );
+}
+
 @widgetbook.UseCase(name: 'GtTitleAppbar', type: GtTitleAppBar)
 Widget buildGtTitleAppbarUsecase(BuildContext context) {
   int count = context.knobs.object.dropdown(
@@ -115,12 +146,6 @@ Widget buildGtActionAppbarUsecase(BuildContext context) {
         _ => "None",
       };
     },
-  );
-  final size = context.knobs.object.dropdown(
-    label: "Title Size",
-    initialOption: GtAppBarTitleSize.medium,
-    options: GtAppBarTitleSize.values,
-    labelBuilder: (value) => value.name.capitalise(),
   );
 
   final head = count >= 1 ? GtSpinner(value: .75) : null;
