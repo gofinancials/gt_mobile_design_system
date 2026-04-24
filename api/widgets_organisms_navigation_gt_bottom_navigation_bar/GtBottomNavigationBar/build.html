@@ -110,14 +110,14 @@ and</li>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   return switch (style) {
-    GtBottomNavigationStyle.ios =&gt; _GtIosFloatingBottomNavigationBar(
+    .ios =&gt; _GtIosFloatingBottomNavigationBar(
       items: items,
       currentIndex: currentIndex,
       onIndexChanged: onIndexChanged,
       onTrailingTap: onTrailingTap,
       trailingIcon: trailingIcon,
     ),
-    GtBottomNavigationStyle.android =&gt; GtAndroidBottomNavigationBar(
+    .android =&gt; GtAndroidBottomNavigationBar(
       items: items,
       currentIndex: currentIndex,
       onIndexChanged: onIndexChanged,

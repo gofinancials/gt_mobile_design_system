@@ -158,12 +158,14 @@ Widget build(BuildContext context) {
               ],
             ),
           ),
-          GtIcon.withColor(
-            icon,
-            color: iconColor,
-            size: 32,
-            alignment: .topLeft,
-          ),
+          if (_icon != null)
+            GtIcon.withColor(
+              _icon,
+              color: iconColor,
+              size: 32,
+              alignment: .topLeft,
+            ),
+          ?_trailing,
         ],
       ),
     ),

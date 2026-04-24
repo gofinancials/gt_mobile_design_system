@@ -55,6 +55,7 @@
     
 <section class="desc markdown">
   <p>A foundational pill widget that displays text and an optional icon within a rounded container.</p>
+<p>This serves as the base structure for other specialized pills (e.g., <a href="../widgets_molecules_pills_gt_status_pill/GtStatusPill-class.html">GtStatusPill</a>, <a href="../widgets_molecules_pills_gt_button_pill/GtButtonPill-class.html">GtButtonPill</a>).</p>
 </section>
 
 
@@ -92,7 +93,7 @@
     <h2>Constructors</h2>
     <dl class="constructor-summary-list">
         <dt id="GtPill.new" class="callable">
-          <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/GtPill.html">GtPill</a></span><span class="signature">({<span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="-param-text"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">text</span>, </span><span class="parameter" id="-param-icon"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">icon</span>, </span><span class="parameter" id="-param-padding"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/EdgeInsets-class.html">EdgeInsets</a>?</span> <span class="parameter-name">padding</span>, </span><span class="parameter" id="-param-bgColor"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">bgColor</span>, </span><span class="parameter" id="-param-borderColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">borderColor</span>, </span><span class="parameter" id="-param-textColor"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">textColor</span></span>})</span>
+          <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/GtPill.html">GtPill</a></span><span class="signature">({<span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="-param-text"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">text</span>, </span><span class="parameter" id="-param-variant"><span>required</span> <span class="type-annotation"><a href="../widgets_molecules_pills_gt_pill/GtPillVariant.html">GtPillVariant</a></span> <span class="parameter-name">variant</span>, </span><span class="parameter" id="-param-icon"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">icon</span>, </span><span class="parameter" id="-param-trailing"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">trailing</span>, </span><span class="parameter" id="-param-padding"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/EdgeInsets-class.html">EdgeInsets</a>?</span> <span class="parameter-name">padding</span>, </span><span class="parameter" id="-param-bgColor"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">bgColor</span>, </span><span class="parameter" id="-param-borderColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">borderColor</span>, </span><span class="parameter" id="-param-textColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">textColor</span>, </span><span class="parameter" id="-param-alignment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/Alignment-class.html">Alignment</a>?</span> <span class="parameter-name">alignment</span>, </span><span class="parameter" id="-param-showShadow"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">showShadow</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-borderRadius"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BorderRadius-class.html">BorderRadius</a>?</span> <span class="parameter-name">borderRadius</span>, </span><span class="parameter" id="-param-textStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">textStyle</span></span>})</span>
         </dt>
         <dd>
           Creates a <a href="../widgets_molecules_pills_gt_pill/GtPill-class.html">GtPill</a>.
@@ -106,6 +107,18 @@
       id="instance-properties">
     <h2>Properties</h2>
     <dl class="properties">
+        <dt id="alignment" class="property">
+  <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/alignment.html">alignment</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/Alignment-class.html">Alignment</a>?</span>
+  
+
+</dt>
+<dd>
+  The alignment of the content within the pill's internal bounds.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="bgColor" class="property">
   <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/bgColor.html">bgColor</a></span>
   <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span>
@@ -113,7 +126,7 @@
 
 </dt>
 <dd>
-  The background color of the pill.
+  The fill or background color of the pill's container.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -125,7 +138,19 @@
 
 </dt>
 <dd>
-  The optional border color. If null, the border defaults to <a href="../widgets_molecules_pills_gt_pill/GtPill/bgColor.html">bgColor</a>.
+  The border color. If null, the border color defaults to the <a href="../widgets_molecules_pills_gt_pill/GtPill/bgColor.html">bgColor</a>, effectively hiding the border.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="borderRadius" class="property">
+  <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/borderRadius.html">borderRadius</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/BorderRadius-class.html">BorderRadius</a>?</span>
+  
+
+</dt>
+<dd>
+  The custom border radius of the pill. Defaults to the theme's small border radius.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -173,7 +198,7 @@
 
 </dt>
 <dd>
-  The internal padding of the pill. Defaults to 4.px on all sides.
+  The internal padding of the pill. Defaults to 4 pixels on all sides if not provided.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -190,6 +215,18 @@
 
 </dd>
 
+        <dt id="showShadow" class="property">
+  <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/showShadow.html">showShadow</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Determines if a drop shadow is rendered beneath the pill container.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="text" class="property">
   <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/text.html">text</a></span>
   <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
@@ -197,19 +234,55 @@
 
 </dt>
 <dd>
-  The text to display inside the pill. It will be automatically converted to uppercase.
+  The text to display inside the pill. In some implementations, this may be automatically converted to uppercase.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
         <dt id="textColor" class="property">
   <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/textColor.html">textColor</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span>
   
 
 </dt>
 <dd>
-  The color of the text and potentially the icon (if it inherits the text color).
+  The color of the text. Icons will inherit this color unless overridden.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="textStyle" class="property">
+  <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/textStyle.html">textStyle</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span>
+  
+
+</dt>
+<dd>
+  The custom text style for the pill's text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="trailing" class="property">
+  <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/trailing.html">trailing</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span>
+  
+
+</dt>
+<dd>
+  An optional icon widget to display after the text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="variant" class="property">
+  <span class="name"><a href="../widgets_molecules_pills_gt_pill/GtPill/variant.html">variant</a></span>
+  <span class="signature">&#8594; <a href="../widgets_molecules_pills_gt_pill/GtPillVariant.html">GtPillVariant</a></span>
+  
+
+</dt>
+<dd>
+  The visual variant that informs context-based color calculations.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>

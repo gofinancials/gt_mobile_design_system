@@ -56,11 +56,17 @@
       const
       <span class="name ">GtPill</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span></li>
 <li><span class="parameter" id="-param-text"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">text</span>, </span></li>
+<li><span class="parameter" id="-param-variant"><span>required</span> <span class="type-annotation"><a href="../../widgets_molecules_pills_gt_pill/GtPillVariant.html">GtPillVariant</a></span> <span class="parameter-name">variant</span>, </span></li>
 <li><span class="parameter" id="-param-icon"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">icon</span>, </span></li>
+<li><span class="parameter" id="-param-trailing"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">trailing</span>, </span></li>
 <li><span class="parameter" id="-param-padding"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/EdgeInsets-class.html">EdgeInsets</a>?</span> <span class="parameter-name">padding</span>, </span></li>
 <li><span class="parameter" id="-param-bgColor"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">bgColor</span>, </span></li>
 <li><span class="parameter" id="-param-borderColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">borderColor</span>, </span></li>
-<li><span class="parameter" id="-param-textColor"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">textColor</span>, </span></li>
+<li><span class="parameter" id="-param-textColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">textColor</span>, </span></li>
+<li><span class="parameter" id="-param-alignment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/Alignment-class.html">Alignment</a>?</span> <span class="parameter-name">alignment</span>, </span></li>
+<li><span class="parameter" id="-param-showShadow"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">showShadow</span> = <span class="default-value">false</span>, </span></li>
+<li><span class="parameter" id="-param-borderRadius"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BorderRadius-class.html">BorderRadius</a>?</span> <span class="parameter-name">borderRadius</span>, </span></li>
+<li><span class="parameter" id="-param-textStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">textStyle</span>, </span></li>
 </ol>})
     </section>
     
@@ -75,11 +81,17 @@
   <pre class="language-dart"><code class="language-dart">const GtPill({
   super.key,
   required this.text,
+  required this.variant,
   this.icon,
+  this.trailing,
   this.padding,
   required this.bgColor,
   this.borderColor,
-  required this.textColor,
+  this.textColor,
+  this.alignment,
+  this.showShadow = false,
+  this.borderRadius,
+  this.textStyle,
 });</code></pre>
 </section>
 

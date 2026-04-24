@@ -109,31 +109,49 @@ and</li>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  Widget child = GtText(
-    text.upper,
-    style: context.textStyles.buttonXs(color: textColor),
-    textAlign: TextAlign.center,
+  List&lt;BoxShadow&gt;? shadow;
+
+  if (showShadow) {
+    final shadowColor = variant.getTextColor(context.palette);
+    shadow = context.shadows.pillShadow(shadowColor);
+  }
+
+  Widget child = Text.rich(
+    TextSpan(
+      children: [
+        if (icon != null) ...[
+          WidgetSpan(child: icon!),
+          WidgetSpan(child: const GtGap.hSm()),
+        ],
+        TextSpan(text: text),
+        if (trailing != null) ...[
+          WidgetSpan(child: const GtGap.hSm()),
+          WidgetSpan(child: trailing!),
+        ],
+      ],
+      style: textStyle ?? context.textStyles.buttonXs(color: textColor),
+    ),
     maxLines: 1,
   );
 
-  if (icon != null) {
-    child = Row(
-      spacing: context.spacingSm,
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [?icon, child],
-    );
-  }
-
-  return Container(
+  child = AnimatedContainer(
+    duration: 500.milliseconds,
+    alignment: alignment == null ? .center : null,
     padding: padding ?? context.insets.allDp(4.px),
     decoration: BoxDecoration(
       color: bgColor,
-      borderRadius: context.borderRadiusSm,
+      borderRadius: borderRadius ?? context.borderRadiusSm,
       border: Border.all(color: borderColor ?? bgColor),
+      boxShadow: shadow,
     ),
     child: child,
   );
+
+  if (alignment != null) {
+    child = Align(alignment: alignment!, child: child);
+  }
+
+  return child;
 }</code></pre>
 </section>
 

@@ -77,12 +77,14 @@
   super.key,
   required this.title,
   required this.subtitle,
-  required this.icon,
+  required IconData icon,
   this.hidden = false,
   this.variant = .away,
   required this.onActionTap,
   required this.actionText,
-}) : dismissText = null,
+}) : _icon = icon,
+     _trailing = null,
+     dismissText = null,
      onDismiss = null;</code></pre>
 </section>
 

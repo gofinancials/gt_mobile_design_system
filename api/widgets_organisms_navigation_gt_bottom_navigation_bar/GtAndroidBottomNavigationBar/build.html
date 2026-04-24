@@ -120,11 +120,9 @@ Widget build(BuildContext context) {
     isAndroid: true,
     color: inactive,
   );
-  final iconSize = context.dp(22.px);
   &#47;&#47; Top inset matches host padding; bottom adds clear space before the label.
-  final iconPadding = EdgeInsets.only(
-    top: context.spacingBase,
-    bottom: context.spacingBase,
+  final iconPadding = context.insets.symmetricDp(
+    vertical: context.spacing.base.px,
   );
 
   return BottomNavigationBar(
@@ -143,19 +141,11 @@ Widget build(BuildContext context) {
         BottomNavigationBarItem(
           icon: Padding(
             padding: iconPadding,
-            child: GtIcon.withColor(
-              item.unselectedIcon,
-              size: iconSize,
-              color: inactive,
-            ),
+            child: GtBottomNavIcon(item.unselectedIcon, selected: false),
           ),
           activeIcon: Padding(
             padding: iconPadding,
-            child: GtIcon.withColor(
-              item.selectedIcon,
-              size: iconSize,
-              color: activeIcon,
-            ),
+            child: GtBottomNavIcon(item.selectedIcon, selected: true),
           ),
           label: item.label.upper,
         ),

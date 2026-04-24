@@ -115,25 +115,36 @@ Widget build(BuildContext context) {
   return GtAnimatedFade(
     showFirst: !hidden,
     child2: const Offstage(),
-    child1: GtCard(
-      padding: context.insets.allDp(12.px),
-      color: bgColor,
-      child: Column(
-        spacing: context.spacingSm,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            spacing: context.spacingBase,
-            crossAxisAlignment: .start,
-            mainAxisAlignment: .spaceBetween,
-            children: [
-              GtSquareConstrainedBox(84, child: icon),
-              GtCancelButton(onTap: onClose, size: 20, alignment: .topRight),
-            ],
-          ),
-          GtText(title.upper, style: context.textStyles.buttonS()),
-          GtText(subtitle, style: context.textStyles.subHeadS()),
-        ],
+    child1: InkWell(
+      onTap: () {
+        if (onTap == null) return;
+        HapticFeedback.lightImpact();
+        onTap!();
+      },
+      child: GtCard(
+        padding: context.insets.allDp(12.px),
+        color: bgColor,
+        child: Column(
+          spacing: context.spacingSm,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              spacing: context.spacingBase,
+              crossAxisAlignment: .start,
+              mainAxisAlignment: .spaceBetween,
+              children: [
+                GtSquareConstrainedBox(84, child: icon),
+                GtCancelButton(
+                  onTap: onClose,
+                  size: 20,
+                  alignment: .topRight,
+                ),
+              ],
+            ),
+            GtText(title.upper, style: context.textStyles.buttonS()),
+            GtText(subtitle, style: context.textStyles.subHeadS()),
+          ],
+        ),
       ),
     ),
   );
