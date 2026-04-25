@@ -115,7 +115,7 @@ Widget build(BuildContext context) {
   return InkWell(
     onTap: () {
       context.copyTextToClipboard(value);
-      onCopied?.call();
+      onCopied?.call(value);
     },
     child: Row(
       spacing: context.spacingBase,
