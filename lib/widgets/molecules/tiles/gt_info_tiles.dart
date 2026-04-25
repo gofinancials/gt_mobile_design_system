@@ -264,3 +264,36 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     );
   }
 }
+
+/// A minimalistic list tile used to display a small leading widget alongside a text label.
+///
+/// This is typically used for subtle inline information, such as hints or inline status indicators.
+class GtSimpleInfoTile extends GtStatelessWidget {
+  /// The custom widget to display at the start of the tile (e.g., a small icon).
+  final Widget leading;
+
+  /// The informational text to display next to the [leading] widget.
+  final String text;
+
+  /// Creates a [GtSimpleInfoTile].
+  const GtSimpleInfoTile({
+    super.key,
+    required this.leading,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      spacing: context.spacingXs,
+      mainAxisSize: .min,
+      children: [
+        GtSquareConstrainedBox(16, child: leading),
+        GtText(
+          text,
+          style: context.textStyles.bodyXs(color: context.palette.text.sub),
+        ),
+      ],
+    );
+  }
+}

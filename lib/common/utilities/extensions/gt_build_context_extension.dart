@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gt_mobile_foundation/extensions/extensions.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// An extension on [BuildContext] providing convenient access to the design system's
@@ -273,6 +274,26 @@ extension ThemeContextExtension on BuildContext {
       anchorPosition: anchorPosition,
       anchorSize: anchorSize,
       anchorWidget: anchorWidget,
+    );
+  }
+
+  /// Automatically scrolls this tab into view immediately if it is currently selected.
+  void scrollIntoView() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Scrollable.ensureVisible(
+        this,
+        curve: Curves.decelerate,
+        duration: 500.milliseconds,
+      );
+    });
+  }
+
+  /// Automatically scrolls this tab into view immediately if it is currently selected.
+  void scrollIntoViewNow() {
+    Scrollable.ensureVisible(
+      this,
+      curve: Curves.decelerate,
+      duration: 500.milliseconds,
     );
   }
 }

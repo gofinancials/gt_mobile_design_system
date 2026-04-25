@@ -41,8 +41,8 @@ class GtVectorIllustrations {
   /// Path to the coins SVG.
   static const coins = "$_basePath/coins.svg";
 
-  /// Path to the currentAccount SVG.
-  static const currentAccount = "$_basePath/current_account.svg";
+  /// Path to the moneyPhone SVG.
+  static const moneyPhone = "$_basePath/current_account.svg";
 
   /// Path to the dataAnalytics SVG.
   static const dataAnalytics = "$_basePath/data_analytics.svg";
@@ -275,7 +275,7 @@ class GtVectorIllustrations {
     chart,
     chat,
     coins,
-    currentAccount,
+    moneyPhone,
     dataAnalytics,
     date,
     debitCards,
