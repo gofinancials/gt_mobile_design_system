@@ -36,7 +36,7 @@ class GtAvatar extends GtStatelessWidget {
   final String? initials;
 
   /// An optional miniature widget to overlay at the bottom-right corner of the avatar.
-  /// 
+  ///
   /// Commonly used for status badges (e.g., online/offline dots) or small action icons.
   final Widget? tag;
 

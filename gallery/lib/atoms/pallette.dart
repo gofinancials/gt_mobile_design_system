@@ -7,7 +7,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(name: 'Palette', type: GtColors, path: "[Atoms]")
+@widgetbook.UseCase(name: 'Palette', type: GtColors)
 Widget playgroundPaletteUseCase(BuildContext context) {
   final delegate = SliverGridDelegateWithMaxCrossAxisExtent(
     maxCrossAxisExtent: context.dp(290.px),

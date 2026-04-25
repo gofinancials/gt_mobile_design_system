@@ -68,6 +68,7 @@ class GtNotificationCard extends GtStatelessWidget {
             child: Column(
               crossAxisAlignment: .start,
               spacing: context.spacingSm,
+              mainAxisSize: .min,
               children: [
                 GtText(title.upper, style: context.textStyles.buttonS()),
                 GtText(subtitle, style: context.textStyles.subHead2xs()),

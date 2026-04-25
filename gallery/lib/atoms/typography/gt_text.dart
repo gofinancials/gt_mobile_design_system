@@ -8,7 +8,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(name: 'GtText', type: GtText, path: "[Atoms]/[Typography]")
+@widgetbook.UseCase(name: 'GtText', type: GtText)
 Widget playgroundGtTextUseCase(BuildContext context) {
   const text = "The quick brown fox jumps over the lazy dog.";
 

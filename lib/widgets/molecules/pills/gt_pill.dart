@@ -56,7 +56,7 @@ extension GtPillExtension on GtPillVariant? {
       .error => palette.error.base,
       .highlighted => palette.highlighted.dark,
       .stable => palette.stable.dark,
-      .verified => palette.success.dark,
+      .verified => palette.verified.dark,
       .away => palette.away.dark,
       _ => palette.text.strong,
     };
@@ -74,7 +74,7 @@ extension GtPillExtension on GtPillVariant? {
       .error => palette.error.light,
       .highlighted => palette.highlighted.light,
       .stable => palette.stable.light,
-      .verified => palette.success.light,
+      .verified => palette.verified.light,
       .away => palette.away.base,
       _ => palette.bg.sub,
     };
@@ -92,7 +92,7 @@ extension GtPillExtension on GtPillVariant? {
       .error => palette.error.lighter,
       .highlighted => palette.highlighted.lighter,
       .stable => palette.stable.lighter,
-      .verified => palette.success.lighter,
+      .verified => palette.verified.lighter,
       .away => palette.away.lighter,
       _ => palette.bg.soft,
     };
@@ -194,7 +194,6 @@ class GtPill extends StatelessWidget {
 
     child = AnimatedContainer(
       duration: 500.milliseconds,
-      alignment: alignment == null ? .center : null,
       padding: padding ?? context.insets.allDp(4.px),
       decoration: BoxDecoration(
         color: bgColor,
@@ -205,10 +204,6 @@ class GtPill extends StatelessWidget {
       child: child,
     );
 
-    if (alignment != null) {
-      child = Align(alignment: alignment!, child: child);
-    }
-
-    return child;
+    return Align(alignment: alignment ?? .center, child: child);
   }
 }

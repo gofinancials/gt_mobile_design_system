@@ -3,7 +3,7 @@ import 'package:gallery/lib.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(name: 'Gaps', type: GtGap, path: "[Atoms]/Spacing")
+@widgetbook.UseCase(name: 'Gaps', type: GtGap)
 Widget playgroundGapUseCase(BuildContext context) {
   final inComponentGaps = const [
     GtGapRow(gap: GtGap.yXs()),

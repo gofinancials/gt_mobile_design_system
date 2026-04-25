@@ -11,15 +11,7 @@ final formKey2 = GlobalKey<FormState>();
 final controller2 = TextEditingController();
 
 void showToast(String text, BuildContext context) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: GtText(
-        text,
-        style: context.textStyles.bodyM(color: context.palette.text.white),
-      ),
-      backgroundColor: context.palette.bg.strong,
-    ),
-  );
+  context.showToast(text);
 }
 
 @widgetbook.UseCase(name: 'GtVirtualKeypadForm', type: GtVirtualKeypadForm)

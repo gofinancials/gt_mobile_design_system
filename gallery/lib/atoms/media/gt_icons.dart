@@ -5,11 +5,7 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(
-  name: 'Vector Icons',
-  type: GtIcon,
-  path: "[Atoms]/[Images]",
-)
+@widgetbook.UseCase(name: 'Vector Icons', type: GtIcon)
 Widget playgroundIconsUseCase(BuildContext context) {
   final allIcons = GtVectorIcons.all;
   final allIconFonts = GtIcons.all;

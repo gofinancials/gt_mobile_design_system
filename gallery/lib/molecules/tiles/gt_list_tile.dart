@@ -7,11 +7,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 final countries = AppCountryUtility.searchCountries("23");
 
-@widgetbook.UseCase(
-  name: 'GtListTiles',
-  type: GtListTile,
-  path: "[Molecules]/[Tiles]",
-)
+@widgetbook.UseCase(name: 'GtListTiles', type: GtListTile)
 Widget gtListTileAllUseCase(BuildContext context) {
   // -----------------------------------------------------------------------
   // KNOBS FOR DYNAMIC RENDERING
@@ -213,7 +209,11 @@ Widget gtListTileAllUseCase(BuildContext context) {
             leading: GtIcon(GtIcons.bell),
             onChanged: (_) {},
             subtitle: "Receive notifications in a timely manner",
-            footer: GtButtonPill(text: "FAIRLY SECURE", variant: .featured),
+            footer: GtButtonPill(
+              text: "FAIRLY SECURE",
+              variant: .featured,
+              alignment: .centerLeft,
+            ),
           ),
           const GtDivider.base(),
           GtRadioTile(
@@ -245,7 +245,11 @@ Widget gtListTileAllUseCase(BuildContext context) {
             leading: GtIcon(GtIcons.calendar),
             subtitle: "Please select me",
             onChanged: (_) {},
-            footer: GtButtonPill(text: "FAIRLY SECURE", variant: .away),
+            footer: GtButtonPill(
+              text: "FAIRLY SECURE",
+              variant: .away,
+              alignment: .centerLeft,
+            ),
           ),
           const GtDivider.base(),
           GtCheckBoxTile(
@@ -276,7 +280,11 @@ Widget gtListTileAllUseCase(BuildContext context) {
             leading: GtIcon(GtIcons.umbrella),
             subtitle: "Please select me",
             onChanged: (_) {},
-            footer: GtButtonPill(text: "FAIRLY SECURE", variant: .error),
+            footer: GtButtonPill(
+              text: "FAIRLY SECURE",
+              variant: .error,
+              alignment: .centerLeft,
+            ),
           ),
         ],
       ),
@@ -747,7 +755,11 @@ Widget gtListTileAllUseCase(BuildContext context) {
       title: "CAC DOCUMENTS",
       subtitle:
           "Your official registration certificate issued by the Corporate Affairs Commission",
-      footer: GtStatusPill(text: "Pending", variant: .away),
+      footer: GtStatusPill(
+        text: "Pending",
+        variant: .away,
+        alignment: .centerLeft,
+      ),
       onPressed: () {},
     ),
     const GtGap.yBase(),
@@ -755,7 +767,11 @@ Widget gtListTileAllUseCase(BuildContext context) {
       icon: GtIcons.tasks,
       title: "Status Report",
       isDone: true,
-      footer: GtStatusPill(text: "Uploaded", variant: .success),
+      footer: GtStatusPill(
+        text: "Uploaded",
+        variant: .success,
+        alignment: .centerLeft,
+      ),
       subtitle:
           "Your official registration certificate issued by the Corporate Affairs Commission",
       onPressed: () {},
@@ -784,7 +800,13 @@ Widget gtListTileAllUseCase(BuildContext context) {
         copyLabel,
         value: copyValue,
         leading: GtIcons.user,
-        onCopied: () {},
+        onCopied: (text) {
+          context.showToast(
+            "Copied $text to clipboard",
+            icon: GtIcons.fileContent,
+            type: .verified,
+          );
+        },
       ),
     ),
     const GtGap.yXl(),

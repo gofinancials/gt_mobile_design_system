@@ -15,11 +15,7 @@ String _sheetPlatformLabel(GtSheetModalPlatform platform) {
   };
 }
 
-@widgetbook.UseCase(
-  name: 'Status state',
-  type: GtStatusState,
-  path: '[Organisms]/View state',
-)
+@widgetbook.UseCase(name: 'Status state', type: GtStatusState)
 Widget playgroundGtStatusStateUseCase(BuildContext context) {
   final palette = context.palette;
   final platform = context.knobs.object.dropdown<GtSheetModalPlatform>(

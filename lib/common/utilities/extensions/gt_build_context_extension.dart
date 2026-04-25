@@ -27,7 +27,10 @@ extension ThemeContextExtension on BuildContext {
   /// Retrieves the total size of the current screen.
   Size get size => _scaler.size;
 
+  /// The total width of the current screen.
   double get width => fracSizer.width;
+
+  /// The total height of the current screen.
   double get height => fracSizer.height;
 
   /// Converts a given [size] into device-independent pixels (DP) based on the screen's density.
@@ -66,45 +69,112 @@ extension ThemeContextExtension on BuildContext {
   /// Retrieves the corner radii configurations for the current context.
   GtRadii get radii => themeData.radii;
 
+  /// Extra-extra-small radius.
   Radius get radiusXxs => dp(radii.xxs.px).radius;
+
+  /// Extra-small radius.
   Radius get radiusXs => dp(radii.xs.px).radius;
+
+  /// Small radius.
   Radius get radiusSm => dp(radii.sm.px).radius;
+
+  /// Medium radius.
   Radius get radiusMd => dp(radii.md.px).radius;
+
+  /// Large radius.
   Radius get radiusLg => dp(radii.lg.px).radius;
+
+  /// Extra-large radius.
   Radius get radiusXl => dp(radii.xl.px).radius;
+
+  /// 2x extra-large radius.
   Radius get radius2Xl => dp(radii.xxl.px).radius;
+
+  /// 3x extra-large radius.
   Radius get radius3Xl => dp(radii.xxxl.px).radius;
+
+  /// 4x extra-large radius.
   Radius get radius4Xl => dp(radii.xxxxl.px).radius;
+
+  /// 5x extra-large radius.
   Radius get radius5Xl => dp(radii.xxl.px).radius;
+
+  /// Full (circular) radius.
   Radius get radiusFull => dp(radii.full.px).radius;
 
+  /// Border radius with extra-extra-small dimension applied to all corners.
   BorderRadius get borderRadiusXxs => BorderRadius.all(radiusXxs);
+
+  /// Border radius with extra-small dimension applied to all corners.
   BorderRadius get borderRadiusXs => BorderRadius.all(radiusXs);
+
+  /// Border radius with small dimension applied to all corners.
   BorderRadius get borderRadiusSm => BorderRadius.all(radiusSm);
+
+  /// Border radius with medium dimension applied to all corners.
   BorderRadius get borderRadiusMd => BorderRadius.all(radiusMd);
+
+  /// Border radius with large dimension applied to all corners.
   BorderRadius get borderRadiusLg => BorderRadius.all(radiusLg);
+
+  /// Border radius with extra-large dimension applied to all corners.
   BorderRadius get borderRadiusXl => BorderRadius.all(radiusXl);
+
+  /// Border radius with 2x extra-large dimension applied to all corners.
   BorderRadius get borderRadius2Xl => BorderRadius.all(radius2Xl);
+
+  /// Border radius with 3x extra-large dimension applied to all corners.
   BorderRadius get borderRadius3Xl => BorderRadius.all(radius3Xl);
+
+  /// Border radius with 4x extra-large dimension applied to all corners.
   BorderRadius get borderRadius4Xl => BorderRadius.all(radius4Xl);
+
+  /// Border radius with 5x extra-large dimension applied to all corners.
   BorderRadius get borderRadius5Xl => BorderRadius.all(radius5Xl);
+
+  /// Border radius with full (circular) dimension applied to all corners.
   BorderRadius get borderRadiusFull => BorderRadius.all(radiusFull);
 
   /// Retrieves the spacing guidelines and dimensions for the current context.
   GtSpacing get spacing => themeData.spacing;
 
+  /// Extra-small spacing dimension.
   double get spacingXs => dp(spacing.xs.px);
+
+  /// Small spacing dimension.
   double get spacingSm => dp(spacing.sm.px);
+
+  /// Base spacing dimension.
   double get spacingBase => dp(spacing.base.px);
+
+  /// Medium spacing dimension.
   double get spacingMd => dp(spacing.md.px);
+
+  /// Large spacing dimension.
   double get spacingLg => dp(spacing.lg.px);
+
+  /// Extra-large spacing dimension.
   double get spacingXl => dp(spacing.xl.px);
+
+  /// Small section spacing dimension.
   double get spacingSectionSm => dp(spacing.sectionSm.px);
+
+  /// Medium section spacing dimension.
   double get spacingsectionMd => dp(spacing.sectionMd.px);
+
+  /// Large section spacing dimension.
   double get spacingSectionLg => dp(spacing.sectionLg.px);
+
+  /// Extra-large section spacing dimension.
   double get spacingsectionXl => dp(spacing.sectionXl.px);
+
+  /// 2x extra-large section spacing dimension.
   double get spacingsection2xl => dp(spacing.section2xl.px);
+
+  /// 3x extra-large section spacing dimension.
   double get spacingsection3xl => dp(spacing.section3xl.px);
+
+  /// 4x extra-large section spacing dimension.
   double get spacingsection4xl => dp(spacing.section4xl.px);
 
   /// Retrieves the box shadow configurations for the current context.
@@ -159,9 +229,59 @@ extension ThemeContextExtension on BuildContext {
   void saveForm(GlobalKey<FormState> formKey) {
     formKey.currentState?.save();
   }
+
+  /// Retrieves the [GtToast] overlay instance for this context.
+  GtToast get toast => GtToast.of(this);
+
+  /// Retrieves the [GtAlert] overlay instance for this context.
+  GtAlert get alert => GtAlert.of(this);
+
+  /// Retrieves the [GtAlert] overlay instance for this context.
+  GtTooltip get tooltip => GtTooltip.of(this);
+
+  /// Displays a toast notification with the given [message].
+  void showToast(
+    String message, {
+    int duration = 3000,
+    IconData? icon,
+    GtPillVariant? type,
+  }) {
+    toast.show(message, icon: icon, duration: duration, type: type);
+  }
+
+  /// Displays an alert notification with the given [title] and [message].
+  void showAlert(
+    String title, {
+    required String message,
+    int duration = 3000,
+    GtNotificationVariant? type,
+  }) {
+    alert.show(title, message: message, duration: duration, type: type);
+  }
+
+  /// Displays an alert notification with the given [title] and [message].
+  void showTooltip(
+    String title, {
+    required String message,
+    required Offset anchorPosition,
+    required Size anchorSize,
+    required Widget anchorWidget,
+  }) {
+    tooltip.show(
+      title,
+      message: message,
+      anchorPosition: anchorPosition,
+      anchorSize: anchorSize,
+      anchorWidget: anchorWidget,
+    );
+  }
 }
 
+/// An extension on [BuildContext] providing convenient access to common [Navigator] operations.
 extension NavigatorExtension on BuildContext {
+  /// Whether there is a previous route to pop to.
   bool get canPop => Navigator.of(this).canPop();
+
+  /// Pops the top-most route off the navigator.
   Future pop() async => Navigator.of(this).pop();
 }

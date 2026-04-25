@@ -5,11 +5,7 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 /// A use case for the [GtEmptyState] component.
-@widgetbook.UseCase(
-  name: 'Empty state',
-  type: GtEmptyState,
-  path: '[Organisms]/View state',
-)
+@widgetbook.UseCase(name: 'Empty state', type: GtEmptyState)
 Widget playgroundGtEmptyStateUseCase(BuildContext context) {
   final state = context.knobs.object.dropdown<(String, String, String, String)>(
     label: 'Illustration',

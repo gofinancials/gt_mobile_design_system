@@ -7,11 +7,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(
-  name: 'GtRichText',
-  type: GtRichText,
-  path: "[Atoms]/[Typography]",
-)
+@widgetbook.UseCase(name: 'GtRichText', type: GtRichText)
 Widget playgroundGtRichTextUseCase(BuildContext context) {
   final String testString = """
 <h1>GtRichText Engine Live! 🎉</h1>

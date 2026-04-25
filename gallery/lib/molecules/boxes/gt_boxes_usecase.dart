@@ -4,11 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(
-  name: 'GtBoxes',
-  type: GtSizedBox,
-  path: "[Molecules]/GtBoxes",
-)
+@widgetbook.UseCase(name: 'GtBoxes', type: GtSizedBox)
 Widget playgroundGtBoxesUseCase(BuildContext context) {
   // Knobs for GtSizedBox
   final boxWidth = context.knobs.double.slider(
