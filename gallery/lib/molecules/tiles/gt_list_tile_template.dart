@@ -4,11 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(
-  name: 'ListTileTemplates',
-  type: GtBaseListTileTemplate,
-  path: "[Molecules]/[Tiles]",
-)
+@widgetbook.UseCase(name: 'ListTileTemplates', type: GtBaseListTileTemplate)
 Widget gtListTileTemplateUseCase(BuildContext context) {
   return Scaffold(
     body: ListView(

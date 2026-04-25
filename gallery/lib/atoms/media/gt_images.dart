@@ -4,7 +4,7 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(name: 'Images', type: GtImage, path: "[Atoms]/[Images]")
+@widgetbook.UseCase(name: 'Images', type: GtImage)
 Widget playgroundImageUseCase(BuildContext context) {
   String imageUrl = context.knobs.object.dropdown(
     label: "Test Image Urls",

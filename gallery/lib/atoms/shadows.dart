@@ -7,7 +7,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(name: 'Shadows', type: GtShadows, path: "[Atoms]")
+@widgetbook.UseCase(name: 'Shadows', type: GtShadows)
 Widget playgroundShadowsUseCase(BuildContext context) {
   final shadows = [
     (context.shadows.xs, "X-Small"),

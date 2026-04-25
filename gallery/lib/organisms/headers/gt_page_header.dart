@@ -5,11 +5,7 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 /// Interactive preview for [GtPageHeader] (screen title + optional subtitle).
-@widgetbook.UseCase(
-  name: 'Page header',
-  type: GtPageHeader,
-  path: '[Organisms]/Headers',
-)
+@widgetbook.UseCase(name: 'Page header', type: GtPageHeader)
 Widget playgroundGtPageHeaderUseCase(BuildContext context) {
   final title = context.knobs.string(
     label: 'Title',

@@ -6,7 +6,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(name: 'Borders', type: GtRadii, path: "[Atoms]")
+@widgetbook.UseCase(name: 'Borders', type: GtRadii)
 Widget playgroundBordersUseCase(BuildContext context) {
   final borders = [
     context.dp(context.radii.sm.px),

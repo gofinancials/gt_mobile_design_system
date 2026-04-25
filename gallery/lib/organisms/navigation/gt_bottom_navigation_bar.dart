@@ -46,11 +46,7 @@ String _styleLabel(GtBottomNavigationStyle s) {
   };
 }
 
-@widgetbook.UseCase(
-  name: 'Bottom Navigation Bar',
-  type: GtBottomNavigationBar,
-  path: '[Organisms]/Navigation',
-)
+@widgetbook.UseCase(name: 'Bottom Navigation Bar', type: GtBottomNavigationBar)
 Widget playgroundGtBottomNavigationBarUseCase(BuildContext context) {
   final preset = context.knobs.object.dropdown<_BottomNavTabsPreset>(
     label: 'Tabs preset',

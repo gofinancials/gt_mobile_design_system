@@ -107,7 +107,7 @@ class GtCopyTile extends GtStatelessWidget {
   final String value;
 
   /// An optional callback executed immediately after the [value] is copied.
-  final OnPressed? onCopied;
+  final OnChanged<String>? onCopied;
 
   /// Creates a [GtCopyTile].
   const GtCopyTile(
@@ -126,7 +126,7 @@ class GtCopyTile extends GtStatelessWidget {
     return InkWell(
       onTap: () {
         context.copyTextToClipboard(value);
-        onCopied?.call();
+        onCopied?.call(value);
       },
       child: Row(
         spacing: context.spacingBase,

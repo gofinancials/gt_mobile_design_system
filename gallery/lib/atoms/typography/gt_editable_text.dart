@@ -9,11 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 final focusNode = FocusNode();
 
-@widgetbook.UseCase(
-  name: 'GtEditableText',
-  type: GtEditableText,
-  path: "[Atoms]/[Typography]",
-)
+@widgetbook.UseCase(name: 'GtEditableText', type: GtEditableText)
 Widget playgroundGtEditableTextUseCase(BuildContext context) {
   final disabled = context.knobs.boolean(
     label: "Disable Edit",

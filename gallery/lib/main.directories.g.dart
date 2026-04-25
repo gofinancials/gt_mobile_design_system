@@ -58,6 +58,8 @@ import 'package:gallery/organisms/view_state/gt_status_state.dart'
     as _gallery_organisms_view_state_gt_status_state;
 import 'package:gallery/templates/forms/gt_form.dart'
     as _gallery_templates_forms_gt_form;
+import 'package:gallery/templates/overlays/gt_overlay.dart'
+    as _gallery_templates_overlays_gt_overlay;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -70,263 +72,36 @@ final directories = <_widgetbook.WidgetbookNode>[
       ),
     ],
   ),
-  _widgetbook.WidgetbookCategory(
-    name: 'Atoms',
-    children: [
-      _widgetbook.WidgetbookComponent(
-        name: 'GtColors',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Palette',
-            builder: _gallery_atoms_pallette.playgroundPaletteUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'GtRadii',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Borders',
-            builder: _gallery_atoms_borders.playgroundBordersUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookComponent(
-        name: 'GtShadows',
-        useCases: [
-          _widgetbook.WidgetbookUseCase(
-            name: 'Shadows',
-            builder: _gallery_atoms_shadows.playgroundShadowsUseCase,
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookFolder(
-        name: 'Spacing',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtDivider',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Dividers',
-                builder:
-                    _gallery_atoms_spacers_gt_divider.playgroundDividerUseCase,
-              ),
-            ],
-          ),
-          _widgetbook.WidgetbookComponent(
-            name: 'GtGap',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Gaps',
-                builder: _gallery_atoms_spacers_gt_gap.playgroundGapUseCase,
-              ),
-            ],
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookCategory(
-        name: 'Images',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtIcon',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Vector Icons',
-                builder: _gallery_atoms_media_gt_icons.playgroundIconsUseCase,
-              ),
-            ],
-          ),
-          _widgetbook.WidgetbookComponent(
-            name: 'GtImage',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Images',
-                builder: _gallery_atoms_media_gt_images.playgroundImageUseCase,
-              ),
-            ],
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookCategory(
-        name: 'Indicators',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtSwitch',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'GtIndicators',
-                builder: _gallery_atoms_indicators_gt_indicators
-                    .playgroundGtIndicatorsUseCase,
-              ),
-            ],
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookCategory(
-        name: 'Typography',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtEditableText',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'GtEditableText',
-                builder: _gallery_atoms_typography_gt_editable_text
-                    .playgroundGtEditableTextUseCase,
-              ),
-            ],
-          ),
-          _widgetbook.WidgetbookComponent(
-            name: 'GtRichText',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'GtRichText',
-                builder: _gallery_atoms_typography_gt_rich_text
-                    .playgroundGtRichTextUseCase,
-              ),
-            ],
-          ),
-          _widgetbook.WidgetbookComponent(
-            name: 'GtText',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'GtText',
-                builder:
-                    _gallery_atoms_typography_gt_text.playgroundGtTextUseCase,
-              ),
-            ],
-          ),
-        ],
-      ),
-    ],
-  ),
-  _widgetbook.WidgetbookCategory(
-    name: 'Molecules',
+  _widgetbook.WidgetbookFolder(
+    name: 'common',
     children: [
       _widgetbook.WidgetbookFolder(
-        name: 'GtBoxes',
+        name: 'styling',
         children: [
           _widgetbook.WidgetbookComponent(
-            name: 'GtSizedBox',
+            name: 'GtColors',
             useCases: [
               _widgetbook.WidgetbookUseCase(
-                name: 'GtBoxes',
-                builder: _gallery_molecules_boxes_gt_boxes_usecase
-                    .playgroundGtBoxesUseCase,
-              ),
-            ],
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookFolder(
-        name: 'GtButtons',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtButton',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Buttons',
-                builder: _gallery_molecules_buttons_gt_button_usecase
-                    .playgroundButtonsUseCase,
-              ),
-            ],
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookFolder(
-        name: 'GtText',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtBalanceText',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Balance',
-                builder: _gallery_molecules_text_gt_balance_text
-                    .playgroundGtBalanceTextUseCase,
-              ),
-            ],
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookCategory(
-        name: 'Tiles',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtBaseListTileTemplate',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'ListTileTemplates',
-                builder: _gallery_molecules_tiles_gt_list_tile_template
-                    .gtListTileTemplateUseCase,
+                name: 'Palette',
+                builder: _gallery_atoms_pallette.playgroundPaletteUseCase,
               ),
             ],
           ),
           _widgetbook.WidgetbookComponent(
-            name: 'GtListTile',
+            name: 'GtRadii',
             useCases: [
               _widgetbook.WidgetbookUseCase(
-                name: 'GtListTiles',
-                builder:
-                    _gallery_molecules_tiles_gt_list_tile.gtListTileAllUseCase,
-              ),
-            ],
-          ),
-        ],
-      ),
-    ],
-  ),
-  _widgetbook.WidgetbookCategory(
-    name: 'Organisms',
-    children: [
-      _widgetbook.WidgetbookFolder(
-        name: 'Headers',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtPageHeader',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Page header',
-                builder: _gallery_organisms_headers_gt_page_header
-                    .playgroundGtPageHeaderUseCase,
-              ),
-            ],
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookFolder(
-        name: 'Navigation',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtBottomNavigationBar',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Bottom Navigation Bar',
-                builder: _gallery_organisms_navigation_gt_bottom_navigation_bar
-                    .playgroundGtBottomNavigationBarUseCase,
-              ),
-            ],
-          ),
-        ],
-      ),
-      _widgetbook.WidgetbookFolder(
-        name: 'View state',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtEmptyState',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'Empty state',
-                builder: _gallery_organisms_view_state_gt_empty_state
-                    .playgroundGtEmptyStateUseCase,
+                name: 'Borders',
+                builder: _gallery_atoms_borders.playgroundBordersUseCase,
               ),
             ],
           ),
           _widgetbook.WidgetbookComponent(
-            name: 'GtStatusState',
+            name: 'GtShadows',
             useCases: [
               _widgetbook.WidgetbookUseCase(
-                name: 'Status state',
-                builder: _gallery_organisms_view_state_gt_status_state
-                    .playgroundGtStatusStateUseCase,
+                name: 'Shadows',
+                builder: _gallery_atoms_shadows.playgroundShadowsUseCase,
               ),
             ],
           ),
@@ -338,8 +113,142 @@ final directories = <_widgetbook.WidgetbookNode>[
     name: 'widgets',
     children: [
       _widgetbook.WidgetbookFolder(
+        name: 'atoms',
+        children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'indicators',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSwitch',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtIndicators',
+                    builder: _gallery_atoms_indicators_gt_indicators
+                        .playgroundGtIndicatorsUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'media',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtIcon',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Vector Icons',
+                    builder:
+                        _gallery_atoms_media_gt_icons.playgroundIconsUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtImage',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Images',
+                    builder:
+                        _gallery_atoms_media_gt_images.playgroundImageUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'spacers',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtDivider',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Dividers',
+                    builder: _gallery_atoms_spacers_gt_divider
+                        .playgroundDividerUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtGap',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Gaps',
+                    builder: _gallery_atoms_spacers_gt_gap.playgroundGapUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'typography',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtEditableText',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtEditableText',
+                    builder: _gallery_atoms_typography_gt_editable_text
+                        .playgroundGtEditableTextUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtRichText',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtRichText',
+                    builder: _gallery_atoms_typography_gt_rich_text
+                        .playgroundGtRichTextUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtText',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtText',
+                    builder: _gallery_atoms_typography_gt_text
+                        .playgroundGtTextUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
         name: 'molecules',
         children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'boxes',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSizedBox',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtBoxes',
+                    builder: _gallery_molecules_boxes_gt_boxes_usecase
+                        .playgroundGtBoxesUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'buttons',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtButton',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Buttons',
+                    builder: _gallery_molecules_buttons_gt_button_usecase
+                        .playgroundButtonsUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
           _widgetbook.WidgetbookFolder(
             name: 'media',
             children: [
@@ -375,6 +284,46 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'Pills Gallery',
                     builder:
                         _gallery_molecules_pills_gt_pill.buildGtPillUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'text',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtBalanceText',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Balance',
+                    builder: _gallery_molecules_text_gt_balance_text
+                        .playgroundGtBalanceTextUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'tiles',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtBaseListTileTemplate',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'ListTileTemplates',
+                    builder: _gallery_molecules_tiles_gt_list_tile_template
+                        .gtListTileTemplateUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtListTile',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtListTiles',
+                    builder: _gallery_molecules_tiles_gt_list_tile
+                        .gtListTileAllUseCase,
                   ),
                 ],
               ),
@@ -465,6 +414,62 @@ final directories = <_widgetbook.WidgetbookNode>[
               ),
             ],
           ),
+          _widgetbook.WidgetbookFolder(
+            name: 'headers',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtPageHeader',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Page header',
+                    builder: _gallery_organisms_headers_gt_page_header
+                        .playgroundGtPageHeaderUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'navigation',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtBottomNavigationBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Bottom Navigation Bar',
+                    builder:
+                        _gallery_organisms_navigation_gt_bottom_navigation_bar
+                            .playgroundGtBottomNavigationBarUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'view_state',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtEmptyState',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Empty state',
+                    builder: _gallery_organisms_view_state_gt_empty_state
+                        .playgroundGtEmptyStateUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtStatusState',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Status state',
+                    builder: _gallery_organisms_view_state_gt_status_state
+                        .playgroundGtStatusStateUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
       ),
       _widgetbook.WidgetbookFolder(
@@ -485,6 +490,41 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtVirtualKeypadForm [Avatar]',
                     builder: _gallery_templates_forms_gt_form
                         .buildGtVirtualKeypadFormAvatarUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'overlays',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAlert',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAlert',
+                    builder: _gallery_templates_overlays_gt_overlay
+                        .buildGtAlertUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtToast',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtToast',
+                    builder: _gallery_templates_overlays_gt_overlay
+                        .buildGtToastUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTooltipWidget',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTooltipWidget',
+                    builder: _gallery_templates_overlays_gt_overlay
+                        .buildGtToolTipUsecase,
                   ),
                 ],
               ),
