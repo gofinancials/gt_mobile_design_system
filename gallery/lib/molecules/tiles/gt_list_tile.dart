@@ -293,7 +293,7 @@ Widget gtListTileAllUseCase(BuildContext context) {
     // --- 2. TRANSACTIONS & FINANCIALS ---
     const GalleryPageSectionHeader(
       title:
-          "Transactions & Financials [GtTransactionListTile/GtLimitInfoListTile/GtLimitEditListTile/GtDoubleColumnListTile/GtLimitInfoListTile]",
+          "Transactions & Financials [GtTransactionListTile/GtLimitInfoListTile/GtLimitEditListTile/GtDoubleColumnListTile/GtLimitInfoListTile/GtGoalProgressListTile]",
     ),
 
     GtCard(
@@ -419,6 +419,17 @@ Widget gtListTileAllUseCase(BuildContext context) {
           ),
         ],
       ),
+    ),
+    const GtGap.yBase(),
+    GtGoalProgressListTile(
+      currentAmount: context.knobs.double.slider(
+        label: "Goal Progress",
+        initialValue: 500,
+        min: 0,
+        max: 1000000,
+      ),
+      goalAmount: 1000000,
+      onEdit: () {},
     ),
 
     // --- 3. USER & ACCOUNT PROFILES ---

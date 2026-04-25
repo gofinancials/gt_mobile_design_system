@@ -49,6 +49,12 @@ class GtTextButton extends GtButton {
     super.key,
   });
 
+  @override
+  EdgeInsetsGeometry padding(BuildContext context) {
+    if (contentPadding != null) return contentPadding!;
+    return super.padding(context);
+  }
+
   Color _textColor(GtPalette palette) {
     if (isDisabled) return palette.text.disabled;
     if (textColor != null) return textColor!;
@@ -59,13 +65,14 @@ class GtTextButton extends GtButton {
       .neutralAlt => palette.text.darkerSub,
       .destructive || .destructiveAlt => palette.error.base,
       .away => palette.away.darker,
-      .featured => palette.feature.base,
+      .featured => palette.feature.dark,
       .info => palette.information.base,
       .success => palette.success.base,
       .warning => palette.warning.base,
       .highlighted => palette.highlighted.base,
       .stable => palette.stable.base,
       .verified => palette.verified.base,
+      .black => palette.text.strong,
       _ => palette.text.strong,
     };
   }
