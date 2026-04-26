@@ -8,6 +8,7 @@ export 'gt_multi_select_field.dart';
 export 'gt_number_field.dart';
 export 'gt_password_field.dart';
 export 'gt_phone_field.dart';
+export 'gt_pin_input.dart';
 export 'gt_search_field.dart';
 export 'gt_select_field.dart';
 export 'gt_text_field.dart';
