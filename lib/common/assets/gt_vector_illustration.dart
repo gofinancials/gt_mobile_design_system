@@ -74,8 +74,8 @@ class GtVectorIllustrations {
   /// Path to the failed SVG.
   static const failed = "$_basePath/failed.svg";
 
-  /// Path to the featureUpdate SVG.
-  static const featureUpdate = "$_basePath/feature_update.svg";
+  /// Path to the bolt SVG.
+  static const bolt = "$_basePath/feature_update.svg";
 
   /// Path to the file SVG.
   static const file = "$_basePath/file.svg";
@@ -286,7 +286,7 @@ class GtVectorIllustrations {
     emptyState,
     exclamation,
     failed,
-    featureUpdate,
+    bolt,
     file,
     flexAccount,
     fuel,
