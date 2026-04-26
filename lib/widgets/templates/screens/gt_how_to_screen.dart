@@ -52,7 +52,7 @@ class GtHowToScreen extends GtStatelessWidget {
     final color = palette.text.white;
 
     return Scaffold(
-      backgroundColor: palette.faded.dark,
+      backgroundColor: palette.bg.surface,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: context.insets.defaultAllInsets,
@@ -73,10 +73,13 @@ class GtHowToScreen extends GtStatelessWidget {
                 style: context.textStyles.h5(color: color),
               ),
               GtGap.yXl(),
-              GtText(
-                description,
-                textAlign: .center,
-                style: context.textStyles.subHeadM(color: palette.text.soft),
+              Padding(
+                padding: context.insets.symmetricDp(horizontal: 10.px),
+                child: GtText(
+                  description,
+                  textAlign: .center,
+                  style: context.textStyles.subHeadM(color: palette.text.soft),
+                ),
               ),
               GtGap.ySection4xl(),
               for (final instruction in instructions) ...[
@@ -96,7 +99,7 @@ class GtHowToScreen extends GtStatelessWidget {
                     child: GtText(
                       continueText,
                       style: context.textStyles.subHeadM(
-                        color: palette.text.soft,
+                        color: palette.text.white,
                       ),
                     ),
                   ),

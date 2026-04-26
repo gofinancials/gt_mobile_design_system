@@ -34,7 +34,7 @@ class GtWelcomeSlide extends GtStatelessWidget {
           const GtGap.ySectionXl(),
           GtText(
             slide.title.upper,
-            style: context.textStyles.h2(color: slide.textColor),
+            style: context.textStyles.h4(color: slide.textColor),
             textAlign: .center,
             maxLines: 1,
           ),
