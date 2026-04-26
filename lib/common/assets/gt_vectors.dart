@@ -14,4 +14,9 @@ class GtVectors {
 
   /// A list containing all available general vector SVG paths.
   static List<String> get all => [logo, clock, coin];
+  static const tapRight = "$_basePath/tap_right.svg";
+  static const tapLeft = "$_basePath/tap_left.svg";
+
+  /// A list containing all available general vector SVG paths.
+  static List<String> get all => [logo, tapRight, tapLeft, clock, coin];
 }

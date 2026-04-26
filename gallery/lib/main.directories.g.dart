@@ -62,6 +62,8 @@ import 'package:gallery/templates/forms/gt_form.dart'
     as _gallery_templates_forms_gt_form;
 import 'package:gallery/templates/overlays/gt_overlay.dart'
     as _gallery_templates_overlays_gt_overlay;
+import 'package:gallery/templates/screens/gt_how_to_screen.dart'
+    as _gallery_templates_screens_gt_how_to_screen;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
