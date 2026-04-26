@@ -63,6 +63,10 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Creates a two-tone linear gradient.</p>
+<p>Transitions from the provided <code>light</code> color at the top-left to the <code>dark</code> color at the bottom-right.</p>
+</section>
 
 
     
@@ -72,8 +76,8 @@
   return LinearGradient(
     colors: [light, dark],
     stops: [0, 1],
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
   );
 }</code></pre>
 </section>

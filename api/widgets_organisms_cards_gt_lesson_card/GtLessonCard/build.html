@@ -130,7 +130,7 @@ Widget build(BuildContext context) {
             decoration: BoxDecoration(gradient: gradient),
             child: GtImage(
               image: illustration,
-              height: context.dp(124.px),
+              height: context.dp(150.px),
               alignment: .center,
             ),
           ),
@@ -170,24 +170,9 @@ Widget build(BuildContext context) {
                   ),
                 ),
                 const GtGap.yBase(),
-                Wrap(
-                  spacing: context.spacingMd,
-                  runSpacing: context.spacingBase,
-                  children: [
-                    GtSimpleInfoTile(
-                      leading: GtSvg(GtVectors.coin, width: 16, height: 16),
-                      text: progress,
-                    ),
-                    GtSimpleInfoTile(
-                      leading: GtSvg(
-                        GtVectors.clock,
-                        width: 16,
-                        height: 16,
-                        color: context.palette.feature.dark,
-                      ),
-                      text: progressDuration,
-                    ),
-                  ],
+                GtLessonInfoTile(
+                  progress: progress,
+                  progressDuration: progressDuration,
                 ),
               ],
             ),
