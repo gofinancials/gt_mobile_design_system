@@ -86,24 +86,12 @@ class GtTabPill<T> extends StatelessWidget {
     };
   }
 
-  /// Automatically scrolls this tab into view immediately if it is currently selected.
-  void scrollIntoView(BuildContext context) {
-    if (!isSelected) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Scrollable.ensureVisible(
-        context,
-        curve: Curves.decelerate,
-        duration: 500.milliseconds,
-      );
-    });
-  }
-
   /// Indicates whether this specific tab represents the active selected item.
   bool get isSelected => activeValue == value;
 
   @override
   Widget build(BuildContext context) {
-    scrollIntoView(context);
+    if (isSelected) context.scrollIntoView();
     final palette = context.palette;
     final textColor = getTextColor(palette);
     final bgColor = getBgColor(palette);
@@ -170,7 +158,7 @@ class GtSelectionPill<T> extends GtTabPill<T> {
 
   @override
   Widget build(BuildContext context) {
-    scrollIntoView(context);
+    if (isSelected) context.scrollIntoView();
     final palette = context.palette;
     final textColor = getTextColor(palette);
     final bgColor = getBgColor(palette);

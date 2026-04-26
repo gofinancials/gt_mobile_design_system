@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:flutter/material.dart';
@@ -123,6 +124,48 @@ enum GtCardVariant {
     };
   }
 
+  /// Gets the border color associated with the card variant from the theme [palette].
+  Gradient getGradient(BuildContext context) {
+    final gradient = context.gradients;
+    final palette = context.palette;
+    return switch (this) {
+      .away => gradient.duoToneGradient(palette.away.darker, palette.away.base),
+      .error => gradient.duoToneGradient(
+        palette.error.darker,
+        palette.error.base,
+      ),
+      .featured => gradient.duoToneGradient(
+        palette.feature.darker,
+        palette.feature.base,
+      ),
+      .highlighted => gradient.duoToneGradient(
+        palette.highlighted.darker,
+        palette.highlighted.base,
+      ),
+      .info => gradient.duoToneGradient(
+        palette.information.darker,
+        palette.information.base,
+      ),
+      .stable => gradient.duoToneGradient(
+        palette.stable.darker,
+        palette.stable.base,
+      ),
+      .success => gradient.duoToneGradient(
+        palette.success.darker,
+        palette.success.base,
+      ),
+      .verified => gradient.duoToneGradient(
+        palette.verified.darker,
+        palette.verified.base,
+      ),
+      .warning => gradient.duoToneGradient(
+        palette.warning.darker,
+        palette.warning.base,
+      ),
+      _ => gradient.duoToneGradient(palette.icon.sub, palette.text.soft),
+    };
+  }
+
   /// Gets the corresponding [GtButtonVariant] for the card variant, used for
   /// buttons inside the card to ensure a consistent theme.
   GtButtonVariant get buttonVariant => switch (this) {
@@ -181,6 +224,8 @@ class GtCard extends GtStatelessWidget {
   /// The semantic variant determining the default background color. Defaults to [GtCardVariant.normal].
   final GtCardVariant variant;
 
+  final OnPressed? onPressed;
+
   /// Creates a [GtCard].
   const GtCard({
     this.color,
@@ -195,6 +240,7 @@ class GtCard extends GtStatelessWidget {
     this.gradient,
     this.variant = GtCardVariant.normal,
     super.key,
+    this.onPressed,
     required this.child,
   });
 
@@ -202,31 +248,42 @@ class GtCard extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.palette;
     final computedColor = color ?? variant.getBgColor(palette);
+    final computedRadius = borderRadius ?? context.borderRadius2Xl;
 
     final shape = switch (cornerStyle) {
       CornerStyle.continous => ContinuousRectangleBorder(
-        borderRadius: borderRadius ?? context.borderRadius2Xl,
+        borderRadius: computedRadius,
         side: border ?? BorderSide.none,
       ),
       _ => RoundedRectangleBorder(
-        borderRadius: borderRadius ?? context.borderRadius2Xl,
+        borderRadius: computedRadius,
         side: border ?? BorderSide.none,
       ),
     };
-    return AnimatedContainer(
-      constraints: constraints,
-      decoration: ShapeDecoration(
-        color: gradient == null ? computedColor : null,
-        shadows: shadows,
-        shape: shape,
-        gradient: gradient,
-        image: image,
+    return ClipRRect(
+      borderRadius: computedRadius,
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.mediumImpact();
+          onPressed?.call();
+        },
+        behavior: .translucent,
+        child: AnimatedContainer(
+          constraints: constraints,
+          decoration: ShapeDecoration(
+            color: gradient == null ? computedColor : null,
+            shadows: shadows,
+            shape: shape,
+            gradient: gradient,
+            image: image,
+          ),
+          width: double.infinity,
+          margin: margin,
+          padding: padding ?? context.insets.defaultAllInsets,
+          duration: 500.milliseconds,
+          child: child,
+        ),
       ),
-      width: double.infinity,
-      margin: margin,
-      padding: padding ?? context.insets.defaultAllInsets,
-      duration: 500.milliseconds,
-      child: child,
     );
   }
 }

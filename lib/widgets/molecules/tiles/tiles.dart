@@ -5,6 +5,7 @@ export 'gt_info_tiles.dart';
 export 'gt_limit_tiles.dart';
 export 'gt_list_tile_template.dart';
 export 'gt_list_tiles.dart';
+export 'gt_progress_cards.dart';
 export 'gt_radio_tile.dart';
 export 'gt_selection_tiles.dart';
 export 'gt_status_tiles.dart';

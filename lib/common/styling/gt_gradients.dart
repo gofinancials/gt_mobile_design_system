@@ -36,4 +36,13 @@ class GtGradients {
       end: Alignment.bottomLeft,
     );
   }
+
+  Gradient duoToneGradient(Color dark, Color light) {
+    return LinearGradient(
+      colors: [light, dark],
+      stops: [0, 1],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+    );
+  }
 }

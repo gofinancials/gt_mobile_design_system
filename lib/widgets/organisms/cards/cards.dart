@@ -9,6 +9,7 @@ export 'gt_debit_card.dart';
 export 'gt_help_card.dart';
 export 'gt_inbox_card.dart';
 export 'gt_instruction_card.dart';
+export 'gt_lesson_card.dart';
 export 'gt_notification_card.dart';
 export 'gt_payment_source_card.dart';
 export 'gt_product_card.dart';
