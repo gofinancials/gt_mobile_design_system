@@ -59,10 +59,10 @@ class GtHowToScreen extends GtStatelessWidget {
           child: Column(
             crossAxisAlignment: .center,
             children: [
-              GtGap.ySectionSm(),
+              GtGap.yLg(),
               GtCancelButton(
                 alignment: .topRight,
-                size: 32,
+                size: 26,
                 color: palette.icon.white,
               ),
               GtGap.ySection4xl(),
