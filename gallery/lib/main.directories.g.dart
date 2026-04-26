@@ -64,6 +64,8 @@ import 'package:gallery/templates/overlays/gt_overlay.dart'
     as _gallery_templates_overlays_gt_overlay;
 import 'package:gallery/templates/screens/gt_how_to_screen.dart'
     as _gallery_templates_screens_gt_how_to_screen;
+import 'package:gallery/templates/slides/gt_slides.dart'
+    as _gallery_templates_slides_gt_slides;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -534,6 +536,36 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtToast',
                     builder: _gallery_templates_overlays_gt_overlay
                         .buildGtToastUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'screens',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtHowToScreen',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtHowToScreen',
+                    builder: _gallery_templates_screens_gt_how_to_screen
+                        .buildGtHowToScreenUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'slides',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtWelcomeSlides',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtWelcomeSlides',
+                    builder: _gallery_templates_slides_gt_slides
+                        .buildGtWelcomeSlidesUsecase,
                   ),
                 ],
               ),

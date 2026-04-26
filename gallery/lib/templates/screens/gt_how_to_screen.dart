@@ -5,7 +5,7 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtHowToScreen', type: GtHowToScreen)
-Widget buildGtHomeAppbarUsecase(BuildContext context) {
+Widget buildGtHowToScreenUsecase(BuildContext context) {
   return GtHowToScreen(
     title: context.knobs.string(label: "Title", initialValue: "how to learn"),
     description: context.knobs.string(
