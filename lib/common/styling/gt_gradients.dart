@@ -17,6 +17,9 @@ class GtGradients {
   /// Requires a [BuildContext] to accurately resolve context-dependent gradient colors.
   const GtGradients(this.context);
 
+  /// A linear gradient tailored for avatar backgrounds.
+  ///
+  /// Transitions from a 24% opacity primary color into the solid primary color.
   Gradient get avatarGradient {
     return LinearGradient(
       colors: [context.palette.primary.alpha24, context.palette.primary.base],
@@ -26,6 +29,9 @@ class GtGradients {
     );
   }
 
+  /// A subtle, semi-transparent linear gradient typically used for ghost styling.
+  ///
+  /// Blends a solid white color into a 16% opacity white.
   Gradient get ghostGradient {
     return LinearGradient(
       colors: [
@@ -37,12 +43,15 @@ class GtGradients {
     );
   }
 
+  /// Creates a two-tone linear gradient.
+  ///
+  /// Transitions from the provided [light] color at the top-left to the [dark] color at the bottom-right.
   Gradient duoToneGradient(Color dark, Color light) {
     return LinearGradient(
       colors: [light, dark],
       stops: [0, 1],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
     );
   }
 }
