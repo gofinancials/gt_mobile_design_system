@@ -22,7 +22,12 @@ class GtVectors {
   static const sterling = "$_basePath/sterling.svg";
 
   /// A list containing all available core vector asset paths.
-  static List<String> get all => [logo, clock, coin, tapRight, tapLeft];
-  /// A list containing all available general vector SVG paths.
-  static List<String> get all => [logo, tapRight, tapLeft, sterling];
+  static List<String> get all => [
+    logo,
+    clock,
+    coin,
+    tapRight,
+    tapLeft,
+    sterling,
+  ];
 }
