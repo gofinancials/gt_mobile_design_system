@@ -7,7 +7,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 @widgetbook.UseCase(name: 'Vector Icons', type: GtIcon)
 Widget playgroundIconsUseCase(BuildContext context) {
-  final allIcons = GtVectorIcons.all;
+  final allIcons = GtVectors.all;
   final allIconFonts = GtIcons.all;
   final allIllustrations = GtVectorIllustrations.all;
   double size = context.knobs.object.dropdown<double>(
