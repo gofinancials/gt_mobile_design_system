@@ -111,31 +111,42 @@ and</li>
 Widget build(BuildContext context) {
   final palette = context.palette;
   final computedColor = color ?? variant.getBgColor(palette);
+  final computedRadius = borderRadius ?? context.borderRadius2Xl;
 
   final shape = switch (cornerStyle) {
     CornerStyle.continous =&gt; ContinuousRectangleBorder(
-      borderRadius: borderRadius ?? context.borderRadius2Xl,
+      borderRadius: computedRadius,
       side: border ?? BorderSide.none,
     ),
     _ =&gt; RoundedRectangleBorder(
-      borderRadius: borderRadius ?? context.borderRadius2Xl,
+      borderRadius: computedRadius,
       side: border ?? BorderSide.none,
     ),
   };
-  return AnimatedContainer(
-    constraints: constraints,
-    decoration: ShapeDecoration(
-      color: gradient == null ? computedColor : null,
-      shadows: shadows,
-      shape: shape,
-      gradient: gradient,
-      image: image,
+  return ClipRRect(
+    borderRadius: computedRadius,
+    child: GestureDetector(
+      onTap: () {
+        HapticFeedback.mediumImpact();
+        onPressed?.call();
+      },
+      behavior: .translucent,
+      child: AnimatedContainer(
+        constraints: constraints,
+        decoration: ShapeDecoration(
+          color: gradient == null ? computedColor : null,
+          shadows: shadows,
+          shape: shape,
+          gradient: gradient,
+          image: image,
+        ),
+        width: double.infinity,
+        margin: margin,
+        padding: padding ?? context.insets.defaultAllInsets,
+        duration: 500.milliseconds,
+        child: child,
+      ),
     ),
-    width: double.infinity,
-    margin: margin,
-    padding: padding ?? context.insets.defaultAllInsets,
-    duration: 500.milliseconds,
-    child: child,
   );
 }</code></pre>
 </section>
