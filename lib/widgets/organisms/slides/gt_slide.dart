@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/extensions/extensions.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A stateless widget that displays a single welcome slide.
+///
+/// This widget is typically used within a carousel or page view, such as
+/// [GtWelcomeSlides]. It renders the content defined in a [GtSlideData]
+/// object, including an image, title, subtitle, and background styling.
 class GtWelcomeSlide extends GtStatelessWidget {
+  /// The data defining the content and styling of this slide.
   final GtSlideData slide;
 
+  /// Creates a [GtWelcomeSlide] widget.
   const GtWelcomeSlide({super.key, required this.slide});
 
   @override

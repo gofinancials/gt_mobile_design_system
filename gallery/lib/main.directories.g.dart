@@ -62,6 +62,8 @@ import 'package:gallery/templates/forms/gt_form.dart'
     as _gallery_templates_forms_gt_form;
 import 'package:gallery/templates/overlays/gt_overlay.dart'
     as _gallery_templates_overlays_gt_overlay;
+import 'package:gallery/templates/screens/gt_duo_tone_screen.dart'
+    as _gallery_templates_screens_gt_duo_tone_screen;
 import 'package:gallery/templates/screens/gt_how_to_screen.dart'
     as _gallery_templates_screens_gt_how_to_screen;
 import 'package:gallery/templates/slides/gt_slides.dart'
@@ -544,6 +546,16 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'screens',
             children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtDuotoneScreen',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtDuotoneScreen',
+                    builder: _gallery_templates_screens_gt_duo_tone_screen
+                        .buildGtDuotoneScreenUsecase,
+                  ),
+                ],
+              ),
               _widgetbook.WidgetbookComponent(
                 name: 'GtHowToScreen',
                 useCases: [
