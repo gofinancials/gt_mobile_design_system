@@ -68,6 +68,8 @@ import 'package:gallery/templates/screens/gt_how_to_screen.dart'
     as _gallery_templates_screens_gt_how_to_screen;
 import 'package:gallery/templates/slides/gt_slides.dart'
     as _gallery_templates_slides_gt_slides;
+import 'package:gallery/templates/modals/gt_bttom_modal.dart'
+    as _gallery_widgets_templates_modals_gt_bottom_modal;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -563,6 +565,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtHowToScreen',
                     builder: _gallery_templates_screens_gt_how_to_screen
                         .buildGtHowToScreenUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'modals',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtBottomModal',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtBottomModal',
+                    builder: _gallery_widgets_templates_modals_gt_bottom_modal
+                        .buildGtBottomModalUsecase,
                   ),
                 ],
               ),
