@@ -988,4 +988,28 @@ class GtTextStyles {
       overflow: overflow,
     );
   }
+
+  /// Generates the textstyles for calendars
+  TextStyle calendar({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: GtFonts.calendar,
+      size: 14,
+      heightPx: 20,
+      widthPct: -.6,
+      weight: FontWeight.w500,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
 }

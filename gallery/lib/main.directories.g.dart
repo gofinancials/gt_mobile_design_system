@@ -34,8 +34,8 @@ import 'package:gallery/molecules/boxes/gt_boxes_usecase.dart'
     as _gallery_molecules_boxes_gt_boxes_usecase;
 import 'package:gallery/molecules/buttons/gt_button_usecase.dart'
     as _gallery_molecules_buttons_gt_button_usecase;
-import 'package:gallery/molecules/inputs/gt_pin_input.dart'
-    as _gallery_molecules_inputs_gt_pin_input;
+import 'package:gallery/molecules/inputs/gt_inputs.dart'
+    as _gallery_molecules_inputs_gt_inputs;
 import 'package:gallery/molecules/media/gt_avatar.dart'
     as _gallery_molecules_media_gt_avatar;
 import 'package:gallery/molecules/pills/gt_pill.dart'
@@ -263,11 +263,21 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'inputs',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtCalendar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtCalendar',
+                    builder: _gallery_molecules_inputs_gt_inputs
+                        .buildGtCalendarUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtPinInput',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtPinInput',
-                    builder: _gallery_molecules_inputs_gt_pin_input
+                    builder: _gallery_molecules_inputs_gt_inputs
                         .buildGtPinInputUsecase,
                   ),
                 ],

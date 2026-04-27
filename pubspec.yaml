@@ -28,6 +28,7 @@ dependencies:
       url: https://github.com/dirisujesse/styled_text_package.git
       path: styled_text
       ref: master
+  table_calendar: ^3.2.0
   vector_graphics: ^1.1.19
 
 dev_dependencies:
@@ -65,3 +66,7 @@ flutter:
     - family: GtIconFont
       fonts:
         - asset: assets/fonts/GtIconFont.otf
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Medium.otf
+          weight: 500
