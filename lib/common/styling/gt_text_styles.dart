@@ -424,6 +424,29 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Small Body (Body S) paragraph text style.
+  TextStyle body2s({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 13,
+      heightPx: 16,
+      widthPct: 1,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   /// Generates the Extra Small Body (Body XS) paragraph text style.
   TextStyle bodyXs({
     Color? color,
@@ -483,6 +506,29 @@ class GtTextStyles {
       family: fonts.body,
       size: 8,
       heightPx: 12,
+      widthPct: 0.0,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the standard Input text style, typically used inside text fields.
+  TextStyle input({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 17,
+      heightPx: 24,
       widthPct: 0.0,
       color: color,
       decoration: decoration,
@@ -989,7 +1035,7 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the textstyles for calendars
+  /// Generates the text style used for calendar days and headers.
   TextStyle calendar({
     Color? color,
     TextDecoration? decoration,
@@ -1012,4 +1058,49 @@ class GtTextStyles {
       overflow: overflow,
     );
   }
+
+  /// A collection containing all predefined [TextStyle] configurations paired with their labels.
+  List<(String, TextStyle)> get all => [
+    ('Display 1 (context.textStyles.d1)', d1()),
+    ('Display 2 (context.textStyles.d2)', d2()),
+    ('Display 3 (context.textStyles.d3)', d3()),
+    ('Display 4 (context.textStyles.d4)', d4()),
+    ('Heading 1 (context.textStyles.h1)', h1()),
+    ('Heading 2 (context.textStyles.h2)', h2()),
+    ('Heading 3 (context.textStyles.h3)', h3()),
+    ('Heading 4 (context.textStyles.h4)', h4()),
+    ('Heading 5 (context.textStyles.h5)', h5()),
+    ('Heading 6 (context.textStyles.h6)', h6()),
+    ('Heading 7 (context.textStyles.h7)', h7()),
+    ('Body XL (context.textStyles.bodyXl)', bodyXl()),
+    ('Body L (context.textStyles.bodyL)', bodyL()),
+    ('Body M (context.textStyles.bodyM)', bodyM()),
+    ('Body S (context.textStyles.bodyS)', bodyS()),
+    ('Body 2S (context.textStyles.body2s)', body2s()),
+    ('Body XS (context.textStyles.bodyXs)', bodyXs()),
+    ('Body 2XS (context.textStyles.body2Xs)', body2Xs()),
+    ('Body 3XS (context.textStyles.body3Xs)', body3Xs()),
+    ('Input (context.textStyles.input)', input()),
+    ('Label XL (context.textStyles.labelXl)', labelXl()),
+    ('Label L (context.textStyles.labelL)', labelL()),
+    ('Label M (context.textStyles.labelM)', labelM()),
+    ('Label S (context.textStyles.labelS)', labelS()),
+    ('Label XS (context.textStyles.labelXs)', labelXs()),
+    ('Title M (context.textStyles.titleM)', titleM()),
+    ('Title S (context.textStyles.titleS)', titleS()),
+    ('Title XS (context.textStyles.titleXs)', titleXs()),
+    ('Title 2XS (context.textStyles.title2xs)', title2xs()),
+    ('Subhead M (context.textStyles.subHeadM)', subHeadM()),
+    ('Subhead S (context.textStyles.subHeadS)', subHeadS()),
+    ('Subhead 2S (context.textStyles.subHead2s)', subHead2s()),
+    ('Subhead XS (context.textStyles.subHeadXs)', subHeadXs()),
+    ('Subhead 2XS (context.textStyles.subHead2xs)', subHead2xs()),
+    ('Button (context.textStyles.button)', button()),
+    ('Button S (context.textStyles.buttonS)', buttonS()),
+    ('Button 2S (context.textStyles.button2s)', button2s()),
+    ('Button XS (context.textStyles.buttonXs)', buttonXs()),
+    ('Button XXS (context.textStyles.buttonXxs)', buttonXxs()),
+    ('Nav Bar Label (context.textStyles.navBarLabel)', navBarLabel()),
+    ('Calendar (context.textStyles.calendar)', calendar()),
+  ];
 }

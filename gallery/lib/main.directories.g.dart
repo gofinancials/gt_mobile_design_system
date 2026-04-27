@@ -282,6 +282,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                   ),
                 ],
               ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTextField',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTextField',
+                    builder: _gallery_molecules_inputs_gt_inputs
+                        .buildGtTextFieldUsecase,
+                  ),
+                ],
+              ),
             ],
           ),
           _widgetbook.WidgetbookFolder(
