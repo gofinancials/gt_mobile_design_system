@@ -122,6 +122,9 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// How the children should be placed along the cross axis. Defaults to [CrossAxisAlignment.end].
   final CrossAxisAlignment crossAxisAlignment;
 
+  /// Custom styling for the subtitle text
+  final TextStyle? subStyle;
+
   /// Creates a [GtTransactionParticipantListTile].
   const GtTransactionParticipantListTile(
     this.title, {
@@ -131,6 +134,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
     this.crossAxisAlignment = CrossAxisAlignment.end,
     this.trailing,
     this.superscript,
+    this.subStyle,
   });
 
   @override
@@ -141,11 +145,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
       crossAxisAlignment: crossAxisAlignment,
       spacing: context.spacingMd,
       children: [
-        if (leading != null)
-          ConstrainedBox(
-            constraints: BoxConstraints.tight(Size.square(32)),
-            child: leading,
-          ),
+        ?leading,
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +158,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
               if (superscript.hasValue)
                 GtText(
                   superscript?.upper,
-                  style: context.textStyles.titleXs(
+                  style: context.textStyles.title2xs(
                     color: palette.text.disabled,
                   ),
                 ),
@@ -167,9 +167,9 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
                 const GtGap.ySm(),
                 GtText(
                   subtitle,
-                  style: context.textStyles.subHead2xs(
-                    color: palette.text.soft,
-                  ),
+                  style:
+                      subStyle ??
+                      context.textStyles.subHead2xs(color: palette.text.soft),
                 ),
               ],
             ],

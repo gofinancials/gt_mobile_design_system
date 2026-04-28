@@ -20,7 +20,7 @@ class GtSlideData {
   final DecorationImage? backgroundImage;
 
   /// The color of the text (both [title] and [subtitle]).
-  /// 
+  ///
   /// If null, the text color typically falls back to a default theme color.
   final Color? textColor;
 

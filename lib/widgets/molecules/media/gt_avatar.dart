@@ -43,6 +43,10 @@ class GtAvatar extends GtStatelessWidget {
   /// Whether to draw a white border around the outer edge of the avatar.
   final bool showBorder;
 
+  final Gradient? gradient;
+
+  final Color? initialsColor;
+
   /// Creates a [GtAvatar].
   const GtAvatar({
     this.avatar,
@@ -55,6 +59,8 @@ class GtAvatar extends GtStatelessWidget {
     this.isUserAvatar = false,
     this.tag,
     this.showBorder = false,
+    this.gradient,
+    this.initialsColor,
   });
 
   @override
@@ -91,7 +97,9 @@ class GtAvatar extends GtStatelessWidget {
       );
     }
 
-    if (showBorder) border = Border.all(color: context.palette.stroke.white);
+    if (showBorder) {
+      border = Border.all(color: context.palette.stroke.white, width: 1.5);
+    }
 
     Widget child = Align(
       alignment: alignment,
@@ -107,7 +115,7 @@ class GtAvatar extends GtStatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: context.gradients.avatarGradient,
+            gradient: gradient ?? context.gradients.avatarGradient,
             color: isUserAvatar ? context.palette.bg.sub : null,
             image: decoration,
             border: border,
@@ -119,8 +127,9 @@ class GtAvatar extends GtStatelessWidget {
                   child: Center(
                     child: GtText(
                       initials,
-                      style: context.textStyles.h7(
-                        color: context.palette.staticColors.white,
+                      style: context.textStyles.avatar(
+                        color: initialsColor ?? context.palette.primary.base,
+                        size: computedSize * 0.5,
                       ),
                       textAlign: TextAlign.center,
                     ),

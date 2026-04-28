@@ -6,6 +6,7 @@
 class GtFonts {
   /// The font family for our icons.
   static const String icon = 'GtIconFont';
+  static const String calendar = 'Inter';
 
   /// The 'Youth' font family.
   static const String _youth = 'Youth';

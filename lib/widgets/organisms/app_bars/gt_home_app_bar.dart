@@ -48,6 +48,8 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
               avatar: avatar,
               alignment: .centerLeft,
               initials: AppHelpers.getInitials(userFullName),
+              gradient: context.gradients.appbarAvatarGradient,
+              initialsColor: context.palette.text.white,
             ),
             const Spacer(),
             GtIconButton(
