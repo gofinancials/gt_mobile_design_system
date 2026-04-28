@@ -68,7 +68,7 @@
     
 <section class="desc markdown">
   <p>A linear gradient tailored for avatar backgrounds.</p>
-<p>Transitions from a 24% opacity primary color into the solid primary color.</p>
+<p>Transitions from a 10% opacity primary color into a 24% opacity primary color.</p>
 </section>
 
     
@@ -76,8 +76,10 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Gradient get avatarGradient {
   return LinearGradient(
-    colors: [context.palette.primary.alpha24, context.palette.primary.base],
-    stops: [0, .6],
+    colors: [
+      context.palette.primary.alpha10,
+      context.palette.primary.alpha24,
+    ],
     begin: Alignment.topRight,
     end: Alignment.bottomLeft,
   );

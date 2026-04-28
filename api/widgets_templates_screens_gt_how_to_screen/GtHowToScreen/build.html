@@ -113,7 +113,7 @@ Widget build(BuildContext context) {
   final color = palette.text.white;
 
   return Scaffold(
-    backgroundColor: palette.faded.dark,
+    backgroundColor: palette.bg.surface,
     body: SafeArea(
       child: SingleChildScrollView(
         padding: context.insets.defaultAllInsets,
@@ -134,10 +134,13 @@ Widget build(BuildContext context) {
               style: context.textStyles.h5(color: color),
             ),
             GtGap.yXl(),
-            GtText(
-              description,
-              textAlign: .center,
-              style: context.textStyles.subHeadM(color: palette.text.soft),
+            Padding(
+              padding: context.insets.symmetricDp(horizontal: 10.px),
+              child: GtText(
+                description,
+                textAlign: .center,
+                style: context.textStyles.subHeadM(color: palette.text.soft),
+              ),
             ),
             GtGap.ySection4xl(),
             for (final instruction in instructions) ...[
@@ -157,7 +160,7 @@ Widget build(BuildContext context) {
                   child: GtText(
                     continueText,
                     style: context.textStyles.subHeadM(
-                      color: palette.text.soft,
+                      color: palette.text.white,
                     ),
                   ),
                 ),

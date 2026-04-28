@@ -141,7 +141,9 @@ Widget build(BuildContext context) {
     );
   }
 
-  if (showBorder) border = Border.all(color: context.palette.stroke.white);
+  if (showBorder) {
+    border = Border.all(color: context.palette.stroke.white, width: 1.5);
+  }
 
   Widget child = Align(
     alignment: alignment,
@@ -157,7 +159,7 @@ Widget build(BuildContext context) {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: context.gradients.avatarGradient,
+          gradient: gradient ?? context.gradients.avatarGradient,
           color: isUserAvatar ? context.palette.bg.sub : null,
           image: decoration,
           border: border,
@@ -169,8 +171,9 @@ Widget build(BuildContext context) {
                 child: Center(
                   child: GtText(
                     initials,
-                    style: context.textStyles.h7(
-                      color: context.palette.staticColors.white,
+                    style: context.textStyles.avatar(
+                      color: initialsColor ?? context.palette.primary.base,
+                      size: computedSize * 0.5,
                     ),
                     textAlign: TextAlign.center,
                   ),

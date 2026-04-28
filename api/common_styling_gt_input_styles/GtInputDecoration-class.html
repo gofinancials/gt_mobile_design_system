@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the GtInputDecoration class from the gt_input_styles library, for the Dart programming language.">
+  <title>GtInputDecoration class - gt_input_styles library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">gt_mobile_ui</a></li>
+    <li><a href="../common_styling_gt_input_styles/">common&#47;styling&#47;gt_input_styles.dart</a></li>
+    <li class="self-crumb">GtInputDecoration class</li>
+  </ol>
+  <div class="self-name">GtInputDecoration</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="common_styling_gt_input_styles&#47;common_styling_gt_input_styles-library-sidebar.html"
+    data-below-sidebar="common_styling_gt_input_styles&#47;GtInputDecoration-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">GtInputDecoration</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>A configuration object that defines the visual appearance of a custom input field.</p>
+<p>This class groups together various text styles, box decorations, and sizing
+constraints necessary to render a form field across all its possible states
+(e.g., normal, focused, error, disabled).</p>
+</section>
+
+
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="GtInputDecoration.new" class="callable">
+          <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/GtInputDecoration.html">GtInputDecoration</a></span><span class="signature">({<span class="parameter" id="-param-hintMaxLines"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">hintMaxLines</span> = <span class="default-value">1</span>, </span><span class="parameter" id="-param-errorMaxLines"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">errorMaxLines</span> = <span class="default-value">1</span>, </span><span class="parameter" id="-param-helperMaxLines"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">helperMaxLines</span> = <span class="default-value">1</span>, </span><span class="parameter" id="-param-textStyle"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a></span> <span class="parameter-name">textStyle</span>, </span><span class="parameter" id="-param-disabledStyle"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a></span> <span class="parameter-name">disabledStyle</span>, </span><span class="parameter" id="-param-size"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="-param-hintStyle"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a></span> <span class="parameter-name">hintStyle</span>, </span><span class="parameter" id="-param-errorStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">errorStyle</span>, </span><span class="parameter" id="-param-labelStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">labelStyle</span>, </span><span class="parameter" id="-param-helperStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">helperStyle</span>, </span><span class="parameter" id="-param-decoration"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a></span> <span class="parameter-name">decoration</span>, </span><span class="parameter" id="-param-padding"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/EdgeInsetsGeometry-class.html">EdgeInsetsGeometry</a></span> <span class="parameter-name">padding</span>, </span><span class="parameter" id="-param-iconColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">iconColor</span>, </span><span class="parameter" id="-param-errorDecoration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a>?</span> <span class="parameter-name">errorDecoration</span>, </span><span class="parameter" id="-param-focusedDecoration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a>?</span> <span class="parameter-name">focusedDecoration</span>, </span><span class="parameter" id="-param-disabledDecoration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a>?</span> <span class="parameter-name">disabledDecoration</span>, </span><span class="parameter" id="-param-focusedErrorDecoration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a>?</span> <span class="parameter-name">focusedErrorDecoration</span></span>})</span>
+        </dt>
+        <dd>
+          Creates a <a href="../common_styling_gt_input_styles/GtInputDecoration-class.html">GtInputDecoration</a> configuration.
+            <div class="constructor-modifier features">const</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="asInputDecoration" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/asInputDecoration.html">asInputDecoration</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/material/InputDecoration-class.html">InputDecoration</a></span>
+  
+
+</dt>
+<dd>
+  Converts this <a href="../common_styling_gt_input_styles/GtInputDecoration-class.html">GtInputDecoration</a> configuration into a standard Flutter <a href="https://api.flutter.dev/flutter/material/InputDecoration-class.html">InputDecoration</a>.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="constraints" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/constraints.html">constraints</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/rendering/BoxConstraints-class.html">BoxConstraints</a></span>
+  
+
+</dt>
+<dd>
+  Returns the BoxConstraints based on the configured <a href="../common_styling_gt_input_styles/GtInputDecoration/size.html">size</a>.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="decoration" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/decoration.html">decoration</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a></span>
+  
+
+</dt>
+<dd>
+  The base decoration applied to the input field in its normal state.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="disabledDecoration" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/disabledDecoration.html">disabledDecoration</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a></span>
+  
+
+</dt>
+<dd>
+  Gets the resolved disabled decoration, falling back to the base <a href="../common_styling_gt_input_styles/GtInputDecoration/decoration.html">decoration</a> if null.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="disabledStyle" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/disabledStyle.html">disabledStyle</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a></span>
+  
+
+</dt>
+<dd>
+  The style to use for the input text when the field is disabled.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="errorDecoration" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/errorDecoration.html">errorDecoration</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a></span>
+  
+
+</dt>
+<dd>
+  Gets the resolved error decoration, falling back to the base <a href="../common_styling_gt_input_styles/GtInputDecoration/decoration.html">decoration</a> if null.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="errorMaxLines" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/errorMaxLines.html">errorMaxLines</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The maximum number of lines the error text can occupy.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="errorStyle" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/errorStyle.html">errorStyle</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span>
+  
+
+</dt>
+<dd>
+  The style to use for the error text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="focusedDecoration" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/focusedDecoration.html">focusedDecoration</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a></span>
+  
+
+</dt>
+<dd>
+  Gets the resolved focused decoration, falling back to the base <a href="../common_styling_gt_input_styles/GtInputDecoration/decoration.html">decoration</a> if null.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="focusedErrorDecoration" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/focusedErrorDecoration.html">focusedErrorDecoration</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a></span>
+  
+
+</dt>
+<dd>
+  Gets the resolved focused-error decoration, falling back to the base <a href="../common_styling_gt_input_styles/GtInputDecoration/decoration.html">decoration</a> if null.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="helperMaxLines" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/helperMaxLines.html">helperMaxLines</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The maximum number of lines the helper text can occupy.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="helperStyle" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/helperStyle.html">helperStyle</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span>
+  
+
+</dt>
+<dd>
+  The style to use for the helper text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hintMaxLines" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/hintMaxLines.html">hintMaxLines</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The maximum number of lines the hint text can occupy.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hintStyle" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/hintStyle.html">hintStyle</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a></span>
+  
+
+</dt>
+<dd>
+  The style to use for the hint placeholder text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="iconColor" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/iconColor.html">iconColor</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span>
+  
+
+</dt>
+<dd>
+  The color to apply to icons within the input field.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="labelStyle" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/labelStyle.html">labelStyle</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span>
+  
+
+</dt>
+<dd>
+  The style to use for the label text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="padding" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/padding.html">padding</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/EdgeInsetsGeometry-class.html">EdgeInsetsGeometry</a></span>
+  
+
+</dt>
+<dd>
+  The internal padding applied to the input field content.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="size" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/size.html">size</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span>
+  
+
+</dt>
+<dd>
+  The overall size constraints for the input field.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="textStyle" class="property">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/textStyle.html">textStyle</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a></span>
+  
+
+</dt>
+<dd>
+  The style to use for the main input text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="copyWith" class="callable">
+  <span class="name"><a href="../common_styling_gt_input_styles/GtInputDecoration/copyWith.html">copyWith</a></span><span class="signature">(<wbr>{<span class="parameter" id="copyWith-param-iconColor"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">iconColor</span>, </span><span class="parameter" id="copyWith-param-hintMaxLines"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">hintMaxLines</span>, </span><span class="parameter" id="copyWith-param-errorMaxLines"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">errorMaxLines</span>, </span><span class="parameter" id="copyWith-param-helperMaxLines"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">helperMaxLines</span>, </span><span class="parameter" id="copyWith-param-textStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">textStyle</span>, </span><span class="parameter" id="copyWith-param-hintStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">hintStyle</span>, </span><span class="parameter" id="copyWith-param-errorStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">errorStyle</span>, </span><span class="parameter" id="copyWith-param-labelStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">labelStyle</span>, </span><span class="parameter" id="copyWith-param-helperStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">helperStyle</span>, </span><span class="parameter" id="copyWith-param-disabledStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">disabledStyle</span>, </span><span class="parameter" id="copyWith-param-padding"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/EdgeInsetsGeometry-class.html">EdgeInsetsGeometry</a>?</span> <span class="parameter-name">padding</span>, </span><span class="parameter" id="copyWith-param-decoration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a>?</span> <span class="parameter-name">decoration</span>, </span><span class="parameter" id="copyWith-param-errorDecoration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a>?</span> <span class="parameter-name">errorDecoration</span>, </span><span class="parameter" id="copyWith-param-focusedDecoration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a>?</span> <span class="parameter-name">focusedDecoration</span>, </span><span class="parameter" id="copyWith-param-disabledDecoration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a>?</span> <span class="parameter-name">disabledDecoration</span>, </span><span class="parameter" id="copyWith-param-focusedErrorDecoration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxDecoration-class.html">BoxDecoration</a>?</span> <span class="parameter-name">focusedErrorDecoration</span>, </span><span class="parameter" id="copyWith-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a>?</span> <span class="parameter-name">size</span></span>})
+    <span class="returntype parameter">&#8594; <a href="../common_styling_gt_input_styles/GtInputDecoration-class.html">GtInputDecoration</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Creates a copy of this input decoration but with the given fields replaced with the new values.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">gt_mobile_ui</a></li>
+    <li><a href="../common_styling_gt_input_styles/">gt_input_styles</a></li>
+    <li class="self-crumb">GtInputDecoration class</li>
+</ol>
+
+    <h5>gt_input_styles library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    gt_mobile_ui
+      0.0.1
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+

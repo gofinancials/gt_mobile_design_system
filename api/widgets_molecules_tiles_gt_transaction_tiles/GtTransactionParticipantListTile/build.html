@@ -115,11 +115,7 @@ Widget build(BuildContext context) {
     crossAxisAlignment: crossAxisAlignment,
     spacing: context.spacingMd,
     children: [
-      if (leading != null)
-        ConstrainedBox(
-          constraints: BoxConstraints.tight(Size.square(32)),
-          child: leading,
-        ),
+      ?leading,
       Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +128,7 @@ Widget build(BuildContext context) {
             if (superscript.hasValue)
               GtText(
                 superscript?.upper,
-                style: context.textStyles.titleXs(
+                style: context.textStyles.title2xs(
                   color: palette.text.disabled,
                 ),
               ),
@@ -141,9 +137,9 @@ Widget build(BuildContext context) {
               const GtGap.ySm(),
               GtText(
                 subtitle,
-                style: context.textStyles.subHead2xs(
-                  color: palette.text.soft,
-                ),
+                style:
+                    subStyle ??
+                    context.textStyles.subHead2xs(color: palette.text.soft),
               ),
             ],
           ],

@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the GtTextField class from the gt_text_field library, for the Dart programming language.">
+  <title>GtTextField class - gt_text_field library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">gt_mobile_ui</a></li>
+    <li><a href="../widgets_molecules_inputs_gt_text_field/">widgets&#47;molecules&#47;inputs&#47;gt_text_field.dart</a></li>
+    <li class="self-crumb">GtTextField<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class</li>
+  </ol>
+  <div class="self-name">GtTextField</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="widgets_molecules_inputs_gt_text_field&#47;widgets_molecules_inputs_gt_text_field-library-sidebar.html"
+    data-below-sidebar="widgets_molecules_inputs_gt_text_field&#47;GtTextField-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">GtTextField&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class 
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>A highly customizable, stateful text input field for the Go Tech design system.</p>
+<p>This widget wraps Flutter's native <a href="https://api.flutter.dev/flutter/material/TextField-class.html">TextField</a> within a <a href="https://api.flutter.dev/flutter/widgets/FormField-class.html">FormField</a> to provide
+seamless validation, error handling, and specialized styling via <a href="../common_styling_gt_input_styles/GtInputDecoration-class.html">GtInputDecoration</a>.</p>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+  <dt>Inheritance</dt>
+  <dd>
+    <ul class="gt-separated dark clazz-relationships">
+      <li><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></li>
+        <li><a href="https://api.flutter.dev/flutter/foundation/DiagnosticableTree-class.html">DiagnosticableTree</a></li>
+        <li><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></li>
+        <li><a href="https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html">StatefulWidget</a></li>
+        <li><a href="../widgets_templates_widget_base_gt_stateful_widget/GtStatefulWidget-class.html">GtStatefulWidget</a></li>
+      <li>GtTextField</li>
+    </ul>
+  </dd>
+
+        
+        
+
+
+        
+  <dt>Available extensions</dt>
+  <dd><ul class="comma-separated clazz-relationships">
+      <li><a href="../common_utilities_extensions_gt_widget_extension/WidgetExtensions.html">WidgetExtensions</a></li>
+  </ul></dd>
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="GtTextField.new" class="callable">
+          <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/GtTextField.html">GtTextField</a></span><span class="signature">({<span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="-param-semanticsLabel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">semanticsLabel</span>, </span><span class="parameter" id="-param-decoration"><span class="type-annotation"><a href="../common_styling_gt_input_styles/GtInputDecoration-class.html">GtInputDecoration</a>?</span> <span class="parameter-name">decoration</span>, </span><span class="parameter" id="-param-textInputAction"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/services/TextInputAction.html">TextInputAction</a>?</span> <span class="parameter-name">textInputAction</span> = <span class="default-value">TextInputAction.next</span>, </span><span class="parameter" id="-param-textCapitalization"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/services/TextCapitalization.html">TextCapitalization</a>?</span> <span class="parameter-name">textCapitalization</span>, </span><span class="parameter" id="-param-controller"><span class="type-annotation"><a href="../common_data_gt_input_data/GtInputController-class.html">GtInputController</a>?</span> <span class="parameter-name">controller</span>, </span><span class="parameter" id="-param-isEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isEnabled</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-autoFocus"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autoFocus</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-autoCorrect"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autoCorrect</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-inputFormatters"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/services/TextInputFormatter-class.html">TextInputFormatter</a></span>&gt;</span>?</span> <span class="parameter-name">inputFormatters</span>, </span><span class="parameter" id="-param-label"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">label</span>, </span><span class="parameter" id="-param-hintText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">hintText</span>, </span><span class="parameter" id="-param-helperText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">helperText</span>, </span><span class="parameter" id="-param-textAlign"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/TextAlign.html">TextAlign</a>?</span> <span class="parameter-name">textAlign</span> = <span class="default-value">TextAlign.left</span>, </span><span class="parameter" id="-param-maxLength"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">maxLength</span>, </span><span class="parameter" id="-param-onChanged"><span class="type-annotation">OnChanged<span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>&gt;</span>?</span> <span class="parameter-name">onChanged</span>, </span><span class="parameter" id="-param-obscureText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">obscureText</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-suffix"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">suffix</span>, </span><span class="parameter" id="-param-prefix"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">prefix</span>, </span><span class="parameter" id="-param-validator"><span class="type-annotation">OnValidate<span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>&gt;</span>?</span> <span class="parameter-name">validator</span>, </span><span class="parameter" id="-param-keyboardType"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/services/TextInputType-class.html">TextInputType</a>?</span> <span class="parameter-name">keyboardType</span>, </span><span class="parameter" id="-param-onFieldSubmitted"><span class="type-annotation">OnChanged<span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>&gt;</span>?</span> <span class="parameter-name">onFieldSubmitted</span>, </span><span class="parameter" id="-param-autofillHints"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">autofillHints</span>, </span><span class="parameter" id="-param-autovalidateMode"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/AutovalidateMode.html">AutovalidateMode</a>?</span> <span class="parameter-name">autovalidateMode</span> = <span class="default-value">AutovalidateMode.disabled</span></span>})</span>
+        </dt>
+        <dd>
+          Creates a standard <a href="../widgets_molecules_inputs_gt_text_field/GtTextField-class.html">GtTextField</a>.
+            <div class="constructor-modifier features">const</div>
+        </dd>
+        <dt id="GtTextField.multiline" class="callable">
+          <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/GtTextField.multiline.html">GtTextField.multiline</a></span><span class="signature">({<span class="parameter" id="multiline-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="multiline-param-semanticsLabel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">semanticsLabel</span>, </span><span class="parameter" id="multiline-param-decoration"><span class="type-annotation"><a href="../common_styling_gt_input_styles/GtInputDecoration-class.html">GtInputDecoration</a>?</span> <span class="parameter-name">decoration</span>, </span><span class="parameter" id="multiline-param-textInputAction"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/services/TextInputAction.html">TextInputAction</a>?</span> <span class="parameter-name">textInputAction</span> = <span class="default-value">TextInputAction.next</span>, </span><span class="parameter" id="multiline-param-textCapitalization"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/services/TextCapitalization.html">TextCapitalization</a>?</span> <span class="parameter-name">textCapitalization</span>, </span><span class="parameter" id="multiline-param-controller"><span class="type-annotation"><a href="../common_data_gt_input_data/GtInputController-class.html">GtInputController</a>?</span> <span class="parameter-name">controller</span>, </span><span class="parameter" id="multiline-param-isEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isEnabled</span> = <span class="default-value">true</span>, </span><span class="parameter" id="multiline-param-autoFocus"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autoFocus</span> = <span class="default-value">false</span>, </span><span class="parameter" id="multiline-param-autoCorrect"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autoCorrect</span> = <span class="default-value">true</span>, </span><span class="parameter" id="multiline-param-inputFormatters"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/services/TextInputFormatter-class.html">TextInputFormatter</a></span>&gt;</span>?</span> <span class="parameter-name">inputFormatters</span>, </span><span class="parameter" id="multiline-param-label"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">label</span>, </span><span class="parameter" id="multiline-param-hintText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">hintText</span>, </span><span class="parameter" id="multiline-param-helperText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">helperText</span>, </span><span class="parameter" id="multiline-param-textAlign"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/TextAlign.html">TextAlign</a>?</span> <span class="parameter-name">textAlign</span> = <span class="default-value">TextAlign.left</span>, </span><span class="parameter" id="multiline-param-maxLength"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">maxLength</span>, </span><span class="parameter" id="multiline-param-onChanged"><span class="type-annotation">OnChanged<span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>&gt;</span>?</span> <span class="parameter-name">onChanged</span>, </span><span class="parameter" id="multiline-param-obscureText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">obscureText</span> = <span class="default-value">false</span>, </span><span class="parameter" id="multiline-param-suffix"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">suffix</span>, </span><span class="parameter" id="multiline-param-prefix"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">prefix</span>, </span><span class="parameter" id="multiline-param-validator"><span class="type-annotation">OnValidate<span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>&gt;</span>?</span> <span class="parameter-name">validator</span>, </span><span class="parameter" id="multiline-param-onFieldSubmitted"><span class="type-annotation">OnChanged<span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>&gt;</span>?</span> <span class="parameter-name">onFieldSubmitted</span>, </span><span class="parameter" id="multiline-param-autofillHints"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">autofillHints</span>, </span><span class="parameter" id="multiline-param-maxLines"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">maxLines</span>, </span><span class="parameter" id="multiline-param-autovalidateMode"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/AutovalidateMode.html">AutovalidateMode</a>?</span> <span class="parameter-name">autovalidateMode</span> = <span class="default-value">AutovalidateMode.disabled</span></span>})</span>
+        </dt>
+        <dd>
+          Creates a <a href="../widgets_molecules_inputs_gt_text_field/GtTextField-class.html">GtTextField</a> optimized for multiline input.
+            <div class="constructor-modifier features">const</div>
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="analytics" class="property inherited">
+  <span class="name"><a href="../widgets_templates_widget_base_gt_stateful_widget/GtStatefulWidget/analytics.html">analytics</a></span>
+  <span class="signature">&#8594; AppAnalyticsService</span>
+  
+
+</dt>
+<dd class="inherited">
+  
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="autoCorrect" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/autoCorrect.html">autoCorrect</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Whether to enable auto-correction.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="autofillHints" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/autofillHints.html">autofillHints</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  A list of strings that helps the autofill service identify the type of this text input.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="autoFocus" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/autoFocus.html">autoFocus</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Whether this text field should focus itself if nothing else is already focused.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="autovalidateMode" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/autovalidateMode.html">autovalidateMode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/widgets/AutovalidateMode.html">AutovalidateMode</a>?</span>
+  
+
+</dt>
+<dd>
+  Used to enable/disable this form field's auto validation and update its error text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="controller" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/controller.html">controller</a></span>
+  <span class="signature">&#8594; <a href="../common_data_gt_input_data/GtInputController-class.html">GtInputController</a>?</span>
+  
+
+</dt>
+<dd>
+  An optional controller to manage the text editing state and focus.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="ctrl" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/ctrl.html">ctrl</a></span>
+  <span class="signature">&#8594; <a href="../common_data_gt_input_data/GtInputController-class.html">GtInputController</a></span>
+  
+
+</dt>
+<dd>
+  Gets the provided <a href="../widgets_molecules_inputs_gt_text_field/GtTextField/controller.html">controller</a>, or instantiates a new one if null.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="decoration" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/decoration.html">decoration</a></span>
+  <span class="signature">&#8594; <a href="../common_styling_gt_input_styles/GtInputDecoration-class.html">GtInputDecoration</a>?</span>
+  
+
+</dt>
+<dd>
+  The visual styling configuration for this text field.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/widgets/Widget/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="helperText" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/helperText.html">helperText</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  Optional text displayed below the input field to guide the user.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="hintText" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/hintText.html">hintText</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  Text that suggests what sort of input the field accepts.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="inputFormatters" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/inputFormatters.html">inputFormatters</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/services/TextInputFormatter-class.html">TextInputFormatter</a></span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  Optional input formatters that format the text being edited.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="isEnabled" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/isEnabled.html">isEnabled</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Whether the text field is interactive.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="key" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/widgets/Widget/key.html">key</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span>
+  
+
+</dt>
+<dd class="inherited">
+  Controls how one widget replaces another widget in the tree.
+  <div class="features"><span class="feature">final</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="keyboardType" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/keyboardType.html">keyboardType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/services/TextInputType-class.html">TextInputType</a>?</span>
+  
+
+</dt>
+<dd>
+  The type of information for which to optimize the text input control.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="label" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/label.html">label</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  Optional text that describes the input field.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="maxLength" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/maxLength.html">maxLength</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
+  
+
+</dt>
+<dd>
+  The maximum number of characters the text field can accept.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="maxLines" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/maxLines.html">maxLines</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
+  
+
+</dt>
+<dd>
+  The maximum number of lines the text field can occupy.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="minLines" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/minLines.html">minLines</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span>
+  
+
+</dt>
+<dd>
+  The minimum number of lines the text field should occupy.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="obscureText" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/obscureText.html">obscureText</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd>
+  Whether to hide the text being edited (e.g., for passwords).
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="onChanged" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/onChanged.html">onChanged</a></span>
+  <span class="signature">&#8594; OnChanged<span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  Called when the user changes the text in the field.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="onFieldSubmitted" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/onFieldSubmitted.html">onFieldSubmitted</a></span>
+  <span class="signature">&#8594; OnChanged<span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  Called when the user indicates that they are done editing the text in the field.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="prefix" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/prefix.html">prefix</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span>
+  
+
+</dt>
+<dd>
+  Optional widget to display before the input field's text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="semanticsLabel" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/semanticsLabel.html">semanticsLabel</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  A semantic label for the text field, used by accessibility frameworks.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="suffix" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/suffix.html">suffix</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span>
+  
+
+</dt>
+<dd>
+  Optional widget to display after the input field's text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="textAlign" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/textAlign.html">textAlign</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/TextAlign.html">TextAlign</a>?</span>
+  
+
+</dt>
+<dd>
+  How the text should be aligned horizontally.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="textCapitalization" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/textCapitalization.html">textCapitalization</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/services/TextCapitalization.html">TextCapitalization</a>?</span>
+  
+
+</dt>
+<dd>
+  Configures how the platform keyboard will select an uppercase or lowercase keyboard.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="textInputAction" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/textInputAction.html">textInputAction</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/services/TextInputAction.html">TextInputAction</a>?</span>
+  
+
+</dt>
+<dd>
+  The type of action button to use for the keyboard.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="validator" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/validator.html">validator</a></span>
+  <span class="signature">&#8594; OnValidate<span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  An optional method that validates the input text.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="createElement" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/widgets/StatefulWidget/createElement.html">createElement</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/widgets/StatefulElement-class.html">StatefulElement</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Creates a <a href="https://api.flutter.dev/flutter/widgets/StatefulElement-class.html">StatefulElement</a> to manage this widget's location in the tree.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="createState" class="callable">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField/createState.html">createState</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../widgets_molecules_inputs_gt_text_field/GtTextField-class.html">GtTextField</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Creates the mutable state for this widget at a given location in the tree.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="debugDescribeChildren" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticableTree/debugDescribeChildren.html">debugDescribeChildren</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticsNode-class.html">DiagnosticsNode</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Returns a list of <a href="https://api.flutter.dev/flutter/foundation/DiagnosticsNode-class.html">DiagnosticsNode</a> objects describing this node's
+children.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="debugFillProperties" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/widgets/Widget/debugFillProperties.html">debugFillProperties</a></span><span class="signature">(<wbr><span class="parameter" id="debugFillProperties-param-properties"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticPropertiesBuilder-class.html">DiagnosticPropertiesBuilder</a></span> <span class="parameter-name">properties</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Add additional properties associated with the node.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toDiagnosticsNode" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticableTree/toDiagnosticsNode.html">toDiagnosticsNode</a></span><span class="signature">(<wbr>{<span class="parameter" id="toDiagnosticsNode-param-name"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">name</span>, </span><span class="parameter" id="toDiagnosticsNode-param-style"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticsTreeStyle.html">DiagnosticsTreeStyle</a>?</span> <span class="parameter-name">style</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/foundation/DiagnosticsNode-class.html">DiagnosticsNode</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Returns a debug representation of the object that is used by debugging
+tools and by <a href="https://api.flutter.dev/flutter/foundation/DiagnosticsNode/toStringDeep.html">DiagnosticsNode.toStringDeep</a>.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toString.html">toString</a></span><span class="signature">(<wbr>{<span class="parameter" id="toString-param-minLevel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticLevel.html">DiagnosticLevel</a></span> <span class="parameter-name">minLevel</span> = <span class="default-value">DiagnosticLevel.info</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toStringDeep" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticableTree/toStringDeep.html">toStringDeep</a></span><span class="signature">(<wbr>{<span class="parameter" id="toStringDeep-param-prefixLineOne"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">prefixLineOne</span> = <span class="default-value">&#39;&#39;</span>, </span><span class="parameter" id="toStringDeep-param-prefixOtherLines"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">prefixOtherLines</span>, </span><span class="parameter" id="toStringDeep-param-minLevel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticLevel.html">DiagnosticLevel</a></span> <span class="parameter-name">minLevel</span> = <span class="default-value">DiagnosticLevel.debug</span>, </span><span class="parameter" id="toStringDeep-param-wrapWidth"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">wrapWidth</span> = <span class="default-value">65</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Returns a string representation of this node and its descendants.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toStringShallow" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticableTree/toStringShallow.html">toStringShallow</a></span><span class="signature">(<wbr>{<span class="parameter" id="toStringShallow-param-joiner"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">joiner</span> = <span class="default-value">&#39;, &#39;</span>, </span><span class="parameter" id="toStringShallow-param-minLevel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticLevel.html">DiagnosticLevel</a></span> <span class="parameter-name">minLevel</span> = <span class="default-value">DiagnosticLevel.debug</span></span>})
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Returns a one-line detailed description of the object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="toStringShort" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/widgets/Widget/toStringShort.html">toStringShort</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A short, textual description of this widget.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="trackEvent" class="callable inherited">
+  <span class="name"><a href="../widgets_templates_widget_base_gt_stateful_widget/GtStatefulWidget/trackEvent.html">trackEvent</a></span><span class="signature">(<wbr><span class="parameter" id="trackEvent-param-event"><span class="type-annotation">AppEvent</span> <span class="parameter-name">event</span>, {</span><span class="parameter" id="trackEvent-param-description"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">description</span>, </span><span class="parameter" id="trackEvent-param-value"><span class="type-annotation">dynamic</span> <span class="parameter-name">value</span></span>})
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="trackNavigation" class="callable inherited">
+  <span class="name"><a href="../widgets_templates_widget_base_gt_stateful_widget/GtStatefulWidget/trackNavigation.html">trackNavigation</a></span><span class="signature">(<wbr><span class="parameter" id="trackNavigation-param-path"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, {</span><span class="parameter" id="trackNavigation-param-widgetClass"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">widgetClass</span></span>})
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator *" class="callable">
+  <span class="name"><a href="../common_utilities_extensions_gt_widget_extension/WidgetExtensions/operator_multiply.html">operator *</a></span><span class="signature">(<wbr><span class="parameter" id="*-param-count"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">count</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+      <p class="from-extension">
+        <span>Available on <a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>,
+        provided by the <a href="../common_utilities_extensions_gt_widget_extension/WidgetExtensions.html">WidgetExtensions</a> extension</span>
+      </p>
+  Duplicates this widget <code>count</code> times and returns them as a <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a>.
+  
+
+</dd>
+
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/widgets/Widget/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">gt_mobile_ui</a></li>
+    <li><a href="../widgets_molecules_inputs_gt_text_field/">gt_text_field</a></li>
+    <li class="self-crumb">GtTextField<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span> class</li>
+</ol>
+
+    <h5>gt_text_field library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    gt_mobile_ui
+      0.0.1
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
