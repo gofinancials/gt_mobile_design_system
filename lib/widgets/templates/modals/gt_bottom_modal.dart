@@ -267,52 +267,48 @@ class _GtLoaderBottomModalState extends State<GtLoaderBottomModal>
                         _GtBottomModalStatusWidget(phase: state.phase),
                         const GtGap.yXl(),
                         Flexible(
-                          child: Builder(
-                            builder: (_) {
-                              if (state.phase == .loading) {
-                                return GtText(
+                          child: state.phase == GtBottomModalPhase.loading
+                              ? GtText(
                                   title.upper,
                                   style: context.textStyles.h6(),
                                   textAlign: TextAlign.center,
-                                );
-                              }
-                              return SlideTransition(
-                                position: _successSlide,
-                                child: FadeTransition(
-                                  opacity: _successFade,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      GtText(
-                                        title.upper,
-                                        style: context.textStyles.h6(),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      if ((description ?? '')
-                                          .trim()
-                                          .isNotEmpty) ...[
-                                        const GtGap.yXs(),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: context.dp(20.px),
-                                          ),
-                                          child: GtText(
-                                            description!,
-                                            style: context.textStyles.bodyS(
-                                              color: GtColors.neutral600.value,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
+                                )
+                              : SlideTransition(
+                                  position: _successSlide,
+                                  child: FadeTransition(
+                                    opacity: _successFade,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        GtText(
+                                          title.upper,
+                                          style: context.textStyles.h6(),
+                                          textAlign: TextAlign.center,
                                         ),
+                                        if ((description ?? '')
+                                            .trim()
+                                            .isNotEmpty) ...[
+                                          const GtGap.yXs(),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: context.dp(20.px),
+                                            ),
+                                            child: GtText(
+                                              description!,
+                                              style: context.textStyles.bodyS(
+                                                color:
+                                                    GtColors.neutral600.value,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
                                       ],
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              );
-                            },
-                          ),
                         ),
                       ],
                     ),
