@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// A custom clipper that creates a concave (inward-curving) cut-out effect.
+///
+/// This clipper is typically used to create ticket-like or receipt-like visual
+/// edges on containers, such as the separator line in a transfer details card.
 class ConcaveRadiusClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

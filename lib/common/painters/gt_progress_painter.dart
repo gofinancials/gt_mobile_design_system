@@ -3,12 +3,24 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A custom painter that draws a horizontal progress bar.
+///
+/// This painter fills a rounded rectangle proportionally based on the provided
+/// [value], allowing for customizable [color], [height], and [borderRadius].
 class GtProgressPainter extends CustomPainter {
+  /// The color of the progress bar.
   final Color color;
+
+  /// The current progress value, typically between 0.0 and 1.0.
   final double value;
+
+  /// The thickness (height) of the progress bar. Defaults to 6.
   final double height;
+
+  /// The corner radius of the progress bar. Defaults to a fully rounded pill shape.
   final Radius? borderRadius;
 
+  /// Creates a [GtProgressPainter].
   GtProgressPainter({
     required this.color,
     this.value = 0,
@@ -54,9 +66,15 @@ class GtProgressPainter extends CustomPainter {
   }
 }
 
+/// A custom painter that draws a vertical line down the exact center of its bounds.
+///
+/// This is often used to create connecting lines between vertical elements,
+/// such as the timeline-style separator in money transfer interfaces.
 class GtCenterLinePainter extends CustomPainter {
+  /// The color of the vertical line.
   final Color color;
 
+  /// Creates a [GtCenterLinePainter].
   GtCenterLinePainter({required this.color});
 
   @override
