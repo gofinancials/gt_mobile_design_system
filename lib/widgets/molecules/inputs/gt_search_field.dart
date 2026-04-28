@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// A specialized text input field designed specifically for search functionality.
 ///
 /// This widget provides a compact, pre-styled input tailored for searching.
-/// By default, it utilizes [GtInputStyles.searchDecoration] to maintain 
+/// By default, it utilizes [GtInputStyles.searchDecoration] to maintain
 /// visual consistency across the application.
 class GtSearchField extends GtStatefulWidget {
   /// The controller used to read and manipulate the search input text.

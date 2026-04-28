@@ -13,7 +13,7 @@ class GtAmountField extends GtStatefulWidget {
   final GtInputController controller;
 
   /// Custom visual styling for the input.
-  /// 
+  ///
   /// If null, defaults to [GtInputStyles.transferInputStyle] from the current theme.
   final GtInputDecoration? decoration;
 
