@@ -232,97 +232,107 @@ class _GtLoaderBottomModalState extends State<GtLoaderBottomModal>
           borderRadius: context.borderRadius4Xl,
           boxShadow: context.shadows.sm(),
         ),
-        child: currentHeight > 0
-            ? SlideTransition(
-                position: _titleSlide,
-                child: FadeTransition(
-                  opacity: _titleFade,
-                  child: SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: currentHeight,
-                        maxHeight: currentHeight,
-                      ),
-                      child: Column(
-                        mainAxisSize: .min,
-                        crossAxisAlignment: .center,
-                        children: [
-                          // Top handle strip (sheet affordance).
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: context.dp(8.px),
-                              bottom: context.dp(20.px),
-                            ),
-                            child: Container(
-                              width: context.dp(32.px),
-                              height: context.dp(4.px),
-                              decoration: BoxDecoration(
-                                color: palette.stroke.sub,
-                                borderRadius: context.borderRadiusXxs,
-                              ),
+        child: Builder(
+          builder: (_) {
+            if (currentHeight <= 0) return const SizedBox.shrink();
+            return SlideTransition(
+              position: _titleSlide,
+              child: FadeTransition(
+                opacity: _titleFade,
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: currentHeight,
+                      maxHeight: currentHeight,
+                    ),
+                    child: Column(
+                      mainAxisSize: .min,
+                      crossAxisAlignment: .center,
+                      children: [
+                        // Top handle strip (sheet affordance).
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: context.dp(8.px),
+                            bottom: context.dp(20.px),
+                          ),
+                          child: Container(
+                            width: context.dp(32.px),
+                            height: context.dp(4.px),
+                            decoration: BoxDecoration(
+                              color: palette.stroke.sub,
+                              borderRadius: context.borderRadiusXxs,
                             ),
                           ),
-                          _statusWidget(context, state),
-                          const GtGap.yXl(),
-                          Flexible(
-                            child: state.phase == GtBottomModalPhase.loading
-                                ? GtText(
-                                    title.upper,
-                                    style: context.textStyles.h6(),
-                                    textAlign: TextAlign.center,
-                                  )
-                                : SlideTransition(
-                                    position: _successSlide,
-                                    child: FadeTransition(
-                                      opacity: _successFade,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          GtText(
-                                            title.upper,
-                                            style: context.textStyles.h6(),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          if ((description ?? '')
-                                              .trim()
-                                              .isNotEmpty) ...[
-                                            const GtGap.yXs(),
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: context.dp(20.px),
-                                              ),
-                                              child: GtText(
-                                                description!,
-                                                style: context.textStyles.bodyS(
-                                                  color:
-                                                      GtColors.neutral600.value,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
+                        ),
+                        _GtBottomModalStatusWidget(phase: state.phase),
+                        const GtGap.yXl(),
+                        Flexible(
+                          child: state.phase == GtBottomModalPhase.loading
+                              ? GtText(
+                                  title.upper,
+                                  style: context.textStyles.h6(),
+                                  textAlign: TextAlign.center,
+                                )
+                              : SlideTransition(
+                                  position: _successSlide,
+                                  child: FadeTransition(
+                                    opacity: _successFade,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        GtText(
+                                          title.upper,
+                                          style: context.textStyles.h6(),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        if ((description ?? '')
+                                            .trim()
+                                            .isNotEmpty) ...[
+                                          const GtGap.yXs(),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: context.dp(20.px),
                                             ),
-                                          ],
+                                            child: GtText(
+                                              description!,
+                                              style: context.textStyles.bodyS(
+                                                color:
+                                                    GtColors.neutral600.value,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
                                         ],
-                                      ),
+                                      ],
                                     ),
                                   ),
-                          ),
-                        ],
-                      ),
+                                ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              )
-            : const SizedBox.shrink(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
+}
 
-  /// Resolves leading icon/loader for the current phase.
-  Widget _statusWidget(BuildContext context, GtBottomModalState state) {
+/// Resolves leading icon/loader for the current phase.
+class _GtBottomModalStatusWidget extends StatelessWidget {
+  final GtBottomModalPhase phase;
+
+  const _GtBottomModalStatusWidget({required this.phase});
+
+  @override
+  Widget build(BuildContext context) {
     final palette = context.palette;
-    return switch (state.phase) {
+    return switch (phase) {
       GtBottomModalPhase.loading => GtSpinner(
         color: palette.bg.strong,
         size: context.dp(28.px),
