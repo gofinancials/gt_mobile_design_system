@@ -17,7 +17,7 @@ dependencies:
   gt_mobile_foundation:
     git:
       url: https://github.com/gofinancials/gt_mobile_foundation.git
-      ref: v0.0.6
+      ref: v0.0.7
 
 dev_dependencies:
   flutter_test:

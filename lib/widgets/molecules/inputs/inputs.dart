@@ -1,12 +1,10 @@
 export 'gt_amount_field.dart';
 export 'gt_async_select_field.dart';
-export 'gt_autocomplete_field.dart';
 export 'gt_calendar.dart';
 export 'gt_date_field.dart';
 export 'gt_dot_form_field.dart';
 export 'gt_email_field.dart';
 export 'gt_multi_select_field.dart';
-export 'gt_number_field.dart';
 export 'gt_password_field.dart';
 export 'gt_phone_field.dart';
 export 'gt_pin_input.dart';

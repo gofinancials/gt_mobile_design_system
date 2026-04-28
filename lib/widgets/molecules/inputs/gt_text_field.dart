@@ -207,19 +207,23 @@ class _GtTextFieldState extends State<GtTextField>
                   ? decoration.errorMaxLines
                   : decoration.helperMaxLines;
 
-              return _GtTextFieldLayout(
-                decoration: decoration,
-                activeDecoration: decor,
-                helperText: helpText,
-                helperStyle: style,
-                focused: _inputFocus.hasFocus || _ctrl.hasValue,
-                maxLines: maxLines,
-                textAlign: widget.textAlign,
-                prefix: widget.prefix,
-                suffix: widget.suffix,
-                labelStyle: labelStyle,
-                labelText: widget.label,
-                child: child!,
+              return GestureDetector(
+                onTap: () => context.requestFocus(_inputFocus),
+                behavior: .translucent,
+                child: _GtTextFieldLayout(
+                  decoration: decoration,
+                  activeDecoration: decor,
+                  helperText: helpText,
+                  helperStyle: style,
+                  focused: _inputFocus.hasFocus || _ctrl.hasValue,
+                  maxLines: maxLines,
+                  textAlign: widget.textAlign,
+                  prefix: widget.prefix,
+                  suffix: widget.suffix,
+                  labelStyle: labelStyle,
+                  labelText: widget.label,
+                  child: child!,
+                ),
               );
             },
           );

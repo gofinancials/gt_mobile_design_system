@@ -93,6 +93,13 @@ Widget buildGtCalendarUsecase(BuildContext context) {
 }
 
 final _inputCtrl = GtInputController();
+final _inputCtrl2 = GtInputController();
+final _inputCtrl3 = GtInputController();
+final _inputCtrl4 = GtInputController();
+final _inputCtrl5 = GtInputController();
+final _inputCtrl6 = GtInputController();
+final _inputCtrl7 = GtInputController();
+final _inputCtrl8 = GtInputController();
 final _formKey2 = GlobalKey<FormState>();
 
 @widgetbook.UseCase(name: 'GtTextField', type: GtTextField)
@@ -134,14 +141,14 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
     child: Scaffold(
       appBar: GtTitleAppBar(title: "GtTextField Showcase"),
       backgroundColor: isWhite ? context.palette.bg.weak : null,
-      body: Padding(
+      body: SingleChildScrollView(
         padding: context.insets.defaultAllInsets,
         child: Column(
           crossAxisAlignment: .stretch,
           mainAxisSize: .min,
           children: [
             ...GtGap.ySection4xl() * 2,
-            GenericListener( 
+            GenericListener(
               valueListenable: _inputCtrl.controller,
               builder: (data) {
                 return GtText(
@@ -153,7 +160,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
             const GtGap.yLg(),
             GtTextField(
               controller: _inputCtrl,
-              label: isSearch ? null : "Enter multiline text here",
+              label: isSearch ? null : "Enter text here",
               hintText: !isSearch ? null : "Enter multiline text here",
               key: PageStorageKey("gt-input"),
               prefix: prefix.$2,
@@ -165,7 +172,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
             ),
             const GtGap.yXl(),
             GtTextField.multiline(
-              controller: _inputCtrl,
+              controller: _inputCtrl2,
               label: isSearch ? null : "Enter multiline text here",
               hintText: !isSearch ? null : "Enter multiline text here",
               key: PageStorageKey("gt-multiline-input"),
@@ -173,8 +180,44 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               suffix: suffix.$2,
               textAlign: textAlign,
               decoration: decoration.$2,
-               validator: (_) => "Field is invalid",
-               helperText: helperText,
+              validator: (_) => "Field is invalid",
+              helperText: helperText,
+            ),
+            const GtGap.yXl(),
+            GtEmailField(
+              controller: _inputCtrl3,
+              label: "Enter email here",
+              decoration: decoration.$2,
+            ),
+            const GtGap.yXl(),
+            GtPasswordField(
+              controller: _inputCtrl4,
+              label: isSearch ? null : "Enter password here",
+              decoration: decoration.$2,
+            ),
+            const GtGap.yXl(),
+            GtAmountField(
+              controller: _inputCtrl5,
+              label: "Enter ammount here",
+              decoration: decoration.$2,
+            ),
+            const GtGap.yXl(),
+            GtSearchField(
+              controller: _inputCtrl6,
+              hintText: "Search here",
+              prefix: GtIcon(GtIcons.magnifier, variant: .soft),
+              decoration: decoration.$2,
+            ),
+            const GtGap.yXl(),
+            GtUrlField(
+              controller: _inputCtrl7,
+              label: "Enter URL here",
+              decoration: decoration.$2,
+            ),
+            const GtGap.yXl(),
+            GtTimeField(
+              controller: _inputCtrl8,
+              decoration: decoration.$2,
             ),
             const GtGap.ySectionSm(),
             GtRaisedButton(
