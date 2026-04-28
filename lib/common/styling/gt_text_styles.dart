@@ -160,6 +160,30 @@ class GtTextStyles {
   // TITLES (h prefix) | H1: Youth, H2-H6: Readex Pro
   // ---------------------------------------------------------------------------
 
+  /// Generates the welcom screen title text style.
+  TextStyle welcome({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.display,
+      size: 60,
+      heightPx: 64,
+      widthPct: -1.0,
+      weight: FontWeight.bold,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   /// Generates the Heading 1 (H1) text style.
   TextStyle h1({
     Color? color,
