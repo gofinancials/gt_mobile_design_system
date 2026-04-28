@@ -263,7 +263,6 @@ class _CupertinoDatePickerContainerState
   }
 }
 
-
 class _MaterialDatePickerContainer extends GtStatefulWidget {
   final ValueChanged<DateTime?> onChangeDate;
   final DateTime? initialDate;

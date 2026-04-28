@@ -2,20 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A specialized compound input field designed for money transfer screens.
+///
+/// This widget creates a cohesive visual block containing the sender's details,
+/// a stylized amount input field, the recipient's details, and an optional
+/// note field. It handles basic balance validation and custom visual styling natively.
 class GtTransferField extends GtStatefulWidget {
+  /// The controller used to read and manipulate the transfer amount input.
   final GtInputController amountController;
+
+  /// The controller used to read and manipulate the note or description input.
   final GtInputController noteController;
+
+  /// The name or identifier of the user sending the funds.
   final String sender;
+
+  /// The name or identifier of the user receiving the funds.
   final String recipient;
+
+  /// The hint text displayed inside the note input field.
   final String noteHint;
+
+  /// The available balance of the sender, used for validation and display.
   final double balance;
+
+  /// The avatar widget representing the recipient.
   final GtAvatar recipientAvatar;
+
+  /// The image data representing the sender.
   final AppImageData senderImage;
+
+  /// Callback invoked whenever either the amount or the note changes.
   final OnChanged<({String? amount, String? note})>? onChange;
+
+  /// Whether the transfer field is interactive and can be modified. Defaults to true.
   final bool isEnabled;
+
+  /// The minimum allowable amount for the transfer.
   final num? min;
+
+  /// The maximum allowable amount for the transfer.
   final num? max;
 
+  /// Creates a new [GtTransferField].
   const GtTransferField({
     super.key,
     required this.amountController,

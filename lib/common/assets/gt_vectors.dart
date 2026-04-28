@@ -20,8 +20,10 @@ class GtVectors {
   /// Path to the tap left SVG.
   static const tapLeft = "$_basePath/tap_left.svg";
 
+  /// Path to the sterling SVG.
   static const sterling = "$_basePath/sterling.svg";
 
+  /// Path to the trend down SVG.
   static const trendDown = "$_basePath/trend_down.svg";
 
   /// A list containing all available core vector asset paths.

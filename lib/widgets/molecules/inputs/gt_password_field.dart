@@ -3,16 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A specialized text input field designed for passwords.
+///
+/// This widget automatically includes a suffix icon to toggle password visibility
+/// (obscuring/revealing text), disables auto-correction, sets the appropriate
+/// keyboard type, and applies default password validation based on a minimum length.
 class GtPasswordField extends GtStatefulWidget {
+  /// The controller used to read and manipulate the password input.
   final GtInputController controller;
+
+  /// An optional label displayed for the input field.
   final String? label;
+
+  /// Whether the input field is interactive and can be modified. Defaults to true.
   final bool isEnabled;
+
+  /// Custom visual styling for the input.
   final GtInputDecoration? decoration;
+
+  /// The minimum required length for the password to pass default validation. Defaults to 3.
   final int minLength;
+
+  /// An optional custom validator. If null, a default password validator is used.
   final OnValidate<String?>? validator;
+
+  /// Callback invoked when the user submits the field (e.g., presses the keyboard action button).
   final OnChanged<String?>? onFieldSubmitted;
+
+  /// The type of action button to use for the keyboard. Defaults to [TextInputAction.next].
   final TextInputAction action;
 
+  /// Creates a new [GtPasswordField].
   const GtPasswordField({
     required this.controller,
     this.label,

@@ -122,6 +122,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// How the children should be placed along the cross axis. Defaults to [CrossAxisAlignment.end].
   final CrossAxisAlignment crossAxisAlignment;
 
+  /// Custom styling for the subtitle text
   final TextStyle? subStyle;
 
   /// Creates a [GtTransactionParticipantListTile].
