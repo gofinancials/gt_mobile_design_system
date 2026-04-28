@@ -19,8 +19,22 @@ class GtGradients {
 
   /// A linear gradient tailored for avatar backgrounds.
   ///
-  /// Transitions from a 24% opacity primary color into the solid primary color.
+  /// Transitions from a 10% opacity primary color into a 24% opacity primary color.
   Gradient get avatarGradient {
+    return LinearGradient(
+      colors: [
+        context.palette.primary.alpha10,
+        context.palette.primary.alpha24,
+      ],
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+    );
+  }
+
+  /// A linear gradient tailored for appbar avatar backgrounds.
+  ///
+  /// Transitions from a 24% opacity primary color into the solid primary color.
+  Gradient get appbarAvatarGradient {
     return LinearGradient(
       colors: [context.palette.primary.alpha24, context.palette.primary.base],
       stops: [0, .6],

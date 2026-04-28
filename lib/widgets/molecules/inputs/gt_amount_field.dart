@@ -23,7 +23,7 @@ class GtAmountField extends GtStatefulWidget {
     this.max,
     this.min,
     this.decoration,
-    this.textAlign  = .start,
+    this.textAlign = .start,
   });
   @override
   State<GtAmountField> createState() => _GtAmountFieldState();

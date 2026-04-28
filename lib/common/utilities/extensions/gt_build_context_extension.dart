@@ -58,7 +58,8 @@ extension ThemeContextExtension on BuildContext {
   }
 
   /// Retrieves the color palette defined in the current theme.
-  GtPalette get palette => Theme.of(this).extension<GtPalette>() ?? PersonalLightPalette();
+  GtPalette get palette =>
+      Theme.of(this).extension<GtPalette>() ?? PersonalLightPalette();
   GtTheme get themeData => GtThemeProvider.of(this);
 
   /// Retrieves the grid configuration from the design system theme.

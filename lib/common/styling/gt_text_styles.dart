@@ -328,6 +328,22 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the avatar text style
+  TextStyle avatar({
+    Color? color,
+    TextOverflow? overflow,
+    required double size,
+  }) {
+    return _buildStyle(
+      family: fonts.title,
+      size: size,
+      heightPx: size * 1.25,
+      widthPct: 0.0,
+      weight: FontWeight.w600,
+      color: color,
+    );
+  }
+
   // ---------------------------------------------------------------------------
   // PARAGRAPHS (body prefix) | Inter, Regular (400)
   // ---------------------------------------------------------------------------
