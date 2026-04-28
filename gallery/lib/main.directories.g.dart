@@ -633,7 +633,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtSplashScreen',
                     builder: _gallery_templates_screens_gt_splash_screen
-                        .buildGtHowToScreenUsecase,
+                        .buildGtSplashScreenUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtWelcomeScreen',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtWelcomeScreen',
+                    builder: _gallery_templates_screens_gt_splash_screen
+                        .buildGWelcomeScreenUsecase,
                   ),
                 ],
               ),
