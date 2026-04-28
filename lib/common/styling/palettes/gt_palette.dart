@@ -144,6 +144,7 @@ class GtPaletteBgColors {
   final Color sub;
   final Color soft;
   final Color weak;
+  final Color weaker;
   final Color white;
   final Color neutralWarm50;
 
@@ -153,6 +154,7 @@ class GtPaletteBgColors {
     required this.sub,
     required this.soft,
     required this.weak,
+    required this.weaker,
     required this.white,
     required this.neutralWarm50,
   });
@@ -163,8 +165,9 @@ class GtPaletteBgColors {
     sub,
     soft,
     weak,
-    white,
+    weaker,
     neutralWarm50,
+    white,
   ];
 
   static GtPaletteBgColors lerp(
@@ -178,6 +181,7 @@ class GtPaletteBgColors {
       sub: Color.lerp(a?.sub, b?.sub, t)!,
       soft: Color.lerp(a?.soft, b?.soft, t)!,
       weak: Color.lerp(a?.weak, b?.weak, t)!,
+      weaker: Color.lerp(a?.weaker, b?.weaker, t)!,
       white: Color.lerp(a?.white, b?.white, t)!,
       neutralWarm50: Color.lerp(a?.neutralWarm50, b?.neutralWarm50, t)!,
     );
@@ -198,8 +202,16 @@ class GtPaletteBgColors {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(strong, surface, sub, soft, weak, white, neutralWarm50);
+  int get hashCode => Object.hash(
+    strong,
+    surface,
+    sub,
+    soft,
+    weak,
+    weaker,
+    white,
+    neutralWarm50,
+  );
 }
 
 /// Colors applied to foreground elements like text and icons.

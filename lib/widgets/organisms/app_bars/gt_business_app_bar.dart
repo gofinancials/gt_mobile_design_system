@@ -58,6 +58,8 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
               avatar: avatar,
               alignment: .centerLeft,
               initials: AppHelpers.getInitials(fullName),
+              gradient: context.gradients.appbarAvatarGradient,
+              initialsColor: context.palette.text.white,
             ),
             Expanded(
               child: Column(

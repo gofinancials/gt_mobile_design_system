@@ -23,6 +23,7 @@ enum GtColors {
   neutral200(ColorSet(0xFFEBEBEB, 0xFF333333)),
   neutral100(ColorSet(0xFFF5F5F5, 0x2999A0AE)),
   neutral50(ColorSet(0xFFF7F7F7, 0xFF262626)),
+  neutral25(ColorSet(0xFFF8F8F8, 0xFF272727)),
   neutral0(ColorSet(0xFFFFFFFF, 0xFF111111)),
 
   // ---------------------------------------------------------------------------

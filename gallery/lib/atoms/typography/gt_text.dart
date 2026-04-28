@@ -11,6 +11,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 @widgetbook.UseCase(name: 'GtText', type: GtText)
 Widget playgroundGtTextUseCase(BuildContext context) {
   const text = "The quick brown fox jumps over the lazy dog.";
+  final styles = context.textStyles;
 
   final softWrap = context.knobs.boolean(
     label: "Soft wrap text",
@@ -39,279 +40,19 @@ Widget playgroundGtTextUseCase(BuildContext context) {
     labelBuilder: (value) => value.$1,
   );
 
-  final displayStyles = [
-    (
-      "DISPLAY 1 [context.textStyles.d1]",
-      GtText(
-        text.upper,
-        style: context.textStyles.d1(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
+  final allStyles = [
+    for (final style in styles.all)
+      (
+        style.$1,
+        GtText(
+          text.upper,
+          style: style.$2,
+          softWrap: softWrap,
+          textDirection: direction,
+          maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
+          textAlign: alignment.$2,
+        ),
       ),
-    ),
-    (
-      "DISPLAY 2 [context.textStyles.d2]",
-      GtText(
-        text.upper,
-        style: context.textStyles.d2(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "DISPLAY 3 [context.textStyles.d3]",
-      GtText(
-        text.upper,
-        style: context.textStyles.d3(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "DISPLAY 4 [context.textStyles.d4]",
-      GtText(
-        text.upper,
-        style: context.textStyles.d4(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-  ];
-  final headingStyles = [
-    (
-      "HEADING 1 [context.textStyles.h1]",
-      GtText(
-        text.upper,
-        style: context.textStyles.h1(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "HEADING 2 [context.textStyles.h2]",
-      GtText(
-        text.upper,
-        style: context.textStyles.h2(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "HEADING 3 [context.textStyles.h3]",
-      GtText(
-        text.upper,
-        style: context.textStyles.h3(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "HEADING 4 [context.textStyles.h4]",
-      GtText(
-        text.upper,
-        style: context.textStyles.h4(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "HEADING 5 [context.textStyles.h5]",
-      GtText(
-        text.upper,
-        style: context.textStyles.h5(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "HEADING 6 [context.textStyles.h6]",
-      GtText(
-        text.upper,
-        style: context.textStyles.h6(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-  ];
-  final labelStyles = [
-    (
-      "LABEL X-LARGE [context.textStyles.labelXl]",
-      GtText(
-        text,
-        style: context.textStyles.labelXl(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "LABEL LARGE [context.textStyles.labelL]",
-      GtText(
-        text,
-        style: context.textStyles.labelL(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "LABEL MEDIUM [context.textStyles.labelM]",
-      GtText(
-        text,
-        style: context.textStyles.labelM(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "LABEL SMALL [context.textStyles.labelS]",
-      GtText(
-        text,
-        style: context.textStyles.labelS(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "LABEL X-SMALL [context.textStyles.labelXs]",
-      GtText(
-        text,
-        style: context.textStyles.labelXs(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-  ];
-  final bodyStyles = [
-    (
-      "BODY X-LARGE [context.textStyles.bodyXl]",
-      GtText(
-        text,
-        style: context.textStyles.bodyXl(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "BODY LARGE [context.textStyles.bodyL]",
-      GtText(
-        text,
-        style: context.textStyles.bodyL(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "BODY MEDIUM [context.textStyles.bodyM]",
-      GtText(
-        text,
-        style: context.textStyles.bodyM(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "BODY SMALL [context.textStyles.bodyS]",
-      GtText(
-        text,
-        style: context.textStyles.bodyS(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "BODY X-SMALL [context.textStyles.bodyXs]",
-      GtText(
-        text,
-        style: context.textStyles.bodyXs(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-  ];
-  final subStyles = [
-    (
-      "SUBHEADING MEDIUM [context.textStyles.subHeadM]",
-      GtText(
-        text.upper,
-        style: context.textStyles.subHeadM(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "SUBHEADING SMALL [context.textStyles.subHeadS]",
-      GtText(
-        text.upper,
-        style: context.textStyles.subHeadS(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "SUBHEADING X-SMALL [context.textStyles.subHeadXs]",
-      GtText(
-        text.upper,
-        style: context.textStyles.subHeadXs(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
-    (
-      "SUBHEADING XX-SMALL [context.textStyles.subHead2xs]",
-      GtText(
-        text.upper,
-        style: context.textStyles.subHead2xs(),
-        softWrap: softWrap,
-        textDirection: direction,
-        maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-        textAlign: alignment.$2,
-      ),
-    ),
   ];
 
   return Scaffold(
@@ -325,60 +66,16 @@ Widget playgroundGtTextUseCase(BuildContext context) {
             child: GalleryPageHeader(
               title: "Typography",
               rider: "Typography Playground",
-              sectionHeader: "Display Text Styles",
+              sectionHeader: "Text Styles",
             ),
           ),
           SliverList.separated(
             itemBuilder: (_, index) {
-              final (label, text) = displayStyles[index];
+              final (label, text) = allStyles[index];
               return GtTextContainer(label: label, text: text);
             },
             separatorBuilder: (_, index) => const GtDivider.lg(),
-            itemCount: displayStyles.length,
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Heading Styles"),
-          ),
-          SliverList.separated(
-            itemBuilder: (_, index) {
-              final (label, text) = headingStyles[index];
-              return GtTextContainer(label: label, text: text);
-            },
-            separatorBuilder: (_, index) => const GtDivider.lg(),
-            itemCount: headingStyles.length,
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Label Styles"),
-          ),
-          SliverList.separated(
-            itemBuilder: (_, index) {
-              final (label, text) = labelStyles[index];
-              return GtTextContainer(label: label, text: text);
-            },
-            separatorBuilder: (_, index) => const GtDivider.lg(),
-            itemCount: labelStyles.length,
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Body Styles"),
-          ),
-          SliverList.separated(
-            itemBuilder: (_, index) {
-              final (label, text) = bodyStyles[index];
-              return GtTextContainer(label: label, text: text);
-            },
-            separatorBuilder: (_, index) => const GtDivider.lg(),
-            itemCount: bodyStyles.length,
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Sub Heading Styles"),
-          ),
-          SliverList.separated(
-            itemBuilder: (_, index) {
-              final (label, text) = subStyles[index];
-              return GtTextContainer(label: label, text: text);
-            },
-            separatorBuilder: (_, index) => const GtDivider.lg(),
-            itemCount: subStyles.length,
+            itemCount: allStyles.length,
           ),
           SliverToBoxAdapter(child: GtGap.ySectionLg()),
         ],

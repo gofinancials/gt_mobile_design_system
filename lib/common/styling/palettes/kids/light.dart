@@ -28,6 +28,7 @@ final class KidsLightPalette extends GtPalette {
           weak: GtColors.neutral50.value,
           white: GtColors.neutral0.value,
           neutralWarm50: GtColors.neutralWarm50.value,
+          weaker: GtColors.neutral25.value,
         ),
         text: GtPaletteTextColors(
           strong: GtColors.neutral950.value,
