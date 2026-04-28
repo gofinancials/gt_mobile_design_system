@@ -97,7 +97,9 @@ class GtAvatar extends GtStatelessWidget {
       );
     }
 
-    if (showBorder) border = Border.all(color: context.palette.stroke.white);
+    if (showBorder) {
+      border = Border.all(color: context.palette.stroke.white, width: 1.5);
+    }
 
     Widget child = Align(
       alignment: alignment,

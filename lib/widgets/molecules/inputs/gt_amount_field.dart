@@ -33,9 +33,10 @@ class _GtAmountFieldState extends State<GtAmountField> {
   @override
   Widget build(BuildContext context) {
     return GtTextField(
-      decoration: widget.decoration,
+      decoration: widget.decoration ?? context.inputStyles.transferInputStyle,
       isEnabled: widget.isEnabled,
       label: widget.label,
+      hintText: "0.00",
       inputFormatters: [AppAmountFormatter()],
       controller: widget.controller,
       validator: (text) => AppValidators.amountValidator(

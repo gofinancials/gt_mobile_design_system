@@ -107,7 +107,7 @@ class GtInputStyles {
       errorDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
-        border: Border.all(color: context.palette.error.base, width: 1.6),
+        border: Border.all(color: context.palette.error.base, width: 1.5),
       ),
       focusedErrorDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
@@ -151,7 +151,7 @@ class GtInputStyles {
       errorDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
-        border: Border.all(color: context.palette.error.base, width: 1.6),
+        border: Border.all(color: context.palette.error.base, width: 1.5),
       ),
       focusedErrorDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
@@ -162,7 +162,7 @@ class GtInputStyles {
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weaker,
       ),
-      padding: context.insets.symmetricDp(horizontal: 8.5.px, vertical: 6.px),
+      padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 6.px),
     );
   }
 
@@ -194,7 +194,7 @@ class GtInputStyles {
       errorDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
-        border: Border.all(color: context.palette.error.base, width: 1.6),
+        border: Border.all(color: context.palette.error.base, width: 1.5),
       ),
       focusedErrorDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
@@ -237,7 +237,7 @@ class GtInputStyles {
       errorDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
-        border: Border.all(color: context.palette.error.base, width: 1.6),
+        border: Border.all(color: context.palette.error.base, width: 1.5),
       ),
       focusedErrorDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
@@ -280,7 +280,7 @@ class GtInputStyles {
       errorDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.white,
-        border: Border.all(color: context.palette.error.base, width: 1.6),
+        border: Border.all(color: context.palette.error.base, width: 1.5),
       ),
       focusedErrorDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
@@ -386,6 +386,47 @@ class GtInputDecoration {
        _focusedDecoration = focusedDecoration,
        _disabledDecoration = disabledDecoration,
        _focusedErrorDecoration = focusedErrorDecoration;
+
+  /// Creates a copy of this input decoration but with the given fields replaced with the new values.
+  GtInputDecoration copyWith({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? labelStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+    EdgeInsetsGeometry? padding,
+    BoxDecoration? decoration,
+    BoxDecoration? errorDecoration,
+    BoxDecoration? focusedDecoration,
+    BoxDecoration? disabledDecoration,
+    BoxDecoration? focusedErrorDecoration,
+    Size? size,
+  }) {
+    return GtInputDecoration(
+      iconColor: iconColor ?? this.iconColor,
+      hintMaxLines: hintMaxLines ?? this.hintMaxLines,
+      errorMaxLines: errorMaxLines ?? this.errorMaxLines,
+      helperMaxLines: helperMaxLines ?? this.helperMaxLines,
+      textStyle: textStyle ?? this.textStyle,
+      hintStyle: hintStyle ?? this.hintStyle,
+      errorStyle: errorStyle ?? this.errorStyle,
+      labelStyle: labelStyle ?? this.labelStyle,
+      helperStyle: helperStyle ?? this.helperStyle,
+      disabledStyle: disabledStyle ?? this.disabledStyle,
+      padding: padding ?? this.padding,
+      decoration: decoration ?? this.decoration,
+      errorDecoration: errorDecoration ?? _errorDecoration,
+      focusedDecoration: focusedDecoration ?? _focusedDecoration,
+      disabledDecoration: disabledDecoration ?? _disabledDecoration,
+      focusedErrorDecoration: focusedErrorDecoration ?? _focusedErrorDecoration,
+      size: size ?? this.size,
+    );
+  }
 
   /// Returns the BoxConstraints based on the configured [size].
   BoxConstraints get constraints => BoxConstraints(minHeight: size.height);

@@ -100,6 +100,7 @@ final _inputCtrl5 = GtInputController();
 final _inputCtrl6 = GtInputController();
 final _inputCtrl7 = GtInputController();
 final _inputCtrl8 = GtInputController();
+final _inputCtrl9 = GtInputController();
 final _formKey2 = GlobalKey<FormState>();
 
 @widgetbook.UseCase(name: 'GtTextField', type: GtTextField)
@@ -147,7 +148,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
           crossAxisAlignment: .stretch,
           mainAxisSize: .min,
           children: [
-            ...GtGap.ySection4xl() * 2,
+            GtGap.ySectionSm(),
             GenericListener(
               valueListenable: _inputCtrl.controller,
               builder: (data) {
@@ -198,7 +199,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
             const GtGap.yXl(),
             GtAmountField(
               controller: _inputCtrl5,
-              label: "Enter ammount here",
+              label: "Enter amount here",
               decoration: decoration.$2,
             ),
             const GtGap.yXl(),
@@ -215,11 +216,23 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               decoration: decoration.$2,
             ),
             const GtGap.yXl(),
-            GtTimeField(
-              controller: _inputCtrl8,
-              decoration: decoration.$2,
+            GtTransferField(
+              amountController: _inputCtrl8,
+              noteController: _inputCtrl9,
+              sender: "FLEX",
+              recipient: "Alex Lobaloba",
+              senderImage: AppImageData(imageData: GtNetworkImages.savings),
+              recipientAvatar: GtAvatar(
+                initials: "AL",
+                size: 40,
+                avatar: AppImageData(imageData: GtNetworkImages.sampleAvatar1),
+                showBorder: true,
+                tag: GtSvg(GtVectors.logo),
+              ),
+              noteHint: "Add a note (optional)",
+              balance: 0,
             ),
-            const GtGap.ySectionSm(),
+            const GtGap.yXl(),
             GtRaisedButton(
               onPressed: () {
                 context.validateForm(_formKey2);

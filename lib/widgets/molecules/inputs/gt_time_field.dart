@@ -98,7 +98,7 @@ class _GtTimeFieldState extends State<GtTimeField> {
       context: context,
       useRootNavigator: false,
       builder: (context) {
-        if (!Platform.isAndroid) {
+        if (Platform.isAndroid) {
           return _MaterialDatePickerContainer(
             onChange: _setTime,
             initialDate: _selectedDate,
@@ -143,8 +143,8 @@ class _GtTimeFieldState extends State<GtTimeField> {
               },
               label: widget.label,
               keyboardType: TextInputType.datetime,
-              prefix: GtIcon(Icons.timer, variant: .sub),
-              suffix: GtIcon(Icons.arrow_downward_rounded, variant: .sub),
+              prefix: GtIcon(GtIcons.alarmClock, variant: .sub),
+              suffix: GtIcon(GtIcons.chevronDownOutline, variant: .sub),
             ),
           ),
         );
@@ -169,45 +169,38 @@ class _CupertinoDatePickerContainer extends GtStatefulWidget {
 
 class _CupertinoDatePickerContainerState
     extends State<_CupertinoDatePickerContainer> {
-  final ValueNotifier<DateTime?> _timeRef = ValueNotifier(null);
+  late final ValueNotifier<DateTime> _timeRef;
+
+  @override
+  void initState() {
+    super.initState();
+    _timeRef = ValueNotifier(widget.initialDate ?? DateTime.now());
+  }
+
+  @override
+  void dispose() {
+    _timeRef.dispose();
+    super.dispose();
+  }
 
   void _selectDate() {
     widget.onChange(_timeRef.value);
     context.pop();
   }
 
+  void _onTimeChanged(DateTime time) {
+    _timeRef.value = time;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: GtCard(
-        margin: context.insets.defaultAllInsets,
-        constraints: BoxConstraints.tightFor(
-          width: double.infinity,
-          height: context.fractionalHeight(50),
-        ),
-        padding: context.insets.allDp(24.px),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Row(children: [GtCancelButton()]),
-            Expanded(
-              child: CupertinoDatePicker(
-                backgroundColor: context.palette.bg.weak,
-                onDateTimeChanged: (time) => _timeRef.value = time,
-                mode: CupertinoDatePickerMode.time,
-                initialDateTime: widget.initialDate,
-              ),
-            ),
-            GtOutlineButton(
-              onPressed: _selectDate,
-              text: "select".ctr(),
-              size: .medium,
-            ),
-          ],
-        ),
+    return GtBasePicker(
+      onSelect: _selectDate,
+      picker: CupertinoDatePicker(
+        backgroundColor: context.palette.bg.weak,
+        onDateTimeChanged: _onTimeChanged,
+        mode: CupertinoDatePickerMode.time,
+        initialDateTime: widget.initialDate,
       ),
     );
   }
@@ -334,107 +327,82 @@ class _MaterialDatePickerContainerState
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      type: MaterialType.transparency,
-      child: GtCard(
-        margin: context.insets.defaultAllInsets,
-        constraints: BoxConstraints.tightFor(
-          width: double.infinity,
-          height: context.fractionalHeight(50),
-        ),
-        padding: context.insets.allDp(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Row(children: [GtCancelButton()]),
-            const GtGap.yBase(),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(
-                    flex: 1,
-                    fit: FlexFit.tight,
-                    child: ValueListenableBuilder<int>(
-                      valueListenable: hour,
-                      builder: (context, currentHour, _) {
-                        return WheelScrollSheet<int>(
-                          key: const Key("hour::wheel"),
-                          selectedData: currentHour,
-                          onSelect: (newHour) => hour.value = newHour,
-                          controller: _hourCtrl,
-                          items: [
-                            for (final (index, hour) in hours.indexed)
-                              GtWheelScrollData(
-                                data: hour,
-                                label: hour.asHourName,
-                                index: index,
-                              ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  Flexible(
-                    fit: FlexFit.tight,
-                    flex: 1,
-                    child: ValueListenableBuilder<int>(
-                      valueListenable: minute,
-                      builder: (context, currentMinute, _) {
-                        return WheelScrollSheet<int>(
-                          key: const Key("minute::wheel"),
-                          selectedData: currentMinute,
-                          onSelect: (newMinute) => minute.value = newMinute,
-                          controller: _minuteCtrl,
-                          items: [
-                            for (final (index, minute) in minutes.indexed)
-                              GtWheelScrollData(
-                                data: minute,
-                                label: minute.asMinuteName,
-                                index: index,
-                              ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                  Flexible(
-                    fit: FlexFit.tight,
-                    flex: 1,
-                    child: ValueListenableBuilder<GtTimePeriod>(
-                      valueListenable: period,
-                      builder: (context, currentPeriod, _) {
-                        return WheelScrollSheet<GtTimePeriod>(
-                          key: const Key("period::wheel"),
-                          selectedData: currentPeriod,
-                          onSelect: (newPeriod) => period.value = newPeriod,
-                          controller: _periodCtrl,
-                          items: [
-                            for (final period in GtTimePeriod.values)
-                              GtWheelScrollData(
-                                data: period,
-                                label: ["AM", "PM"][period.index],
-                                index: period.index,
-                              ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
+    return GtBasePicker(
+      onSelect: _selectDate,
+      picker: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            flex: 1,
+            fit: FlexFit.tight,
+            child: ValueListenableBuilder<int>(
+              valueListenable: hour,
+              builder: (context, currentHour, _) {
+                return WheelScrollSheet<int>(
+                  key: const Key("hour::wheel"),
+                  selectedData: currentHour,
+                  onSelect: (newHour) => hour.value = newHour,
+                  controller: _hourCtrl,
+                  items: [
+                    for (final (index, hour) in hours.indexed)
+                      GtWheelScrollData(
+                        data: hour,
+                        label: hour.asHourName,
+                        index: index,
+                      ),
+                  ],
+                );
+              },
             ),
-            const GtGap.yBase(),
-            GtOutlineButton(
-              onPressed: _selectDate,
-              text: "select".ctr(),
-              size: .medium,
+          ),
+          Flexible(
+            fit: FlexFit.tight,
+            flex: 1,
+            child: ValueListenableBuilder<int>(
+              valueListenable: minute,
+              builder: (context, currentMinute, _) {
+                return WheelScrollSheet<int>(
+                  key: const Key("minute::wheel"),
+                  selectedData: currentMinute,
+                  onSelect: (newMinute) => minute.value = newMinute,
+                  controller: _minuteCtrl,
+                  items: [
+                    for (final (index, minute) in minutes.indexed)
+                      GtWheelScrollData(
+                        data: minute,
+                        label: minute.asMinuteName,
+                        index: index,
+                      ),
+                  ],
+                );
+              },
             ),
-          ],
-        ),
+          ),
+          Flexible(
+            fit: FlexFit.tight,
+            flex: 1,
+            child: ValueListenableBuilder<GtTimePeriod>(
+              valueListenable: period,
+              builder: (context, currentPeriod, _) {
+                return WheelScrollSheet<GtTimePeriod>(
+                  key: const Key("period::wheel"),
+                  selectedData: currentPeriod,
+                  onSelect: (newPeriod) => period.value = newPeriod,
+                  controller: _periodCtrl,
+                  items: [
+                    for (final period in GtTimePeriod.values)
+                      GtWheelScrollData(
+                        data: period,
+                        label: ["AM", "PM"][period.index],
+                        index: period.index,
+                      ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

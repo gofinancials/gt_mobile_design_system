@@ -52,7 +52,7 @@ class _GtEmailFieldState extends State<GtEmailField> {
             return const Offstage();
           }
 
-          const icon = GtIcons.cautionOutline;
+          const icon = GtIcons.cautionSolid;
 
           return GtIcon.withColor(
             icon,

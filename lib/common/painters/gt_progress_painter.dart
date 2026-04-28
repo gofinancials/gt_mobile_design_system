@@ -53,3 +53,30 @@ class GtProgressPainter extends CustomPainter {
     return oldDelegate.value != value;
   }
 }
+
+class GtCenterLinePainter extends CustomPainter {
+  final Color color;
+
+  GtCenterLinePainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..color = color
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    final path = Path();
+    double x = size.width;
+    double y = size.height;
+    path.moveTo(x * .5, 0);
+    path.lineTo(x * .5, y);
+    path.close();
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(GtCenterLinePainter oldDelegate) {
+    return oldDelegate.color != color;
+  }
+}
