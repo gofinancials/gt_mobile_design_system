@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gt_mobile_foundation/extensions/extensions.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A widget that displays a horizontal scrollable list of items under a shared title.
@@ -43,7 +43,7 @@ class GtSectionSlide extends GtStatelessWidget {
       children: [
         Padding(
           padding: context.insets.defaultHorizontalInsets,
-          child: GtText(title.upper, style: context.textStyles.buttonS()),
+          child: GtSectionHeader(title.upper),
         ),
         GtGap.yBase(),
         GtSizedBox(

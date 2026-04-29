@@ -28,6 +28,7 @@ class GtIcons {
   static const qrMain = GtIconData(0xf119);
   static const notificationSolid = GtIconData(0xf11a);
   static const more = GtIconData(0xf11b);
+  static const moreHorizontal = GtIconData(0xf12a);
   static const info = GtIconData(0xf11c);
   static const help = GtIconData(0xf11d);
   static const gem = GtIconData(0xf11e);
@@ -376,6 +377,7 @@ class GtIcons {
     qrMain,
     notificationSolid,
     more,
+    moreHorizontal,
     info,
     help,
     gem,
