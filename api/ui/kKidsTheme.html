@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the kAllThemes property from the common library, for the Dart programming language.">
-  <title>kAllThemes property - common library - Dart API</title>
+  <meta name="description" content="API docs for the kKidsTheme property from the ui library, for the Dart programming language.">
+  <title>kKidsTheme property - ui library - Dart API</title>
 
 
   
@@ -25,10 +25,10 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">gt_mobile_ui</a></li>
-    <li><a href="../common_common/">common&#47;common.dart</a></li>
-    <li class="self-crumb">kAllThemes property</li>
+    <li><a href="../ui/">gt_mobile_ui.dart</a></li>
+    <li class="self-crumb">kKidsTheme property</li>
   </ol>
-  <div class="self-name">kAllThemes</div>
+  <div class="self-name">kKidsTheme</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -45,36 +45,34 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="common_common&#47;common_common-library-sidebar.html"
+      data-above-sidebar="ui&#47;ui-library-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-top-level-property">kAllThemes</span> top-level property 
+<h1><span class="kind-top-level-property">kKidsTheme</span> top-level property 
  
 </h1></div>
 
         <section class="multi-line-signature">
           
-          <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../common_styling_gt_theme/GtTheme-class.html">GtTheme</a></span>&gt;</span>
-          <span class="name ">kAllThemes</span>
-          <div class="features"><span class="feature">getter/setter pair</span></div>
+          <a href="../common_styling_gt_theme/GtTheme-class.html">GtTheme</a>
+          <span class="name ">kKidsTheme</span>
+          <div class="features"><span class="feature">final</span></div>
 
         </section>
         
 <section class="desc markdown">
-  <p>A comprehensive list of all available themes in the design system.</p>
-<p>This list includes predefined themes such as <a href="../common_common/kPersonalTheme.html">kPersonalTheme</a> and <a href="../common_common/kKidsTheme.html">kKidsTheme</a>.</p>
+  <p>The pre-configured theme specifically designed for the Kids application.</p>
+<p>Uses <code>KidsLightPalette</code> and <code>KidsDarkPalette</code> for a playful and vibrant look.</p>
 </section>
 
         
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">List&lt;GtTheme&gt; kAllThemes = [
-  kPersonalTheme,
-  kKidsTheme,
-  kFlexTheme,
-  kPProTheme,
-  kGoTechTheme,
-];</code></pre>
+  <pre class="language-dart"><code class="language-dart">final kKidsTheme = GtTheme(
+  lightPalette: KidsLightPalette(),
+  darkPalette: KidsDarkPalette(),
+  name: &quot;Kids&quot;,
+);</code></pre>
 </section>
 
 
@@ -89,11 +87,11 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">gt_mobile_ui</a></li>
-    <li><a href="../common_common/">common</a></li>
-    <li class="self-crumb">kAllThemes property</li>
+    <li><a href="../ui/">ui</a></li>
+    <li class="self-crumb">kKidsTheme property</li>
 </ol>
 
-    <h5>common library</h5>
+    <h5>ui library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-left-->
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">

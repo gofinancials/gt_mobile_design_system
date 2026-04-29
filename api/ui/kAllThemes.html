@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the kGoTechTheme property from the common library, for the Dart programming language.">
-  <title>kGoTechTheme property - common library - Dart API</title>
+  <meta name="description" content="API docs for the kAllThemes property from the ui library, for the Dart programming language.">
+  <title>kAllThemes property - ui library - Dart API</title>
 
 
   
@@ -25,10 +25,10 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">gt_mobile_ui</a></li>
-    <li><a href="../common_common/">common&#47;common.dart</a></li>
-    <li class="self-crumb">kGoTechTheme property</li>
+    <li><a href="../ui/">gt_mobile_ui.dart</a></li>
+    <li class="self-crumb">kAllThemes property</li>
   </ol>
-  <div class="self-name">kGoTechTheme</div>
+  <div class="self-name">kAllThemes</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -45,34 +45,36 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="common_common&#47;common_common-library-sidebar.html"
+      data-above-sidebar="ui&#47;ui-library-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-top-level-property">kGoTechTheme</span> top-level property 
+<h1><span class="kind-top-level-property">kAllThemes</span> top-level property 
  
 </h1></div>
 
         <section class="multi-line-signature">
           
-          <a href="../common_styling_gt_theme/GtTheme-class.html">GtTheme</a>
-          <span class="name ">kGoTechTheme</span>
-          <div class="features"><span class="feature">final</span></div>
+          <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../common_styling_gt_theme/GtTheme-class.html">GtTheme</a></span>&gt;</span>
+          <span class="name ">kAllThemes</span>
+          <div class="features"><span class="feature">getter/setter pair</span></div>
 
         </section>
         
 <section class="desc markdown">
-  <p>The pre-configured theme for the GoTech application.</p>
-<p>Uses <code>GotechLightPalette</code> and <code>GotechDarkPalette</code> for a technology-focused look.</p>
+  <p>A comprehensive list of all available themes in the design system.</p>
+<p>This list includes predefined themes such as <a href="../ui/kPersonalTheme.html">kPersonalTheme</a> and <a href="../ui/kKidsTheme.html">kKidsTheme</a>.</p>
 </section>
 
         
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">final kGoTechTheme = GtTheme(
-  lightPalette: GotechLightPalette(),
-  darkPalette: GotechDarkPalette(),
-  name: &quot;Gotech&quot;,
-);</code></pre>
+  <pre class="language-dart"><code class="language-dart">List&lt;GtTheme&gt; kAllThemes = [
+  kPersonalTheme,
+  kKidsTheme,
+  kFlexTheme,
+  kPProTheme,
+  kGoTechTheme,
+];</code></pre>
 </section>
 
 
@@ -87,11 +89,11 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">gt_mobile_ui</a></li>
-    <li><a href="../common_common/">common</a></li>
-    <li class="self-crumb">kGoTechTheme property</li>
+    <li><a href="../ui/">ui</a></li>
+    <li class="self-crumb">kAllThemes property</li>
 </ol>
 
-    <h5>common library</h5>
+    <h5>ui library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-left-->
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
