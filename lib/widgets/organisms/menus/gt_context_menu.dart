@@ -64,7 +64,7 @@ class _GtContextMenuState<T> extends State<GtContextMenu<T>> {
       crossAxisUnconstrained: false,
       controller: _menuController,
       childFocusNode: _focusNode,
-      alignmentOffset: Offset(16, 8),
+      alignmentOffset: Offset(0, 8),
       builder: (context, controller, child) {
         final isOpened = controller.isOpen;
         if (isOpened) {
