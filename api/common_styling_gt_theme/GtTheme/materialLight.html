@@ -86,6 +86,7 @@
   );
   return base.copyWith(
     extensions: [lightPalette],
+    shadowColor: lightPalette.bg.strong.setOpacity(.17),
     splashColor: lightPalette.primary.alpha16,
     splashFactory: InkSplash.splashFactory,
     pageTransitionsTheme: PageTransitionsTheme(builders: defaultTransitions),
