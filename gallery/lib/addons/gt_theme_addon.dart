@@ -65,6 +65,7 @@ class GtThemeAddon extends WidgetbookAddon<GtThemeSetting> {
             darkTheme: setting.theme.materialDark,
             themeMode: setting.mode,
             debugShowCheckedModeBanner: false,
+            navigatorKey: GtRouter.navigatorKey,
             home: MediaQuery(
               data: MediaQuery.of(
                 context,

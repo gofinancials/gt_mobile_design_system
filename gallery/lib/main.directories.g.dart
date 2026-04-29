@@ -52,6 +52,8 @@ import 'package:gallery/organisms/cards/gt_card.dart'
     as _gallery_organisms_cards_gt_card;
 import 'package:gallery/organisms/headers/gt_page_header.dart'
     as _gallery_organisms_headers_gt_page_header;
+import 'package:gallery/organisms/menus/gt_context_menu.dart'
+    as _gallery_organisms_menus_gt_context_menu;
 import 'package:gallery/organisms/navigation/gt_bottom_navigation_bar.dart'
     as _gallery_organisms_navigation_gt_bottom_navigation_bar;
 import 'package:gallery/organisms/slides/gt_slide.dart'
@@ -493,6 +495,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'Page header',
                     builder: _gallery_organisms_headers_gt_page_header
                         .playgroundGtPageHeaderUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'menus',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtContextMenu',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtContextMenu',
+                    builder: _gallery_organisms_menus_gt_context_menu
+                        .buildGtContextMeunuUsecase,
                   ),
                 ],
               ),

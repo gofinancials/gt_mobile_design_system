@@ -85,7 +85,7 @@ class GtAlertOverlay extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: context.palette.bg.strong.setOpacity(.17),
+      color: context.shadowColor,
       child: SafeArea(
         bottom: false,
         minimum: context.insets.defaultHorizontalInsets,

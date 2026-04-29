@@ -126,16 +126,19 @@ class WidgetbookApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Widgetbook.material(
-      initialRoute: "?path=designsystemcover/cover",
-      directories: directories,
-      addons: [
-        ViewportAddon(Viewports.all),
-        GtThemeAddon(themes: kAllThemes),
-        InspectorAddon(),
-        TextScaleAddon(max: 1.5),
-        ZoomAddon(),
-      ],
+    return GtThemeProvider(
+      theme: kPersonalTheme,
+      child: Widgetbook.material(
+        initialRoute: "?path=designsystemcover/cover",
+        directories: directories,
+        addons: [
+          ViewportAddon(Viewports.all),
+          GtThemeAddon(themes: kAllThemes),
+          InspectorAddon(),
+          TextScaleAddon(max: 1.5),
+          ZoomAddon(),
+        ],
+      ),
     );
   }
 }

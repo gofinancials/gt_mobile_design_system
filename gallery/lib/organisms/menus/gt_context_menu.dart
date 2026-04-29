@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gallery/widgets/gallery_page_header.dart';
+import 'package:gallery/widgets/widgets.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -24,18 +24,50 @@ Widget buildGtContextMeunuUsecase(BuildContext context) {
                 trailing: GtMoreContextMenu<String>(
                   items: [
                     GtContextMenuItem(
-                      value: "New Stash",
                       label: "New stash",
-                      icon: GtIcons.add,
-                      onSelect: context.showToast,
+                      icon: GtIcons.plus,
+                      onTap: () => context.showToast("New Stash"),
                     ),
                     GtContextMenuItem(
-                      value: "Archived stash",
                       label: "Archived stash",
                       icon: GtIcons.boxArchive,
-                      onSelect: context.showToast,
+                      onTap: () => context.showToast("Archived Stash"),
                     ),
                   ],
+                ),
+              ),
+              GalleryPageSectionHeader(title: "GtPillContextMenu"),
+              GtSectionHeader(
+                "Gt Pill Context menu example",
+                trailing: GtPillContextMenu<String>(
+                  items: [
+                    GtContextMenuItem(
+                      label: "Account information",
+                      icon: GtIcons.shareIos,
+                      onTap: () => context.showToast("Account information"),
+                    ),
+                    GtContextMenuItem(
+                      label: "Manage accounts",
+                      icon: GtIcons.gear,
+                      onTap: () => context.showToast("Manage accounts"),
+                    ),
+                    GtContextMenuItem(
+                      label: "Branding",
+                      icon: GtIcons.paintbrush,
+                      onTap: () => context.showToast("Branding"),
+                    ),
+                    GtContextMenuItem(
+                      label: "Account statements",
+                      icon: GtIcons.fileContent,
+                      onTap: () => context.showToast("Account statements"),
+                    ),
+                    GtContextMenuItem(
+                      label: "Switch accounts",
+                      icon: GtIcons.switchOutline,
+                      onTap: () => context.showToast("Switch accounts"),
+                    ),
+                  ],
+                  anchor: GtButtonPill(text: "MANAGE", variant: .primary),
                 ),
               ),
             ],
