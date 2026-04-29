@@ -209,6 +209,9 @@ extension ThemeContextExtension on BuildContext {
   /// Returns `true` if the current screen is classified as a large monitor.
   bool get isMonitor => screenType.isMonitor;
 
+  // Default shadow color
+  Color get shadowColor => palette.bg.strong.setOpacity(.17);
+
   /// Validates a form associated with the provided [formKey].
   ///
   /// Triggers the [onValidationFailure] callback if the validation fails.
@@ -306,4 +309,7 @@ extension NavigatorExtension on BuildContext {
 
   /// Pops the top-most route off the navigator.
   Future pop() async => Navigator.of(this).pop();
+
+  /// May pop the top-most route off the navigator.
+  Future maybePop() async => Navigator.of(this).maybePop();
 }

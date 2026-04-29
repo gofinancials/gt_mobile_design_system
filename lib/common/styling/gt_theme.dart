@@ -46,6 +46,7 @@ class GtTheme {
     );
     return base.copyWith(
       extensions: [darkPalette],
+      shadowColor: darkPalette.bg.strong.setOpacity(.17),
       splashColor: darkPalette.primary.alpha16,
       splashFactory: InkSplash.splashFactory,
       pageTransitionsTheme: PageTransitionsTheme(builders: defaultTransitions),
@@ -128,6 +129,7 @@ class GtTheme {
     );
     return base.copyWith(
       extensions: [lightPalette],
+      shadowColor: lightPalette.bg.strong.setOpacity(.17),
       splashColor: lightPalette.primary.alpha16,
       splashFactory: InkSplash.splashFactory,
       pageTransitionsTheme: PageTransitionsTheme(builders: defaultTransitions),

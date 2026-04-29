@@ -21,4 +21,12 @@ class GtBackdropFilters {
     final sigma = context.dp(18.px);
     return ImageFilter.blur(sigmaX: sigma, sigmaY: sigma);
   }
+
+  /// A subtle blur effect applied behind context menus.
+  ///
+  /// Uses a fixed 3px sigma to gently obscure the background without completely
+  /// hiding it, drawing focus to the menu items.
+  ImageFilter contextMenuBlur() {
+    return ImageFilter.blur(sigmaX: 3, sigmaY: 3);
+  }
 }
