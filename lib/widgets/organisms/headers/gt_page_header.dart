@@ -23,6 +23,9 @@ class GtPageHeader extends GtStatelessWidget {
   /// Overrides title and subtitle color; defaults to [GtPalette.text.strong].
   final Color? titleColor;
 
+  /// Overrides subtitle color; defaults to [GtPalette.text.strong].
+  final Color? subTitleColor;
+
   /// Vertical gap between title and subtitle in **design pixels**.
   ///
   /// When `null`, uses [spacingBase] (`context.spacingBase`, ~8dp). Otherwise
@@ -38,6 +41,7 @@ class GtPageHeader extends GtStatelessWidget {
     required this.title,
     this.subtitle,
     this.titleColor,
+    this.subTitleColor,
     this.spacingPx,
     this.textAlign = TextAlign.start,
   });
@@ -49,7 +53,7 @@ class GtPageHeader extends GtStatelessWidget {
 
   /// Body S: 14px, regular (400) via [GtTextStyles] defaults.
   TextStyle _subtitleStyle(BuildContext context) {
-    return context.textStyles.bodyS(color: titleColor);
+    return context.textStyles.bodyS(color: subTitleColor ?? titleColor);
   }
 
   @override

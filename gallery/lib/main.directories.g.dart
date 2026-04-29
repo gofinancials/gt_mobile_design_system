@@ -50,6 +50,8 @@ import 'package:gallery/organisms/app_bars/gt_home_app_bar.dart'
     as _gallery_organisms_app_bars_gt_home_app_bar;
 import 'package:gallery/organisms/cards/gt_card.dart'
     as _gallery_organisms_cards_gt_card;
+import 'package:gallery/organisms/grids/gt_grids.dart'
+    as _gallery_organisms_grids_gt_grids;
 import 'package:gallery/organisms/headers/gt_page_header.dart'
     as _gallery_organisms_headers_gt_page_header;
 import 'package:gallery/organisms/menus/gt_context_menu.dart'
@@ -480,6 +482,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'Cards Gallery',
                     builder:
                         _gallery_organisms_cards_gt_card.buildGtCardUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'grids',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTransferCategoryGrid',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTransferCategoryGrid',
+                    builder: _gallery_organisms_grids_gt_grids
+                        .buildGtTransferCategoryGridUsecase,
                   ),
                 ],
               ),

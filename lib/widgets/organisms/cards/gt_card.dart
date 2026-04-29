@@ -277,7 +277,6 @@ class GtCard extends GtStatelessWidget {
             gradient: gradient,
             image: image,
           ),
-          width: double.infinity,
           margin: margin,
           padding: padding ?? context.insets.defaultAllInsets,
           duration: 500.milliseconds,

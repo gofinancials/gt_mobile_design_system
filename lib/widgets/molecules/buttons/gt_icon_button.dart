@@ -68,7 +68,7 @@ class GtIconButton extends GtButton {
   /// Overrides the base implementation to enforce a square shape based on the
   /// button's calculated height. A small adjustment is added for visual balance.
   Size maximumSize(BuildContext context) {
-    final height = buttonHeight(context) + 4;
+    final height = buttonHeight;
     return Size.square(height);
   }
 
@@ -166,7 +166,7 @@ class GtIconButton extends GtButton {
           icon,
           color: iconColor,
           size: iconSize,
-          alignment: alignment,
+          alignment: .center,
         ),
         child2: GtSpinner(color: iconColor),
         showFirst: !isLoading,
