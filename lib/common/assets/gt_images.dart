@@ -28,13 +28,16 @@ class GtNetworkImages {
   static const String cash = '$_baseUrl/Cash.webp';
 
   /// Image URL for the charity illustration.
-  static const String charity = '$_baseUrl/Charity.webp';
+  static const String heart = '$_baseUrl/Charity.webp';
 
   /// Image URL for the emergency illustration.
   static const String emergency = '$_baseUrl/Emergency.webp';
 
   /// Image URL for the fun illustration.
   static const String fun = '$_baseUrl/Fun.webp';
+
+  /// Image URL for the family illustration.
+  static const String family = '$_baseUrl/family.webp';
 
   /// Image URL for the gym illustration.
   static const String gym = '$_baseUrl/Gym.webp';
@@ -69,17 +72,38 @@ class GtNetworkImages {
   /// Image URL for the vacation illustration.
   static const String vacation = '$_baseUrl/Vacation.webp';
 
-  /// Image URL for the vacations illustration.
-  static const String vacations = '$_baseUrl/Vacations.webp';
+  /// Image URL for the rocket illustration.
+  static const String rocket = '$_baseUrl/Vacations.webp';
 
   /// Image URL for the vault illustration.
   static const String vault = '$_baseUrl/Vault.webp';
 
-  /// Image URL for the primary wallet illustration.
-  static const String wallet1 = '$_baseUrl/Wallet-1.webp';
-
-  /// Image URL for the standard wallet illustration.
+  /// Image URL for the wallet illustration.
   static const String wallet = '$_baseUrl/Wallet.webp';
+
+  /// Image URL for the food illustration.
+  static const String food = '$_baseUrl/Food.webp';
+
+  /// Image URL for the charity illustration.
+  static const String charity = '$_baseUrl/HelpingHands.webp';
+
+  /// Image URL for the returns illustration.
+  static const String returns = '$_baseUrl/Return.webp';
+
+  /// Image URL for the school illustration.
+  static const String school = '$_baseUrl/School.webp';
+
+  /// Image URL for the transport illustration.
+  static const String transport = '$_baseUrl/Transport.webp';
+
+  /// Image URL for the alarm illustration.
+  static const String alarm = '$_baseUrl/Alarm.webp';
+
+  /// Image URL for the holiday illustration.
+  static const String holiday = '$_baseUrl/Holiday.webp';
+
+  /// Image URL for the giftillustration.
+  static const String gift = '$_baseUrl/Gift.webp';
 
   /// Image URL for the first sample avatar.
   static const String sampleAvatar1 = '$_baseUrl/sample_avatar_1.webp';

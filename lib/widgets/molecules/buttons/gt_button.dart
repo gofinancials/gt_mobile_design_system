@@ -139,13 +139,13 @@ abstract class GtButton extends GtStatelessWidget {
 
   /// Calculates the required height of the button based on its [size] and the
   /// current device pixel ratio using Go Tech's layout utilities.
-  double buttonHeight(BuildContext context) {
-    return context.dp(size.value.px);
+  double get buttonHeight {
+    return size.value;
   }
 
   /// Calculates the minimum size constraints for the button.
   Size minimumSize(BuildContext context) {
-    final height = buttonHeight(context);
+    final height = buttonHeight;
     final width = minSize?.width;
     return switch (size) {
       .pill => Size(width ?? context.dp(52.px), height),
@@ -158,7 +158,7 @@ abstract class GtButton extends GtStatelessWidget {
 
   /// Calculates the maximum size constraints, restricting the height while allowing infinite width.
   Size maximumSize(BuildContext context) {
-    final height = buttonHeight(context);
+    final height = buttonHeight;
     return Size(double.infinity, height);
   }
 
@@ -186,7 +186,7 @@ abstract class GtButton extends GtStatelessWidget {
   /// Generates the base [ButtonStyle] containing the standard size, padding,
   /// and shape constraints for Go Tech buttons.
   ButtonStyle baseStyle(BuildContext context) {
-    final height = buttonHeight(context);
+    final height = buttonHeight;
     final minSize = minimumSize(context);
     final maxSize = maximumSize(context);
     final hPadding = padding(context);
