@@ -62,16 +62,18 @@ import 'package:gallery/organisms/view_state/gt_status_state.dart'
     as _gallery_organisms_view_state_gt_status_state;
 import 'package:gallery/templates/forms/gt_form.dart'
     as _gallery_templates_forms_gt_form;
+import 'package:gallery/templates/modals/gt_bttom_modal.dart'
+    as _gallery_templates_modals_gt_bttom_modal;
 import 'package:gallery/templates/overlays/gt_overlay.dart'
     as _gallery_templates_overlays_gt_overlay;
 import 'package:gallery/templates/screens/gt_duo_tone_screen.dart'
     as _gallery_templates_screens_gt_duo_tone_screen;
 import 'package:gallery/templates/screens/gt_how_to_screen.dart'
     as _gallery_templates_screens_gt_how_to_screen;
+import 'package:gallery/templates/screens/gt_splash_screen.dart'
+    as _gallery_templates_screens_gt_splash_screen;
 import 'package:gallery/templates/slides/gt_slides.dart'
     as _gallery_templates_slides_gt_slides;
-import 'package:gallery/templates/modals/gt_bttom_modal.dart'
-    as _gallery_widgets_templates_modals_gt_bottom_modal;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -81,6 +83,26 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookUseCase(
         name: 'Cover',
         builder: _gallery_gallery_cover.buildCover,
+      ),
+    ],
+  ),
+  _widgetbook.WidgetbookCategory(
+    name: 'Templates',
+    children: [
+      _widgetbook.WidgetbookFolder(
+        name: 'Modals',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtLoaderBottomModal',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtBottomModal (Loader)',
+                builder: _gallery_templates_modals_gt_bttom_modal
+                    .buildGtBottomModalUsecase,
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   ),
@@ -605,18 +627,23 @@ final directories = <_widgetbook.WidgetbookNode>[
                   ),
                 ],
               ),
-            ],
-          ),
-          _widgetbook.WidgetbookFolder(
-            name: 'modals',
-            children: [
               _widgetbook.WidgetbookComponent(
-                name: 'GtBottomModal',
+                name: 'GtSplashScreen',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtBottomModal',
-                    builder: _gallery_widgets_templates_modals_gt_bottom_modal
-                        .buildGtBottomModalUsecase,
+                    name: 'GtSplashScreen',
+                    builder: _gallery_templates_screens_gt_splash_screen
+                        .buildGtSplashScreenUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtWelcomeScreen',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtWelcomeScreen',
+                    builder: _gallery_templates_screens_gt_splash_screen
+                        .buildGWelcomeScreenUsecase,
                   ),
                 ],
               ),

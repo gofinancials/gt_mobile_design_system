@@ -8,6 +8,9 @@ class GtVectors {
   /// Path to the logo SVG.
   static const logo = "$_basePath/logo.svg";
 
+  /// Path to the logo SVG.
+  static const whiteLogo = "$_basePath/logo_white.svg";
+
   /// Path to the clock SVG.
   static const clock = "$_basePath/clock.svg";
 
