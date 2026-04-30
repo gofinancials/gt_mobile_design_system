@@ -71,7 +71,7 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Size minimumSize(BuildContext context) {
-  final height = buttonHeight(context);
+  final height = buttonHeight;
   final width = minSize?.width;
   return switch (size) {
     .pill =&gt; Size(width ?? context.dp(52.px), height),

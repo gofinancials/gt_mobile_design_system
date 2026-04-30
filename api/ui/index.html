@@ -1446,7 +1446,8 @@ based on predefined width breakpoints.
 
 </dt>
 <dd>
-  A widget that displays a horizontal scrollable list of items under a shared title.
+  A widget that displays a horizontal scrollable list of items under a shared
+title.
 </dd>
 
           <dt id="GtSelectionColumnListTile">
@@ -1817,6 +1818,22 @@ typographic system and text styles.
   
 </dd>
 
+          <dt id="GtTransactionCategory">
+  <span class="name "><a href="../common_data_gt_transaction_category/GtTransactionCategory-class.html">GtTransactionCategory</a></span> 
+
+</dt>
+<dd>
+  A data model representing a category for a transaction or transfer.
+</dd>
+
+          <dt id="GtTransactionCategoryGridCell">
+  <span class="name "><a href="../widgets_organisms_grids_gt_transfer_category_grid/GtTransactionCategoryGridCell-class.html">GtTransactionCategoryGridCell</a></span> 
+
+</dt>
+<dd>
+  A visual representation of a single cell within the <a href="../widgets_organisms_grids_gt_transfer_category_grid/GtTransferCategoryGrid-class.html">GtTransferCategoryGrid</a>.
+</dd>
+
           <dt id="GtTransactionListTile">
   <span class="name "><a href="../widgets_molecules_tiles_gt_transaction_tiles/GtTransactionListTile-class.html">GtTransactionListTile</a></span> 
 
@@ -1832,6 +1849,22 @@ typographic system and text styles.
 <dd>
   A list tile specifically designed to display the participants (sender or
 receiver) of a transaction, showing a superscript label (e.g., 'to', 'from').
+</dd>
+
+          <dt id="GtTransferCategoryController">
+  <span class="name "><a href="../widgets_organisms_grids_gt_transfer_category_grid/GtTransferCategoryController-class.html">GtTransferCategoryController</a></span> 
+
+</dt>
+<dd>
+  A controller that manages the selection state of a <a href="../common_data_gt_transaction_category/GtTransactionCategory-class.html">GtTransactionCategory</a>.
+</dd>
+
+          <dt id="GtTransferCategoryGrid">
+  <span class="name "><a href="../widgets_organisms_grids_gt_transfer_category_grid/GtTransferCategoryGrid-class.html">GtTransferCategoryGrid</a></span> 
+
+</dt>
+<dd>
+  A widget that displays a grid of selectable transaction categories.
 </dd>
 
           <dt id="GtTransferField">
@@ -2172,6 +2205,19 @@ Each variant determines the background, border, and text colors applied to the p
       </dl>
     </section>
 
+    <section class="summary offset-anchor" id="mixins">
+      <h2>Mixins</h2>
+      <dl>
+          <dt id="GtTransactionCategoryMixin">
+  <span class="name "><a href="../widgets_organisms_grids_gt_transfer_category_grid/GtTransactionCategoryMixin-mixin.html">GtTransactionCategoryMixin</a></span> 
+
+</dt>
+<dd>
+  A mixin that provides a comprehensive list of default transaction categories.
+</dd>
+
+      </dl>
+    </section>
 
 
     <section class="summary offset-anchor" id="extensions">
@@ -2388,6 +2434,7 @@ This can be used as a fallback or default selection when no specific theme is ch
       <li><a href="../common_data_gt_input_data/">common/data/gt_input_data</a></li>
       <li><a href="../common_data_gt_keycell_data/">common/data/gt_keycell_data</a></li>
       <li><a href="../common_data_gt_slide_data/">common/data/gt_slide_data</a></li>
+      <li><a href="../common_data_gt_transaction_category/">common/data/gt_transaction_category</a></li>
       <li><a href="../common_data_gt_wheel_scroll_data/">common/data/gt_wheel_scroll_data</a></li>
       <li><a href="../common_data_gt_widget_pair/">common/data/gt_widget_pair</a></li>
       <li><a href="../common_mixins_gt_modal_mixin/">common/mixins/gt_modal_mixin</a></li>
@@ -2553,10 +2600,12 @@ This can be used as a fallback or default selection when no specific theme is ch
       <li><a href="../widgets_organisms_cards_gt_product_card/">widgets/organisms/cards/gt_product_card</a></li>
       <li><a href="../widgets_organisms_cards_gt_progress_card/">widgets/organisms/cards/gt_progress_card</a></li>
       <li><a href="../widgets_organisms_cards_gt_reminder_banner/">widgets/organisms/cards/gt_reminder_banner</a></li>
+      <li><a href="../widgets_organisms_cards_gt_selectable_card/">widgets/organisms/cards/gt_selectable_card</a></li>
       <li><a href="../widgets_organisms_cards_gt_state_cards/">widgets/organisms/cards/gt_state_cards</a></li>
       <li><a href="../widgets_organisms_cards_gt_tip_card/">widgets/organisms/cards/gt_tip_card</a></li>
       <li><a href="../widgets_organisms_grids_grids/">widgets/organisms/grids/grids</a></li>
       <li><a href="../widgets_organisms_grids_gt_keypad_grid/">widgets/organisms/grids/gt_keypad_grid</a></li>
+      <li><a href="../widgets_organisms_grids_gt_transfer_category_grid/">widgets/organisms/grids/gt_transfer_category_grid</a></li>
       <li><a href="../widgets_organisms_headers_gt_form_header/">widgets/organisms/headers/gt_form_header</a></li>
       <li><a href="../widgets_organisms_headers_gt_page_header/">widgets/organisms/headers/gt_page_header</a></li>
       <li><a href="../widgets_organisms_headers_gt_section_header/">widgets/organisms/headers/gt_section_header</a></li>

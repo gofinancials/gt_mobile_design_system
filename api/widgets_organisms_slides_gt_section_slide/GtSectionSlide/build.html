@@ -109,8 +109,9 @@ and</li>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
+  final itemCount = _itemCount ?? children.length;
   final key = PageStorageKey(
-    &quot;gt-lesson-section-slide$title-${children.length}&quot;,
+    &quot;gt-section-slide-$title-$itemCount&quot;,
   );
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -126,9 +127,9 @@ Widget build(BuildContext context) {
         child: ListView.separated(
           key: key,
           padding: context.insets.defaultHorizontalInsets,
-          itemBuilder: (_, index) =&gt; children[index],
+          itemBuilder: _builder ?? (_, index) =&gt; children[index],
           separatorBuilder: (_, index) =&gt; gutter ?? const GtGap.hMd(),
-          itemCount: children.length,
+          itemCount: itemCount,
           scrollDirection: Axis.horizontal,
         ),
       ),

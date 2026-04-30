@@ -63,7 +63,9 @@
     </section>
     
 <section class="desc markdown">
-  <p>Creates a <a href="../../widgets_organisms_slides_gt_section_slide/GtSectionSlide-class.html">GtSectionSlide</a>.</p>
+  <p>Creates a <a href="../../widgets_organisms_slides_gt_section_slide/GtSectionSlide-class.html">GtSectionSlide</a> with an explicit list of <code>children</code>.</p>
+<p>This is suitable for a small, fixed number of items. For larger or dynamic
+lists, consider using <a href="../../widgets_organisms_slides_gt_section_slide/GtSectionSlide/GtSectionSlide.builder.html">GtSectionSlide.builder</a> for better performance.</p>
 </section>
 
 
@@ -76,7 +78,8 @@
   this.scrollHeight = 300,
   this.gutter,
   super.key,
-});</code></pre>
+})  : _builder = null,
+     _itemCount = null;</code></pre>
 </section>
 
 

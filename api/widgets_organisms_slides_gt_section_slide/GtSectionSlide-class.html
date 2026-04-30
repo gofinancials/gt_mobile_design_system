@@ -54,9 +54,19 @@
 
     
 <section class="desc markdown">
-  <p>A widget that displays a horizontal scrollable list of items under a shared title.</p>
-<p>Typically used to present a categorized section of widgets, such as a carousel
-of featured cards or recent items.</p>
+  <p>A widget that displays a horizontal scrollable list of items under a shared
+title.</p>
+<p>This widget is ideal for creating carousels or horizontally scrolling sections
+within a page. It combines a <a href="../widgets_organisms_headers_gt_section_header/GtSectionHeader-class.html">GtSectionHeader</a> with a <code>ListView.separated</code>
+to present a collection of widgets in a compact and interactive way.</p>
+<p>It supports two modes of creation:</p>
+<ol>
+<li>Directly providing a <code>List&lt;Widget&gt;</code> via the default constructor.</li>
+<li>Using a builder function via the <code>GtSectionSlide.builder</code> constructor for
+lazily loaded or large lists.</li>
+</ol>
+<p>The scroll view's height is fixed by <a href="../widgets_organisms_slides_gt_section_slide/GtSectionSlide/scrollHeight.html">scrollHeight</a>, and its children are
+separated by <a href="../widgets_organisms_slides_gt_section_slide/GtSectionSlide/gutter.html">gutter</a>.</p>
 </section>
 
 
@@ -98,7 +108,14 @@ of featured cards or recent items.</p>
           <span class="name"><a href="../widgets_organisms_slides_gt_section_slide/GtSectionSlide/GtSectionSlide.html">GtSectionSlide</a></span><span class="signature">({<span class="parameter" id="-param-title"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span><span class="parameter" id="-param-children"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span>&gt;</span></span> <span class="parameter-name">children</span>, </span><span class="parameter" id="-param-scrollHeight"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">scrollHeight</span> = <span class="default-value">300</span>, </span><span class="parameter" id="-param-gutter"><span class="type-annotation"><a href="../widgets_atoms_spacers_gt_gap/GtGap-class.html">GtGap</a>?</span> <span class="parameter-name">gutter</span>, </span><span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span></span>})</span>
         </dt>
         <dd>
-          Creates a <a href="../widgets_organisms_slides_gt_section_slide/GtSectionSlide-class.html">GtSectionSlide</a>.
+          Creates a <a href="../widgets_organisms_slides_gt_section_slide/GtSectionSlide-class.html">GtSectionSlide</a> with an explicit list of <code>children</code>.
+            <div class="constructor-modifier features">const</div>
+        </dd>
+        <dt id="GtSectionSlide.builder" class="callable">
+          <span class="name"><a href="../widgets_organisms_slides_gt_section_slide/GtSectionSlide/GtSectionSlide.builder.html">GtSectionSlide.builder</a></span><span class="signature">({<span class="parameter" id="builder-param-title"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span><span class="parameter" id="builder-param-scrollHeight"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">scrollHeight</span> = <span class="default-value">300</span>, </span><span class="parameter" id="builder-param-gutter"><span class="type-annotation"><a href="../widgets_atoms_spacers_gt_gap/GtGap-class.html">GtGap</a>?</span> <span class="parameter-name">gutter</span>, </span><span class="parameter" id="builder-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="builder-param-builder"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/IndexedWidgetBuilder.html">IndexedWidgetBuilder</a></span> <span class="parameter-name">builder</span>, </span><span class="parameter" id="builder-param-itemCount"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">itemCount</span></span>})</span>
+        </dt>
+        <dd>
+          Creates a <a href="../widgets_organisms_slides_gt_section_slide/GtSectionSlide-class.html">GtSectionSlide</a> that builds its children on demand.
             <div class="constructor-modifier features">const</div>
         </dd>
     </dl>
@@ -140,7 +157,7 @@ of featured cards or recent items.</p>
 
 </dt>
 <dd>
-  An optional widget used to separate the <a href="../widgets_organisms_slides_gt_section_slide/GtSectionSlide/children.html">children</a>.
+  An optional widget used to separate the items in the scroll view.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -188,7 +205,7 @@ of featured cards or recent items.</p>
 
 </dt>
 <dd>
-  The fixed height of the horizontal scroll area.
+  The fixed height of the horizontal scroll area where <a href="../widgets_organisms_slides_gt_section_slide/GtSectionSlide/children.html">children</a> are displayed.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -200,7 +217,7 @@ of featured cards or recent items.</p>
 
 </dt>
 <dd>
-  The title displayed above the section. This text is automatically converted to uppercase.
+  The title displayed above the section using a <a href="../widgets_organisms_headers_gt_section_header/GtSectionHeader-class.html">GtSectionHeader</a>.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
