@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A template screen widget used for displaying a splash screen.
 ///
 /// It supports a customizable background color, background image, and a central logo.
-class GtSplashScreen extends GtStatelessWidget {
+class GtSplashScreen extends GtStatefulWidget {
   /// The image to be displayed in the center of the splash screen.
   final AppImageData? logo;
 
@@ -27,6 +27,21 @@ class GtSplashScreen extends GtStatelessWidget {
     this.backgroundImage,
     this.logo,
   });
+
+  @override
+  State<StatefulWidget> createState() => _GtSplashScreenState();
+}
+
+class _GtSplashScreenState extends State<GtSplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    widget.task();
+  }
+
+  AppImageData? get logo => widget.logo;
+  Color? get color => widget.color;
+  ImageProvider? get backgroundImage => widget.backgroundImage;
 
   @override
   Widget build(BuildContext context) {

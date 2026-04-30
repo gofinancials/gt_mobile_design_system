@@ -27,16 +27,10 @@ class GalleryConfig extends AppConfig {
   String get cipherKey => "";
 
   @override
-  String get copyrightText => "© 2024 Go Tech";
-
-  @override
   String get countryCode => "US";
 
   @override
   String get dbName => "gallery_db";
-
-  @override
-  String get defaultAvatar => "";
 
   @override
   String get defaultLanguageCode => "en";
@@ -46,12 +40,6 @@ class GalleryConfig extends AppConfig {
 
   @override
   bool get isMock => true;
-
-  @override
-  String get logo => "";
-
-  @override
-  String get package => "com.gotech.gallery";
 
   @override
   String get privacyUrl => "";
