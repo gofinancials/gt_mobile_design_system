@@ -21,7 +21,6 @@ dependencies:
       ref: v0.0.8
   lottie: ^3.0.0
   pin_code_fields: ^9.3.0
-  provider: ^6.0.3
   shimmer: ^3.0.0
   styled_text:
     git:
