@@ -42,6 +42,8 @@ import 'package:gallery/molecules/pills/gt_pill.dart'
     as _gallery_molecules_pills_gt_pill;
 import 'package:gallery/molecules/text/gt_balance_text.dart'
     as _gallery_molecules_text_gt_balance_text;
+import 'package:gallery/molecules/text/gt_status_text.dart'
+    as _gallery_molecules_text_gt_status_text;
 import 'package:gallery/molecules/tiles/gt_list_tile.dart'
     as _gallery_molecules_tiles_gt_list_tile;
 import 'package:gallery/molecules/tiles/gt_list_tile_template.dart'
@@ -372,6 +374,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'Balance',
                     builder: _gallery_molecules_text_gt_balance_text
                         .playgroundGtBalanceTextUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtStatusText',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Access status',
+                    builder: _gallery_molecules_text_gt_status_text
+                        .playgroundGtStatusTextUseCase,
                   ),
                 ],
               ),
