@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the GtSplashScreen class from the gt_splash_screen library, for the Dart programming language.">
-  <title>GtSplashScreen class - gt_splash_screen library - Dart API</title>
+  <meta name="description" content="API docs for the GtLocalStateWrapper class from the gt_local_state_wrapper library, for the Dart programming language.">
+  <title>GtLocalStateWrapper class - gt_local_state_wrapper library - Dart API</title>
 
 
   
@@ -25,10 +25,10 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">gt_mobile_ui</a></li>
-    <li><a href="../widgets_templates_screens_gt_splash_screen/">widgets&#47;templates&#47;screens&#47;gt_splash_screen.dart</a></li>
-    <li class="self-crumb">GtSplashScreen class</li>
+    <li><a href="../widgets_templates_state_gt_local_state_wrapper/">widgets&#47;templates&#47;state&#47;gt_local_state_wrapper.dart</a></li>
+    <li class="self-crumb">GtLocalStateWrapper<span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span> class</li>
   </ol>
-  <div class="self-name">GtSplashScreen</div>
+  <div class="self-name">GtLocalStateWrapper</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -45,18 +45,14 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="widgets_templates_screens_gt_splash_screen&#47;widgets_templates_screens_gt_splash_screen-library-sidebar.html"
-    data-below-sidebar="widgets_templates_screens_gt_splash_screen&#47;GtSplashScreen-class-sidebar.html">
+    data-above-sidebar="widgets_templates_state_gt_local_state_wrapper&#47;widgets_templates_state_gt_local_state_wrapper-library-sidebar.html"
+    data-below-sidebar="widgets_templates_state_gt_local_state_wrapper&#47;GtLocalStateWrapper-class-sidebar.html">
     <div>
-<h1><span class="kind-class">GtSplashScreen</span> class 
+<h1><span class="kind-class">GtLocalStateWrapper&lt;<wbr><span class="type-parameter">T extends ChangeNotifier</span>&gt;</span> class 
  
 </h1></div>
 
     
-<section class="desc markdown">
-  <p>A template screen widget used for displaying a splash screen.</p>
-<p>It supports a customizable background color, background image, and a central logo.</p>
-</section>
 
 
     <section>
@@ -70,7 +66,7 @@
         <li><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></li>
         <li><a href="https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html">StatefulWidget</a></li>
         <li><a href="../widgets_templates_widget_base_gt_stateful_widget/GtStatefulWidget-class.html">GtStatefulWidget</a></li>
-      <li>GtSplashScreen</li>
+      <li>GtLocalStateWrapper</li>
     </ul>
   </dd>
 
@@ -93,11 +89,11 @@
   <section class="summary offset-anchor" id="constructors">
     <h2>Constructors</h2>
     <dl class="constructor-summary-list">
-        <dt id="GtSplashScreen.new" class="callable">
-          <span class="name"><a href="../widgets_templates_screens_gt_splash_screen/GtSplashScreen/GtSplashScreen.html">GtSplashScreen</a></span><span class="signature">({<span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="-param-task"><span>required</span> <span class="type-annotation">OnPressedAsync</span> <span class="parameter-name">task</span>, </span><span class="parameter" id="-param-color"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">color</span>, </span><span class="parameter" id="-param-backgroundImage"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/ImageProvider-class.html">ImageProvider</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span>?</span> <span class="parameter-name">backgroundImage</span>, </span><span class="parameter" id="-param-logo"><span class="type-annotation">AppImageData?</span> <span class="parameter-name">logo</span></span>})</span>
+        <dt id="GtLocalStateWrapper.new" class="callable">
+          <span class="name"><a href="../widgets_templates_state_gt_local_state_wrapper/GtLocalStateWrapper/GtLocalStateWrapper.html">GtLocalStateWrapper</a></span><span class="signature">({<span class="parameter" id="-param-builder"><span>required</span> <span class="type-annotation">ValueBuilder<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span> <span class="parameter-name">builder</span>, </span><span class="parameter" id="-param-notifier"><span class="type-annotation">T?</span> <span class="parameter-name">notifier</span>, </span><span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span></span>})</span>
         </dt>
         <dd>
-          Creates a new <a href="../widgets_templates_screens_gt_splash_screen/GtSplashScreen-class.html">GtSplashScreen</a>.
+          
             <div class="constructor-modifier features">const</div>
         </dd>
     </dl>
@@ -120,26 +116,14 @@
 
 </dd>
 
-        <dt id="backgroundImage" class="property">
-  <span class="name"><a href="../widgets_templates_screens_gt_splash_screen/GtSplashScreen/backgroundImage.html">backgroundImage</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/ImageProvider-class.html">ImageProvider</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span>&gt;</span>?</span>
+        <dt id="builder" class="property">
+  <span class="name"><a href="../widgets_templates_state_gt_local_state_wrapper/GtLocalStateWrapper/builder.html">builder</a></span>
+  <span class="signature">&#8594; ValueBuilder<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
   
 
 </dt>
 <dd>
-  An optional background image to display behind the splash screen content.
-  <div class="features"><span class="feature">final</span></div>
-
-</dd>
-
-        <dt id="color" class="property">
-  <span class="name"><a href="../widgets_templates_screens_gt_splash_screen/GtSplashScreen/color.html">color</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span>
   
-
-</dt>
-<dd>
-  The background color of the splash screen.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -168,14 +152,14 @@
 
 </dd>
 
-        <dt id="logo" class="property">
-  <span class="name"><a href="../widgets_templates_screens_gt_splash_screen/GtSplashScreen/logo.html">logo</a></span>
-  <span class="signature">&#8594; AppImageData?</span>
+        <dt id="notifier" class="property">
+  <span class="name"><a href="../widgets_templates_state_gt_local_state_wrapper/GtLocalStateWrapper/notifier.html">notifier</a></span>
+  <span class="signature">&#8594; T?</span>
   
 
 </dt>
 <dd>
-  The image to be displayed in the center of the splash screen.
+  
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -189,18 +173,6 @@
 <dd class="inherited">
   A representation of the runtime type of the object.
   <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
-
-</dd>
-
-        <dt id="task" class="property">
-  <span class="name"><a href="../widgets_templates_screens_gt_splash_screen/GtSplashScreen/task.html">task</a></span>
-  <span class="signature">&#8594; OnPressedAsync</span>
-  
-
-</dt>
-<dd>
-  An asynchronous task to be executed while the splash screen is active.
-  <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
@@ -227,7 +199,7 @@
 </dd>
 
         <dt id="createState" class="callable">
-  <span class="name"><a href="../widgets_templates_screens_gt_splash_screen/GtSplashScreen/createState.html">createState</a></span><span class="signature">(<wbr>)
+  <span class="name"><a href="../widgets_templates_state_gt_local_state_wrapper/GtLocalStateWrapper/createState.html">createState</a></span><span class="signature">(<wbr>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html">StatefulWidget</a></span>&gt;</span></span>
   </span>
   
@@ -425,11 +397,11 @@ tools and by <a href="https://api.flutter.dev/flutter/foundation/DiagnosticsNode
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">gt_mobile_ui</a></li>
-    <li><a href="../widgets_templates_screens_gt_splash_screen/">gt_splash_screen</a></li>
-    <li class="self-crumb">GtSplashScreen class</li>
+    <li><a href="../widgets_templates_state_gt_local_state_wrapper/">gt_local_state_wrapper</a></li>
+    <li class="self-crumb">GtLocalStateWrapper<span class="signature">&lt;<wbr><span class="type-parameter">T extends <a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></span>&gt;</span> class</li>
 </ol>
 
-    <h5>gt_splash_screen library</h5>
+    <h5>gt_local_state_wrapper library</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div>
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
