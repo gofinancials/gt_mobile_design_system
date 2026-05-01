@@ -58,7 +58,7 @@ class GtSectionSlide extends GtStatelessWidget {
     this.scrollHeight = 300,
     this.gutter,
     super.key,
-  })  : _builder = null,
+  }) : _builder = null,
        _itemCount = null;
 
   /// Creates a [GtSectionSlide] that builds its children on demand.
@@ -74,16 +74,14 @@ class GtSectionSlide extends GtStatelessWidget {
     super.key,
     required IndexedWidgetBuilder builder,
     required int itemCount,
-  })  : _builder = builder,
+  }) : _builder = builder,
        _itemCount = itemCount,
        children = const [];
 
   @override
   Widget build(BuildContext context) {
     final itemCount = _itemCount ?? children.length;
-    final key = PageStorageKey(
-      "gt-section-slide-$title-$itemCount",
-    );
+    final key = PageStorageKey("gt-section-slide-$title-$itemCount");
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,

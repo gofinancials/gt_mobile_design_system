@@ -1,137 +1,76 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-
-/// Visual phase for [GtLoaderBottomModal].
-enum GtBottomModalPhase {
-  /// Initial/processing state that shows the animated loader.
-  loading,
-
-  /// Completed successfully.
-  success,
-
-  /// Completed with an error state.
-  error,
-}
-
-/// Immutable snapshot consumed by [GtLoaderBottomModal].
-class GtBottomModalState {
-  final bool visible;
-  final GtBottomModalPhase phase;
-  final String title;
-  final String? description;
-
-  const GtBottomModalState({
-    required this.visible,
-    required this.phase,
-    required this.title,
-    this.description,
-  });
-}
-
-/// Controller for driving [GtLoaderBottomModal] state transitions.
-///
-/// This keeps the bottom modal independent from overlay logic and can be
-/// triggered from button presses in any screen/use case.
-class GtBottomModalController extends ChangeNotifier {
-  GtBottomModalState _state = const GtBottomModalState(
-    visible: false,
-    phase: GtBottomModalPhase.loading,
-    title: '',
-  );
-
-  Timer? _autoCloseTimer;
-
-  GtBottomModalState get state => _state;
-
-  /// Shows the modal in loading mode by default.
-  ///
-  /// If [animate] is false, it opens directly in success/error mode.
-  void showMessageOverlay(
-    String title, {
-    String? description,
-    bool animate = true,
-    bool showError = false,
-  }) {
-    _cancelAutoClose();
-    _state = GtBottomModalState(
-      visible: true,
-      phase: animate
-          ? GtBottomModalPhase.loading
-          : (showError ? GtBottomModalPhase.error : GtBottomModalPhase.success),
-      title: title,
-      description: description,
-    );
-    notifyListeners();
-  }
-
-  /// Switches to success/error state and optionally auto-closes.
-  void hideLoaderOverLay(
-    String title, {
-    String? description,
-    OnPressed? onComplete,
-    bool showError = false,
-    int durationInSec = 2,
-  }) {
-    _cancelAutoClose();
-    _state = GtBottomModalState(
-      visible: true,
-      phase: showError ? GtBottomModalPhase.error : GtBottomModalPhase.success,
-      title: title,
-      description: description,
-    );
-    notifyListeners();
-
-    _autoCloseTimer = Timer(Duration(seconds: durationInSec), () {
-      hideOverlay();
-      onComplete?.call();
-    });
-  }
-
-  /// Closes and resets the modal.
-  void hideOverlay() {
-    _cancelAutoClose();
-    _state = const GtBottomModalState(
-      visible: false,
-      phase: GtBottomModalPhase.loading,
-      title: '',
-    );
-    notifyListeners();
-  }
-
-  void _cancelAutoClose() {
-    _autoCloseTimer?.cancel();
-    _autoCloseTimer = null;
-  }
-
-  @override
-  void dispose() {
-    _cancelAutoClose();
-    super.dispose();
-  }
-}
 
 /// Animated loader/success/error bottom container.
 ///
 /// Place inside a [Stack] as the last child so it appears floating at the
 /// bottom of the screen. It intentionally does not use overlay/route APIs.
-class GtLoaderBottomModal extends StatefulWidget {
-  final GtBottomModalController controller;
+class GtBottomModal extends StatefulWidget {
+  final GtBottomModalController? _controller;
+  final GtBottomModalData? _data;
+
+  /// Optional margin to apply around the modal container.
+  ///
+  /// If not provided, it defaults to a standard inset at the bottom of the screen.
   final EdgeInsetsGeometry? margin;
 
-  const GtLoaderBottomModal({required this.controller, this.margin, super.key});
+  /// The alignment of the modal within its parent.
+  ///
+  /// Defaults to [Alignment.bottomCenter].
+  final AlignmentGeometry alignment;
+
+  /// Creates a [GtBottomModal] that displays static [data].
+  const GtBottomModal({
+    required GtBottomModalData data,
+    this.margin,
+    super.key,
+    this.alignment = .bottomCenter,
+  }) : _data = data,
+       _controller = null;
+
+  /// Creates a [GtBottomModal] whose state is managed dynamically by a [controller].
+  const GtBottomModal.controller({
+    required GtBottomModalController controller,
+    this.margin,
+    super.key,
+    this.alignment = .bottomCenter,
+  }) : _controller = controller,
+       _data = null;
+
+  /// The controller managing this modal, if any.
+  GtBottomModalController? get controller => _controller;
+
+  /// The static data for this modal, if any.
+  GtBottomModalData? get data => _data;
+
+  /// Whether this modal is driven by a [GtBottomModalController].
+  bool get hasController => _controller != null;
+
+  /// The resolved title text.
+  String get title {
+    if (hasController) return controller!.title;
+    return data!.title;
+  }
+
+  /// The resolved description text, or null if neither the controller nor the
+  /// static data provides one.
+  String? get description {
+    return controller?.description ?? data?.description;
+  }
+
+  /// The resolved icon data, or null if neither the controller nor the static
+  /// data provides one.
+  AppImageData? get icon {
+    return controller?.icon ?? data?.icon;
+  }
 
   @override
-  State<GtLoaderBottomModal> createState() => _GtLoaderBottomModalState();
+  State<GtBottomModal> createState() => _GtBottomModalState();
 }
 
-class _GtLoaderBottomModalState extends State<GtLoaderBottomModal>
+class _GtBottomModalState extends State<GtBottomModal>
     with TickerProviderStateMixin {
-  final Duration _heightDuration = const Duration(milliseconds: 260);
-  double _currentHeightPx = 0.0;
-
   late AnimationController _titleController;
   late AnimationController _successController;
   late Animation<Offset> _titleSlide;
@@ -139,23 +78,25 @@ class _GtLoaderBottomModalState extends State<GtLoaderBottomModal>
   late Animation<Offset> _successSlide;
   late Animation<double> _successFade;
 
+  late AppDebouncer _debouncer;
+
   @override
   void initState() {
     super.initState();
     _initAnimation();
-    widget.controller.addListener(_onControllerChanged);
-    _onControllerChanged();
+    _debouncer = AppDebouncer(widget.controller?.completionDelay ?? 1.seconds);
+    widget.controller?.taskNotifier?.addListener(_taskListener);
   }
 
   void _initAnimation() {
     _titleController = AnimationController(
       duration: const Duration(milliseconds: 600),
       vsync: this,
-    );
+    )..forward();
     _successController = AnimationController(
       duration: const Duration(milliseconds: 600),
       vsync: this,
-    );
+    )..forward();
 
     _titleSlide =
         Tween<Offset>(begin: const Offset(0.0, 0.05), end: Offset.zero).animate(
@@ -177,32 +118,28 @@ class _GtLoaderBottomModalState extends State<GtLoaderBottomModal>
     );
   }
 
-  void _onControllerChanged() {
-    if (!mounted) return;
-    final state = widget.controller.state;
-    if (!state.visible) {
-      setState(() => _currentHeightPx = 0.0);
-      return;
+  @override
+  void didUpdateWidget(covariant GtBottomModal oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller?.taskNotifier != widget.controller?.taskNotifier) {
+      oldWidget.controller?.taskNotifier?.removeListener(_taskListener);
+      widget.controller?.taskNotifier?.addListener(_taskListener);
     }
+  }
 
-    final hasDescription = (state.description ?? '').trim().isNotEmpty;
-    final targetHeightPx = hasDescription ? 164.0 : 145.0;
-
-    setState(() => _currentHeightPx = targetHeightPx);
-    _titleController
-      ..reset()
-      ..forward();
-
-    if (state.phase != GtBottomModalPhase.loading) {
-      _successController
-        ..reset()
-        ..forward();
-    }
+  void _taskListener() {
+    _debouncer.abort();
+    final callback = widget.controller?.onComplete;
+    final task = widget.controller?.task;
+    if (callback == null || task == null) return;
+    if (task.isLoading) return;
+    _debouncer.run(() => callback(task));
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(_onControllerChanged);
+    widget.controller?.taskNotifier?.removeListener(_taskListener);
+    _debouncer.abort();
     _titleController.dispose();
     _successController.dispose();
     super.dispose();
@@ -210,117 +147,190 @@ class _GtLoaderBottomModalState extends State<GtLoaderBottomModal>
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
-    final state = widget.controller.state;
-    final title = state.title;
-    final description = state.description;
-    final resolvedMargin =
-        widget.margin ??
-        context.insets.onlyDp(left: 16.px, right: 16.px, bottom: 24.px);
-    final currentHeight = context.dp(_currentHeightPx.px);
-
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: AnimatedContainer(
-        duration: _heightDuration,
-        curve: Curves.easeInOut,
-        height: currentHeight,
-        width: double.infinity,
-        margin: resolvedMargin,
-        decoration: BoxDecoration(
-          color: palette.bg.white,
-          borderRadius: context.borderRadius4Xl,
-          boxShadow: context.shadows.sm(),
+    if (!widget.hasController) {
+      return Material(
+        type: .transparency,
+        child: GestureDetector(
+          behavior: .opaque,
+          onTap: context.pop,
+          child: Align(
+            alignment: widget.alignment,
+            child: _GtModalBody(
+              titleSlide: _titleSlide,
+              titleFade: _titleFade,
+              successSlide: _successSlide,
+              successFade: _successFade,
+              title: widget.title,
+              icon: _GtBottomModalIconWidget(
+                GtBottomModalPhase.idle,
+                icon: widget.icon,
+              ),
+              description: widget.description,
+              margin: widget.margin,
+            ),
+          ),
         ),
-        child: Builder(
-          builder: (_) {
-            if (currentHeight <= 0) return const SizedBox.shrink();
-            return SlideTransition(
-              position: _titleSlide,
-              child: FadeTransition(
-                opacity: _titleFade,
-                child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: currentHeight,
-                      maxHeight: currentHeight,
-                    ),
-                    child: Column(
-                      mainAxisSize: .min,
-                      crossAxisAlignment: .center,
-                      children: [
-                        // Top handle strip (sheet affordance).
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: context.dp(8.px),
-                            bottom: context.dp(20.px),
-                          ),
-                          child: Container(
-                            width: context.dp(32.px),
-                            height: context.dp(4.px),
-                            decoration: BoxDecoration(
-                              color: palette.stroke.sub,
-                              borderRadius: context.borderRadiusXxs,
-                            ),
-                          ),
-                        ),
-                        _GtBottomModalStatusWidget(phase: state.phase),
-                        const GtGap.yXl(),
-                        Flexible(
-                          child: Builder(
-                            builder: (_) {
-                              if (state.phase == .loading) {
-                                return GtText(
-                                  title.upper,
-                                  style: context.textStyles.h6(),
-                                  textAlign: TextAlign.center,
-                                );
-                              }
-                              return SlideTransition(
-                                position: _successSlide,
-                                child: FadeTransition(
-                                  opacity: _successFade,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      GtText(
-                                        title.upper,
-                                        style: context.textStyles.h6(),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      if ((description ?? '')
-                                          .trim()
-                                          .isNotEmpty) ...[
-                                        const GtGap.yXs(),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: context.dp(20.px),
-                                          ),
-                                          child: GtText(
-                                            description!,
-                                            style: context.textStyles.bodyS(
-                                              color: GtColors.neutral600.value,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ],
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+      );
+    }
+
+    final controller = widget.controller!;
+
+    return ListenableBuilder(
+      listenable: Listenable.merge([
+        controller,
+        if (controller.hasTask) controller.taskNotifier!,
+      ]),
+      builder: (context, child) {
+        final task = controller.task;
+
+        Widget child = Material(
+          type: .transparency,
+          child: Align(
+            alignment: widget.alignment,
+            child: _GtModalBody(
+              titleSlide: _titleSlide,
+              titleFade: _titleFade,
+              successSlide: _successSlide,
+              successFade: _successFade,
+              title: controller.title,
+              icon: _GtBottomModalIconWidget(
+                controller.phase,
+                icon: controller.icon,
+              ),
+              description: controller.description,
+              margin: widget.margin,
+              progress: controller.progress != null
+                  ? "${controller.percentage}%"
+                  : null,
+            ),
+          ),
+        );
+
+        if (task != null && task.isLoading) {
+          child = GtPopScope(child: IgnorePointer(child: child));
+        }
+
+        return child;
+      },
+    );
+  }
+}
+
+/// Internal widget that renders the modal container, animations, and typography.
+class _GtModalBody extends GtStatelessWidget {
+  final Animation<Offset> titleSlide;
+  final Animation<double> titleFade;
+  final Animation<Offset> successSlide;
+  final Animation<double> successFade;
+  final String title;
+  final String? description;
+  final String? progress;
+  final EdgeInsetsGeometry? margin;
+  final Widget? icon;
+
+  const _GtModalBody({
+    required this.titleSlide,
+    required this.titleFade,
+    required this.successSlide,
+    required this.successFade,
+    required this.title,
+    this.progress,
+    this.icon,
+    this.description,
+    this.margin,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final resolvedMargin =
+        margin ??
+        context.insets.onlyDp(left: 16.px, right: 16.px, bottom: 34.px);
+    final header = GtText(
+      title.upper,
+      style: context.textStyles.button(),
+      textAlign: TextAlign.center,
+    );
+    TextStyle subStyle = context.textStyles.bodyXs(
+      color: palette.text.darkerSub,
+    );
+    final resolvedDescription = progress ?? description;
+
+    if (progress.hasValue) {
+      subStyle = context.textStyles.subHeadXs(color: palette.text.sub);
+    }
+
+    return SafeArea(
+      top: false,
+      child: GestureDetector(
+        onVerticalDragEnd: (details) {
+          if (details.velocity.pixelsPerSecond.dy < 0.0) return;
+          context.pop();
+        },
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 500),
+          width: double.infinity,
+          margin: resolvedMargin,
+          padding: context.insets.symmetricDp(
+            horizontal: 52.px,
+            vertical: 8.px,
+          ),
+          decoration: BoxDecoration(
+            color: palette.bg.white,
+            borderRadius: context.borderRadius4Xl,
+          ),
+          child: SlideTransition(
+            position: titleSlide,
+            child: FadeTransition(
+              opacity: titleFade,
+              child: Column(
+                mainAxisSize: .min,
+                crossAxisAlignment: .center,
+                children: [
+                  Align(
+                    alignment: .topCenter,
+                    child: Container(
+                      margin: context.insets.onlyDp(bottom: 16.px),
+                      width: context.dp(32.px),
+                      height: context.dp(4.px),
+                      decoration: BoxDecoration(
+                        color: palette.stroke.sub,
+                        borderRadius: context.borderRadiusXxs,
+                      ),
                     ),
                   ),
-                ),
+                  ?icon,
+                  const GtGap.yBase(),
+                  Flexible(
+                    child: Builder(
+                      builder: (_) {
+                        return SlideTransition(
+                          position: successSlide,
+                          child: FadeTransition(
+                            opacity: successFade,
+                            child: Column(
+                              mainAxisSize: .min,
+                              crossAxisAlignment: .center,
+                              children: [
+                                header,
+                                if (resolvedDescription.hasValue)
+                                  GtText(
+                                    resolvedDescription,
+                                    style: subStyle,
+                                    textAlign: TextAlign.center,
+                                  ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const GtGap.ySectionSm(),
+                ],
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );
@@ -328,29 +338,31 @@ class _GtLoaderBottomModalState extends State<GtLoaderBottomModal>
 }
 
 /// Resolves leading icon/loader for the current phase.
-class _GtBottomModalStatusWidget extends StatelessWidget {
+class _GtBottomModalIconWidget extends StatelessWidget {
   final GtBottomModalPhase phase;
+  final AppImageData? icon;
 
-  const _GtBottomModalStatusWidget({required this.phase});
+  const _GtBottomModalIconWidget(this.phase, {this.icon});
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    Widget child = const GtGap.ySectionSm();
+
+    final size = context.dp(36.px);
+
+    if (icon != null) {
+      child = GtImage(image: icon, width: size, height: size);
+    }
+
     return switch (phase) {
-      GtBottomModalPhase.loading => GtSpinner(
-        color: palette.bg.strong,
-        size: context.dp(28.px),
-      ),
-      GtBottomModalPhase.success => GtSvg(
+      .loading => GtSpinner(size: size),
+      .success => GtSvg(
         GtVectorIllustrations.success,
-        width: context.dp(30.px),
-        height: context.dp(30.px),
+        width: size,
+        height: size,
       ),
-      GtBottomModalPhase.error => GtSvg(
-        GtVectorIllustrations.failed,
-        width: context.dp(30.px),
-        height: context.dp(30.px),
-      ),
+      .error => GtSvg(GtVectorIllustrations.failed, width: size, height: size),
+      _ => child,
     };
   }
 }

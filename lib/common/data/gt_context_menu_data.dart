@@ -3,7 +3,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 
 /// A data model representing a single actionable item within a context menu.
 ///
-/// Used by context menu widgets like `GtContextMenu`, `GtPillContextMenu`, 
+/// Used by context menu widgets like `GtContextMenu`, `GtPillContextMenu`,
 /// and `GtMoreContextMenu` to configure the list of available options.
 class GtContextMenuItem<T> {
   /// The text displayed for this menu item.

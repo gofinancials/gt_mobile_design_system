@@ -29,11 +29,15 @@ class GtVectors {
   /// Path to the trend down SVG.
   static const trendDown = "$_basePath/trend_down.svg";
 
+  /// Path to the trend down SVG.
+  static const caution = "$_basePath/caution.svg";
+
   /// A list containing all available core vector asset paths.
   static List<String> get all => [
     logo,
     clock,
     coin,
+    caution,
     tapRight,
     tapLeft,
     sterling,

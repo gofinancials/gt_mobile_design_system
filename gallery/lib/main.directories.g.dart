@@ -68,8 +68,8 @@ import 'package:gallery/organisms/view_state/gt_status_state.dart'
     as _gallery_organisms_view_state_gt_status_state;
 import 'package:gallery/templates/forms/gt_form.dart'
     as _gallery_templates_forms_gt_form;
-import 'package:gallery/templates/modals/gt_bttom_modal.dart'
-    as _gallery_templates_modals_gt_bttom_modal;
+import 'package:gallery/templates/modals/gt_bottom_modal.dart'
+    as _gallery_templates_modals_gt_bottom_modal;
 import 'package:gallery/templates/overlays/gt_overlay.dart'
     as _gallery_templates_overlays_gt_overlay;
 import 'package:gallery/templates/screens/gt_duo_tone_screen.dart'
@@ -89,26 +89,6 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookUseCase(
         name: 'Cover',
         builder: _gallery_gallery_cover.buildCover,
-      ),
-    ],
-  ),
-  _widgetbook.WidgetbookCategory(
-    name: 'Templates',
-    children: [
-      _widgetbook.WidgetbookFolder(
-        name: 'Modals',
-        children: [
-          _widgetbook.WidgetbookComponent(
-            name: 'GtLoaderBottomModal',
-            useCases: [
-              _widgetbook.WidgetbookUseCase(
-                name: 'GtBottomModal (Loader)',
-                builder: _gallery_templates_modals_gt_bttom_modal
-                    .buildGtBottomModalUsecase,
-              ),
-            ],
-          ),
-        ],
       ),
     ],
   ),
@@ -620,6 +600,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtVirtualKeypadForm [Avatar]',
                     builder: _gallery_templates_forms_gt_form
                         .buildGtVirtualKeypadFormAvatarUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'modals',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtBottomModal',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtBottomModal (Loader)',
+                    builder: _gallery_templates_modals_gt_bottom_modal
+                        .buildGtBottomModalUsecase,
                   ),
                 ],
               ),
