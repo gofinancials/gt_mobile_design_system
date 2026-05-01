@@ -21,7 +21,7 @@ class GtSelectableCard<T> extends GtStatelessWidget {
   final Widget child;
 
   /// The visual variant determining the card's color scheme, particularly the border color when selected.
-  /// 
+  ///
   /// Defaults to [GtCardVariant.featured].
   final GtCardVariant variant;
 
@@ -79,7 +79,8 @@ class GtAvatarSelectionCard extends GtStatelessWidget {
   final AppImageData image;
 
   /// Creates a [GtAvatarSelectionCard].
-  const GtAvatarSelectionCard(this.image, {
+  const GtAvatarSelectionCard(
+    this.image, {
     required this.selected,
     required this.onSelect,
     super.key,

@@ -54,7 +54,8 @@ class GtTheme {
       brightness: Brightness.dark,
       dividerColor: darkPalette.stroke.soft,
       dialogTheme: base.dialogTheme.copyWith(
-        backgroundColor: darkPalette.staticColors.black.setOpacity(0.3),
+        backgroundColor: darkPalette.bg.white,
+        barrierColor: darkPalette.bg.strong.setOpacity(.17),
       ),
       colorScheme: base.colorScheme.copyWith(
         surface: darkPalette.bg.white,
@@ -83,6 +84,8 @@ class GtTheme {
       ),
       bottomSheetTheme: base.bottomSheetTheme.copyWith(
         backgroundColor: darkPalette.bg.white,
+        modalBarrierColor: darkPalette.bg.strong.setOpacity(.17),
+        shadowColor: darkPalette.bg.strong.setOpacity(.17),
         elevation: 0,
       ),
       buttonTheme: base.buttonTheme.copyWith(
@@ -137,7 +140,8 @@ class GtTheme {
       brightness: Brightness.light,
       dividerColor: lightPalette.stroke.soft,
       dialogTheme: base.dialogTheme.copyWith(
-        backgroundColor: lightPalette.staticColors.black.setOpacity(0.3),
+        backgroundColor: lightPalette.bg.white,
+        barrierColor: lightPalette.bg.strong.setOpacity(.17),
       ),
       colorScheme: base.colorScheme.copyWith(
         surface: lightPalette.bg.white,
@@ -166,6 +170,8 @@ class GtTheme {
       ),
       bottomSheetTheme: base.bottomSheetTheme.copyWith(
         backgroundColor: lightPalette.bg.white,
+        modalBarrierColor: lightPalette.bg.strong.setOpacity(.17),
+        shadowColor: lightPalette.bg.strong.setOpacity(.17),
         elevation: 0,
       ),
       buttonTheme: base.buttonTheme.copyWith(

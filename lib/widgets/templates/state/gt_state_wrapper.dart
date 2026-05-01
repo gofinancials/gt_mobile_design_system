@@ -22,9 +22,6 @@ class GtStateWrapper extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: providers,
-      child: child,
-    );
+    return MultiProvider(providers: providers, child: child);
   }
 }

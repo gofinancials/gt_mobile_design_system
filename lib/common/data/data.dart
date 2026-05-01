@@ -1,3 +1,4 @@
+export 'gt_bottom_modal_data.dart';
 export 'gt_calendar_data.dart';
 export 'gt_context_menu_data.dart';
 export 'gt_input_data.dart';
