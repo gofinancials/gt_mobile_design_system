@@ -56,6 +56,9 @@ mixin GtBottomModalMixin {
   /// On non-mobile platforms, it uses [showAdaptiveDialog]. On mobile platforms,
   /// it uses [showModalBottomSheet].
   void _showModal(BuildContext context, {required Widget modal}) {
+    GtOverlay.closeCurrentOverlays();
+    GtRouter.openedModal();
+
     if (!context.isMobile) {
       showAdaptiveDialog(
         useRootNavigator: false,
@@ -76,5 +79,61 @@ mixin GtBottomModalMixin {
       backgroundColor: Colors.transparent,
       builder: (context) => modal,
     );
+  }
+}
+
+/// A mixin that provides convenience methods for displaying standard and draggable bottom sheets.
+mixin GtBottomSheetMixin {
+  /// Displays a standard bottom sheet containing the given [child] widget.
+  ///
+  /// The sheet's behavior can be customized with flags such as [isDismissable],
+  /// [canDragToClose], and [isScrollable]. The [maxHeightFraction] determines
+  /// the maximum height of the sheet relative to the screen size (defaults to 0.9).
+  /// Returns a [Future] that resolves to the value `T` passed when popping the sheet.
+  Future<T?> showSheet<T>(
+    BuildContext context, {
+    required Widget child,
+    bool isDismissable = true,
+    bool canDragToClose = true,
+    bool isScrollable = false,
+    bool canPop = true,
+    bool useRootNavigator = false,
+    double maxHeightFraction = .9,
+  }) async {
+    return GtBottomSheet<T>(
+      context: context,
+      modalWidget: child,
+      isDismissable: isDismissable,
+      canDragToClose: canDragToClose,
+      isScrollable: isScrollable,
+      canPop: canPop,
+      useRootNavigator: useRootNavigator,
+      maxHeightFraction: maxHeightFraction,
+    ).present(context);
+  }
+
+  /// Displays a bottom sheet that can be dragged up and down by the user.
+  ///
+  /// The [builder] provides a [ScrollController] that must be attached to a
+  /// scrollable widget within the sheet to enable the drag behavior.
+  /// The sheet's size is constrained by [minChildSize], [initialChildSize],
+  /// and [maxChildSize], which represent fractions of the screen height.
+  Future<T?> showDraggableSheet<T>(
+    BuildContext context, {
+    required ValueBuilder<ScrollController> builder,
+    double minChildSize = .3,
+    double initialChildSize = .7,
+    double maxChildSize = .9,
+    bool useRootNavigator = false,
+    double maxHeightFraction = .9,
+  }) async {
+    return GtBottomSheet<T>.draggable(
+      context: context,
+      builder: builder,
+      minChildSize: minChildSize,
+      initialChildSize: initialChildSize,
+      maxChildSize: maxChildSize,
+      useRootNavigator: useRootNavigator,
+    ).present(context);
   }
 }
