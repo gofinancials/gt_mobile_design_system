@@ -124,11 +124,11 @@ class GalleryStatusWidgetShowcase extends StatelessWidget
             GtRaisedButton(
               onPressed: () {
                 showOtherModal(
-                context,
-                stausIcon: GtVectorIllustrations.disconnected,
-                messageTitle: "Session Timeout",
-                subtitle: "Your session expired; you need to log in again.",
-                actionLabel: 'Login',
+                  context,
+                  stausIcon: GtVectorIllustrations.disconnected,
+                  messageTitle: "Session Timeout",
+                  subtitle: "Your session expired; you need to log in again.",
+                  actionLabel: 'Login',
                 );
               },
               text: "Show other status - Session",

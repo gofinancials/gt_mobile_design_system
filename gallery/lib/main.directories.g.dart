@@ -66,6 +66,8 @@ import 'package:gallery/organisms/view_state/gt_empty_state.dart'
     as _gallery_organisms_view_state_gt_empty_state;
 import 'package:gallery/organisms/view_state/gt_status_state.dart'
     as _gallery_organisms_view_state_gt_status_state;
+import 'package:gallery/templates/dialogs/gt_confirm_dialog.dart'
+    as _gallery_templates_dialogs_gt_confirm_dialog;
 import 'package:gallery/templates/forms/gt_form.dart'
     as _gallery_templates_forms_gt_form;
 import 'package:gallery/templates/modals/gt_bottom_modal.dart'
@@ -587,6 +589,21 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookFolder(
         name: 'templates',
         children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'dialogs',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtConfirmDialog',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtConfirmDialog',
+                    builder: _gallery_templates_dialogs_gt_confirm_dialog
+                        .buildGtConfirmDialogUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
           _widgetbook.WidgetbookFolder(
             name: 'forms',
             children: [

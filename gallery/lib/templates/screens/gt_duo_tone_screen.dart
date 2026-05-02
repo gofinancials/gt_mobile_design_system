@@ -50,7 +50,12 @@ Widget buildGtDuotoneScreenUsecase(BuildContext context) {
       ("None", null),
       (
         "GtLessonInfoTile",
-        GtLessonInfoTile(progress: "3/10", progressDuration: "5 Mins", alignment: .center, crossAlignment: .center,),
+        GtLessonInfoTile(
+          progress: "3/10",
+          progressDuration: "5 Mins",
+          alignment: .center,
+          crossAlignment: .center,
+        ),
       ),
     ],
     labelBuilder: (value) => value.$1,
