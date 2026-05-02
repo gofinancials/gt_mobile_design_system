@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gallery/widgets/gallery_page_header.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -15,15 +14,6 @@ class _BottomSheetPreview extends StatefulWidget {
 
   @override
   State<_BottomSheetPreview> createState() => _BottomSheetPreviewState();
-}
-
-class SampleFuture extends AppEquatable {
-  final String title;
-
-  const SampleFuture({required this.title});
-
-  @override
-  List<Object?> get props => [title];
 }
 
 const List<(IconData, String)> items = [
@@ -50,8 +40,7 @@ class _BottomSheetPreviewState extends State<_BottomSheetPreview>
           children: [
             GalleryPageHeader(
               title: 'Bottom Sheet',
-              rider:
-                  'Bottom shet playground draggable and static',
+              rider: 'Bottom shet playground draggable and static',
             ),
             GtRaisedButton(
               text: 'Show Simple Bottom Sheet',

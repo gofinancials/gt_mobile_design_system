@@ -108,25 +108,37 @@ void main() {
   runApp(const WidgetbookApp());
 }
 
+final ValueNotifier<GtThemeSetting> themeNotifier = ValueNotifier(
+  GtThemeSetting(theme: kPersonalTheme, mode: ThemeMode.light),
+);
+
 @widgetbook.App()
 class WidgetbookApp extends StatelessWidget {
   const WidgetbookApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GtThemeProvider(
-      theme: kPersonalTheme,
-      child: Widgetbook.material(
-        initialRoute: "?path=designsystemcover/cover",
-        directories: directories,
-        addons: [
-          ViewportAddon(Viewports.all),
-          GtThemeAddon(themes: kAllThemes),
-          InspectorAddon(),
-          TextScaleAddon(max: 1.5),
-          ZoomAddon(),
-        ],
-      ),
+    return GenericListener(
+      valueListenable: themeNotifier,
+      builder: (activeTheme) {
+        return GtThemeProvider(
+          theme: activeTheme.theme,
+          child: Widgetbook.material(
+            initialRoute: "?path=designsystemcover/cover",
+            directories: directories,
+            darkTheme: activeTheme.theme.materialDark,
+            lightTheme: activeTheme.theme.materialLight,
+            themeMode: activeTheme.mode,
+            addons: [
+              ViewportAddon(Viewports.all),
+              GtThemeAddon(themes: kAllThemes, themeNotifier: themeNotifier),
+              InspectorAddon(),
+              TextScaleAddon(max: 1.5),
+              ZoomAddon(),
+            ],
+          ),
+        );
+      },
     );
   }
 }

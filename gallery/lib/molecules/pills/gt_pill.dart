@@ -160,7 +160,10 @@ Widget buildGtPillUseCase(BuildContext context) {
                       for (final selection in selections)
                         selection: Padding(
                           padding: context.insets.symmetricDp(vertical: 20.px),
-                          child: GtText(selection.label.upper, textAlign: .center),
+                          child: GtText(
+                            selection.label.upper,
+                            textAlign: .center,
+                          ),
                         ),
                     },
                   ),

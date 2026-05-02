@@ -96,7 +96,7 @@ class _GtTimeFieldState extends State<GtTimeField> {
   void _showPicker() async {
     showCupertinoModalPopup(
       context: context,
-      useRootNavigator: false,
+      useRootNavigator: true,
       builder: (context) {
         if (Platform.isAndroid) {
           return _MaterialDatePickerContainer(

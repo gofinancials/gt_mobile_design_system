@@ -1,15 +1,19 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 /// A setting state that holds both the selected [GtTheme] and [ThemeMode].
-class GtThemeSetting {
+class GtThemeSetting extends AppEquatable {
   const GtThemeSetting({required this.theme, required this.mode});
 
   final GtTheme theme;
   final ThemeMode mode;
+
+  @override
+  List<Object?> get props => [theme, mode];
 }
 
 /// A custom Addon that exposes two configuration fields in Widgetbook:
@@ -18,6 +22,7 @@ class GtThemeSetting {
 class GtThemeAddon extends WidgetbookAddon<GtThemeSetting> {
   GtThemeAddon({
     required this.themes,
+    this.themeNotifier,
     this.initialTheme,
     this.initialMode = ThemeMode.light,
   }) : super(name: 'Theme');
@@ -25,6 +30,7 @@ class GtThemeAddon extends WidgetbookAddon<GtThemeSetting> {
   final List<GtTheme> themes;
   final GtTheme? initialTheme;
   final ThemeMode initialMode;
+  final ValueNotifier<GtThemeSetting>? themeNotifier;
 
   @override
   List<Field> get fields => [
@@ -62,6 +68,9 @@ class GtThemeAddon extends WidgetbookAddon<GtThemeSetting> {
       theme: setting.theme,
       child: Builder(
         builder: (context) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            themeNotifier?.value = setting;
+          });
           return MaterialApp(
             scrollBehavior: const MaterialScrollBehavior().copyWith(
               dragDevices: {
