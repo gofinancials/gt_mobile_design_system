@@ -21,7 +21,7 @@ class GtBottomSheet<T> {
        maxChildSize = maxHeightFraction,
        minChildSize = .3,
        initialChildSize = .9,
-       _isDraggble = false;
+       _isDraggable = false;
 
   /// Creates a draggable [GtBottomSheet] whose size can be adjusted by the user.
   ///
@@ -35,7 +35,7 @@ class GtBottomSheet<T> {
     this.initialChildSize = .7,
     this.maxChildSize = .9,
     this.useRootNavigator = false,
-  }) : _isDraggble = true,
+  }) : _isDraggable = true,
        modalWidget = const Offstage(),
        isScrollable = true,
        canPop = true,
@@ -74,7 +74,7 @@ class GtBottomSheet<T> {
   final bool useRootNavigator;
 
   /// Internal flag tracking if the sheet is in draggable mode.
-  final bool _isDraggble;
+  final bool _isDraggable;
 
   /// Whether the system back button or back gesture can close the sheet.
   final bool canPop;
@@ -97,23 +97,32 @@ class GtBottomSheet<T> {
     return _presentMobileSheet(context);
   }
 
+  /// Presents the bottom sheet using mobile-specific configurations.
+  ///
+  /// On iOS/macOS, it utilizes [showCupertinoSheet], while on Android/other platforms,
+  /// it defaults to [showModalBottomSheet].
   Future<T?> _presentMobileSheet(BuildContext context) async {
+    final constraints = BoxConstraints(maxWidth: 500);
     Widget child = Builder(
       builder: (context) {
-        if (_isDraggble) {
+        if (_isDraggable) {
           return DraggableScrollableSheet(
             initialChildSize: initialChildSize,
             maxChildSize: maxChildSize,
             minChildSize: minChildSize,
             builder: (context, scrollController) {
-              return _GtSheetContainer(child: _builder!(scrollController));
+              return _GtSheetContainer(
+                constraints: constraints,
+                controller: scrollController,
+                child: _builder!(scrollController),
+              );
             },
           );
         }
         return GtPopScope(
           canPop: canPop,
           child: _GtSheetContainer(
-            constraints: BoxConstraints(
+            constraints: constraints.copyWith(
               maxHeight: context.height * maxChildSize,
               minHeight: context.height * minChildSize,
             ),
@@ -123,7 +132,7 @@ class GtBottomSheet<T> {
       },
     );
 
-    if (!context.isIos) {
+    if (!_isDraggable && context.isIos) {
       return showCupertinoSheet<T>(
         context: context,
         builder: (context) => child,
@@ -141,34 +150,39 @@ class GtBottomSheet<T> {
       backgroundColor: Colors.transparent,
       barrierColor: barrierColor,
       useRootNavigator: useRootNavigator,
-      constraints: BoxConstraints.expand(width: double.infinity),
+      constraints: constraints,
       builder: (context) => child,
     );
   }
 
+  /// Presents the bottom sheet using desktop-specific configurations.
+  ///
+  /// Uses [showAdaptiveDialog] to display the sheet as a centered modal dialog.
   Future<T?> _presentDesktopSheet(BuildContext context) async {
     return showAdaptiveDialog<T>(
       context: context,
       barrierDismissible: isDismissable,
       barrierColor: barrierColor,
       useRootNavigator: useRootNavigator,
-      anchorPoint: context.position,
+      anchorPoint: Offset(context.width * .5, context.height * .5),
       builder: (context) {
         final constraints = BoxConstraints(
           maxWidth: 500,
           maxHeight: context.height * maxChildSize,
           minHeight: context.height * minChildSize,
         );
-        if (_isDraggble) {
+        if (_isDraggable) {
           return DraggableScrollableSheet(
             initialChildSize: initialChildSize,
             maxChildSize: maxChildSize,
             minChildSize: minChildSize,
+            expand: false,
             builder: (context, scrollController) {
               return _GtSheetContainer(
                 constraints: constraints,
                 alignment: .center,
                 borderRadius: context.borderRadius4Xl,
+                controller: scrollController,
                 child: _builder!(scrollController),
               );
             },
@@ -194,31 +208,41 @@ class _GtSheetContainer extends GtStatelessWidget {
   final BoxConstraints? constraints;
   final AlignmentGeometry alignment;
   final Widget child;
+  final ScrollController? controller;
 
   const _GtSheetContainer({
     this.borderRadius,
     this.constraints,
     this.alignment = .bottomCenter,
+    this.controller,
     required this.child,
   });
 
   @override
   Widget build(BuildContext context) {
     final defaultRadius = BorderRadius.vertical(top: context.radius4Xl);
+    Widget body = Container(
+      margin: !context.isMobile ? context.insets.defaultAllInsets : .zero,
+      decoration: BoxDecoration(
+        color: context.palette.bg.white,
+        borderRadius: borderRadius ?? defaultRadius,
+      ),
+      constraints: constraints,
+      child: child,
+    );
+
+    if (controller != null) {
+      body = Scrollbar(
+        thumbVisibility: true,
+        trackVisibility: false,
+        controller: controller,
+        radius: context.radius4Xl,
+        child: body,
+      );
+    }
     return Material(
       type: .transparency,
-      child: Align(
-        alignment: alignment,
-        child: Container(
-          margin: !context.isMobile ? context.insets.defaultAllInsets : .zero,
-          decoration: BoxDecoration(
-            color: context.palette.bg.white,
-            borderRadius: borderRadius ?? defaultRadius,
-          ),
-          constraints: constraints,
-          child: child,
-        ),
-      ),
+      child: Align(alignment: alignment, child: body),
     );
   }
 }

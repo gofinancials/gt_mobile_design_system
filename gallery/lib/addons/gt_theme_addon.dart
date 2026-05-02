@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
@@ -61,6 +63,13 @@ class GtThemeAddon extends WidgetbookAddon<GtThemeSetting> {
       child: Builder(
         builder: (context) {
           return MaterialApp(
+            scrollBehavior: const MaterialScrollBehavior().copyWith(
+              dragDevices: {
+                PointerDeviceKind.mouse,
+                PointerDeviceKind.touch,
+                PointerDeviceKind.trackpad,
+              },
+            ),
             theme: setting.theme.materialLight,
             darkTheme: setting.theme.materialDark,
             themeMode: setting.mode,

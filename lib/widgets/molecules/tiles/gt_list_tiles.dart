@@ -66,7 +66,7 @@ class GtIconListTile extends GtStatelessWidget {
   final String title;
 
   /// The secondary text displayed below the title.
-  final String subtitle;
+  final String? subtitle;
 
   /// The icon displayed at the start of the tile.
   final IconData icon;
@@ -84,12 +84,22 @@ class GtIconListTile extends GtStatelessWidget {
   const GtIconListTile(
     this.title, {
     super.key,
-    required this.subtitle,
+    this.subtitle,
     required this.icon,
     this.crossAxisAlignment,
     this.iconColor,
     this.onTap,
   });
+
+  /// Creates a [GtIconListTile].
+  const factory GtIconListTile.alt(
+    String title, {
+    Key? key,
+    String? subtitle,
+    required IconData icon,
+    CrossAxisAlignment? crossAxisAlignment,
+    OnPressed? onTap,
+  }) = _GtIconListTileAlt;
 
   @override
   Widget build(BuildContext context) {
@@ -107,23 +117,76 @@ class GtIconListTile extends GtStatelessWidget {
           spacing: context.spacingMd,
           crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
           children: [
-            Align(
-              child: GtIcon.withColor(
-                icon,
-                size: context.dp(24.px),
-                color: iconColor,
-              ),
-            ),
+            GtIcon.withColor(icon, size: context.dp(24.px), color: iconColor),
             Expanded(
               child: Column(
                 spacing: context.spacingSm,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GtText(title, style: context.textStyles.subHeadS()),
-                  GtText(
-                    subtitle,
-                    style: context.textStyles.bodyXs(color: palette.text.sub),
-                  ),
+                  if (subtitle.hasValue)
+                    GtText(
+                      subtitle,
+                      style: context.textStyles.bodyXs(color: palette.text.sub),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A list tile that emphasizes a leading icon alongside a title and subtitle.
+class _GtIconListTileAlt extends GtIconListTile {
+  /// Creates a [GtIconListTile].
+  const _GtIconListTileAlt(
+    super.title, {
+    super.key,
+    super.subtitle,
+    required super.icon,
+    super.crossAxisAlignment,
+    super.onTap,
+  }) : super(iconColor: null);
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+
+    return InkWell(
+      onTap: () {
+        if (onTap == null) return;
+        HapticFeedback.lightImpact();
+        onTap?.call();
+      },
+      child: Padding(
+        padding: context.insets.symmetricDp(vertical: 12.px),
+        child: Row(
+          spacing: context.spacingBase,
+          crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
+          children: [
+            Container(
+              alignment: .center,
+              width: context.dp(36.px),
+              height: context.dp(36.px),
+              decoration: BoxDecoration(
+                color: context.palette.bg.weak,
+                borderRadius: context.borderRadiusXl,
+              ),
+              child: GtIcon(icon, size: context.dp(24.px)),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GtText(title, style: context.textStyles.bodyM()),
+                  if (subtitle.hasValue)
+                    GtText(
+                      subtitle,
+                      style: context.textStyles.bodyXs(color: palette.text.sub),
+                    ),
                 ],
               ),
             ),

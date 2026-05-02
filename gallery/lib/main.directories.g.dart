@@ -70,6 +70,8 @@ import 'package:gallery/templates/forms/gt_form.dart'
     as _gallery_templates_forms_gt_form;
 import 'package:gallery/templates/modals/gt_bottom_modal.dart'
     as _gallery_templates_modals_gt_bottom_modal;
+import 'package:gallery/templates/modals/gt_bottom_sheet.dart'
+    as _gallery_templates_modals_gt_bottom_sheet;
 import 'package:gallery/templates/overlays/gt_overlay.dart'
     as _gallery_templates_overlays_gt_overlay;
 import 'package:gallery/templates/screens/gt_duo_tone_screen.dart'
@@ -572,7 +574,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtStatusState',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'Status state',
+                    name: 'GtStatusState',
                     builder: _gallery_organisms_view_state_gt_status_state
                         .playgroundGtStatusStateUseCase,
                   ),
@@ -612,9 +614,19 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtBottomModal',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtBottomModal (Loader)',
+                    name: 'GtBottomModal',
                     builder: _gallery_templates_modals_gt_bottom_modal
                         .buildGtBottomModalUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtBottomSheet',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtBottomSheet',
+                    builder: _gallery_templates_modals_gt_bottom_sheet
+                        .buildGtBottomSheetUsecase,
                   ),
                 ],
               ),
@@ -684,7 +696,12 @@ final directories = <_widgetbook.WidgetbookNode>[
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtWelcomeScreen',
                     builder: _gallery_templates_screens_gt_splash_screen
-                        .buildGWelcomeScreenUsecase,
+                        .buildtGWelcomeScreenUsecase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtWelcomeScreen.withTitleWidget',
+                    builder: _gallery_templates_screens_gt_splash_screen
+                        .buildGtWelcomeScreenTitleUsecase,
                   ),
                 ],
               ),

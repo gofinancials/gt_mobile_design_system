@@ -702,7 +702,29 @@ class GtTextStyles {
   // TITLES (title prefix) | Inter, Bold (700), High Tracking
   // ---------------------------------------------------------------------------
 
-  /// Generates the Medium Title (Title M) text style.
+  TextStyle title({
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 48,
+      heightPx: 96,
+      widthPct: 0,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   TextStyle titleM({
     Color? color,
     TextDecoration? decoration,

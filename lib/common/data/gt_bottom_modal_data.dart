@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 
@@ -24,12 +26,6 @@ class GtBottomModalData extends AppEquatable {
   /// The main title text of the modal.
   final String title;
 
-  /// The title text to display when the modal is in the success phase.
-  final String? successTitle;
-
-  /// The title text to display when the modal is in the error phase.
-  final String? errorTitle;
-
   /// An optional icon to display.
   final AppImageData? icon;
 
@@ -37,83 +33,92 @@ class GtBottomModalData extends AppEquatable {
   final String? description;
 
   /// Creates a [GtBottomModalData] instance.
-  const GtBottomModalData({
-    required this.title,
-    this.description,
-    this.icon,
-    this.successTitle,
-    this.errorTitle,
-  });
+  const GtBottomModalData({required this.title, this.description, this.icon});
 
   /// Creates a copy of this object with the given fields replaced with new values.
   GtBottomModalData copyWith({
     String? title,
     String? description,
     AppImageData? icon,
-    String? successTitle,
-    String? errorTitle,
   }) {
     return GtBottomModalData(
       icon: icon ?? this.icon,
       title: title ?? this.title,
       description: description ?? this.description,
-      successTitle: successTitle ?? this.successTitle,
-      errorTitle: errorTitle ?? this.errorTitle,
     );
   }
 
   @override
-  List<Object?> get props => [
-    title,
-    description,
-    icon,
-    successTitle,
-    errorTitle,
-  ];
+  List<Object?> get props => [title, description, icon];
 }
 
-/// Controller for driving [GtLoaderBottomModal] state transitions.
+/// Controller for driving [GtBottomModal] state transitions.
 ///
 /// This keeps the bottom modal independent from overlay logic and can be
 /// triggered from button presses in any screen/use case.
 class GtBottomModalController extends ChangeNotifier {
+  /// Debouncer used to delay the execution of the completion callback.
+  final AppDebouncer _debouncer;
+
+  /// The initial, unmodified data provided to the controller, used for resetting.
+  final GtBottomModalData _pristineData;
+
   /// The current data for the bottom modal.
   GtBottomModalData _data;
 
-  /// An optional notifier for tracking an asynchronous task.
-  ValueNotifier<AsyncData>? _taskNotifier;
+  /// A completer used to track the lifecycle and result of the asynchronous task.
+  Completer<TaskResponse> _completer;
 
   /// The progress of the task, typically a value between 0.0 and 1.0.
   double? _progress;
 
   /// A callback executed when the associated task completes.
-  final OnChanged<AsyncData>? _completionCallback;
+  final OnChanged<TaskResponse>? _completionCallback;
 
-  /// The delay before executing the [_completionCallback] after the task finishes.
-  final Duration? _completionCallbackDelay;
+  /// The final result (success or failure) of the completed task.
+  TaskResponse? _completionValue;
 
   /// Creates a [GtBottomModalController] associated with an asynchronous task.
   GtBottomModalController({
     required GtBottomModalData data,
-    required ValueNotifier<AsyncData> taskNotifier,
-    required OnChanged<AsyncData> onComplete,
+    required OnChanged<TaskResponse> onComplete,
     required Duration onCompleteDelay,
     double? progress,
   }) : _data = data,
+       _pristineData = data,
        _progress = progress,
-       _taskNotifier = taskNotifier,
+       _completer = Completer(),
        _completionCallback = onComplete,
-       _completionCallbackDelay = onCompleteDelay;
+       _debouncer = AppDebouncer(onCompleteDelay);
+
+  /// Completes the task with the given [value] and triggers the completion callback.
+  ///
+  /// If [breakIfAlreadyCompleted] is true and the task is already completed, this does nothing.
+  void complete(TaskResponse value, {bool breakIfAlreadyCompleted = true}) {
+    final isCompleted = _completer.isCompleted;
+    if (breakIfAlreadyCompleted && isCompleted) return;
+    if (_completer.isCompleted) _completer = Completer();
+    _completer.complete(value);
+    _completionValue = value;
+    notifyListeners();
+    _debouncer.run(() async {
+      _completionCallback?.call(await _completer.future);
+    });
+  }
 
   /// Updates the controller's state with new values and notifies listeners.
+  ///
+  /// * [data]: The new modal data to apply.
+  /// * [progress]: The new progress value to apply.
+  /// * [completer]: The new task completer to apply.
   void copyWithin({
     GtBottomModalData? data,
     double? progress,
-    ValueNotifier<AsyncData>? taskNotifier,
+    Completer<TaskResponse>? completer,
   }) {
     _data = data ?? _data;
     _progress = progress ?? _progress;
-    _taskNotifier = taskNotifier ?? _taskNotifier;
+    _completer = completer ?? _completer;
 
     notifyListeners();
   }
@@ -148,27 +153,7 @@ class GtBottomModalController extends ChangeNotifier {
   }
 
   /// The current title from the modal data.
-  String get title {
-    final text = data.title;
-    if (task == null) return text;
-    return switch (phase) {
-      .success => data.successTitle ?? data.title,
-      .error => data.errorTitle ?? data.title,
-      _ => text,
-    };
-  }
-
-  /// Updates the title displayed during the error phase and notifies listeners.
-  set errorTitle(String value) {
-    _data = _data.copyWith(errorTitle: value);
-    notifyListeners();
-  }
-
-  /// Updates the title displayed during the success phase and notifies listeners.
-  set successTitle(String value) {
-    _data = _data.copyWith(successTitle: value);
-    notifyListeners();
-  }
+  String get title => data.title;
 
   /// The current icon from the modal data.
   AppImageData? get icon => _data.icon;
@@ -179,7 +164,8 @@ class GtBottomModalController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// The current description from the modal data.
+  /// The current description, prioritizing the [errorMessage] if an error occurred,
+  /// otherwise falling back to the description from the modal data.
   String? get description => errorMessage ?? _data.description;
 
   /// Updates the description and notifies listeners.
@@ -188,41 +174,20 @@ class GtBottomModalController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// The notifier for the asynchronous task.
-  ValueNotifier<AsyncData>? get taskNotifier => _taskNotifier;
-
-  /// A callback executed when the associated task completes.
-  OnChanged<AsyncData>? get onComplete => _completionCallback;
-
-  /// The delay before executing the [_completionCallback] after the task finishes.
-  Duration? get completionDelay => _completionCallbackDelay;
-
-  /// Sets the task notifier and notifies listeners.
-  set taskNotifier(ValueNotifier<AsyncData>? value) {
-    _taskNotifier = value;
-    notifyListeners();
-  }
-
-  /// The current [AsyncData] value from the task notifier, if any.
-  AsyncData? get task => _taskNotifier?.value;
-
-  /// Whether a task is currently associated with this controller.
-  bool get hasTask => task != null;
-
   /// Whether progress is currently being tracked.
   bool get hasProgress => _progress != null;
 
   /// Whether the associated task is currently loading.
-  bool get isLoading => task?.isLoading ?? false;
+  bool get isLoading => !_completer.isCompleted;
 
   /// Whether the associated task has encountered an error.
-  bool get hasError => task?.hasError ?? false;
+  bool get hasError => _completionValue is TaskFailure;
 
   /// Whether the associated task has completed successfully with data.
-  bool get isSuccessful => task?.hasData ?? false;
+  bool get isSuccessful => _completionValue is TaskSuccess;
 
   /// The error message from the associated task, if an error occurred.
-  String? get errorMessage => task?.error?.message;
+  String? get errorMessage => _completionValue?.error?.message;
 
   /// Computes the current [GtBottomModalPhase] based on the task's state.
   GtBottomModalPhase get phase {
@@ -232,20 +197,20 @@ class GtBottomModalController extends ChangeNotifier {
     return GtBottomModalPhase.idle;
   }
 
-  /// Resets the controller to its initial state, clearing progress and task notifier.
+  /// Resets the controller to its initial state, restoring pristine data, clearing progress, and resetting the task completer.
   void reset() {
-    _data = GtBottomModalData(
-      title: _data.title,
-      description: _data.description,
-      icon: _data.icon,
-    );
+    _data = _pristineData;
     _progress = null;
-    _taskNotifier = null;
+    _completer = Completer();
+    _completionValue = null;
+    _debouncer.abort();
+    notifyListeners();
   }
 
+  /// Cleans up resources, aborts any pending debounced callbacks, and disposes the controller.
   @override
   void dispose() {
-    reset();
+    _debouncer.abort();
     super.dispose();
   }
 }
