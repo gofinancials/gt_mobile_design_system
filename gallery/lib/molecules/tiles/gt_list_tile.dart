@@ -918,6 +918,37 @@ Widget gtListTileAllUseCase(BuildContext context) {
         onTap: () {},
       ),
     ),
+    const GtGap.yBase(),
+    GtCard(
+      child: GtIconListTile(
+        iconTileTitle,
+        icon: GtIcons.bell,
+        onTap: () {},
+      ),
+    ),
+    const GtGap.yBase(),
+    GtIconListTile.alt(
+        iconTileTitle,
+        subtitle: iconTileSub,
+        icon: GtIcons.message,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        onTap: () {},
+      ),
+    const GtGap.yBase(),
+    GtIconListTile.alt(
+        iconTileTitle,
+        subtitle: iconTileSub,
+        icon: GtIcons.whatsapp,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        onTap: () {},
+      ),
+    const GtGap.yBase(),
+    GtIconListTile.alt(
+        iconTileTitle,
+        icon: GtIcons.faceId,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        onTap: () {},
+      ),
     const GtGap.ySectionSm(),
   ];
 

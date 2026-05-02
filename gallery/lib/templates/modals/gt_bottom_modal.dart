@@ -26,64 +26,49 @@ class SampleFuture extends AppEquatable {
   List<Object?> get props => [title];
 }
 
-final ValueNotifier<FutureData<SampleFuture>> _taskNotifier = ValueNotifier(
-  FutureData.pristine(),
-);
-
-void _getSuccessFuture() async {
-  final state = _taskNotifier.value;
-  if (state.isLoading) return;
-  _taskNotifier.value = state.copyWith(isLoading: true);
+TaskCallResponse<SampleFuture> _getSuccessFuture() async {
   await Future.delayed(2.seconds);
-  _taskNotifier.value = state.copyWith(
-    data: SampleFuture(title: "We fetched data successfully"),
-    isLoading: false,
-  );
+  return TaskSuccess(data: SampleFuture(title: "We fetched data successfully"));
 }
 
-void _getFailureFuture({OnPressed? onError}) async {
-  final state = _taskNotifier.value;
-  if (state.isLoading) return;
-  _taskNotifier.value = state.copyWith(isLoading: true);
+TaskCallResponse<SampleFuture> _getFailureFuture({OnPressed? onError}) async {
   await Future.delayed(2.seconds);
   onError?.call();
-  _taskNotifier.value = state.copyWith(
-    error: TaskError(message: "An error occured while fetching your request"),
-    data: null,
-    isLoading: false,
+  return TaskFailure(
+    error: TaskError(
+      message:
+          "Unable to complete request right now, an absolute <e>error</e> occurred.",
+    ),
   );
 }
 
 Stream<double> _getProgressStream() async* {
-  final list = List.generate(10, (index) => (index + 1) / 10);
+  final list = List.generate(100, (index) => (index + 1) / 100);
   for (final i in list) {
     yield i;
-    await Future.delayed(1.seconds);
+    await Future.delayed(100.milliseconds);
   }
 }
 
-void _getProgressFuture({OnChanged<double>? onProgress}) async {
-  final state = _taskNotifier.value;
-  if (state.isLoading) return;
-  _taskNotifier.value = state.copyWith(isLoading: true);
+TaskCallResponse<SampleFuture> _getProgressFuture({
+  OnChanged<double>? onProgress,
+}) async {
   _getProgressStream().asBroadcastStream().listen(onProgress?.call);
   await Future.delayed(10.seconds);
-  _taskNotifier.value = state.copyWith(
-    data: SampleFuture(title: "We fetched data successfully"),
-    isLoading: false,
+  return TaskSuccess(
+    data: SampleFuture(title: "We fetched downloaded your file successfully"),
   );
 }
 
 final GtBottomModalController _controller = GtBottomModalController(
   data: GtBottomModalData(title: "PROCESSING"),
-  taskNotifier: _taskNotifier,
   onComplete: (value) {
     GtRouter.popView();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _taskNotifier.value = FutureData.pristine();
+      _controller.reset();
     });
   },
-  onCompleteDelay: 1.seconds,
+  onCompleteDelay: 2.seconds,
 );
 
 class _BottomModalPreviewState extends State<_BottomModalPreview>
@@ -91,77 +76,74 @@ class _BottomModalPreviewState extends State<_BottomModalPreview>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Padding(
-            padding: context.insets.defaultHorizontalInsets,
-            child: Column(
-              mainAxisAlignment: .start,
-              crossAxisAlignment: .stretch,
-              spacing: context.spacingLg,
-              children: [
-                GalleryPageHeader(
-                  title: 'Bottom Modal',
-                  rider:
-                      'Representation of the static, loading, success, and error states',
-                ),
-                GtRaisedButton(
-                  text: 'Open Simple modal',
-                  onPressed: () {
-                    showBottomModal(
-                      context,
-                      title: "NOT FOUND",
-                      description:
-                          "The system couldn’t find what you asked for",
-                      icon: AppImageData(imageData: GtVectors.caution),
-                    );
-                  },
-                ),
-                GtRaisedButton(
-                  text: 'Open Task bottom modal',
-                  variant: .success,
-                  onPressed: () {
-                    _getSuccessFuture();
-                    showTaskBottomModal(context, controller: _controller);
-                  },
-                ),
-                GtRaisedButton(
-                  text: 'Open Failing Task bottom modal',
-                  variant: .destructive,
-                  onPressed: () {
-                    _getFailureFuture(
-                      onError: () {
-                        _controller.errorTitle = "Something went wrong";
-                        _controller.description =
-                            "Unable to complete request right now.";
-                      },
-                    );
-                    showTaskBottomModal(context, controller: _controller);
-                  },
-                ),
-                GtRaisedButton(
-                  text: 'Open Progressive Task bottom modal',
-                  variant: .highlighted,
-                  onPressed: () {
-                    _getProgressFuture(
-                      onProgress: (value) {
-                        if (value == 1.0) {
-                          _controller.successTitle = "Completed";
-                          _controller.description = "Data has been downloaded";
-                          _controller.progress = null;
-                          return;
-                        }
-                        _controller.title = "Downloading...";
-                        _controller.progress = value;
-                      },
-                    );
-                    showTaskBottomModal(context, controller: _controller);
-                  },
-                ),
-              ],
+      body: Padding(
+        padding: context.insets.defaultHorizontalInsets,
+        child: Column(
+          mainAxisAlignment: .start,
+          crossAxisAlignment: .stretch,
+          spacing: context.spacingLg,
+          children: [
+            GalleryPageHeader(
+              title: 'Bottom Modal',
+              rider:
+                  'Representation of the static, loading, success, and error states',
             ),
-          ),
-        ],
+            GtRaisedButton(
+              text: 'Open Simple modal',
+              onPressed: () {
+                showBottomModal(
+                  context,
+                  title: "NOT FOUND",
+                  description: "The system couldn’t find what you asked for",
+                  icon: AppImageData(imageData: GtVectors.caution),
+                );
+              },
+            ),
+            GtRaisedButton(
+              text: 'Open Task bottom modal',
+              variant: .success,
+              onPressed: () async {
+                showTaskBottomModal(context, controller: _controller);
+                _controller.complete(await _getSuccessFuture());
+              },
+            ),
+            GtRaisedButton(
+              text: 'Open Failing Task bottom modal',
+              variant: .destructive,
+              onPressed: () async {
+                showTaskBottomModal(context, controller: _controller);
+                _controller.complete(
+                  await _getFailureFuture(
+                    onError: () {
+                      _controller.title = "Something went wrong";
+                    },
+                  ),
+                );
+              },
+            ),
+            GtRaisedButton(
+              text: 'Open Progressive Task bottom modal',
+              variant: .highlighted,
+              onPressed: () async {
+                showTaskBottomModal(context, controller: _controller);
+                _controller.complete(
+                  await _getProgressFuture(
+                    onProgress: (value) {
+                      if (value == 1.0) {
+                        _controller.title = "Completed";
+                        _controller.description = "Data has been downloaded";
+                        _controller.progress = null;
+                        return;
+                      }
+                      _controller.title = "Downloading...";
+                      _controller.progress = value;
+                    },
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

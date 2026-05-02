@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-/// Animated loader/success/error bottom container.
+/// An animated bottom modal container for displaying static content or tracking asynchronous tasks.
 ///
-/// Place inside a [Stack] as the last child so it appears floating at the
-/// bottom of the screen. It intentionally does not use overlay/route APIs.
+/// This widget can be used standalone or presented via overlay APIs (like [showModalBottomSheet]).
+/// When driven by a [GtBottomModalController], it animates seamlessly between loading, success,
+/// and error states without needing to dismiss and rebuild the modal.
 class GtBottomModal extends StatefulWidget {
   final GtBottomModalController? _controller;
   final GtBottomModalData? _data;
@@ -78,25 +79,17 @@ class _GtBottomModalState extends State<GtBottomModal>
   late Animation<Offset> _successSlide;
   late Animation<double> _successFade;
 
-  late AppDebouncer _debouncer;
-
   @override
   void initState() {
     super.initState();
     _initAnimation();
-    _debouncer = AppDebouncer(widget.controller?.completionDelay ?? 1.seconds);
-    widget.controller?.taskNotifier?.addListener(_taskListener);
   }
 
   void _initAnimation() {
-    _titleController = AnimationController(
-      duration: const Duration(milliseconds: 600),
-      vsync: this,
-    )..forward();
-    _successController = AnimationController(
-      duration: const Duration(milliseconds: 600),
-      vsync: this,
-    )..forward();
+    _titleController = AnimationController(duration: 1.seconds, vsync: this)
+      ..forward();
+    _successController = AnimationController(duration: 1.seconds, vsync: this)
+      ..forward();
 
     _titleSlide =
         Tween<Offset>(begin: const Offset(0.0, 0.05), end: Offset.zero).animate(
@@ -116,33 +109,6 @@ class _GtBottomModalState extends State<GtBottomModal>
     _successFade = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _successController, curve: Curves.easeInOut),
     );
-  }
-
-  @override
-  void didUpdateWidget(covariant GtBottomModal oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller?.taskNotifier != widget.controller?.taskNotifier) {
-      oldWidget.controller?.taskNotifier?.removeListener(_taskListener);
-      widget.controller?.taskNotifier?.addListener(_taskListener);
-    }
-  }
-
-  void _taskListener() {
-    _debouncer.abort();
-    final callback = widget.controller?.onComplete;
-    final task = widget.controller?.task;
-    if (callback == null || task == null) return;
-    if (task.isLoading) return;
-    _debouncer.run(() => callback(task));
-  }
-
-  @override
-  void dispose() {
-    widget.controller?.taskNotifier?.removeListener(_taskListener);
-    _debouncer.abort();
-    _titleController.dispose();
-    _successController.dispose();
-    super.dispose();
   }
 
   @override
@@ -176,12 +142,9 @@ class _GtBottomModalState extends State<GtBottomModal>
     final controller = widget.controller!;
 
     return ListenableBuilder(
-      listenable: Listenable.merge([
-        controller,
-        if (controller.hasTask) controller.taskNotifier!,
-      ]),
+      listenable: controller,
       builder: (context, child) {
-        final task = controller.task;
+        final isLoading = controller.isLoading;
 
         Widget child = Material(
           type: .transparency,
@@ -206,7 +169,7 @@ class _GtBottomModalState extends State<GtBottomModal>
           ),
         );
 
-        if (task != null && task.isLoading) {
+        if (isLoading) {
           child = GtPopScope(child: IgnorePointer(child: child));
         }
 
@@ -218,14 +181,31 @@ class _GtBottomModalState extends State<GtBottomModal>
 
 /// Internal widget that renders the modal container, animations, and typography.
 class _GtModalBody extends GtStatelessWidget {
+  /// The animation driving the upward slide transition of the title.
   final Animation<Offset> titleSlide;
+
+  /// The animation driving the fade-in transition of the title.
   final Animation<double> titleFade;
+
+  /// The animation driving the upward slide transition of the success/error content.
   final Animation<Offset> successSlide;
+
+  /// The animation driving the fade-in transition of the success/error content.
   final Animation<double> successFade;
+
+  /// The main title text.
   final String title;
+
+  /// An optional description text.
   final String? description;
+
+  /// An optional progress text (e.g. "45%"). Overrides the description if provided.
   final String? progress;
+
+  /// Margin applied around the modal container.
   final EdgeInsetsGeometry? margin;
+
+  /// The icon widget to display above the title.
   final Widget? icon;
 
   const _GtModalBody({
@@ -314,9 +294,9 @@ class _GtModalBody extends GtStatelessWidget {
                               children: [
                                 header,
                                 if (resolvedDescription.hasValue)
-                                  GtText(
+                                  GtRichText(
                                     resolvedDescription,
-                                    style: subStyle,
+                                    textStyle: subStyle,
                                     textAlign: TextAlign.center,
                                   ),
                               ],
@@ -339,7 +319,10 @@ class _GtModalBody extends GtStatelessWidget {
 
 /// Resolves leading icon/loader for the current phase.
 class _GtBottomModalIconWidget extends StatelessWidget {
+  /// The current phase of the modal (idle, loading, success, error).
   final GtBottomModalPhase phase;
+
+  /// An optional custom icon to display when the phase is idle.
   final AppImageData? icon;
 
   const _GtBottomModalIconWidget(this.phase, {this.icon});

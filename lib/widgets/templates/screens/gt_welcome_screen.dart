@@ -9,13 +9,20 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// two standard action buttons (primary and secondary).
 class GtWelcomeScreen extends GtStatelessWidget {
   /// Whether to display the default application logo at the top of the screen.
+  ///
+  /// If true, renders a [GtActionAppBar] containing the default logo.
   final bool showLogo;
 
   /// The main headline or welcome message displayed on the screen.
-  final String title;
+  final String _title;
 
-  /// The alignment of the [title] within its container.
-  /// Defaults to [Alignment.bottomLeft] if not provided.
+  /// An optional custom widget to use in place of the standard text title.
+  final Widget? _titleWidget;
+
+  /// The alignment of the title (or title widget) within its container.
+  ///
+  /// Defaults to [Alignment.bottomLeft] in the standard constructor, and
+  /// [Alignment.topCenter] when using [GtWelcomeScreen.withTitleWidget].
   final AlignmentGeometry titleAlignment;
 
   /// The primary action button displayed at the bottom of the screen.
@@ -25,18 +32,24 @@ class GtWelcomeScreen extends GtStatelessWidget {
   final GtButton secondaryButton;
 
   /// The background color of the Welcome screen.
+  ///
+  /// If null, defaults to the primary darker color from the current theme palette.
   final Color? color;
 
-  /// The color of the [title] text. Defaults to white if not provided.
+  /// The color of the standard title text.
+  ///
+  /// If null, defaults to static white. Ignored when using [GtWelcomeScreen.withTitleWidget].
   final Color? titleColor;
 
   /// An optional background image to display behind the welcome screen content.
+  ///
+  /// If a [NetworkImage] is provided, it is automatically cached using [CachedNetworkImageProvider].
   final ImageProvider? backgroundImage;
 
   /// Creates a new [GtWelcomeScreen].
   const GtWelcomeScreen({
     super.key,
-    required this.title,
+    required String title,
     required this.primaryButton,
     required this.secondaryButton,
     this.color,
@@ -44,11 +57,34 @@ class GtWelcomeScreen extends GtStatelessWidget {
     this.showLogo = true,
     this.titleAlignment = .bottomLeft,
     this.backgroundImage,
-  });
+  }) : _title = title,
+       _titleWidget = null;
+
+  /// Creates a new [GtWelcomeScreen.withTitleWidget].
+  const GtWelcomeScreen.withTitleWidget({
+    super.key,
+    required Widget title,
+    required this.primaryButton,
+    required this.secondaryButton,
+    this.color,
+    this.showLogo = true,
+    this.titleAlignment = .topCenter,
+    this.backgroundImage,
+  }) : _title = "",
+       _titleWidget = title,
+       titleColor = null;
 
   @override
   Widget build(BuildContext context) {
     GtActionAppBar? appBar;
+    Widget? title = _titleWidget;
+    title ??= GtText(
+      _title.upper,
+      textAlign: .start,
+      style: context.textStyles.welcome(
+        color: titleColor ?? context.palette.staticColors.white,
+      ),
+    );
 
     if (showLogo) {
       appBar = GtActionAppBar(
@@ -81,23 +117,15 @@ class GtWelcomeScreen extends GtStatelessWidget {
             mainAxisSize: .max,
             crossAxisAlignment: .stretch,
             children: [
-              GtGap.ySectionMd(),
+              if (_titleWidget == null) GtGap.ySectionMd(),
               Expanded(
-                child: Align(
-                  alignment: titleAlignment,
-                  child: GtText(
-                    title.upper,
-                    textAlign: .start,
-                    style: context.textStyles.welcome(
-                      color: titleColor ?? context.palette.staticColors.white,
-                    ),
-                  ),
-                ),
+                child: Align(alignment: titleAlignment, child: title),
               ),
               GtGap.ySectionMd(),
               primaryButton,
               GtGap.yMd(),
               secondaryButton,
+              if (!context.isIos) GtGap.ySectionSm(),
             ],
           ),
         ),
