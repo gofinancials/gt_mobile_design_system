@@ -110,6 +110,14 @@ and</li>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   GtActionAppBar? appBar;
+  Widget? title = _titleWidget;
+  title ??= GtText(
+    _title.upper,
+    textAlign: .start,
+    style: context.textStyles.welcome(
+      color: titleColor ?? context.palette.staticColors.white,
+    ),
+  );
 
   if (showLogo) {
     appBar = GtActionAppBar(
@@ -142,23 +150,15 @@ Widget build(BuildContext context) {
           mainAxisSize: .max,
           crossAxisAlignment: .stretch,
           children: [
-            GtGap.ySectionMd(),
+            if (_titleWidget == null) GtGap.ySectionMd(),
             Expanded(
-              child: Align(
-                alignment: titleAlignment,
-                child: GtText(
-                  title.upper,
-                  textAlign: .start,
-                  style: context.textStyles.welcome(
-                    color: titleColor ?? context.palette.staticColors.white,
-                  ),
-                ),
-              ),
+              child: Align(alignment: titleAlignment, child: title),
             ),
             GtGap.ySectionMd(),
             primaryButton,
             GtGap.yMd(),
             secondaryButton,
+            if (!context.isIos) GtGap.ySectionSm(),
           ],
         ),
       ),

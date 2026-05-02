@@ -123,23 +123,18 @@ Widget build(BuildContext context) {
         spacing: context.spacingMd,
         crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
         children: [
-          Align(
-            child: GtIcon.withColor(
-              icon,
-              size: context.dp(24.px),
-              color: iconColor,
-            ),
-          ),
+          GtIcon.withColor(icon, size: context.dp(24.px), color: iconColor),
           Expanded(
             child: Column(
               spacing: context.spacingSm,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GtText(title, style: context.textStyles.subHeadS()),
-                GtText(
-                  subtitle,
-                  style: context.textStyles.bodyXs(color: palette.text.sub),
-                ),
+                if (subtitle.hasValue)
+                  GtText(
+                    subtitle,
+                    style: context.textStyles.bodyXs(color: palette.text.sub),
+                  ),
               ],
             ),
           ),

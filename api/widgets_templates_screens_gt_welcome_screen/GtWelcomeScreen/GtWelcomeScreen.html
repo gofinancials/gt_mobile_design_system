@@ -76,7 +76,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">const GtWelcomeScreen({
   super.key,
-  required this.title,
+  required String title,
   required this.primaryButton,
   required this.secondaryButton,
   this.color,
@@ -84,7 +84,8 @@
   this.showLogo = true,
   this.titleAlignment = .bottomLeft,
   this.backgroundImage,
-});</code></pre>
+}) : _title = title,
+     _titleWidget = null;</code></pre>
 </section>
 
 

@@ -110,9 +110,7 @@ and</li>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   final itemCount = _itemCount ?? children.length;
-  final key = PageStorageKey(
-    &quot;gt-section-slide-$title-$itemCount&quot;,
-  );
+  final key = PageStorageKey(&quot;gt-section-slide-$title-$itemCount&quot;);
   return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.stretch,

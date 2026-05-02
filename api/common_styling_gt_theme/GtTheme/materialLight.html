@@ -94,7 +94,8 @@
     brightness: Brightness.light,
     dividerColor: lightPalette.stroke.soft,
     dialogTheme: base.dialogTheme.copyWith(
-      backgroundColor: lightPalette.staticColors.black.setOpacity(0.3),
+      backgroundColor: lightPalette.bg.white,
+      barrierColor: lightPalette.bg.strong.setOpacity(.17),
     ),
     colorScheme: base.colorScheme.copyWith(
       surface: lightPalette.bg.white,
@@ -123,6 +124,8 @@
     ),
     bottomSheetTheme: base.bottomSheetTheme.copyWith(
       backgroundColor: lightPalette.bg.white,
+      modalBarrierColor: lightPalette.bg.strong.setOpacity(.17),
+      shadowColor: lightPalette.bg.strong.setOpacity(.17),
       elevation: 0,
     ),
     buttonTheme: base.buttonTheme.copyWith(
