@@ -4,30 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-/// A function type that asynchronously builds a list of autocomplete suggestions
-/// based on the user's current search [query].
-typedef SuggestionBuilder<T> =
-    AppSearchDelegate<FutureOr<List<GtAutocompleteItem<T>>>>;
-
-/// Represents an individual selectable item in the autocomplete list.
-class GtAutocompleteItem<T> extends AppEquatable {
-  /// The underlying value of this item.
-  final T value;
-
-  /// An optional builder to dynamically compute the label from the [value].
-  final MapCallback<String, T>? labelBuilder;
-
-  /// Creates a new autocomplete item.
-  const GtAutocompleteItem({required this.value, this.labelBuilder});
-
-  /// The label that should be displayed, falling back to the string
-  /// representation of [value] if no [labelBuilder] was provided.
-  String get computedLabel => labelBuilder?.call(value) ?? "$value";
-
-  @override
-  List<Object?> get props => [value, labelBuilder, computedLabel];
-}
-
 /// A text input field that provides a list of selectable suggestions as the user types.
 ///
 /// [GtAutocompleteField] supports providing a static list of suggestions or dynamically
@@ -51,8 +27,9 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
   /// An optional label displayed above the input field.
   final String? label;
 
-  /// Callback invoked when an item is selected from the autocomplete list.
-  final OnChanged<GtAutocompleteItem<T>>? onChange;
+  /// Callback invoked when an item is selected from the autocomplete list,
+  /// or when the input text changes. Passes `null` if the text doesn't exactly match an item.
+  final OnChanged<GtAutocompleteItem<T>?>? onChange;
 
   /// How the text should be aligned horizontally. Defaults to [TextAlign.start].
   final TextAlign textAlign;
@@ -82,6 +59,10 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
   /// An optional widget to display at the trailing edge of the field (e.g., a clear icon).
   final Widget? suffix;
 
+  /// The duration to wait before triggering the [onChange] callback after the user stops typing.
+  /// Defaults to 2 seconds.
+  final Duration? debounceTime;
+
   /// Creates an autocomplete field with a static list of [suggestions].
   const GtAutocompleteField({
     super.key,
@@ -99,6 +80,7 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
     this.textInputAction = TextInputAction.next,
     this.prefix,
     this.suffix,
+    this.debounceTime,
   }) : _suggestions = suggestions,
        _suggestionsBuilder = null;
 
@@ -119,6 +101,7 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
     this.textInputAction = TextInputAction.next,
     this.prefix,
     this.suffix,
+    this.debounceTime,
   }) : _suggestionsBuilder = builder,
        _suggestions = null;
 
@@ -136,11 +119,17 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
 }
 
 class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
+  /// The controller managing the text and focus state.
   late final GtInputController controller;
+
+  /// The debouncer used to delay search queries and autocomplete triggering.
+  late final AppDebouncer debouncer;
+
   @override
   void initState() {
     super.initState();
     controller = widget.controller ?? GtInputController();
+    debouncer = AppDebouncer(widget.debounceTime ?? 2.seconds);
   }
 
   @override
@@ -158,29 +147,29 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
     }
   }
 
+  /// Filter the suggestions based on the query.
+  FutureOr<List<GtAutocompleteItem<T>>> _filterSuggestions(String query) async {
+    if (!widget.isEnabled || !query.hasValue) return [];
+
+    if (widget.suggestionBuilder != null) {
+      return await widget.suggestionBuilder?.call(query) ?? [];
+    }
+
+    final options = widget.suggestions;
+
+    return options.whereList((it) {
+      return it.computedLabel.includes(query);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Autocomplete<GtAutocompleteItem<T>>(
+      key: GlobalObjectKey(controller),
       optionsViewOpenDirection: .mostSpace,
-      key: PageStorageKey((controller.hashCode, widget.label, widget.hintText)),
-      optionsBuilder: (value) async {
-        if (!widget.isEnabled) return [];
-
-        if (widget.suggestionBuilder != null) {
-          return await widget.suggestionBuilder?.call(value.text) ?? [];
-        }
-
-        final options = widget.suggestions;
-
-        final query = value.text;
-
-        if (!query.hasValue) return [];
-
-        return options.whereList((it) {
-          return it.computedLabel.includes(query);
-        });
-      },
+      optionsBuilder: (value) => _filterSuggestions(value.text),
       onSelected: (value) {
+        debouncer.abort();
         controller.text = value.computedLabel;
         widget.onChange?.call(value);
       },
@@ -199,24 +188,19 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
           autofillHints: widget.autofillHints,
           textInputAction: widget.textInputAction,
           prefix: widget.prefix,
-          suffix: GenericListener(
-            valueListenable: ctrl,
-            builder: (context) {
-              if (widget.suffix != null) return widget.suffix!;
-
-              if (ctrl.hasValue) {
-                return GtIconButton(
-                  icon: GtIcons.xmark,
-                  size: .pill,
-                  variant: .black,
-                  onPressed: ctrl.clear,
-                  alignment: .centerRight,
-                );
-              }
-
-              return SizedBox.shrink();
-            },
-          ),
+          onChanged: (query) async {
+            debouncer.abort();
+            final matches = await _filterSuggestions(query.value);
+            GtAutocompleteItem<T>? match = matches.tryFirstWhere(
+              (it) => it.computedLabel.equals(query.value),
+            );
+            match ??= matches.tryFirst;
+            debouncer.run(() {
+              widget.onChange?.call(match);
+              controller.text = match?.computedLabel ?? controller.text;
+            });
+          },
+          suffix: widget.suffix,
         );
       },
       optionsViewBuilder: (context, onSelected, options) {

@@ -102,7 +102,10 @@ class GtDateField extends GtStatefulWidget {
 }
 
 class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
+  /// The controller for the visible text field that displays the formatted date.
   late GtInputController _localCtrl;
+
+  /// The controller that manages the underlying calendar selection state.
   late GtCalendarController _calendarController;
 
   @override
@@ -111,12 +114,7 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
     _calendarController =
         widget.controller ?? GtCalendarController(GtCalendarValue());
 
-    _localCtrl = GtInputController(
-      GtInputValue(
-        controller: TextEditingController(text: _formattedValue),
-        focusNode: widget.focusNode ?? FocusNode(),
-      ),
-    );
+    _localCtrl = GtInputController(text: _formattedValue);
 
     _calendarController.addListener(_setLocalValue);
     widget.focusNode?.addListener(_onFocusChange);
@@ -126,12 +124,14 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
     }
   }
 
+  /// Handles focus changes to automatically open the calendar picker.
   void _onFocusChange() {
     if (widget.focusNode?.hasFocus ?? false) {
       _showPicker();
     }
   }
 
+  /// Formats the currently selected calendar value based on the selection mode.
   String get _formattedValue {
     final val = widget.isDay
         ? _calendarController.formattedDay(widget.dateFormat)
@@ -139,10 +139,12 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
     return val ?? "";
   }
 
+  /// Synchronizes the text field with the underlying calendar controller's value.
   void _setLocalValue() {
     _localCtrl.text = _formattedValue;
   }
 
+  /// Opens the [GtCalendarModal] in a draggable bottom sheet.
   void _showPicker() {
     if (!widget.isEnabled) return;
     showDraggableSheet(

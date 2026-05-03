@@ -251,27 +251,23 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               decoration: decoration.$2,
             ),
             const GtGap.yXl(),
-            GtAutocompleteField(
+            GtAutocompleteField.builder(
               controller: _inputCtrl12,
               hintText: "Search for a country",
               decoration: decoration.$2,
               validator: (_) => "Field is invalid",
               textInputAction: TextInputAction.done,
-              suggestions: [
-                GtAutocompleteItem(value: "Nigeria"),
-                GtAutocompleteItem(value: "United Kingdom"),
-                GtAutocompleteItem(value: "United States"),
-                GtAutocompleteItem(value: "Ghana"),
-                GtAutocompleteItem(value: "Kenya"),
-                GtAutocompleteItem(value: "South Africa"),
-              ],
+              builder: (query) async {
+                final countries = await AppCountryUtility.searchCountries(
+                  query,
+                );
+                return countries.mapList(
+                  (it) => GtAutocompleteItem(value: it.displayName),
+                );
+              },
             ),
             const GtGap.yXl(),
-            GtDobField(
-              controller: _inputCtrl13,
-              decoration: decoration.$2,
-              validator: (_) => "Field is invalid",
-            ),
+            GtDobField(controller: _inputCtrl13, decoration: decoration.$2),
             const GtGap.yXl(),
             GtRaisedButton(
               onPressed: () {
