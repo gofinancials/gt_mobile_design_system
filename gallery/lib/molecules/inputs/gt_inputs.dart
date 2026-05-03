@@ -101,6 +101,10 @@ final _inputCtrl6 = GtInputController();
 final _inputCtrl7 = GtInputController();
 final _inputCtrl8 = GtInputController();
 final _inputCtrl9 = GtInputController();
+final _inputCtrl10 = GtCalendarController(GtCalendarValue());
+final _inputCtrl11 = GtCalendarController(GtCalendarValue());
+final _inputCtrl12 = GtInputController();
+final _inputCtrl13 = GtDobController();
 final _formKey2 = GlobalKey<FormState>();
 
 @widgetbook.UseCase(name: 'GtTextField', type: GtTextField)
@@ -231,6 +235,42 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               ),
               noteHint: "Add a note (optional)",
               balance: 0,
+            ),
+            const GtGap.yXl(),
+            GtDateField(
+              controller: _inputCtrl10,
+              hintText: "dd/mm/yyyy",
+              calendarTitle: "Select your birthday",
+              decoration: decoration.$2,
+            ),
+            const GtGap.yXl(),
+            GtDateField.range(
+              controller: _inputCtrl11,
+              hintText: "dd/mm/yyyy - dd/mm/yyyy",
+              calendarTitle: "Select your vacation dates",
+              decoration: decoration.$2,
+            ),
+            const GtGap.yXl(),
+            GtAutocompleteField(
+              controller: _inputCtrl12,
+              hintText: "Search for a country",
+              decoration: decoration.$2,
+              validator: (_) => "Field is invalid",
+              textInputAction: TextInputAction.done,
+              suggestions: [
+                GtAutocompleteItem(value: "Nigeria"),
+                GtAutocompleteItem(value: "United Kingdom"),
+                GtAutocompleteItem(value: "United States"),
+                GtAutocompleteItem(value: "Ghana"),
+                GtAutocompleteItem(value: "Kenya"),
+                GtAutocompleteItem(value: "South Africa"),
+              ],
+            ),
+            const GtGap.yXl(),
+            GtDobField(
+              controller: _inputCtrl13,
+              decoration: decoration.$2,
+              validator: (_) => "Field is invalid",
             ),
             const GtGap.yXl(),
             GtRaisedButton(

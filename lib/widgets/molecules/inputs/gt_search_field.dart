@@ -23,9 +23,6 @@ class GtSearchField extends GtStatefulWidget {
   /// Whether a valid input must be entered to pass validation. Defaults to true.
   final bool isRequired;
 
-  /// An optional color to override the default fill color of the input field.
-  final Color? fillColor;
-
   /// An optional custom validator. Defaults to a URL validator if omitted.
   final OnValidate<String?>? validator;
 
@@ -51,7 +48,6 @@ class GtSearchField extends GtStatefulWidget {
     this.isRequired = true,
     this.decoration,
     this.helperText,
-    this.fillColor,
     this.isEnabled = true,
     this.prefix,
     this.suffix,

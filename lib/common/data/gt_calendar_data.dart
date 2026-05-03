@@ -85,6 +85,22 @@ class GtCalendarController extends ValueNotifier<GtCalendarValue> {
 
   /// The current, present-day date.
   DateTime get today => DateTime.now();
+
+  /// Returns the currently selected single day formatted as a string.
+  ///
+  /// The string is formatted according to the provided [format], which
+  /// defaults to `'dd/MM/yyyy'`. Returns `null` if no day is selected.
+  String? formattedDay([String format = 'dd/MM/yyyy']) {
+    return day?.format(format);
+  }
+
+  /// Returns the currently selected date range formatted as a string.
+  ///
+  /// The string is formatted according to the provided [format], which
+  /// defaults to `'dd/MM/yyyy'`. Returns `null` if no range is selected.
+  String? formattedRange([String format = 'dd/MM/yyyy']) {
+    return range?.formattedDateRange(format);
+  }
 }
 
 /// Defines the available selection behaviors for a calendar widget.

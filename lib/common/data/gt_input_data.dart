@@ -83,4 +83,9 @@ class GtInputController {
 
   /// Sets the current text of the controller.
   set text(String text) => controller.text = text;
+
+  void dispose() {
+    controller.dispose();
+    focusNode.dispose();
+  }
 }
