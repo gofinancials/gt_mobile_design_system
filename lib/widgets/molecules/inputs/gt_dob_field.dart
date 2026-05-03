@@ -54,9 +54,11 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
   void initState() {
     super.initState();
     _dobController = widget.controller ?? GtDobController();
-    _dayCtrl = GtInputController(text: "${_dobController.day}");
-    _monthCtrl = GtInputController(text: "${_dobController.month}");
-    _yearCtrl = GtInputController(text: "${_dobController.year}");
+    _dayCtrl = GtInputController(text: "${_dobController.day ?? ''}");
+    _monthCtrl = GtInputController(
+      text: _dobController.month?.asMonthName ?? '',
+    );
+    _yearCtrl = GtInputController(text: "${_dobController.year ?? ''}");
   }
 
   @override
@@ -76,7 +78,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
       _dobController = widget.controller!;
     }
     _dayCtrl.text = _dobController.day?.toString() ?? '';
-    _monthCtrl.text = _dobController.month?.toString() ?? '';
+    _monthCtrl.text = _dobController.month?.asMonthName ?? '';
     _yearCtrl.text = _dobController.year?.toString() ?? '';
   }
 

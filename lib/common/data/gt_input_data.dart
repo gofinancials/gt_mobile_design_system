@@ -215,7 +215,7 @@ class GtDobController extends ChangeNotifier {
   }
 
   /// Generates a list of valid month suggestions.
-  List<GtAutocompleteItem<int>> get monthSuggestions => List.generate(
+  List<GtAutocompleteItem<int>> monthSuggestions = List.generate(
     12,
     (index) => GtAutocompleteItem(
       value: (index + 1),

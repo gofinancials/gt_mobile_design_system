@@ -122,6 +122,8 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
   /// The controller managing the text and focus state.
   late final GtInputController controller;
 
+  late final FocusNode focusNode;
+
   /// The debouncer used to delay search queries and autocomplete triggering.
   late final AppDebouncer debouncer;
 
@@ -129,11 +131,14 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
   void initState() {
     super.initState();
     controller = widget.controller ?? GtInputController();
+    focusNode = controller.focusNode;
     debouncer = AppDebouncer(widget.debounceTime ?? 2.seconds);
   }
 
   @override
   void dispose() {
+    focusNode.unfocus();
+    debouncer.abort();
     if (widget.controller == null) controller.dispose();
     super.dispose();
   }
