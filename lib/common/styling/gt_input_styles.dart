@@ -122,6 +122,56 @@ class GtInputStyles {
     );
   }
 
+  /// The default style configuration for standard form text fields,
+  /// featuring a weak background and standard height.
+  GtInputDecoration get plainDecoration {
+    final textStyle = context.textStyles.input();
+    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
+    final disabledStyle = textStyle.copyWith(
+      color: context.palette.text.disabled,
+    );
+
+    return GtInputDecoration(
+      size: Size(.infinity, 64),
+      textStyle: textStyle,
+      disabledStyle: disabledStyle,
+      hintStyle: hintStyle,
+      labelStyle: context.textStyles.body2s(color: context.palette.text.soft),
+      errorStyle: context.textStyles.body2s(color: context.palette.error.base),
+      helperStyle: context.textStyles.body2s(),
+      decoration: BoxDecoration(
+        borderRadius: context.borderRadiusXl,
+        color: context.palette.bg.weak,
+      ),
+      padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 12.px),
+    );
+  }
+
+  /// A compact style configuration for standard form text fields,
+  /// featuring a weak background, smaller height, and reduced text size.
+  GtInputDecoration get plainSmDecoration {
+    final textStyle = context.textStyles.bodyS();
+    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
+    final disabledStyle = textStyle.copyWith(
+      color: context.palette.text.disabled,
+    );
+
+    return GtInputDecoration(
+      size: Size(.infinity, 60),
+      textStyle: textStyle,
+      disabledStyle: disabledStyle,
+      hintStyle: hintStyle,
+      labelStyle: context.textStyles.body2s(color: context.palette.text.soft),
+      errorStyle: context.textStyles.body2s(color: context.palette.error.base),
+      helperStyle: context.textStyles.body2s(),
+      decoration: BoxDecoration(
+        borderRadius: context.borderRadiusXl,
+        color: context.palette.bg.weak,
+      ),
+      padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 6.px),
+    );
+  }
+
   /// A compact style configuration for standard form text fields,
   /// featuring a smaller height and reduced text size.
   GtInputDecoration get smDecoration {
@@ -299,6 +349,8 @@ class GtInputStyles {
   List<(String, GtInputDecoration)> get all => [
     ('Transfer Input Style', transferInputStyle),
     ('Default Decoration', defaultDecoration),
+    ('Plain Decoration', plainDecoration),
+    ('Plain Small Decoration', plainSmDecoration),
     ('Small Decoration', smDecoration),
     ('Search Decoration', searchDecoration),
     ('Small Search Decoration', smSearchDecoration),

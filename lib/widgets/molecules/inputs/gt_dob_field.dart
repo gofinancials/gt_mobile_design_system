@@ -133,6 +133,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
             ),
           ),
           Expanded(
+            flex: 2,
             child: GtAutocompleteField<int>(
               key: const ValueKey("gt_dob_field_month"),
               label: "month".ctr(),
