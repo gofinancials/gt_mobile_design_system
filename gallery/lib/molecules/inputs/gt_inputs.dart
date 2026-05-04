@@ -165,16 +165,6 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
           mainAxisSize: .min,
           children: [
             GtGap.ySectionSm(),
-            GenericListener(
-              valueListenable: _inputCtrl.controller,
-              builder: (data) {
-                return GtText(
-                  "Provided text is: ${data.text}",
-                  textAlign: .center,
-                );
-              },
-            ),
-            const GtGap.yLg(),
             GtTextField(
               controller: _inputCtrl,
               label: isSearch ? null : "Enter text here",
