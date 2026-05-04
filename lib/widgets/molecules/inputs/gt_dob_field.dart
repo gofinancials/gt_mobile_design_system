@@ -118,6 +118,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
           Expanded(
             child: GtAutocompleteField<int>.builder(
               key: const ValueKey("gt_dob_field_day"),
+              autofillHints: const [AutofillHints.birthdayDay],
               label: "day".ctr(),
               builder: (query) {
                 return _dobController.daySuggestions.whereList(
@@ -137,6 +138,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
             child: GtAutocompleteField<int>(
               key: const ValueKey("gt_dob_field_month"),
               label: "month".ctr(),
+              autofillHints: const [AutofillHints.birthdayMonth],
               suggestions: _dobController.monthSuggestions,
               controller: _monthCtrl,
               onChange: (value) {
@@ -156,6 +158,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
             child: GtAutocompleteField<int>(
               key: const ValueKey("gt_dob_field_year"),
               label: "year".ctr(),
+              autofillHints: const [AutofillHints.birthdayYear],
               suggestions: _dobController.yearSuggestions,
               controller: _yearCtrl,
               onChange: (value) {

@@ -107,6 +107,7 @@ final _inputCtrl11 = GtCalendarController(GtCalendarValue());
 final _inputCtrl12 = GtInputController();
 final _inputCtrl13 = GtDobController();
 final _inputCtrl14 = GtDropdownInputController<Country>();
+final _inputCtrl15 = GtInputController<Country>();
 final _formKey2 = GlobalKey<FormState>();
 
 FutureOr<List<GtDropdownData<Country>>> get _allCountries async {
@@ -285,7 +286,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               decoration: decoration.$2,
               options: allCountries,
               sheetTitle: "Select Country",
-              label: "Select a country [Default tiles with Titl]",
+              label: "Select a country [Default tiles with Title]",
             ),
             const GtGap.yXl(),
             GtDropdownField<Country>(
@@ -313,7 +314,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               label: "Select a country [Custom list]",
               optionsBuilder: (options, controller, scrollContoller) {
                 return ListView.separated(
-                  padding: context.insets.symmetricDp(vertical: 16.px),
+                  padding: context.insets.allDp(16.px),
                   controller: scrollContoller,
                   itemCount: options.length,
                   separatorBuilder: (context, index) => const GtGap.yLg(),
@@ -335,6 +336,8 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               },
             ),
             const GtGap.yXl(),
+            GtPhoneField(controller: _inputCtrl15, label: "Phone number"),
+            const GtGap.ySectionSm(),
             GtRaisedButton(
               onPressed: () {
                 context.validateForm(_formKey2);

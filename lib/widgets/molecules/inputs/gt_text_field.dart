@@ -83,9 +83,6 @@ class GtTextField<T> extends GtStatefulWidget {
   /// A list of strings that helps the autofill service identify the type of this text input.
   final List<String>? autofillHints;
 
-  /// Gets the provided [controller], or instantiates a new one if null.
-  GtInputController get ctrl => controller ?? GtInputController();
-
   /// Creates a standard [GtTextField].
   const GtTextField({
     super.key,
@@ -152,9 +149,23 @@ class GtTextField<T> extends GtStatefulWidget {
 
 class _GtTextFieldState extends State<GtTextField>
     with WidgetsBindingObserver, AppTaskMixin {
-  FocusNode get _inputFocus => widget.ctrl.focusNode;
-  TextEditingController get _ctrl => widget.ctrl.controller;
+  late final GtInputController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.controller ?? GtInputController();
+  }
+
+  FocusNode get _inputFocus => controller.focusNode;
+  TextEditingController get _ctrl => controller.controller;
   GtInputDecoration? get _decoration => widget.decoration;
+
+  @override
+  void dispose() {
+    if (widget.controller == null) controller.dispose();
+    super.dispose();
+  }
 
   /// Resolves the appropriate [BoxDecoration] based on the current input state.
   BoxDecoration resolveDecoration(
@@ -254,7 +265,7 @@ class _GtTextFieldState extends State<GtTextField>
             hintMaxLines: decoration.hintMaxLines,
             floatingLabelStyle: hintStyle,
             hintText: widget.hintText ?? widget.label,
-            counter: null,
+            counter: const SizedBox.shrink(),
             enabled: widget.isEnabled,
           ),
         ),

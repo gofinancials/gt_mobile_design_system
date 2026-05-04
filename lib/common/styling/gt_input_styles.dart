@@ -124,6 +124,26 @@ class GtInputStyles {
 
   /// The default style configuration for standard form text fields,
   /// featuring a weak background and standard height.
+  GtInputDecoration get phoneInputDecoration {
+    return defaultDecoration.copyWith(
+      padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 7.px),
+    );
+  }
+
+  /// The default style configuration for standard form text fields,
+  /// featuring a weak background and standard height.
+  GtInputDecoration get phoneCodeDecoration {
+    return phoneInputDecoration.copyWith(
+      decoration: BoxDecoration(
+        borderRadius: context.borderRadiusXl,
+        border: Border.all(color: context.palette.stroke.sub, width: 1.5),
+      ),
+      padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 11.px),
+    );
+  }
+
+  /// The default style configuration for standard form text fields,
+  /// featuring a weak background and standard height.
   GtInputDecoration get plainDecoration {
     final textStyle = context.textStyles.input();
     final hintStyle = textStyle.copyWith(color: context.palette.text.soft);

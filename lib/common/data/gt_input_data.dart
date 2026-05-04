@@ -43,14 +43,17 @@ class GtInputValue<T> {
   /// The focus node that controls the focus state of the input.
   late final FocusNode focusNode;
 
-  final GtDropdownDataNotifier<T>? _selection;
+  final GtDropdownDataNotifier<T> _selection;
+
+  final bool _updateControllerWithSelection;
 
   /// Creates a [GtInputValue] with the provided [controller] and [focusNode].
   GtInputValue({
     required this.controller,
     required this.focusNode,
     GtDropdownDataNotifier<T>? selectionNotifier,
-  }) : _selection = selectionNotifier;
+  }) : _selection = selectionNotifier ?? GtDropdownDataNotifier<T>(null),
+       _updateControllerWithSelection = false;
 
   /// Creates a [GtInputValue] initialized with an optional [selection].
   ///
@@ -59,18 +62,19 @@ class GtInputValue<T> {
   GtInputValue.selection({required GtDropdownData<T>? selection})
     : _selection = GtDropdownDataNotifier<T>(selection),
       controller = TextEditingController(text: selection?.computedLabel),
-      focusNode = FocusNode();
+      focusNode = FocusNode(),
+      _updateControllerWithSelection = true;
 
-  /// The [ValueNotifier] that tracks the currently selected dropdown item, if this
-  /// value was initialized as a selection input.
-  GtDropdownDataNotifier<T>? get selectionNotifier => _selection;
+  /// The [ValueNotifier] that tracks the currently selected dropdown item.
+  GtDropdownDataNotifier<T> get selectionNotifier => _selection;
 
   /// The currently selected dropdown item, if any.
-  GtDropdownData<T>? get selection => _selection?.value;
+  GtDropdownData<T>? get selection => _selection.value;
 
   /// Updates the current selection and sets the controller's text to the new computed label.
   set selection(GtDropdownData<T>? selection) {
-    _selection?.value = selection;
+    _selection.value = selection;
+    if (!_updateControllerWithSelection) return;
     controller.text = selection?.computedLabel ?? "";
   }
 
@@ -146,8 +150,8 @@ class GtInputController<T> {
   /// The currently selected dropdown item, if any.
   GtDropdownData<T>? get selection => _value.selection;
 
-  /// The currently selected dropdown item, if any.
-  GtDropdownDataNotifier<T>? get selectionNotifier => _value.selectionNotifier;
+  /// The [ValueNotifier] that tracks the currently selected dropdown item.
+  GtDropdownDataNotifier<T> get selectionNotifier => _value.selectionNotifier;
 
   /// Updates the current selection in the underlying value.
   set selection(GtDropdownData<T>? selection) {
@@ -156,6 +160,13 @@ class GtInputController<T> {
 
   /// Whether the input currently has focus.
   bool get hasFocus => focusNode.hasFocus;
+
+  /// The current text value of the controller and/or selectionNotifier.
+  ({String controllerText, String? selectionLabel})
+  get controllerAndSelectionText => (
+    controllerText: controller.text,
+    selectionLabel: selectionNotifier.value?.computedLabel,
+  );
 
   /// The current text value of the controller.
   String get text => controller.text;
@@ -166,7 +177,7 @@ class GtInputController<T> {
   /// Sets the current text of the controller.
   set text(String text) => controller.text = text;
 
-  /// Updates the text and selection of the controller.
+  /// Updates the editing state of the controller.
   set editingValue(TextEditingValue value) => controller.value = value;
 
   /// Moves the focus to the input.
@@ -175,23 +186,23 @@ class GtInputController<T> {
   /// Removes focus from the input.
   void unfocus() => focusNode.unfocus();
 
-  /// Registers a [listener] that is notified whenever the text editing state changes.
+  /// Registers a [listener] that is notified whenever the text editing state or selection changes.
   void addListener(OnPressed listener) {
     controller.addListener(listener);
-    _value.selectionNotifier?.addListener(listener);
+    _value.selectionNotifier.addListener(listener);
   }
 
-  /// Removes a previously registered [listener] from the text editing controller.
+  /// Removes a previously registered [listener] from the text editing controller and selection notifier.
   void removeListener(OnPressed listener) {
     controller.removeListener(listener);
-    selectionNotifier?.removeListener(listener);
+    selectionNotifier.removeListener(listener);
   }
 
-  /// Disposes of the underlying controller and focus node.
+  /// Disposes of the underlying controller, focus node, and selection notifier.
   void dispose() {
     controller.dispose();
     focusNode.dispose();
-    _value.selectionNotifier?.dispose();
+    _value.selectionNotifier.dispose();
   }
 }
 
