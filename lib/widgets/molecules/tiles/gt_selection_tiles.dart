@@ -301,6 +301,9 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
   final Country value;
 
   /// Whether this country is currently selected.
+  final bool showCountryCode;
+
+  /// Whether this country is currently selected.
   final bool isSelected;
 
   /// The callback triggered when the tile is tapped.
@@ -310,12 +313,16 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
   const GtCountrySelectionListTile(
     this.value, {
     super.key,
+    this.showCountryCode = false,
     required this.isSelected,
     required this.onSelect,
   });
 
   @override
   Widget build(BuildContext context) {
+    final style = context.textStyles.bodyS();
+    final size = context.dp(34.px);
+
     return InkWell(
       onTap: () {
         HapticFeedback.selectionClick();
@@ -324,16 +331,23 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
       child: Row(
         spacing: context.spacingBase,
         children: [
-          ClipRRect(
-            borderRadius: context.borderRadiusFull,
-            child: GtNetworkImage(
-              value.pngFlagUrl,
-              fit: BoxFit.cover,
-              height: 40,
-              width: 40,
+          ClipOval(
+            child: GtNetworkImage(value.rasterFlagUrl, width: size, height:size, fit: .cover,),
+          ),
+          Expanded(
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  if (showCountryCode)
+                    TextSpan(
+                      text: "${value.countryCode} ",
+                      style: style.copyWith(color: context.palette.text.soft),
+                    ),
+                  TextSpan(text: value.displayName.capitalise(), style: style),
+                ],
+              ),
             ),
           ),
-          Expanded(child: GtText(value.displayName.capitalise())),
           if (isSelected)
             GtIcon(GtIcons.checkSolid, alignment: Alignment.centerRight),
         ],

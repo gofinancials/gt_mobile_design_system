@@ -230,16 +230,6 @@ class _GtSheetContainer extends GtStatelessWidget {
       constraints: constraints,
       child: child,
     );
-
-    if (controller != null) {
-      body = Scrollbar(
-        thumbVisibility: true,
-        trackVisibility: false,
-        controller: controller,
-        radius: context.radius4Xl,
-        child: body,
-      );
-    }
     return Material(
       type: .transparency,
       child: Align(alignment: alignment, child: body),

@@ -12,6 +12,8 @@ extension AppVectorsExtension on String {
   /// Otherwise, it treats the string as a local asset path and returns an
   /// [AssetBytesLoader]. An optional [package] can be specified for local assets.
   BytesLoader vectorBytes([String? package]) {
+    print(this);
+    print(AppRegex.urlRegex.hasMatch(this));
     if (AppRegex.urlRegex.hasMatch(this)) {
       return NetworkBytesLoader(Uri.parse(this));
     }

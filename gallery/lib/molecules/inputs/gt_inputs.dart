@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -105,7 +106,17 @@ final _inputCtrl10 = GtCalendarController(GtCalendarValue());
 final _inputCtrl11 = GtCalendarController(GtCalendarValue());
 final _inputCtrl12 = GtInputController();
 final _inputCtrl13 = GtDobController();
+final _inputCtrl14 = GtDropdownInputController<Country>();
 final _formKey2 = GlobalKey<FormState>();
+
+FutureOr<List<GtDropdownData<Country>>> get _allCountries async {
+  final countries = await AppCountryUtility.fetchCountries();
+  return countries.mapList(
+    (it) => GtDropdownData(value: it, label: it.displayName),
+  );
+}
+
+final allCountries = _allCountries;
 
 @widgetbook.UseCase(name: 'GtTextField', type: GtTextField)
 Widget buildGtTextFieldUsecase(BuildContext context) {
@@ -268,6 +279,61 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
             ),
             const GtGap.yXl(),
             GtDobField(controller: _inputCtrl13, decoration: decoration.$2),
+            const GtGap.yXl(),
+            GtDropdownField<Country>(
+              controller: _inputCtrl14,
+              decoration: decoration.$2,
+              options: allCountries,
+              sheetTitle: "Select Country",
+              label: "Select a country [Default tiles with Titl]",
+            ),
+            const GtGap.yXl(),
+            GtDropdownField<Country>(
+              controller: _inputCtrl14,
+              decoration: decoration.$2,
+              options: allCountries,
+              label: "Select a country [Custom tiles]",
+              optionBuilder: (value, value2) {
+                return GtCountrySelectionListTile(
+                  value.value,
+                  isSelected: value == value2.selection,
+                  onSelect: (val) {
+                    value2.selection = value;
+                    context.maybePop();
+                  },
+                  showCountryCode: true,
+                );
+              },
+            ),
+            const GtGap.yXl(),
+            GtDropdownField<Country>(
+              controller: _inputCtrl14,
+              decoration: decoration.$2,
+              options: allCountries,
+              label: "Select a country [Custom list]",
+              optionsBuilder: (options, controller, scrollContoller) {
+                return ListView.separated(
+                  padding: context.insets.symmetricDp(vertical: 16.px),
+                  controller: scrollContoller,
+                  itemCount: options.length,
+                  separatorBuilder: (context, index) => const GtGap.yLg(),
+                  itemBuilder: (context, index) {
+                    final value = options[index];
+                    final isSelected = value == controller.selection;
+
+                    return GtCountrySelectionListTile(
+                      value.value,
+                      isSelected: isSelected,
+                      onSelect: (val) {
+                        controller.selection = value;
+                        context.maybePop();
+                      },
+                      showCountryCode: true,
+                    );
+                  },
+                );
+              },
+            ),
             const GtGap.yXl(),
             GtRaisedButton(
               onPressed: () {

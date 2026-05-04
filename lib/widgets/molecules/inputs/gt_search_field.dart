@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 /// visual consistency across the application.
 class GtSearchField extends GtStatefulWidget {
   /// The controller used to read and manipulate the search input text.
-  final GtInputController controller;
+  final GtInputController? controller;
 
   /// Optional hint text that suggests what sort of input is expected.
   final String? hintText;
@@ -41,7 +41,7 @@ class GtSearchField extends GtStatefulWidget {
   /// Creates a new [GtSearchField].
   const GtSearchField({
     super.key,
-    required this.controller,
+    this.controller,
     this.validator,
     this.hintText,
     this.onChange,
@@ -57,16 +57,48 @@ class GtSearchField extends GtStatefulWidget {
 }
 
 class _GtSearchFieldState extends State<GtSearchField> {
+  late final GtInputController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = widget.controller ?? GtInputController();
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller == null) controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final suffix = GenericListener(
+      valueListenable: controller.controller,
+      builder: (value) {
+        if (value.text.isEmpty) return const Offstage();
+        return InkWell(
+          onTap: () {
+            controller.clear();
+            widget.onChange?.call(null);
+          },
+          child: GtIcon(
+            Icons.cancel_rounded,
+            variant: .disabled,
+            size: 19,
+            alignment: .centerRight,
+          ),
+        );
+      },
+    );
     return GtTextField(
       isEnabled: widget.isEnabled,
       decoration: widget.decoration ?? context.inputStyles.searchDecoration,
       helperText: widget.helperText,
       hintText: widget.hintText,
-      controller: widget.controller,
-      suffix: widget.suffix,
-      prefix: widget.prefix,
+      controller: controller,
+      suffix: widget.suffix ?? suffix,
+      prefix: widget.prefix ?? GtIcon(GtIcons.magnifier, variant: .soft),
       validator: widget.validator ?? AppValidators.urlValidator,
       keyboardType: TextInputType.url,
       onChanged: widget.onChange,

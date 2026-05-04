@@ -4,19 +4,75 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A data class representing a single selectable item within a dropdown or autocomplete list.
+class GtDropdownData<T> extends AppEquatable {
+  /// The underlying value of this item.
+  final T value;
+
+  /// The optional display text for the item.
+  final String? label;
+
+  /// An optional builder to dynamically compute the label from the [value].
+  final MapCallback<String, T>? labelBuilder;
+
+  /// Creates a new autocomplete item.
+  const GtDropdownData({required this.value, this.label, this.labelBuilder});
+
+  /// The label that should be displayed, falling back to the string
+  /// representation of [value] if no [labelBuilder] was provided.
+  String get computedLabel => labelBuilder?.call(value) ?? label ?? "$value";
+
+  @override
+  List<Object?> get props => [value, labelBuilder, computedLabel];
+}
+
+/// A [ValueNotifier] that specifically manages changes to a [GtDropdownData] selection.
+class GtDropdownDataNotifier<T> extends ValueNotifier<GtDropdownData<T>?> {
+  /// Creates a [GtDropdownDataNotifier] with an initial [value].
+  GtDropdownDataNotifier(super.value);
+}
+
 /// A data class that groups together a [TextEditingController] and a [FocusNode]
 /// for an input field.
 ///
 /// This provides a convenient way to pass both commonly used controllers together.
-class GtInputValue {
+class GtInputValue<T> {
   /// The controller that manages the text being edited.
-  final TextEditingController controller;
+  late final TextEditingController controller;
 
   /// The focus node that controls the focus state of the input.
-  final FocusNode focusNode;
+  late final FocusNode focusNode;
+
+  final GtDropdownDataNotifier<T>? _selection;
 
   /// Creates a [GtInputValue] with the provided [controller] and [focusNode].
-  GtInputValue({required this.controller, required this.focusNode});
+  GtInputValue({
+    required this.controller,
+    required this.focusNode,
+    GtDropdownDataNotifier<T>? selectionNotifier,
+  }) : _selection = selectionNotifier;
+
+  /// Creates a [GtInputValue] initialized with an optional [selection].
+  ///
+  /// Automatically instantiates a [TextEditingController] seeded with the selection's computed label
+  /// and a new [FocusNode].
+  GtInputValue.selection({required GtDropdownData<T>? selection})
+    : _selection = GtDropdownDataNotifier<T>(selection),
+      controller = TextEditingController(text: selection?.computedLabel),
+      focusNode = FocusNode();
+
+  /// The [ValueNotifier] that tracks the currently selected dropdown item, if this
+  /// value was initialized as a selection input.
+  GtDropdownDataNotifier<T>? get selectionNotifier => _selection;
+
+  /// The currently selected dropdown item, if any.
+  GtDropdownData<T>? get selection => _selection?.value;
+
+  /// Updates the current selection and sets the controller's text to the new computed label.
+  set selection(GtDropdownData<T>? selection) {
+    _selection?.value = selection;
+    controller.text = selection?.computedLabel ?? "";
+  }
 
   /// Whether the input currently has focus.
   bool get hasFocus => focusNode.hasFocus;
@@ -28,13 +84,14 @@ class GtInputValue {
   TextEditingValue get editingValue => controller.value;
 
   /// Creates a copy of this value but with the given fields replaced with the new values.
-  GtInputValue copyWith({
+  GtInputValue<T> copyWith({
     TextEditingController? controller,
     FocusNode? focusNode,
   }) {
-    return GtInputValue(
+    return GtInputValue<T>(
       controller: controller ?? this.controller,
       focusNode: focusNode ?? this.focusNode,
+      selectionNotifier: _selection,
     );
   }
 
@@ -43,38 +100,59 @@ class GtInputValue {
     if (identical(this, other)) return true;
     return other is GtInputValue &&
         other.controller == controller &&
-        other.focusNode == focusNode;
+        other.focusNode == focusNode &&
+        other._selection == _selection;
   }
 
   @override
-  int get hashCode => Object.hash(controller, focusNode);
+  int get hashCode => Object.hash(controller, focusNode, _selection);
 }
 
 /// A controller wrapper for input widgets that manages both text editing and focus state.
 ///
 /// This encapsulates a [GtInputValue] to simplify input field management.
-class GtInputController {
-  late final GtInputValue _value;
+class GtInputController<T> {
+  GtInputValue<T> _value;
 
   /// Creates a [GtInputController].
   ///
   /// Initializes a new [TextEditingController] optionally seeded with [text],
   /// and automatically creates an associated [FocusNode].
-  GtInputController({String? text}) {
-    _value = GtInputValue(
-      controller: TextEditingController(text: text),
-      focusNode: FocusNode(),
-    );
-  }
+  GtInputController({String? text})
+    : _value = GtInputValue<T>(
+        controller: TextEditingController(text: text),
+        focusNode: FocusNode(),
+      );
+
+  /// Internal constructor for subclasses to prevent double-initialization memory leaks.
+  GtInputController._withValue(this._value);
+
+  /// Creates a [GtInputController] for dropdown inputs.
+  ///
+  /// Initializes a controller specifically tailored for dropdowns or autocomplete fields,
+  /// optionally seeded with an initial [selection].
+  factory GtInputController.dropdown({GtDropdownData<T>? selection}) =
+      GtDropdownInputController<T>;
 
   /// The underlying value containing the controller and focus node.
-  GtInputValue get value => _value;
+  GtInputValue<T> get value => _value;
 
   /// The text editing controller.
   TextEditingController get controller => _value.controller;
 
   /// The focus node.
   FocusNode get focusNode => _value.focusNode;
+
+  /// The currently selected dropdown item, if any.
+  GtDropdownData<T>? get selection => _value.selection;
+
+  /// The currently selected dropdown item, if any.
+  GtDropdownDataNotifier<T>? get selectionNotifier => _value.selectionNotifier;
+
+  /// Updates the current selection in the underlying value.
+  set selection(GtDropdownData<T>? selection) {
+    _value.selection = selection;
+  }
 
   /// Whether the input currently has focus.
   bool get hasFocus => focusNode.hasFocus;
@@ -97,21 +175,33 @@ class GtInputController {
   /// Removes focus from the input.
   void unfocus() => focusNode.unfocus();
 
-  /// Registers a [listener] that is notified whenever the input value changes.
+  /// Registers a [listener] that is notified whenever the text editing state changes.
   void addListener(OnPressed listener) {
     controller.addListener(listener);
+    _value.selectionNotifier?.addListener(listener);
   }
 
-  /// Removes a previously registered [listener].
+  /// Removes a previously registered [listener] from the text editing controller.
   void removeListener(OnPressed listener) {
     controller.removeListener(listener);
+    selectionNotifier?.removeListener(listener);
   }
 
   /// Disposes of the underlying controller and focus node.
   void dispose() {
     controller.dispose();
     focusNode.dispose();
+    _value.selectionNotifier?.dispose();
   }
+}
+
+/// A specialized [GtInputController] for dropdown and autocomplete inputs.
+///
+/// Extends [GtInputController] to initialize specifically with a [GtDropdownData] selection.
+class GtDropdownInputController<T> extends GtInputController<T> {
+  /// Creates a [GtDropdownInputController] initialized with an optional [selection].
+  GtDropdownInputController({GtDropdownData<T>? selection})
+    : super._withValue(GtInputValue<T>.selection(selection: selection));
 }
 
 /// A function type that asynchronously builds a list of autocomplete suggestions
@@ -120,23 +210,7 @@ typedef SuggestionBuilder<T> =
     AppSearchDelegate<FutureOr<List<GtAutocompleteItem<T>>>>;
 
 /// Represents an individual selectable item in the autocomplete list.
-class GtAutocompleteItem<T> extends AppEquatable {
-  /// The underlying value of this item.
-  final T value;
-
-  /// An optional builder to dynamically compute the label from the [value].
-  final MapCallback<String, T>? labelBuilder;
-
-  /// Creates a new autocomplete item.
-  const GtAutocompleteItem({required this.value, this.labelBuilder});
-
-  /// The label that should be displayed, falling back to the string
-  /// representation of [value] if no [labelBuilder] was provided.
-  String get computedLabel => labelBuilder?.call(value) ?? "$value";
-
-  @override
-  List<Object?> get props => [value, labelBuilder, computedLabel];
-}
+typedef GtAutocompleteItem<T> = GtDropdownData<T>;
 
 /// A controller for managing the state of a [GtDobField].
 ///
@@ -159,12 +233,18 @@ class GtDobController extends ChangeNotifier {
     return DateTime(year!, month!, day!);
   }
 
-  /// Calculates the current age based on the selected [dob].
+  /// Calculates the exact current age in years based on the selected [dob].
   ///
   /// Returns 0 if the date of birth is incomplete.
   int get age {
     if (dob == null) return 0;
-    return DateTime.now().year - dob!.year;
+    final today = _now;
+    int calculatedAge = today.year - dob!.year;
+    if (today.month < dob!.month ||
+        (today.month == dob!.month && today.day < dob!.day)) {
+      calculatedAge--;
+    }
+    return calculatedAge;
   }
 
   DateTime get _now => DateTime.now();
@@ -214,8 +294,8 @@ class GtDobController extends ChangeNotifier {
     ];
   }
 
-  /// Generates a list of valid month suggestions.
-  List<GtAutocompleteItem<int>> monthSuggestions = List.generate(
+  /// A static list of valid month suggestions (1-12).
+  final List<GtAutocompleteItem<int>> monthSuggestions = List.generate(
     12,
     (index) => GtAutocompleteItem(
       value: (index + 1),

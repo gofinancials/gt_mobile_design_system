@@ -321,6 +321,7 @@ class GtInputStyles {
       decoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.white,
+        border: Border.all(color: context.palette.stroke.sub, width: 2),
       ),
       focusedDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
@@ -340,6 +341,7 @@ class GtInputStyles {
       disabledDecoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weaker,
+        border: Border.all(color: context.palette.stroke.soft, width: 2),
       ),
       padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 6.px),
     );
