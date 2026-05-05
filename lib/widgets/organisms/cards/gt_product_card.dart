@@ -60,7 +60,7 @@ class GtProductCard extends GtStatelessWidget {
           children: [
             GtIcon.withColor(icon, color: iconColor, size: 24),
             if (footer == null) const Spacer() else const GtGap.ySm(),
-            GtText(name, style: context.textStyles.subHeadS()),
+            GtText(name, style: context.textStyles.subHeadS(), maxLines: 1),
             ?footer,
           ],
         ),

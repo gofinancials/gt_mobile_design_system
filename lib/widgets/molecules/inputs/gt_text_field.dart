@@ -311,43 +311,40 @@ class _GtTextFieldLayout extends GtStatelessWidget {
       crossAxisAlignment: .stretch,
       mainAxisSize: .min,
       children: [
-        ClipRRect(
-          borderRadius:
-              decoration.decoration.borderRadius?.resolve(.ltr) ?? .zero,
-          child: AnimatedContainer(
-            duration: 300.milliseconds,
-            constraints: decoration.constraints,
-            padding: decoration.padding,
-            // height: decoration.size.height,
-            decoration: activeDecoration,
-            alignment: .center,
-            child: Column(
-              crossAxisAlignment: .stretch,
-              mainAxisAlignment: .center,
-              spacing: context.spacingSm,
-              mainAxisSize: .min,
-              children: [
-                if (focused && labelText.hasValue)
-                  Flexible(
-                    child: GtText(
-                      labelText,
-                      style: labelStyle,
-                      maxLines: 1,
-                      overflow: .ellipsis,
-                    ),
+        AnimatedContainer(
+          duration: 300.milliseconds,
+          constraints: decoration.constraints,
+          padding: decoration.padding,
+          height: decoration.size.height,
+          decoration: activeDecoration,
+          alignment: .center,
+          clipBehavior: .hardEdge,
+          child: Column(
+            crossAxisAlignment: .stretch,
+            mainAxisAlignment: .center,
+            spacing: context.spacingSm,
+            mainAxisSize: .min,
+            children: [
+              if (focused && labelText.hasValue)
+                Flexible(
+                  child: GtText(
+                    labelText,
+                    style: labelStyle,
+                    maxLines: 1,
+                    overflow: .ellipsis,
                   ),
-                Row(
-                  spacing: context.spacingBase,
-                  mainAxisAlignment: .start,
-                  crossAxisAlignment: .center,
-                  children: [
-                    ?prefix,
-                    Expanded(child: child),
-                    ?suffix,
-                  ],
                 ),
-              ],
-            ),
+              Row(
+                spacing: context.spacingBase,
+                mainAxisAlignment: .start,
+                crossAxisAlignment: .center,
+                children: [
+                  ?prefix,
+                  Expanded(child: child),
+                  ?suffix,
+                ],
+              ),
+            ],
           ),
         ),
         if (helperText.hasValue)

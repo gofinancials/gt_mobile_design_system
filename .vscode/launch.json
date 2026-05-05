@@ -9,7 +9,7 @@
             "cwd": "gallery",
             "request": "launch",
             "type": "dart",
-            // "preLaunchTask": "GenerateDirectories",
+            "preLaunchTask": "GenerateDirectories",
             "args": [
                 "--verbose",
                 "--enable-experiment=dot-shorthands"

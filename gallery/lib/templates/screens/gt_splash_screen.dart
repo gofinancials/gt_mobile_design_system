@@ -100,17 +100,19 @@ Widget buildGtWelcomeScreenTitleUsecase(BuildContext context) {
   );
   final titleStyle = context.textStyles.title(color: titleColor.$2);
   return GtWelcomeScreen.withTitleWidget(
-    title: context.knobs.object.dropdown<GtText>(
+    title: context.knobs.object.dropdown<Widget>(
       label: "Title",
       initialOption: GtText("OneBank", textAlign: .center, style: titleStyle),
       options: [
         GtText("OneBank", textAlign: .center, style: titleStyle),
-        GtText("OneBank Kids", textAlign: .center, style: titleStyle),
-        GtText("OneBank Flex", textAlign: .center, style: titleStyle),
-        GtText("OneBank Pro", textAlign: .center, style: titleStyle),
-        GtText("GoTech", textAlign: .center, style: titleStyle),
+        GtNetworkImage(
+          GtNetworkImages.avatar3d1,
+          height: context.fractionalLongest(.4),
+          width: context.fractionalShortest(.6),
+          fit: .fitHeight,
+          alignment: .topCenter,
+        ),
       ],
-      labelBuilder: (value) => value.data ?? "",
     ),
     backgroundImage: bgImage.$2,
     titleAlignment: context.knobs.object.dropdown<Alignment>(

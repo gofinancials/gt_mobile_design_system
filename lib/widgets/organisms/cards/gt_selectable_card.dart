@@ -89,7 +89,7 @@ class GtAvatarSelectionCard extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GtSelectableCard(
-      selectedMargin: 2,
+      selectedMargin: 3,
       selected: selected,
       onSelect: onSelect,
       value: image,
