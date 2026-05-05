@@ -15,72 +15,61 @@ The **OneBank UI Design System** will serve as a centralized, standalone Flutter
 
 To ensure scalability and reusability, we loosely adopt the **Atomic Design** methodology, mapped conceptually to our established Flutter directory conventions:
 
-- **Atoms (Primitives):** The absolute basics. These cannot be broken down further. (e.g., `typography/`, `icons/`, `spacers/`, `style/colors.dart`).
-- **Molecules (Fragments):** Simple UI components built by combining atoms. (e.g., `fragments/buttons/`, `inputs/`, `pills/`).
-- **Organisms (Complex Components):** Distinct sections of an interface combining molecules and atoms. (e.g., `layouts/app_bars/`, `dialogs/`, `modals/`).
-- **Templates (Layouts & States):** Page-level structures that dictate where organisms sit without injecting business data. (e.g., `layouts/view_state/`, `layouts/containers/`).
+- **Atoms (Primitives):** The absolute basics. These cannot be broken down further. (e.g., `typography/`, `media/`, `spacers/`).
+- **Molecules (Fragments):** Simple UI components built by combining atoms. (e.g., `buttons/`, `inputs/`, `pills/`).
+- **Organisms (Complex Components):** Distinct sections of an interface combining molecules and atoms. (e.g., `app_bars/`, `cards/`, `navigation/`).
+- **Templates (Layouts & States):** Page-level structures that dictate where organisms sit without injecting business data. (e.g., `dialogs/`, `modals/`, `screens/`).
 
 ## 2. Dynamic Theming Engine (ThemeExtensions)
 
-To achieve true dynamic theming across different OneBank applications (and support light/dark modes natively), we strictly avoid hardcoding colors. Instead, we leverage Flutter's `ThemeExtension` API powered by shared configuration resources.
+To achieve true dynamic theming across different OneBank applications (and support light/dark modes natively), we strictly avoid hardcoding colors. Instead, we leverage Flutter's `ThemeExtension` API powered by our own `GtTheme` and `GtPalette` system.
 
-This allows us to inject custom, strongly-typed semantic color tokens into the Flutter context, enabling an app like "OneBank Kids" to inject its playful palette, while the main app injects a corporate palette.
+This allows us to inject custom, strongly-typed semantic color tokens into the Flutter context, enabling an app like "OneBank Kids" to use its playful palette, while the main app uses a corporate palette.
 
 ```dart
-// 1. Define the Extension
-class AppColorsExtension extends ThemeExtension<AppColorsExtension> {
-  final Color primaryAction;
-  final Color surfaceBackground;
-  final Color textInteractive;
-
-  const AppColorsExtension({
-    required this.primaryAction,
-    required this.surfaceBackground,
-    required this.textInteractive,
-  });
-
-  @override
-  ThemeExtension<AppColorsExtension> copyWith({...}) { ... }
-
-  @override
-  ThemeExtension<AppColorsExtension> lerp(...) { ... }
+// 1. Define the Palette Interface
+abstract class GtPalette extends ThemeExtension<GtPalette> {
+  GtPaletteBrandColors get primary;
+  GtPaletteBackgroundColors get bg;
+  GtPaletteTextColors get text;
+  // ...
 }
 
-// 2. Define App-Specific Palettes utilizing shared configurations
-final kidsLightColors = AppColorsExtension(
-  primaryAction: OneBankSharedColors.playfulOrange,
-  surfaceBackground: OneBankSharedColors.neutralLight,
-  textInteractive: OneBankSharedColors.kidsBlue,
-);
+// 2. Define App-Specific Palettes
+class KidsLightPalette extends GtPalette {
+  // implements colors for Kids App Light Theme
+}
 
-final mainBankLightColors = AppColorsExtension(
-  primaryAction: OneBankSharedColors.corporateBlue,
-  surfaceBackground: OneBankSharedColors.white,
-  textInteractive: OneBankSharedColors.black,
+// 3. Assemble the Theme
+final kKidsTheme = GtTheme(
+  name: "Kids",
+  lightPalette: KidsLightPalette(),
+  darkPalette: KidsDarkPalette(),
 );
 ```
 
 ## 3. Architecture Diagram
 
-The following diagram illustrates how the `OneBank UI` library is consumed by host applications, and how `Widgetbook` acts as an isolated preview environment.
+The following diagram illustrates how the `gt_mobile_ui` library is consumed by host applications, and how `Widgetbook` acts as an isolated preview environment.
 
 ```mermaid
 flowchart TD
     subgraph Host Apps [Host Applications]
         OBK[OneBank Kids App]
-        OBM[OneBank Pro App]
+        OBM[OneBank Main App]
     end
 
-    subgraph DesignSystem [OneBank UI Package]
+    subgraph DesignSystem [Sterling gt_mobile_ui Package]
         direction TB
-        TE[Theme Extensions<br>Color, Typography, Spacing]
-        SC[Shared Configs<br>Palettes, Base Resources]
+        TE[GtTheme<br>Material Theme configuration]
+        SC[GtPalette<br>Semantic Color Tokens]
 
         subgraph Components [Atomic Components]
             direction LR
-            A[Atoms<br>Typography, Icons]
-            M[Molecules<br>Inputs, Buttons]
-            O[Organisms<br>Dialogs, Nav]
+            A[Atoms<br>Typography, Spacers]
+            M[Molecules<br>Inputs, Buttons, Pills]
+            O[Organisms<br>Cards, App Bars, Menus]
+            T[Templates<br>Dialogs, Modals, Screens]
         end
 
         SC --> TE
@@ -98,56 +87,61 @@ flowchart TD
 
 ## 4. Directory Structure
 
-We maintain our proven directory structure, explicitly categorizing folders by their conceptual atomic weight. We have introduced a `config/` directory specifically to account for commonly shared classes and resources that govern theme generation.
+We maintain our proven directory structure within `lib/`, explicitly categorizing `widgets` by their conceptual atomic weight, and abstracting styling logic into `common`.
 
+```text
+lib/
+├── common/                  # Core design system configurations and utilities
+│   ├── assets/              # Centralized static assets configurations
+│   ├── clippers/            # Custom clipping shapes
+│   ├── mixins/              # Reusable logic (e.g., validation, focus management)
+│   ├── painters/            # Custom canvas painters
+│   ├── physics/             # Custom scroll physics
+│   ├── providers/           # State providers
+│   ├── router/              # Navigation helpers
+│   ├── styling/             # [THEME ENGINE]
+│   │   ├── palettes/        # App-specific color palettes (Kids, Personal, Flex)
+│   │   ├── gt_colors.dart   # Semantic color definitions
+│   │   ├── gt_theme.dart    # Core theme interface and pre-configured themes
+│   │   ├── gt_input_styles.dart # Base field decorations
+│   │   └── gt_text_styles.dart  # Semantic text definitions
+│   └── utilities/           # Helper functions
+└── widgets/                 # [COMPONENT LIBRARY]
+    ├── atoms/               # [PRIMITIVES]
+    │   ├── indicators/      # Progress bars, spinners
+    │   ├── media/           # Basic image and icon wrappers
+    │   ├── spacers/         # Gaps, dividers
+    │   └── typography/      # Text primitives
+    ├── molecules/           # [FRAGMENTS]
+    │   ├── boxes/           # Container layouts
+    │   ├── buttons/         # AppButtons, IconButtons
+    │   ├── inputs/          # TextFields, Dropdowns
+    │   ├── media/           # Avatars, complex media
+    │   ├── pills/           # Status tags, badges
+    │   ├── text/            # Formatted text blocks
+    │   └── tiles/           # List tiles
+    ├── organisms/           # [COMPLEX COMPONENTS]
+    │   ├── app_bars/        # Standard and segmented app bars
+    │   ├── cards/           # Product cards, selectable cards
+    │   ├── grids/           # Grid layouts
+    │   ├── headers/         # Page headers
+    │   ├── menus/           # Context menus
+    │   ├── navigation/      # Bottom navigation bars
+    │   ├── slides/          # Carousel slides
+    │   └── view_state/      # Empty, error, and loading states
+    └── templates/           # [LAYOUTS & PAGE STRUCTURES]
+        ├── carousels/       # Full carousel implementations
+        ├── dialogs/         # Alert and confirmation dialogs
+        ├── forms/           # Form wrappers
+        ├── modals/          # Bottom sheets
+        ├── overlays/        # Tooltips, toasts
+        └── screens/         # Scaffold templates (Splash, Welcome)
 ```
-.
-├── assets/                  # Centralized static assets (fonts, universal SVGs)
-├── config/                  # [SHARED RESOURCES] Theme generation & constants
-│   ├── color_palettes.dart  # Raw hex colors (e.g., OneBankSharedColors)
-│   ├── spacing_config.dart  # Base padding/margin definitions
-│   └── typography_config.dart# Font family names and base sizes
-├── mixins/                  # Reusable UI logic (e.g., system chrome management)
-├── painter/                 # Custom canvas painters (dashed lines, progress rings)
-├── physics/                 # Custom scroll physics (e.g., marquee scrolling)
-├── state/                   # UI-only state wrappers (NO business logic)
-├── style/                   # [THEME ENGINE]
-│   ├── colors.dart          # Semantic color mappings
-│   ├── input_styles.dart    # Base field decorations
-│   ├── text_styles.dart     # Semantic text definitions
-│   └── theme/
-│       ├── theme.dart       # Core theme interface
-│       └── tr_theme.dart    # ThemeExtension implementations
-├── widgets/                 # [COMPONENT LIBRARY]
-│   ├── animation/           # Shimmers, implicit animations
-│   ├── fragments/           # [ATOMS & MOLECULES]
-│   │   ├── buttons/         # AppButton, IconButton, TextButton
-│   │   ├── cards/           # Base card containers
-│   │   ├── images/          # Svg, Lottie, NetworkImage wrappers
-│   │   ├── indicators/      # Checkboxes, switches, progress bars
-│   │   ├── inputs/          # TextFields, Dropdowns, Date inputs
-│   │   ├── list_items/      # Standardized list tiles
-│   │   ├── pills/           # Tags, badges, status pills
-│   │   ├── spacers/         # Gaps, dividers, specific sized boxes
-│   │   ├── text/            # Specialized text widgets (terms, gilded headers)
-│   ├── icons/               # Icon containers and mappings
-│   ├── layouts/             # [ORGANISMS & TEMPLATES]
-│   │   ├── app_bars/        # Standard and segmented app bars
-│   │   ├── containers/      # Max width, responsive bounds
-│   │   ├── dialogs/         # Confirmation, info, error dialogs
-│   │   ├── forms/           # Form wrappers and auto-validators
-│   │   ├── view_state/      # Empty, Loading, and Error state templates
-│   ├── media/               # Audio/Video player UI controls
-│   ├── modals/              # Bottom sheets and modal bodies
-│   ├── overlays/            # Tooltips, disabled states, floating notifications
-│   ├── typography/          # [ATOMS] Base text definitions (H1, Body, Label)
-└── widgetbook/              # Widgetbook setup, use-cases, and story files
-```
 
-## 5. Tooling: Widgetbook Integration
+## 5. Tooling: Widgetbook Integration (Gallery)
 
-We selected **Widgetbook** specifically because it is built natively for Flutter environments. Unlike generic component libraries, Widgetbook runs seamlessly within our existing Dart tooling, ensuring identical rendering behavior between the documentation and the live app.
+We selected **Widgetbook** specifically because it is built natively for Flutter environments. The interactive catalog is housed in the `gallery/` directory. Unlike generic component libraries, Widgetbook runs seamlessly within our existing Dart tooling, ensuring identical rendering behavior between the documentation and the live app.
 
-- **Use Cases:** Every component in the `widgets/` directory MUST have a corresponding `.usecase.dart` file.
+- **Use Cases:** Every component in the `widgets/` directory MUST have a corresponding `.usecase.dart` file in the `gallery/` package.
 - **Knobs:** Engineers must implement "Knobs" (booleans, text inputs, sliders) in the Widgetbook definitions so PMs and Designers can dynamically alter component states (e.g., toggling an `isLoading` knob on an `AppButton`).
-- **Deployment:** The Widgetbook will be compiled to a Flutter Web app and deployed for internal stakeholder review.
+- **Deployment:** The gallery will be compiled to a Flutter Web app and deployed for internal stakeholder review.
