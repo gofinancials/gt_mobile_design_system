@@ -78,6 +78,8 @@ import 'package:gallery/templates/overlays/gt_overlay.dart'
     as _gallery_templates_overlays_gt_overlay;
 import 'package:gallery/templates/screens/gt_duo_tone_screen.dart'
     as _gallery_templates_screens_gt_duo_tone_screen;
+import 'package:gallery/templates/screens/gt_debit_card_screen.dart'
+    as _gallery_templates_screens_gt_debit_card_screen;
 import 'package:gallery/templates/screens/gt_how_to_screen.dart'
     as _gallery_templates_screens_gt_how_to_screen;
 import 'package:gallery/templates/screens/gt_splash_screen.dart'
@@ -684,6 +686,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtDuotoneScreen',
                     builder: _gallery_templates_screens_gt_duo_tone_screen
                         .buildGtDuotoneScreenUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtDebitCardScreen',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtDebitCardScreen',
+                    builder: _gallery_templates_screens_gt_debit_card_screen
+                        .buildGtDebitCardScreenUsecase,
                   ),
                 ],
               ),
