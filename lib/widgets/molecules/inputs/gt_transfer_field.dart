@@ -183,6 +183,7 @@ class _GtTransferFieldState extends State<GtTransferField> {
               controller: widget.noteController,
               hintText: widget.noteHint,
               isEnabled: widget.isEnabled,
+              decoration: context.inputStyles.plainDecoration,
               suffix: GtNetworkImage(GtNetworkImages.transfer),
               onChanged: (value) {
                 widget.onChange?.call((

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:gt_mobile_foundation/extensions/extensions.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// An extension on [num] providing convenient properties for generating
@@ -49,4 +50,22 @@ extension RadiiExtension on num {
 
   /// Converts this number to standard logical pixels (px).
   double get px => _dpComputer.px(this);
+
+  String get asMonthName {
+    return switch (this) {
+      DateTime.january => "january",
+      DateTime.february => "february",
+      DateTime.march => "march",
+      DateTime.april => "april",
+      DateTime.may => "may",
+      DateTime.june => "june",
+      DateTime.july => "july",
+      DateTime.august => "august",
+      DateTime.september => "september",
+      DateTime.october => "october",
+      DateTime.november => "november",
+      DateTime.december => "december",
+      _ => "",
+    }.ctr();
+  }
 }

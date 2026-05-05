@@ -27,7 +27,7 @@ class GalleryConfig extends AppConfig {
   String get cipherKey => "";
 
   @override
-  String get countryCode => "US";
+  String get countryCode => "+234";
 
   @override
   String get dbName => "gallery_db";

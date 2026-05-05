@@ -44,8 +44,8 @@ class _ConfirmDialogPreviewState extends State<_ConfirmDialogPreview>
           spacing: context.spacingLg,
           children: [
             GalleryPageHeader(
-              title: 'Bottom Sheet',
-              rider: 'Bottom shet playground draggable and static',
+              title: 'Confirm Dialog',
+              rider: 'Confirm Dialog playground',
             ),
             GtRaisedButton(
               text: "Confirm Action",

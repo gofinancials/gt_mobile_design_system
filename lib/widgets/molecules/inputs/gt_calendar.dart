@@ -85,7 +85,7 @@ class _GtCalendarState extends State<GtCalendar> {
             calendarBuilders: CalendarBuilders(
               headerTitleBuilder: (context, day) {
                 return _GtCalendarHeader(
-                  day.format("MMM yyyy"),
+                  day.format("MMMM yyyy"),
                   controller: controller,
                 );
               },
@@ -247,6 +247,72 @@ class _GtCalendarHeader extends GtStatelessWidget {
           children: [
             GtText(day, style: style),
             GtIcon(GtIcons.chevronDown, variant: .soft, size: 14),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A bottom sheet modal that presents a calendar for date or date range selection.
+///
+/// This widget is typically used within a bottom sheet to provide a dedicated
+/// interface for selecting dates, such as in [GtDateField].
+class GtCalendarModal extends GtStatefulWidget {
+  /// The scroll controller used for the modal's scrollable view.
+  final ScrollController scrollController;
+
+  /// The controller used to manage the calendar's state.
+  final GtCalendarController controller;
+
+  /// The title displayed at the top of the modal.
+  final String title;
+
+  /// Defines whether the user can select a single day or a date range.
+  final GtCalendarSelectionMode selectionMode;
+
+  /// Callback triggered when a specific day is selected.
+  final OnChanged<DateTime>? onSelectDay;
+
+  /// Callback triggered when a date range is selected.
+  final OnChanged<DateTimeRange>? onSelectRange;
+
+  /// Creates a [GtCalendarModal].
+  const GtCalendarModal(
+    this.scrollController, {
+    super.key,
+    required this.controller,
+    required this.title,
+    this.selectionMode = .day,
+    this.onSelectDay,
+    this.onSelectRange,
+  });
+
+  @override
+  State<GtCalendarModal> createState() => _GtCalendarModalState();
+}
+
+class _GtCalendarModalState extends State<GtCalendarModal> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: context.insets.symmetricDp(vertical: 24.px, horizontal: 16.px),
+      child: SingleChildScrollView(
+        controller: widget.scrollController,
+        child: Column(
+          spacing: context.spacingLg,
+          crossAxisAlignment: .stretch,
+          children: [
+            GtTitleAppBar(
+              title: widget.title,
+              trailing: GtOptionalWidgetPair(tail: GtCancelButton()),
+            ),
+            GtCalendar(
+              controller: widget.controller,
+              selectionMode: widget.selectionMode,
+              onSelectDay: widget.onSelectDay,
+              onSelectRange: widget.onSelectRange,
+            ),
           ],
         ),
       ),
