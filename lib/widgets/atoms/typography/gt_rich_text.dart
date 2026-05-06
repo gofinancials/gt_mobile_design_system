@@ -173,32 +173,26 @@ class GtRichText extends GtStatelessWidget {
       ),
       'a': StyledTextActionTag(
         launch,
-        style: style.copyWith(
-          decoration: TextDecoration.underline,
-          decorationColor: linkColor ?? style.color,
-        ),
+        style: style.copyWith(color: linkColor ?? style.color),
       ),
       'ba': StyledTextActionTag(
         launch,
         style: style.copyWith(
-          decoration: TextDecoration.underline,
-          decorationColor: linkColor ?? style.color,
+          color: linkColor ?? style.color,
           fontWeight: FontWeight.w600,
         ),
       ),
       'sba': StyledTextActionTag(
         launch,
         style: style.copyWith(
-          decoration: TextDecoration.underline,
-          decorationColor: linkColor ?? style.color,
+          color: linkColor ?? style.color,
           fontWeight: FontWeight.w600,
         ),
       ),
       'ma': StyledTextActionTag(
         launch,
         style: style.copyWith(
-          decoration: TextDecoration.underline,
-          decorationColor: linkColor ?? style.color,
+          color: linkColor ?? style.color,
           fontWeight: FontWeight.w500,
         ),
       ),
