@@ -50,7 +50,6 @@ class GtTransactionListTile extends GtStatelessWidget {
 
     return GtInkWell(
       borderRadius: .zero,
-      hapticFeedbackType: .light,
       onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),

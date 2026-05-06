@@ -67,7 +67,6 @@ class GtButtonPill extends StatelessWidget {
     };
 
     return GtInkWell(
-      hapticFeedbackType: .light,
       borderRadius: context.borderRadiusSm,
       onTap: onTap,
       child: GtPill(

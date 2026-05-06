@@ -187,7 +187,6 @@ class GtStatusListTile extends GtStatelessWidget {
       isDone,
       child: GtInkWell(
         borderRadius: _asCard ? context.borderRadius2Xl : .zero,
-        hapticFeedbackType: .light,
         onTap: onPressed,
         child: child,
       ),

@@ -45,7 +45,6 @@ class GtInstructionCard extends GtStatelessWidget {
     final iconColor = variant.getIconColor(palette);
 
     return GtInkWell(
-      hapticFeedbackType: .light,
       borderRadius: context.borderRadiusXl,
       onTap: onPressed,
       child: GtCard(

@@ -32,11 +32,7 @@ class GtListTile extends GtStatelessWidget {
   Widget build(BuildContext context) {
     return GtInkWell(
       borderRadius: context.borderRadius2Xl,
-      hapticFeedbackType: .light,
-      onTap: () {
-        if (onTap == null) return;
-        onTap?.call();
-      },
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),
         child: Row(
@@ -106,12 +102,8 @@ class GtIconListTile extends GtStatelessWidget {
     final palette = context.palette;
 
     return GtInkWell(
-      hapticFeedbackType: .light,
       borderRadius: context.borderRadius2Xl,
-      onTap: () {
-        if (onTap == null) return;
-        onTap?.call();
-      },
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),
         child: Row(
@@ -158,11 +150,7 @@ class _GtIconListTileAlt extends GtIconListTile {
 
     return GtInkWell(
       borderRadius: context.borderRadius2Xl,
-      hapticFeedbackType: .light,
-      onTap: () {
-        if (onTap == null) return;
-        onTap?.call();
-      },
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),
         child: Row(
@@ -227,11 +215,7 @@ class GtSimpleActionListTile extends GtStatelessWidget {
   Widget build(BuildContext context) {
     return GtInkWell(
       borderRadius: context.borderRadius2Xl,
-      hapticFeedbackType: .light,
-      onTap: () {
-        if (onTap == null) return;
-        onTap?.call();
-      },
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),
         child: Row(

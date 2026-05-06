@@ -90,7 +90,6 @@ class GtHowToScreen extends GtStatelessWidget {
                 alignment: .topCenter,
                 child: GtInkWell(
                   borderRadius: context.borderRadius2Xl,
-                  hapticFeedbackType: .light,
                   onTap: onContinue,
                   child: Padding(
                     padding: context.insets.symmetricDp(vertical: 8.px),

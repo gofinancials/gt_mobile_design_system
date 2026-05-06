@@ -82,12 +82,7 @@ class GtInputListTile extends GtStatelessWidget {
       child = GtCard(borderRadius: context.borderRadiusXl, child: child);
     }
 
-    return GtInkWell(
-      borderRadius: .zero,
-      hapticFeedbackType: .light,
-      onTap: onTap,
-      child: child,
-    );
+    return GtInkWell(borderRadius: .zero, onTap: onTap, child: child);
   }
 }
 
@@ -122,7 +117,6 @@ class GtCopyTile extends GtStatelessWidget {
 
     return GtInkWell(
       borderRadius: .zero,
-      hapticFeedbackType: .light,
       onTap: () => onCopied?.call(value),
       child: Row(
         spacing: context.spacingBase,
@@ -184,7 +178,6 @@ class GtInstructionListTile extends GtStatelessWidget {
   Widget build(BuildContext context) {
     return GtInkWell(
       borderRadius: .zero,
-      hapticFeedbackType: .light,
       onTap: onTap,
       child: Row(
         spacing: context.spacingBase,

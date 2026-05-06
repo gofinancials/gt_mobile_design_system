@@ -77,7 +77,6 @@ class GtIndicatorTile extends GtStatelessWidget {
 
     return GtInkWell(
       borderRadius: .zero,
-      hapticFeedbackType: .light,
       onTap: onTap,
       child: Row(
         crossAxisAlignment: switch (footer == null) {

@@ -162,7 +162,6 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
-      hapticFeedbackType: .light,
       borderRadius: context.borderRadiusXl,
       onTap: () {
         if (!widget.isEnabled) return;
