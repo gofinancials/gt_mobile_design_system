@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -162,10 +161,11 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GtInkWell(
+      hapticFeedbackType: .light,
+      borderRadius: context.borderRadiusXl,
       onTap: () {
         if (!widget.isEnabled) return;
-        HapticFeedback.mediumImpact();
         context.resetFocus();
         _showPicker();
       },

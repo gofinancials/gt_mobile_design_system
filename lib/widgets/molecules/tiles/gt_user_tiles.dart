@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -43,12 +42,10 @@ class GtAccountListTile extends GtStatelessWidget {
       _ => context.textStyles.bodyXs(color: palette.text.sub),
     };
 
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .light,
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),
         child: Row(
@@ -104,11 +101,10 @@ class GtContactListTile extends GtStatelessWidget {
     final palette = context.palette;
     final subStyle = context.textStyles.bodyXs(color: palette.text.sub);
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap.call();
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .light,
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),
         child: Row(
@@ -210,11 +206,10 @@ class GtStakeHolderListTile extends GtStatelessWidget {
       ],
     );
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap();
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .light,
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),
         child: Row(

@@ -672,6 +672,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                   ),
                 ],
               ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTooltipWidget',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTooltipWidget',
+                    builder: _gallery_templates_overlays_gt_overlay
+                        .buildGtToolTipUsecase,
+                  ),
+                ],
+              ),
             ],
           ),
           _widgetbook.WidgetbookFolder(

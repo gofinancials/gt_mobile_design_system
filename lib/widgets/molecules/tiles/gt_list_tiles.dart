@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -31,10 +30,11 @@ class GtListTile extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GtInkWell(
+      borderRadius: context.borderRadius2Xl,
+      hapticFeedbackType: .light,
       onTap: () {
         if (onTap == null) return;
-        HapticFeedback.lightImpact();
         onTap?.call();
       },
       child: Padding(
@@ -105,10 +105,11 @@ class GtIconListTile extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.palette;
 
-    return InkWell(
+    return GtInkWell(
+      hapticFeedbackType: .light,
+      borderRadius: context.borderRadius2Xl,
       onTap: () {
         if (onTap == null) return;
-        HapticFeedback.lightImpact();
         onTap?.call();
       },
       child: Padding(
@@ -155,10 +156,11 @@ class _GtIconListTileAlt extends GtIconListTile {
   Widget build(BuildContext context) {
     final palette = context.palette;
 
-    return InkWell(
+    return GtInkWell(
+      borderRadius: context.borderRadius2Xl,
+      hapticFeedbackType: .light,
       onTap: () {
         if (onTap == null) return;
-        HapticFeedback.lightImpact();
         onTap?.call();
       },
       child: Padding(
@@ -223,10 +225,11 @@ class GtSimpleActionListTile extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GtInkWell(
+      borderRadius: context.borderRadius2Xl,
+      hapticFeedbackType: .light,
       onTap: () {
         if (onTap == null) return;
-        HapticFeedback.lightImpact();
         onTap?.call();
       },
       child: Padding(

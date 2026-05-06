@@ -47,7 +47,9 @@ class GtBackButton extends GtStatelessWidget {
       type: MaterialType.transparency,
       child: Hero(
         tag: "gt-back-button",
-        child: InkWell(
+        child: GtInkWell(
+          hapticFeedbackType: .medium,
+          customBorder: CircleBorder(),
           onTap: () {
             if (action != null) return action!();
             if (!canPop && routeStackSensitive) return;

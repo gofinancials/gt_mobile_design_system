@@ -13,9 +13,8 @@ class GtTooltip extends GtOverlay {
   void show(
     String title, {
     required message,
-    required Offset anchorPosition,
-    required Size anchorSize,
     required Widget anchorWidget,
+    required BuildContext anchorContext,
   }) {
     runThrowableTask(() {
       if (_entry != null || _inserted) return;
@@ -24,6 +23,7 @@ class GtTooltip extends GtOverlay {
       _entry = OverlayEntry(
         opaque: false,
         builder: (context) {
+          final pos = anchorContext.overlayPosition(context);
           return GestureDetector(
             onTap: close,
             child: Material(
@@ -31,10 +31,11 @@ class GtTooltip extends GtOverlay {
               child: GtTooltipWidget(
                 title,
                 message: message,
-                anchorPosition: anchorPosition,
-                anchorSize: anchorSize,
+                anchorPosition: pos.anchorPosition,
+                anchorRect: pos.anchorRect,
                 onClose: close,
                 anchorWidget: anchorWidget,
+                overlayBoxConstraints: pos.overlayBoxConstraints,
               ),
             ),
           );
@@ -61,9 +62,10 @@ class GtTooltipWidget extends GtStatelessWidget {
   final String title;
   final String message;
   final Offset anchorPosition;
-  final Size anchorSize;
+  final Rect anchorRect;
   final OnPressed onClose;
   final Widget anchorWidget;
+  final BoxConstraints overlayBoxConstraints;
 
   const GtTooltipWidget(
     this.title, {
@@ -71,16 +73,16 @@ class GtTooltipWidget extends GtStatelessWidget {
     required this.anchorPosition,
     required this.onClose,
     required this.anchorWidget,
-    required this.anchorSize,
+    required this.anchorRect,
+    required this.overlayBoxConstraints,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     final offset = anchorPosition;
-    final size = anchorSize;
+    final size = anchorRect.size;
     final screenHeight = context.height;
-    final screenWidth = context.width;
 
     // Determine if the widget is in the upper half of the screen
     final isCloserToTop = offset.dy < (screenHeight / 2);
@@ -97,66 +99,34 @@ class GtTooltipWidget extends GtStatelessWidget {
     final bottomPositionForCard = (screenHeight - offset.dy) + cardSpacing;
 
     // Calculate horizontal positions to center the tip and keep the card on screen
-    final tipSize = context.dp(20.px);
-    final anchorCenterX = offset.dx + (size.width / 2);
-    final tipLeftPosition = anchorCenterX - (tipSize / 2);
+    final tipOffset = anchorRect.left + (size.width * .9);
 
-    // Determine if the widget is in the left half of the screen
-    final isCloserToLeft = anchorCenterX < (screenWidth / 2);
-
-    final maxCardWidth = 280.0;
-    final edgePadding = context.dp(16.px);
-
-    double? cardLeftPosition;
-    double? cardRightPosition;
-
-    if (isCloserToLeft) {
-      final maxLeft = max(
-        edgePadding,
-        screenWidth - maxCardWidth - edgePadding,
-      );
-      cardLeftPosition = offset.dx.clamp(edgePadding, maxLeft);
-    } else {
-      final maxRight = max(
-        edgePadding,
-        screenWidth - maxCardWidth - edgePadding,
-      );
-      final anchorRightDistance = screenWidth - (offset.dx + size.width);
-      cardRightPosition = anchorRightDistance.clamp(edgePadding, maxRight);
-    }
-
-    return Stack(
-      children: [
-        Positioned(
-          left: offset.dx,
-          top: offset.dy,
-          width: size.width,
-          height: size.height,
-          child: anchorWidget,
-        ),
-        Positioned(
-          top: isCloserToTop ? topPositionForTip : null,
-          bottom: !isCloserToTop ? bottomPositionForTip : null,
-          left: tipLeftPosition,
-          child: Transform.rotate(
-            angle: pi / 4,
-            child: DecoratedBox(
-              decoration: BoxDecoration(color: context.palette.bg.white),
-              child: GtSquareBox(size: 20),
+    return ConstrainedBox(
+      constraints: overlayBoxConstraints,
+      child: Stack(
+        children: [
+          Positioned.fromRect(rect: anchorRect, child: anchorWidget),
+          Positioned(
+            top: isCloserToTop ? topPositionForTip : null,
+            bottom: !isCloserToTop ? bottomPositionForTip : null,
+            left: tipOffset,
+            child: Transform.rotate(
+              angle: pi / 4,
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: context.palette.bg.white),
+                child: GtSquareBox(size: 20),
+              ),
             ),
           ),
-        ),
-        Positioned(
-          top: isCloserToTop ? topPositionForCard : null,
-          bottom: !isCloserToTop ? bottomPositionForCard : null,
-          left: cardLeftPosition,
-          right: cardRightPosition,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxCardWidth),
+          Positioned(
+            top: isCloserToTop ? topPositionForCard : null,
+            bottom: !isCloserToTop ? bottomPositionForCard : null,
+            left: anchorRect.left - context.dp(16.px),
             child: GtCard(
               padding: context.insets.allDp(12.px),
               borderRadius: context.borderRadiusXl,
               color: context.palette.bg.white,
+              constraints: BoxConstraints(maxWidth: 272),
               child: GtBaseListTileTemplate(
                 title: GtText(title),
                 subtitle: GtText(
@@ -172,8 +142,8 @@ class GtTooltipWidget extends GtStatelessWidget {
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -225,29 +195,28 @@ class _GtTooltipWrapperState extends State<GtTooltipWrapper> with RouteAware {
 
   @override
   Widget build(BuildContext parentContext) {
-    return LayoutBuilder(
-      key: Key("gt-tooltip-layout-builder"),
-      builder: (context, constraints) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (_tooltip != null) return;
-          _tooltip = GtTooltip.of(context);
-        });
-        return GestureDetector(
-          key: Key("gt-tooltip-getsture-detector"),
-          onTapDown: (details) {
-            final size = context.size ?? Size.zero;
-
-            _tooltip?.show(
-              widget.tooltipTitle,
-              message: widget.tooltipMessage,
-              anchorPosition: context.position,
-              anchorSize: size,
-              anchorWidget: widget.child,
-            );
-          },
-          child: widget.child,
-        );
-      },
+    return UnconstrainedBox(
+      child: LayoutBuilder(
+        key: ValueKey("gt-tooltip-layout-builder"),
+        builder: (context, constraints) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (_tooltip != null) return;
+            _tooltip = GtTooltip.of(context);
+          });
+          return GestureDetector(
+            key: Key("gt-tooltip-getsture-detector"),
+            onTapDown: (details) {
+              _tooltip?.show(
+                widget.tooltipTitle,
+                message: widget.tooltipMessage,
+                anchorWidget: widget.child,
+                anchorContext: context,
+              );
+            },
+            child: widget.child,
+          );
+        },
+      ),
     );
   }
 }

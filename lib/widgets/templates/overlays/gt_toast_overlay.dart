@@ -78,7 +78,7 @@ class GtToastOverlay extends GtStatelessWidget {
     return Material(
       color: context.shadowColor,
       child: SafeArea(
-        minimum: context.insets.defaultHorizontalInsets,
+        minimum: context.insets.defaultAllInsets,
         bottom: false,
         child: Align(
           alignment: Alignment.topCenter,

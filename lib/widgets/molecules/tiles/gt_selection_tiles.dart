@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -30,11 +29,10 @@ class GtMenuListTile<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onSelect(value);
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .selection,
+      onTap: () => onSelect(value),
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 4.px),
         child: Row(
@@ -113,11 +111,10 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
     final textStyles = context.textStyles;
     TextStyle labelStyle = textStyles.bodyM();
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.selectionClick();
-        onSelect(value);
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .selection,
+      onTap: () => onSelect(value),
       child: Row(
         spacing: context.spacingMd,
         children: [
@@ -210,11 +207,10 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
       );
     }
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.selectionClick();
-        onSelect(value);
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .selection,
+      onTap: () => onSelect(value),
       child: child,
     );
   }
@@ -283,11 +279,10 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
       );
     }
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.selectionClick();
-        onSelect(value);
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .selection,
+      onTap: () => onSelect(value),
       child: child,
     );
   }
@@ -323,16 +318,20 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
     final style = context.textStyles.bodyS();
     final size = context.dp(34.px);
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.selectionClick();
-        onSelect(value);
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .selection,
+      onTap: () => onSelect(value),
       child: Row(
         spacing: context.spacingBase,
         children: [
           ClipOval(
-            child: GtNetworkImage(value.rasterFlagUrl, width: size, height:size, fit: .cover,),
+            child: GtNetworkImage(
+              value.rasterFlagUrl,
+              width: size,
+              height: size,
+              fit: .cover,
+            ),
           ),
           Expanded(
             child: Text.rich(

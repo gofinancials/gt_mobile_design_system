@@ -46,7 +46,8 @@ class GtCancelButton extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget child = InkWell(
+    Widget child = GtInkWell(
+      customBorder: CircleBorder(),
       onTap: () {
         HapticFeedback.lightImpact();
         if (subAction != null) subAction!();

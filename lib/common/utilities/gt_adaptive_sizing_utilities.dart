@@ -1,7 +1,16 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart'
-    show BuildContext, MediaQuery, EdgeInsets, RenderBox, Size, Offset;
+    show
+        BoxConstraints,
+        BuildContext,
+        EdgeInsets,
+        MediaQuery,
+        Offset,
+        Overlay,
+        Rect,
+        RenderBox,
+        Size;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A utility class that extracts and caches common [MediaQuery] properties
@@ -303,6 +312,44 @@ class GtScaleUtil {
   Offset get localPosition {
     final RenderBox box = context.findRenderObject() as RenderBox;
     return box.globalToLocal(Offset.zero);
+  }
+
+  /// Returns the global offset position of the current widget on the screen.
+  ({
+    Offset overlayPosition,
+    Offset anchorPosition,
+    Offset anchorBottomRight,
+    Rect anchorRect,
+    Rect anchorPaintBounds,
+    BoxConstraints overlayBoxConstraints,
+  })
+  overlayPosition(BuildContext overlayContext) {
+    final overlay =
+        Overlay.of(overlayContext).context.findRenderObject() as RenderBox?;
+    if (overlay == null) {
+      return (
+        overlayPosition: position,
+        anchorPosition: position,
+        anchorBottomRight: position,
+        anchorRect: Rect.zero,
+        anchorPaintBounds: Rect.zero,
+        overlayBoxConstraints: BoxConstraints.expand(),
+      );
+    }
+    final RenderBox anchorBox = context.findRenderObject() as RenderBox;
+    final topLeft = anchorBox.localToGlobal(Offset.zero, ancestor: overlay);
+    final bottomRight = anchorBox.localToGlobal(
+      anchorBox.paintBounds.bottomRight,
+      ancestor: overlay,
+    );
+    return (
+      overlayPosition: overlay.localToGlobal(Offset.zero),
+      anchorPosition: topLeft,
+      anchorBottomRight: bottomRight,
+      anchorRect: Rect.fromPoints(topLeft, bottomRight),
+      anchorPaintBounds: anchorBox.paintBounds,
+      overlayBoxConstraints: BoxConstraints.loose(overlay.paintBounds.size),
+    );
   }
 
   /// Returns the rendered size of the current widget.

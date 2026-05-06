@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -46,12 +45,10 @@ class GtAlertBanner extends GtStatelessWidget {
     return GtAnimatedFade(
       showFirst: !hidden,
       child2: const Offstage(),
-      child1: InkWell(
-        onTap: () {
-          if (onTap == null) return;
-          HapticFeedback.lightImpact();
-          onTap!();
-        },
+      child1: GtInkWell(
+        borderRadius: context.borderRadius2Xl,
+        hapticFeedbackType: .light,
+        onTap: onTap,
         child: GtCard(
           padding: context.insets.allDp(12.px),
           color: bgColor,

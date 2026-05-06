@@ -87,8 +87,8 @@ class GtAlertOverlay extends GtStatelessWidget {
     return Material(
       color: context.shadowColor,
       child: SafeArea(
+        minimum: context.insets.defaultAllInsets,
         bottom: false,
-        minimum: context.insets.defaultHorizontalInsets,
         child: Column(
           crossAxisAlignment: .stretch,
           children: [

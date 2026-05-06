@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -76,12 +75,10 @@ class GtIndicatorTile extends GtStatelessWidget {
       );
     }
 
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .light,
+      onTap: onTap,
       child: Row(
         crossAxisAlignment: switch (footer == null) {
           false => CrossAxisAlignment.start,
