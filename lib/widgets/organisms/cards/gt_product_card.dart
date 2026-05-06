@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -44,11 +43,10 @@ class GtProductCard extends GtStatelessWidget {
       );
     }
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      hapticFeedbackType: .light,
+      borderRadius: context.borderRadius2Xl,
+      onTap: onTap,
       child: GtCard(
         padding: context.insets.allDp(12.px),
         variant: variant,

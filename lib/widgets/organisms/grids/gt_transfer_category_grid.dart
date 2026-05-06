@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:gt_mobile_ui/widgets/organisms/cards/gt_selectable_card.dart';
 
 /// A controller that manages the selection state of a [GtTransactionCategory].
 ///
@@ -113,11 +111,10 @@ class GtTransactionCategoryGridCell extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        HapticFeedback.selectionClick();
-        onTap();
-      },
+    return GtInkWell(
+      hapticFeedbackType: .light,
+      borderRadius: context.borderRadiusSm,
+      onTap: onTap,
       child: Column(
         spacing: context.spacingBase,
         mainAxisSize: .min,

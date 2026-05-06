@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -41,12 +40,10 @@ class GtInboxCard extends GtStatelessWidget {
     final subStyle = context.textStyles.bodyXs(
       color: context.palette.text.soft,
     );
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        onTap?.call();
-        HapticFeedback.lightImpact();
-      },
+    return GtInkWell(
+      hapticFeedbackType: .light,
+      borderRadius: context.borderRadiusXl,
+      onTap: onTap,
       child: GtCard(
         padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 16.px),
         borderRadius: context.borderRadiusXl,

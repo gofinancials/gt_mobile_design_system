@@ -227,7 +227,9 @@ class _GtCalendarHeader extends GtStatelessWidget {
     final palette = context.palette;
     final style = context.textStyles.calendar(color: palette.text.darkerSub);
 
-    return InkWell(
+    return GtInkWell(
+      borderRadius: context.borderRadius2Xl,
+      hapticFeedbackType: .light,
       onTap: () async {
         final year = await showDatePicker(
           context: context,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -34,11 +33,10 @@ class GtExportListTile extends GtStatelessWidget {
       subStyle = context.textStyles.bodyXs(color: palette.text.soft);
     }
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap.call();
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .light,
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),
         child: Row(

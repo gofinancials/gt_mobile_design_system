@@ -110,56 +110,56 @@ Widget buildGtAlertUsecase(BuildContext context) {
   );
 }
 
-// @widgetbook.UseCase(name: 'GtTooltipWidget', type: GtTooltipWidget)
-// Widget buildGtToolTipUsecase(BuildContext context) {
-//   return Scaffold(
-//     appBar: GtTitleAppBar(title: "GtTooltip Playground"),
-//     body: Padding(
-//       padding: context.insets.defaultAllInsets,
-//       child: Builder(
-//         builder: (context) {
-//           return Column(
-//             crossAxisAlignment: .stretch,
-//             mainAxisAlignment: .center,
-//             spacing: context.spacingsection4xl,
-//             children: [
-//               GtTooltipWrapper(
-//                 key: ValueKey("Click me to see tooltip 1"),
-//                 tooltipTitle: "View and add accounts",
-//                 tooltipMessage:
-//                     "You can view your other accounts and open a new one",
-//                 child: GtText(
-//                   "Click me to see tooltip 1".upper,
-//                   style: context.textStyles.h6(),
-//                   textAlign: .center,
-//                 ),
-//               ),
-//               GtTooltipWrapper(
-//                 key: ValueKey("Click me to see tooltip 2"),
-//                 tooltipTitle: "View and add accounts",
-//                 tooltipMessage:
-//                     "You can view your other accounts and open a new one",
-//                 child: GtText(
-//                   "Click me to see tooltip 2".upper,
-//                   style: context.textStyles.h6(),
-//                   textAlign: .center,
-//                 ),
-//               ),
-//               GtTooltipWrapper(
-//                 key: ValueKey("Click me to see tooltip 3"),
-//                 tooltipTitle: "View and add accounts",
-//                 tooltipMessage:
-//                     "You can view your other accounts and open a new one",
-//                 child: GtText(
-//                   "Click me to see tooltip 3".upper,
-//                   style: context.textStyles.h6(),
-//                   textAlign: .center,
-//                 ),
-//               ),
-//             ],
-//           );
-//         },
-//       ),
-//     ),
-//   );
-// }
+@widgetbook.UseCase(name: 'GtTooltipWidget', type: GtTooltipWidget)
+Widget buildGtToolTipUsecase(BuildContext context) {
+  return Scaffold(
+    appBar: GtTitleAppBar(title: "GtTooltip Playground"),
+    body: Padding(
+      padding: context.insets.defaultAllInsets,
+      child: Builder(
+        builder: (context) {
+          return Column(
+            crossAxisAlignment: .stretch,
+            mainAxisAlignment: .center,
+            spacing: context.spacingsection4xl,
+            children: [
+              GtTooltipWrapper(
+                key: ValueKey("Click me to see tooltip 1"),
+                tooltipTitle: "View and add accounts",
+                tooltipMessage:
+                    "You can view your other accounts and open a new one",
+                child: GtText(
+                  "Click me to see tooltip 1".upper,
+                  style: context.textStyles.h6(),
+                  textAlign: .center,
+                ),
+              ),
+              GtTooltipWrapper(
+                key: ValueKey("Click me to see tooltip 2"),
+                tooltipTitle: "View and add accounts",
+                tooltipMessage:
+                    "You can view your other accounts and open a new one",
+                child: GtText(
+                  "Click me to see tooltip 2".upper,
+                  style: context.textStyles.h6(),
+                  textAlign: .center,
+                ),
+              ),
+              GtTooltipWrapper(
+                key: ValueKey("Click me to see tooltip 3"),
+                tooltipTitle: "View and add accounts",
+                tooltipMessage:
+                    "You can view your other accounts and open a new one",
+                child: GtText(
+                  "Click me to see tooltip 3".upper,
+                  style: context.textStyles.h6(),
+                  textAlign: .center,
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    ),
+  );
+}

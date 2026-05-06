@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:gt_mobile_ui/widgets/organisms/cards/gt_selectable_card.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 final controller = GtTransferCategoryController(null);

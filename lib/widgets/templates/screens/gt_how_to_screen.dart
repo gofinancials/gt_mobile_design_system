@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -89,11 +88,10 @@ class GtHowToScreen extends GtStatelessWidget {
               GtGap.ySectionXl(),
               Align(
                 alignment: .topCenter,
-                child: InkWell(
-                  onTap: () {
-                    HapticFeedback.lightImpact();
-                    onContinue?.call();
-                  },
+                child: GtInkWell(
+                  borderRadius: context.borderRadius2Xl,
+                  hapticFeedbackType: .light,
+                  onTap: onContinue,
                   child: Padding(
                     padding: context.insets.symmetricDp(vertical: 8.px),
                     child: GtText(

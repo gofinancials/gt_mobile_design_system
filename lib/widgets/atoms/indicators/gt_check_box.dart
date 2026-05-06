@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -61,11 +60,10 @@ class GtCheckBox<T> extends GtStatelessWidget {
     return RepaintBoundary(
       child: GtDisabledOverlay(
         disabled,
-        child: InkWell(
-          onTap: () {
-            HapticFeedback.selectionClick();
-            onChanged(value);
-          },
+        child: GtInkWell(
+          hapticFeedbackType: .selection,
+          borderRadius: borderRadius,
+          onTap: () => onChanged(value),
           child: Container(
             alignment: Alignment.center,
             height: size,

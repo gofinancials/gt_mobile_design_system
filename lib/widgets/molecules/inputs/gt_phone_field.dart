@@ -251,7 +251,9 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
   Widget build(BuildContext context) {
     final decoration = context.inputStyles.phoneCodeDecoration;
 
-    return InkWell(
+    return GtInkWell(
+      borderRadius: context.borderRadiusXl,
+      hapticFeedbackType: .medium,
       onTap: _showSheet,
       child: Container(
         constraints: decoration.constraints,

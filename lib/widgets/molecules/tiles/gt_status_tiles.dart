@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -186,11 +185,10 @@ class GtStatusListTile extends GtStatelessWidget {
 
     return GtDisabledOverlay(
       isDone,
-      child: InkWell(
-        onTap: () {
-          HapticFeedback.lightImpact();
-          onPressed();
-        },
+      child: GtInkWell(
+        borderRadius: _asCard ? context.borderRadius2Xl : .zero,
+        hapticFeedbackType: .light,
+        onTap: onPressed,
         child: child,
       ),
     );

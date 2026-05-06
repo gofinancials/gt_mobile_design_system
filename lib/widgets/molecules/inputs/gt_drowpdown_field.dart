@@ -162,7 +162,9 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GtInkWell(
+      borderRadius: context.borderRadiusXl,
+      hapticFeedbackType: .medium,
       onTap: _showSheet,
       onFocusChange: (value) {
         if (!value) return;

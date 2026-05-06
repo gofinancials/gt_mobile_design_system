@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -83,12 +82,10 @@ class GtInputListTile extends GtStatelessWidget {
       child = GtCard(borderRadius: context.borderRadiusXl, child: child);
     }
 
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .light,
+      onTap: onTap,
       child: child,
     );
   }
@@ -123,11 +120,10 @@ class GtCopyTile extends GtStatelessWidget {
     final styles = context.textStyles;
     final textColors = context.palette.text;
 
-    return InkWell(
-      onTap: () {
-        context.copyTextToClipboard(value);
-        onCopied?.call(value);
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .light,
+      onTap: () => onCopied?.call(value),
       child: Row(
         spacing: context.spacingBase,
         children: [
@@ -186,12 +182,10 @@ class GtInstructionListTile extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      hapticFeedbackType: .light,
+      onTap: onTap,
       child: Row(
         spacing: context.spacingBase,
         crossAxisAlignment: CrossAxisAlignment.start,

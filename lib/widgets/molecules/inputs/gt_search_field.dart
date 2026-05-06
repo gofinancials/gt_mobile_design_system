@@ -77,7 +77,8 @@ class _GtSearchFieldState extends State<GtSearchField> {
       valueListenable: controller.controller,
       builder: (value) {
         if (value.text.isEmpty) return const Offstage();
-        return InkWell(
+        return GtInkWell(
+          customBorder: CircleBorder(),
           onTap: () {
             controller.clear();
             widget.onChange?.call(null);

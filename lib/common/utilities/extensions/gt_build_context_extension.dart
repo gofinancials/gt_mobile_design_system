@@ -22,6 +22,18 @@ extension ThemeContextExtension on BuildContext {
   /// Retrieves the current global offset position.
   Offset get position => _scaler.position;
 
+  ({
+    Offset overlayPosition,
+    Offset anchorPosition,
+    Offset anchorBottomRight,
+    Rect anchorRect,
+    Rect anchorPaintBounds,
+    BoxConstraints overlayBoxConstraints,
+  })
+  overlayPosition(BuildContext overlayContext) {
+    return _scaler.overlayPosition(overlayContext);
+  }
+
   /// Retrieves the current local offset position.
   Offset get localPosition => _scaler.localPosition;
 
@@ -268,16 +280,14 @@ extension ThemeContextExtension on BuildContext {
   void showTooltip(
     String title, {
     required String message,
-    required Offset anchorPosition,
-    required Size anchorSize,
     required Widget anchorWidget,
+    required BuildContext anchorContext,
   }) {
     tooltip.show(
       title,
       message: message,
-      anchorPosition: anchorPosition,
-      anchorSize: anchorSize,
       anchorWidget: anchorWidget,
+      anchorContext: anchorContext,
     );
   }
 
