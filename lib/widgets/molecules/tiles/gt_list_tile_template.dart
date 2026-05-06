@@ -117,12 +117,7 @@ class GtBaseListTileTemplate extends GtStatelessWidget {
     }
 
     if (onTap != null) {
-      return GtInkWell(
-        borderRadius: .zero,
-        hapticFeedbackType: .light,
-        onTap: onTap,
-        child: child,
-      );
+      return GtInkWell(borderRadius: .zero, onTap: onTap, child: child);
     }
 
     return child;

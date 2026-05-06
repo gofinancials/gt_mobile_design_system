@@ -109,7 +109,6 @@ class _GtContextMenuState<T> extends State<GtContextMenu<T>> {
         padding: context.insets.allDp(6.px),
         child: GtInkWell(
           borderRadius: context.borderRadiusSm,
-          hapticFeedbackType: .light,
           onTap: _toggle,
           child: widget.anchor,
         ),

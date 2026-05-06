@@ -41,7 +41,6 @@ class GtInboxCard extends GtStatelessWidget {
       color: context.palette.text.soft,
     );
     return GtInkWell(
-      hapticFeedbackType: .light,
       borderRadius: context.borderRadiusXl,
       onTap: onTap,
       child: GtCard(

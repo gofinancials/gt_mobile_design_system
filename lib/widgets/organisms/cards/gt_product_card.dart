@@ -44,7 +44,6 @@ class GtProductCard extends GtStatelessWidget {
     }
 
     return GtInkWell(
-      hapticFeedbackType: .light,
       borderRadius: context.borderRadius2Xl,
       onTap: onTap,
       child: GtCard(

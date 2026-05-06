@@ -40,7 +40,6 @@ class GtPaymentSourceCard extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
-      hapticFeedbackType: .light,
       borderRadius: context.borderRadius2Xl,
       onTap: onTap,
       child: GtCard(

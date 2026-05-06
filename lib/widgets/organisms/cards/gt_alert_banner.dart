@@ -47,7 +47,6 @@ class GtAlertBanner extends GtStatelessWidget {
       child2: const Offstage(),
       child1: GtInkWell(
         borderRadius: context.borderRadius2Xl,
-        hapticFeedbackType: .light,
         onTap: onTap,
         child: GtCard(
           padding: context.insets.allDp(12.px),

@@ -88,10 +88,8 @@ class _GtPasswordFieldState extends State<GtPasswordField> {
               ),
           suffix: GtInkWell(
             borderRadius: context.borderRadiusXl,
-            hapticFeedbackType: .medium,
             child: GtAnimatedSwitcher(child: GtIcon(icon, key: ValueKey(icon))),
             onTap: () {
-              HapticFeedback.lightImpact();
               hidePass.value = !passwordHidden;
             },
           ),

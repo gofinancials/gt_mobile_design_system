@@ -42,7 +42,6 @@ class GtHelpCard extends GtStatelessWidget {
     }
 
     return GtInkWell(
-      hapticFeedbackType: .light,
       borderRadius: context.borderRadiusXl,
       onTap: onTap,
       child: GtCard(

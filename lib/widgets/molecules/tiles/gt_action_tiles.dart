@@ -35,7 +35,6 @@ class GtExportListTile extends GtStatelessWidget {
 
     return GtInkWell(
       borderRadius: .zero,
-      hapticFeedbackType: .light,
       onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),

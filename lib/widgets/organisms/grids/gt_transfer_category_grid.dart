@@ -112,7 +112,6 @@ class GtTransactionCategoryGridCell extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
-      hapticFeedbackType: .light,
       borderRadius: context.borderRadiusSm,
       onTap: onTap,
       child: Column(

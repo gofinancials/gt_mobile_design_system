@@ -44,7 +44,6 @@ class GtAccountListTile extends GtStatelessWidget {
 
     return GtInkWell(
       borderRadius: .zero,
-      hapticFeedbackType: .light,
       onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),
@@ -103,7 +102,6 @@ class GtContactListTile extends GtStatelessWidget {
 
     return GtInkWell(
       borderRadius: .zero,
-      hapticFeedbackType: .light,
       onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),
@@ -208,7 +206,6 @@ class GtStakeHolderListTile extends GtStatelessWidget {
 
     return GtInkWell(
       borderRadius: .zero,
-      hapticFeedbackType: .light,
       onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),

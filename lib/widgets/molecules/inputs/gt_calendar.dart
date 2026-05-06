@@ -229,7 +229,6 @@ class _GtCalendarHeader extends GtStatelessWidget {
 
     return GtInkWell(
       borderRadius: context.borderRadius2Xl,
-      hapticFeedbackType: .light,
       onTap: () async {
         final year = await showDatePicker(
           context: context,

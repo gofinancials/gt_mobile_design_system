@@ -58,7 +58,6 @@ class GtBillCard extends GtStatelessWidget {
 
     return GtInkWell(
       borderRadius: context.borderRadiusXl,
-      hapticFeedbackType: .light,
       onTap: onTap,
       child: child,
     );
