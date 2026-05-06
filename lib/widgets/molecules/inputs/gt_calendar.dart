@@ -138,9 +138,12 @@ class _GtCalendarState extends State<GtCalendar> {
             },
             onRangeSelected: (start, end, focusedDay) {
               controller.day = focusedDay;
-              if (start == null || end == null) return;
-              final range = DateTimeRange(start: start, end: end);
+              final range = DateTimeRange(
+                start: start ?? focusedDay,
+                end: end ?? focusedDay,
+              );
               controller.range = range;
+              if (start == null || end == null) return;
               widget.onSelectRange?.call(range);
             },
             headerStyle: HeaderStyle(
