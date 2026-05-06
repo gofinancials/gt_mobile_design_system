@@ -67,7 +67,7 @@ class _GtCalendarState extends State<GtCalendar> {
             lastDay: controller.lastDay,
             pageAnimationEnabled: false,
             focusedDay: focusedDay ?? controller.today,
-            currentDay: focusedDay,
+            currentDay: controller.today,
             rangeStartDay: selectedRange?.start,
             rangeEndDay: selectedRange?.end,
             calendarFormat: .month,
@@ -78,10 +78,7 @@ class _GtCalendarState extends State<GtCalendar> {
               _ => .disabled,
             },
             daysOfWeekHeight: 40,
-            selectedDayPredicate: (day) => switch (widget.selectionMode) {
-              .range => false,
-              _ => day.isSameDay(focusedDay),
-            },
+            selectedDayPredicate: (day) => day.isSameDay(focusedDay),
             calendarBuilders: CalendarBuilders(
               headerTitleBuilder: (context, day) {
                 return _GtCalendarHeader(
@@ -136,9 +133,11 @@ class _GtCalendarState extends State<GtCalendar> {
             ),
             onDaySelected: (selectedDay, day) {
               controller.day = selectedDay;
+              if (widget.selectionMode != .day) return;
               widget.onSelectDay?.call(selectedDay);
             },
             onRangeSelected: (start, end, focusedDay) {
+              controller.day = focusedDay;
               if (start == null || end == null) return;
               final range = DateTimeRange(start: start, end: end);
               controller.range = range;
