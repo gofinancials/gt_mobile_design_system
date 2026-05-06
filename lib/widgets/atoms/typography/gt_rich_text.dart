@@ -3,6 +3,9 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:styled_text/styled_text.dart';
 
+/// A type definition for rich text action tags, mapping to [StyledTextActionTag].
+typedef GtRichTextTag = StyledTextActionTag;
+
 /// A versatile rich text widget that parses and renders HTML-like tags using the Go Tech design system.
 ///
 /// This widget uses the `styled_text` package under the hood to apply custom text styles
@@ -28,6 +31,9 @@ class GtRichText extends GtStatelessWidget {
   /// The color used to style automatically detected hashtags (`<ht>` tags). Defaults to the highlighted base color.
   final Color? hashTagColor;
 
+  /// The color used for links (`<a>`, `<b><a>`, etc.). Defaults to the base text color.
+  final Color? linkColor;
+
   /// The maximum number of lines for the text to span, wrapping if necessary.
   final int? maxLines;
 
@@ -46,10 +52,12 @@ class GtRichText extends GtStatelessWidget {
     this.hashTagColor,
     this.textOverflow,
     this.onTextTap,
+    this.linkColor,
     super.key,
     this.tags,
   });
 
+  /// Parses the input [text] to detect and wrap hashtags in `<ht>` tags.
   String? get _parsedText {
     String inputText = text.value;
     final hashTags = AppRegex.hashTagRegex.allMatches(inputText);
@@ -167,14 +175,14 @@ class GtRichText extends GtStatelessWidget {
         launch,
         style: style.copyWith(
           decoration: TextDecoration.underline,
-          decorationColor: style.color,
+          decorationColor: linkColor ?? style.color,
         ),
       ),
       'ba': StyledTextActionTag(
         launch,
         style: style.copyWith(
           decoration: TextDecoration.underline,
-          decorationColor: style.color,
+          decorationColor: linkColor ?? style.color,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -182,7 +190,7 @@ class GtRichText extends GtStatelessWidget {
         launch,
         style: style.copyWith(
           decoration: TextDecoration.underline,
-          decorationColor: style.color,
+          decorationColor: linkColor ?? style.color,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -190,7 +198,7 @@ class GtRichText extends GtStatelessWidget {
         launch,
         style: style.copyWith(
           decoration: TextDecoration.underline,
-          decorationColor: style.color,
+          decorationColor: linkColor ?? style.color,
           fontWeight: FontWeight.w500,
         ),
       ),
