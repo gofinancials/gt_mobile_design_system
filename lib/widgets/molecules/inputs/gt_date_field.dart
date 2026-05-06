@@ -55,8 +55,8 @@ class GtDateField extends GtStatefulWidget {
   const GtDateField({
     super.key,
     this.controller,
-    this.dateFormat = "MM-dd-yyyy",
-    this.hintText = "MM-DD-YYYY",
+    this.dateFormat = "dd-MM-yyyy",
+    this.hintText = "DD--MM-YYYY",
     this.validator,
     this.decoration,
     this.suffix,
@@ -73,8 +73,8 @@ class GtDateField extends GtStatefulWidget {
   const GtDateField.range({
     super.key,
     this.controller,
-    this.dateFormat = "MM-dd-yyyy",
-    this.hintText = "MM-DD-YYYY",
+    this.dateFormat = "dd-MM-yyyy",
+    this.hintText = "DD-MM-YYYY - DD-MM-YYYY",
     this.validator,
     this.decoration,
     this.suffix,
@@ -143,6 +143,10 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
     _localCtrl.text = _formattedValue;
   }
 
+  void _pop(BuildContext context) {
+    AppDebouncer(500.milliseconds).run(context.pop);
+  }
+
   /// Opens the [GtCalendarModal] in a draggable bottom sheet.
   void _showPicker() {
     if (!widget.isEnabled) return;
@@ -153,8 +157,8 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
         controller: _calendarController,
         title: widget.calendarTitle ?? widget.label ?? widget.hintText,
         selectionMode: widget.selectionMode,
-        onSelectDay: (_) => context.pop(),
-        onSelectRange: (_) => context.pop(),
+        onSelectDay: (_) => _pop(context),
+        onSelectRange: (_) => _pop(context),
       ),
     );
   }
