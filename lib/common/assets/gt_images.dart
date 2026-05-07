@@ -161,6 +161,12 @@ class GtNetworkImages {
   /// Debit card
   static const String debitCard = '$_basePath/debit_card.png';
 
+  /// Physical debit card
+  static const String physicalCard = '$_basePath/physical_debit.png';
+
+  /// Virtual debit card
+  static const String virtualCard = '$_basePath/virtual_debit.png';
+
   /// A collection containing all 3D avatar template URLs.
   static const threeDAvatars = [
     avatar3d1,

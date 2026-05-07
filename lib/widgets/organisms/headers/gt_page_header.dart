@@ -62,14 +62,14 @@ class GtPageHeader extends GtStatelessWidget {
     final spacing = gapPx == null ? context.spacingBase : context.dp(gapPx.px);
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: .stretch,
+      mainAxisSize: .min,
       spacing: spacing,
       children: [
         GtText(title.upper, style: _titleStyle(context), textAlign: textAlign),
         if (subtitle.hasValue)
           GtText(
-            subtitle.value,
+            subtitle.value.capitalise(true),
             style: _subtitleStyle(context),
             textAlign: textAlign,
           ),
