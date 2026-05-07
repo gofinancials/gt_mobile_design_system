@@ -13,16 +13,16 @@ Widget buildGtDebitCardScreenUsecase(BuildContext context) {
   );
   final subtitle = context.knobs.string(
     label: 'Subtitle',
-    initialValue: 'Request your card in minutes and enjoy fast, secure payments—anywhere.',
+    initialValue:
+        'Request your card in minutes and enjoy fast, secure payments—anywhere.',
   );
-  final illustration = context.knobs.object.dropdown<(String, AppImageData)>(
+  final illustration = context.knobs.object.dropdown<(String, AppImageData?)>(
     label: 'Illustration',
     options: [
-      ('Card', AppImageData(imageData: GtNetworkImages.card)),
-      ('Wallet', AppImageData(imageData: GtNetworkImages.wallet)),
-      ('Cash', AppImageData(imageData: GtNetworkImages.cash)),
+      // ('None', null),
+      ('Card', AppImageData(imageData: GtNetworkImages.debitCard)),
     ],
-    initialOption: ('Card', AppImageData(imageData: GtNetworkImages.card)),
+    initialOption: ('Card', AppImageData(imageData: GtNetworkImages.debitCard)),
     labelBuilder: (value) => value.$1,
   );
   final buttonText = context.knobs.string(

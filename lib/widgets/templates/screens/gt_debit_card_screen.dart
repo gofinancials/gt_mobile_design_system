@@ -9,7 +9,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// illustration, title, subtitle, and a primary action button.
 class GtDebitCardScreen extends GtStatelessWidget {
   /// The top illustration displayed above text content.
-  final AppImageData image;
+  ///
+  /// When `null` or without a resolvable source, the hero image and its trailing
+  /// gap are omitted.
+  final AppImageData? image;
 
   /// The main heading shown beneath the [image].
   final String title;
@@ -33,13 +36,24 @@ class GtDebitCardScreen extends GtStatelessWidget {
   /// Creates a [GtDebitCardScreen].
   const GtDebitCardScreen({
     super.key,
-    required this.image,
+    this.image,
     required this.title,
     required this.subtitle,
     required this.button,
     this.onClose,
     this.backgroundColor,
   });
+
+  /// Whether [image] has a non-empty URL, asset path, or file to render.
+  static bool _hasImage(AppImageData? data) {
+    if (data == null) return false;
+    if (data.isUrl && (data.fileUrl?.trim().isNotEmpty ?? false)) return true;
+    if (data.isString && (data.filePath?.trim().isNotEmpty ?? false)) {
+      return true;
+    }
+    if (data.isFile && data.file != null) return true;
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,46 +75,53 @@ class GtDebitCardScreen extends GtStatelessWidget {
       body: Container(
         color: bgColor,
         child: SafeArea(
-          child: Padding(
-            padding: context.insets.defaultHorizontalInsets,
-            child: Column(
-              crossAxisAlignment: .stretch,
-              children: [
-                const GtGap.ySectionMd(),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: .end,
-                    crossAxisAlignment: .stretch,
-                    children: [
-                      // Hero illustration block.
-                      // GtImage(
-                      //   image: image,
-                      //   width: context.dp(200.px),
-                      //   height: context.dp(200.px),
-                      //   alignment: Alignment.center,
-                      // ),
+          child: Column(
+            crossAxisAlignment: .stretch,
+            children: [
+              const GtGap.ySectionMd(),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: .end,
+                  crossAxisAlignment: .stretch,
+                  children: [
+                    if (_hasImage(image)) ...[
+                      GtImage(
+                        image: image,
+                        width: context.dp(300.px),
+                        height: context.dp(300.px),
+                        alignment: Alignment.centerRight,
+                        fit: BoxFit.contain,
+                      ),
                       // GtGap.ySectionLg(),
-                      // Title block.
-                      GtText(
-                        title.upper,
-                        textAlign: .start,
-                        style: context.textStyles.d1(color: textColor),
-                      ),
-                      GtGap.yMd(),
-                      // Subtitle block.
-                      GtText(
-                        subtitle.capitalise(),
-                        textAlign: .start,
-                        style: context.textStyles.bodyS(color: textColor),
-                      ),
-                      GtGap.yXl(),
-                      button,
-                      GtGap.ySectionSm(),
                     ],
-                  ),
+                    // Title block.
+                    Padding(
+                      padding: context.insets.defaultHorizontalInsets,
+                      child: Column(
+                        crossAxisAlignment: .stretch,
+                        children: [
+                          GtText(
+                            title.upper,
+                            textAlign: .start,
+                            style: context.textStyles.d1(color: textColor),
+                          ),
+                          GtGap.yMd(),
+                          // Subtitle block.
+                          GtText(
+                            subtitle.capitalise(),
+                            textAlign: .start,
+                            style: context.textStyles.bodyS(color: textColor),
+                          ),
+                          GtGap.yXl(),
+                          button,
+                          GtGap.ySectionSm(),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
