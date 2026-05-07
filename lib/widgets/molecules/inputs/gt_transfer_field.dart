@@ -108,6 +108,7 @@ class _GtTransferFieldState extends State<GtTransferField> {
             ));
           },
           autofillHints: const [AutofillHints.transactionAmount],
+          autoCorrect: false,
         );
 
         return Column(

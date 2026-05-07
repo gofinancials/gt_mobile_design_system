@@ -96,14 +96,14 @@ class _GtSearchFieldState extends State<GtSearchField> {
       isEnabled: widget.isEnabled,
       decoration: widget.decoration ?? context.inputStyles.searchDecoration,
       helperText: widget.helperText,
+      autoCorrect: false,
       hintText: widget.hintText,
       controller: controller,
       suffix: widget.suffix ?? suffix,
       prefix: widget.prefix ?? GtIcon(GtIcons.magnifier, variant: .soft),
-      validator: widget.validator ?? AppValidators.urlValidator,
+      validator: widget.validator,
       keyboardType: TextInputType.url,
       onChanged: widget.onChange,
-      autofillHints: const [AutofillHints.url],
     );
   }
 }

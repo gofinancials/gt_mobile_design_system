@@ -62,6 +62,7 @@ class _GtAmountFieldState extends State<GtAmountField> {
       decoration: widget.decoration ?? context.inputStyles.transferInputStyle,
       isEnabled: widget.isEnabled,
       label: widget.label,
+      autoCorrect: false,
       hintText: "0.00",
       inputFormatters: [AppAmountFormatter()],
       controller: widget.controller,

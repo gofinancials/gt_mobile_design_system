@@ -49,6 +49,10 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
   /// The type of keyboard to use for editing the text. Defaults to [TextInputType.text].
   final TextInputType keyboardType;
 
+  /// Configures how the platform keyboard will select an uppercase or lowercase keyboard.
+  /// Defaults to [TextCapitalization.none].
+  final TextCapitalization textCapitalization;
+
   /// The action to perform when the keyboard's "done" or "next" button is pressed.
   /// Defaults to [TextInputAction.next].
   final TextInputAction textInputAction;
@@ -78,6 +82,7 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
     this.autofillHints,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.next,
+    this.textCapitalization = .none,
     this.prefix,
     this.suffix,
     this.debounceTime,
@@ -99,6 +104,7 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
     this.autofillHints,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.next,
+    this.textCapitalization = .none,
     this.prefix,
     this.suffix,
     this.debounceTime,
@@ -122,6 +128,7 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
   /// The controller managing the text and focus state.
   late final GtInputController controller;
 
+  /// The focus node that controls the focus state of the input.
   late final FocusNode focusNode;
 
   /// The debouncer used to delay search queries and autocomplete triggering.
@@ -183,6 +190,7 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
       fieldViewBuilder: (context, ctrl, focusNode, onFieldSubmitted) {
         return GtTextField(
           decoration: widget.decoration,
+          autoCorrect: false,
           isEnabled: widget.isEnabled,
           label: widget.label,
           hintText: widget.hintText,
@@ -192,6 +200,7 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
           keyboardType: widget.keyboardType,
           autofillHints: widget.autofillHints,
           textInputAction: widget.textInputAction,
+          textCapitalization: widget.textCapitalization,
           prefix: widget.prefix,
           onChanged: (query) async {
             debouncer.abort();

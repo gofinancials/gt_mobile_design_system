@@ -112,6 +112,7 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
           },
         ),
         textAlign: widget.textAlign,
+        autoCorrect: false,
         keyboardType: TextInputType.phone,
         onChanged: widget.onChange,
         autofillHints: const [AutofillHints.telephoneNumberNational],
