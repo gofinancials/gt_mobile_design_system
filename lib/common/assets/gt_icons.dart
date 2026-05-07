@@ -361,6 +361,11 @@ class GtIcons {
   static const delete = GtIconData(0xf129);
   static const faceId = GtIconData(0xf128);
 
+  static const money = GtIconData(0xf127);
+  static const temple = GtIconData(0xf12c);
+  static const childHead = GtIconData(0xf146);
+  static const verifiedUsers = GtIconData(0xf12b);
+
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
   /// This is particularly useful for cataloging, testing, or building
@@ -690,5 +695,9 @@ class GtIcons {
     alipay,
     delete,
     faceId,
+    money,
+    temple,
+    childHead,
+    verifiedUsers,
   ];
 }

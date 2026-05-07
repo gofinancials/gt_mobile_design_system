@@ -867,7 +867,10 @@ Widget gtListTileAllUseCase(BuildContext context) {
           GtInstructionListTile(
             instructionText,
             iconVariant: GtIconVariant.strong,
-            textColor: context.palette.text.darkerSub,
+            iconSize: context.dp(16.px),
+            textStyle: context.textStyles.bodyXs(
+              color: context.palette.text.sub,
+            ),
             icon: GtIcons.user,
           ),
         ],

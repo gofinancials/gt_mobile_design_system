@@ -2,31 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-/// A list tile designed to display a label and its corresponding text value,
-/// often used for summarizing form inputs or displaying read-only data.
+/// A list tile designed to display a descriptive label and its corresponding text value.
 ///
-/// Can optionally be rendered inside a stylized card using [GtInputListTile.asCard].
+/// This widget is commonly used for summarizing form inputs, displaying read-only
+/// account information, or presenting key-value pairs in a clean, vertical layout.
+///
+/// It can be rendered as a standalone tile or wrapped in a stylized card using
+/// the [GtInputListTile.asCard] constructor.
 class GtInputListTile extends GtStatelessWidget {
-  /// The primary label or title for the input data.
+  /// The primary label or title for the information being displayed.
   final String label;
 
-  /// The corresponding text value or data displayed alongside the label.
+  /// The main text value or data associated with the [label].
   final String text;
 
   /// An optional widget, typically an icon, displayed at the start of the tile.
   final Widget? leading;
 
-  /// The callback triggered when the tile is tapped. Provides light haptic feedback.
+  /// A callback triggered when the tile is tapped.
+  ///
+  /// If provided, the tile becomes interactive and provides haptic feedback.
   final OnPressed? onTap;
 
-  /// Custom text style to apply to the [text].
+  /// Optional custom [TextStyle] for the [text].
+  ///
+  /// If null, defaults to [GtTextStyles.subHeadS].
   final TextStyle? textStyle;
 
-  /// Custom text style to apply to the [label].
+  /// Optional custom [TextStyle] for the [label].
+  ///
+  /// If null, defaults to [GtTextStyles.bodyXs] with a subtle color.
   final TextStyle? labelStyle;
+
+  /// Internal flag to determine if the tile should be wrapped in a [GtCard].
   final bool _asCard;
 
-  /// Creates a standard [GtInputListTile] without a card wrapper.
+  /// Creates a standard [GtInputListTile] without a card container.
   const GtInputListTile(
     this.label, {
     super.key,
@@ -37,7 +48,7 @@ class GtInputListTile extends GtStatelessWidget {
     this.onTap,
   }) : _asCard = false;
 
-  /// Creates a [GtInputListTile] wrapped inside a stylized [GtCard].
+  /// Creates a [GtInputListTile] that is automatically wrapped in a [GtCard].
   const GtInputListTile.asCard(
     this.label, {
     super.key,
@@ -86,22 +97,27 @@ class GtInputListTile extends GtStatelessWidget {
   }
 }
 
-/// A list tile designed to display a label and a value that can be easily
-/// copied to the device clipboard upon tapping.
+/// A list tile that displays a label and a value, allowing the user to copy
+/// the value to the clipboard by tapping the tile.
+///
+/// This is ideal for IDs, account numbers, or any data that the user might
+/// need to use elsewhere. It includes a copy icon by default.
 class GtCopyTile extends GtStatelessWidget {
-  /// The icon to display at the start of the tile.
+  /// The icon displayed at the start of the tile, typically representing the data type.
   final IconData leading;
 
-  /// The descriptive label for the data being copied.
+  /// The descriptive label for the data (e.g., "Account Number").
   final String label;
 
-  /// The actual text value that will be copied to the clipboard.
+  /// The actual text value that will be copied to the clipboard when tapped.
   final String value;
 
-  /// An optional callback executed immediately after the [value] is copied.
+  /// An optional callback executed after the [value] has been successfully copied.
+  ///
+  /// This can be used to show a toast or snackbar notification.
   final OnChanged<String>? onCopied;
 
-  /// Creates a [GtCopyTile].
+  /// Creates a [GtCopyTile] for easy data copying.
   const GtCopyTile(
     this.label, {
     super.key,
@@ -147,31 +163,50 @@ class GtCopyTile extends GtStatelessWidget {
   }
 }
 
-/// A list tile used to present instructional text alongside an icon.
+/// A list tile used to present instructional or informative text alongside a prominent icon.
+///
+/// This widget is useful for onboarding steps, feature explanations, or any
+/// scenario where text needs to be visually associated with a specific icon.
 class GtInstructionListTile extends GtStatelessWidget {
-  /// The instructional text to display.
+  /// The instructional or informative text to display.
   final String text;
 
-  /// The icon to display alongside the instruction.
+  /// The icon to display alongside the text.
   final IconData icon;
 
-  /// The variant style applied to the [icon]. Defaults to [GtIconVariant.soft].
+  /// The visual style variant for the [icon].
+  ///
+  /// Defaults to [GtIconVariant.soft].
   final GtIconVariant? iconVariant;
 
-  /// Custom color to apply to the instructional [text].
-  final Color? textColor;
+  /// Optional custom [TextStyle] for the [text].
+  ///
+  /// If null, defaults to [GtTextStyles.bodyXs].
+  final TextStyle? textStyle;
 
-  /// An optional callback triggered when the instruction is tapped.
+  /// An optional callback triggered when the tile is tapped.
   final OnPressed? onTap;
 
-  /// Creates a [GtInstructionListTile].
+  /// Optional custom size for the [icon].
+  ///
+  /// If null, defaults to 24px.
+  final double? iconSize;
+
+  /// How the icon and text should be aligned vertically.
+  ///
+  /// Defaults to [CrossAxisAlignment.start].
+  final CrossAxisAlignment crossAxisAlignment;
+
+  /// Creates a [GtInstructionListTile] with the given [text] and [icon].
   const GtInstructionListTile(
     this.text, {
     super.key,
     required this.icon,
     this.onTap,
     this.iconVariant,
-    this.textColor,
+    this.textStyle,
+    this.iconSize,
+    this.crossAxisAlignment = CrossAxisAlignment.start,
   });
 
   @override
@@ -181,18 +216,18 @@ class GtInstructionListTile extends GtStatelessWidget {
       onTap: onTap,
       child: Row(
         spacing: context.spacingBase,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: crossAxisAlignment,
         children: [
           GtIcon(
             icon,
-            size: context.dp(24.px),
+            size: iconSize ?? context.dp(24.px),
             alignment: Alignment.topLeft,
             variant: iconVariant ?? GtIconVariant.soft,
           ),
           Expanded(
             child: GtText(
               text,
-              style: context.textStyles.bodyS(color: textColor),
+              style: textStyle ?? context.textStyles.bodyXs(),
             ),
           ),
         ],
@@ -201,12 +236,15 @@ class GtInstructionListTile extends GtStatelessWidget {
   }
 }
 
-/// A list tile that displays a label and a value in a two-column row format.
+/// A list tile that displays a label and a value in a balanced two-column format.
+///
+/// The label is typically on the left, and the value (with optional prefix/suffix)
+/// is on the right. This is often used in transaction details or summary screens.
 class GtDoubleColumnListTile extends GtStatelessWidget {
-  /// The text displayed in the left column.
+  /// The text displayed in the left column, usually the field name.
   final String label;
 
-  /// The text displayed in the right column.
+  /// The text displayed in the right column, usually the field value.
   final String value;
 
   /// An optional widget displayed immediately before the [value].
@@ -215,7 +253,9 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   /// An optional widget displayed immediately after the [value].
   final Widget? valueSuffix;
 
-  /// If true, emphasizes the [value] text over the [label]. Defaults to true.
+  /// Whether to emphasize the [value] text over the [label].
+  ///
+  /// If true (default), the value uses a stronger style while the label is subtler.
   final bool highlightValue;
 
   /// Creates a [GtDoubleColumnListTile].
@@ -252,14 +292,15 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   }
 }
 
-/// A minimalistic list tile used to display a small leading widget alongside a text label.
+/// A minimalistic tile for displaying a small leading widget alongside a text label.
 ///
-/// This is typically used for subtle inline information, such as hints or inline status indicators.
+/// This is typically used for subtle inline information, such as help hints,
+/// status indicators, or small informational notes within a larger context.
 class GtSimpleInfoTile extends GtStatelessWidget {
-  /// The custom widget to display at the start of the tile (e.g., a small icon).
+  /// The widget to display at the start, such as a small status icon.
   final Widget leading;
 
-  /// The informational text to display next to the [leading] widget.
+  /// The informational text content.
   final String text;
 
   /// Creates a [GtSimpleInfoTile].
