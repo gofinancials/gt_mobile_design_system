@@ -155,6 +155,15 @@ class GtNetworkImages {
   static const String avatarTexture5 =
       '$_baseUrl/avatar_templates/texture_5.webp';
 
+  /// Debit card
+  static const String debitCard = '$_baseUrl/DebitCard.webp';
+
+  /// Physical debit card
+  static const String physicalCard = '$_baseUrl/PhysicalDebitCard.webp';
+
+  /// Virtual debit card
+  static const String virtualCard = '$_baseUrl/VirtualDebitCard.webp';
+
   /// A collection containing all 3D avatar template URLs.
   static const threeDAvatars = [
     avatar3d1,

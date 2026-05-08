@@ -6,9 +6,9 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 String _accessStatusLabel(GtAccessStatus s) {
   return switch (s) {
-    GtAccessStatus.fullAccess => 'Full access',
-    GtAccessStatus.noAccess => 'No access',
-    GtAccessStatus.viewOnly => 'View only',
+    .fullAccess => 'Full access',
+    .noAccess => 'No access',
+    .viewOnly => 'View only',
   };
 }
 
@@ -18,7 +18,7 @@ Widget playgroundGtStatusTextUseCase(BuildContext context) {
   final status = context.knobs.object.dropdown<GtAccessStatus>(
     label: 'Access status',
     options: GtAccessStatus.values,
-    initialOption: GtAccessStatus.fullAccess,
+    initialOption: .fullAccess,
     labelBuilder: _accessStatusLabel,
   );
 
