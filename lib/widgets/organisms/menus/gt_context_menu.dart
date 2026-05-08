@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -108,11 +107,9 @@ class _GtContextMenuState<T> extends State<GtContextMenu<T>> {
           borderRadius: context.borderRadiusSm,
         ),
         padding: context.insets.allDp(6.px),
-        child: InkWell(
-          onTap: () {
-            HapticFeedback.lightImpact();
-            _toggle();
-          },
+        child: GtInkWell(
+          borderRadius: context.borderRadiusSm,
+          onTap: _toggle,
           child: widget.anchor,
         ),
       ),
@@ -192,9 +189,10 @@ class GtContextMenuTile<T> extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GtInkWell(
+      hapticFeedbackType: .selection,
+      borderRadius: .zero,
       onTap: () {
-        HapticFeedback.selectionClick();
         subAction?.call();
         item.onTap();
       },

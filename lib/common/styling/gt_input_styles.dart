@@ -118,20 +118,20 @@ class GtInputStyles {
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weaker,
       ),
-      padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 12.px),
+      padding: context.insets.symmetricDp(horizontal: 16.px),
     );
   }
 
-  /// The default style configuration for standard form text fields,
-  /// featuring a weak background and standard height.
+  /// The style configuration specifically tailored for phone number input fields,
+  /// matching the default decoration but optimizing padding for phone numbers.
   GtInputDecoration get phoneInputDecoration {
     return defaultDecoration.copyWith(
-      padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 7.px),
+      padding: context.insets.symmetricDp(horizontal: 16.px),
     );
   }
 
-  /// The default style configuration for standard form text fields,
-  /// featuring a weak background and standard height.
+  /// The style configuration for country or phone code selector fields,
+  /// featuring a subtle border to distinguish it from the main phone input.
   GtInputDecoration get phoneCodeDecoration {
     return phoneInputDecoration.copyWith(
       decoration: BoxDecoration(
@@ -145,31 +145,6 @@ class GtInputStyles {
   /// The default style configuration for standard form text fields,
   /// featuring a weak background and standard height.
   GtInputDecoration get plainDecoration {
-    final textStyle = context.textStyles.input();
-    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
-    final disabledStyle = textStyle.copyWith(
-      color: context.palette.text.disabled,
-    );
-
-    return GtInputDecoration(
-      size: Size(.infinity, 64),
-      textStyle: textStyle,
-      disabledStyle: disabledStyle,
-      hintStyle: hintStyle,
-      labelStyle: context.textStyles.body2s(color: context.palette.text.soft),
-      errorStyle: context.textStyles.body2s(color: context.palette.error.base),
-      helperStyle: context.textStyles.body2s(),
-      decoration: BoxDecoration(
-        borderRadius: context.borderRadiusXl,
-        color: context.palette.bg.weak,
-      ),
-      padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 12.px),
-    );
-  }
-
-  /// A compact style configuration for standard form text fields,
-  /// featuring a weak background, smaller height, and reduced text size.
-  GtInputDecoration get plainSmDecoration {
     final textStyle = context.textStyles.bodyS();
     final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
     final disabledStyle = textStyle.copyWith(
@@ -177,7 +152,7 @@ class GtInputStyles {
     );
 
     return GtInputDecoration(
-      size: Size(.infinity, 60),
+      size: Size(.infinity, 48),
       textStyle: textStyle,
       disabledStyle: disabledStyle,
       hintStyle: hintStyle,
@@ -188,7 +163,7 @@ class GtInputStyles {
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
       ),
-      padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 6.px),
+      padding: context.insets.symmetricDp(horizontal: 12.px),
     );
   }
 
@@ -232,7 +207,7 @@ class GtInputStyles {
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weaker,
       ),
-      padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 6.px),
+      padding: context.insets.symmetricDp(horizontal: 16.px),
     );
   }
 
@@ -275,7 +250,7 @@ class GtInputStyles {
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weaker,
       ),
-      padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 6.px),
+      padding: context.insets.symmetricDp(horizontal: 8.px),
     );
   }
 
@@ -318,7 +293,7 @@ class GtInputStyles {
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weaker,
       ),
-      padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 6.px),
+      padding: context.insets.symmetricDp(horizontal: 8.px),
     );
   }
 
@@ -363,7 +338,7 @@ class GtInputStyles {
         color: context.palette.bg.weaker,
         border: Border.all(color: context.palette.stroke.soft, width: 2),
       ),
-      padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 6.px),
+      padding: context.insets.symmetricDp(horizontal: 8.px),
     );
   }
 
@@ -372,7 +347,6 @@ class GtInputStyles {
     ('Transfer Input Style', transferInputStyle),
     ('Default Decoration', defaultDecoration),
     ('Plain Decoration', plainDecoration),
-    ('Plain Small Decoration', plainSmDecoration),
     ('Small Decoration', smDecoration),
     ('Search Decoration', searchDecoration),
     ('Small Search Decoration', smSearchDecoration),
@@ -503,7 +477,9 @@ class GtInputDecoration {
   }
 
   /// Returns the BoxConstraints based on the configured [size].
-  BoxConstraints get constraints => BoxConstraints(minHeight: size.height);
+  BoxConstraints get constraints {
+    return BoxConstraints.tightFor(height: size.height);
+  }
 
   /// Gets the resolved error decoration, falling back to the base [decoration] if null.
   BoxDecoration get errorDecoration => _errorDecoration ?? decoration;

@@ -1,6 +1,5 @@
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A specialized text input field designed for passwords.
@@ -86,10 +85,10 @@ class _GtPasswordFieldState extends State<GtPasswordField> {
                 password,
                 minLength: widget.minLength,
               ),
-          suffix: InkWell(
+          suffix: GtInkWell(
+            borderRadius: context.borderRadiusXl,
             child: GtAnimatedSwitcher(child: GtIcon(icon, key: ValueKey(icon))),
             onTap: () {
-              HapticFeedback.lightImpact();
               hidePass.value = !passwordHidden;
             },
           ),

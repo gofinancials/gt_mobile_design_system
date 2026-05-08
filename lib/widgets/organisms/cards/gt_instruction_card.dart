@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -45,11 +44,9 @@ class GtInstructionCard extends GtStatelessWidget {
     final textColor = variant.getTextColor(palette);
     final iconColor = variant.getIconColor(palette);
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onPressed();
-      },
+    return GtInkWell(
+      borderRadius: context.borderRadiusXl,
+      onTap: onPressed,
       child: GtCard(
         color: isFilled ? bgColor : Colors.transparent,
         border: isFilled

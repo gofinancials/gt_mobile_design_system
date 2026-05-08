@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -49,12 +48,9 @@ class GtTransactionListTile extends GtStatelessWidget {
       _ => palette.primary.base,
     };
 
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: .zero,
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),
         child: Row(

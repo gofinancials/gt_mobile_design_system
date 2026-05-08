@@ -119,6 +119,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
             child: GtAutocompleteField<int>.builder(
               key: const ValueKey("gt_dob_field_day"),
               autofillHints: const [AutofillHints.birthdayDay],
+              keyboardType: .number,
               label: "day".ctr(),
               builder: (query) {
                 return _dobController.daySuggestions.whereList(
@@ -138,6 +139,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
             child: GtAutocompleteField<int>(
               key: const ValueKey("gt_dob_field_month"),
               label: "month".ctr(),
+              textCapitalization: .words,
               autofillHints: const [AutofillHints.birthdayMonth],
               suggestions: _dobController.monthSuggestions,
               controller: _monthCtrl,
@@ -164,6 +166,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
               onChange: (value) {
                 _dobController.year = value?.value;
               },
+              keyboardType: .number,
               textInputAction: .next,
               suffix: Offstage(),
             ),

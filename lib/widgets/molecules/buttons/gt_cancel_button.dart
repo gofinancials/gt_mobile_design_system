@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -46,14 +45,14 @@ class GtCancelButton extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget child = InkWell(
+    Widget child = GtInkWell(
+      customBorder: CircleBorder(),
       onTap: () {
-        HapticFeedback.lightImpact();
         if (subAction != null) subAction!();
         if (onTap != null) return onTap!();
         if (!context.canPop) return;
 
-        Navigator.of(context).maybePop();
+        context.maybePop();
       },
       child: GtIcon.withColor(
         GtIcons.cancel,

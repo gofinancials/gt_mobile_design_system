@@ -112,6 +112,7 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
           },
         ),
         textAlign: widget.textAlign,
+        autoCorrect: false,
         keyboardType: TextInputType.phone,
         onChanged: widget.onChange,
         autofillHints: const [AutofillHints.telephoneNumberNational],
@@ -251,7 +252,9 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
   Widget build(BuildContext context) {
     final decoration = context.inputStyles.phoneCodeDecoration;
 
-    return InkWell(
+    return GtInkWell(
+      borderRadius: context.borderRadiusXl,
+      hapticFeedbackType: .medium,
       onTap: _showSheet,
       child: Container(
         constraints: decoration.constraints,

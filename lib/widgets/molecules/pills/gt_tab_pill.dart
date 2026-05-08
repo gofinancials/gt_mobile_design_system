@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -106,11 +105,10 @@ class GtTabPill<T> extends StatelessWidget {
       trailingWidget = GtIcon.withColor(trailing!, color: textColor, size: 16);
     }
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.selectionClick();
-        onSelect(value);
-      },
+    return GtInkWell(
+      borderRadius: context.borderRadiusSm,
+      hapticFeedbackType: .selection,
+      onTap: () => onSelect(value),
       child: GtPill(
         text: text.upper,
         bgColor: bgColor,
@@ -173,11 +171,10 @@ class GtSelectionPill<T> extends GtTabPill<T> {
       trailingWidget = GtIcon.withColor(trailing!, color: textColor, size: 16);
     }
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.selectionClick();
-        onSelect(value);
-      },
+    return GtInkWell(
+      borderRadius: context.borderRadiusMd,
+      hapticFeedbackType: .selection,
+      onTap: () => onSelect(value),
       child: GtPill(
         text: text.capitalise(),
         bgColor: bgColor,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -31,12 +30,9 @@ class GtListTile extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: context.borderRadius2Xl,
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),
         child: Row(
@@ -105,12 +101,9 @@ class GtIconListTile extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.palette;
 
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: context.borderRadius2Xl,
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),
         child: Row(
@@ -155,12 +148,9 @@ class _GtIconListTileAlt extends GtIconListTile {
   Widget build(BuildContext context) {
     final palette = context.palette;
 
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: context.borderRadius2Xl,
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),
         child: Row(
@@ -223,12 +213,9 @@ class GtSimpleActionListTile extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: context.borderRadius2Xl,
+      onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),
         child: Row(

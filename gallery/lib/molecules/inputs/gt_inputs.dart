@@ -199,7 +199,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
             const GtGap.yXl(),
             GtPasswordField(
               controller: _inputCtrl4,
-              label: isSearch ? null : "Enter password here",
+              label: "Enter password here",
               decoration: decoration.$2,
             ),
             const GtGap.yXl(),
@@ -241,14 +241,12 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
             const GtGap.yXl(),
             GtDateField(
               controller: _inputCtrl10,
-              hintText: "dd/mm/yyyy",
               calendarTitle: "Select your birthday",
               decoration: decoration.$2,
             ),
             const GtGap.yXl(),
             GtDateField.range(
               controller: _inputCtrl11,
-              hintText: "dd/mm/yyyy - dd/mm/yyyy",
               calendarTitle: "Select your vacation dates",
               decoration: decoration.$2,
             ),

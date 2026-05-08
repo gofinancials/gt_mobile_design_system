@@ -15,5 +15,6 @@ export 'gt_payment_source_card.dart';
 export 'gt_product_card.dart';
 export 'gt_progress_card.dart';
 export 'gt_reminder_banner.dart';
+export 'gt_selectable_card.dart';
 export 'gt_state_cards.dart';
 export 'gt_tip_card.dart';

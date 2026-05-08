@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -98,11 +97,10 @@ class GtRadio<T> extends GtStatelessWidget {
     return RepaintBoundary(
       child: GtDisabledOverlay(
         disabled,
-        child: InkWell(
-          onTap: () {
-            HapticFeedback.selectionClick();
-            onChanged(value);
-          },
+        child: GtInkWell(
+          hapticFeedbackType: .selection,
+          customBorder: CircleBorder(),
+          onTap: () => onChanged(value),
           child: AnimatedContainer(
             duration: 500.milliseconds,
             height: size,

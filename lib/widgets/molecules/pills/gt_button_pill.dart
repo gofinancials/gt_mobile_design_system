@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -67,12 +66,9 @@ class GtButtonPill extends StatelessWidget {
       _ => 6.px,
     };
 
-    return InkWell(
-      onTap: () {
-        if (onTap == null) return;
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: context.borderRadiusSm,
+      onTap: onTap,
       child: GtPill(
         text: text.upper,
         bgColor: bgColor,

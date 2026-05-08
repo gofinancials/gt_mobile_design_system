@@ -73,7 +73,7 @@ class GtConfirmDialogAction extends GtStatelessWidget {
   final String text;
 
   /// Whether this action performs a destructive operation (e.g., deleting data).
-  /// 
+  ///
   /// If true, the text is typically colored with the theme's error color.
   final bool destructive;
 
@@ -92,7 +92,10 @@ class GtConfirmDialogAction extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.palette;
     final textColor = destructive ? colors.error.base : null;
-    final child = GtText(text, style: context.textStyles.bodyS(color: textColor));
+    final child = GtText(
+      text,
+      style: context.textStyles.bodyS(color: textColor),
+    );
     if (context.isIos || context.isMacos) {
       return CupertinoDialogAction(
         onPressed: onTap,

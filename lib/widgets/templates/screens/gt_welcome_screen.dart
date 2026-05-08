@@ -113,6 +113,7 @@ class GtWelcomeScreen extends GtStatelessWidget {
         decoration: BoxDecoration(image: decorationImage, color: bgColor),
         padding: context.insets.defaultHorizontalInsets,
         child: SafeArea(
+          top: _titleWidget == null,
           child: Column(
             mainAxisSize: .max,
             crossAxisAlignment: .stretch,

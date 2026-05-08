@@ -28,6 +28,11 @@ class GtSelectableCard<T> extends GtStatelessWidget {
   /// The internal padding applied around the [child] to accommodate the selection border without clipping.
   final double selectedMargin;
 
+  /// The border radius applied to the card's corners.
+  ///
+  /// If null, it defaults to the extra-large radius ([context.borderRadiusXl]).
+  final BorderRadius? borderRadius;
+
   /// Creates a [GtSelectableCard].
   const GtSelectableCard({
     required this.selected,
@@ -36,6 +41,7 @@ class GtSelectableCard<T> extends GtStatelessWidget {
     required this.child,
     this.variant = .featured,
     this.selectedMargin = 0,
+    this.borderRadius,
     super.key,
   });
 
@@ -52,7 +58,7 @@ class GtSelectableCard<T> extends GtStatelessWidget {
         onSelect(value);
         context.scrollIntoViewNow();
       },
-      borderRadius: context.borderRadiusXl,
+      borderRadius: borderRadius ?? context.borderRadiusXl,
       padding: .zero,
       margin: .zero,
       border: border,
@@ -78,23 +84,32 @@ class GtAvatarSelectionCard extends GtStatelessWidget {
   /// The image data representing the avatar.
   final AppImageData image;
 
+  /// The border radius applied to the avatar image and its selection border.
+  ///
+  /// If null, it defaults to the medium radius ([context.borderRadiusMd]).
+  final BorderRadius? borderRadius;
+
   /// Creates a [GtAvatarSelectionCard].
   const GtAvatarSelectionCard(
     this.image, {
     required this.selected,
     required this.onSelect,
+    this.borderRadius,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final cornerRadius = borderRadius ?? context.borderRadiusMd;
+
     return GtSelectableCard(
-      selectedMargin: 2,
+      selectedMargin: 3,
       selected: selected,
       onSelect: onSelect,
       value: image,
+      borderRadius: cornerRadius,
       child: ClipRRect(
-        borderRadius: context.borderRadiusMd,
+        borderRadius: cornerRadius,
         child: GtImage(image: image, width: 80, height: 120),
       ),
     );

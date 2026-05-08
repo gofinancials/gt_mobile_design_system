@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -118,13 +117,7 @@ class GtBaseListTileTemplate extends GtStatelessWidget {
     }
 
     if (onTap != null) {
-      return InkWell(
-        onTap: () {
-          HapticFeedback.lightImpact();
-          onTap?.call();
-        },
-        child: child,
-      );
+      return GtInkWell(borderRadius: .zero, onTap: onTap, child: child);
     }
 
     return child;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -44,11 +43,9 @@ class GtProductCard extends GtStatelessWidget {
       );
     }
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: context.borderRadius2Xl,
+      onTap: onTap,
       child: GtCard(
         padding: context.insets.allDp(12.px),
         variant: variant,
@@ -60,7 +57,7 @@ class GtProductCard extends GtStatelessWidget {
           children: [
             GtIcon.withColor(icon, color: iconColor, size: 24),
             if (footer == null) const Spacer() else const GtGap.ySm(),
-            GtText(name, style: context.textStyles.subHeadS()),
+            GtText(name, style: context.textStyles.subHeadS(), maxLines: 1),
             ?footer,
           ],
         ),

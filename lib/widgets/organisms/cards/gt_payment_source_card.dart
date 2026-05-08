@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -40,11 +39,9 @@ class GtPaymentSourceCard extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap?.call();
-      },
+    return GtInkWell(
+      borderRadius: context.borderRadius2Xl,
+      onTap: onTap,
       child: GtCard(
         padding: context.insets.allDp(16.px),
         variant: variant,
