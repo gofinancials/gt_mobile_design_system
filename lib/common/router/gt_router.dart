@@ -59,7 +59,7 @@ class GtRouter {
   }
 
   /// Exits the application gracefully using [SystemNavigator.pop].
-  static void closeGt() {
+  static void closeApp() {
     SystemNavigator.pop(animated: true);
   }
 
