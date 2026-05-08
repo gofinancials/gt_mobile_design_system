@@ -76,12 +76,12 @@ import 'package:gallery/templates/modals/gt_bottom_sheet.dart'
     as _gallery_templates_modals_gt_bottom_sheet;
 import 'package:gallery/templates/overlays/gt_overlay.dart'
     as _gallery_templates_overlays_gt_overlay;
-import 'package:gallery/templates/screens/gt_duo_tone_screen.dart'
-    as _gallery_templates_screens_gt_duo_tone_screen;
 import 'package:gallery/templates/screens/gt_debit_card_screen.dart'
     as _gallery_templates_screens_gt_debit_card_screen;
 import 'package:gallery/templates/screens/gt_debit_card_selection_screen.dart'
     as _gallery_templates_screens_gt_debit_card_selection_screen;
+import 'package:gallery/templates/screens/gt_duo_tone_screen.dart'
+    as _gallery_templates_screens_gt_duo_tone_screen;
 import 'package:gallery/templates/screens/gt_how_to_screen.dart'
     as _gallery_templates_screens_gt_how_to_screen;
 import 'package:gallery/templates/screens/gt_splash_screen.dart'
@@ -546,6 +546,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                   ),
                 ],
               ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtButtonBottomNavBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtButtonBottomNavBar',
+                    builder:
+                        _gallery_organisms_navigation_gt_bottom_navigation_bar
+                            .playgroundGtButtonBottomNavBarUseCase,
+                  ),
+                ],
+              ),
             ],
           ),
           _widgetbook.WidgetbookFolder(
@@ -692,16 +703,6 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'screens',
             children: [
               _widgetbook.WidgetbookComponent(
-                name: 'GtDuotoneScreen',
-                useCases: [
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'GtDuotoneScreen',
-                    builder: _gallery_templates_screens_gt_duo_tone_screen
-                        .buildGtDuotoneScreenUsecase,
-                  ),
-                ],
-              ),
-              _widgetbook.WidgetbookComponent(
                 name: 'GtDebitCardScreen',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -716,8 +717,19 @@ final directories = <_widgetbook.WidgetbookNode>[
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtDebitCardSelectionScreen',
-                    builder: _gallery_templates_screens_gt_debit_card_selection_screen
-                        .buildGtDebitCardSelectionScreenUsecase,
+                    builder:
+                        _gallery_templates_screens_gt_debit_card_selection_screen
+                            .buildGtDebitCardSelectionScreenUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtDuotoneScreen',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtDuotoneScreen',
+                    builder: _gallery_templates_screens_gt_duo_tone_screen
+                        .buildGtDuotoneScreenUsecase,
                   ),
                 ],
               ),

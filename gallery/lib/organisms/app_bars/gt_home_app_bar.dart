@@ -177,10 +177,9 @@ Widget buildGtModalAppbarUsecase(BuildContext context) {
     width: 24,
   );
 
-  showModal({String? title, Widget? titleLeading}) {
+  showModal({String? title, Widget? titleLeading, bool extended = false}) {
     showModalBottomSheet(
       context: context,
-
       builder: (context) {
         return Material(
           type: .transparency,
@@ -193,7 +192,17 @@ Widget buildGtModalAppbarUsecase(BuildContext context) {
               mainAxisAlignment: .start,
               crossAxisAlignment: .stretch,
               children: [
-                if (titleLeading == null)
+                if (extended)
+                  GtModalAppBar.extended(
+                    title: title ?? "Schedule",
+                    action: GtRaisedButton(
+                      onPressed: () {},
+                      text: "UPLOAD",
+                      size: .xsmall,
+                      variant: .secondary,
+                    ),
+                  )
+                else if (titleLeading == null)
                   GtModalAppBar(title: title)
                 else
                   GtModalAppBar.withLeadingTitleimage(
@@ -222,15 +231,20 @@ Widget buildGtModalAppbarUsecase(BuildContext context) {
           GtRaisedButton(
             onPressed: showModal,
             text: "Show Simple Modal AppBar",
+            variant: .secondary,
           ),
           GtRaisedButton(
             onPressed: () => showModal(title: title),
             text: "Show Titled Modal AppBar",
-            variant: .away,
+            variant: .info,
           ),
           GtRaisedButton(
             onPressed: () => showModal(title: title, titleLeading: leading),
-            text: "Show Prefixed Titled Modal AppBar",
+            text: "Show Titled Modal AppBar",
+          ),
+          GtRaisedButton(
+            onPressed: () => showModal(title: title, extended: true),
+            text: "Show Extended Modal AppBar",
             variant: .black,
           ),
         ],

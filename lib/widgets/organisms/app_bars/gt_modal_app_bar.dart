@@ -27,7 +27,7 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// a centered title, and an optional trailing [action] widget.
   const factory GtModalAppBar.extended({
     required String title,
-    required Widget? action,
+    Widget? action,
     Key? key,
   }) = _GtExtendedModalAppBar;
 

@@ -60,6 +60,10 @@ Widget playgroundGtBottomNavigationBarUseCase(BuildContext context) {
     initialOption: GtBottomNavigationStyle.ios,
     labelBuilder: _styleLabel,
   );
+  final withTrailing = context.knobs.boolean(
+    label: 'With trailing action (iOS)',
+    initialValue: true,
+  );
   final tabs = preset.items;
 
   final rider = style == GtBottomNavigationStyle.ios
@@ -81,7 +85,7 @@ Widget playgroundGtBottomNavigationBarUseCase(BuildContext context) {
             _BottomNavPreviewIos(
               items: tabs,
               initialIndex: 0,
-              withTrailingAction: true,
+              withTrailingAction: withTrailing,
             ),
         ],
       ),
@@ -89,6 +93,51 @@ Widget playgroundGtBottomNavigationBarUseCase(BuildContext context) {
     bottomNavigationBar: style == GtBottomNavigationStyle.android
         ? _BottomNavAndroidPreview(items: tabs, initialIndex: 0)
         : null,
+  );
+}
+
+@widgetbook.UseCase(name: 'GtButtonBottomNavBar', type: GtButtonBottomNavBar)
+Widget playgroundGtButtonBottomNavBarUseCase(BuildContext context) {
+  final hasHeading = context.knobs.boolean(
+    label: 'Has Heading',
+    initialValue: true,
+  );
+  final buttonLabel = context.knobs.string(
+    label: 'Button Label',
+    initialValue: 'Continue',
+  );
+  final spacing = context.knobs.double.slider(
+    label: 'Spacing',
+    initialValue: context.spacingLg,
+    min: 0,
+    max: 64,
+  );
+
+  return Scaffold(
+    backgroundColor: context.palette.bg.neutralWarm50,
+    body: Padding(
+      padding: context.insets.defaultHorizontalInsets,
+      child: const Column(
+        children: [
+          GalleryPageHeader(
+            title: 'Button Bottom Nav Bar',
+            rider:
+                'A bottom bar for primary actions, often used in forms or selection flows.',
+          ),
+        ],
+      ),
+    ),
+    bottomNavigationBar: GtButtonBottomNavBar(
+      button: GtRaisedButton(text: buttonLabel, onPressed: () {}),
+      heading: hasHeading
+          ? GtText(
+              'Please confirm your selection to proceed',
+              style: context.textStyles.bodyXs(),
+              textAlign: TextAlign.center,
+            )
+          : null,
+      spacing: spacing,
+    ),
   );
 }
 
