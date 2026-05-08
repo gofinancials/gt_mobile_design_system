@@ -10,6 +10,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// - Base64 encoded strings (starting with "data:") are routed to [GtMemoryImage].
 /// - SVG URLs (ending with ".svg") are routed to [GtSvg].
 /// - Standard image URLs are handled by [CachedNetworkImage] for efficient caching.
+///
+/// @category Atoms
 class GtNetworkImage extends GtStatelessWidget {
   /// An optional local asset path to display while the network image is loading.
   ///

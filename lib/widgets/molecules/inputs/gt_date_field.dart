@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [GtDateField] allows the user to select either a single date or a range
 /// of dates depending on the constructor used. It presents a text field
 /// visually, but interaction opens a [GtCalendarModal].
+///
+/// @category Molecules
 class GtDateField extends GtStatefulWidget {
   /// The label displayed above the text field.
   final String? label;

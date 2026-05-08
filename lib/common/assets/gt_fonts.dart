@@ -3,6 +3,8 @@
 /// This class provides static constants for the available font families
 /// and instance properties to map semantic text categories (like title, body,
 /// and display) to specific fonts.
+///
+/// @category Assets
 class GtFonts {
   /// The font family for our icons.
   static const String icon = 'GtIconFont';

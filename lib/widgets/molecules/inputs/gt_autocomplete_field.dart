@@ -9,6 +9,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [GtAutocompleteField] supports providing a static list of suggestions or dynamically
 /// fetching suggestions via a builder function. It wraps Flutter's [Autocomplete]
 /// widget with the design system's [GtTextField] styling.
+///
+/// @category Molecules
 class GtAutocompleteField<T> extends GtStatefulWidget {
   /// The controller used to read and manipulate the input text.
   final GtInputController? controller;

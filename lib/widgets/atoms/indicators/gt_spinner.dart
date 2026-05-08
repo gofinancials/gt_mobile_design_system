@@ -8,6 +8,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// When [value] is null, this widget displays a continuous spinning animation.
 /// When [value] is provided, it smoothly animates to display a pie chart representing
 /// the given progress.
+///
+/// @category Atoms
 class GtSpinner extends GtStatefulWidget {
   /// The progress value of the spinner, ranging from 0.0 to 1.0.
   ///

@@ -187,6 +187,8 @@ enum GtCardVariant {
 /// [GtCard] supports various visual variants, corner styles (including continuous squircles),
 /// gradients, background images, and custom borders. It automatically animates
 /// changes to its decoration and constraints over a 500ms duration.
+///
+/// @category Organisms
 class GtCard extends GtStatelessWidget {
   /// An optional color to override the default background color provided by the [variant].
   final Color? color;

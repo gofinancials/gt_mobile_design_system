@@ -5,6 +5,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A foundational tile component often used alongside indicators (e.g.,
 /// checkboxes, switches, radios). It provides a standardized layout for titles,
 /// subtitles, and icons.
+///
+/// @category Molecules
 class GtIndicatorTile extends GtStatelessWidget {
   /// The primary text to display in the tile.
   final String title;

@@ -5,6 +5,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A specialized pill widget used to indicate status, featuring predefined color variants and a compact layout.
 ///
 /// Automatically scales padding based on [size] and applies semantic colors using [variant].
+///
+/// @category Molecules
 class GtStatusPill extends StatelessWidget {
   /// The text indicating the status to display.
   final String text;

@@ -8,6 +8,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// uses a numeric keyboard with decimal support, and includes built-in
 /// validation for required, minimum, and maximum amounts. By default, it
 /// uses the [GtInputStyles.transferInputStyle].
+///
+/// @category Molecules
 class GtAmountField extends GtStatefulWidget {
   /// The controller used to read and manipulate the input text.
   final GtInputController controller;

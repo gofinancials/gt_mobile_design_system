@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget can be used standalone or presented via overlay APIs (like [showModalBottomSheet]).
 /// When driven by a [GtBottomModalController], it animates seamlessly between loading, success,
 /// and error states without needing to dismiss and rebuild the modal.
+///
+/// @category Templates
 class GtBottomModal extends StatefulWidget {
   final GtBottomModalController? _controller;
   final GtBottomModalData? _data;

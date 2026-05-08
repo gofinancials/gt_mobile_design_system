@@ -3,6 +3,8 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card for displaying a payment method, like a bank account, with balance details.
+///
+/// @category Organisms
 class GtPaymentSourceCard extends GtStatelessWidget {
   /// The title of the payment source (e.g., "Checking Account").
   final String title;

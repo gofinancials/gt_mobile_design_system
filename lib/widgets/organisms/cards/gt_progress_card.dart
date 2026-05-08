@@ -4,6 +4,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card that prompts the user to take one or two actions (e.g., a primary
 /// action and a dismiss option).
+///
+/// @category Organisms
 class GtProgressCard extends GtStatelessWidget {
   /// The main title of the action card.
   final String title;

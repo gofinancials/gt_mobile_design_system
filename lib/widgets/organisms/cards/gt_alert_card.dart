@@ -3,6 +3,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card for displaying alerts, typically with an icon, title, and subtitle,
 /// and a distinct border.
+///
+/// @category Organisms
 class GtAlertCard extends GtStatelessWidget {
   /// The main title of the alert.
   final String title;

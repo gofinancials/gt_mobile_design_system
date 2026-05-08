@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget combines a [GtIndicatorTile] with a [GtSwitch] to create a standard
 /// toggle row, often used for settings or binary selections. Tapping anywhere on the
 /// tile will toggle the switch, provided it is not [disabled].
+///
+/// @category Molecules
 class GtSwitchTile extends GtStatelessWidget {
   /// The current state of the switch. If true, the switch is in the "on" position.
   final bool value;

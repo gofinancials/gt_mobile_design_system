@@ -5,6 +5,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A generic list tile used for rendering items in a menu or dropdown.
 ///
 /// Returns a strongly-typed [value] via the [onSelect] callback when tapped.
+///
+/// @category Molecules
 class GtMenuListTile<T> extends StatelessWidget {
   /// The primary text to display in the menu tile.
   final String text;

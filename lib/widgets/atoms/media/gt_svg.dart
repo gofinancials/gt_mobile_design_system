@@ -7,6 +7,8 @@ import 'package:vector_graphics/vector_graphics.dart';
 /// This widget wraps the `vector_graphics` package for high-performance rendering.
 /// It supports two primary modes: as a general-purpose scalable graphic, or as a
 /// semantically colored icon via [GtSvg.asIcon].
+///
+/// @category Atoms
 class GtSvg extends GtStatelessWidget {
   /// The path to the vector graphic asset.
   final String path;

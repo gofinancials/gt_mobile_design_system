@@ -8,6 +8,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// If the provided [imageFile] is null, this widget gracefully degrades by
 /// rendering an empty space that respects the provided [width], [height],
 /// [fit], and [alignment] properties.
+///
+/// @category Atoms
 class GtFileImage extends GtStatelessWidget {
   /// The local file containing the image data. If null, a blank space is rendered.
   final File? imageFile;

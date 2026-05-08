@@ -6,6 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This widget combines a [GtIndicatorTile] with a [GtRadio] to create a standard selection
 /// row. It supports the same standard and conditional selection modes as the standalone radio button.
+///
+/// @category Molecules
 class GtRadioTile<T> extends GtStatelessWidget {
   /// The value represented by this radio button.
   final T value;

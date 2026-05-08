@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// [GtDobField] ensures users can only select valid dates within the bounds
 /// configured in its [GtDobController].
+///
+/// @category Molecules
 class GtDobField extends GtStatefulWidget {
   /// The controller used to manage the date selection state.
   final GtDobController? controller;

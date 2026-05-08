@@ -2,6 +2,8 @@
 /// Note: The design specifies "Stretched / Flex" for columns, meaning
 /// the UI implementation should dynamically fill the remaining space
 /// after margins and gutters are applied.
+///
+/// @category Styling
 class GtGridLayout {
   final int columns;
   final double margins;

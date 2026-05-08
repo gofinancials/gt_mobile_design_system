@@ -3,6 +3,8 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A specialized app bar for the home screen featuring a user avatar and quick action icons.
+///
+/// @category Organisms
 class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// Optional avatar image data for the current user.
   final AppImageData? avatar;

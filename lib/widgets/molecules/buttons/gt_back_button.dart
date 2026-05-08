@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget displays a back chevron icon and automatically handles popping
 /// the current navigation route. It can be configured to be [routeStackSensitive],
 /// which allows it to intelligently hide itself if there are no previous routes to return to.
+///
+/// @category Molecules
 class GtBackButton extends GtStatelessWidget {
   /// An optional custom callback to execute when the button is tapped.
   ///

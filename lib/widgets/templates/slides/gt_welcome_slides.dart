@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget uses a [PageView] to display a list of [GtSlideData] objects.
 /// It includes automatic slide transitions, page indicators ([GtDots]), and
 /// an optional logo and action buttons in an app bar.
+///
+/// @category Templates
 class GtWelcomeSlides extends GtStatefulWidget {
   /// The list of data for each slide to be displayed.
   final List<GtSlideData> slides;

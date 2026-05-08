@@ -6,6 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This widget smoothly animates a pie chart shrinking over a specified [duration],
 /// displaying the remaining seconds in the center.
+///
+/// @category Atoms
 class GtCountdownPie extends GtStatefulWidget {
   /// The total duration of the countdown.
   ///

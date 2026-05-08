@@ -5,6 +5,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This widget wraps the standard Flutter [Icon] to provide consistent sizing,
 /// semantic colors based on [GtIconVariant], and optional alignment handling.
+///
+/// @category Atoms
 class GtIcon extends GtStatelessWidget {
   /// The icon data to display (e.g., [Icons.home]).
   final IconData icon;

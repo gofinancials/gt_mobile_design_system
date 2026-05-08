@@ -1,6 +1,8 @@
 /// A utility class containing constants for remote network image URLs.
 ///
 /// This includes illustrations, category icons, and avatar templates hosted remotely.
+///
+/// @category Assets
 class GtNetworkImages {
   /// The base URL for all network images.
   static const String _baseUrl =

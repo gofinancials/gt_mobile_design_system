@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// An app bar designed for action-heavy screens, providing space for a leading widget and multiple trailing actions.
+///
+/// @category Organisms
 class GtActionAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// An optional custom widget to display at the leading edge.
   final Widget? leading;

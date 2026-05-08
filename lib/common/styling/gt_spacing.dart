@@ -2,6 +2,8 @@
 ///
 /// Uses semantic naming to build flexible and consistent layouts.
 /// The default values match the standard design system scale.
+///
+/// @category Styling
 class GtSpacing {
   // Category: Spacing between elements inside components
   /// Very tight, fine-detail spacing. Default: 2.0

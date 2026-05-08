@@ -8,6 +8,8 @@ import 'package:lottie/lottie.dart';
 /// This widget analyzes the provided [path] using [AppRegex.urlRegex] to determine
 /// if it should load the animation over the network via [LottieBuilder.network]
 /// or from the local asset bundle via [LottieBuilder.asset].
+///
+/// @category Atoms
 class GtLottie extends GtStatelessWidget {
   /// The source path for the Lottie animation. This can be a valid HTTP(S) URL or a local asset path.
   final String path;

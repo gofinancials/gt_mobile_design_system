@@ -4,6 +4,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card widget used to display instructions or prompts for the user to take a
 /// specific action, such as uploading a document or taking a photo.
+///
+/// @category Organisms
 class GtInstructionCard extends GtStatelessWidget {
   /// The primary widget, typically an icon, displayed at the top of the card.
   final Widget icon;

@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This widget wraps Flutter's native [TextField] within a [FormField] to provide
 /// seamless validation, error handling, and specialized styling via [GtInputDecoration].
+///
+/// @category Molecules
 class GtTextField<T> extends GtStatefulWidget {
   /// An optional controller to manage the text editing state and focus.
   final GtInputController? controller;
@@ -228,6 +230,7 @@ class _GtTextFieldState extends State<GtTextField>
                   helperStyle: style,
                   focused: _inputFocus.hasFocus || _ctrl.hasValue,
                   maxLines: maxLines,
+                  multiline: widget.keyboardType == .multiline,
                   textAlign: widget.textAlign,
                   prefix: widget.prefix,
                   suffix: widget.suffix,
@@ -288,6 +291,7 @@ class _GtTextFieldLayout extends GtStatelessWidget {
   final Widget? suffix;
   final Widget child;
   final bool focused;
+  final bool multiline;
 
   const _GtTextFieldLayout({
     required this.decoration,
@@ -302,10 +306,14 @@ class _GtTextFieldLayout extends GtStatelessWidget {
     required this.focused,
     required this.labelStyle,
     required this.labelText,
+    required this.multiline,
   });
 
   @override
   Widget build(BuildContext context) {
+    final constraints = multiline
+        ? decoration.multilineConstraints
+        : decoration.constraints;
     return Column(
       spacing: context.spacingBase,
       crossAxisAlignment: .stretch,
@@ -313,9 +321,9 @@ class _GtTextFieldLayout extends GtStatelessWidget {
       children: [
         AnimatedContainer(
           duration: 300.milliseconds,
-          constraints: decoration.constraints,
+          constraints: constraints,
           padding: decoration.padding,
-          height: decoration.size.height,
+          height: multiline ? null : decoration.size.height,
           decoration: activeDecoration,
           alignment: .center,
           clipBehavior: .hardEdge,

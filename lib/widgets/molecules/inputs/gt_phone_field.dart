@@ -9,6 +9,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget automatically applies phone number formatting, uses a phone
 /// keyboard, and includes built-in validation for phone numbers. It integrates
 /// with a country code selector. By default, it uses [GtInputStyles.phoneInputDecoration].
+///
+/// @category Molecules
 class GtPhoneField extends GtStatefulWidget {
   /// The controller used to read and manipulate the input text and selected country code.
   final GtInputController<Country>? controller;

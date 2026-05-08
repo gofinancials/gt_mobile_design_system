@@ -8,6 +8,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [GtIconVariant] so color tracks the design-system semantic palette. Hosts
 /// can override [label], [icon], or [iconVariant] for localization or one-off
 /// product copy.
+///
+/// @category Molecules
 enum GtAccessStatus {
   /// Full permissions to the underlying resource or surface.
   fullAccess,

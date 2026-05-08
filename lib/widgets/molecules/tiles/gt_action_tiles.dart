@@ -4,6 +4,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A list tile used for export or share actions, prominently displaying a title
 /// and an optional subtitle along with a share icon.
+///
+/// @category Molecules
 class GtExportListTile extends GtStatelessWidget {
   /// The primary text displayed prominently in the tile.
   final String title;

@@ -5,6 +5,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This widget wraps Flutter's standard [Text] widget, applying the design system's
 /// default typography styles automatically if no [style] is provided.
+///
+/// @category Atoms
 class GtText extends GtStatelessWidget {
   /// The text string to display.
   final String? data;

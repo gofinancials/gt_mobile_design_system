@@ -3,6 +3,8 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card widget that displays an empty state message, typically used when there is no data to show.
+///
+/// @category Organisms
 class GtEmptyStateCard extends GtStatelessWidget {
   /// The icon to display above the description. If null, no icon is shown.
   final IconData? icon;

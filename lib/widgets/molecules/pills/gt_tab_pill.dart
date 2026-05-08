@@ -6,6 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Automatically toggles styles between selected and unselected states by comparing
 /// the [value] against the [activeValue]. Triggers an automatic scroll into view when selected.
+///
+/// @category Molecules
 class GtTabPill<T> extends StatelessWidget {
   /// The unique underlying value represented by this tab pill.
   final T value;

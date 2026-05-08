@@ -8,6 +8,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This class uses the provided [BuildContext] to resolve theme-dependent
 /// colors and create standardized linear, radial, or sweep gradients
 /// as defined in the design system.
+///
+/// @category Styling
 class GtGradients {
   /// The [BuildContext] used to access the current theme and color palettes.
   final BuildContext context;

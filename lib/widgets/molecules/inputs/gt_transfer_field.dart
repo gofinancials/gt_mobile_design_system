@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget creates a cohesive visual block containing the sender's details,
 /// a stylized amount input field, the recipient's details, and an optional
 /// note field. It handles basic balance validation and custom visual styling natively.
+///
+/// @category Molecules
 class GtTransferField extends GtStatefulWidget {
   /// The controller used to read and manipulate the transfer amount input.
   final GtInputController amountController;

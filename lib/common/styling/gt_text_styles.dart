@@ -11,6 +11,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This class uses the provided [BuildContext] to resolve theme-dependent
 /// text styles, scaling factors, and responsive typography tokens as defined
 /// in the design system.
+///
+/// @category Styling
 class GtTextStyles {
   /// The [BuildContext] used to access the current theme and scaling utilities.
   final BuildContext context;

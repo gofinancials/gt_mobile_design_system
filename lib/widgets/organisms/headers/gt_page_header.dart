@@ -13,6 +13,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// subtitle uses [Column.spacing]; when [spacingPx] is null it falls
 /// back to [BuildContext.spacingBase] (~8dp). Wrap with [Padding] or padded
 /// parents (e.g. [SafeArea], [ListView] padding) as needed.
+///
+/// @category Organisms
 class GtPageHeader extends GtStatelessWidget {
   /// Primary heading text (shown in **uppercase**).
   final String title;

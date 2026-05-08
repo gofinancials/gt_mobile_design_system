@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget automatically applies email validation, provides autofill hints
 /// for email, and displays a visual warning indicator (a caution icon) if the
 /// currently entered text is not a valid email format.
+///
+/// @category Molecules
 class GtEmailField extends GtStatefulWidget {
   /// The controller used to read and manipulate the email input.
   final GtInputController controller;

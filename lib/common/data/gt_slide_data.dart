@@ -3,6 +3,8 @@ import 'package:gt_mobile_foundation/foundation.dart';
 
 /// A data class that represents the content and styling for a single slide
 /// within a carousel or welcome screen, such as `GtWelcomeSlides`.
+///
+/// @category Data
 class GtSlideData {
   /// The primary heading text displayed on the slide.
   final String title;

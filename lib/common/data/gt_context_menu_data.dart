@@ -5,6 +5,8 @@ import 'package:gt_mobile_foundation/foundation.dart';
 ///
 /// Used by context menu widgets like `GtContextMenu`, `GtPillContextMenu`,
 /// and `GtMoreContextMenu` to configure the list of available options.
+///
+/// @category Data
 class GtContextMenuItem<T> {
   /// The text displayed for this menu item.
   final String label;

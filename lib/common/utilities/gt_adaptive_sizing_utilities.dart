@@ -55,6 +55,8 @@ final class GtMediaQueryData {
 /// A utility class for calculating layout dimensions as a fraction of the
 /// screen size, adjusted dynamically based on the current device screen type
 /// (mobile, tablet, laptop, monitor).
+///
+/// @category Utilities
 class GtFractionalSizer {
   late GtMediaQueryData _queryData;
   late GtScreenType screenType;

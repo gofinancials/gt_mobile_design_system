@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Internal enumeration of predefined gap sizes.
+///
+/// @category Atoms
 enum _GtGapSize {
   xs,
   sm,

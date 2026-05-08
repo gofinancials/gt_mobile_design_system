@@ -3,6 +3,8 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card used to represent a product or feature, usually in a grid.
+///
+/// @category Organisms
 class GtProductCard extends GtStatelessWidget {
   /// The name of the product or feature.
   final String name;

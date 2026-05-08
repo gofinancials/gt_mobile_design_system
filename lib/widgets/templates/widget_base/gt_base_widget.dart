@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+///
+/// @category Templates
 class GtBaseWidget extends GtStatelessWidget {
   final Widget? child;
 

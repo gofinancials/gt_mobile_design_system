@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 /// Text buttons have no visible boundary or background by default, making them
 /// ideal for less prominent actions, such as "Cancel" or secondary links.
 /// It extends [GtButton] to inherit standard sizing and interaction states.
+///
+/// @category Molecules
 class GtTextButton extends GtButton {
   /// The text label displayed on the button.
   final String? text;

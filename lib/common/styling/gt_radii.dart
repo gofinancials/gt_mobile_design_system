@@ -2,6 +2,8 @@
 ///
 /// Uses abstract, size-based semantic naming (T-shirt sizing) instead of
 /// hardcoded pixel values to allow for easier theming and mental mapping.
+///
+/// @category Styling
 class GtRadii {
   /// Sharp corner. Default: 0.0
   final double none;

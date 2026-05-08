@@ -8,6 +8,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Includes a visual progress bar indicating the current amount vs the goal
 /// amount, and an optional edit button.
+///
+/// @category Molecules
 class GtGoalProgressListTile extends GtStatelessWidget {
   /// The current accumulated or utilized amount towards the goal.
   final num currentAmount;

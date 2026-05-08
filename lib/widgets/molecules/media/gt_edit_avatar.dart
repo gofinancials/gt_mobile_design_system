@@ -8,6 +8,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 ///
 /// This widget is typically used in profile editing screens where the user
 /// needs a visual indicator that their avatar can be tapped and changed.
+///
+/// @category Molecules
 class GtEditAvatar extends GtStatelessWidget {
   /// The optional image data to display. If null, a default placeholder is used.
   final AppImageData? avatar;

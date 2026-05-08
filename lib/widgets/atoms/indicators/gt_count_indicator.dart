@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Defines the semantic type and visual color scheme for a [GtCountIndicator].
+///
+/// @category Atoms
 enum GtCountIndicatorType {
   /// Represents an error state, typically colored red.
   error,

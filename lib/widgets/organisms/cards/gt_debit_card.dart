@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Layout structure:
 /// - Foreground row (title/subtitle + trailing chevron).
 /// - Decorative/preview image pinned to the bottom-right.
+///
+/// @category Organisms
 class GtDebitCard extends GtStatelessWidget {
   /// Main card title.
   final String title;

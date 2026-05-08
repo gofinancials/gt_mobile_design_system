@@ -8,6 +8,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Displays a [title], an optional [description], and two action buttons
 /// (allow and deny). It automatically adapts its layout to the current platform
 /// (Cupertino for iOS/macOS, Material for others).
+///
+/// @category Templates
 class GtConfirmDialog extends GtStatelessWidget {
   /// The primary title of the confirmation dialog.
   final String title;

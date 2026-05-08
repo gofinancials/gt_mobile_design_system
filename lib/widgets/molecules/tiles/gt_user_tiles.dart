@@ -4,6 +4,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A specialized list tile for displaying account information, typically
 /// showing an account name, subtitle, and an avatar or leading icon.
+///
+/// @category Molecules
 class GtAccountListTile extends GtStatelessWidget {
   /// The primary name or title of the account.
   final String title;

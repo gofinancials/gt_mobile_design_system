@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget is typically used for PIN entry, passcodes, or amount inputs.
 /// It combines a [GtDotFormField] for visual input representation and a
 /// [GtKeyPadGrid] for user interaction.
+///
+/// @category Templates
 class GtVirtualKeypadForm extends GtStatefulWidget {
   /// The main heading text displayed at the top of the form.
   final String title;

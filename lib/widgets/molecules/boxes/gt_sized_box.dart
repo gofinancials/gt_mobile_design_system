@@ -5,6 +5,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This widget acts as a wrapper around Flutter's [SizedBox], ensuring that the
 /// provided [height] and [width] are consistently scaled across different screen densities.
+///
+/// @category Molecules
 class GtSizedBox extends GtStatelessWidget {
   /// The optional height in logical pixels, which will be scaled to DP.
   final double? height;

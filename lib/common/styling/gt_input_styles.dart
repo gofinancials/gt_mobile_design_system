@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This class uses the provided [BuildContext] to resolve theme-dependent
 /// colors, border radii, padding, and typography for various input components
 /// (e.g., text fields, dropdowns) as defined in the design system.
+///
+/// @category Styling
 class GtInputStyles {
   /// The [BuildContext] used to access the current theme and adaptive sizing utilities.
   final BuildContext context;
@@ -479,6 +481,10 @@ class GtInputDecoration {
   /// Returns the BoxConstraints based on the configured [size].
   BoxConstraints get constraints {
     return BoxConstraints.tightFor(height: size.height);
+  }
+
+  BoxConstraints get multilineConstraints {
+    return BoxConstraints(minHeight: size.height);
   }
 
   /// Gets the resolved error decoration, falling back to the base [decoration] if null.

@@ -9,6 +9,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// propagate efficiently throughout the application.
 ///
 /// Use `GtThemeProvider.of(context)` to access the theme.
+///
+/// @category Providers
 class GtThemeProvider extends InheritedWidget {
   /// The design system theme to provide to the widget tree.
   final GtTheme theme;

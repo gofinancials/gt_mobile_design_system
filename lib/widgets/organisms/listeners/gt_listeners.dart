@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A convenience widget that listens to a [ValueListenable] of type [bool].
 ///
 /// Rebuilds its child using the [builder] function whenever the boolean value changes.
+///
+/// @category Organisms
 class BoolListener extends GtStatelessWidget {
   /// The builder function called when the boolean value changes.
   final ValueBuilder<bool> builder;

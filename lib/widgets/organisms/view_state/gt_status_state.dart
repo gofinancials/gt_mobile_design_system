@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 // -----------------------------------------------------------------------------
 
 /// Visual outcome for [GtStatusState]: drives status icon and icon tint tokens.
+///
+/// @category Organisms
 enum GtStatusStateVariant {
   /// Positive completion — success palette on the status glyph.
   success,

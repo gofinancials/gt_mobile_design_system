@@ -10,6 +10,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// spacing, shadows, etc.) and native Flutter theme data. Host applications
 /// must implement this class to provide their specific brand identity and
 /// token configurations.
+///
+/// @category Styling
 class GtTheme {
   /// Creates a base instance of [GtTheme].
   ///

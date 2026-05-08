@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This card displays an icon, the [title], and [subtitle] of the message,
 /// along with the total [messageCount] and a visual badge for the [ureadCount]
 /// (unread messages).
+///
+/// @category Organisms
 class GtInboxCard extends GtStatelessWidget {
   /// The primary title of the inbox item.
   final String title;

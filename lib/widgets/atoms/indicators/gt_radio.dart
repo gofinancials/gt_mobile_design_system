@@ -3,6 +3,8 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Defines the visual style of the [GtRadio] component.
+///
+/// @category Atoms
 enum GtRadioStyle {
   /// The standard radio style featuring a filled inner circle when active.
   standard,

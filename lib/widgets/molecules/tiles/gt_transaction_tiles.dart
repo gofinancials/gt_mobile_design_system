@@ -6,6 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Includes the transaction name, amount (styled conditionally based on whether
 /// it is a debit), and a subtitle for details like the date.
+///
+/// @category Molecules
 class GtTransactionListTile extends GtStatelessWidget {
   /// The widget to display at the start of the tile, typically an icon or logo.
   final Widget leading;

@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 /// Rather than hardcoding specific hues (like "blue" or "orange"), this semantic grouping
 /// allows different host apps to inject their own primary brand identity while
 /// keeping component logic identical. Includes opacities for interactive states.
+///
+/// @category Styling
 class GtPaletteBrandColors {
   final Color dark;
   final Color darker;

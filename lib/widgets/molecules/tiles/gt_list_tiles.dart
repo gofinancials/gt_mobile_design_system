@@ -6,6 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// leading and trailing widgets.
 ///
 /// Triggers the [onTap] callback with light haptic feedback when pressed.
+///
+/// @category Molecules
 class GtListTile extends GtStatelessWidget {
   /// The primary text to display in the tile.
   final String text;

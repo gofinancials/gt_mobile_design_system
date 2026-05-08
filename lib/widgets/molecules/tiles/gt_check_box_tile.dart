@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget combines a [GtIndicatorTile] with a [GtCheckBox] to create a standard
 /// selection row. Tapping anywhere on the tile will trigger the [onChanged] callback
 /// with the associated [value], provided it is not [disabled].
+///
+/// @category Molecules
 class GtCheckBoxTile<T> extends GtStatelessWidget {
   /// The value represented by this checkbox.
   final T value;

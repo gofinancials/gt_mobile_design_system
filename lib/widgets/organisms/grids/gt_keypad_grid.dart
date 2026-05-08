@@ -8,6 +8,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget displays a standard numeric keypad (0-9) along with a backspace
 /// button and an optional biometric authentication button. It is commonly used
 /// for PIN entry, passcodes, or entering monetary amounts.
+///
+/// @category Organisms
 class GtKeyPadGrid extends GtStatefulWidget {
   /// Controls the text being edited by the keypad.
   final TextEditingController controller;

@@ -6,6 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// It extends [ValueNotifier] to allow widgets to rebuild when the selected
 /// category changes.
+///
+/// @category Organisms
 class GtTransferCategoryController
     extends ValueNotifier<GtTransactionCategory?> {
   /// Creates a [GtTransferCategoryController] with an initial [value].

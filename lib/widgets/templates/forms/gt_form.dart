@@ -5,6 +5,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// [GtForm] wraps Flutter's native [Form] widget and automatically includes
 /// an [AutofillGroup] to enhance the user experience with form data autofill.
+///
+/// @category Templates
 class GtForm extends GtStatefulWidget {
   /// The widget below this widget in the tree.
   ///

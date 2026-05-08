@@ -6,6 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A widget that displays an image from a [Uint8List] of memory bytes.
 ///
 /// This is a standardized wrapper around [Image.memory] for the Go Tech design system.
+///
+/// @category Atoms
 class GtMemoryImage extends GtStatelessWidget {
   /// The raw image data represented as a list of bytes.
   final Uint8List bytes;

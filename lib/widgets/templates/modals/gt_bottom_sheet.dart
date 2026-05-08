@@ -6,6 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A utility class for configuring and presenting adaptive bottom sheets.
 ///
 /// Supports standard static sheets as well as draggable/scrollable sheets.
+///
+/// @category Templates
 class GtBottomSheet<T> {
   /// Creates a standard [GtBottomSheet] containing the given [modalWidget].
   GtBottomSheet({

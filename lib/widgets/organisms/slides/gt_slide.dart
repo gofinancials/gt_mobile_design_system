@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget is typically used within a carousel or page view, such as
 /// [GtWelcomeSlides]. It renders the content defined in a [GtSlideData]
 /// object, including an image, title, subtitle, and background styling.
+///
+/// @category Organisms
 class GtWelcomeSlide extends GtStatelessWidget {
   /// The data defining the content and styling of this slide.
   final GtSlideData slide;

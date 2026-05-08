@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 /// This widget is commonly used for secure inputs like PINs, passcodes, or OTPs.
 /// It integrates with Flutter's [Form] system, supporting validation, error states,
 /// and disabled states via an internal [FormField].
+///
+/// @category Molecules
 class GtDotFormField extends GtStatefulWidget {
   /// Whether the form field is interactive.
   ///

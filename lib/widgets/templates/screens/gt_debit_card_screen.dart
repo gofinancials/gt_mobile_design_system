@@ -7,6 +7,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This layout intentionally omits a textual app-bar title and keeps a
 /// close ("X") action at the top-right, followed by vertically stacked content:
 /// illustration, title, subtitle, and a primary action button.
+///
+/// @category Templates
 class GtDebitCardScreen extends GtStatelessWidget {
   /// The top illustration displayed above text content.
   ///

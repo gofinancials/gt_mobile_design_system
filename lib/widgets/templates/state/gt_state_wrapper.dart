@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:provider/provider.dart';
 
+///
+/// @category Templates
 class GtStateWrapper extends GtStatelessWidget {
   final Widget child;
   final List<ChangeNotifierProvider> providers;
