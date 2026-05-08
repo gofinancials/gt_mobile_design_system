@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This painter fills a rounded rectangle proportionally based on the provided
 /// [value], allowing for customizable [color], [height], and [borderRadius].
 ///
-/// @Category Painters
+/// {@category Painters}
 class GtProgressPainter extends CustomPainter {
   /// The color of the progress bar.
   final Color color;

@@ -9,7 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// validation for required, minimum, and maximum amounts. By default, it
 /// uses the [GtInputStyles.transferInputStyle].
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtAmountField extends GtStatefulWidget {
   /// The controller used to read and manipulate the input text.
   final GtInputController controller;

@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 /// Defines the shape of a [GtIconButton].
 ///
-/// @Category Molecules
+/// {@category Molecules}
 enum GtIconButtonShape {
   /// A button with squared corners, respecting the theme's border radius.
   square,

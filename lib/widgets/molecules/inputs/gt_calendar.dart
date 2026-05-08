@@ -8,7 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 /// [GtCalendar] supports single day and date range selection modes. It integrates
 /// with the `table_calendar` package and aligns with the design system's styling.
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtCalendar extends GtStatefulWidget {
   /// The controller used to manage the calendar's focused day and selection state.
   final GtCalendarController? controller;

@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget wraps Flutter's native [TextField] within a [FormField] to provide
 /// seamless validation, error handling, and specialized styling via [GtInputDecoration].
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtTextField<T> extends GtStatefulWidget {
   /// An optional controller to manage the text editing state and focus.
   final GtInputController? controller;

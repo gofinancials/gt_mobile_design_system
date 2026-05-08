@@ -11,7 +11,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// must implement this class to provide their specific brand identity and
 /// token configurations.
 ///
-/// @Category Styling
+/// {@category Styling}
 class GtTheme {
   /// Creates a base instance of [GtTheme].
   ///

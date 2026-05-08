@@ -3,7 +3,7 @@
 /// This class encapsulates the underlying data value, its display label, and its positional
 /// index, which is used by components like the `WheelScrollSheet` to render and track selections.
 ///
-/// @Category Data
+/// {@category Data}
 class GtWheelScrollData<T> {
   /// The actual underlying data value of type [T] that this item represents.
   final T data;

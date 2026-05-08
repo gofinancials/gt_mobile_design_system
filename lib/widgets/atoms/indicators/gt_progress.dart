@@ -7,7 +7,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// If [value] is null, this widget displays an indeterminate progress animation.
 /// Otherwise, it displays a determinate progress bar filling up to [value].
 ///
-/// @Category Atoms
+/// {@category Atoms}
 class GtProgress extends GtStatelessWidget {
   /// The color of the active progress indicator. Defaults to the primary base color.
   final Color? color;

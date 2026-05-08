@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card for displaying prominent banners with a title, subtitle, and a close button.
 ///
-/// @Category Organisms
+/// {@category Organisms}
 class GtBannerCard extends GtStatefulWidget {
   /// The main title of the banner.
   final String title;

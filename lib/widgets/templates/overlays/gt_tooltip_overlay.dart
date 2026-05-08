@@ -5,7 +5,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 ///
-/// @Category Templates
+/// {@category Templates}
 class GtTooltip extends GtOverlay {
   OverlayEntry? _entry;
   bool _inserted = false;

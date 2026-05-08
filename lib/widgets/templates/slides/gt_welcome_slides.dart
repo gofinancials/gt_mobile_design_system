@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// It includes automatic slide transitions, page indicators ([GtDots]), and
 /// an optional logo and action buttons in an app bar.
 ///
-/// @Category Templates
+/// {@category Templates}
 class GtWelcomeSlides extends GtStatefulWidget {
   /// The list of data for each slide to be displayed.
   final List<GtSlideData> slides;

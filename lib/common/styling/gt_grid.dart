@@ -3,7 +3,7 @@
 /// the UI implementation should dynamically fill the remaining space
 /// after margins and gutters are applied.
 ///
-/// @Category Styling
+/// {@category Styling}
 class GtGridLayout {
   final int columns;
   final double margins;

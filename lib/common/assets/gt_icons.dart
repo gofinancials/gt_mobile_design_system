@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:gt_mobile_ui/common/common.dart';
 
 ///
-/// @Category Assets
+/// {@category Assets}
 class GtIconData extends IconData {
   const GtIconData(super.codePoint)
     : super(fontFamily: GtFonts.icon, fontPackage: 'gt_mobile_ui');

@@ -9,7 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// or [GtFileImage] (for local device files). If no valid image data is provided,
 /// it gracefully falls back to an empty placeholder box.
 ///
-/// @Category Atoms
+/// {@category Atoms}
 class GtImage extends GtStatelessWidget {
   /// The data source for the image, wrapping either a URL, asset path, or [File].
   final AppImageData? image;

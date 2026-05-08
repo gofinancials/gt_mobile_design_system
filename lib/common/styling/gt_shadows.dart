@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This class uses the provided [BuildContext] to resolve the theme-dependent
 /// default shadow color as defined in the design system's palette.
 ///
-/// @Category Styling
+/// {@category Styling}
 class GtShadows {
   /// The [BuildContext] used to access the current theme and color palettes.
   final BuildContext context;

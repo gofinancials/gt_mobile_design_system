@@ -9,7 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// rendering an empty space that respects the provided [width], [height],
 /// [fit], and [alignment] properties.
 ///
-/// @Category Atoms
+/// {@category Atoms}
 class GtFileImage extends GtStatelessWidget {
   /// The local file containing the image data. If null, a blank space is rendered.
   final File? imageFile;

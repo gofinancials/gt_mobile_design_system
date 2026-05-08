@@ -9,7 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// as standard paddings, row/column layouts, optional card wrapping, and haptic
 /// feedback on tap.
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtBaseListTileTemplate extends GtStatelessWidget {
   /// The primary content of the list tile, typically a text widget.
   final Widget title;

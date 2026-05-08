@@ -22,7 +22,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// The default currency **N** uses a double strikethrough ([TextDecorationStyle.double]
 /// with [TextDecoration.lineThrough]) per design.
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtBalanceText extends GtStatelessWidget {
   /// Raw balance; when `null`, an em dash is shown instead of the balance line.
   final num? amount;

@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// the current navigation route. It can be configured to be [routeStackSensitive],
 /// which allows it to intelligently hide itself if there are no previous routes to return to.
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtBackButton extends GtStatelessWidget {
   /// An optional custom callback to execute when the button is tapped.
   ///

@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// consistent defaults for text styles, cursor colors, and focus behavior based
 /// on the current design system palette and theme.
 ///
-/// @Category Atoms
+/// {@category Atoms}
 class GtEditableText extends GtStatefulWidget {
   /// The style to use for the text being edited.
   ///

@@ -5,7 +5,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A list tile that displays an illustration alongside a title and subtitle,
 /// often used for onboarding or multi-step processes.
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtIllustratedStepTile extends GtStatelessWidget {
   /// The path to the SVG illustration displayed at the start of the tile.
   final String illustrationPath;

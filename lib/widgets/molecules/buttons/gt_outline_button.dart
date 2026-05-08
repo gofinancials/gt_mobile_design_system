@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 /// that are important but not the primary focus of the view.
 /// It extends [GtButton] to inherit standard sizing, layout, and state management.
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtOutlineButton extends GtButton {
   /// The text label displayed on the button.
   final String? text;

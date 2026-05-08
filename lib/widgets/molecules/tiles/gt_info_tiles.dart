@@ -10,7 +10,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// It can be rendered as a standalone tile or wrapped in a stylized card using
 /// the [GtInputListTile.asCard] constructor.
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtInputListTile extends GtStatelessWidget {
   /// The primary label or title for the information being displayed.
   final String label;

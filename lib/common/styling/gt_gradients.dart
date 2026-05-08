@@ -9,7 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// colors and create standardized linear, radial, or sweep gradients
 /// as defined in the design system.
 ///
-/// @Category Styling
+/// {@category Styling}
 class GtGradients {
   /// The [BuildContext] used to access the current theme and color palettes.
   final BuildContext context;

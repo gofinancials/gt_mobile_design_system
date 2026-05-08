@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// An app bar that displays a prominent title and an optional pair of trailing widgets.
 ///
-/// @Category Organisms
+/// {@category Organisms}
 class GtTitleAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// The primary title text displayed in the app bar.
   final String title;

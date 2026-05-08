@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card that links to a help or support section, often with a message icon.
 ///
-/// @Category Organisms
+/// {@category Organisms}
 class GtHelpCard extends GtStatelessWidget {
   /// The main title text of the help card.
   final String title;

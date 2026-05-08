@@ -17,7 +17,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// The scroll view's height is fixed by [scrollHeight], and its children are
 /// separated by [gutter].
 ///
-/// @Category Organisms
+/// {@category Organisms}
 class GtSectionSlide extends GtStatelessWidget {
   /// The list of widgets to display within the horizontal scroll view.
   ///

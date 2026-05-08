@@ -9,7 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// subtitle. Host screens can wrap this widget with their own app bar, actions,
 /// or modal container as needed.
 ///
-/// @Category Organisms
+/// {@category Organisms}
 class GtEmptyState extends GtStatelessWidget {
   /// Illustration asset path rendered at the top (e.g. from
   /// [GtVectorIllustrations]).

@@ -82,7 +82,7 @@ enum GtButtonVariant {
 /// This class centralizes the calculation of button dimensions, padding, and
 /// basic shape characteristics to ensure consistency across different button types.
 ///
-/// @Category Molecules
+/// {@category Molecules}
 abstract class GtButton extends GtStatelessWidget {
   /// The callback that is called when the button is tapped or otherwise activated.
   final OnPressed onPressed;

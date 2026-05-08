@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 /// (by checking the ".svg" extension) and delegates to [GtSvg] for vector rendering.
 /// For all other formats, it falls back to the standard [Image.asset].
 ///
-/// @Category Atoms
+/// {@category Atoms}
 class GtAssetImage extends GtStatelessWidget {
   /// The path to the image asset (e.g., 'assets/images/logo.png' or 'assets/icons/home.svg').
   final String imageUrl;

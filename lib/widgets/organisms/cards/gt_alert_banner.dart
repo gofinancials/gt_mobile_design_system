@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A banner for alerts, with a title, subtitle, icon, and close button.
 ///
-/// @Category Organisms
+/// {@category Organisms}
 class GtAlertBanner extends GtStatelessWidget {
   /// The main title of the alert banner.
   final String title;

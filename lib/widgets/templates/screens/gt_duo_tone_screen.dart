@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// It includes a large top section with a gradient and image, followed by a title,
 /// description, an optional footer, and a main action button.
 ///
-/// @Category Templates
+/// {@category Templates}
 class GtDuotoneScreen extends GtStatelessWidget {
   /// The primary illustration or image displayed in the upper gradient section of the screen.
   final AppImageData illustration;

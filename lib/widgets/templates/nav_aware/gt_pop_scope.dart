@@ -33,7 +33,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 // }
 
 ///
-/// @Category Templates
+/// {@category Templates}
 class GtPopScope extends GtStatefulWidget {
   final Widget child;
   final bool canPop;

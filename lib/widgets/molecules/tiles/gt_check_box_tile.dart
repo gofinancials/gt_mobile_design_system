@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// selection row. Tapping anywhere on the tile will trigger the [onChanged] callback
 /// with the associated [value], provided it is not [disabled].
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtCheckBoxTile<T> extends GtStatelessWidget {
   /// The value represented by this checkbox.
   final T value;

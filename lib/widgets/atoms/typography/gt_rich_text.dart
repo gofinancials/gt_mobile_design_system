@@ -16,7 +16,7 @@ typedef GtRichTextTag = StyledTextActionTag;
 /// Additionally, it automatically detects hashtags in the raw [text] and wraps them
 /// in `<ht>` tags.
 ///
-/// @Category Atoms
+/// {@category Atoms}
 class GtRichText extends GtStatelessWidget {
   /// How the text should be aligned horizontally.
   final TextAlign? textAlign;

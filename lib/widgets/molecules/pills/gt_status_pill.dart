@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Automatically scales padding based on [size] and applies semantic colors using [variant].
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtStatusPill extends StatelessWidget {
   /// The text indicating the status to display.
   final String text;

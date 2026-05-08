@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Typically used in grids or lists where users can select a classification
 /// for a specific transaction (e.g., "Shopping", "Food", "Payroll").
 ///
-/// @Category Data
+/// {@category Data}
 class GtTransactionCategory {
   /// The display name or title of the category.
   final String label;

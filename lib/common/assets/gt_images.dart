@@ -2,7 +2,7 @@
 ///
 /// This includes illustrations, category icons, and avatar templates hosted remotely.
 ///
-/// @Category Assets
+/// {@category Assets}
 class GtNetworkImages {
   /// The base URL for all network images.
   static const String _baseUrl =

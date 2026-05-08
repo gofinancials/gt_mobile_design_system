@@ -7,7 +7,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget displays a cancel (cross) icon and provides built-in navigation
 /// pop functionality, haptic feedback, and optional Hero transition support.
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtCancelButton extends GtStatelessWidget {
   /// An optional callback executed immediately when the button is tapped,
   /// before [onTap] or the default pop navigation.

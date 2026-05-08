@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// applies the standard button text style, and adjusts its appearance based on
 /// the [disabled] state.
 ///
-/// @Category Molecules
+/// {@category Molecules}
 class GtButtonText extends GtStatelessWidget {
   /// An optional widget (typically an icon) to display before the text.
   final Widget? icon;

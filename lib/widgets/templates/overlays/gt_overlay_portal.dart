@@ -7,7 +7,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This is typically used for dropdowns, tooltips, or contextual menus that need
 /// to float above the rest of the UI but remain visually anchored to a specific widget.
 ///
-/// @Category Templates
+/// {@category Templates}
 class GtOverlayPortal extends GtStatefulWidget {
   /// The controller used to toggle the visibility of the overlay.
   final OverlayPortalController controller;

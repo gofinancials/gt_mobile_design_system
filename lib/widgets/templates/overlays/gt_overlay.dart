@@ -6,7 +6,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 /// Provides lifecycle management capabilities, such as keeping track of active
 /// overlays and allowing them to be dismissed either manually or automatically on navigation.
 ///
-/// @Category Templates
+/// {@category Templates}
 abstract class GtOverlay with AppTaskMixin, RouteAware {
   /// The [BuildContext] associated with this overlay.
   final BuildContext context;

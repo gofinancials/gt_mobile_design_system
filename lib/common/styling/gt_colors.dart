@@ -3,7 +3,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 
 /// Represents the ColorSets from the AlignUI Design System.
 ///
-/// @Category Styling
+/// {@category Styling}
 enum GtColors {
   // ---------------------------------------------------------------------------
   // PRIMITIVE ColorSets

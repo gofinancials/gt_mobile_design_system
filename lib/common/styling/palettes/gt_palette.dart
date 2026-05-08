@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 /// allows different host apps to inject their own primary brand identity while
 /// keeping component logic identical. Includes opacities for interactive states.
 ///
-/// @Category Styling
+/// {@category Styling}
 class GtPaletteBrandColors {
   final Color dark;
   final Color darker;

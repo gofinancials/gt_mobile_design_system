@@ -3,7 +3,7 @@
 /// This class centralizes asset paths for core vector assets, such as logos, to prevent
 /// typos and make them easily accessible throughout the app.
 ///
-/// @Category Assets
+/// {@category Assets}
 class GtVectors {
   static const _basePath = "packages/gt_mobile_ui/assets/images/vector";
 

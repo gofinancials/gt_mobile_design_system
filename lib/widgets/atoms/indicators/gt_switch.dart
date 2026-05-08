@@ -9,7 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// system colors, triggers haptic feedback on toggle, and handles a disabled
 /// state using [GtDisabledOverlay].
 ///
-/// @Category Atoms
+/// {@category Atoms}
 class GtSwitch extends GtStatelessWidget {
   /// The current state of the switch. If true, the switch is in the "on" position.
   final bool value;

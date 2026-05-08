@@ -3,7 +3,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 ///
-/// @Category Organisms
+/// {@category Organisms}
 enum GtNotificationVariant {
   error,
   warning,

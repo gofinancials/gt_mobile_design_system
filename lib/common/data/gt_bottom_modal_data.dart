@@ -5,7 +5,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 
 /// Represents the current state or phase of the bottom modal.
 ///
-/// @Category Data
+/// {@category Data}
 enum GtBottomModalPhase {
   /// The modal is currently processing an asynchronous task.
   loading,

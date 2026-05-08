@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
 ///
-/// @Category Physics
+/// {@category Physics}
 class GtMarqueeScrollPhysics extends ScrollPhysics {
   final double marqueeVelocity;
 

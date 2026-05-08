@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Supported debit-card variants rendered by [GtDebitCardSelectionScreen].
 ///
-/// @Category Templates
+/// {@category Templates}
 enum GtDebitCardVariant { physical, virtual }
 
 extension _GtDebitCardVariantDefaults on GtDebitCardVariant {
