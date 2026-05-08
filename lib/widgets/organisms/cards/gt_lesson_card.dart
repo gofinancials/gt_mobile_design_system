@@ -7,7 +7,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Includes an illustration, title, description, and progress indicators
 /// such as completed lessons and watched duration.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtLessonCard extends GtStatelessWidget {
   /// The primary illustration or image displayed at the top of the card.
   final AppImageData illustration;

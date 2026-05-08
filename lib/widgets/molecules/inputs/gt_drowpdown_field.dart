@@ -15,7 +15,7 @@ typedef ValueBuilder3<T, K, O> = Widget Function(T value, K value2, O value3);
 /// [GtDropdownField] allows users to select an item from a provided list of [options].
 /// When tapped, it opens a draggable bottom sheet containing a search field and the list of items.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtDropdownField<T> extends GtStatefulWidget {
   /// The controller used to read and manipulate the input text.
   final GtDropdownInputController<T>? controller;

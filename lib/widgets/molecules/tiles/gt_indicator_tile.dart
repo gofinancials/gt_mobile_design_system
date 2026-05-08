@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// checkboxes, switches, radios). It provides a standardized layout for titles,
 /// subtitles, and icons.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtIndicatorTile extends GtStatelessWidget {
   /// The primary text to display in the tile.
   final String title;

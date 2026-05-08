@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// The gradient starts with the provided [color] at the top and fades to
 /// transparent, spanning across the top 40% of the canvas height.
 ///
-/// @category Painters
+/// @Category Painters
 class GtHomeGradientPainter extends CustomPainter {
   /// The starting color of the gradient at the top edge.
   final Color color;

@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Returns a strongly-typed [value] via the [onSelect] callback when tapped.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtMenuListTile<T> extends StatelessWidget {
   /// The primary text to display in the menu tile.
   final String text;

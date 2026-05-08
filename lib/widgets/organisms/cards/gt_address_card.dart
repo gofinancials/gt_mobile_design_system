@@ -3,7 +3,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A simple card for displaying a physical address.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtAddressCard extends GtStatelessWidget {
   /// The first line of the address.
   final String line1;

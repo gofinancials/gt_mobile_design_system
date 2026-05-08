@@ -10,7 +10,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// fetching suggestions via a builder function. It wraps Flutter's [Autocomplete]
 /// widget with the design system's [GtTextField] styling.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtAutocompleteField<T> extends GtStatefulWidget {
   /// The controller used to read and manipulate the input text.
   final GtInputController? controller;

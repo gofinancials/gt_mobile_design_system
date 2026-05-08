@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Features a fully rounded, capsule-like shape and supports custom typography scaling.
 /// Use [useDisplayFont] to swap standard body typography for larger display styles.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtInfoPill extends StatelessWidget {
   /// The informational text to display.
   final String text;

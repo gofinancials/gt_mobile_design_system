@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A standard row of dot indicators, typically used for carousels or paginated content.
 ///
-/// @category Atoms
+/// @Category Atoms
 class GtDots extends StatelessWidget {
   /// The total number of dots to display.
   final int length;

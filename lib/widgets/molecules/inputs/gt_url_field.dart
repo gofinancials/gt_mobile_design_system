@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// keyboard type, provides autofill hints for URLs, and includes a convenient
 /// "paste" suffix button that reads a valid URL directly from the device clipboard.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtUrlField extends GtStatefulWidget {
   /// The controller used to read and manipulate the URL input text.
   final GtInputController controller;

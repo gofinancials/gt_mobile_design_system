@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtInkWell extends InkWell {
   final HapticFeedbackType hapticFeedbackType;
 

@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A utility class for managing and displaying toast overlays in the GT Mobile Design System.
 ///
-/// @category Templates
+/// @Category Templates
 class GtToast extends GtOverlay {
   OverlayEntry? _entry;
   bool _inserted = false;

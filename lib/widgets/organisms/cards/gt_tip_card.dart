@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card for displaying tips or informational messages, often with a border and an icon.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtTipCard extends GtStatelessWidget {
   /// The main title of the tip.
   final String title;

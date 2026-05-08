@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 /// Paints a hollow circular chart (donut) representing a specific value.
 ///
-/// @category Painters
+/// @Category Painters
 class GtPiePainter extends CustomPainter {
   final double value; // Clamped between 0.0 and 1.0
   final Color trackColor;

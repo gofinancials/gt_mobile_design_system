@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// colors, border radii, padding, and typography for various input components
 /// (e.g., text fields, dropdowns) as defined in the design system.
 ///
-/// @category Styling
+/// @Category Styling
 class GtInputStyles {
   /// The [BuildContext] used to access the current theme and adaptive sizing utilities.
   final BuildContext context;

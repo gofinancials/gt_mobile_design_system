@@ -7,7 +7,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// It displays a primary [title] on the left and an optional [trailing] widget
 /// (such as a "See All" button or an icon) on the right.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtSectionHeader extends GtStatelessWidget {
   /// An optional widget displayed at the trailing edge of the header.
   ///

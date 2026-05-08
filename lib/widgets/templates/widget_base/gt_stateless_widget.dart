@@ -2,7 +2,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:flutter/material.dart';
 
 ///
-/// @category Templates
+/// @Category Templates
 abstract class GtStatelessWidget extends StatelessWidget
     with AppAnalyticsMixin {
   const GtStatelessWidget({super.key});

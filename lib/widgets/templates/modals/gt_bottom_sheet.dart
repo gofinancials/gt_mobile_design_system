@@ -7,7 +7,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Supports standard static sheets as well as draggable/scrollable sheets.
 ///
-/// @category Templates
+/// @Category Templates
 class GtBottomSheet<T> {
   /// Creates a standard [GtBottomSheet] containing the given [modalWidget].
   GtBottomSheet({

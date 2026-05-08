@@ -5,7 +5,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Designed for screens requiring a prominent call-to-action at the bottom, such as forms or selection flows.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtButtonBottomNavBar extends GtStatelessWidget {
   final Widget button;
   final Widget? heading;

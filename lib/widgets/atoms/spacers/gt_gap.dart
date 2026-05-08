@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Internal enumeration of predefined gap sizes.
 ///
-/// @category Atoms
+/// @Category Atoms
 enum _GtGapSize {
   xs,
   sm,

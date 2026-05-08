@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Uses [BuildContext] so blur radii can be scaled with [BuildContext.dp] like
 /// other design tokens.
 ///
-/// @category Styling
+/// @Category Styling
 class GtBackdropFilters {
   /// The [BuildContext] used for responsive blur sigma values.
   final BuildContext context;

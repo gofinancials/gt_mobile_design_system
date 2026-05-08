@@ -7,7 +7,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Features slightly larger padding and a larger icon size compared to [GtStatusPill].
 /// Supports tapping interactions by utilizing [onTap].
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtButtonPill extends StatelessWidget {
   /// The text to display on the button.
   final String text;

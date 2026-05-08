@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A banner for reminders that includes a call-to-action button.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtReminderBanner extends GtStatelessWidget {
   /// The main title of the reminder banner.
   final String title;

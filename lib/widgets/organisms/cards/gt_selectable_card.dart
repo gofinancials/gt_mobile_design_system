@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// derived from the specified [variant]. It automatically scrolls into view
 /// when tapped and triggers the [onSelect] callback with its assigned [value].
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtSelectableCard<T> extends GtStatelessWidget {
   /// Whether this card is currently selected.
   final bool selected;

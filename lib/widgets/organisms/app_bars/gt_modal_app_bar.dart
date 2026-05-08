@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// An app bar tailored for modal bottom sheets and overlays, featuring a centered title and an integrated cancel button.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   final String? _title;
   final Widget? _titleLeading;

@@ -26,7 +26,7 @@ enum GtAppBarTitleSize {
 ///
 /// Supports an optional leading widget, a centered title, and an optional trailing widget.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// The widget displayed at the leading edge (left side).
   final Widget? leading;

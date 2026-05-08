@@ -4,7 +4,7 @@
 /// and instance properties to map semantic text categories (like title, body,
 /// and display) to specific fonts.
 ///
-/// @category Assets
+/// @Category Assets
 class GtFonts {
   /// The font family for our icons.
   static const String icon = 'GtIconFont';

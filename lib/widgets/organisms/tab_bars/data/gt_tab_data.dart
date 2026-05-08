@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtTabData<T> {
   final T value;
   final String label;

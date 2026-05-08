@@ -9,7 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A list tile used to display information about a specific limit, showing a
 /// label, a value, and an optional leading icon.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtLimitInfoListTile extends GtStatelessWidget {
   /// The descriptive label for the limit.
   final String label;

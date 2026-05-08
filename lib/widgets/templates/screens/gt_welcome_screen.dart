@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// It features an optional logo, a customizable title, a background, and
 /// two standard action buttons (primary and secondary).
 ///
-/// @category Templates
+/// @Category Templates
 class GtWelcomeScreen extends GtStatelessWidget {
   /// Whether to display the default application logo at the top of the screen.
   ///

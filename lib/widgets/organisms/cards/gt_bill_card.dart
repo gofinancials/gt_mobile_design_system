@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card for representing a biller or a specific bill.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtBillCard extends GtStatelessWidget {
   /// The name of the biller or bill.
   final String name;

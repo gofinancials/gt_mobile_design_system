@@ -5,7 +5,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 ///
 /// This class holds either a single selected [day] or a selected date [range].
 ///
-/// @category Data
+/// @Category Data
 class GtCalendarValue {
   /// The currently selected single date, if any.
   final DateTime? day;

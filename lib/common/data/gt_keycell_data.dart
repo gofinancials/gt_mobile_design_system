@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This class encapsulates the value and optional icon for each button
 /// displayed in the [GtKeyPadGrid].
 ///
-/// @category Data
+/// @Category Data
 class GtKeyCellData {
   /// An optional icon to display on the key (e.g., backspace, biometric icon).
   final IconData? icon;

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// By default, it utilizes [GtInputStyles.searchDecoration] to maintain
 /// visual consistency across the application.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtSearchField extends GtStatefulWidget {
   /// The controller used to read and manipulate the search input text.
   final GtInputController? controller;

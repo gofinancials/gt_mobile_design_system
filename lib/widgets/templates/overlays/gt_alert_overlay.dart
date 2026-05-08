@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A utility class for managing and displaying alert overlays in the GT Mobile Design System.
 ///
-/// @category Templates
+/// @Category Templates
 class GtAlert extends GtOverlay {
   OverlayEntry? _entry;
   bool _inserted = false;

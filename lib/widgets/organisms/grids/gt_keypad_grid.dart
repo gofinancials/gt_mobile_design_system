@@ -9,7 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// button and an optional biometric authentication button. It is commonly used
 /// for PIN entry, passcodes, or entering monetary amounts.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtKeyPadGrid extends GtStatefulWidget {
   /// Controls the text being edited by the keypad.
   final TextEditingController controller;

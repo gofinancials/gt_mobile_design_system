@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// along with the total [messageCount] and a visual badge for the [ureadCount]
 /// (unread messages).
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtInboxCard extends GtStatelessWidget {
   /// The primary title of the inbox item.
   final String title;

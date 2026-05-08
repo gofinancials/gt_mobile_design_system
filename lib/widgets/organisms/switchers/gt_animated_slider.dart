@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtAnimatedSlider extends GtStatefulWidget {
   final Widget child;
   final int duration;

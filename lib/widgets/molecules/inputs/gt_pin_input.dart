@@ -9,7 +9,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 /// Uses individual cells for each digit and automatically handles focus traversal
 /// between them. Supports validation, error states, and automatic submission.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtPinInput extends GtStatefulWidget {
   /// An optional controller to read or manipulate the current PIN text.
   final TextEditingController? controller;

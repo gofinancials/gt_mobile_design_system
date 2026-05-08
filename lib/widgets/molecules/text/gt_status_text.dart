@@ -9,7 +9,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// can override [label], [icon], or [iconVariant] for localization or one-off
 /// product copy.
 ///
-/// @category Molecules
+/// @Category Molecules
 enum GtAccessStatus {
   /// Full permissions to the underlying resource or surface.
   fullAccess,

@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:provider/provider.dart';
 
 ///
-/// @category Templates
+/// @Category Templates
 class GtLocalStateWrapper<T extends ChangeNotifier> extends GtStatefulWidget {
   final ValueBuilder<T> builder;
   final T? notifier;

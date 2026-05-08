@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Defines the visual shape of a [GtCheckBox].
 ///
-/// @category Atoms
+/// @Category Atoms
 enum GtCheckBoxShape {
   /// A standard square checkbox with slightly rounded corners.
   square,

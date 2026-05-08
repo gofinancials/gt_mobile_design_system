@@ -14,7 +14,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// back to [BuildContext.spacingBase] (~8dp). Wrap with [Padding] or padded
 /// parents (e.g. [SafeArea], [ListView] padding) as needed.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtPageHeader extends GtStatelessWidget {
   /// Primary heading text (shown in **uppercase**).
   final String title;

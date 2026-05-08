@@ -11,7 +11,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// - SVG URLs (ending with ".svg") are routed to [GtSvg].
 /// - Standard image URLs are handled by [CachedNetworkImage] for efficient caching.
 ///
-/// @category Atoms
+/// @Category Atoms
 class GtNetworkImage extends GtStatelessWidget {
   /// An optional local asset path to display while the network image is loading.
   ///

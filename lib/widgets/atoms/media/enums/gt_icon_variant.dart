@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 ///
-/// @category Atoms
+/// @Category Atoms
 enum GtIconVariant {
   strong,
   sub,

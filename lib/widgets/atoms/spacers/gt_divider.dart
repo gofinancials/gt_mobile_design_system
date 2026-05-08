@@ -3,7 +3,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Defines the predefined vertical spacing sizes for a [GtDivider].
 ///
-/// @category Atoms
+/// @Category Atoms
 enum GtDividerSize {
   /// No vertical spacing.
   none,

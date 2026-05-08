@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 /// visual style suitable for main actions in the application. It extends
 /// [GtButton] to inherit standard sizing, layout, and state management.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtRaisedButton extends GtButton {
   /// The text label displayed on the button.
   final String? text;

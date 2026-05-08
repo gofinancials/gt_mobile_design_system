@@ -56,7 +56,7 @@ final class GtMediaQueryData {
 /// screen size, adjusted dynamically based on the current device screen type
 /// (mobile, tablet, laptop, monitor).
 ///
-/// @category Utilities
+/// @Category Utilities
 class GtFractionalSizer {
   late GtMediaQueryData _queryData;
   late GtScreenType screenType;

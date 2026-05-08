@@ -5,7 +5,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 
 /// Paints a circular progress indicator with a sweep gradient.
 ///
-/// @category Painters
+/// @Category Painters
 class GtCircularProgressPainter extends CustomPainter {
   final Color color;
   final double strokeWidth;

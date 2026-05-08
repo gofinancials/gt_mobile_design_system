@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A data class representing a single selectable item within a dropdown or autocomplete list.
 ///
-/// @category Data
+/// @Category Data
 class GtDropdownData<T> extends AppEquatable {
   /// The underlying value of this item.
   final T value;

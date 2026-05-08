@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// when the user interacts with the [anchor] widget. When opened, it applies a
 /// backdrop blur effect behind the menu.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtContextMenu<T> extends GtStatefulWidget {
   /// The list of items to display in the context menu.
   final List<GtContextMenuItem<T>> items;

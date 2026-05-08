@@ -7,7 +7,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This is a standardized wrapper around [Image.memory] for the Go Tech design system.
 ///
-/// @category Atoms
+/// @Category Atoms
 class GtMemoryImage extends GtStatelessWidget {
   /// The raw image data represented as a list of bytes.
   final Uint8List bytes;

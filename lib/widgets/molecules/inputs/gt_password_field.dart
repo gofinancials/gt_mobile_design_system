@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// (obscuring/revealing text), disables auto-correction, sets the appropriate
 /// keyboard type, and applies default password validation based on a minimum length.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtPasswordField extends GtStatefulWidget {
   /// The controller used to read and manipulate the password input.
   final GtInputController controller;

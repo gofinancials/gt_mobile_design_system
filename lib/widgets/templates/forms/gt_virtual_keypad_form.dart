@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// It combines a [GtDotFormField] for visual input representation and a
 /// [GtKeyPadGrid] for user interaction.
 ///
-/// @category Templates
+/// @Category Templates
 class GtVirtualKeypadForm extends GtStatefulWidget {
   /// The main heading text displayed at the top of the form.
   final String title;

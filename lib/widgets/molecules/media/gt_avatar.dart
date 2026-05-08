@@ -10,7 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 /// local files, and asset strings. It can also display text [initials] as a fallback,
 /// and optionally overlay a [tag] widget (like a status badge) at the bottom-right corner.
 ///
-/// @category Molecules
+/// @Category Molecules
 class GtAvatar extends GtStatelessWidget {
   /// The image data to display in the avatar. If null, [initials] or a placeholder is shown.
   final AppImageData? avatar;

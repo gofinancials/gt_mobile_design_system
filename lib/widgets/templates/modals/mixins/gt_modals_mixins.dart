@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A mixin that provides convenience methods for displaying bottom modals.
 ///
-/// @category Templates
+/// @Category Templates
 mixin GtBottomModalMixin {
   /// Displays a simple bottom modal with a [title], an optional [description], and an optional [icon].
   ///

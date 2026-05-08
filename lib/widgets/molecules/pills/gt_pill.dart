@@ -5,7 +5,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Defines the visual variants available for status, button, and other pills.
 /// Each variant determines the background, border, and text colors applied to the pill.
 ///
-/// @category Molecules
+/// @Category Molecules
 enum GtPillVariant {
   /// A strong emphasis variant, typically using solid, bold brand colors.
   strong,

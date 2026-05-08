@@ -7,7 +7,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 /// It provides convenience methods for common navigation actions and maintains
 /// an internal stack of route names to track the user's navigation history.
 ///
-/// @category Router
+/// @Category Router
 class GtRouter {
   GtRouter._();
 

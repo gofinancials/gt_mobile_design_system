@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [ios] is the default floating glass bar; [android] uses Material
 /// [BottomNavigationBar] with fixed tabs (no trailing action).
 ///
-/// @category Organisms
+/// @Category Organisms
 enum GtBottomNavigationStyle { ios, android }
 
 /// A single tab item for [GtBottomNavigationBar] and [GtAndroidBottomNavigationBar].
@@ -16,7 +16,7 @@ enum GtBottomNavigationStyle { ios, android }
 /// `selectedIcon` and `unselectedIcon` allow teams to use outlined/filled icon
 /// pairs for both iOS and Android variants.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtBottomNavigationItem {
   final IconData selectedIcon;
   final IconData unselectedIcon;
@@ -35,7 +35,7 @@ class GtBottomNavigationItem {
 /// For Android-only trees you can also use [GtAndroidBottomNavigationBar]
 /// directly (no trailing action).
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtBottomNavigationBar extends GtStatelessWidget {
   final List<GtBottomNavigationItem> items;
   final int currentIndex;
@@ -87,7 +87,7 @@ class GtBottomNavigationBar extends GtStatelessWidget {
 ///
 /// Does **not** support a trailing action; use the iOS variant for that.
 ///
-/// @category Organisms
+/// @Category Organisms
 class GtAndroidBottomNavigationBar extends GtStatelessWidget {
   final List<GtBottomNavigationItem> items;
   final int currentIndex;

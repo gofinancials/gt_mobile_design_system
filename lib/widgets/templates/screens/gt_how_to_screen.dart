@@ -3,7 +3,7 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 ///
-/// @category Templates
+/// @Category Templates
 class GtHowToTile extends GtStatelessWidget {
   final AppImageData leading;
   final String instruction;
