@@ -58,7 +58,6 @@ class GtDebitCard extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = backgroundColor ?? context.palette.bg.weak;
     final radius = context.borderRadius2Xl;
     final borderRadius = BorderRadius.only(
       topLeft: radius.topLeft,
@@ -66,87 +65,80 @@ class GtDebitCard extends GtStatelessWidget {
       bottomLeft: radius.bottomLeft,
     );
 
-    return ClipRRect(
+    return GtCard(
+      padding: .zero,
+      constraints: BoxConstraints(minHeight: context.dp(190.px)),
+      border: .none,
       borderRadius: borderRadius,
-      child: Material(
-        color: bgColor,
-        child: InkWell(
-          onTap: onPressed,
-          child: Container(
-            constraints: BoxConstraints(minHeight: context.dp(190.px)),
-            child: Stack(
+      color: backgroundColor,
+      child: Stack(
+        children: [
+          if (image != null)
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: FractionalTranslation(
+                translation: Offset(.015, 0),
+                child: GtImage(
+                  image: image,
+                  width: context.dp(132.px),
+                  height: context.dp(99.px),
+                  fit: BoxFit.contain,
+                  useDefaultSize: false,
+                ),
+              ),
+            ),
+          Padding(
+            padding: context.insets.allDp(16.px),
+            child: Column(
               children: [
-                Padding(
-                  padding: context.insets.allDp(16.px),
-                  child: Column(
-                    children: [
-                      Row(
+                Row(
+                  crossAxisAlignment: .start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: .min,
                         crossAxisAlignment: .start,
                         children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: .min,
-                              crossAxisAlignment: .start,
-                              children: [
-                                GtText(
-                                  title.upper,
-                                  style: _titleStyle(context),
-                                ),
-                                if (subtitle.hasValue) ...[
-                                  GtGap.yXs(),
-                                  GtText(
-                                    subtitle.value.capitalise(true),
-                                    style: _subtitleStyle(context),
-                                  ),
-                                ],
-                                GtGap.yMd(),
-                                Container(
-                                  padding: context.insets.symmetricDp(
-                                    horizontal: 5.px,
-                                    vertical: 3.px,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: context.palette.bg.strong,
-                                    borderRadius: BorderRadius.circular(
-                                      context.dp(5.px),
-                                    ),
-                                  ),
-                                  child: GtText(
-                                    feeLabel!,
-                                    style: _feeLabelStyle(context),
-                                  ),
-                                ),
-                              ],
+                          GtText(title.upper, style: _titleStyle(context)),
+                          if (subtitle.hasValue) ...[
+                            GtGap.yXs(),
+                            GtText(
+                              subtitle.value.capitalise(true),
+                              style: _subtitleStyle(context),
                             ),
-                          ),
-                          GtGap.hBase(),
-                          GtIcon(
-                            GtIcons.chevronRight,
-                            variant: .soft,
-                            size: context.dp(15.px),
-                            alignment: Alignment.topRight,
+                          ],
+                          GtGap.yMd(),
+                          Container(
+                            padding: context.insets.symmetricDp(
+                              horizontal: 5.px,
+                              vertical: 3.px,
+                            ),
+                            decoration: BoxDecoration(
+                              color: context.palette.bg.strong,
+                              borderRadius: 5.circularBorderRadius,
+                            ),
+                            child: GtText(
+                              feeLabel!,
+                              style: _feeLabelStyle(context),
+                            ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-                if (image != null)
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: GtImage(
-                      image: image,
-                      width: context.dp(132.px),
-                      height: context.dp(98.px),
-                      fit: BoxFit.contain,
-                      useDefaultSize: false,
                     ),
-                  ),
+                    GtGap.hBase(),
+                    GtIcon(
+                      GtIcons.chevronRight,
+                      variant: .soft,
+                      size: context.dp(18.px),
+                      alignment: Alignment.topRight,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }

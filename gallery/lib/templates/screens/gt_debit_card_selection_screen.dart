@@ -29,6 +29,5 @@ Widget buildGtDebitCardSelectionScreenUsecase(BuildContext context) {
       };
       context.showToast(label, type: .success);
     },
-    variants: const [.physical, .virtual],
   );
 }

@@ -2,9 +2,6 @@
 ///
 /// This includes illustrations, category icons, and avatar templates hosted remotely.
 class GtNetworkImages {
-  /// Temporary base path for debit card.
-  static const _basePath = "packages/gt_mobile_ui/assets/images/raster";
-
   /// The base URL for all network images.
   static const String _baseUrl =
       'https://raw.githubusercontent.com/gofinancials/gt_images/refs/heads/main';
@@ -159,13 +156,13 @@ class GtNetworkImages {
       '$_baseUrl/avatar_templates/texture_5.webp';
 
   /// Debit card
-  static const String debitCard = '$_basePath/debit_card.png';
+  static const String debitCard = '$_baseUrl/DebitCard.webp';
 
   /// Physical debit card
-  static const String physicalCard = '$_basePath/physical_debit.png';
+  static const String physicalCard = '$_baseUrl/PhysicalDebitCard.webp';
 
   /// Virtual debit card
-  static const String virtualCard = '$_basePath/virtual_debit.png';
+  static const String virtualCard = '$_baseUrl/VirtualDebitCard.webp';
 
   /// A collection containing all 3D avatar template URLs.
   static const threeDAvatars = [

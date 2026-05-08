@@ -89,12 +89,7 @@ class GtNetworkImage extends GtStatelessWidget {
       },
       placeholder: (context, _) {
         if (placeHolderPath == null) {
-          return FittedBox(
-            fit: BoxFit.scaleDown,
-            child: CircularProgressIndicator(
-              color: context.palette.primary.dark,
-            ),
-          );
+          return FittedBox(fit: BoxFit.scaleDown, child: GtSpinner());
         }
         return GtAssetImage(
           placeHolderPath!,

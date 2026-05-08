@@ -7,20 +7,18 @@ enum GtDebitCardVariant { physical, virtual }
 
 extension _GtDebitCardVariantDefaults on GtDebitCardVariant {
   String get title => switch (this) {
-    .physical => 'Physical Card',
-    .virtual => 'Virtual',
+    .physical => 'physicalCard'.ctr(),
+    .virtual => 'virtual'.ctr(),
   };
 
   String get subtitle => switch (this) {
-    .physical =>
-      'Perfect for ATM withdrawals, in-store shopping, and everyday transactions.',
-    .virtual =>
-      'Best for online shopping, subscriptions, and quick in-app payments.',
+    .physical => 'physicalCardDescription'.tr(),
+    .virtual => 'virtualCardDescription'.tr(),
   };
 
   String get feeLabel => switch (this) {
-    .physical => 'N1000',
-    .virtual => 'FREE',
+    .physical => 1000.asCurrency(AppStrings.naira),
+    .virtual => 'free'.utr(),
   };
 
   AppImageData get image => switch (this) {
@@ -40,12 +38,6 @@ class GtDebitCardSelectionScreen extends GtStatelessWidget {
   /// Optional support text displayed under [title].
   final String? subtitle;
 
-  /// Card variants displayed beneath the header.
-  ///
-  /// Defaults to both [GtDebitCardVariant.physical] and
-  /// [GtDebitCardVariant.virtual].
-  final List<GtDebitCardVariant> variants;
-
   /// Callback when any card option is selected.
   final ValueChanged<GtDebitCardVariant>? onVariantSelected;
 
@@ -64,7 +56,6 @@ class GtDebitCardSelectionScreen extends GtStatelessWidget {
     super.key,
     required this.title,
     this.subtitle,
-    this.variants = const [.physical, .virtual],
     this.onVariantSelected,
     this.onClose,
     this.backgroundColor,
@@ -76,35 +67,27 @@ class GtDebitCardSelectionScreen extends GtStatelessWidget {
 
     return Scaffold(
       backgroundColor: bgColor,
-      appBar: GtAppBar(leading: GtBackButton(routeStackSensitive: false)),
+      appBar: const GtAppBar(),
       body: Container(
         color: bgColor,
         child: SafeArea(
-          child: Padding(
+          child: SingleChildScrollView(
             padding: context.insets.defaultHorizontalInsets,
             child: Column(
               crossAxisAlignment: .stretch,
+              spacing: context.spacingMd,
               children: [
-                GtGap.ySectionSm(),
+                GtGap.yMd(),
                 GtHeader(title: title, subtitle: subtitle),
-                GtGap.ySectionLg(),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: .stretch,
-                    spacing: context.spacingMd,
-                    children: variants
-                        .map(
-                          (v) => GtDebitCard(
-                            title: v.title,
-                            subtitle: v.subtitle,
-                            feeLabel: v.feeLabel,
-                            image: v.image,
-                            onPressed: () => onVariantSelected?.call(v),
-                          ),
-                        )
-                        .toList(),
+                GtGap.yMd(),
+                for (final v in GtDebitCardVariant.values)
+                  GtDebitCard(
+                    title: v.title,
+                    subtitle: v.subtitle,
+                    feeLabel: v.feeLabel,
+                    image: v.image,
+                    onPressed: () => onVariantSelected?.call(v),
                   ),
-                ),
               ],
             ),
           ),
