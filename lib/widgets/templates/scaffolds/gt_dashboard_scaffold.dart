@@ -48,6 +48,9 @@ class GtDashboardScaffold extends GtStatefulWidget {
   /// Callback triggered when the help icon is pressed.
   final OnPressed? onClickHelp;
 
+  /// Callback triggered when the avatar is pressed.
+  final OnPressed? onClickAvatar;
+
   /// Optional avatar image data for the current user.
   final AppImageData? avatar;
 
@@ -70,6 +73,7 @@ class GtDashboardScaffold extends GtStatefulWidget {
     required this.onClickHide,
     this.onClickNotification,
     this.onClickHelp,
+    this.onClickAvatar,
     this.avatar,
     this.userFullName,
     required this.data,
@@ -111,6 +115,7 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
         backgroundColor: color,
         extendBodyBehindAppBar: true,
         appBar: GtHomeAppBar(
+          onClickAvatar: widget.onClickAvatar,
           onClickSearch: widget.onClickSearch,
           onClickHide: widget.onClickHide,
           onClickNotification: widget.onClickNotification,

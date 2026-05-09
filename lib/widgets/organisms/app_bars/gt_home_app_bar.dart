@@ -19,6 +19,9 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// Callback triggered when the notification icon is pressed.
   final OnPressed? onClickNotification;
 
+  /// Callback triggered when the avatar is pressed.
+  final OnPressed? onClickAvatar;
+
   /// Creates a [GtHomeAppBar].
   const GtHomeAppBar({
     this.avatar,
@@ -26,6 +29,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     required this.onClickHide,
     this.onClickNotification,
     this.userFullName,
+    this.onClickAvatar,
     super.key,
   });
 
@@ -61,6 +65,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
               initials: AppHelpers.getInitials(userFullName),
               gradient: context.gradients.appbarAvatarGradient,
               initialsColor: context.palette.text.white,
+              onPressed: onClickAvatar,
             ),
             const Spacer(),
             GtIconButton(
