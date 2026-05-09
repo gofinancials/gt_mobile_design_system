@@ -290,6 +290,9 @@ class GtIcons {
   static const subscription = GtIconData(0xf0c8);
   static const heartHand = GtIconData(0xf0c9);
   static const award = GtIconData(0xf0ca);
+  static const awardFilled = GtIconData(0xf149);
+  static const piggyBank = GtIconData(0xf147);
+  static const piggyBankFilled = GtIconData(0xf148);
   static const stopwatch = GtIconData(0xf0cb);
   static const heartBreak = GtIconData(0xf0cc);
   static const awardCertificate = GtIconData(0xf0cd);
@@ -606,6 +609,9 @@ class GtIcons {
     subscription,
     heartHand,
     award,
+    awardFilled,
+    piggyBank,
+    piggyBankFilled,
     stopwatch,
     heartBreak,
     awardCertificate,
