@@ -146,6 +146,7 @@ class GtPaletteBgColors {
   final Color weak;
   final Color weaker;
   final Color white;
+  final Color warm;
   final Color neutralWarm50;
 
   const GtPaletteBgColors({
@@ -156,6 +157,7 @@ class GtPaletteBgColors {
     required this.weak,
     required this.weaker,
     required this.white,
+    required this.warm,
     required this.neutralWarm50,
   });
 
@@ -166,6 +168,7 @@ class GtPaletteBgColors {
     soft,
     weak,
     weaker,
+    warm,
     neutralWarm50,
     white,
   ];
@@ -184,6 +187,7 @@ class GtPaletteBgColors {
       weaker: Color.lerp(a?.weaker, b?.weaker, t)!,
       white: Color.lerp(a?.white, b?.white, t)!,
       neutralWarm50: Color.lerp(a?.neutralWarm50, b?.neutralWarm50, t)!,
+      warm: Color.lerp(a?.warm, b?.warm, t)!,
     );
   }
 
@@ -198,6 +202,7 @@ class GtPaletteBgColors {
         other.soft == soft &&
         other.weak == weak &&
         other.white == white &&
+        other.warm == warm &&
         other.neutralWarm50 == neutralWarm50;
   }
 

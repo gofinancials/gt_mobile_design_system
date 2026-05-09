@@ -27,6 +27,7 @@ final class PersonalLightPalette extends GtPalette {
           soft: GtColors.neutral200.value,
           weak: GtColors.neutral50.value,
           white: GtColors.neutral0.value,
+          warm: GtColors.yellow25.value,
           neutralWarm50: GtColors.neutralWarm50.value,
           weaker: GtColors.neutral25.value,
         ),

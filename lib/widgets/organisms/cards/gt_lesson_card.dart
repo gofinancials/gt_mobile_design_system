@@ -34,6 +34,9 @@ class GtLessonCard extends GtStatelessWidget {
   /// The callback triggered when the user taps on the lesson card.
   final OnPressed onTap;
 
+  /// The background color of the card.
+  final Color? cardBackgroundColor;
+
   /// Creates a [GtLessonCard].
   const GtLessonCard({
     super.key,
@@ -45,6 +48,7 @@ class GtLessonCard extends GtStatelessWidget {
     this.watchedLessons = 0,
     this.watchedDuration,
     this.variant = .featured,
+    this.cardBackgroundColor,
     required this.onTap,
   }) : assert(watchedLessons <= totalLessons),
        assert(watchedDuration == null || watchedDuration < duration);
@@ -100,6 +104,7 @@ class GtLessonCard extends GtStatelessWidget {
                 vertical: 16.px,
                 horizontal: 12.px,
               ),
+              color: cardBackgroundColor,
               onPressed: onTap,
               borderRadius: .zero,
               child: Column(

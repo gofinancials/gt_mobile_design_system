@@ -17,14 +17,14 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   final OnPressed onClickHide;
 
   /// Callback triggered when the notification icon is pressed.
-  final OnPressed onClickNotification;
+  final OnPressed? onClickNotification;
 
   /// Creates a [GtHomeAppBar].
   const GtHomeAppBar({
     this.avatar,
     required this.onClickSearch,
     required this.onClickHide,
-    required this.onClickNotification,
+    this.onClickNotification,
     this.userFullName,
     super.key,
   });
@@ -81,15 +81,16 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
               gradient: gradient,
               size: .medium,
             ),
-            GtIconButton(
-              icon: GtIcons.bell,
-              onPressed: onClickNotification,
-              shape: btnShape,
-              color: btnColor,
-              variant: .neutral,
-              gradient: gradient,
-              size: .medium,
-            ),
+            if (onClickNotification != null)
+              GtIconButton(
+                icon: GtIcons.bell,
+                onPressed: onClickNotification!,
+                shape: btnShape,
+                color: btnColor,
+                variant: .neutral,
+                gradient: gradient,
+                size: .medium,
+              ),
           ],
         ),
       ),

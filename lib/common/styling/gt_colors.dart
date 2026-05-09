@@ -117,6 +117,7 @@ enum GtColors {
   yellow200(ColorSet(0xFFFFECC0)),
   yellow100(ColorSet(0xFFFFEFCC)),
   yellow50(ColorSet(0xFFFFFAEB)),
+  yellow25(ColorSet(0xFFFBFAF5)),
 
   // ---------------------------------------------------------------------------
   // VIBRANTS - PURPLE

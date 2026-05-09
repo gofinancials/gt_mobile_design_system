@@ -27,6 +27,7 @@ final class FlexDarkPalette extends GtPalette {
           soft: GtColors.neutral200.dark,
           weak: GtColors.neutral50.dark,
           white: GtColors.neutral0.dark,
+          warm: GtColors.neutralWarm50.dark,
           neutralWarm50: GtColors.neutralWarm50.dark,
           weaker: GtColors.neutral25.dark,
         ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gt_mobile_foundation/extensions/string_extensions.dart';
-import 'package:gt_mobile_foundation/typedefs/app_typedefs.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Visual variant for [GtBottomNavigationBar].
@@ -13,7 +12,7 @@ enum GtBottomNavigationStyle { ios, android }
 ///
 /// `selectedIcon` and `unselectedIcon` allow teams to use outlined/filled icon
 /// pairs for both iOS and Android variants.
-class GtBottomNavigationItem {
+class GtBottomNavigationItem extends AppEquatable {
   final IconData selectedIcon;
   final IconData unselectedIcon;
   final String label;
@@ -23,6 +22,9 @@ class GtBottomNavigationItem {
     required this.unselectedIcon,
     required this.label,
   });
+
+  @override
+  List<Object?> get props => [selectedIcon, unselectedIcon, label];
 }
 
 /// Host-configurable bottom navigation: **iOS** floating glass (default) or
@@ -30,13 +32,15 @@ class GtBottomNavigationItem {
 ///
 /// For Android-only trees you can also use [GtAndroidBottomNavigationBar]
 /// directly (no trailing action).
+///
+/// @category Organisms
 class GtBottomNavigationBar extends GtStatelessWidget {
   final List<GtBottomNavigationItem> items;
   final int currentIndex;
   final ValueChanged<int> onIndexChanged;
 
   /// Defaults to [GtBottomNavigationStyle.ios].
-  final GtBottomNavigationStyle style;
+  final GtBottomNavigationStyle? style;
 
   /// Optional callback for the trailing circular action button (**iOS only**).
   final OnPressed? onTrailingTap;
@@ -49,7 +53,7 @@ class GtBottomNavigationBar extends GtStatelessWidget {
     required this.items,
     required this.currentIndex,
     required this.onIndexChanged,
-    this.style = GtBottomNavigationStyle.ios,
+    this.style,
     this.onTrailingTap,
     this.trailingIcon = GtIcons.helpInfo,
   }) : assert(
@@ -59,7 +63,8 @@ class GtBottomNavigationBar extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return switch (style) {
+    GtBottomNavigationStyle platformStyle = context.isAndroid ? .android : .ios;
+    return switch (style ?? platformStyle) {
       .ios => _GtIosFloatingBottomNavigationBar(
         items: items,
         currentIndex: currentIndex,
@@ -80,6 +85,8 @@ class GtBottomNavigationBar extends GtStatelessWidget {
 /// icon pairs from [GtBottomNavigationItem], palette-driven colors.
 ///
 /// Does **not** support a trailing action; use the iOS variant for that.
+///
+/// @category Organisms
 class GtAndroidBottomNavigationBar extends GtStatelessWidget {
   final List<GtBottomNavigationItem> items;
   final int currentIndex;
@@ -98,45 +105,55 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final inactive = GtColors.neutralGray600.value;
-    final activeIcon = palette.text.strong;
-    final selectedLabelStyle = context.textStyles.navBarLabel(
-      isAndroid: true,
-      color: palette.primary.dark,
-    );
-    final unselectedLabelStyle = context.textStyles.navBarLabel(
-      isAndroid: true,
-      color: inactive,
-    );
-    // Top inset matches host padding; bottom adds clear space before the label.
-    final iconPadding = context.insets.symmetricDp(
-      vertical: context.spacing.base.px,
-    );
+    final inactive = palette.text.soft;
+    final active = palette.primary.dark;
 
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      type: BottomNavigationBarType.fixed,
-      elevation: 0,
-      backgroundColor: palette.bg.white,
-      selectedItemColor: activeIcon,
-      unselectedItemColor: inactive,
-      selectedLabelStyle: selectedLabelStyle,
-      unselectedLabelStyle: unselectedLabelStyle,
-      showUnselectedLabels: true,
-      onTap: onIndexChanged,
-      items: [
-        for (final item in items)
-          BottomNavigationBarItem(
-            icon: Padding(
-              padding: iconPadding,
-              child: GtBottomNavIcon(item.unselectedIcon, selected: false),
-            ),
-            activeIcon: Padding(
-              padding: iconPadding,
-              child: GtBottomNavIcon(item.selectedIcon, selected: true),
-            ),
-            label: item.label.upper,
+    return Stack(
+      alignment: .bottomCenter,
+      children: [
+        Container(
+          padding: context.insets.fromLTRBDp(7.5.px, 12.px, 7.5.px, 16.px),
+          color: palette.bg.white,
+          child: Table(
+            defaultVerticalAlignment: .middle,
+            children: [
+              TableRow(
+                children: [
+                  for (final (i, item) in items.indexed)
+                    GtInkWell(
+                      onTap: () => onIndexChanged(i),
+                      child: Padding(
+                        padding: context.insets.allDp(11.px),
+                        child: Column(
+                          spacing: context.spacingBase,
+                          mainAxisSize: .min,
+                          crossAxisAlignment: .center,
+                          children: [
+                            GtBottomNavIcon(
+                              currentIndex == i
+                                  ? item.selectedIcon
+                                  : item.unselectedIcon,
+                              selected: currentIndex == i,
+                              selectedColor: palette.primary.dark,
+                              unselectedColor: palette.icon.soft,
+                            ),
+                            GtText(
+                              item.label.upper,
+                              maxLines: 1,
+                              style: context.textStyles.navBarLabel(
+                                isAndroid: true,
+                                color: currentIndex == i ? active : inactive,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ],
           ),
+        ),
       ],
     );
   }
@@ -173,78 +190,93 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
       boxShadow: context.shadows.bottomNavInnerGlass(),
     );
 
-    return Row(
-      crossAxisAlignment: .center,
+    return Stack(
+      alignment: .bottomCenter,
       children: [
-        Expanded(
-          child: ClipRRect(
-            borderRadius: radius,
-            child: BackdropFilter(
-              filter: context.backdropFilters.bottomNavFrost(),
-              child: Container(
-                height: context.dp(68.px),
-                decoration: boxDecoration,
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: palette.bg.strong.withValues(alpha: 0.01),
-                        ),
-                      ),
-                    ),
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        final tabWidth = constraints.maxWidth / items.length;
-                        final inset = context.dp(4.px);
-                        final highlightHeight =
-                            constraints.maxHeight - (2 * inset);
-
-                        return Stack(
-                          children: [
-                            AnimatedPositioned(
-                              duration: const Duration(milliseconds: 350),
-                              curve: Curves.easeInOutCubic,
-                              left: (tabWidth * currentIndex) + inset,
-                              top: inset,
-                              width: tabWidth - (2 * inset),
-                              height: highlightHeight,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: palette.bg.weak,
-                                  borderRadius: radius,
+        Container(
+          constraints: BoxConstraints(maxHeight: context.dp(95.px)),
+          padding: context.insets.fromLTRBDp(16.px, 0, 16.px, 21.px),
+          child: Row(
+            crossAxisAlignment: .center,
+            mainAxisSize: .min,
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: radius,
+                  child: BackdropFilter(
+                    filter: context.backdropFilters.bottomNavFrost(),
+                    child: Container(
+                      clipBehavior: .hardEdge,
+                      height: context.dp(68.px),
+                      decoration: boxDecoration,
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: palette.bg.strong.withValues(
+                                  alpha: 0.01,
                                 ),
                               ),
                             ),
-                            Row(
-                              children: [
-                                for (var i = 0; i < items.length; i++)
-                                  Expanded(
-                                    child: _GtBottomNavigationTab(
-                                      item: items[i],
-                                      selected: i == currentIndex,
-                                      onTap: () => onIndexChanged(i),
+                          ),
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              final tabWidth =
+                                  constraints.maxWidth / items.length;
+                              final inset = context.dp(4.px);
+                              final highlightHeight =
+                                  constraints.maxHeight - (2 * inset);
+
+                              return Stack(
+                                clipBehavior: .hardEdge,
+                                children: [
+                                  AnimatedPositioned(
+                                    duration: const Duration(milliseconds: 350),
+                                    curve: Curves.easeInOutCubic,
+                                    left: (tabWidth * currentIndex) + inset,
+                                    top: inset,
+                                    width: tabWidth - (2 * inset),
+                                    height: highlightHeight,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: palette.bg.weak,
+                                        borderRadius: radius,
+                                      ),
                                     ),
                                   ),
-                              ],
-                            ),
-                          ],
-                        );
-                      },
+                                  Row(
+                                    children: [
+                                      for (final (i, item) in items.indexed)
+                                        Expanded(
+                                          child: _GtBottomNavigationTab(
+                                            item: item,
+                                            selected: i == currentIndex,
+                                            onTap: () => onIndexChanged(i),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              if (onTrailingTap != null) ...[
+                SizedBox(width: context.dp(12.px)),
+                _GtBottomNavigationTrailingAction(
+                  onTap: onTrailingTap!,
+                  icon: trailingIcon,
+                ),
+              ],
+            ],
           ),
         ),
-        if (onTrailingTap != null) ...[
-          SizedBox(width: context.dp(12.px)),
-          _GtBottomNavigationTrailingAction(
-            onTap: onTrailingTap!,
-            icon: trailingIcon,
-          ),
-        ],
       ],
     );
   }
@@ -253,17 +285,26 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
 class GtBottomNavIcon extends GtStatelessWidget {
   final IconData icon;
   final bool selected;
+  final Color unselectedColor;
+  final Color selectedColor;
 
-  const GtBottomNavIcon(this.icon, {required this.selected, super.key});
+  const GtBottomNavIcon(
+    this.icon, {
+    required this.selected,
+    required this.unselectedColor,
+    required this.selectedColor,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
-
     return GtIcon.withColor(
       icon,
-      size: context.dp(22.px),
-      color: selected ? palette.primary.dark : palette.icon.soft,
+      size: context.dp(28.px),
+      color: switch (selected) {
+        true => selectedColor,
+        _ => unselectedColor,
+      },
       alignment: .center,
     );
   }
@@ -295,8 +336,9 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
             GtBottomNavIcon(
               selected ? item.selectedIcon : item.unselectedIcon,
               selected: selected,
+              selectedColor: palette.primary.dark,
+              unselectedColor: palette.icon.sub,
             ),
-            const GtGap.ySm(),
             GtText(
               item.label,
               textAlign: TextAlign.center,
@@ -344,7 +386,7 @@ class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
             height: context.dp(68.px),
             width: context.dp(68.px),
             decoration: boxDecoration,
-            child: Center(child: GtIcon(icon, size: 28)),
+            child: Center(child: GtIcon(icon, size: context.dp(28.px))),
           ),
         ),
       ),

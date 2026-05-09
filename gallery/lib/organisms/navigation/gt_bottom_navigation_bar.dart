@@ -67,7 +67,7 @@ Widget playgroundGtBottomNavigationBarUseCase(BuildContext context) {
       : 'Android-style bottom navigation playground.';
 
   return Scaffold(
-    backgroundColor: context.palette.bg.neutralWarm50,
+    backgroundColor: context.palette.bg.warm,
     body: Padding(
       padding: context.insets.symmetricDp(
         horizontal: context.grid.singleColumn.margins.px,
@@ -76,19 +76,16 @@ Widget playgroundGtBottomNavigationBarUseCase(BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           GalleryPageHeader(title: 'Bottom Navigation Bar', rider: rider),
-          const GtGap.yXl(),
-          if (style == GtBottomNavigationStyle.ios)
-            _BottomNavPreviewIos(
-              items: tabs,
-              initialIndex: 0,
-              withTrailingAction: true,
-            ),
         ],
       ),
     ),
     bottomNavigationBar: style == GtBottomNavigationStyle.android
         ? _BottomNavAndroidPreview(items: tabs, initialIndex: 0)
-        : null,
+        : _BottomNavPreviewIos(
+            items: tabs,
+            initialIndex: 0,
+            withTrailingAction: true,
+          ),
   );
 }
 

@@ -1,1 +1,1 @@
-export 'gt_scaffold.dart';
+export 'gt_dashboard_scaffold.dart';
