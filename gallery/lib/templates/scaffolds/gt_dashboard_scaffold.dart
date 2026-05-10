@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
+
+final pageController = PageController(initialPage: 0);
 
 @widgetbook.UseCase(name: 'Dashboard Scaffold', type: GtDashboardScaffold)
 Widget playgroundGtDashboardScaffoldUseCase(BuildContext context) {
@@ -39,48 +42,67 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
     ),
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    final pages = [
-      Center(
+  List<GtDashboardPageData> get data => [
+    GtDashboardPageData(
+      page: Center(
         child: GtText(
           'Home Page',
           style: context.textStyles.h4(),
           key: const ValueKey("home"),
         ),
       ),
-      Center(
+      backgroundColor: context.isIos || context.isMacos
+          ? context.palette.bg.warm
+          : null,
+      appBar: GtHomeAppBar(
+        onClickSearch: () {},
+        onClickHide: () {},
+        onClickNotification: () {},
+      ),
+      navItem: _items[0],
+      showGradient: true,
+    ),
+    GtDashboardPageData(
+      appBar: GtTitleAppBar(title: "Payments"),
+      page: Center(
         child: GtText(
           'Payments Page',
           style: context.textStyles.h4(),
           key: const ValueKey("payments"),
         ),
       ),
-      Center(
+      navItem: _items[1],
+    ),
+    GtDashboardPageData(
+      appBar: GtTitleAppBar(title: "Products"),
+      page: Center(
         child: GtText(
           'Products Page',
           style: context.textStyles.h4(),
           key: const ValueKey("products"),
         ),
       ),
-      Center(
+      navItem: _items[2],
+    ),
+    GtDashboardPageData(
+      appBar: GtTitleAppBar(title: "Cards"),
+      page: Center(
         child: GtText(
           'Cards Page',
           style: context.textStyles.h4(),
           key: const ValueKey("cards"),
         ),
       ),
-    ];
+      navItem: _items[3],
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
     return GtDashboardScaffold(
-      onClickSearch: () {},
-      onClickHide: () {},
-      onClickNotification: () {},
       onClickHelp: () {},
-      userFullName: 'John Doe',
-      data: [
-        for (final (index, page) in pages.indexed)
-          GtDashboardPageData(page: page, navItem: _items[index]),
-      ],
+      data: data,
+      pageController: pageController,
     );
   }
 }

@@ -11,10 +11,25 @@ class GtDashboardPageData extends AppEquatable {
   /// The navigation item configuration for this page in the bottom navigation bar.
   final GtBottomNavigationItem navItem;
 
-  const GtDashboardPageData({required this.page, required this.navItem});
+  /// Whether to show the gradient background.
+  final bool showGradient;
+
+  /// The app bar to be displayed in the scaffold.
+  final PreferredSizeWidget? appBar;
+
+  /// The background color of the page.
+  final Color? backgroundColor;
+
+  const GtDashboardPageData({
+    required this.page,
+    required this.navItem,
+    this.showGradient = false,
+    this.appBar,
+    this.backgroundColor,
+  });
 
   @override
-  List<Object?> get props => [page, navItem];
+  List<Object?> get props => [page, navItem, showGradient, appBar];
 }
 
 /// Utility extension on a list of [GtDashboardPageData] to easily extract
@@ -36,27 +51,6 @@ extension GtDashboardPageDataList on List<GtDashboardPageData> {
 ///
 /// @category Templates
 class GtDashboardScaffold extends GtStatefulWidget {
-  /// Callback triggered when the search icon is pressed.
-  final OnPressed onClickSearch;
-
-  /// Callback triggered when the hide/visibility icon is pressed.
-  final OnPressed onClickHide;
-
-  /// Callback triggered when the notification icon is pressed.
-  final OnPressed? onClickNotification;
-
-  /// Callback triggered when the help icon is pressed.
-  final OnPressed? onClickHelp;
-
-  /// Callback triggered when the avatar is pressed.
-  final OnPressed? onClickAvatar;
-
-  /// Optional avatar image data for the current user.
-  final AppImageData? avatar;
-
-  /// The full name of the user, used to generate initials if [avatar] is absent.
-  final String? userFullName;
-
   /// A list of page data defining the body widgets and their bottom navigation configurations.
   final List<GtDashboardPageData> data;
 
@@ -66,19 +60,19 @@ class GtDashboardScaffold extends GtStatefulWidget {
   /// Optional callback triggered when the user navigates to a new page.
   final OnChanged<int>? onPageChanged;
 
+  /// Callback for the trailing circular action button (**iOS only**).
+  final OnPressed onClickHelp;
+
+  final PageController? pageController;
+
   /// Creates a [GtDashboardScaffold].
   const GtDashboardScaffold({
     super.key,
-    required this.onClickSearch,
-    required this.onClickHide,
-    this.onClickNotification,
-    this.onClickHelp,
-    this.onClickAvatar,
-    this.avatar,
-    this.userFullName,
     required this.data,
     this.initialIndex = 0,
     this.onPageChanged,
+    required this.onClickHelp,
+    this.pageController,
   }) : assert(data.length >= 2, "Data must be at least 2");
 
   @override
@@ -92,68 +86,75 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: widget.initialIndex);
+    _pageController =
+        widget.pageController ??
+        PageController(initialPage: widget.initialIndex);
     _currentPageNotifier = ValueNotifier<int>(widget.initialIndex);
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    if (widget.pageController == null) {
+      _pageController.dispose();
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isIos = context.isIos || context.isMacos;
-    final bgColors = context.palette.bg;
-    final color = isIos ? bgColors.warm : bgColors.white;
     final pages = widget.data.pages;
     final navItems = widget.data.navItems;
 
     return GtRootPopScope(
-      child: Scaffold(
-        backgroundColor: color,
-        extendBodyBehindAppBar: true,
-        appBar: GtHomeAppBar(
-          onClickAvatar: widget.onClickAvatar,
-          onClickSearch: widget.onClickSearch,
-          onClickHide: widget.onClickHide,
-          onClickNotification: widget.onClickNotification,
-          avatar: widget.avatar,
-          userFullName: widget.userFullName,
-        ),
-        body: CustomPaint(
-          painter: GtHomeGradientPainter(
-            color: context.palette.primary.alpha24,
-          ),
-          child: SafeArea(
-            child: PageView.builder(
-              key: const PageStorageKey("gt-dashboard-page-view"),
-              controller: _pageController,
-              onPageChanged: (index) {
-                widget.onPageChanged?.call(index);
-                _currentPageNotifier.value = index;
+      child: ListenableBuilder(
+        listenable: Listenable.merge([_pageController, _currentPageNotifier]),
+        builder: (_, child) {
+          final index = _currentPageNotifier.value;
+          final data = widget.data[index];
+          final appBar = data.appBar;
+          final bgColor = data.backgroundColor;
+          Widget body = child ?? const SizedBox.shrink();
+
+          if (data.showGradient) {
+            body = CustomPaint(
+              painter: GtHomeGradientPainter(
+                color: context.palette.primary.alpha24,
+              ),
+              child: body,
+            );
+          }
+
+          return Scaffold(
+            backgroundColor: bgColor ?? context.palette.bg.white,
+            extendBodyBehindAppBar: true,
+            appBar: appBar,
+            body: body,
+            bottomNavigationBar: GtBottomNavigationBar(
+              key: const PageStorageKey("gt-dashboard-nav-bar"),
+              items: navItems,
+              onTrailingTap: widget.onClickHelp,
+              currentIndex: index,
+              onIndexChanged: (index) {
+                if (navItems[index].onSelected != null) {
+                  navItems[index].onSelected!(index);
+                  return;
+                }
+                _pageController.jumpToPage(index);
               },
-              itemBuilder: (_, index) => pages[index],
-              itemCount: pages.length,
-              physics: const NeverScrollableScrollPhysics(),
             ),
-          ),
-        ),
-        bottomNavigationBar: ListenableBuilder(
-          listenable: Listenable.merge([_pageController, _currentPageNotifier]),
-          builder: (_, child) => GtBottomNavigationBar(
-            key: const PageStorageKey("gt-dashboard-nav-bar"),
-            items: navItems,
-            onTrailingTap: widget.onClickHelp,
-            currentIndex: _currentPageNotifier.value,
-            onIndexChanged: (index) {
-              _pageController.animateToPage(
-                index,
-                duration: 300.milliseconds,
-                curve: Curves.decelerate,
-              );
+          );
+        },
+        child: SafeArea(
+          child: PageView.builder(
+            key: const PageStorageKey("gt-dashboard-page-view"),
+            controller: _pageController,
+            onPageChanged: (index) {
+              widget.onPageChanged?.call(index);
+              _currentPageNotifier.value = index;
             },
+            itemBuilder: (_, index) => pages[index],
+            itemCount: pages.length,
+            physics: const NeverScrollableScrollPhysics(),
           ),
         ),
       ),

@@ -16,11 +16,13 @@ class GtBottomNavigationItem extends AppEquatable {
   final IconData selectedIcon;
   final IconData unselectedIcon;
   final String label;
+  final OnChanged<int>? onSelected;
 
   const GtBottomNavigationItem({
     required this.selectedIcon,
     required this.unselectedIcon,
     required this.label,
+    this.onSelected,
   });
 
   @override
