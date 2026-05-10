@@ -369,6 +369,11 @@ class GtIcons {
   static const childHead = GtIconData(0xf146);
   static const verifiedUsers = GtIconData(0xf12b);
 
+  static const airtime = GtIconData(0xf14d);
+  static const cuppedHand = GtIconData(0xf14c);
+  static const eyeOutline = GtIconData(0xf14b);
+  static const snowFlake = GtIconData(0xf14a);
+
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
   /// This is particularly useful for cataloging, testing, or building
@@ -705,5 +710,9 @@ class GtIcons {
     temple,
     childHead,
     verifiedUsers,
+    airtime,
+    cuppedHand,
+    eyeOutline,
+    snowFlake,
   ];
 }

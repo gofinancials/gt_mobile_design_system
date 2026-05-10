@@ -43,7 +43,7 @@ class GtBalanceText extends GtStatelessWidget {
   const GtBalanceText({
     super.key,
     required this.amount,
-    this.currencySymbol = "N",
+    this.currencySymbol = AppStrings.naira,
     this.hidden = false,
     this.textAlign = TextAlign.center,
     this.maxLines = 1,
@@ -54,10 +54,11 @@ class GtBalanceText extends GtStatelessWidget {
     // Double strikethrough on the currency glyph (e.g. "N").
     final currencyStyle = context.textStyles.h4(
       color: context.palette.text.strong,
-      decoration: TextDecoration.lineThrough,
-      decorationStyle: TextDecorationStyle.double,
     );
-    final amtStyle = context.textStyles.d3();
+    final amtStyle = switch (context.isAndroid) {
+      true => context.textStyles.h2(),
+      _ => context.textStyles.h3(),
+    };
 
     if (amount == null) {
       return GtText(

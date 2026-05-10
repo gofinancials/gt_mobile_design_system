@@ -17,7 +17,10 @@ enum GtButtonSize {
   medium(40),
 
   /// A large button with a baseline height of 48.
-  large(48);
+  large(48),
+
+  /// A xtra large button with a baseline height of 48.
+  xlarge(54);
 
   const GtButtonSize(this.value);
 
@@ -153,6 +156,7 @@ abstract class GtButton extends GtStatelessWidget {
       .small => Size(width ?? context.dp(68.px), height),
       .medium => Size(width ?? context.dp(80.px), height),
       .large => Size(width ?? context.dp(120.px), height),
+      .xlarge => Size(width ?? context.dp(160.px), height),
     };
   }
 
@@ -170,6 +174,7 @@ abstract class GtButton extends GtStatelessWidget {
       .xsmall || .small => i.symmetricDp(horizontal: 10.px),
       .medium => i.symmetricDp(horizontal: 16.px),
       .large => i.symmetricDp(horizontal: 20.px),
+      .xlarge => i.symmetricDp(horizontal: 24.px),
     };
   }
 

@@ -37,23 +37,66 @@ class GtIconButton extends GtButton {
   /// Defaults to [GtIconButtonShape.round].
   final GtIconButtonShape shape;
 
+  /// An optional gradient to apply to the button's background.
+  ///
+  /// If provided, this gradient will be displayed as the background of the button.
   final Gradient? gradient;
+
+  /// An optional color to override the default icon color.
+  ///
+  /// If provided, this color will be used for the icon instead of the color
+  /// derived from the button's [variant] and state.
+  final Color? iconColor;
 
   /// Creates a [GtIconButton].
   const GtIconButton({
+    /// The icon to display inside the button.
     required this.icon,
+
+    /// The callback that is called when the button is tapped or otherwise activated.
+    ///
+    /// If this callback is null, then the button will be disabled.
     required super.onPressed,
+
+    /// The minimum size of the button.
     super.minSize,
+
+    /// The visual style variant of the button. Defaults to [GtButtonVariant.stable].
     this.variant = .stable,
+
+    /// The size of the button. Defaults to [GtButtonSize.large].
     super.size = .large,
+
+    /// An optional custom widget.
+    ///
+    /// *Note: This property is declared but currently unused in the standard build method.*
     this.leading,
+
+    /// The background color of the button.
     super.color,
+
+    /// Whether the button is disabled.
     super.isDisabled = false,
+
+    /// Whether the button is currently in a loading state.
     super.isLoading = false,
+
+    /// Custom padding to apply inside the button.
     this.contentPadding,
+
+    /// The shape of the button. Defaults to [GtIconButtonShape.round].
     this.shape = .round,
+
+    /// The alignment of the button's content.
     super.alignment,
+
+    /// An optional gradient to apply to the button's background.
     this.gradient,
+
+    /// An optional color to override the default icon color.
+    this.iconColor,
+
+    /// Standard Flutter key.
     super.key,
   });
 
@@ -79,10 +122,25 @@ class GtIconButton extends GtButton {
     return context.insets.zero;
   }
 
+  @override
+  /// Calculates the border radius for the button based on its [size].
+  ///
+  /// This radius is used when the button [shape] is [GtIconButtonShape.square].
+  BorderRadius borderRadius(BuildContext context) {
+    final radius = switch (size) {
+      .large || .xlarge => 12,
+      .pill => 6.8,
+      .xsmall => 8,
+      _ => 10,
+    };
+    return BorderRadius.circular(context.dp(radius.px));
+  }
+
   /// Determines the icon color based on the button's [variant] and [isDisabled]
   /// state.
   Color _iconColor(GtPalette palette) {
     if (isDisabled) return palette.text.disabled;
+    if (iconColor != null) return iconColor!;
     return switch (variant) {
       .white => palette.staticColors.black,
       .black => palette.text.white,
