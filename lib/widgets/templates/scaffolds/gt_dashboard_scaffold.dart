@@ -81,7 +81,6 @@ class GtDashboardScaffold extends GtStatefulWidget {
 
 class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
   late final PageController _pageController;
-  late final ValueNotifier<int> _currentPageNotifier;
 
   @override
   void initState() {
@@ -89,7 +88,6 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
     _pageController =
         widget.pageController ??
         PageController(initialPage: widget.initialIndex);
-    _currentPageNotifier = ValueNotifier<int>(widget.initialIndex);
   }
 
   @override
@@ -107,9 +105,12 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
 
     return GtRootPopScope(
       child: ListenableBuilder(
-        listenable: Listenable.merge([_pageController, _currentPageNotifier]),
+        listenable: _pageController,
         builder: (_, child) {
-          final index = _currentPageNotifier.value;
+          int index = widget.initialIndex;
+          if (_pageController.hasClients) {
+            index = _pageController.page?.round() ?? index;
+          }
           final data = widget.data[index];
           final appBar = data.appBar;
           final bgColor = data.backgroundColor;
@@ -148,10 +149,7 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
           child: PageView.builder(
             key: const PageStorageKey("gt-dashboard-page-view"),
             controller: _pageController,
-            onPageChanged: (index) {
-              widget.onPageChanged?.call(index);
-              _currentPageNotifier.value = index;
-            },
+            onPageChanged: widget.onPageChanged?.call,
             itemBuilder: (_, index) => pages[index],
             itemCount: pages.length,
             physics: const NeverScrollableScrollPhysics(),
