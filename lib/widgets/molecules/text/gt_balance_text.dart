@@ -8,19 +8,19 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [num.asCurrency] with a configurable `symbol`; this default matches common
 /// in-app Naira shorthand.
 
-/// Balance line: **currency** and **amount** use distinct [TextStyle]s in a
-/// [Wrap] so the amount can flow to the next line on smaller widths.
+/// Balance line displaying a currency symbol and an amount with distinct styles.
 ///
 /// The numeric portion uses [AppTextFormatter.formatCurrency] with
-/// [ignoreSymbol] so the symbol is shown only in the leading cell (with a
-/// trailing space).
+/// `ignoreSymbol: true` so the symbol can be styled separately.
 ///
-/// When [hidden] is `true`, the amount uses [AppTextFormatter.maskedCurrency]
-/// with an empty `symbol` (`*****` per foundation); the currency label stays
-/// visible.
+/// When [hidden] is `true`, the amount is replaced by a masked representation
+/// (e.g., `*****`) while the currency label remains visible.
 ///
-/// The default currency **N** uses a double strikethrough ([TextDecorationStyle.double]
-/// with [TextDecoration.lineThrough]) per design.
+/// For Naira, the symbol "N" is rendered with a double strikethrough decoration
+/// per the design system's specifications.
+///
+/// {@category molecules}
+/// {@category text}
 class GtBalanceText extends GtStatelessWidget {
   /// Raw balance; when `null`, an em dash is shown instead of the balance line.
   final num? amount;
@@ -39,6 +39,21 @@ class GtBalanceText extends GtStatelessWidget {
   /// Maximum lines for the amount [GtText].
   final int? maxLines;
 
+  /// Returns `true` if the [currencySymbol] represents Naira.
+  bool get isNaira {
+    bool isNaira = currencySymbol == AppStrings.naira;
+    bool isN = currencySymbol.equals("N");
+    return isNaira || isN;
+  }
+
+  /// The normalized currency symbol to display.
+  ///
+  /// Forces "N" for Naira symbols to ensure consistent styling.
+  String get computedSymbol => switch (isNaira) {
+    true => "N",
+    false => currencySymbol,
+  };
+
   /// Creates a [GtBalanceText].
   const GtBalanceText({
     super.key,
@@ -54,6 +69,8 @@ class GtBalanceText extends GtStatelessWidget {
     // Double strikethrough on the currency glyph (e.g. "N").
     final currencyStyle = context.textStyles.h4(
       color: context.palette.text.strong,
+      decoration: isNaira ? TextDecoration.lineThrough : null,
+      decorationStyle: isNaira ? TextDecorationStyle.double : null,
     );
     final amtStyle = switch (context.isAndroid) {
       true => context.textStyles.h2(),
@@ -71,34 +88,20 @@ class GtBalanceText extends GtStatelessWidget {
 
     final String amtDisplay = hidden
         ? AppTextFormatter.maskedCurrency(amount, symbol: '')
-        : AppTextFormatter.formatCurrency(
-            amount,
-            symbol: currencySymbol,
-            ignoreSymbol: true,
-          );
+        : AppTextFormatter.formatCurrency(amount, ignoreSymbol: true);
 
-    return Wrap(
-      alignment: _textAlign(textAlign),
-      crossAxisAlignment: .center,
-      runAlignment: .start,
-      children: [
-        GtText('$currencySymbol ', style: currencyStyle),
-        GtText(amtDisplay, style: amtStyle, maxLines: maxLines, softWrap: true),
-      ],
+    return Text.rich(
+      TextSpan(
+        children: [
+          WidgetSpan(
+            child: GtText('$computedSymbol ', style: currencyStyle),
+            alignment: .middle,
+          ),
+          TextSpan(text: amtDisplay),
+        ],
+      ),
+      textAlign: textAlign,
+      style: amtStyle,
     );
-  }
-}
-
-WrapAlignment _textAlign(TextAlign align) {
-  switch (align) {
-    case TextAlign.center:
-      return WrapAlignment.center;
-    case TextAlign.end:
-    case TextAlign.right:
-      return WrapAlignment.end;
-    case TextAlign.start:
-    case TextAlign.left:
-    case TextAlign.justify:
-      return WrapAlignment.start;
   }
 }

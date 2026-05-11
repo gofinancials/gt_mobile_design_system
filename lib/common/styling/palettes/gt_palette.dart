@@ -433,6 +433,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
   // Neutral
   final GtPaletteStaticColors staticColors;
   final GtPaletteBgColors bg;
+  final GtPaletteBgColors fill;
   final GtPaletteTextColors text;
   final GtPaletteStrokeColors stroke;
   final GtPaletteContentColors icon;
@@ -454,6 +455,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
     required this.coverColors,
     required this.staticColors,
     required this.bg,
+    required this.fill,
     required this.text,
     required this.stroke,
     required this.icon,
@@ -505,6 +507,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
         t,
       ),
       bg: GtPaletteBgColors.lerp(bg, other.bg, t),
+      fill: GtPaletteBgColors.lerp(fill, other.fill, t),
       text: GtPaletteTextColors.lerp(text, other.text, t),
       stroke: GtPaletteStrokeColors.lerp(stroke, other.stroke, t),
       icon: GtPaletteContentColors.lerp(icon, other.icon, t),
@@ -535,6 +538,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
         other.coverColors == coverColors &&
         other.staticColors == staticColors &&
         other.bg == bg &&
+        other.fill == fill &&
         other.text == text &&
         other.stroke == stroke &&
         other.icon == icon &&
@@ -556,6 +560,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
     coverColors,
     staticColors,
     bg,
+    fill,
     text,
     stroke,
     icon,

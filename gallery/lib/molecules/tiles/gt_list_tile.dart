@@ -57,10 +57,6 @@ Widget gtListTileAllUseCase(BuildContext context) {
     label: 'Txn Amount',
     initialValue: 4500.0,
   );
-  final txnIsDebit = context.knobs.boolean(
-    label: 'Txn Is Debit',
-    initialValue: true,
-  );
   final limitInfoLabel = context.knobs.string(
     label: 'Limit Info Label',
     initialValue: 'Current single airtime limit',
@@ -297,18 +293,35 @@ Widget gtListTileAllUseCase(BuildContext context) {
     ),
 
     GtCard(
-      child: GtTransactionListTile(
-        txnName,
-        subtitle: txnSubtitle,
-        amount: txnAmount,
-        isDebit: txnIsDebit,
-        leading: DecoratedBox(
-          decoration: BoxDecoration(
-            color: context.palette.error.base,
-            shape: BoxShape.circle,
+      child: Column(
+        children: [
+          GtTransactionListTile(
+            txnName,
+            subtitle: txnSubtitle,
+            amount: txnAmount,
+            isDebit: true,
+            leading: DecoratedBox(
+              decoration: BoxDecoration(
+                color: context.palette.error.base,
+                shape: BoxShape.circle,
+              ),
+            ),
+            onTap: () {},
           ),
-        ),
-        onTap: () {},
+          GtTransactionListTile(
+            txnName,
+            subtitle: txnSubtitle,
+            amount: txnAmount,
+            isDebit: false,
+            leading: DecoratedBox(
+              decoration: BoxDecoration(
+                color: context.palette.error.base,
+                shape: BoxShape.circle,
+              ),
+            ),
+            onTap: () {},
+          ),
+        ],
       ),
     ),
     const GtGap.yXl(),

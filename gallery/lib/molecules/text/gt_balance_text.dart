@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gallery/widgets/gallery_page_header.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
@@ -17,7 +18,7 @@ Widget playgroundGtBalanceTextUseCase(BuildContext context) {
   );
   final currencySymbol = context.knobs.string(
     label: 'Currency symbol',
-    initialValue: "N",
+    initialValue: AppStrings.naira,
   );
 
   return Scaffold(

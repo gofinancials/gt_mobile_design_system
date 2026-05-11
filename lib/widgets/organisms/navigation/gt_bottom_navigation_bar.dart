@@ -186,9 +186,9 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
     final radius = context.borderRadiusFull;
 
     final boxDecoration = BoxDecoration(
-      color: palette.bg.white,
+      color: palette.bg.strong.setOpacity(.01),
       borderRadius: radius,
-      border: Border.all(color: palette.bg.white.withValues(alpha: 0.20)),
+      border: Border.all(color: palette.bg.white.setOpacity(.65)),
       boxShadow: context.shadows.bottomNavInnerGlass(),
     );
 
@@ -203,67 +203,75 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
             mainAxisSize: .min,
             children: [
               Expanded(
-                child: ClipRRect(
-                  borderRadius: radius,
-                  child: BackdropFilter(
-                    filter: context.backdropFilters.bottomNavFrost(),
-                    child: Container(
-                      clipBehavior: .hardEdge,
-                      height: context.dp(68.px),
-                      decoration: boxDecoration,
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: palette.bg.strong.withValues(
-                                  alpha: 0.01,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    boxShadow: context.shadows.bottomNavShadow(),
+                    borderRadius: radius,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: radius,
+                    child: BackdropFilter(
+                      filter: context.backdropFilters.bottomNavFrost(),
+                      child: Container(
+                        clipBehavior: .hardEdge,
+                        height: context.dp(68.px),
+                        decoration: boxDecoration,
+                        child: Stack(
+                          children: [
+                            Positioned.fill(
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: palette.bg.strong.withValues(
+                                    alpha: 0.01,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          LayoutBuilder(
-                            builder: (context, constraints) {
-                              final tabWidth =
-                                  constraints.maxWidth / items.length;
-                              final inset = context.dp(4.px);
-                              final highlightHeight =
-                                  constraints.maxHeight - (2 * inset);
+                            LayoutBuilder(
+                              builder: (context, constraints) {
+                                final tabWidth =
+                                    constraints.maxWidth / items.length;
+                                final inset = context.dp(4.px);
+                                final highlightHeight =
+                                    constraints.maxHeight - (2 * inset);
 
-                              return Stack(
-                                clipBehavior: .hardEdge,
-                                children: [
-                                  AnimatedPositioned(
-                                    duration: const Duration(milliseconds: 350),
-                                    curve: Curves.easeInOutCubic,
-                                    left: (tabWidth * currentIndex) + inset,
-                                    top: inset,
-                                    width: tabWidth - (2 * inset),
-                                    height: highlightHeight,
-                                    child: DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        color: palette.bg.weak,
-                                        borderRadius: radius,
+                                return Stack(
+                                  clipBehavior: .hardEdge,
+                                  children: [
+                                    AnimatedPositioned(
+                                      duration: const Duration(
+                                        milliseconds: 350,
+                                      ),
+                                      curve: Curves.easeInOutCubic,
+                                      left: (tabWidth * currentIndex) + inset,
+                                      top: inset,
+                                      width: tabWidth - (2 * inset),
+                                      height: highlightHeight,
+                                      child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          color: palette.fill.sub,
+                                          borderRadius: radius,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      for (final (i, item) in items.indexed)
-                                        Expanded(
-                                          child: _GtBottomNavigationTab(
-                                            item: item,
-                                            selected: i == currentIndex,
-                                            onTap: () => onIndexChanged(i),
+                                    Row(
+                                      children: [
+                                        for (final (i, item) in items.indexed)
+                                          Expanded(
+                                            child: _GtBottomNavigationTab(
+                                              item: item,
+                                              selected: i == currentIndex,
+                                              onTap: () => onIndexChanged(i),
+                                            ),
                                           ),
-                                        ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -370,25 +378,31 @@ class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
     final radius = context.borderRadiusFull;
 
     final boxDecoration = BoxDecoration(
-      color: palette.bg.white,
+      color: palette.bg.strong.setOpacity(.02),
       borderRadius: radius,
-      border: Border.all(color: palette.bg.weak),
+      border: Border.all(color: palette.bg.white.setOpacity(.65)),
       boxShadow: context.shadows.bottomNavInnerGlass(),
     );
 
-    return ClipRRect(
-      borderRadius: radius,
-      child: BackdropFilter(
-        filter: context.backdropFilters.bottomNavFrost(),
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () => onTap(),
-          child: Container(
-            alignment: .center,
-            height: context.dp(68.px),
-            width: context.dp(68.px),
-            decoration: boxDecoration,
-            child: Center(child: GtIcon(icon, size: context.dp(28.px))),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        boxShadow: context.shadows.bottomNavShadow(),
+        shape: .circle,
+      ),
+      child: ClipRRect(
+        borderRadius: radius,
+        child: BackdropFilter(
+          filter: context.backdropFilters.bottomNavFrost(),
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () => onTap(),
+            child: Container(
+              alignment: .center,
+              height: context.dp(68.px),
+              width: context.dp(68.px),
+              decoration: boxDecoration,
+              child: Center(child: GtIcon(icon, size: context.dp(28.px))),
+            ),
           ),
         ),
       ),

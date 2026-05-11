@@ -119,7 +119,7 @@ class GtLessonCard extends GtStatelessWidget {
                   ],
                   GtText(
                     title.upper,
-                    style: context.textStyles.h6(),
+                    style: context.textStyles.button(),
                     overflow: .ellipsis,
                     maxLines: 1,
                   ),
@@ -128,7 +128,7 @@ class GtLessonCard extends GtStatelessWidget {
                       description,
                       maxLines: hasWatchedLessons ? 1 : 2,
                       overflow: .ellipsis,
-                      style: context.textStyles.bodyS(
+                      style: context.textStyles.body2s(
                         color: context.palette.text.darkerSub,
                       ),
                     ),

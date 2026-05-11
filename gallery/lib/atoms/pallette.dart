@@ -50,6 +50,17 @@ Widget playgroundPaletteUseCase(BuildContext context) {
             itemCount: context.palette.bg.all.length,
           ),
           SliverToBoxAdapter(
+            child: GalleryPageSectionHeader(title: "Fill Colors"),
+          ),
+          SliverGrid.builder(
+            itemBuilder: (_, index) {
+              final colors = context.palette.fill.all;
+              return GtColorContainer(color: colors[index].colorSet);
+            },
+            gridDelegate: delegate,
+            itemCount: context.palette.fill.all.length,
+          ),
+          SliverToBoxAdapter(
             child: GalleryPageSectionHeader(title: "Cover Colors"),
           ),
           SliverGrid.builder(

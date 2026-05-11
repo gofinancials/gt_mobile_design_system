@@ -119,6 +119,7 @@ class GtLimitEditListTile extends GtStatelessWidget {
                         TextSpan(text: " "),
                         WidgetSpan(
                           child: GtIcon(GtIcons.info, size: 18, variant: .soft),
+                          alignment: .middle,
                         ),
                       ],
                       recognizer: TapGestureRecognizer()

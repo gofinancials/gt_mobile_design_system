@@ -85,6 +85,7 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                                 size: 10,
                                 color: context.palette.information.base,
                               ),
+                              alignment: .middle,
                             ),
                         ],
                         style: context.textStyles.buttonXs(

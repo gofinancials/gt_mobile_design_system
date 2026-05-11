@@ -178,13 +178,13 @@ class GtPill extends StatelessWidget {
       TextSpan(
         children: [
           if (icon != null) ...[
-            WidgetSpan(child: icon!),
+            WidgetSpan(child: icon!, alignment: .middle),
             WidgetSpan(child: const GtGap.hSm()),
           ],
           TextSpan(text: text),
           if (trailing != null) ...[
             WidgetSpan(child: const GtGap.hSm()),
-            WidgetSpan(child: trailing!),
+            WidgetSpan(child: trailing!, alignment: .middle),
           ],
         ],
         style: textStyle ?? context.textStyles.buttonXs(color: textColor),

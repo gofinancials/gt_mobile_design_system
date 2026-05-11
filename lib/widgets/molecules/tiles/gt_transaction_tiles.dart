@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A collection of specialized list tiles for transaction-related UI.
+///
+/// Includes [GtTransactionListTile] for displaying financial transactions
+/// and [GtTransactionParticipantListTile] for displaying participants (sender/receiver).
+
 /// A specialized list tile for displaying financial transactions.
 ///
 /// Includes the transaction name, amount (styled conditionally based on whether
 /// it is a debit), and a subtitle for details like the date.
+///
+/// {@category molecules}
+/// {@category tiles}
 class GtTransactionListTile extends GtStatelessWidget {
   /// The widget to display at the start of the tile, typically an icon or logo.
   final Widget leading;
@@ -25,6 +33,9 @@ class GtTransactionListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnPressed? onTap;
 
+  /// The size (width and height) of the square leading widget. Defaults to 36.
+  final double leadingSize;
+
   /// Creates a [GtTransactionListTile].
   const GtTransactionListTile(
     this.name, {
@@ -33,19 +44,22 @@ class GtTransactionListTile extends GtStatelessWidget {
     required this.amount,
     required this.isDebit,
     required this.leading,
+    this.leadingSize = 36,
     this.onTap,
   });
 
   String get _formattedAmount {
-    return AppTextFormatter.formatCurrency(amount, symbol: "N");
+    final formatted = AppTextFormatter.formatCurrency(amount, symbol: "N");
+    if (!isDebit) return "+$formatted";
+    return formatted;
   }
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
     final amountColor = switch (isDebit) {
-      true => palette.text.soft,
-      _ => palette.primary.base,
+      true => palette.text.strong,
+      _ => palette.success.darker,
     };
 
     return GtInkWell(
@@ -56,13 +70,10 @@ class GtTransactionListTile extends GtStatelessWidget {
         child: Row(
           spacing: context.spacingBase,
           children: [
-            ConstrainedBox(
-              constraints: BoxConstraints.tight(Size.square(36)),
-              child: leading,
-            ),
+            GtSquareConstrainedBox(leadingSize, child: leading),
             Expanded(
               child: Column(
-                spacing: context.spacingSm,
+                spacing: context.spacingXs,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -78,7 +89,7 @@ class GtTransactionListTile extends GtStatelessWidget {
                       ),
                       GtText(
                         _formattedAmount,
-                        style: context.textStyles.subHeadM(color: amountColor),
+                        style: context.textStyles.subHeadS(color: amountColor),
                       ),
                     ],
                   ),
@@ -99,6 +110,9 @@ class GtTransactionListTile extends GtStatelessWidget {
 
 /// A list tile specifically designed to display the participants (sender or
 /// receiver) of a transaction, showing a superscript label (e.g., 'to', 'from').
+///
+/// {@category molecules}
+/// {@category tiles}
 class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// The primary name or title of the participant.
   final String title;
@@ -115,10 +129,12 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// An optional widget to display at the end of the tile, typically an action icon.
   final Widget? trailing;
 
-  /// How the children should be placed along the cross axis. Defaults to [CrossAxisAlignment.end].
+  /// How the children should be placed along the cross axis.
+  ///
+  /// Defaults to [CrossAxisAlignment.end].
   final CrossAxisAlignment crossAxisAlignment;
 
-  /// Custom styling for the subtitle text
+  /// Custom styling for the [subtitle] text.
   final TextStyle? subStyle;
 
   /// Creates a [GtTransactionParticipantListTile].

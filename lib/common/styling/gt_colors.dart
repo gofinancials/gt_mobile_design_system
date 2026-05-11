@@ -24,6 +24,7 @@ enum GtColors {
   neutral100(ColorSet(0xFFF5F5F5, 0x2999A0AE)),
   neutral50(ColorSet(0xFFF7F7F7, 0xFF262626)),
   neutral25(ColorSet(0xFFF8F8F8, 0xFF272727)),
+  neutral12(ColorSet(0xFFEDEDED, 0xFF1C1C1C)),
   neutral0(ColorSet(0xFFFFFFFF, 0xFF111111)),
 
   // ---------------------------------------------------------------------------
@@ -117,7 +118,7 @@ enum GtColors {
   yellow200(ColorSet(0xFFFFECC0)),
   yellow100(ColorSet(0xFFFFEFCC)),
   yellow50(ColorSet(0xFFFFFAEB)),
-  yellow25(ColorSet(0xFFFBFAF5)),
+  yellow25(ColorSet(0xFFFBFAF5, 0xFF1D1C16)),
 
   // ---------------------------------------------------------------------------
   // VIBRANTS - PURPLE

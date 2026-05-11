@@ -31,6 +31,17 @@ final class SterlingProLightPalette extends GtPalette {
           neutralWarm50: GtColors.neutralWarm50.value,
           weaker: GtColors.neutral25.value,
         ),
+        fill: GtPaletteBgColors(
+          strong: GtColors.neutral950.value,
+          surface: GtColors.neutral800.value,
+          sub: GtColors.neutral300.value,
+          soft: GtColors.neutral200.value,
+          weak: GtColors.neutral12.value,
+          white: GtColors.neutral0.value,
+          warm: GtColors.yellow25.value,
+          neutralWarm50: GtColors.neutralWarm50.value,
+          weaker: GtColors.neutral25.value,
+        ),
         text: GtPaletteTextColors(
           strong: GtColors.neutral950.value,
           sub: GtColors.neutral500.value,

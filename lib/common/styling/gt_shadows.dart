@@ -268,11 +268,25 @@ class GtShadows {
   List<BoxShadow> bottomNavInnerGlass([Color? color]) {
     return [
       BoxShadow(
-        spreadRadius: -5,
-        offset: Offset(5, -10),
-        blurRadius: 6,
-        color: (color ?? context.palette.staticColors.black).setOpacity(.10),
-        blurStyle: BlurStyle.inner,
+        spreadRadius: -1,
+        offset: Offset(1, 1),
+        blurRadius: 10,
+        color: (color ?? context.palette.bg.white).setOpacity(.7),
+        blurStyle: .inner,
+      ),
+    ];
+  }
+
+  /// Inner glass shadow used by bottom navigation containers and buttons.
+  ///
+  /// Accepts an optional [color] to override the default theme shadow color.
+  List<BoxShadow> bottomNavShadow([Color? color]) {
+    return [
+      BoxShadow(
+        spreadRadius: 0,
+        offset: Offset(0, 8),
+        blurRadius: 40,
+        color: (color ?? context.palette.bg.strong).setOpacity(.24),
       ),
     ];
   }
