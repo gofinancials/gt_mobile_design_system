@@ -13,7 +13,7 @@ class GtHomeGradientPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = Rect.fromLTRB(0, 0, size.width, size.height * 0.4);
+    final rect = Rect.fromLTRB(0, 0, size.width, size.height * .6);
     // Create a linear gradient from the target color to transparent
     final gradient = LinearGradient(
       colors: [color, Colors.transparent],

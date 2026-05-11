@@ -11,10 +11,10 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   final String? userFullName;
 
   /// Callback triggered when the search icon is pressed.
-  final OnPressed onClickSearch;
+  final OnPressed? onClickSearch;
 
   /// Callback triggered when the hide/visibility icon is pressed.
-  final OnPressed onClickHide;
+  final OnPressed? onClickHide;
 
   /// Callback triggered when the notification icon is pressed.
   final OnPressed? onClickNotification;
@@ -25,8 +25,8 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// Creates a [GtHomeAppBar].
   const GtHomeAppBar({
     this.avatar,
-    required this.onClickSearch,
-    required this.onClickHide,
+    this.onClickSearch,
+    this.onClickHide,
     this.onClickNotification,
     this.userFullName,
     this.onClickAvatar,
@@ -36,18 +36,8 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final toolbarHeight = MediaQuery.paddingOf(context).top;
-    final btnColor = switch (context.isIos) {
-      true => context.palette.primary.alpha16,
-      _ => Colors.transparent,
-    };
-    GtIconButtonShape btnShape = switch (context.isIos) {
-      true => .round,
-      _ => .square,
-    };
-    final gradient = switch (context.isIos) {
-      true => null,
-      _ => context.gradients.ghostGradient,
-    };
+    final btnColor = context.palette.primary.alpha16;
+    final gradient = context.gradients.ghostGradient;
 
     return Material(
       type: .transparency,
@@ -68,29 +58,31 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
               onPressed: onClickAvatar,
             ),
             const Spacer(),
-            GtIconButton(
-              icon: GtIcons.magnifier,
-              onPressed: onClickSearch,
-              shape: btnShape,
-              color: btnColor,
-              variant: .neutral,
-              size: .medium,
-              gradient: gradient,
-            ),
-            GtIconButton(
-              icon: GtIcons.hide,
-              onPressed: onClickHide,
-              shape: btnShape,
-              color: btnColor,
-              variant: .neutral,
-              gradient: gradient,
-              size: .medium,
-            ),
+            if (onClickSearch != null)
+              GtIconButton(
+                icon: GtIcons.magnifier,
+                onPressed: onClickSearch!,
+                shape: .round,
+                color: btnColor,
+                variant: .neutral,
+                size: .medium,
+                gradient: gradient,
+              ),
+            if (onClickHide != null)
+              GtIconButton(
+                icon: GtIcons.hide,
+                onPressed: onClickHide!,
+                shape: .round,
+                color: btnColor,
+                variant: .neutral,
+                gradient: gradient,
+                size: .medium,
+              ),
             if (onClickNotification != null)
               GtIconButton(
                 icon: GtIcons.bell,
                 onPressed: onClickNotification!,
-                shape: btnShape,
+                shape: .round,
                 color: btnColor,
                 variant: .neutral,
                 gradient: gradient,
