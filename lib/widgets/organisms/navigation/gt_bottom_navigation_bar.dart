@@ -114,7 +114,12 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
       alignment: .bottomCenter,
       children: [
         Container(
-          padding: context.insets.fromLTRBDp(7.5.px, 12.px, 7.5.px, 16.px),
+          padding: context.insets.fromLTRBDp(
+            7.5.px,
+            12.px,
+            7.5.px,
+            (kBottomNavigationBarHeight + 2).px,
+          ),
           color: palette.bg.white,
           child: Table(
             defaultVerticalAlignment: .middle,
