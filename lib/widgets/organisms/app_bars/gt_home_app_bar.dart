@@ -37,7 +37,6 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final toolbarHeight = MediaQuery.paddingOf(context).top;
     final btnColor = context.palette.primary.alpha16;
-    final gradient = context.gradients.ghostGradient;
 
     return Material(
       type: .transparency,
@@ -66,7 +65,6 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 color: btnColor,
                 variant: .neutral,
                 size: .medium,
-                gradient: gradient,
               ),
             if (onClickHide != null)
               GtIconButton(
@@ -75,7 +73,6 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 shape: .round,
                 color: btnColor,
                 variant: .neutral,
-                gradient: gradient,
                 size: .medium,
               ),
             if (onClickNotification != null)
@@ -85,7 +82,6 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 shape: .round,
                 color: btnColor,
                 variant: .neutral,
-                gradient: gradient,
                 size: .medium,
               ),
           ],
