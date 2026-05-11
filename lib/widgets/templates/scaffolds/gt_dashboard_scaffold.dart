@@ -63,7 +63,11 @@ class GtDashboardScaffold extends GtStatefulWidget {
   /// Callback for the trailing circular action button (**iOS only**).
   final OnPressed onClickHelp;
 
+  /// The page controller to control the page view.
   final PageController? pageController;
+
+  ///The style of the bottom navigation bar.
+  final GtBottomNavigationStyle? bottomNavigationStyle;
 
   /// Creates a [GtDashboardScaffold].
   const GtDashboardScaffold({
@@ -73,6 +77,7 @@ class GtDashboardScaffold extends GtStatefulWidget {
     this.onPageChanged,
     required this.onClickHelp,
     this.pageController,
+    this.bottomNavigationStyle,
   }) : assert(data.length >= 2, "Data must be at least 2");
 
   @override
@@ -133,6 +138,7 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
             bottomNavigationBar: GtBottomNavigationBar(
               key: const PageStorageKey("gt-dashboard-nav-bar"),
               items: navItems,
+              style: widget.bottomNavigationStyle,
               onTrailingTap: widget.onClickHelp,
               currentIndex: index,
               onIndexChanged: (index) {
