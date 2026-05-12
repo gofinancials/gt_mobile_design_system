@@ -118,7 +118,7 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
             7.5.px,
             12.px,
             7.5.px,
-            (kBottomNavigationBarHeight + 2).px,
+            (context.mediaQueryData.bottomInset + 12).px,
           ),
           color: palette.bg.white,
           child: Table(
@@ -197,104 +197,107 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
       boxShadow: context.shadows.bottomNavInnerGlass(),
     );
 
-    final bottomPadding = context.isAndroid ? (kBottomNavigationBarHeight) : 0;
-
     return Stack(
       alignment: .bottomCenter,
       children: [
-        Container(
-          constraints: BoxConstraints(maxHeight: context.dp(95.px)),
-          margin: context.insets.onlyDp(bottom: bottomPadding.px),
-          padding: context.insets.fromLTRBDp(16.px, 0, 16.px, 21.px),
-          child: Row(
-            crossAxisAlignment: .center,
-            mainAxisSize: .min,
-            children: [
-              Expanded(
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    boxShadow: context.isInDarkMode
-                        ? context.shadows.md(context.palette.bg.weak)
-                        : context.shadows.bottomNavShadow(),
-                    borderRadius: radius,
-                  ),
-                  child: ClipRRect(
-                    borderRadius: radius,
-                    child: BackdropFilter(
-                      filter: context.backdropFilters.bottomNavFrost(),
-                      child: Container(
-                        clipBehavior: .hardEdge,
-                        height: context.dp(68.px),
-                        decoration: boxDecoration,
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: palette.bg.strong.withValues(
-                                    alpha: 0.01,
+        SafeArea(
+          top: false,
+          bottom: context.isAndroid,
+          maintainBottomViewPadding: true,
+          minimum: context.insets.onlyDp(bottom: context.isAndroid ? 8.px : 0),
+          child: Container(
+            constraints: BoxConstraints(maxHeight: context.dp(95.px)),
+            padding: context.insets.fromLTRBDp(16.px, 0, 16.px, 21.px),
+            child: Row(
+              crossAxisAlignment: .center,
+              mainAxisSize: .min,
+              children: [
+                Expanded(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      boxShadow: context.isInDarkMode
+                          ? context.shadows.md(context.palette.bg.weak)
+                          : context.shadows.bottomNavShadow(),
+                      borderRadius: radius,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: radius,
+                      child: BackdropFilter(
+                        filter: context.backdropFilters.bottomNavFrost(),
+                        child: Container(
+                          clipBehavior: .hardEdge,
+                          height: context.dp(68.px),
+                          decoration: boxDecoration,
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    color: palette.bg.strong.withValues(
+                                      alpha: 0.01,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            LayoutBuilder(
-                              builder: (context, constraints) {
-                                final tabWidth =
-                                    constraints.maxWidth / items.length;
-                                final inset = context.dp(4.px);
-                                final highlightHeight =
-                                    constraints.maxHeight - (2 * inset);
+                              LayoutBuilder(
+                                builder: (context, constraints) {
+                                  final tabWidth =
+                                      constraints.maxWidth / items.length;
+                                  final inset = context.dp(4.px);
+                                  final highlightHeight =
+                                      constraints.maxHeight - (2 * inset);
 
-                                return Stack(
-                                  clipBehavior: .hardEdge,
-                                  children: [
-                                    AnimatedPositioned(
-                                      duration: const Duration(
-                                        milliseconds: 350,
-                                      ),
-                                      curve: Curves.easeInOutCubic,
-                                      left: (tabWidth * currentIndex) + inset,
-                                      top: inset,
-                                      width: tabWidth - (2 * inset),
-                                      height: highlightHeight,
-                                      child: DecoratedBox(
-                                        decoration: BoxDecoration(
-                                          color: palette.fill.sub,
-                                          borderRadius: radius,
+                                  return Stack(
+                                    clipBehavior: .hardEdge,
+                                    children: [
+                                      AnimatedPositioned(
+                                        duration: const Duration(
+                                          milliseconds: 350,
+                                        ),
+                                        curve: Curves.easeInOutCubic,
+                                        left: (tabWidth * currentIndex) + inset,
+                                        top: inset,
+                                        width: tabWidth - (2 * inset),
+                                        height: highlightHeight,
+                                        child: DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            color: palette.fill.sub,
+                                            borderRadius: radius,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        for (final (i, item) in items.indexed)
-                                          Expanded(
-                                            child: _GtBottomNavigationTab(
-                                              item: item,
-                                              selected: i == currentIndex,
-                                              onTap: () => onIndexChanged(i),
+                                      Row(
+                                        children: [
+                                          for (final (i, item) in items.indexed)
+                                            Expanded(
+                                              child: _GtBottomNavigationTab(
+                                                item: item,
+                                                selected: i == currentIndex,
+                                                onTap: () => onIndexChanged(i),
+                                              ),
                                             ),
-                                          ),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ],
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              if (onTrailingTap != null) ...[
-                SizedBox(width: context.dp(12.px)),
-                _GtBottomNavigationTrailingAction(
-                  onTap: onTrailingTap!,
-                  icon: trailingIcon,
-                ),
+                if (onTrailingTap != null) ...[
+                  SizedBox(width: context.dp(12.px)),
+                  _GtBottomNavigationTrailingAction(
+                    onTap: onTrailingTap!,
+                    icon: trailingIcon,
+                  ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ],
