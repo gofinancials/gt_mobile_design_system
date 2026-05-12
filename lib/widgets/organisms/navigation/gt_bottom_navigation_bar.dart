@@ -197,11 +197,14 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
       boxShadow: context.shadows.bottomNavInnerGlass(),
     );
 
+    final bottomPadding = context.isAndroid ? (kBottomNavigationBarHeight) : 0;
+
     return Stack(
       alignment: .bottomCenter,
       children: [
         Container(
           constraints: BoxConstraints(maxHeight: context.dp(95.px)),
+          margin: context.insets.onlyDp(bottom: bottomPadding.px),
           padding: context.insets.fromLTRBDp(16.px, 0, 16.px, 21.px),
           child: Row(
             crossAxisAlignment: .center,
@@ -210,7 +213,9 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
               Expanded(
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    boxShadow: context.shadows.bottomNavShadow(),
+                    boxShadow: context.isInDarkMode
+                        ? context.shadows.md(context.palette.bg.weak)
+                        : context.shadows.bottomNavShadow(),
                     borderRadius: radius,
                   ),
                   child: ClipRRect(
@@ -391,7 +396,9 @@ class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        boxShadow: context.shadows.bottomNavShadow(),
+        boxShadow: context.isInDarkMode
+            ? context.shadows.md(context.palette.bg.weak)
+            : context.shadows.bottomNavShadow(),
         shape: .circle,
       ),
       child: ClipRRect(

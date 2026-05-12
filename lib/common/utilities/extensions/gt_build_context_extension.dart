@@ -69,6 +69,9 @@ extension ThemeContextExtension on BuildContext {
     return fracSizer.getShortestSideFraction(fraction);
   }
 
+  /// Checks if the current theme is dark mode.
+  bool get isInDarkMode => Theme.of(this).brightness == .dark;
+
   /// Retrieves the color palette defined in the current theme.
   GtPalette get palette =>
       Theme.of(this).extension<GtPalette>() ?? PersonalLightPalette();
