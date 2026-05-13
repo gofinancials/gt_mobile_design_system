@@ -114,7 +114,7 @@ extension ThemeContextExtension on BuildContext {
   Radius get radius4Xl => dp(radii.xxxxl.px).radius;
 
   /// 5x extra-large radius.
-  Radius get radius5Xl => dp(radii.xxl.px).radius;
+  Radius get radius5Xl => dp(radii.xxxxxl.px).radius;
 
   /// Full (circular) radius.
   Radius get radiusFull => dp(radii.full.px).radius;

@@ -274,14 +274,7 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal>
   void _filterOptions(String? query) {
     debouncer.abort();
     debouncer.run(() {
-      if (!query.hasValue) {
-        presentedOptions.value = options;
-        return;
-      }
-
-      presentedOptions.value = options.whereList((it) {
-        return it.computedLabel.includes(query.value);
-      });
+      presentedOptions.value = options.whereList((it) => it.filter(query));
     });
   }
 

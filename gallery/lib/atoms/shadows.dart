@@ -2,26 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
-import 'package:gt_mobile_foundation/extensions/extensions.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 @widgetbook.UseCase(name: 'Shadows', type: GtShadows)
 Widget playgroundShadowsUseCase(BuildContext context) {
-  final shadows = [
-    (context.shadows.xs, "X-Small"),
-    (context.shadows.sm, "Small"),
-    (context.shadows.md, "Medium"),
-    (context.shadows.lg, "Large"),
-  ];
-  final delegate = SliverGridDelegateWithMaxCrossAxisExtent(
-    maxCrossAxisExtent: context.dp(300.px),
-    mainAxisExtent: context.dp(200.px),
-    mainAxisSpacing: context.dp(16.px),
-    crossAxisSpacing: context.dp(16.px),
-  );
-
+  final shadows = context.shadows.all;
   return Scaffold(
     body: Padding(
       padding: context.insets.symmetricDp(
@@ -36,15 +23,15 @@ Widget playgroundShadowsUseCase(BuildContext context) {
                   "Shadows are used to create depth and visual hierarchy. They can be used to create cards, buttons, and other UI elements.",
             ),
           ),
-          SliverGrid.builder(
+          SliverList.separated(
             itemBuilder: (_, index) {
               return GtShadowContainer(
-                shadow: shadows[index].$1(),
-                label: shadows[index].$2,
+                shadow: shadows[index].value(),
+                label: shadows[index].label,
               );
             },
+            separatorBuilder: (context, index) => GtGap.ySectionSm(),
             itemCount: shadows.length,
-            gridDelegate: delegate,
           ),
           SliverToBoxAdapter(child: GtGap.ySectionLg()),
         ],
@@ -69,7 +56,7 @@ class GtShadowContainer extends StatelessWidget {
       spacing: context.dp(context.spacing.md.px),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label.upper, style: context.textStyles.h5()),
+        GtInfoPill(text: label, variant: .info),
         Container(
           height: context.dp(150.px),
           decoration: BoxDecoration(

@@ -33,14 +33,14 @@ class GtVectors {
   static const caution = "$_basePath/caution.svg";
 
   /// A list containing all available core vector asset paths.
-  static List<String> get all => [
-    logo,
-    clock,
-    coin,
-    caution,
-    tapRight,
-    tapLeft,
-    sterling,
-    trendDown,
+  static List<({String label, String value})> get all => [
+    (label: 'logo', value: logo),
+    (label: 'clock', value: clock),
+    (label: 'coin', value: coin),
+    (label: 'caution', value: caution),
+    (label: 'tapRight', value: tapRight),
+    (label: 'tapLeft', value: tapLeft),
+    (label: 'sterling', value: sterling),
+    (label: 'trendDown', value: trendDown),
   ];
 }

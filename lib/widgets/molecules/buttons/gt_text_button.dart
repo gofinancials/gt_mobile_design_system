@@ -66,6 +66,7 @@ class GtTextButton extends GtButton {
       .destructive || .destructiveAlt => palette.error.base,
       .away => palette.away.darker,
       .featured => palette.feature.dark,
+      .featuredAlt => palette.feature.base,
       .info => palette.information.base,
       .success => palette.success.base,
       .warning => palette.warning.base,

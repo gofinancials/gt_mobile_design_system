@@ -48,6 +48,9 @@ enum GtButtonVariant {
   /// A featured button style, used to highlight special or premium actions.
   featured,
 
+  /// A featured alt button style, used to highlight special or premium actions.
+  featuredAlt,
+
   /// An informational button style, used to convey neutral or general information.
   info,
 

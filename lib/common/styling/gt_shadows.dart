@@ -290,4 +290,16 @@ class GtShadows {
       ),
     ];
   }
+
+  /// A list containing all available shadow styles as a tuple of their name and the method.
+  List<({String label, List<BoxShadow> Function([Color?]) value})> get all => [
+    (label: 'context.shadows.xs', value: xs),
+    (label: 'context.shadows.sm', value: sm),
+    (label: 'context.shadows.md', value: md),
+    (label: 'context.shadows.lg', value: lg),
+    (label: 'context.shadows.indicatorShadow', value: indicatorShadow),
+    (label: 'context.shadows.pillShadow', value: pillShadow),
+    (label: 'context.shadows.bottomNavInnerGlass', value: bottomNavInnerGlass),
+    (label: 'context.shadows.bottomNavShadow', value: bottomNavShadow),
+  ];
 }

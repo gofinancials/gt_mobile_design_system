@@ -64,7 +64,7 @@ class GtOutlineButton extends GtButton {
       .destructive => palette.error.base,
       .destructiveAlt => GtColors.red100.value,
       .away => palette.away.darker,
-      .featured => palette.feature.base,
+      .featured || .featuredAlt => palette.feature.base,
       .info => palette.information.base,
       .success => palette.success.base,
       .warning => palette.warning.base,

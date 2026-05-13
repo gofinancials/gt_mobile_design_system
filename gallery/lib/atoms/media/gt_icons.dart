@@ -10,11 +10,6 @@ Widget playgroundIconsUseCase(BuildContext context) {
   final allIcons = GtVectors.all;
   final allIconFonts = GtIcons.all;
   final allIllustrations = GtVectorIllustrations.all;
-  double size = context.knobs.object.dropdown<double>(
-    label: "Icon Size",
-    initialOption: 24,
-    options: [16, 24, 48, 64, 124, 256],
-  );
   final variant = context.knobs.object.dropdown<(String, GtIconVariant)>(
     label: "Icon Variant",
     initialOption: ("Strong", GtIconVariant.strong),
@@ -30,8 +25,7 @@ Widget playgroundIconsUseCase(BuildContext context) {
   );
   final gridTemplate = context.grid.eightColumn;
   final delegate = SliverGridDelegateWithMaxCrossAxisExtent(
-    maxCrossAxisExtent: size * 1.2,
-    mainAxisExtent: size * 1.2,
+    maxCrossAxisExtent: 120,
     mainAxisSpacing: context.dp(gridTemplate.gutter.px),
     crossAxisSpacing: context.dp(gridTemplate.gutter.px),
   );
@@ -54,7 +48,10 @@ Widget playgroundIconsUseCase(BuildContext context) {
             gridDelegate: delegate,
             itemBuilder: (_, index) {
               final icon = allIconFonts[index];
-              return GtIcon(icon, size: size, variant: variant.$2);
+              return GalleryIconCard(
+                label: icon.label,
+                child: GtIcon(icon.value, size: 24, variant: variant.$2),
+              );
             },
             itemCount: allIconFonts.length,
           ),
@@ -67,7 +64,10 @@ Widget playgroundIconsUseCase(BuildContext context) {
             gridDelegate: delegate,
             itemBuilder: (_, index) {
               final icon = allIconFonts[index];
-              return GtIcon.withColor(icon, size: size, color: color);
+              return GalleryIconCard(
+                label: icon.label,
+                child: GtIcon.withColor(icon.value, size: 24, color: color),
+              );
             },
             itemCount: allIconFonts.length,
           ),
@@ -78,7 +78,10 @@ Widget playgroundIconsUseCase(BuildContext context) {
             gridDelegate: delegate,
             itemBuilder: (_, index) {
               final icon = allIllustrations[index];
-              return GtSvg(icon, width: size, height: size);
+              return GalleryIconCard(
+                label: icon.label,
+                child: GtSvg(icon.value, height: 24, width: 24, color: color),
+              );
             },
             itemCount: allIllustrations.length,
           ),
@@ -92,7 +95,10 @@ Widget playgroundIconsUseCase(BuildContext context) {
             gridDelegate: delegate,
             itemBuilder: (_, index) {
               final icon = allIcons[index];
-              return GtSvg.asIcon(icon, size: size, variant: variant.$2);
+              return GalleryIconCard(
+                label: icon.label,
+                child: GtSvg.asIcon(icon.value, size: 24, variant: variant.$2),
+              );
             },
             itemCount: allIcons.length,
           ),
@@ -103,7 +109,10 @@ Widget playgroundIconsUseCase(BuildContext context) {
             gridDelegate: delegate,
             itemBuilder: (_, index) {
               final icon = allIcons[index];
-              return GtSvg(icon, height: size, width: size, color: color);
+              return GalleryIconCard(
+                label: icon.label,
+                child: GtSvg(icon.value, height: 24, width: 24, color: color),
+              );
             },
             itemCount: allIcons.length,
           ),
@@ -112,4 +121,24 @@ Widget playgroundIconsUseCase(BuildContext context) {
       ),
     ),
   );
+}
+
+class GalleryIconCard extends StatelessWidget {
+  const GalleryIconCard({super.key, required this.child, required this.label});
+
+  final String label;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      spacing: context.spacingMd,
+      mainAxisAlignment: .center,
+      mainAxisSize: .min,
+      children: [
+        child,
+        GtStatusPill(text: label, variant: .primary),
+      ],
+    );
+  }
 }

@@ -169,9 +169,7 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
 
     final options = widget.suggestions;
 
-    return options.whereList((it) {
-      return it.computedLabel.includes(query);
-    });
+    return options.whereList((it) => it.filter(query));
   }
 
   @override
