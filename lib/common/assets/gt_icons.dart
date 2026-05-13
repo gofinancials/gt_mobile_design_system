@@ -45,13 +45,6 @@ class GtIcons {
   static const add = GtIconData(0xf127);
 
   /// ---------------------------------------------------------------------------
-  /// DECORATIVE ICONS
-  /// ---------------------------------------------------------------------------
-  static const swapCircle = GtIconData(0xf13d);
-  static const sendCircle = GtIconData(0xf13c);
-  static const billCircle = GtIconData(0xf13b);
-
-  /// ---------------------------------------------------------------------------
   /// CREDIT CARD ICONS
   /// ---------------------------------------------------------------------------
   static const wechat = GtIconData(0xf102);
@@ -104,7 +97,6 @@ class GtIcons {
   static const refresh = GtIconData(0xf012);
   static const feather = GtIconData(0xf013);
   static const receipts = GtIconData(0xf014);
-  static const facialRecognition = GtIconData(0xf015);
   static const question = GtIconData(0xf016);
   static const faceSmile = GtIconData(0xf017);
   static const qrCode = GtIconData(0xf018);
@@ -408,9 +400,6 @@ class GtIcons {
     (label: 'cautionSolid', value: cautionSolid),
     (label: 'cancel', value: cancel),
     (label: 'add', value: add),
-    (label: 'billCircle', value: billCircle),
-    (label: 'sendCircle', value: sendCircle),
-    (label: 'swapCircle', value: swapCircle),
     (label: 'scribble', value: scribble),
     (label: 'flame', value: flame),
     (label: 'scissors', value: scissors),
@@ -433,7 +422,6 @@ class GtIcons {
     (label: 'refresh', value: refresh),
     (label: 'feather', value: feather),
     (label: 'receipts', value: receipts),
-    (label: 'facialRecognition', value: facialRecognition),
     (label: 'question', value: question),
     (label: 'faceSmile', value: faceSmile),
     (label: 'qrCode', value: qrCode),

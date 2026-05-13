@@ -38,11 +38,13 @@ class GtRaisedButton extends GtButton {
     this.leading,
     this.trailing,
     super.alignment,
+    super.textColor,
     super.key,
   });
 
   Color _textColor(GtPalette palette) {
     if (isDisabled) return palette.text.disabled;
+    if (textColor != null) return textColor!;
     return switch (variant) {
       .white => palette.staticColors.black,
       .black => palette.text.white,

@@ -26,6 +26,9 @@ class GtVectors {
   /// Path to the sterling SVG.
   static const sterling = "$_basePath/sterling.svg";
 
+  /// Path to the sterling debit card SVG.
+  static const sterlingCard = "$_basePath/sterling_card.svg";
+
   /// Path to the trend down SVG.
   static const trendDown = "$_basePath/trend_down.svg";
 
