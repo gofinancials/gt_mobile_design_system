@@ -21,9 +21,6 @@ class GtTextButton extends GtButton {
   /// An optional icon to display after the button's [text].
   final IconData? trailing;
 
-  /// An optional color to explicitly override the default text and icon color.
-  final Color? textColor;
-
   /// An optional color for a border (Note: typically unused in a standard text button,
   /// but included for API consistency across button types).
   final Color? borderColor;
@@ -38,7 +35,7 @@ class GtTextButton extends GtButton {
     super.minSize,
     this.variant = .primary,
     super.size = .large,
-    this.textColor,
+    super.textColor,
     this.borderColor,
     super.isDisabled = false,
     super.isLoading = false,
@@ -66,6 +63,7 @@ class GtTextButton extends GtButton {
       .destructive || .destructiveAlt => palette.error.base,
       .away => palette.away.darker,
       .featured => palette.feature.dark,
+      .featuredAlt => palette.feature.base,
       .info => palette.information.base,
       .success => palette.success.base,
       .warning => palette.warning.base,

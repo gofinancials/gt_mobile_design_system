@@ -7,11 +7,55 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 final formKey = GlobalKey<FormState>();
 final controller = TextEditingController();
 
+final formKey1 = GlobalKey<FormState>();
+final controller1 = TextEditingController();
+
 final formKey2 = GlobalKey<FormState>();
 final controller2 = TextEditingController();
 
 void showToast(String text, BuildContext context) {
   context.showToast(text);
+}
+
+@widgetbook.UseCase(name: 'GtOtpForm', type: GtOtpForm)
+Widget buildGtOtpFormUsecase(BuildContext context) {
+  return Scaffold(
+    key: const Key("kids-auth-otp-code-screen"),
+    bottomNavigationBar: GtButtonBottomNavBar(
+      button: GtRaisedButton(
+        onPressed: () {
+          context.showToast("Submitted", type: .success);
+        },
+        text: "CONTINUE",
+      ),
+    ),
+    appBar: GtActionAppBar(
+      leading: const GtBackButton(routeStackSensitive: true),
+      trailing: GtOptionalWidgetPair(
+        tail: GtRaisedButton(
+          text: "Help",
+          leading: GtIcons.spark,
+          size: .small,
+          onPressed: () {},
+          variant: .featuredAlt,
+        ),
+      ),
+    ),
+    body: GtOtpForm(
+      onResendCode: () {},
+      title: context.knobs.string(
+        label: "Title",
+        initialValue: "Verification code",
+      ),
+      subtitle: context.knobs.string(
+        label: "Subtitle",
+        initialValue:
+            "We've sent a login code to your parent's phone. Ask them for the code to sign in.",
+      ),
+      controller: controller1,
+      formKey: formKey1,
+    ),
+  );
 }
 
 @widgetbook.UseCase(name: 'GtVirtualKeypadForm', type: GtVirtualKeypadForm)

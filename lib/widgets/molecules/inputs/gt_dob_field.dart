@@ -123,7 +123,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
               label: "day".ctr(),
               builder: (query) {
                 return _dobController.daySuggestions.whereList(
-                  (it) => it.computedLabel.includes(query),
+                  (it) => it.filter(query),
                 );
               },
               onChange: (value) {

@@ -48,6 +48,9 @@ enum GtButtonVariant {
   /// A featured button style, used to highlight special or premium actions.
   featured,
 
+  /// A featured alt button style, used to highlight special or premium actions.
+  featuredAlt,
+
   /// An informational button style, used to convey neutral or general information.
   info,
 
@@ -105,6 +108,9 @@ abstract class GtButton extends GtStatelessWidget {
   /// An optional custom color to override the default background color of the button variant.
   final Color? color;
 
+  /// An optional custom text color to override the default text color of the button.
+  final Color? textColor;
+
   /// The alignment of the button's content (e.g., text and icons) within the button's bounds.
   final AlignmentGeometry? alignment;
 
@@ -116,6 +122,7 @@ abstract class GtButton extends GtStatelessWidget {
     this.color,
     this.isDisabled = false,
     this.isLoading = false,
+    this.textColor,
     this.alignment,
     super.key,
   });

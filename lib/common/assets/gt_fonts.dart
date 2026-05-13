@@ -31,4 +31,12 @@ class GtFonts {
     this.display = _youth,
     this.body = _readex,
   });
+
+  /// A list containing all available font families.
+  static List<({String label, String value})> get all => [
+    (label: 'icon', value: icon),
+    (label: 'calendar', value: calendar),
+    (label: 'youth', value: _youth),
+    (label: 'readex', value: _readex),
+  ];
 }

@@ -39,11 +39,13 @@ class GtOutlineButton extends GtButton {
     this.leading,
     this.trailing,
     super.alignment,
+    super.textColor,
     super.key,
   });
 
   Color _textColor(GtPalette palette) {
     if (isDisabled) return palette.text.disabled;
+    if (textColor != null) return textColor!;
     final color = _borderColor(palette);
     return switch (variant) {
       .destructiveAlt => GtColors.red600.value,
@@ -64,7 +66,7 @@ class GtOutlineButton extends GtButton {
       .destructive => palette.error.base,
       .destructiveAlt => GtColors.red100.value,
       .away => palette.away.darker,
-      .featured => palette.feature.base,
+      .featured || .featuredAlt => palette.feature.base,
       .info => palette.information.base,
       .success => palette.success.base,
       .warning => palette.warning.base,

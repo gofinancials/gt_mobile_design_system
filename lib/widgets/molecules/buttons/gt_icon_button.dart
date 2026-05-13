@@ -149,6 +149,7 @@ class GtIconButton extends GtButton {
       .neutralAlt => palette.text.darkerSub,
       .stable => palette.icon.sub,
       .away => palette.text.white,
+      .featuredAlt => palette.text.strong,
       .destructiveAlt => GtColors.red600.value,
       _ => palette.staticColors.white,
     };
@@ -169,6 +170,7 @@ class GtIconButton extends GtButton {
       .destructiveAlt => GtColors.red100.value,
       .away => palette.away.darker,
       .featured => palette.feature.base,
+      .featuredAlt => palette.feature.lighter,
       .info => palette.information.base,
       .success => palette.success.base,
       .warning => palette.warning.base,
@@ -193,6 +195,7 @@ class GtIconButton extends GtButton {
       .destructive => palette.error.dark,
       .away => GtColors.yellow800.value,
       .featured => palette.feature.dark,
+      .featuredAlt => palette.feature.light,
       .info => palette.information.dark,
       .success => palette.success.dark,
       .warning => palette.warning.dark,

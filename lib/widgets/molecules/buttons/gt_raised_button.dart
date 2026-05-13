@@ -38,11 +38,13 @@ class GtRaisedButton extends GtButton {
     this.leading,
     this.trailing,
     super.alignment,
+    super.textColor,
     super.key,
   });
 
   Color _textColor(GtPalette palette) {
     if (isDisabled) return palette.text.disabled;
+    if (textColor != null) return textColor!;
     return switch (variant) {
       .white => palette.staticColors.black,
       .black => palette.text.white,
@@ -51,6 +53,7 @@ class GtRaisedButton extends GtButton {
       .secondary => palette.primary.dark,
       .destructiveAlt => GtColors.red600.value,
       .away => palette.text.white,
+      .featuredAlt => palette.text.strong,
       _ => palette.staticColors.white,
     };
   }
@@ -76,6 +79,7 @@ class GtRaisedButton extends GtButton {
       .destructive => palette.error.base,
       .away => palette.away.darker,
       .featured => palette.feature.base,
+      .featuredAlt => palette.feature.lighter,
       .info => palette.information.base,
       .success => palette.success.base,
       .warning => palette.warning.base,
@@ -98,6 +102,7 @@ class GtRaisedButton extends GtButton {
       .destructive => palette.error.dark,
       .away => GtColors.yellow800.value,
       .featured => palette.feature.dark,
+      .featuredAlt => palette.feature.light,
       .info => palette.information.dark,
       .success => palette.success.dark,
       .warning => palette.warning.dark,

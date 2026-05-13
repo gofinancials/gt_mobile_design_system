@@ -1,60 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 @widgetbook.UseCase(name: 'Gaps', type: GtGap)
 Widget playgroundGapUseCase(BuildContext context) {
   final inComponentGaps = const [
-    GtGapRow(gap: GtGap.yXs()),
-    GtGapRow(gap: GtGap.ySm()),
-    GtGapRow(gap: GtGap.yBase()),
-    GtGapRow(gap: GtGap.yMd()),
-    GtGapRow(gap: GtGap.yLg()),
-    GtGapRow(gap: GtGap.yXl()),
-    GtGapRow(gap: GtGap.ySectionSm()),
-    GtGapRow(gap: GtGap.ySectionMd()),
+    GtGapRow(gap: GtGap.yXs(), label: "GtGap.yXs"),
+    GtGapRow(gap: GtGap.ySm(), label: "GtGap.ySm"),
+    GtGapRow(gap: GtGap.yBase(), label: "GtGap.yBase"),
+    GtGapRow(gap: GtGap.yMd(), label: "GtGap.yMd"),
+    GtGapRow(gap: GtGap.yLg(), label: "GtGap.yLg"),
+    GtGapRow(gap: GtGap.yXl(), label: "GtGap.yXl"),
+    GtGapRow(gap: GtGap.ySectionSm(), label: "GtGap.ySectionSm"),
+    GtGapRow(gap: GtGap.ySectionMd(), label: "GtGap.ySectionMd"),
   ];
 
   final outComponentGaps = const [
-    GtGapRow(gap: GtGap.ySectionSm()),
-    GtGapRow(gap: GtGap.ySectionMd()),
-    GtGapRow(gap: GtGap.ySectionLg()),
-    GtGapRow(gap: GtGap.ySectionXl()),
-    GtGapRow(gap: GtGap.ySection2xl()),
-    GtGapRow(gap: GtGap.ySection3xl()),
-    GtGapRow(gap: GtGap.ySection4xl()),
+    GtGapRow(gap: GtGap.ySectionSm(), label: "GtGap.ySectionSm"),
+    GtGapRow(gap: GtGap.ySectionMd(), label: "GtGap.ySectionMd"),
+    GtGapRow(gap: GtGap.ySectionLg(), label: "GtGap.ySectionLg"),
+    GtGapRow(gap: GtGap.ySectionXl(), label: "GtGap.ySectionXl"),
+    GtGapRow(gap: GtGap.ySection2xl(), label: "GtGap.ySection2xl"),
+    GtGapRow(gap: GtGap.ySection3xl(), label: "GtGap.ySection3xl"),
+    GtGapRow(gap: GtGap.ySection4xl(), label: "GtGap.ySection4xl"),
   ];
   final xGaps = const [
-    GtGapColumn(gap: GtGap.hXs()),
-    GtGapColumn(gap: GtGap.hSm()),
-    GtGapColumn(gap: GtGap.hBase()),
-    GtGapColumn(gap: GtGap.hMd()),
-    GtGapColumn(gap: GtGap.hLg()),
-    GtGapColumn(gap: GtGap.hXl()),
-    GtGapColumn(gap: GtGap.hSectionSm()),
-    GtGapColumn(gap: GtGap.hSectionMd()),
-    GtGapColumn(gap: GtGap.hSectionLg()),
-    GtGapColumn(gap: GtGap.hSectionXl()),
-    GtGapColumn(gap: GtGap.hSection2xl()),
-    GtGapColumn(gap: GtGap.hSection3xl()),
-    GtGapColumn(gap: GtGap.hSection4xl()),
+    GtGapColumn(gap: GtGap.hXs(), label: "GtGap.hXs"),
+    GtGapColumn(gap: GtGap.hSm(), label: "GtGap.hSm"),
+    GtGapColumn(gap: GtGap.hBase(), label: "GtGap.hBase"),
+    GtGapColumn(gap: GtGap.hMd(), label: "GtGap.hMd"),
+    GtGapColumn(gap: GtGap.hLg(), label: "GtGap.hLg"),
+    GtGapColumn(gap: GtGap.hXl(), label: "GtGap.hXl"),
+    GtGapColumn(gap: GtGap.hSectionSm(), label: "GtGap.hSectionSm"),
+    GtGapColumn(gap: GtGap.hSectionMd(), label: "GtGap.hSectionMd"),
+    GtGapColumn(gap: GtGap.hSectionLg(), label: "GtGap.hSectionLg"),
+    GtGapColumn(gap: GtGap.hSectionXl(), label: "GtGap.hSectionXl"),
+    GtGapColumn(gap: GtGap.hSection2xl(), label: "GtGap.hSection2xl"),
+    GtGapColumn(gap: GtGap.hSection3xl(), label: "GtGap.hSection3xl"),
+    GtGapColumn(gap: GtGap.hSection4xl(), label: "GtGap.hSection4xl"),
   ];
 
   final sGaps = const [
-    GtGapColumn(gap: GtGap.sXs(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sSm(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sBase(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sMd(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sLg(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sXl(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sSectionSm(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sSectionMd(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sSectionLg(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sSectionXl(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sSection2xl(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sSection3xl(), isHorizontal: false),
-    GtGapColumn(gap: GtGap.sSection4xl(), isHorizontal: false),
+    GtGapColumn(gap: GtGap.sXs(), label: "GtGap.sXs", isHorizontal: false),
+    GtGapColumn(gap: GtGap.sSm(), label: "GtGap.sSm", isHorizontal: false),
+    GtGapColumn(gap: GtGap.sBase(), label: "GtGap.sBase", isHorizontal: false),
+    GtGapColumn(gap: GtGap.sMd(), label: "GtGap.sMd", isHorizontal: false),
+    GtGapColumn(gap: GtGap.sLg(), label: "GtGap.sLg", isHorizontal: false),
+    GtGapColumn(gap: GtGap.sXl(), label: "GtGap.sXl", isHorizontal: false),
+    GtGapColumn(
+      gap: GtGap.sSectionSm(),
+      label: "GtGap.sSectionSm",
+      isHorizontal: false,
+    ),
+    GtGapColumn(
+      gap: GtGap.sSectionMd(),
+      label: "GtGap.sSectionMd",
+      isHorizontal: false,
+    ),
+    GtGapColumn(
+      gap: GtGap.sSectionLg(),
+      label: "GtGap.sSectionLg",
+      isHorizontal: false,
+    ),
+    GtGapColumn(
+      gap: GtGap.sSectionXl(),
+      label: "GtGap.sSectionXl",
+      isHorizontal: false,
+    ),
+    GtGapColumn(
+      gap: GtGap.sSection2xl(),
+      label: "GtGap.sSection2xl",
+      isHorizontal: false,
+    ),
+    GtGapColumn(
+      gap: GtGap.sSection3xl(),
+      label: "GtGap.sSection3xl",
+      isHorizontal: false,
+    ),
+    GtGapColumn(
+      gap: GtGap.sSection4xl(),
+      label: "GtGap.sSection4xl",
+      isHorizontal: false,
+    ),
   ];
 
   return Scaffold(
@@ -69,7 +98,71 @@ Widget playgroundGapUseCase(BuildContext context) {
               title: "spacing",
               rider:
                   "Begin by adding an Ellipse shape onto a white background frame – this will allow you to perceive shadows more distinctly.",
-              sectionHeader: "Spacing between elements inside components",
+              sectionHeader: "Spacing Primitives (for column/row/wraps)",
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Table(
+              defaultVerticalAlignment: .middle,
+              columnWidths: {
+                0: const FlexColumnWidth(4),
+                1: const FixedColumnWidth(5),
+                2: const FlexColumnWidth(4),
+              },
+              children: [
+                TableRow(
+                  children: [
+                    GtCard(
+                      borderRadius: .zero,
+                      color: context.palette.feature.base,
+                      padding: context.insets.allDp(10.px),
+                      child: GtText(
+                        "Accessor".upper,
+                        textAlign: .start,
+                        style: context.textStyles.h7(
+                          color: context.palette.text.white,
+                        ),
+                      ),
+                    ),
+                    const Offstage(),
+                    GtCard(
+                      borderRadius: .zero,
+                      color: context.palette.highlighted.base,
+                      padding: context.insets.allDp(10.px),
+                      child: GtText(
+                        "Spacing Value".upper,
+                        textAlign: .start,
+                        style: context.textStyles.h7(
+                          color: context.palette.text.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                for (final spacing in context.spacing.all)
+                  TableRow(
+                    children: [
+                      GtCard(
+                        borderRadius: .zero,
+                        variant: .featured,
+                        padding: context.insets.allDp(10.px),
+                        child: GtText(spacing.label, textAlign: .start),
+                      ),
+                      const Offstage(),
+                      GtCard(
+                        borderRadius: .zero,
+                        variant: .highlighted,
+                        padding: context.insets.allDp(10.px),
+                        child: GtText("${spacing.value}px", textAlign: .start),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: GalleryPageSectionHeader(
+              title: "Spacing between elements inside components",
             ),
           ),
           SliverList.separated(
@@ -118,7 +211,9 @@ Widget playgroundGapUseCase(BuildContext context) {
 
 class GtGapRow extends StatelessWidget {
   final GtGap gap;
-  const GtGapRow({required this.gap, super.key});
+  final String label;
+
+  const GtGapRow({required this.gap, required this.label, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +225,7 @@ class GtGapRow extends StatelessWidget {
         TableRow(
           children: [
             Text(
-              "${gapValue.toStringAsFixed(0)} px",
+              "$label (${gapValue.toStringAsFixed(0)}px)",
               style: context.textStyles.bodyM(),
             ),
             Container(color: context.palette.primary.darker, child: gap),
@@ -143,9 +238,15 @@ class GtGapRow extends StatelessWidget {
 
 class GtGapColumn extends StatelessWidget {
   final GtGap gap;
+  final String label;
   final bool isHorizontal;
 
-  const GtGapColumn({required this.gap, this.isHorizontal = true, super.key});
+  const GtGapColumn({
+    required this.gap,
+    required this.label,
+    this.isHorizontal = true,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +258,7 @@ class GtGapColumn extends StatelessWidget {
       spacing: context.dp(context.spacing.xs.px),
       children: [
         Text(
-          "${gapValue.toStringAsFixed(0)} px",
+          "$label (${gapValue.toStringAsFixed(0)}px)",
           style: context.textStyles.bodyM(),
         ),
         Container(

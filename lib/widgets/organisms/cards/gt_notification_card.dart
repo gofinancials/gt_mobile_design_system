@@ -49,7 +49,11 @@ class GtNotificationCard extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final bgColor = variant.cardVariant.getBorderColor(palette);
+    final cardVariant = variant.cardVariant;
+    final bgColor = switch (context.isInDarkMode) {
+      true => cardVariant.getIconColor(palette),
+      _ => cardVariant.getBorderColor(palette),
+    };
 
     return GtCard(
       padding: context.insets.allDp(12.px),

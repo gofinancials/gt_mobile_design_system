@@ -614,6 +614,16 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'forms',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtOtpForm',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtOtpForm',
+                    builder:
+                        _gallery_templates_forms_gt_form.buildGtOtpFormUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtVirtualKeypadForm',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
