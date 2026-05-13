@@ -58,7 +58,7 @@ class GtImage extends GtStatelessWidget {
           if (image?.isUrl ?? false) {
             return GtNetworkImage(
               image?.fileUrl ?? "",
-              alignment: Alignment.center,
+              alignment: alignment,
               width: width ?? defaultSize,
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
@@ -67,7 +67,7 @@ class GtImage extends GtStatelessWidget {
           if (image?.isString ?? false) {
             return GtAssetImage(
               image?.filePath ?? "",
-              alignment: Alignment.center,
+              alignment: alignment,
               width: width ?? defaultSize,
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
@@ -76,7 +76,7 @@ class GtImage extends GtStatelessWidget {
           if (image?.isFile ?? false) {
             return GtFileImage(
               image?.file,
-              alignment: Alignment.center,
+              alignment: alignment,
               width: width ?? defaultSize,
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,

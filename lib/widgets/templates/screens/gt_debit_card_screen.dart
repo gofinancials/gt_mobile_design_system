@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -30,8 +32,13 @@ class GtDebitCardScreen extends GtStatelessWidget {
 
   /// Background color of the screen surface.
   ///
-  /// Defaults to the semantic white background from the active palette.
+  /// Defaults to the semantic primary background from the active palette.
   final Color? backgroundColor;
+
+  /// Color of the texts on the screen.
+  ///
+  /// Defaults to the semantic white color from the active palette.
+  final Color? textColor;
 
   /// Creates a [GtDebitCardScreen].
   const GtDebitCardScreen({
@@ -40,25 +47,17 @@ class GtDebitCardScreen extends GtStatelessWidget {
     required this.title,
     required this.subtitle,
     required this.button,
+    this.textColor,
     this.onClose,
     this.backgroundColor,
   });
 
-  /// Whether [image] has a non-empty URL, asset path, or file to render.
-  static bool _hasImage(AppImageData? data) {
-    if (data == null) return false;
-    if (data.isUrl && (data.fileUrl?.trim().isNotEmpty ?? false)) return true;
-    if (data.isString && (data.filePath?.trim().isNotEmpty ?? false)) {
-      return true;
-    }
-    if (data.isFile && data.file != null) return true;
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final bgColor = backgroundColor ?? context.palette.primary.darker;
-    final textColor = context.palette.text.white;
+    final bgColor = backgroundColor ?? context.palette.primary.base;
+    final computedTextColor = textColor ?? context.palette.staticColors.white;
+    final computedImage =
+        image ?? AppImageData(imageData: GtVectors.sterlingCard);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -72,58 +71,52 @@ class GtDebitCardScreen extends GtStatelessWidget {
           ),
         ),
       ),
-      body: Container(
-        color: bgColor,
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: .stretch,
-            children: [
-              const GtGap.ySectionMd(),
-              Expanded(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: context.insets.defaultHorizontalInsets,
                 child: Column(
                   mainAxisAlignment: .end,
                   crossAxisAlignment: .stretch,
                   children: [
-                    if (_hasImage(image)) ...[
-                      GtImage(
-                        image: image,
-                        width: context.dp(300.px),
-                        height: context.dp(300.px),
-                        alignment: Alignment.centerRight,
-                        fit: BoxFit.contain,
-                      ),
-                      // GtGap.ySectionLg(),
-                    ],
-                    // Title block.
-                    Padding(
-                      padding: context.insets.defaultHorizontalInsets,
-                      child: Column(
-                        crossAxisAlignment: .stretch,
-                        children: [
-                          GtText(
-                            title.upper,
-                            textAlign: .start,
-                            style: context.textStyles.d1(color: textColor),
-                          ),
-                          GtGap.yMd(),
-                          // Subtitle block.
-                          GtText(
-                            subtitle.capitalise(),
-                            textAlign: .start,
-                            style: context.textStyles.bodyS(color: textColor),
-                          ),
-                          GtGap.yXl(),
-                          button,
-                          GtGap.ySectionSm(),
-                        ],
+                    GtText(
+                      title.upper,
+                      textAlign: .start,
+                      style: context.textStyles.d1(
+                        color: computedTextColor,
+                        heightPx: 52,
                       ),
                     ),
+                    GtGap.yLg(),
+                    // Subtitle block.
+                    GtText(
+                      subtitle.capitalise(),
+                      textAlign: .start,
+                      style: context.textStyles.bodyS(color: computedTextColor),
+                    ),
+                    GtGap.yXl(),
+                    button,
+                    GtGap.yLg(),
                   ],
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            right: 0,
+            top: context.dp(140.px),
+            child: GtImage(
+              image: computedImage,
+              width: min(context.fractionalShortest(.8), 358),
+              height: max(context.fractionalLongest(.35), 280),
+              alignment: .centerRight,
+              fit: .contain,
+            ),
+          ),
+        ],
       ),
     );
   }

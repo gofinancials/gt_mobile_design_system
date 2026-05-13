@@ -2,22 +2,38 @@
 
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 @widgetbook.UseCase(name: 'Borders', type: GtRadii)
 Widget playgroundBordersUseCase(BuildContext context) {
-  final borders = [
-    context.dp(context.radii.sm.px),
-    context.dp(context.radii.md.px),
-    context.dp(context.radii.lg.px),
-    context.dp(context.radii.xl.px),
-    context.dp(context.radii.xxl.px),
-    context.dp(context.radii.xxxl.px),
-    context.dp(context.radii.xxxxl.px),
-    context.dp(context.radii.xxxxxl.px),
-    context.dp(context.radii.full.px),
+  final circularBorders = [
+    ('context.borderRadiusXxs', context.borderRadiusXxs),
+    ('context.borderRadiusXs', context.borderRadiusXs),
+    ('context.borderRadiusSm', context.borderRadiusSm),
+    ('context.borderRadiusMd', context.borderRadiusMd),
+    ('context.borderRadiusLg', context.borderRadiusLg),
+    ('context.borderRadiusXl', context.borderRadiusXl),
+    ('context.borderRadius2Xl', context.borderRadius2Xl),
+    ('context.borderRadius3Xl', context.borderRadius3Xl),
+    ('context.borderRadius4Xl', context.borderRadius4Xl),
+    ('context.borderRadius5Xl', context.borderRadius5Xl),
+    ('context.borderRadiusFull', context.borderRadiusFull),
+  ];
+  final borderRadii = [
+    ('context.radiusXxs', context.radiusXxs),
+    ('context.radiusXs', context.radiusXs),
+    ('context.radiusSm', context.radiusSm),
+    ('context.radiusMd', context.radiusMd),
+    ('context.radiusLg', context.radiusLg),
+    ('context.radiusXl', context.radiusXl),
+    ('context.radius2Xl', context.radius2Xl),
+    ('context.radius3Xl', context.radius3Xl),
+    ('context.radius4Xl', context.radius4Xl),
+    ('context.radius5Xl', context.radius5Xl),
+    ('context.radiusFull', context.radiusFull),
   ];
   final delegate = SliverGridDelegateWithMaxCrossAxisExtent(
     maxCrossAxisExtent: context.dp(200.px),
@@ -38,103 +54,86 @@ Widget playgroundBordersUseCase(BuildContext context) {
               title: "Borders",
               rider:
                   "Borders are used to separate content and create visual hierarchy. They can be used to create cards, buttons, and other UI elements.",
-              sectionHeader: "Circular Borders",
+              sectionHeader: "Design System Border Radii",
             ),
           ),
-          SliverGrid.builder(
-            itemBuilder: (_, index) {
-              return GtBorderContainer(
-                borderRadius: borders[index].circularBorderRadius,
-                value: borders[index],
-              );
-            },
-            itemCount: borders.length,
-            gridDelegate: delegate,
-          ),
           SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Left Borders"),
-          ),
-          SliverGrid.builder(
-            itemBuilder: (_, index) {
-              return GtBorderContainer(
-                borderRadius: borders[index].leftBorderRadius,
-                value: borders[index],
-              );
-            },
-            itemCount: borders.length,
-            gridDelegate: delegate,
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Right Borders"),
-          ),
-          SliverGrid.builder(
-            itemBuilder: (_, index) {
-              return GtBorderContainer(
-                borderRadius: borders[index].rightBorderRadius,
-                value: borders[index],
-              );
-            },
-            itemCount: borders.length,
-            gridDelegate: delegate,
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Top Borders"),
-          ),
-          SliverGrid.builder(
-            itemBuilder: (_, index) {
-              return GtBorderContainer(
-                borderRadius: borders[index].topBorderRadius,
-                value: borders[index],
-              );
-            },
-            itemCount: borders.length,
-            gridDelegate: delegate,
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Bottom Borders"),
-          ),
-          SliverGrid.builder(
-            itemBuilder: (_, index) {
-              return GtBorderContainer(
-                borderRadius: borders[index].bottomBorderRadius,
-                value: borders[index],
-              );
-            },
-            itemCount: borders.length,
-            gridDelegate: delegate,
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(
-              title: "Top Left to Bottom Right Borders",
+            child: Table(
+              defaultVerticalAlignment: .middle,
+              columnWidths: {
+                0: const FlexColumnWidth(4),
+                1: const FixedColumnWidth(5),
+                2: const FlexColumnWidth(4),
+              },
+              children: [
+                TableRow(
+                  children: [
+                    GtCard(
+                      borderRadius: .zero,
+                      color: context.palette.feature.base,
+                      padding: context.insets.allDp(10.px),
+                      child: GtText(
+                        "Accessor".upper,
+                        textAlign: .start,
+                        style: context.textStyles.h7(
+                          color: context.palette.text.white,
+                        ),
+                      ),
+                    ),
+                    const Offstage(),
+                    GtCard(
+                      borderRadius: .zero,
+                      color: context.palette.highlighted.base,
+                      padding: context.insets.allDp(10.px),
+                      child: GtText(
+                        "DP Value".upper,
+                        textAlign: .start,
+                        style: context.textStyles.h7(
+                          color: context.palette.text.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                for (final radius in borderRadii)
+                  TableRow(
+                    children: [
+                      GtCard(
+                        borderRadius: .zero,
+                        variant: .featured,
+                        padding: context.insets.allDp(10.px),
+                        child: GtText(radius.$1, textAlign: .start),
+                      ),
+                      const Offstage(),
+                      GtCard(
+                        borderRadius: .zero,
+                        variant: .highlighted,
+                        padding: context.insets.allDp(10.px),
+                        child: GtText(
+                          "${radius.$2.x.toStringAsFixed(0)}dp",
+                          textAlign: .start,
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
             ),
           ),
-          SliverGrid.builder(
-            itemBuilder: (_, index) {
-              return GtBorderContainer(
-                borderRadius:
-                    borders[index].diagonalTopLeftBottomRightBorderRadius,
-                value: borders[index],
-              );
-            },
-            itemCount: borders.length,
-            gridDelegate: delegate,
-          ),
           SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(
-              title: "Top Right to Bottom Left Borders",
-            ),
+            child: GalleryPageSectionHeader(title: "Circular Borders"),
           ),
           SliverGrid.builder(
             itemBuilder: (_, index) {
+              final border = circularBorders[index];
               return GtBorderContainer(
-                borderRadius:
-                    borders[index].diagonalTopRightBottomLeftBorderRadius,
-                value: borders[index],
+                borderRadius: border.$2,
+                label: border.$1,
               );
             },
-            itemCount: borders.length,
+            itemCount: circularBorders.length,
             gridDelegate: delegate,
           ),
+
           SliverToBoxAdapter(child: GtGap.ySectionLg()),
         ],
       ),
@@ -144,10 +143,11 @@ Widget playgroundBordersUseCase(BuildContext context) {
 
 class GtBorderContainer extends StatelessWidget {
   final BorderRadius borderRadius;
-  final double value;
+  final String label;
+
   const GtBorderContainer({
     required this.borderRadius,
-    required this.value,
+    required this.label,
     super.key,
   });
 
@@ -155,19 +155,17 @@ class GtBorderContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: context.dp(200.px),
+      padding: context.insets.allDp(10.px),
       decoration: BoxDecoration(
-        color: GtColors.transparent.value,
+        color: context.palette.primary.base,
         borderRadius: borderRadius,
-        border: Border.all(
-          color: context.palette.stroke.strong,
-          width: context.dp(2.px),
-        ),
       ),
-      alignment: Alignment.bottomLeft,
+      alignment: .center,
       child: Center(
-        child: Text(
-          "${value.toStringAsFixed(0)}PX",
-          style: context.textStyles.subHeadM(),
+        child: GtText(
+          label,
+          style: context.textStyles.bodyXs(color: context.palette.text.white),
+          textAlign: .center,
         ),
       ),
     );

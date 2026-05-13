@@ -165,26 +165,29 @@ class GtNetworkImages {
   static const String virtualCard = '$_baseUrl/VirtualDebitCard.webp';
 
   /// A collection containing all 3D avatar template URLs.
-  static const threeDAvatars = [
-    avatar3d1,
-    avatar3d2,
-    avatar3d3,
-    avatar3d4,
-    avatar3d5,
-    avatar3d6,
+  static List<({String label, String value})> get threeDAvatars => [
+    (label: 'avatar3d1', value: avatar3d1),
+    (label: 'avatar3d2', value: avatar3d2),
+    (label: 'avatar3d3', value: avatar3d3),
+    (label: 'avatar3d4', value: avatar3d4),
+    (label: 'avatar3d5', value: avatar3d5),
+    (label: 'avatar3d6', value: avatar3d6),
   ];
 
   /// A collection containing all texture avatar template URLs.
-  static const textureAvatars = [
-    avatarTexture1,
-    avatarTexture2,
-    avatarTexture3,
-    avatarTexture4,
-    avatarTexture5,
+  static List<({String label, String value})> get textureAvatars => [
+    (label: 'avatarTexture1', value: avatarTexture1),
+    (label: 'avatarTexture2', value: avatarTexture2),
+    (label: 'avatarTexture3', value: avatarTexture3),
+    (label: 'avatarTexture4', value: avatarTexture4),
+    (label: 'avatarTexture5', value: avatarTexture5),
   ];
 
   /// A combined collection of all avatar template URLs (both 3D and texture).
-  static const allAvatars = [...threeDAvatars, ...textureAvatars];
+  static List<({String label, String value})> get allAvatars => [
+    ...threeDAvatars,
+    ...textureAvatars,
+  ];
 }
 
 /// A utility class containing constants for local raster asset image paths.
@@ -198,5 +201,7 @@ class GtAssetImages {
   static const String avatar = '$_basePath/avatar.png';
 
   /// A collection containing all local raster asset image paths.
-  static const all = [avatar];
+  static List<({String label, String value})> get all => [
+    (label: 'avatar', value: avatar),
+  ];
 }

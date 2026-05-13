@@ -59,4 +59,21 @@ class GtSpacing {
     this.section3xl = 64.0,
     this.section4xl = 80.0,
   });
+
+  /// A list containing all available spacing values as a tuple of their accessor and the value.
+  List<({String label, double value})> get all => [
+    (label: 'context.spacing.xs', value: xs),
+    (label: 'context.spacing.sm', value: sm),
+    (label: 'context.spacing.base', value: base),
+    (label: 'context.spacing.md', value: md),
+    (label: 'context.spacing.lg', value: lg),
+    (label: 'context.spacing.xl', value: xl),
+    (label: 'context.spacing.sectionSm', value: sectionSm),
+    (label: 'context.spacing.sectionMd', value: sectionMd),
+    (label: 'context.spacing.sectionLg', value: sectionLg),
+    (label: 'context.spacing.sectionXl', value: sectionXl),
+    (label: 'context.spacing.section2xl', value: section2xl),
+    (label: 'context.spacing.section3xl', value: section3xl),
+    (label: 'context.spacing.section4xl', value: section4xl),
+  ];
 }

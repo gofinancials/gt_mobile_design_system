@@ -38,6 +38,8 @@ Widget buildGtDebitCardScreenUsecase(BuildContext context) {
     button: GtRaisedButton(
       text: buttonText,
       onPressed: () => context.showToast('Continue tapped', type: .success),
+      textColor: context.palette.primary.base,
+      variant: .white,
     ),
   );
 }

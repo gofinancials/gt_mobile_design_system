@@ -15,15 +15,32 @@ class GtDropdownData<T> extends AppEquatable {
   /// An optional builder to dynamically compute the label from the [value].
   final MapCallback<String, T>? labelBuilder;
 
-  /// Creates a new autocomplete item.
-  const GtDropdownData({required this.value, this.label, this.labelBuilder});
+  final AppSearchDelegate<bool>? _filterDelegate;
+
+  /// Creates a new [GtDropdownData] item.
+  const GtDropdownData({
+    required this.value,
+    this.label,
+    this.labelBuilder,
+    AppSearchDelegate<bool>? filterDelegate,
+  }) : _filterDelegate = filterDelegate;
 
   /// The label that should be displayed, falling back to the string
   /// representation of [value] if no [labelBuilder] was provided.
   String get computedLabel => labelBuilder?.call(value) ?? label ?? "$value";
 
+  /// Filters this item based on a search query.
+  ///
+  /// Returns `true` if the item should be included in the results,
+  /// and `false` otherwise.
+  bool filter(String? query) {
+    if (_filterDelegate != null) return _filterDelegate(query.value);
+    if (!query.hasValue) return true;
+    return computedLabel.includes(query.value);
+  }
+
   @override
-  List<Object?> get props => [value, labelBuilder, computedLabel];
+  List<Object?> get props => [value, label, computedLabel];
 }
 
 /// A [ValueNotifier] that specifically manages changes to a [GtDropdownData] selection.
@@ -223,7 +240,7 @@ typedef SuggestionBuilder<T> =
 /// Represents an individual selectable item in the autocomplete list.
 typedef GtAutocompleteItem<T> = GtDropdownData<T>;
 
-/// A controller for managing the state of a [GtDobField].
+/// A controller for managing the state of a date of birth field.
 ///
 /// This controller handles date selection logic, age calculations, and bounds
 /// constraints for a date of birth input.
@@ -238,7 +255,7 @@ class GtDobController extends ChangeNotifier {
   int? _month;
   int? _day;
 
-  /// Gets the currently selected Date of Birth, or null if the date is incomplete.
+  /// Gets the currently selected date of birth, or null if the date is incomplete.
   DateTime? get dob {
     if (year == null || month == null || day == null) return null;
     return DateTime(year!, month!, day!);
@@ -246,7 +263,7 @@ class GtDobController extends ChangeNotifier {
 
   /// Calculates the exact current age in years based on the selected [dob].
   ///
-  /// Returns 0 if the date of birth is incomplete.
+  /// Returns `0` if the date of birth is incomplete.
   int get age {
     if (dob == null) return 0;
     final today = _now;

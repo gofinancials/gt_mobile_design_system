@@ -205,7 +205,17 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
   FutureOr<List<GtDropdownData<Country>>> get _allCountries async {
     final countries = await AppCountryUtility.fetchCountries();
     return countries.mapList(
-      (it) => GtDropdownData(value: it, label: it.displayName),
+      (it) => GtDropdownData(
+        value: it,
+        label: it.displayName,
+        filterDelegate: (query) {
+          if (!query.hasValue) return true;
+          final hasPhoneCode = it.countryCode.includes(query);
+          final hasCountryName = it.displayName.includes(query);
+
+          return hasPhoneCode || hasCountryName;
+        },
+      ),
     );
   }
 

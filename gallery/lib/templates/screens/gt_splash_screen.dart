@@ -12,6 +12,7 @@ Widget buildGtSplashScreenUsecase(BuildContext context) {
       ("Kids Pattern", NetworkImage(GtNetworkImages.kidsPattern)),
       ("Flex Pattern", NetworkImage(GtNetworkImages.flexPattern)),
     ],
+    labelBuilder: (value) => value.$1,
   );
   return GtSplashScreen(task: () async {}, backgroundImage: bgImage.$2);
 }
@@ -25,6 +26,7 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
       ("Kids Pattern", NetworkImage(GtNetworkImages.kidsPattern)),
       ("Flex Pattern", NetworkImage(GtNetworkImages.flexPattern)),
     ],
+    labelBuilder: (value) => value.$1,
   );
   return GtWelcomeScreen(
     title: context.knobs.string(
@@ -36,6 +38,7 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
       label: "Title Alignment",
       options: [Alignment.topLeft, Alignment.bottomLeft],
       initialOption: .bottomLeft,
+      labelBuilder: (value) => value.toString(),
     ),
     showLogo: context.knobs.boolean(label: "Show Logo", initialValue: true),
     titleColor: context.knobs.object
@@ -88,6 +91,7 @@ Widget buildGtWelcomeScreenTitleUsecase(BuildContext context) {
       ("Kids Pattern", NetworkImage(GtNetworkImages.kidsPattern)),
       ("Flex Pattern", NetworkImage(GtNetworkImages.flexPattern)),
     ],
+    labelBuilder: (value) => value.$1,
   );
   final titleColor = context.knobs.object.dropdown<(String, Color)>(
     label: "Title Color",
@@ -119,6 +123,7 @@ Widget buildGtWelcomeScreenTitleUsecase(BuildContext context) {
       label: "Title Alignment",
       options: [.topLeft, .topCenter, .bottomLeft, .bottomCenter],
       initialOption: .topCenter,
+      labelBuilder: (value) => value.toString(),
     ),
     showLogo: context.knobs.boolean(label: "Show Logo", initialValue: false),
     primaryButton: GtRaisedButton(
