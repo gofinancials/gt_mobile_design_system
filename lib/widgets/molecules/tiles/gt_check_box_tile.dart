@@ -40,6 +40,9 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
   /// Optional secondary text to display below the [title].
   final String? subtitle;
 
+  /// Custom padding to apply to the tile.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtCheckBoxTile].
   const GtCheckBoxTile(
     this.title, {
@@ -52,6 +55,7 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
     this.activeColor,
     this.leading,
     this.subtitle,
+    this.padding,
     super.key,
   });
 
@@ -62,6 +66,7 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
         if (disabled) return;
         onChanged(value);
       },
+      padding: padding,
       title,
       subtitle: subtitle,
       icon: leading,

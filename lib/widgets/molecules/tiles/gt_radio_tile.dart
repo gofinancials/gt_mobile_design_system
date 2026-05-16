@@ -46,6 +46,9 @@ class GtRadioTile<T> extends GtStatelessWidget {
   /// The visual style of the radio button. Defaults to [GtRadioStyle.standard].
   final GtRadioStyle radioStyle;
 
+  /// Custom padding to apply to the tile.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a standard [GtRadioTile] that compares [value] against [groupValue].
   const GtRadioTile(
     this.title, {
@@ -59,6 +62,7 @@ class GtRadioTile<T> extends GtStatelessWidget {
     this.activeColor,
     this.leading,
     this.subtitle,
+    this.padding,
   }) : condition = null;
 
   /// Creates a [GtRadioTile] whose active state is directly controlled by [condition].
@@ -74,6 +78,7 @@ class GtRadioTile<T> extends GtStatelessWidget {
     this.leading,
     this.subtitle,
     this.disabled = false,
+    this.padding,
   }) : groupValue = null;
 
   @override
@@ -83,6 +88,7 @@ class GtRadioTile<T> extends GtStatelessWidget {
         if (disabled) return;
         onChanged(value);
       },
+      padding: padding,
       title,
       subtitle: subtitle,
       icon: leading,

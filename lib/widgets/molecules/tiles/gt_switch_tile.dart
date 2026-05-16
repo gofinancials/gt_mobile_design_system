@@ -39,6 +39,9 @@ class GtSwitchTile extends GtStatelessWidget {
   /// An optional widget to display below the main content of the tile.
   final Widget? footer;
 
+  /// Custom padding to apply to the tile.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtSwitchTile].
   const GtSwitchTile(
     this.title, {
@@ -51,6 +54,7 @@ class GtSwitchTile extends GtStatelessWidget {
     this.footer,
     this.leading,
     this.subtitle,
+    this.padding,
   });
 
   @override
@@ -60,6 +64,7 @@ class GtSwitchTile extends GtStatelessWidget {
         if (disabled) return;
         onChanged(!value);
       },
+      padding: padding,
       title,
       subtitle: subtitle,
       icon: leading,

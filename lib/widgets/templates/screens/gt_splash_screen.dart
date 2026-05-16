@@ -16,6 +16,9 @@ class GtSplashScreen extends GtStatefulWidget {
   /// An optional background image to display behind the splash screen content.
   final ImageProvider? backgroundImage;
 
+  /// An optional background image style to apply to the background image.
+  final GtDecorationImageStyle? decorationImageStyle;
+
   /// An asynchronous task to be executed while the splash screen is active.
   final OnPressedAsync task;
 
@@ -25,6 +28,7 @@ class GtSplashScreen extends GtStatefulWidget {
     required this.task,
     this.color,
     this.backgroundImage,
+    this.decorationImageStyle,
     this.logo,
   });
 
@@ -46,7 +50,7 @@ class _GtSplashScreenState extends State<GtSplashScreen> {
   @override
   Widget build(BuildContext context) {
     final center = logo ?? AppImageData(imageData: GtVectors.whiteLogo);
-    final bgColor = color ?? context.palette.primary.darker;
+    final bgColor = color ?? context.palette.primary.base;
     ImageProvider? bgImage = backgroundImage;
     DecorationImage? decorationImage;
 
@@ -55,7 +59,9 @@ class _GtSplashScreenState extends State<GtSplashScreen> {
     }
 
     if (bgImage != null) {
-      decorationImage = DecorationImage(image: bgImage, fit: BoxFit.cover);
+      decorationImage =
+          widget.decorationImageStyle?.toDecorationImage(bgImage) ??
+          DecorationImage(image: bgImage, fit: BoxFit.cover);
     }
 
     return Scaffold(

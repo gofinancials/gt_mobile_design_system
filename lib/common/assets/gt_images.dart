@@ -117,6 +117,9 @@ class GtNetworkImages {
   /// Image URL for the flex app splash background
   static const String flexPattern = '$_baseUrl/flex.webp';
 
+  /// Image URL for the head quarters
+  static const String hq = '$_baseUrl/Hq.webp';
+
   /// Image URL for the first 3D avatar template.
   static const String avatar3d1 = '$_baseUrl/avatar_templates/3d_1.webp';
 

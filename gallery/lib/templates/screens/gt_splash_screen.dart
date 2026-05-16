@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
@@ -14,7 +15,27 @@ Widget buildGtSplashScreenUsecase(BuildContext context) {
     ],
     labelBuilder: (value) => value.$1,
   );
-  return GtSplashScreen(task: () async {}, backgroundImage: bgImage.$2);
+  return GtSplashScreen(
+    task: () async {},
+    backgroundImage: bgImage.$2,
+    color: context.knobs.colorOrNull(label: "Background Color"),
+    logo: context.knobs.object
+        .dropdown(
+          label: "Logo",
+          initialOption: ("None", null),
+          options: [
+            ("None", null),
+            ("Logo", AppImageData(imageData: GtVectors.logo)),
+            (
+              "OneBankProLogo",
+              AppImageData(imageData: GtVectors.oneBankProLogo),
+            ),
+            ("WhiteLogo", AppImageData(imageData: GtVectors.whiteLogo)),
+          ],
+          labelBuilder: (value) => value.$1,
+        )
+        .$2,
+  );
 }
 
 @widgetbook.UseCase(name: 'GtWelcomeScreen', type: GtWelcomeScreen)
@@ -25,10 +46,36 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
       ("None", null),
       ("Kids Pattern", NetworkImage(GtNetworkImages.kidsPattern)),
       ("Flex Pattern", NetworkImage(GtNetworkImages.flexPattern)),
+      ("Head Quarters", NetworkImage(GtNetworkImages.hq)),
     ],
     labelBuilder: (value) => value.$1,
   );
   return GtWelcomeScreen(
+    logo: context.knobs.object
+        .dropdown(
+          label: "Logo",
+          initialOption: ("None", null),
+          options: [
+            ("None", null),
+            (
+              "On Pro",
+              GtImage(
+                image: AppImageData(imageData: GtVectors.oneBankProWordMark),
+                height: 36,
+              ),
+            ),
+          ],
+          labelBuilder: (value) => value.$1,
+        )
+        .$2,
+    decorationImageStyle: context.knobs.object
+        .dropdown<(String, GtDecorationImageStyle?)>(
+          label: "Decoration Image Style",
+          options: [("None", null), ("Pro", GtDecorationImageStyle.pro)],
+          initialOption: ("None", null),
+          labelBuilder: (value) => value.$1,
+        )
+        .$2,
     title: context.knobs.string(
       label: "Title",
       initialValue: "Your everyday money app",

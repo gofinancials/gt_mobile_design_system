@@ -97,7 +97,7 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
               ),
             ),
             GtIconButton(
-              icon: GtIcons.chartBarTrendUp,
+              icon: GtIcons.trendUpSolid,
               onPressed: onClickStat,
               shape: .square,
               color: btnColor,

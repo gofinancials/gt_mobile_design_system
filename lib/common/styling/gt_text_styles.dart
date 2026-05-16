@@ -177,7 +177,7 @@ class GtTextStyles {
     return _buildStyle(
       family: fonts.display,
       size: 60,
-      heightPx: heightPx ?? 64,
+      heightPx: heightPx ?? 52,
       widthPct: -1.0,
       weight: FontWeight.bold,
       color: color,

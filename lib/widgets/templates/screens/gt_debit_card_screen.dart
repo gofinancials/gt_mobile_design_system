@@ -73,6 +73,17 @@ class GtDebitCardScreen extends GtStatelessWidget {
       ),
       body: Stack(
         children: [
+          Positioned(
+            right: 0,
+            top: context.dp(140.px),
+            child: GtImage(
+              image: computedImage,
+              width: min(context.fractionalShortest(.8), 358),
+              height: max(context.fractionalLongest(.35), 280),
+              alignment: .centerRight,
+              fit: .contain,
+            ),
+          ),
           Positioned.fill(
             child: SafeArea(
               top: false,
@@ -103,17 +114,6 @@ class GtDebitCardScreen extends GtStatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ),
-          Positioned(
-            right: 0,
-            top: context.dp(140.px),
-            child: GtImage(
-              image: computedImage,
-              width: min(context.fractionalShortest(.8), 358),
-              height: max(context.fractionalLongest(.35), 280),
-              alignment: .centerRight,
-              fit: .contain,
             ),
           ),
         ],

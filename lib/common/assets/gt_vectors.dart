@@ -8,7 +8,14 @@ class GtVectors {
   /// Path to the logo SVG.
   static const logo = "$_basePath/logo.svg";
 
-  /// Path to the logo SVG.
+  /// Path to the oneBankProLogo SVG.
+  static const oneBankProLogo = "$_basePath/one_bank_pro_logo.svg";
+
+  /// Path to the oneBankProWordMark SVG.
+  static const oneBankProWordMark =
+      "$_basePath/white_one_bank_pro_word_mark.svg";
+
+  /// Path to the whiteLogo SVG.
   static const whiteLogo = "$_basePath/logo_white.svg";
 
   /// Path to the clock SVG.
@@ -44,6 +51,8 @@ class GtVectors {
     (label: 'tapRight', value: tapRight),
     (label: 'tapLeft', value: tapLeft),
     (label: 'sterling', value: sterling),
+    (label: 'oneBankProLogo', value: oneBankProLogo),
+    (label: 'oneBankProWordMark', value: oneBankProWordMark),
     (label: 'trendDown', value: trendDown),
   ];
 }

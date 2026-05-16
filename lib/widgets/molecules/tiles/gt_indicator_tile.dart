@@ -30,6 +30,9 @@ class GtIndicatorTile extends GtStatelessWidget {
   /// Custom text style to apply to the [subtitle].
   final TextStyle? subTitleStyle;
 
+  /// Custom padding to apply to the tile.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtIndicatorTile].
   const GtIndicatorTile(
     this.title, {
@@ -41,6 +44,7 @@ class GtIndicatorTile extends GtStatelessWidget {
     this.onTap,
     this.titleStyle,
     this.subTitleStyle,
+    this.padding,
   });
 
   @override
@@ -78,17 +82,20 @@ class GtIndicatorTile extends GtStatelessWidget {
     return GtInkWell(
       borderRadius: .zero,
       onTap: onTap,
-      child: Row(
-        crossAxisAlignment: switch (footer == null) {
-          false => CrossAxisAlignment.start,
-          _ => CrossAxisAlignment.center,
-        },
-        spacing: context.spacingLg,
-        children: [
-          ?icon,
-          Expanded(child: leading),
-          ?trailing,
-        ],
+      child: Padding(
+        padding: padding ?? .zero,
+        child: Row(
+          crossAxisAlignment: switch (footer == null) {
+            false => CrossAxisAlignment.start,
+            _ => CrossAxisAlignment.center,
+          },
+          spacing: context.spacingLg,
+          children: [
+            ?icon,
+            Expanded(child: leading),
+            ?trailing,
+          ],
+        ),
       ),
     );
   }

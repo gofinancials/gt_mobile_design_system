@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/extensions/extensions.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A template screen widget used for displaying a welcome screen.
@@ -46,6 +47,14 @@ class GtWelcomeScreen extends GtStatelessWidget {
   /// If a [NetworkImage] is provided, it is automatically cached using [CachedNetworkImageProvider].
   final ImageProvider? backgroundImage;
 
+  /// An optional background image style to apply to the background image.
+  final GtDecorationImageStyle? decorationImageStyle;
+
+  /// The logo to display at the top of the screen.
+  ///
+  /// If null, the default logo will be displayed.
+  final GtImage? logo;
+
   /// Creates a new [GtWelcomeScreen].
   const GtWelcomeScreen({
     super.key,
@@ -57,6 +66,8 @@ class GtWelcomeScreen extends GtStatelessWidget {
     this.showLogo = true,
     this.titleAlignment = .bottomLeft,
     this.backgroundImage,
+    this.decorationImageStyle,
+    this.logo,
   }) : _title = title,
        _titleWidget = null;
 
@@ -70,6 +81,8 @@ class GtWelcomeScreen extends GtStatelessWidget {
     this.showLogo = true,
     this.titleAlignment = .topCenter,
     this.backgroundImage,
+    this.decorationImageStyle,
+    this.logo,
   }) : _title = "",
        _titleWidget = title,
        titleColor = null;
@@ -89,11 +102,11 @@ class GtWelcomeScreen extends GtStatelessWidget {
     if (showLogo) {
       appBar = GtActionAppBar(
         implyLeading: false,
-        leading: GtSvg(GtVectors.sterling, width: 104),
+        leading: logo ?? GtSvg(GtVectors.sterling, width: 104),
       );
     }
 
-    final bgColor = color ?? context.palette.primary.darker;
+    final bgColor = color ?? context.palette.primary.base;
     ImageProvider? bgImage = backgroundImage;
     DecorationImage? decorationImage;
 
@@ -102,7 +115,9 @@ class GtWelcomeScreen extends GtStatelessWidget {
     }
 
     if (bgImage != null) {
-      decorationImage = DecorationImage(image: bgImage, fit: BoxFit.cover);
+      decorationImage =
+          decorationImageStyle?.toDecorationImage(bgImage) ??
+          DecorationImage(image: bgImage, fit: .cover);
     }
 
     return Scaffold(
