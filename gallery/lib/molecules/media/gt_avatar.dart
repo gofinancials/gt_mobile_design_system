@@ -54,7 +54,7 @@ Widget buildGtAvatarUsecase(BuildContext context) {
       );
 
   return Scaffold(
-    appBar: GtTitleAppBar(title: "GtEditAvatar Widget"),
+    appBar: GtTitleAppBar(title: "GtSquareAvatar Widget"),
     body: Center(
       child: GtAvatar(
         avatar: images.$2,
@@ -74,8 +74,8 @@ Widget buildGtAvatarUsecase(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'GtEditAvatar', type: GtEditAvatar)
-Widget buildGtEditAvatarUsecase(BuildContext context) {
+@widgetbook.UseCase(name: 'GtSquareAvatar', type: GtSquareAvatar)
+Widget buildGtSquareAvatarUsecase(BuildContext context) {
   final fit = context.knobs.object.dropdown(
     label: "Avatar Fit",
     options: BoxFit.values,
@@ -129,9 +129,9 @@ Widget buildGtEditAvatarUsecase(BuildContext context) {
   );
 
   return Scaffold(
-    appBar: GtTitleAppBar(title: "GtEditAvatar Widget"),
+    appBar: GtTitleAppBar(title: "GtSquareAvatar Widget"),
     body: Center(
-      child: GtEditAvatar(
+      child: GtSquareAvatar(
         avatar: images.$2,
         fit: fit,
         alignment: alignment.$2,

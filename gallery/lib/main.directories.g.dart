@@ -328,12 +328,12 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               ),
               _widgetbook.WidgetbookComponent(
-                name: 'GtEditAvatar',
+                name: 'GtSquareAvatar',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtEditAvatar',
+                    name: 'GtSquareAvatar',
                     builder: _gallery_molecules_media_gt_avatar
-                        .buildGtEditAvatarUsecase,
+                        .buildGtSquareAvatarUsecase,
                   ),
                 ],
               ),

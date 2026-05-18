@@ -8,7 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 ///
 /// This widget is typically used in profile editing screens where the user
 /// needs a visual indicator that their avatar can be tapped and changed.
-class GtEditAvatar extends GtStatelessWidget {
+class GtSquareAvatar extends GtStatelessWidget {
   /// The optional image data to display. If null, a default placeholder is used.
   final AppImageData? avatar;
 
@@ -19,7 +19,7 @@ class GtEditAvatar extends GtStatelessWidget {
   final Alignment alignment;
 
   /// Callback invoked when the avatar is tapped to initiate an edit action.
-  final OnPressed onEdit;
+  final OnPressed? onEdit;
 
   /// Indicates if this represents the primary user avatar.
   ///
@@ -30,12 +30,16 @@ class GtEditAvatar extends GtStatelessWidget {
   /// The size (width and height) of the square avatar box. Defaults to 180dp.
   final double? size;
 
-  /// Creates a [GtEditAvatar].
-  const GtEditAvatar({
+  /// The border radius of the square avatar box. Defaults to [context.borderRadius4Xl].
+  final BorderRadius? borderRadius;
+
+  /// Creates a [GtSquareAvatar].
+  const GtSquareAvatar({
     this.avatar,
     super.key,
     this.alignment = Alignment.center,
     this.fit,
+    this.borderRadius,
     required this.onEdit,
     this.isUserAvatar = false,
     this.size,
@@ -75,38 +79,44 @@ class GtEditAvatar extends GtStatelessWidget {
 
     final computedSize = size ?? context.dp(180.px);
 
+    Widget? editPen;
+
+    if (onEdit != null) {
+      editPen = Align(
+        alignment: .topRight,
+        child: Container(
+          alignment: .center,
+          width: computedSize * .17,
+          height: computedSize * .17,
+          margin: EdgeInsets.all(computedSize * .06),
+          padding: EdgeInsets.all(computedSize * .028),
+          decoration: BoxDecoration(
+            color: context.palette.bg.white,
+            borderRadius: context.borderRadiusMd,
+          ),
+          child: GtIcon(GtIcons.penSparkle, size: computedSize * .12),
+        ),
+      );
+    }
+
     Widget child = Align(
       alignment: alignment,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
           HapticFeedback.lightImpact();
-          onEdit();
+          onEdit?.call();
         },
         child: GtSquareConstrainedBox(
           computedSize,
           child: ClipRRect(
-            borderRadius: context.borderRadius4Xl,
+            borderRadius: borderRadius ?? context.borderRadius4Xl,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: context.gradients.avatarGradient,
                 image: decoration,
               ),
-              child: Align(
-                alignment: .topRight,
-                child: Container(
-                  alignment: .center,
-                  width: computedSize * .17,
-                  height: computedSize * .17,
-                  margin: EdgeInsets.all(computedSize * .06),
-                  padding: EdgeInsets.all(computedSize * .028),
-                  decoration: BoxDecoration(
-                    color: context.palette.bg.white,
-                    borderRadius: context.borderRadiusMd,
-                  ),
-                  child: GtIcon(GtIcons.penSparkle, size: computedSize * .12),
-                ),
-              ),
+              child: editPen,
             ),
           ),
         ),
