@@ -16,6 +16,12 @@ class GtHelpCard extends GtStatelessWidget {
   /// An optional callback function that is invoked when the card is tapped.
   final OnPressed? onTap;
 
+  /// Optional padding for the card. Default is [context.insets.allDp(12.px)]
+  final EdgeInsetsGeometry? padding;
+
+  /// The size of the icon. Default is 24
+  final double? iconSize;
+
   /// Creates a [GtHelpCard].
   const GtHelpCard({
     super.key,
@@ -23,6 +29,8 @@ class GtHelpCard extends GtStatelessWidget {
     this.subtitle,
     this.variant = .normal,
     this.onTap,
+    this.padding,
+    this.iconSize,
   });
 
   @override
@@ -45,7 +53,7 @@ class GtHelpCard extends GtStatelessWidget {
       borderRadius: context.borderRadiusXl,
       onTap: onTap,
       child: GtCard(
-        padding: context.insets.allDp(12.px),
+        padding: padding ?? context.insets.allDp(12.px),
         borderRadius: context.borderRadiusXl,
         variant: variant,
         child: GtBaseListTileTemplate(
@@ -57,7 +65,7 @@ class GtHelpCard extends GtStatelessWidget {
           title: GtText(title, style: context.textStyles.bodyM()),
           leading: GtIcon.withColor(
             GtIcons.messages,
-            size: 24,
+            size: iconSize ?? 24,
             color: iconColor,
           ),
         ),
