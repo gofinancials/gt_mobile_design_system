@@ -310,10 +310,7 @@ class GtIdicatorDescriptionContainer extends GtStatelessWidget {
               children: [
                 GtText(title, style: context.textStyles.h4()),
                 if (description.hasValue)
-                  GtRichText(
-                    description,
-                    textStyle: context.textStyles.bodyS(),
-                  ),
+                  GtRichText(description, style: context.textStyles.bodyS()),
               ],
             ),
           ),

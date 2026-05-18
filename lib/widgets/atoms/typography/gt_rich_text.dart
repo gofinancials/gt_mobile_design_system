@@ -20,7 +20,7 @@ class GtRichText extends GtStatelessWidget {
   final TextAlign? textAlign;
 
   /// The base text style applied to the text. Defaults to the `bodyM` style from the current context.
-  final TextStyle? textStyle;
+  final TextStyle? style;
 
   /// How visual overflow should be handled.
   final TextOverflow? textOverflow;
@@ -46,7 +46,7 @@ class GtRichText extends GtStatelessWidget {
   /// Creates a new [GtRichText] widget.
   const GtRichText(
     this.text, {
-    this.textStyle,
+    this.style,
     this.textAlign,
     this.maxLines,
     this.hashTagColor,
@@ -77,7 +77,7 @@ class GtRichText extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = textStyle ?? context.textStyles.bodyM();
+    final style = this.style ?? context.textStyles.bodyM();
     final content = _parsedText.value;
 
     launch(String? text, Map<String?, String?> attributes) {
@@ -90,6 +90,18 @@ class GtRichText extends GtStatelessWidget {
     }
 
     final defaultTags = {
+      'i': StyledTextActionTag(
+        (text, attributes) => onTextTap?.call(text.value),
+        style: style.copyWith(fontStyle: .italic),
+      ),
+      'im': StyledTextActionTag(
+        (text, attributes) => onTextTap?.call(text.value),
+        style: style.copyWith(fontStyle: .italic, fontWeight: .w500),
+      ),
+      'ib': StyledTextActionTag(
+        (text, attributes) => onTextTap?.call(text.value),
+        style: style.copyWith(fontStyle: .italic, fontWeight: .bold),
+      ),
       'p': StyledTextActionTag(
         (text, attributes) => onTextTap?.call(text.value),
         style: style,

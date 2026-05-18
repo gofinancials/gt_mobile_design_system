@@ -35,6 +35,14 @@ class GtPageHeader extends GtStatelessWidget {
   /// Horizontal alignment of title and subtitle text.
   final TextAlign textAlign;
 
+  /// The color used to style automatically detected hashtags (`<ht>` tags). Defaults to the highlighted base color.
+  final Color? hashTagColor;
+
+  /// The color used for links (`<a>`, `<b><a>`, etc.). Defaults to the base text color.
+  final Color? linkColor;
+
+  final bool _rich;
+
   /// Creates a [GtPageHeader].
   const GtPageHeader({
     super.key,
@@ -44,7 +52,21 @@ class GtPageHeader extends GtStatelessWidget {
     this.subTitleColor,
     this.spacingPx,
     this.textAlign = TextAlign.start,
-  });
+  }) : _rich = false,
+       hashTagColor = null,
+       linkColor = null;
+
+  const GtPageHeader.rich({
+    super.key,
+    required this.title,
+    this.subtitle,
+    this.titleColor,
+    this.subTitleColor,
+    this.spacingPx,
+    this.textAlign = TextAlign.start,
+    this.hashTagColor,
+    this.linkColor,
+  }) : _rich = true;
 
   /// Heading 5: 24px, weight 700 ([FontWeight.bold]).
   TextStyle _titleStyle(BuildContext context) {
@@ -67,11 +89,20 @@ class GtPageHeader extends GtStatelessWidget {
       spacing: spacing,
       children: [
         GtText(title.upper, style: _titleStyle(context), textAlign: textAlign),
-        if (subtitle.hasValue)
+        if (subtitle.hasValue && !_rich)
           GtText(
-            subtitle.value.capitalise(true),
+            subtitle,
             style: _subtitleStyle(context),
             textAlign: textAlign,
+          ),
+        if (subtitle.hasValue && _rich)
+          GtRichText(
+            subtitle,
+            key: ValueKey((context.isInDarkMode, subtitle?.length)),
+            style: _subtitleStyle(context),
+            textAlign: textAlign,
+            linkColor: linkColor ?? context.palette.primary.base,
+            hashTagColor: hashTagColor ?? context.palette.primary.base,
           ),
       ],
     );

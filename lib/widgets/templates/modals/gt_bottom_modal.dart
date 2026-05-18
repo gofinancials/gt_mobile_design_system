@@ -296,7 +296,7 @@ class _GtModalBody extends GtStatelessWidget {
                                 if (resolvedDescription.hasValue)
                                   GtRichText(
                                     resolvedDescription,
-                                    textStyle: subStyle,
+                                    style: subStyle,
                                     textAlign: TextAlign.center,
                                   ),
                               ],
