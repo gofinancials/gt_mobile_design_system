@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/extensions/string_extensions.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// Defines the text capitalization behavior for [GtButtonText].
+enum GtButtonTextCase { upper, lower, sentence, title, none }
+
 /// A specialized text widget for use within Go Tech buttons.
 ///
 /// This widget handles the layout of text with optional leading and trailing icons,
@@ -41,6 +44,9 @@ class GtButtonText extends GtStatelessWidget {
   /// Optional text alignment to override the default button text alignment.
   final TextAlign textAlign;
 
+  /// Defines the text capitalization behavior for the button text.
+  final GtButtonTextCase textCase;
+
   /// Creates a [GtButtonText] widget.
   const GtButtonText(
     this.text, {
@@ -54,6 +60,7 @@ class GtButtonText extends GtStatelessWidget {
     this.decoration,
     this.textColor,
     this.disabledTextColor,
+    this.textCase = .upper,
     this.style,
   });
 
@@ -75,9 +82,17 @@ class GtButtonText extends GtStatelessWidget {
       );
     }
 
+    final casedText = switch (textCase) {
+      .upper => text.upper,
+      .lower => text.lower,
+      .sentence => text.capitalise(true),
+      .title => text.capitalise(),
+      .none => text,
+    };
+
     if (icon != null || trailingIcon != null) {
       return _ButtonTextWithIcon(
-        text: text,
+        text: casedText,
         alignment: alignment,
         style: style ?? btnStyle,
         leadingIcon: icon,
@@ -87,7 +102,7 @@ class GtButtonText extends GtStatelessWidget {
       );
     }
     return _ButtonText(
-      text: text,
+      text: casedText,
       style: style ?? btnStyle,
       textAlign: textAlign,
     );
@@ -199,6 +214,6 @@ class _ButtonText extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GtText(text.upper, textAlign: textAlign, style: style, maxLines: 1);
+    return GtText(text, textAlign: textAlign, style: style, maxLines: 1);
   }
 }

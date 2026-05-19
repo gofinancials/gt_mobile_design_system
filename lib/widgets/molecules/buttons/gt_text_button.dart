@@ -34,6 +34,9 @@ class GtTextButton extends GtButton {
   /// Optional text alignment to override the default button text alignment.
   final TextAlign textAlign;
 
+  /// Defines the text capitalization behavior for the button text.
+  final GtButtonTextCase textCase;
+
   /// Creates a [GtTextButton].
   const GtTextButton({
     this.text,
@@ -50,6 +53,7 @@ class GtTextButton extends GtButton {
     this.leading,
     this.trailing,
     super.alignment,
+    this.textCase = .upper,
     this.style,
     super.key,
   });
@@ -140,6 +144,7 @@ class GtTextButton extends GtButton {
       child: GtAnimatedFade(
         child1: GtButtonText(
           text.value,
+          textCase: textCase,
           size: size,
           disabled: isDisabled,
           icon: leadingIcon,

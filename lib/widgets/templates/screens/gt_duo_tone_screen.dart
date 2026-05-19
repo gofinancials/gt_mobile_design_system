@@ -38,6 +38,9 @@ class GtDuotoneScreen extends GtStatelessWidget {
   /// The overflow for the title text.
   final TextOverflow? titleOverflow;
 
+  /// The size of the illustration image
+  final Size? illustrationSize;
+
   /// Creates a [GtDuotoneScreen].
   const GtDuotoneScreen({
     super.key,
@@ -50,6 +53,7 @@ class GtDuotoneScreen extends GtStatelessWidget {
     required this.onTap,
     this.titleMaxLines = 1,
     this.titleOverflow,
+    this.illustrationSize,
     this.footer,
   });
 
@@ -77,12 +81,14 @@ class GtDuotoneScreen extends GtStatelessWidget {
         crossAxisAlignment: .stretch,
         children: [
           Expanded(
-            flex: 6,
+            flex: 8,
             child: Container(
               decoration: BoxDecoration(gradient: gradient),
+              alignment: .bottomCenter,
               child: GtImage(
                 image: illustration,
-                height: context.dp(400.px),
+                height: illustrationSize?.height ?? context.dp(320.px),
+                width: illustrationSize?.width,
                 alignment: .bottomCenter,
               ),
             ),

@@ -89,6 +89,13 @@ Widget playgroundButtonsUseCase(BuildContext context) {
     initialOption: GtButtonSize.large,
   );
 
+  final textButtonCase = context.knobs.object.dropdown<GtButtonTextCase>(
+    label: "Text Button Case",
+    options: GtButtonTextCase.values,
+    labelBuilder: (value) => value.name,
+    initialOption: GtButtonTextCase.upper,
+  );
+
   final alignmentOptions = [
     ("None", null),
     ("Center", Alignment.center),
@@ -215,6 +222,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
                   isLoading: isLoading,
                   leading: leadingIcon.$2,
                   trailing: trailingIcon.$2,
+                  textCase: textButtonCase,
                   onPressed: () => debugPrint("GtTextButton pressed"),
                 );
               },
@@ -230,6 +238,7 @@ Widget playgroundButtonsUseCase(BuildContext context) {
               alignment: interactiveAlignment.$2,
               isDisabled: isDisabled,
               isLoading: isLoading,
+              textCase: textButtonCase,
               onPressed: () => debugPrint("Interactive GtTextButton pressed"),
             ),
           ),
