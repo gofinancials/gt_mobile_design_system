@@ -35,18 +35,26 @@ class GtButtonText extends GtStatelessWidget {
   /// The size category of the button, which determines the text style and icon scaling.
   final GtButtonSize size;
 
+  /// Optional text style to override the default button text style.
+  final TextStyle? style;
+
+  /// Optional text alignment to override the default button text alignment.
+  final TextAlign textAlign;
+
   /// Creates a [GtButtonText] widget.
   const GtButtonText(
     this.text, {
     super.key,
     required this.disabled,
     required this.size,
+    this.textAlign = .center,
     this.alignment = Alignment.center,
     this.icon,
     this.trailingIcon,
     this.decoration,
     this.textColor,
     this.disabledTextColor,
+    this.style,
   });
 
   @override
@@ -71,13 +79,18 @@ class GtButtonText extends GtStatelessWidget {
       return _ButtonTextWithIcon(
         text: text,
         alignment: alignment,
-        style: btnStyle,
+        style: style ?? btnStyle,
         leadingIcon: icon,
         trailingIcon: trailingIcon,
         size: size,
+        textAlign: textAlign,
       );
     }
-    return _ButtonText(text: text, style: btnStyle);
+    return _ButtonText(
+      text: text,
+      style: style ?? btnStyle,
+      textAlign: textAlign,
+    );
   }
 }
 
@@ -101,6 +114,9 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
   /// The size category used to scale the icons appropriately.
   final GtButtonSize size;
 
+  /// Optional text alignment to override the default button text alignment.
+  final TextAlign textAlign;
+
   /// Creates a [_ButtonTextWithIcon].
   const _ButtonTextWithIcon({
     required this.text,
@@ -109,6 +125,7 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
     this.leadingIcon,
     this.trailingIcon,
     required this.size,
+    this.textAlign = .center,
   });
 
   @override
@@ -116,7 +133,7 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
     Widget? child;
 
     if (text.hasValue) {
-      child = _ButtonText(text: text!, style: style);
+      child = _ButtonText(text: text!, style: style, textAlign: textAlign);
     }
 
     child = Row(
@@ -174,16 +191,14 @@ class _ButtonText extends GtStatelessWidget {
   /// The style to apply to the text.
   final TextStyle? style;
 
+  /// Optional text alignment to override the default button text alignment.
+  final TextAlign textAlign;
+
   /// Creates a [_ButtonText].
-  const _ButtonText({required this.text, this.style});
+  const _ButtonText({required this.text, this.style, this.textAlign = .center});
 
   @override
   Widget build(BuildContext context) {
-    return GtText(
-      text.upper,
-      textAlign: TextAlign.center,
-      style: style,
-      maxLines: 1,
-    );
+    return GtText(text.upper, textAlign: textAlign, style: style, maxLines: 1);
   }
 }

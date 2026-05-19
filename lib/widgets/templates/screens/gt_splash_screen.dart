@@ -49,7 +49,7 @@ class _GtSplashScreenState extends State<GtSplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final center = logo ?? AppImageData(imageData: GtVectors.whiteLogo);
+    final center = logo ?? AppImageData.asset(GtVectors.whiteLogo);
     final bgColor = color ?? context.palette.primary.base;
     ImageProvider? bgImage = backgroundImage;
     DecorationImage? decorationImage;

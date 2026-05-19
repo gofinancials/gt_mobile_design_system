@@ -20,6 +20,9 @@ class GtDuotoneScreen extends GtStatelessWidget {
   /// The visual variant determining the color scheme of the top gradient.
   final GtCardVariant variant;
 
+  /// Variant of the bottom button
+  final GtButtonVariant buttonVariant;
+
   /// The callback triggered when the main action button is pressed.
   final OnPressed onTap;
 
@@ -29,6 +32,12 @@ class GtDuotoneScreen extends GtStatelessWidget {
   /// An optional widget displayed below the description, typically used for extra information.
   final Widget? footer;
 
+  /// The maximum number of lines for the title text.
+  final int titleMaxLines;
+
+  /// The overflow for the title text.
+  final TextOverflow? titleOverflow;
+
   /// Creates a [GtDuotoneScreen].
   const GtDuotoneScreen({
     super.key,
@@ -37,7 +46,10 @@ class GtDuotoneScreen extends GtStatelessWidget {
     required this.illustration,
     required this.buttonText,
     this.variant = .featured,
+    this.buttonVariant = .primary,
     required this.onTap,
+    this.titleMaxLines = 1,
+    this.titleOverflow,
     this.footer,
   });
 
@@ -52,6 +64,13 @@ class GtDuotoneScreen extends GtStatelessWidget {
       appBar: GtActionAppBar(
         implyLeading: false,
         trailing: GtOptionalWidgetPair(tail: GtCancelButton(color: bgColor)),
+      ),
+      bottomNavigationBar: GtButtonBottomNavBar(
+        button: GtRaisedButton(
+          onPressed: onTap,
+          text: buttonText,
+          variant: buttonVariant,
+        ),
       ),
       key: ValueKey('gt-duotone-screen-$title-$buttonText'),
       body: Column(
@@ -70,8 +89,8 @@ class GtDuotoneScreen extends GtStatelessWidget {
           ),
           Flexible(
             flex: 4,
-            child: Padding(
-              padding: context.insets.fromLTRBDp(16.px, 40.px, 16.px, 10.px),
+            child: SingleChildScrollView(
+              padding: context.insets.fromLTRBDp(36.px, 40.px, 36.px, 10.px),
               child: Column(
                 spacing: context.spacingMd,
                 mainAxisAlignment: .start,
@@ -80,23 +99,18 @@ class GtDuotoneScreen extends GtStatelessWidget {
                   GtText(
                     title.upper,
                     style: context.textStyles.h4(),
-                    overflow: .ellipsis,
-                    maxLines: 1,
+                    overflow: titleOverflow,
+                    maxLines: titleMaxLines,
                     textAlign: .center,
                   ),
                   GtText(
                     description,
-                    style: context.textStyles.bodyM(
+                    style: context.textStyles.subHeadS(
                       color: context.palette.text.darkerSub,
                     ),
                     textAlign: .center,
                   ),
                   if (footer != null) ...[const GtGap.yBase(), ?footer],
-                  const Spacer(),
-                  SafeArea(
-                    top: false,
-                    child: GtRaisedButton(onPressed: onTap, text: buttonText),
-                  ),
                 ],
               ),
             ),

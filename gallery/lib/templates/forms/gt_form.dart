@@ -89,8 +89,8 @@ Widget buildGtVirtualKeypadFormAvatarUsecase(BuildContext context) {
     label: "Avatar",
     options: [
       ("None", null),
-      ("Avatar 1", AppImageData(imageData: GtNetworkImages.sampleAvatar1)),
-      ("Avatar 2", AppImageData(imageData: GtNetworkImages.sampleAvatar2)),
+      ("Avatar 1", AppImageData.network(GtNetworkImages.sampleAvatar1)),
+      ("Avatar 2", AppImageData.network(GtNetworkImages.sampleAvatar2)),
     ],
     labelBuilder: (value) => value.$1,
   );

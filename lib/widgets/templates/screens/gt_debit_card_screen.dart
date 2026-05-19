@@ -56,8 +56,7 @@ class GtDebitCardScreen extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final bgColor = backgroundColor ?? context.palette.primary.base;
     final computedTextColor = textColor ?? context.palette.staticColors.white;
-    final computedImage =
-        image ?? AppImageData(imageData: GtVectors.sterlingCard);
+    final computedImage = image ?? AppImageData.asset(GtVectors.sterlingCard);
 
     return Scaffold(
       backgroundColor: bgColor,

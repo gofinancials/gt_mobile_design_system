@@ -20,9 +20,9 @@ Widget buildGtDuotoneScreenUsecase(BuildContext context) {
     initialValue: "Why saving matters and how to build good habits.",
   );
   final illustrations = [
-    AppImageData(imageData: GtVectorIllustrations.grow),
-    AppImageData(imageData: GtVectorIllustrations.security),
-    AppImageData(imageData: GtVectorIllustrations.vault),
+    AppImageData.asset(GtVectorIllustrations.grow),
+    AppImageData.asset(GtVectorIllustrations.security),
+    AppImageData.asset(GtVectorIllustrations.vault),
   ];
   final illustration = context.knobs.object.dropdown(
     label: "Illustration",
@@ -45,7 +45,7 @@ Widget buildGtDuotoneScreenUsecase(BuildContext context) {
     initialValue: "get started",
   );
   final footer = context.knobs.object.dropdown<(String, Widget?)>(
-    label: "Fotter",
+    label: "Footer",
     options: [
       ("None", null),
       (
@@ -69,5 +69,15 @@ Widget buildGtDuotoneScreenUsecase(BuildContext context) {
     onTap: showToast,
     variant: variant,
     footer: footer.$2,
+    titleMaxLines: context.knobs.object.dropdown(
+      label: "Title Max Lines",
+      options: [1, 2, 3],
+      initialOption: 2,
+    ),
+    titleOverflow: context.knobs.object.dropdown(
+      label: "Title Overflow",
+      options: TextOverflow.values,
+      initialOption: TextOverflow.ellipsis,
+    ),
   );
 }

@@ -45,47 +45,37 @@ class GtInkWell extends InkWell {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        triggerHaptic(hapticFeedbackType);
         super.onTap?.call();
+        triggerHaptic(hapticFeedbackType);
       },
       onDoubleTap: () {
-        triggerHaptic(hapticFeedbackType);
         super.onDoubleTap?.call();
       },
       onLongPress: () {
-        triggerHaptic(hapticFeedbackType);
         super.onLongPress?.call();
       },
       onLongPressUp: () {
-        triggerHaptic(hapticFeedbackType);
         super.onLongPressUp?.call();
       },
       onTapDown: (details) {
-        triggerHaptic(hapticFeedbackType);
         super.onTapDown?.call(details);
       },
       onTapUp: (details) {
-        triggerHaptic(hapticFeedbackType);
         super.onTapUp?.call(details);
       },
       onTapCancel: () {
-        triggerHaptic(hapticFeedbackType);
         super.onTapCancel?.call();
       },
       onSecondaryTap: () {
-        triggerHaptic(hapticFeedbackType);
         super.onSecondaryTap?.call();
       },
       onSecondaryTapUp: (details) {
-        triggerHaptic(hapticFeedbackType);
         super.onSecondaryTapUp?.call(details);
       },
       onSecondaryTapDown: (details) {
-        triggerHaptic(hapticFeedbackType);
         super.onSecondaryTapDown?.call(details);
       },
       onSecondaryTapCancel: () {
-        triggerHaptic(hapticFeedbackType);
         super.onSecondaryTapCancel?.call();
       },
       onHighlightChanged: (value) {

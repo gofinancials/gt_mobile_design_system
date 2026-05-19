@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -33,6 +35,9 @@ class GtImage extends GtStatelessWidget {
   /// dimensions or parent constraints.
   final bool useDefaultSize;
 
+  /// An optional color filter to apply to the image.
+  final Color? color;
+
   /// Creates a new [GtImage].
   ///
   /// The [alignment] defaults to [Alignment.center] and [useDefaultSize] defaults
@@ -45,6 +50,7 @@ class GtImage extends GtStatelessWidget {
     this.fit,
     this.width,
     this.height,
+    this.color,
     this.useDefaultSize = true,
   });
 
@@ -62,6 +68,7 @@ class GtImage extends GtStatelessWidget {
               width: width ?? defaultSize,
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
+              color: color,
             );
           }
           if (image?.isString ?? false) {
@@ -71,6 +78,25 @@ class GtImage extends GtStatelessWidget {
               width: width ?? defaultSize,
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
+              color: color,
+            );
+          }
+          if (image?.isBytes ?? false) {
+            return GtMemoryImage(
+              image!.bytesData ?? Uint8List(0),
+              alignment: alignment,
+              width: width ?? defaultSize,
+              height: height ?? defaultSize,
+              fit: fit ?? BoxFit.cover,
+              color: color,
+            );
+          }
+          if (image?.isIcon ?? false) {
+            return GtIcon.withColor(
+              image?.iconData ?? GtIcons.anchor,
+              alignment: alignment,
+              size: width ?? context.dp(24.px),
+              color: color ?? context.palette.icon.strong,
             );
           }
           if (image?.isFile ?? false) {
@@ -80,6 +106,7 @@ class GtImage extends GtStatelessWidget {
               width: width ?? defaultSize,
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
+              color: color,
             );
           }
           return Align(

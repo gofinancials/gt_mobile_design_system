@@ -95,7 +95,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
 
   /// The default avatar used if none is provided to [GtVirtualKeypadForm.withAvatar].
   static AppImageData get _defaultAvatar =>
-      AppImageData(imageData: GtAssetImages.avatar);
+      AppImageData.asset(GtAssetImages.avatar);
 
   @override
   State<GtVirtualKeypadForm> createState() => _GtVirtualKeypadFormState();

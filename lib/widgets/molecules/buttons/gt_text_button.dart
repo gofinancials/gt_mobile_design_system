@@ -28,6 +28,12 @@ class GtTextButton extends GtButton {
   /// Custom padding to apply inside the button, overriding the default size-based padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// Optional text style to override the default button text style.
+  final TextStyle? style;
+
+  /// Optional text alignment to override the default button text alignment.
+  final TextAlign? textAlign;
+
   /// Creates a [GtTextButton].
   const GtTextButton({
     this.text,
@@ -39,10 +45,12 @@ class GtTextButton extends GtButton {
     this.borderColor,
     super.isDisabled = false,
     super.isLoading = false,
+    this.textAlign = .center,
     this.contentPadding,
     this.leading,
     this.trailing,
     super.alignment,
+    this.style,
     super.key,
   });
 
@@ -86,6 +94,7 @@ class GtTextButton extends GtButton {
     final palette = context.palette;
     final textColor = _textColor(palette);
     final focusColor = _focusColor(palette);
+    final textStyle = this.style;
     final style = baseStyle(context);
 
     Widget? leadingIcon;
@@ -137,6 +146,7 @@ class GtTextButton extends GtButton {
           trailingIcon: trailingIcon,
           textColor: textColor,
           alignment: alignment,
+          style: textStyle,
         ),
         child2: GtSpinner(color: textColor),
         showFirst: !isLoading,
