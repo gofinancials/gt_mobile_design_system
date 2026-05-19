@@ -293,3 +293,85 @@ class GtStakeHolderStatusListTile extends GtStatelessWidget {
     );
   }
 }
+
+/// A list tile that displays an account type, featuring a trailing icon.
+class GtAccountTypeListTile extends GtStatelessWidget {
+  /// The title of the account type.
+  final String title;
+
+  /// The subtitle of the account type.
+  final String subtitle;
+
+  /// The icon of the account type.
+  final IconData icon;
+
+  /// The callback triggered when the tile is tapped. Provides light haptic feedback.
+  final OnPressed onTap;
+
+  /// Creates a [GtAccountTypeListTile].
+  const GtAccountTypeListTile(
+    this.title, {
+    super.key,
+    required this.icon,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+
+    final leading = Row(
+      crossAxisAlignment: .start,
+      spacing: context.spacing.md,
+      children: [
+        Container(
+          width: context.dp(36.px),
+          height: context.dp(36.px),
+          decoration: BoxDecoration(
+            color: context.palette.bg.white,
+            borderRadius: context.borderRadiusMd,
+          ),
+          child: Center(child: GtIcon(icon, size: context.dp(24.px))),
+        ),
+        Expanded(
+          child: Column(
+            mainAxisSize: .min,
+            spacing: context.spacing.sm,
+            crossAxisAlignment: .start,
+            children: [
+              GtText(
+                title,
+                style: context.textStyles.subHead2M(
+                  color: context.palette.text.strong,
+                ),
+              ),
+              GtText(
+                subtitle,
+                style: context.textStyles.body2Xs(
+                  color: palette.text.darkerSub,
+                  heightPx: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    return GtInkWell(
+      borderRadius: .zero,
+      onTap: onTap,
+      child: Padding(
+        padding: context.insets.symmetricDp(vertical: 8.px),
+        child: Row(
+          spacing: context.spacingBase,
+          children: [
+            Expanded(child: leading),
+            GtIcon(GtIcons.chevronRight, size: 16, variant: .disabled),
+          ],
+        ),
+      ),
+    );
+  }
+}
