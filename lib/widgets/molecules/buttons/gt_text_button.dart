@@ -32,7 +32,7 @@ class GtTextButton extends GtButton {
   final TextStyle? style;
 
   /// Optional text alignment to override the default button text alignment.
-  final TextAlign? textAlign;
+  final TextAlign textAlign;
 
   /// Creates a [GtTextButton].
   const GtTextButton({
@@ -147,6 +147,7 @@ class GtTextButton extends GtButton {
           textColor: textColor,
           alignment: alignment,
           style: textStyle,
+          textAlign: textAlign,
         ),
         child2: GtSpinner(color: textColor),
         showFirst: !isLoading,
