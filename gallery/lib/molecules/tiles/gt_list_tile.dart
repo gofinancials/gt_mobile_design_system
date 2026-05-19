@@ -584,6 +584,28 @@ Widget gtListTileAllUseCase(BuildContext context) {
         ],
       ),
     ),
+    const GtGap.yXl(),
+    GtCard(
+      child: Column(
+        spacing: context.spacingXl,
+        children: [
+          GtAccountTypeListTile(
+            "Open an account",
+            subtitle:
+                "I'm new to Sterling Bank and want to open a business account from scratch",
+            icon: GtIcons.users,
+            onTap: () {},
+          ),
+          GtAccountTypeListTile(
+            "Upgrade Banca account",
+            subtitle:
+                "I have a Banca business account and want to move it across to Sterling Pro",
+            icon: GtIcons.gemSparkle,
+            onTap: () {},
+          ),
+        ],
+      ),
+    ),
 
     // --- 4. SELECTION & MENUS ---
     const GalleryPageSectionHeader(
