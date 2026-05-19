@@ -24,6 +24,9 @@ class GtFileImage extends GtStatelessWidget {
   /// How to align the image within its bounds. Defaults to [Alignment.center].
   final Alignment alignment;
 
+  /// An optional color filter to apply to the image.
+  final Color? color;
+
   /// Creates a new [GtFileImage].
   const GtFileImage(
     this.imageFile, {
@@ -32,6 +35,7 @@ class GtFileImage extends GtStatelessWidget {
     this.fit,
     this.width,
     this.height,
+    this.color,
   });
 
   @override
@@ -51,6 +55,7 @@ class GtFileImage extends GtStatelessWidget {
       alignment: alignment,
       width: width,
       height: height,
+      color: color,
     );
   }
 }

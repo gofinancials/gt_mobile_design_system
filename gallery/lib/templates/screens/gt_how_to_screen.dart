@@ -15,11 +15,11 @@ Widget buildGtHowToScreenUsecase(BuildContext context) {
     ),
     instructions: [
       GtHowToTile(
-        leading: AppImageData(imageData: GtVectors.tapLeft),
+        leading: AppImageData.asset(GtVectors.tapLeft),
         instruction: "Tap left to go backward",
       ),
       GtHowToTile(
-        leading: AppImageData(imageData: GtVectors.tapRight),
+        leading: AppImageData.asset(GtVectors.tapRight),
         instruction: "Tap right to go forward",
       ),
     ],

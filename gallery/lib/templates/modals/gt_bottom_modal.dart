@@ -95,7 +95,7 @@ class _BottomModalPreviewState extends State<_BottomModalPreview>
                   context,
                   title: "NOT FOUND",
                   description: "The system couldn’t find what you asked for",
-                  icon: AppImageData(imageData: GtVectors.caution),
+                  icon: AppImageData.asset(GtVectors.caution),
                 );
               },
             ),

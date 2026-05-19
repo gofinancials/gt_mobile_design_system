@@ -30,21 +30,21 @@ Widget buildGtAvatarUsecase(BuildContext context) {
           ("Initials", null, false, null, "JD"),
           (
             "Simple Image",
-            AppImageData(imageData: GtNetworkImages.sampleAvatar1),
+            AppImageData.network(GtNetworkImages.sampleAvatar1),
             false,
             null,
             null,
           ),
           (
             "Simple Asset Image",
-            AppImageData(imageData: GtAssetImages.avatar),
+            AppImageData.asset(GtAssetImages.avatar),
             false,
             null,
             null,
           ),
           (
             "Avatar with border and tag",
-            AppImageData(imageData: GtNetworkImages.sampleAvatar2),
+            AppImageData.network(GtNetworkImages.sampleAvatar2),
             true,
             GtSvg(GtVectors.logo),
             null,
@@ -98,30 +98,26 @@ Widget buildGtSquareAvatarUsecase(BuildContext context) {
       ("None", null),
       (
         "Sample 1",
-        AppImageData(
-          imageData:
-              "https://images.unsplash.com/photo-1728577740843-5f29c7586afe?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        AppImageData.network(
+          "https://images.unsplash.com/photo-1728577740843-5f29c7586afe?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         ),
       ),
       (
         "Sample 2",
-        AppImageData(
-          imageData:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        AppImageData.network(
+          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         ),
       ),
       (
         "Sample 3",
-        AppImageData(
-          imageData:
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=928&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        AppImageData.network(
+          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=928&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         ),
       ),
       (
         "Sample 4",
-        AppImageData(
-          imageData:
-              "https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        AppImageData.network(
+          "https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         ),
       ),
     ],

@@ -7,7 +7,7 @@ final controller = GtTransferCategoryController(null);
 final controller2 = ValueNotifier<AppImageData?>(null);
 final threeDAvatars = [
   for (final image in GtNetworkImages.threeDAvatars)
-    AppImageData(imageData: image),
+    AppImageData.network(image.value),
 ];
 
 @widgetbook.UseCase(

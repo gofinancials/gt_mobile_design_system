@@ -20,9 +20,9 @@ Widget buildGtDebitCardScreenUsecase(BuildContext context) {
     label: 'Illustration',
     options: [
       // ('None', null),
-      ('Card', AppImageData(imageData: GtNetworkImages.debitCard)),
+      ('Card', AppImageData.network(GtNetworkImages.debitCard)),
     ],
-    initialOption: ('Card', AppImageData(imageData: GtNetworkImages.debitCard)),
+    initialOption: ('Card', AppImageData.network(GtNetworkImages.debitCard)),
     labelBuilder: (value) => value.$1,
   );
   final buttonText = context.knobs.string(

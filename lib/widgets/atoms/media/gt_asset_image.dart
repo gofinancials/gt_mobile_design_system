@@ -22,6 +22,9 @@ class GtAssetImage extends GtStatelessWidget {
   /// How to align the image within its bounds. Defaults to [Alignment.center].
   final Alignment alignment;
 
+  /// An optional color filter to apply to the image.
+  final Color? color;
+
   /// Creates a new [GtAssetImage].
   const GtAssetImage(
     this.imageUrl, {
@@ -30,6 +33,7 @@ class GtAssetImage extends GtStatelessWidget {
     this.fit,
     this.width,
     this.height,
+    this.color,
   });
 
   @override
@@ -41,6 +45,7 @@ class GtAssetImage extends GtStatelessWidget {
         alignment: alignment,
         width: width,
         height: height,
+        color: color,
       );
     }
     return Image.asset(
@@ -49,6 +54,7 @@ class GtAssetImage extends GtStatelessWidget {
       alignment: alignment,
       width: width,
       height: height,
+      color: color,
     );
   }
 }

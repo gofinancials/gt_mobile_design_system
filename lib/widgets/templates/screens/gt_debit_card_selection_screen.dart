@@ -22,8 +22,8 @@ extension _GtDebitCardVariantDefaults on GtDebitCardVariant {
   };
 
   AppImageData get image => switch (this) {
-    .physical => AppImageData(imageData: GtNetworkImages.physicalCard),
-    .virtual => AppImageData(imageData: GtNetworkImages.virtualCard),
+    .physical => AppImageData.network(GtNetworkImages.physicalCard),
+    .virtual => AppImageData.network(GtNetworkImages.virtualCard),
   };
 }
 

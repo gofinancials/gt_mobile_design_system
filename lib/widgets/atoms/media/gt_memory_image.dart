@@ -22,6 +22,9 @@ class GtMemoryImage extends GtStatelessWidget {
   /// How to align the image within its bounds. Defaults to [Alignment.center].
   final Alignment alignment;
 
+  /// An optional color filter to apply to the image.
+  final Color? color;
+
   /// Creates a new [GtMemoryImage] from the provided byte array.
   const GtMemoryImage(
     this.bytes, {
@@ -30,6 +33,7 @@ class GtMemoryImage extends GtStatelessWidget {
     this.fit,
     this.width,
     this.height,
+    this.color,
   });
 
   @override
@@ -40,6 +44,7 @@ class GtMemoryImage extends GtStatelessWidget {
       alignment: alignment,
       width: width,
       height: height,
+      color: color,
     );
   }
 }

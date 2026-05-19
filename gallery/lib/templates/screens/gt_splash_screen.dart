@@ -25,12 +25,9 @@ Widget buildGtSplashScreenUsecase(BuildContext context) {
           initialOption: ("None", null),
           options: [
             ("None", null),
-            ("Logo", AppImageData(imageData: GtVectors.logo)),
-            (
-              "OneBankProLogo",
-              AppImageData(imageData: GtVectors.oneBankProLogo),
-            ),
-            ("WhiteLogo", AppImageData(imageData: GtVectors.whiteLogo)),
+            ("Logo", AppImageData.asset(GtVectors.logo)),
+            ("OneBankProLogo", AppImageData.asset(GtVectors.oneBankProLogo)),
+            ("WhiteLogo", AppImageData.asset(GtVectors.whiteLogo)),
           ],
           labelBuilder: (value) => value.$1,
         )
@@ -60,7 +57,7 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
             (
               "On Pro",
               GtImage(
-                image: AppImageData(imageData: GtVectors.oneBankProWordMark),
+                image: AppImageData.asset(GtVectors.oneBankProWordMark),
                 height: 36,
               ),
             ),

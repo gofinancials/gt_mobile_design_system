@@ -237,11 +237,11 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               noteController: _inputCtrl9,
               sender: "FLEX",
               recipient: "Alex Lobaloba",
-              senderImage: AppImageData(imageData: GtNetworkImages.savings),
+              senderImage: AppImageData.network(GtNetworkImages.savings),
               recipientAvatar: GtAvatar(
                 initials: "AL",
                 size: 40,
-                avatar: AppImageData(imageData: GtNetworkImages.sampleAvatar1),
+                avatar: AppImageData.network(GtNetworkImages.sampleAvatar1),
                 showBorder: true,
                 tag: GtSvg(GtVectors.logo),
               ),
