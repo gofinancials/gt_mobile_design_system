@@ -18,10 +18,7 @@ Widget buildGtDebitCardScreenUsecase(BuildContext context) {
   );
   final illustration = context.knobs.object.dropdown<(String, AppImageData?)>(
     label: 'Illustration',
-    options: [
-      // ('None', null),
-      ('Card', AppImageData.network(GtNetworkImages.debitCard)),
-    ],
+    options: [('Card', AppImageData.network(GtNetworkImages.debitCard))],
     initialOption: ('Card', AppImageData.network(GtNetworkImages.debitCard)),
     labelBuilder: (value) => value.$1,
   );

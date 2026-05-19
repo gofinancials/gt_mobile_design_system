@@ -116,7 +116,7 @@ class GtHeader extends GtStatelessWidget {
     return GtPageHeader(
       title: title,
       subtitle: subtitle,
-      textAlign: TextAlign.start,
+      textAlign: .start,
       titleColor: context.palette.text.strong,
       subTitleColor: context.palette.text.strong,
     );
