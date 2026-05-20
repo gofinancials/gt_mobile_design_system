@@ -147,20 +147,33 @@ class GtInputDots extends StatelessWidget {
   /// The color used for both the filled active dots and the borders of the inactive dots.
   final Color? color;
 
+  /// The color of the inactive dots
+  final Color? inactiveColor;
+
+  /// Whether the dots should be filled with color when inactive, or just outlined.
+  final bool filled;
+
   /// Creates a new [GtInputDot] indicator.
   const GtInputDots({
     this.maxLength = 4,
     required this.inputValue,
+    this.inactiveColor,
+    this.filled = false,
     this.color,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    final activeColor = color ?? context.palette.text.strong;
+    final fallbackInactiveColor = filled ? context.palette.bg.sub : activeColor;
+    final computedInactiveColor = inactiveColor ?? fallbackInactiveColor;
+
     List<Widget> children = List.generate(maxLength, (index) {
       final isActive = index < inputValue.length;
+      final color = isActive ? activeColor : computedInactiveColor;
 
-      return _InputDot(isActive, color: color);
+      return _InputDot(isActive, color: color, filled: filled);
     });
     final spacing = context.dp(context.spacing.base.px);
 
@@ -177,18 +190,16 @@ class GtInputDots extends StatelessWidget {
 }
 
 class _InputDot extends StatelessWidget {
-  final Color? color;
+  final Color color;
   final bool active;
+  final bool filled;
 
-  const _InputDot(this.active, {this.color});
+  const _InputDot(this.active, {required this.color, this.filled = false});
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
-    final computedColor = color ?? palette.text.strong;
-    final borderColor = computedColor;
-    final contentColor = active ? computedColor : GtColors.transparent.value;
-    final size = 24 * (active ? 1.2 : 1);
+    final contentColor = active ? color : Colors.transparent;
+    final size = 24 * (active ? 1.1 : 1);
 
     return AnimatedContainer(
       duration: 300.milliseconds,
@@ -196,9 +207,9 @@ class _InputDot extends StatelessWidget {
       height: context.dp(size.px),
       width: context.dp(size.px),
       decoration: BoxDecoration(
-        color: contentColor,
+        color: filled ? color : contentColor,
         shape: BoxShape.circle,
-        border: Border.all(color: borderColor, width: 4),
+        border: Border.all(color: color, width: 4),
       ),
     );
   }

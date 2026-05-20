@@ -47,6 +47,15 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
   /// An optional trailing action in the app bar (e.g., action buttons).
   final Widget? action;
 
+  /// Whether the dots should be filled with color when inactive.
+  final bool fillInactiveDots;
+
+  /// The color used for both the filled active dots and the borders of the inactive dots.
+  final Color? color;
+
+  /// The color of the inactive dots
+  final Color? inactiveColor;
+
   /// Creates a standard virtual keypad form.
   ///
   /// Use this constructor when you need a simple title and subtitle layout
@@ -65,8 +74,12 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.onCompleted,
     this.footer,
     this.action,
+    this.fillInactiveDots = false,
+    this.color,
+    this.inactiveColor,
+    OnPressed? onBioAuth,
   }) : _subtitle = subtitle,
-       _onBioAuth = null,
+       _onBioAuth = onBioAuth,
        _avatar = null;
 
   /// Creates a virtual keypad form customized for user authentication.
@@ -86,8 +99,11 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     required this.formKey,
     this.onChanged,
     this.onCompleted,
+    this.fillInactiveDots = false,
     this.footer,
     this.action,
+    this.color,
+    this.inactiveColor,
   }) : _subtitle = null,
        _onBioAuth = onBioAuth,
        title = name,
@@ -159,6 +175,9 @@ class _GtVirtualKeypadFormState extends State<GtVirtualKeypadForm> {
                 errorText: widget.errorText,
                 helperText: widget.helperText,
                 validator: widget.validator,
+                filled: widget.fillInactiveDots,
+                color: widget.color,
+                inactiveColor: widget.inactiveColor,
               ),
               Expanded(
                 child: GtKeyPadGrid(

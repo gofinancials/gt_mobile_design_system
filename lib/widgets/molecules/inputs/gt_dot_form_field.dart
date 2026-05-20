@@ -33,6 +33,15 @@ class GtDotFormField extends GtStatefulWidget {
   /// The total number of dots (characters) expected in this field.
   final int length;
 
+  /// The color used for both the filled active dots and the borders of the inactive dots.
+  final Color? color;
+
+  /// The color of the inactive dots
+  final Color? inactiveColor;
+
+  /// Whether the dots should be filled with color when inactive, or just outlined.
+  final bool filled;
+
   /// Creates a [GtDotFormField].
   const GtDotFormField({
     super.key,
@@ -42,6 +51,9 @@ class GtDotFormField extends GtStatefulWidget {
     this.helperText,
     this.errorText,
     this.focusNode,
+    this.filled = false,
+    this.color,
+    this.inactiveColor,
     required this.length,
   });
 
@@ -85,7 +97,9 @@ class _GtDotFormFieldState extends State<GtDotFormField> {
                     child: GtInputDots(
                       inputValue: text,
                       maxLength: widget.length,
-                      color: errorText.hasValue ? textColor : null,
+                      color: hasError ? textColor : widget.color,
+                      inactiveColor: widget.inactiveColor,
+                      filled: widget.filled,
                     ),
                   ),
                   if (helperText.hasValue)
