@@ -148,6 +148,12 @@ class GtPill extends StatelessWidget {
   /// The custom text style for the pill's text.
   final TextStyle? textStyle;
 
+  /// The style of the border, such as solid, or none.
+  final BorderStyle borderStyle;
+
+  /// Optional constraints to apply to the pill's container, such as fixed width or height.
+  final BoxConstraints? constraints;
+
   /// Creates a [GtPill].
   const GtPill({
     super.key,
@@ -163,6 +169,8 @@ class GtPill extends StatelessWidget {
     this.showShadow = false,
     this.borderRadius,
     this.textStyle,
+    this.borderStyle = .solid,
+    this.constraints,
   });
 
   @override
@@ -192,16 +200,20 @@ class GtPill extends StatelessWidget {
       maxLines: 1,
     );
 
-    child = AnimatedContainer(
-      duration: 500.milliseconds,
-      padding: padding ?? context.insets.allDp(4.px),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: borderRadius ?? context.borderRadiusSm,
-        border: Border.all(color: borderColor ?? bgColor),
-        boxShadow: shadow,
+    child = UnconstrainedBox(
+      child: AnimatedContainer(
+        alignment: .center,
+        duration: 500.milliseconds,
+        constraints: constraints,
+        padding: padding ?? context.insets.allDp(4.px),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: borderRadius ?? context.borderRadiusSm,
+          border: Border.all(color: borderColor ?? bgColor, style: borderStyle),
+          boxShadow: shadow,
+        ),
+        child: child,
       ),
-      child: child,
     );
 
     return Align(alignment: alignment ?? .center, child: child);

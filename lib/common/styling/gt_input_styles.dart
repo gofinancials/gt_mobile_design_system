@@ -165,7 +165,7 @@ class GtInputStyles {
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
       ),
-      padding: context.insets.symmetricDp(horizontal: 16.px),
+      padding: context.insets.symmetricDp(horizontal: 10.px),
     );
   }
 
@@ -295,7 +295,7 @@ class GtInputStyles {
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weaker,
       ),
-      padding: context.insets.symmetricDp(horizontal: 16.px),
+      padding: context.insets.symmetricDp(horizontal: 8.px),
     );
   }
 
@@ -340,7 +340,7 @@ class GtInputStyles {
         color: context.palette.bg.weaker,
         border: Border.all(color: context.palette.stroke.soft, width: 2),
       ),
-      padding: context.insets.symmetricDp(horizontal: 16.px),
+      padding: context.insets.symmetricDp(horizontal: 8.px),
     );
   }
 
