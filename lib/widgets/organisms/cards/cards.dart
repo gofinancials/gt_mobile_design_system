@@ -5,6 +5,7 @@ export 'gt_alert_card.dart';
 export 'gt_banner_card.dart';
 export 'gt_bill_card.dart';
 export 'gt_card.dart';
+export 'gt_card_list_tile.dart';
 export 'gt_debit_card.dart';
 export 'gt_help_card.dart';
 export 'gt_inbox_card.dart';
