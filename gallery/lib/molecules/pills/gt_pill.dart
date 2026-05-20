@@ -158,7 +158,7 @@ Widget buildGtPillUseCase(BuildContext context) {
                     controller: activeSelection,
                     tabViews: {
                       for (final selection in selections)
-                        selection: Padding(
+                        selection.value: Padding(
                           padding: context.insets.symmetricDp(vertical: 20.px),
                           child: GtText(
                             selection.label.upper,
