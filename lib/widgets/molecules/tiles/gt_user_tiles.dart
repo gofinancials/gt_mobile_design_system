@@ -86,6 +86,9 @@ class GtContactListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnPressed onTap;
 
+  /// An optional spacing between the title amd subtitle.
+  final double? spacing;
+
   /// Creates a [GtContactListTile].
   const GtContactListTile(
     this.title, {
@@ -93,12 +96,13 @@ class GtContactListTile extends GtStatelessWidget {
     required this.subtitle,
     required this.leading,
     required this.onTap,
+    this.spacing,
   });
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final subStyle = context.textStyles.bodyXs(color: palette.text.sub);
+    final subStyle = context.textStyles.subHead2xs(color: palette.text.sub);
 
     return GtInkWell(
       borderRadius: .zero,
@@ -114,7 +118,8 @@ class GtContactListTile extends GtStatelessWidget {
             ),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: .start,
+                spacing: spacing ?? 0,
                 children: [
                   GtText(title, style: context.textStyles.subHeadS()),
                   GtText(subtitle, style: subStyle),
@@ -123,7 +128,7 @@ class GtContactListTile extends GtStatelessWidget {
             ),
             GtIcon(
               GtIcons.chevronRight,
-              size: 16,
+              size: 14,
               alignment: Alignment.centerRight,
               variant: .soft,
             ),
@@ -213,7 +218,7 @@ class GtStakeHolderListTile extends GtStatelessWidget {
           spacing: context.spacingBase,
           children: [
             Expanded(child: leading),
-            GtIcon(GtIcons.chevronRight, size: 16, variant: .soft),
+            GtIcon(GtIcons.chevronRight, size: 14, variant: .soft),
           ],
         ),
       ),
@@ -368,7 +373,7 @@ class GtAccountTypeListTile extends GtStatelessWidget {
           spacing: context.spacingBase,
           children: [
             Expanded(child: leading),
-            GtIcon(GtIcons.chevronRight, size: 16, variant: .disabled),
+            GtIcon(GtIcons.chevronRight, size: 14, variant: .disabled),
           ],
         ),
       ),

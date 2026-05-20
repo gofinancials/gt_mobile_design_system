@@ -33,6 +33,9 @@ class GtSquareAvatar extends GtStatelessWidget {
   /// The border radius of the square avatar box. Defaults to [context.borderRadius4Xl].
   final BorderRadius? borderRadius;
 
+  /// Whether to draw a white border around the outer edge of the avatar.
+  final bool showBorder;
+
   /// Creates a [GtSquareAvatar].
   const GtSquareAvatar({
     this.avatar,
@@ -40,6 +43,7 @@ class GtSquareAvatar extends GtStatelessWidget {
     this.alignment = Alignment.center,
     this.fit,
     this.borderRadius,
+    this.showBorder = false,
     required this.onEdit,
     this.isUserAvatar = false,
     this.size,
@@ -52,6 +56,11 @@ class GtSquareAvatar extends GtStatelessWidget {
 
     ImageProvider? image;
     DecorationImage? decoration;
+
+    Border? border;
+    if (showBorder) {
+      border = Border.all(color: context.palette.stroke.white, width: 1.5);
+    }
 
     if (!hasAvatar) {
       image = CachedNetworkImageProvider(GtNetworkImages.avatar3d2);
@@ -109,15 +118,15 @@ class GtSquareAvatar extends GtStatelessWidget {
         },
         child: GtSquareConstrainedBox(
           computedSize,
-          child: ClipRRect(
-            borderRadius: borderRadius ?? context.borderRadius4Xl,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: context.gradients.avatarGradient,
-                image: decoration,
-              ),
-              child: editPen,
+          child: Container(
+            clipBehavior: .hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: borderRadius ?? context.borderRadius4Xl,
+              gradient: context.gradients.avatarGradient,
+              image: decoration,
+              border: border,
             ),
+            child: editPen,
           ),
         ),
       ),

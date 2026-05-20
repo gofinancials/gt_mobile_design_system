@@ -128,6 +128,10 @@ Widget buildGtSquareAvatarUsecase(BuildContext context) {
     appBar: GtTitleAppBar(title: "GtSquareAvatar Widget"),
     body: Center(
       child: GtSquareAvatar(
+        showBorder: context.knobs.boolean(
+          label: "Show Border",
+          initialValue: false,
+        ),
         avatar: images.$2,
         fit: fit,
         alignment: alignment.$2,
