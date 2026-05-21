@@ -842,18 +842,7 @@ Widget gtListTileAllUseCase(BuildContext context) {
     const GtGap.yXl(),
     GtCard(
       padding: context.insets.symmetricDp(vertical: 24.px, horizontal: 16.px),
-      child: GtCopyTile(
-        copyLabel,
-        value: copyValue,
-        leading: GtIcons.user,
-        onCopied: (text) {
-          context.showToast(
-            "Copied $text to clipboard",
-            icon: GtIcons.fileContent,
-            type: .verified,
-          );
-        },
-      ),
+      child: GtCopyTile(copyLabel, value: copyValue, leading: GtIcons.user),
     ),
     const GtGap.yXl(),
     GtCard(

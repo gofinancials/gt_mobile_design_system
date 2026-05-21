@@ -349,8 +349,10 @@ class GtIcons {
   static const paymentFilled = GtIconData(0xf134);
   static const product = GtIconData(0xf135);
   static const productFilled = GtIconData(0xf136);
-  static const card = GtIconData(0xf130);
-  static const cardFilled = GtIconData(0xf131);
+  static const card = GtIconData(0xf131);
+  static const cardFilled = GtIconData(0xf154);
+  static const cardEdit = GtIconData(0xf155);
+  static const fileFilled = GtIconData(0xf130);
   static const helpInfo = GtIconData(0xf10e);
 
   static const delete = GtIconData(0xf129);
@@ -444,6 +446,7 @@ class GtIcons {
     (label: 'card', value: card),
     (label: 'cardCheck', value: cardCheck),
     (label: 'cardDark', value: cardDark),
+    (label: 'cardEdit', value: cardEdit),
     (label: 'cardFilled', value: cardFilled),
     (label: 'cardLight', value: cardLight),
     (label: 'cartShopping', value: cartShopping),
@@ -509,6 +512,7 @@ class GtIcons {
     (label: 'feather', value: feather),
     (label: 'file', value: file),
     (label: 'fileContent', value: fileContent),
+    (label: 'fileFilled', value: fileFilled),
     (label: 'files', value: files),
     (label: 'film', value: film),
     (label: 'filter', value: filter),

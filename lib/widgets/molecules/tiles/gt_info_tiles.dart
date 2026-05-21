@@ -112,18 +112,12 @@ class GtCopyTile extends GtStatelessWidget {
   /// The actual text value that will be copied to the clipboard when tapped.
   final String value;
 
-  /// An optional callback executed after the [value] has been successfully copied.
-  ///
-  /// This can be used to show a toast or snackbar notification.
-  final OnChanged<String>? onCopied;
-
   /// Creates a [GtCopyTile] for easy data copying.
   const GtCopyTile(
     this.label, {
     super.key,
     required this.value,
     required this.leading,
-    this.onCopied,
   });
 
   @override
@@ -133,7 +127,9 @@ class GtCopyTile extends GtStatelessWidget {
 
     return GtInkWell(
       borderRadius: .zero,
-      onTap: () => onCopied?.call(value),
+      onTap: () {
+        context.copyTextToClipboard(value);
+      },
       child: Row(
         spacing: context.spacingBase,
         children: [
