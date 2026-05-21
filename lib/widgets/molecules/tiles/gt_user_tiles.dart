@@ -108,7 +108,7 @@ class GtContactListTile extends GtStatelessWidget {
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 12.px),
+        padding: context.insets.symmetricDp(vertical: 8.px),
         child: Row(
           spacing: context.spacingBase,
           children: [

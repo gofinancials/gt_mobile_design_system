@@ -2,6 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// Defines the styling for a [GtTabPill], allowing for custom color
+/// configurations for both active and inactive states.
+class GtTabPillStyle {
+  /// The text color for the pill when it is in an inactive state.
+  final Color? textColor;
+
+  /// The background color for the pill when it is in an inactive state.
+  final Color? bgColor;
+
+  /// The text color for the pill when it is in an active (selected) state.
+  final Color? activeTextColor;
+
+  /// The visual variant of the pill, which determines default color treatments.
+  final GtPillVariant? variant;
+
+  /// The background color for the pill when it is in an active (selected) state.
+  final Color? activeBgColor;
+
+  /// Creates a style configuration for a [GtTabPill].
+  const GtTabPillStyle({
+    this.variant,
+    this.textColor,
+    this.bgColor,
+    this.activeTextColor,
+    this.activeBgColor,
+  });
+}
+
 /// A specialized pill widget intended for tabbed selections.
 ///
 /// Automatically toggles styles between selected and unselected states by comparing
@@ -16,7 +44,7 @@ class GtTabPill<T> extends StatelessWidget {
   /// The primary tab text to display.
   final String text;
 
-  /// The visual variant determining the tab's foundational color structure.
+  /// The visual variant of the pill, which determines default color treatments.
   final GtPillVariant? variant;
 
   /// An optional leading icon to display alongside the text. Rendered at size 16.
@@ -31,6 +59,9 @@ class GtTabPill<T> extends StatelessWidget {
   /// A callback triggered when the user taps to select the tab.
   final OnChanged<T> onSelect;
 
+  /// The style configuration for this tab pill, allowing for custom color overrides.
+  final GtTabPillStyle? style;
+
   /// Creates a [GtTabPill].
   const GtTabPill({
     super.key,
@@ -42,6 +73,7 @@ class GtTabPill<T> extends StatelessWidget {
     this.icon,
     this.trailing,
     this.alignment = .centerLeft,
+    this.style,
   });
 
   /// Creates a specialized selection variant of the tab pill.
@@ -55,21 +87,29 @@ class GtTabPill<T> extends StatelessWidget {
     IconData? icon,
     IconData? trailing,
     Alignment? alignment,
+    GtTabPillStyle? style,
   }) = GtSelectionPill<T>;
+
+  GtPillVariant get effectiveVariant => style?.variant ?? variant ?? .strong;
 
   /// Gets the appropriate text color based on the tab's current selection state.
   Color getTextColor(GtPalette palette) {
-    if (!isSelected) return variant.getTextColor(palette);
-    return switch (variant) {
+    if (!isSelected) {
+      return style?.textColor ?? effectiveVariant.getTextColor(palette);
+    }
+    final activeColor = switch (effectiveVariant) {
       .neutral => palette.text.darkerSub,
       _ => palette.text.white,
     };
+    return style?.activeTextColor ?? activeColor;
   }
 
   /// Gets the appropriate background color based on the tab's current selection state.
   Color getBgColor(GtPalette palette) {
-    if (!isSelected) return variant.getBgColor(palette);
-    return switch (variant) {
+    if (!isSelected) {
+      return style?.bgColor ?? effectiveVariant.getBgColor(palette);
+    }
+    final activeColor = switch (effectiveVariant) {
       .primary => palette.primary.base,
       .neutral => palette.bg.sub,
       .featured => palette.feature.base,
@@ -83,6 +123,7 @@ class GtTabPill<T> extends StatelessWidget {
       .away => palette.away.base,
       _ => palette.bg.strong,
     };
+    return style?.activeBgColor ?? activeColor;
   }
 
   /// Indicates whether this specific tab represents the active selected item.
@@ -112,13 +153,14 @@ class GtTabPill<T> extends StatelessWidget {
       child: GtPill(
         text: text.upper,
         bgColor: bgColor,
-        borderColor: bgColor,
+        constraints: const BoxConstraints(minHeight: 32),
+        borderStyle: .none,
         textStyle: context.textStyles.button2s(color: textColor),
         icon: iconWidget,
         padding: context.insets.symmetricDp(vertical: 8.px, horizontal: 12.px),
         trailing: trailingWidget,
         alignment: alignment,
-        variant: variant ?? .strong,
+        variant: effectiveVariant,
       ),
     );
   }
@@ -140,18 +182,25 @@ class GtSelectionPill<T> extends GtTabPill<T> {
     super.icon,
     super.trailing,
     super.alignment = .centerLeft,
+    super.style,
   });
 
   @override
   Color getTextColor(GtPalette palette) {
-    if (!isSelected) return palette.text.darkerSub;
-    return super.getTextColor(palette);
+    if (!isSelected) {
+      return style?.textColor ?? palette.text.darkerSub;
+    }
+    final activeColor = super.getTextColor(palette);
+    return style?.activeTextColor ?? activeColor;
   }
 
   @override
   Color getBgColor(GtPalette palette) {
-    if (!isSelected) return Colors.transparent;
-    return super.getBgColor(palette);
+    if (!isSelected) {
+      return style?.bgColor ?? Colors.transparent;
+    }
+    final activeColor = super.getBgColor(palette);
+    return style?.activeBgColor ?? activeColor;
   }
 
   @override
@@ -178,14 +227,14 @@ class GtSelectionPill<T> extends GtTabPill<T> {
       child: GtPill(
         text: text.capitalise(),
         bgColor: bgColor,
-        borderColor: bgColor,
+        borderStyle: .none,
         borderRadius: context.borderRadiusMd,
         textStyle: context.textStyles.subHeadS(color: textColor),
         icon: iconWidget,
         padding: context.insets.symmetricDp(vertical: 4.px, horizontal: 12.px),
         trailing: trailingWidget,
         alignment: alignment,
-        variant: variant ?? .strong,
+        variant: effectiveVariant,
       ),
     );
   }
