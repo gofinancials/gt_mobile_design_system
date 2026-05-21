@@ -17,6 +17,7 @@ class GtBottomSheet<T> {
     this.canPop = true,
     this.useRootNavigator = true,
     double maxHeightFraction = .9,
+    this.floating = false,
   }) : _builder = null,
        maxChildSize = maxHeightFraction,
        minChildSize = .3,
@@ -35,6 +36,7 @@ class GtBottomSheet<T> {
     this.initialChildSize = .7,
     this.maxChildSize = .9,
     this.useRootNavigator = true,
+    this.floating = false,
   }) : _isDraggable = true,
        modalWidget = const Offstage(),
        isScrollable = true,
@@ -82,6 +84,9 @@ class GtBottomSheet<T> {
   /// Whether the underlying standard sheet behaves as a scroll-controlled sheet.
   final bool isScrollable;
 
+  /// Whether the sheet should appear floating above the bottom edge with margins, rather than attached to the bottom.
+  final bool floating;
+
   /// The color of the modal barrier that darkens the background behind the sheet.
   Color get barrierColor => context.palette.faded.darker.setOpacity(.45);
 
@@ -92,7 +97,6 @@ class GtBottomSheet<T> {
   Future<T?> present(BuildContext context) async {
     GtOverlay.closeCurrentOverlays();
     GtRouter.openedModal();
-
     if (!context.isMobile) return _presentDesktopSheet(context);
     return _presentMobileSheet(context);
   }
@@ -112,6 +116,7 @@ class GtBottomSheet<T> {
             minChildSize: minChildSize,
             builder: (context, scrollController) {
               return _GtSheetContainer(
+                floating: floating,
                 constraints: constraints,
                 controller: scrollController,
                 child: _builder!(scrollController),
@@ -122,6 +127,7 @@ class GtBottomSheet<T> {
         return GtPopScope(
           canPop: canPop,
           child: _GtSheetContainer(
+            floating: floating,
             constraints: constraints.copyWith(
               maxHeight: context.height * maxChildSize,
               minHeight: context.height * minChildSize,
@@ -132,7 +138,7 @@ class GtBottomSheet<T> {
       },
     );
 
-    if (!_isDraggable && context.isIos) {
+    if ((!_isDraggable && !floating) && context.isIos) {
       return showCupertinoSheet<T>(
         context: context,
         builder: (context) => child,
@@ -179,6 +185,7 @@ class GtBottomSheet<T> {
             expand: false,
             builder: (context, scrollController) {
               return _GtSheetContainer(
+                floating: floating,
                 constraints: constraints,
                 alignment: .center,
                 borderRadius: context.borderRadius4Xl,
@@ -191,6 +198,7 @@ class GtBottomSheet<T> {
         return GtPopScope(
           canPop: canPop,
           child: _GtSheetContainer(
+            floating: floating,
             constraints: constraints,
             alignment: .center,
             borderRadius: context.borderRadius4Xl,
@@ -209,20 +217,35 @@ class _GtSheetContainer extends GtStatelessWidget {
   final AlignmentGeometry alignment;
   final Widget child;
   final ScrollController? controller;
+  final bool floating;
 
   const _GtSheetContainer({
     this.borderRadius,
     this.constraints,
     this.alignment = .bottomCenter,
     this.controller,
+    this.floating = false,
     required this.child,
   });
 
+  EdgeInsetsGeometry resolveMargin(BuildContext context) {
+    if (floating) {
+      return context.insets.symmetricDp(vertical: 18.px, horizontal: 16.px);
+    }
+    return !context.isMobile ? context.insets.defaultAllInsets : .zero;
+  }
+
+  BorderRadius defaultBorderRadius(BuildContext context) {
+    if (floating) return context.borderRadius4Xl;
+
+    return BorderRadius.vertical(top: context.radius4Xl);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final defaultRadius = BorderRadius.vertical(top: context.radius4Xl);
+    final defaultRadius = defaultBorderRadius(context);
     Widget body = Container(
-      margin: !context.isMobile ? context.insets.defaultAllInsets : .zero,
+      margin: resolveMargin(context),
       decoration: BoxDecoration(
         color: context.palette.bg.white,
         borderRadius: borderRadius ?? defaultRadius,

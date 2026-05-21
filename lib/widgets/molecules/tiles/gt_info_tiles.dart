@@ -7,6 +7,79 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This widget is commonly used for summarizing form inputs, displaying read-only
 /// account information, or presenting key-value pairs in a clean, vertical layout.
 ///
+class GtInfoListTile extends GtStatelessWidget {
+  /// The primary label or title for the information being displayed.
+  final String label;
+
+  /// The main text value or data associated with the [label].
+  final String text;
+
+  /// An optional widget, typically an icon, displayed at the start of the tile.
+  final Widget? trailing;
+
+  /// A callback triggered when the tile is tapped.
+  ///
+  /// If provided, the tile becomes interactive and provides haptic feedback.
+  final OnPressed? onTap;
+
+  /// Optional custom [TextStyle] for the [text].
+  ///
+  /// If null, defaults to [GtTextStyles.subHeadS].
+  final TextStyle? textStyle;
+
+  /// Optional custom [TextStyle] for the [label].
+  ///
+  /// If null, defaults to [GtTextStyles.bodyXs] with a subtle color.
+  final TextStyle? labelStyle;
+
+  /// Creates a [GtInfoListTile].
+  const GtInfoListTile(
+    this.label, {
+    super.key,
+    required this.text,
+    this.trailing,
+    this.labelStyle,
+    this.textStyle,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final styles = context.textStyles;
+    final textColors = context.palette.text;
+    final style = textStyle ?? styles.subHead3M(heightPx: 0);
+    final hintStyle = (labelStyle ?? styles.bodyS(color: textColors.sub));
+
+    return GtInkWell(
+      borderRadius: .zero,
+      onTap: onTap,
+      child: Padding(
+        padding: context.insets.symmetricDp(vertical: 8.px),
+        child: Column(
+          spacing: context.spacingSm,
+          crossAxisAlignment: .stretch,
+          children: [
+            Row(
+              crossAxisAlignment: .center,
+              spacing: context.spacingSm,
+              children: [
+                Expanded(child: GtText(label, style: hintStyle)),
+                ?trailing,
+              ],
+            ),
+            GtText(text, style: style),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A list tile designed to display a descriptive label and its corresponding text value.
+///
+/// This widget is commonly used for summarizing form inputs, displaying read-only
+/// account information, or presenting key-value pairs in a clean, vertical layout.
+///
 /// It can be rendered as a standalone tile or wrapped in a stylized card using
 /// the [GtInputListTile.asCard] constructor.
 class GtInputListTile extends GtStatelessWidget {

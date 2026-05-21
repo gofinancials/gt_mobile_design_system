@@ -112,6 +112,55 @@ Widget buildGtPillUseCase(BuildContext context) {
                     alignment: alignment.$2,
                     size: pillSize,
                   ),
+                  const GtGap.yBase(),
+                  GtStatusPill.custom(
+                    text: "Error",
+                    variant: .error,
+                    alignment: alignment.$2,
+                    leading: GtIcon(GtIcons.x, variant: .error, size: 13),
+                    textColor: context.palette.error.base,
+                    borderColor: context.palette.error.light,
+                    padding: context.insets.symmetricDp(
+                      horizontal: 8.px,
+                      vertical: 6.px,
+                    ),
+                  ),
+                  const GtGap.yBase(),
+                  GtStatusPill.custom(
+                    text: "Success",
+                    variant: .success,
+                    alignment: alignment.$2,
+                    leading: GtIcon(
+                      GtIcons.checkBox,
+                      variant: .success,
+                      size: 13,
+                    ),
+                    textColor: context.palette.success.base,
+                    borderColor: context.palette.success.light,
+                    padding: context.insets.symmetricDp(
+                      horizontal: 8.px,
+                      vertical: 6.px,
+                    ),
+                  ),
+                  const GtGap.yBase(),
+                  GtStatusPill.custom(
+                    text: "Processing",
+                    variant: .away,
+                    alignment: alignment.$2,
+                    leading: GtSquareConstrainedBox(
+                      13,
+                      child: GtSpinner(
+                        size: 13,
+                        color: context.palette.away.base,
+                      ),
+                    ),
+                    textColor: context.palette.away.base,
+                    borderColor: context.palette.away.light,
+                    padding: context.insets.symmetricDp(
+                      horizontal: 8.px,
+                      vertical: 6.px,
+                    ),
+                  ),
                 ],
               ),
               SliverList.list(
@@ -138,6 +187,8 @@ Widget buildGtPillUseCase(BuildContext context) {
                       label: "Toggle Display Font",
                     ),
                   ),
+                  const GalleryPageSectionHeader(title: "GtCopyPill"),
+                  GtCopyPill("123456789", variant: .strong),
                 ],
               ),
               SliverList.list(

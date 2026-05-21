@@ -826,9 +826,8 @@ Widget gtListTileAllUseCase(BuildContext context) {
     // --- 6. INFORMATION & ACTIONS ---
     const GalleryPageSectionHeader(
       title:
-          "Information & Actions [GtInputListTile/GtCopyTile/GtExportListTile/GtDeviceListTile/GtInstructionListTile]",
+          "Information & Actions [GtInfoListTile/GtInputListTile/GtCopyTile/GtExportListTile/GtDeviceListTile/GtInstructionListTile]",
     ),
-
     GtCard(
       child: GtInputListTile(inputLabel, text: inputText, onTap: () {}),
     ),
@@ -838,6 +837,15 @@ Widget gtListTileAllUseCase(BuildContext context) {
       text: cardInputText,
       leading: const GtIcon(GtIcons.house),
       onTap: () {},
+    ),
+    const GtGap.yBase(),
+    GtCard(
+      padding: context.insets.defaultHorizontalInsets,
+      child: GtInfoListTile(
+        "Cardholder name",
+        text: "ALEX LOBALOBA",
+        trailing: GtCopyPill("Alex Lobaloba"),
+      ),
     ),
     const GtGap.yXl(),
     GtCard(

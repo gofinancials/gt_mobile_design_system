@@ -18,11 +18,29 @@ class GtStatusPill extends StatelessWidget {
   /// An optional trailing icon to display after the text. Rendered at size 11.
   final IconData? trailing;
 
+  /// An optional custom leading widget to display alongside the text.
+  final Widget? leadingWidget;
+
+  /// An optional custom trailing widget to display after the text.
+  final Widget? trailingWidget;
+
   /// The alignment of the content within the pill.
   final Alignment? alignment;
 
   /// The size variation of the status pill.
   final GtPillSize size;
+
+  /// Optional custom padding for the pill. Overrides the default padding derived from [size].
+  final EdgeInsets? padding;
+
+  /// The fill or background color of the pill's container.
+  final Color? bgColor;
+
+  /// The border color. If null, the border color defaults to the [bgColor], effectively hiding the border.
+  final Color? borderColor;
+
+  /// The color of the text. Icons will inherit this color unless overridden.
+  final Color? textColor;
 
   /// Creates a [GtStatusPill].
   const GtStatusPill({
@@ -33,16 +51,39 @@ class GtStatusPill extends StatelessWidget {
     this.icon,
     this.alignment,
     this.size = .normal,
-  });
+    this.padding,
+  }) : trailingWidget = null,
+       leadingWidget = null,
+       bgColor = null,
+       borderColor = null,
+       textColor = null;
+
+  /// Creates a custom [GtStatusPill].
+  const GtStatusPill.custom({
+    super.key,
+    required this.text,
+    this.variant,
+    Widget? leading,
+    Widget? trailing,
+    this.alignment,
+    this.padding,
+    this.bgColor,
+    this.borderColor,
+    this.textColor,
+  }) : trailingWidget = trailing,
+       leadingWidget = leading,
+       icon = null,
+       trailing = null,
+       size = .normal;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final textColor = variant.getTextColor(palette);
-    final bgColor = variant.getBgColor(palette);
-    final borderColor = variant.getBorderColor(palette);
-    Widget? iconWidget;
-    Widget? trailingWidget;
+    final textColor = this.textColor ?? variant.getTextColor(palette);
+    final bgColor = this.bgColor ?? variant.getBgColor(palette);
+    final borderColor = this.borderColor ?? variant.getBorderColor(palette);
+    Widget? iconWidget = leadingWidget;
+    Widget? trailingWidget = this.trailingWidget;
 
     if (icon != null) {
       iconWidget = GtIcon.withColor(icon!, color: textColor, size: 11);
@@ -64,7 +105,7 @@ class GtStatusPill extends StatelessWidget {
       trailing: trailingWidget,
       textColor: textColor,
       borderColor: borderColor,
-      padding: context.insets.allDp(padding),
+      padding: this.padding ?? context.insets.allDp(padding),
       alignment: alignment,
       variant: variant ?? .strong,
     );

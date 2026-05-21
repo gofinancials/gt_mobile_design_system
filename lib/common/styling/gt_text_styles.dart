@@ -906,6 +906,31 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Medium Subheading (Subhead M) text style with no widthPct.
+  TextStyle subHead3M({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 15,
+      heightPx: heightPx ?? 24,
+      widthPct: 0,
+      weight: FontWeight.w500,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   /// Generates the Small Subheading (Subhead S) text style.
   TextStyle subHeadS({
     double? heightPx,

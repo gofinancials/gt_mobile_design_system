@@ -81,7 +81,7 @@ class GtDebitCardSelectionScreen extends GtStatelessWidget {
                 GtHeader(title: title, subtitle: subtitle),
                 GtGap.yMd(),
                 for (final v in GtDebitCardVariant.values)
-                  GtDebitCard(
+                  GtPaymentCardSelectionCard(
                     title: v.title,
                     subtitle: v.subtitle,
                     feeLabel: v.feeLabel,

@@ -84,3 +84,58 @@ class GtButtonPill extends StatelessWidget {
     );
   }
 }
+
+/// A specialized pill widget designed to copy a specific value to the clipboard when tapped.
+///
+/// It visually resembles a standard [GtPill] but inherently handles the copy-to-clipboard
+/// interaction and provides default text and icon styling.
+class GtCopyPill extends GtStatelessWidget {
+  /// The underlying value that will be copied to the clipboard when the pill is tapped.
+  final String value;
+
+  /// The text to display on the pill. If not provided, defaults to a localized 'copy' string.
+  final String? text;
+
+  /// An optional custom leading widget (typically an icon). Defaults to a file copy icon.
+  final Widget? leading;
+
+  /// The visual variant determining the color scheme of the pill. Defaults to [GtPillVariant.strong].
+  final GtPillVariant variant;
+
+  /// Creates a [GtCopyPill].
+  const GtCopyPill(
+    this.value, {
+    super.key,
+    this.text,
+    this.leading,
+    this.variant = .strong,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final textColor = variant.getTextColor(palette);
+    final bgColor = variant.getBgColor(palette);
+    final defaultLeading = GtIcon(
+      GtIcons.fileFilled,
+      size: 13,
+      variant: .disabled,
+    );
+
+    return GtInkWell(
+      borderRadius: context.borderRadiusSm,
+      onTap: () {
+        context.copyTextToClipboard(value);
+      },
+      child: GtPill(
+        icon: leading ?? defaultLeading,
+        text: text?.upper ?? "copy".utr(),
+        textStyle: context.textStyles.buttonXxs(color: textColor),
+        variant: variant,
+        textColor: textColor,
+        bgColor: bgColor,
+        padding: context.insets.allDp(4.px),
+      ),
+    );
+  }
+}
