@@ -137,7 +137,10 @@ class GalleryIconCard extends StatelessWidget {
       mainAxisSize: .min,
       children: [
         child,
-        GtStatusPill(text: label, variant: .primary),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: GtStatusPill(text: label, variant: .primary),
+        ),
       ],
     );
   }

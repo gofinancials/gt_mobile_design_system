@@ -59,6 +59,59 @@ class _BottomSheetPreviewState extends State<_BottomSheetPreview>
               },
             ),
             GtRaisedButton(
+              text: 'Show Floating Bottom Sheet',
+              variant: .neutral,
+              onPressed: () {
+                showSheet(
+                  context,
+                  maxHeightFraction: .5,
+                  floating: true,
+                  isScrollable: true,
+                  child: Column(
+                    mainAxisSize: .min,
+                    crossAxisAlignment: .stretch,
+                    children: [
+                      const GtGap.yLg(),
+                      GtTitleAppBar(title: "CARD DETAILS"),
+                      Padding(
+                        padding: context.insets.symmetricDp(
+                          horizontal: 16.px,
+                          vertical: 24.px,
+                        ),
+                        child: Column(
+                          mainAxisSize: .min,
+                          crossAxisAlignment: .stretch,
+                          children: [
+                            GtInfoListTile(
+                              "Cardholder name",
+                              text: "ALEX LOBALOBA",
+                              trailing: GtCopyPill("Alex Lobaloba"),
+                            ),
+                            const GtGap.yBase(),
+                            GtInfoListTile(
+                              "Card number",
+                              text: "1234 5678 9012 3456",
+                              trailing: GtCopyPill("1234 5678 9012 3456"),
+                            ),
+                            const GtGap.yBase(),
+                            GtInfoListTile("Expiry date", text: "11/25"),
+                            const GtGap.yBase(),
+                            GtInfoListTile("Security code", text: "123"),
+                            const GtGap.yBase(),
+                            GtInfoListTile(
+                              "Billing address",
+                              text:
+                                  "20 Marina Boulevard, Ipaja, Lagos, 1274, Nigeria",
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            GtRaisedButton(
               text: 'Show Draggable Bottom Sheet',
               variant: .highlighted,
               onPressed: () {
@@ -82,6 +135,61 @@ class _BottomSheetPreviewState extends State<_BottomSheetPreview>
                           ],
                         ),
                       ),
+                    );
+                  },
+                );
+              },
+            ),
+            GtRaisedButton(
+              text: 'Show Floating Draggable Bottom Sheet',
+              variant: .black,
+              onPressed: () {
+                showDraggableSheet(
+                  context,
+                  initialChildSize: .4,
+                  maxChildSize: .5,
+                  minChildSize: .2,
+                  floating: true,
+                  builder: (value) {
+                    return ListView(
+                      controller: value,
+                      children: [
+                        const GtGap.yLg(),
+                        GtTitleAppBar(title: "CARD DETAILS"),
+                        Padding(
+                          padding: context.insets.symmetricDp(
+                            horizontal: 16.px,
+                            vertical: 24.px,
+                          ),
+                          child: Column(
+                            mainAxisSize: .min,
+                            crossAxisAlignment: .stretch,
+                            children: [
+                              GtInfoListTile(
+                                "Cardholder name",
+                                text: "ALEX LOBALOBA",
+                                trailing: GtCopyPill("Alex Lobaloba"),
+                              ),
+                              const GtGap.yBase(),
+                              GtInfoListTile(
+                                "Card number",
+                                text: "1234 5678 9012 3456",
+                                trailing: GtCopyPill("1234 5678 9012 3456"),
+                              ),
+                              const GtGap.yBase(),
+                              GtInfoListTile("Expiry date", text: "11/25"),
+                              const GtGap.yBase(),
+                              GtInfoListTile("Security code", text: "123"),
+                              const GtGap.yBase(),
+                              GtInfoListTile(
+                                "Billing address",
+                                text:
+                                    "20 Marina Boulevard, Ipaja, Lagos, 1274, Nigeria",
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     );
                   },
                 );

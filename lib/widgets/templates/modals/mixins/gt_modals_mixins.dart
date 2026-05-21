@@ -97,6 +97,7 @@ mixin GtBottomSheetMixin {
     bool canDragToClose = true,
     bool isScrollable = false,
     bool canPop = true,
+    bool floating = false,
     bool useRootNavigator = false,
     double maxHeightFraction = .9,
   }) async {
@@ -109,6 +110,7 @@ mixin GtBottomSheetMixin {
       canPop: canPop,
       useRootNavigator: useRootNavigator,
       maxHeightFraction: maxHeightFraction,
+      floating: floating,
     ).present(context);
   }
 
@@ -125,6 +127,7 @@ mixin GtBottomSheetMixin {
     double initialChildSize = .7,
     double maxChildSize = .9,
     bool useRootNavigator = false,
+    bool floating = false,
     double maxHeightFraction = .9,
   }) async {
     return GtBottomSheet<T>.draggable(
@@ -133,6 +136,7 @@ mixin GtBottomSheetMixin {
       minChildSize: minChildSize,
       initialChildSize: initialChildSize,
       maxChildSize: maxChildSize,
+      floating: floating,
       useRootNavigator: useRootNavigator,
     ).present(context);
   }

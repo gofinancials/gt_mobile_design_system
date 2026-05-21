@@ -484,6 +484,34 @@ Widget buildGtCardUseCase(BuildContext context) {
               ),
             ],
           ),
+          SliverList.list(
+            children: [
+              const GalleryPageSectionHeader(
+                title: "GtDebitCard/GtPaymentCardSelectionCard",
+              ),
+              GtPaymentCardSelectionCard(
+                title: "Alex Johnson",
+                subtitle: "Debit Card",
+                feeLabel: "Fee ₦2000",
+                image: AppImageData(GtNetworkImages.debitCard),
+              ),
+              const GtGap.yBase(),
+              GtDebitCard(
+                alignment: context.knobs.object.dropdown(
+                  label: "Card Alignment",
+                  options: [
+                    Alignment.center,
+                    Alignment.centerLeft,
+                    Alignment.centerRight,
+                  ],
+                  initialOption: Alignment.center,
+                  labelBuilder: (value) => value.toString().split('.').last,
+                ),
+                holderName: "Fola Lobaloba",
+                onPressed: () {},
+              ),
+            ],
+          ),
           SliverToBoxAdapter(child: const GtGap.ySectionXl()),
         ],
       ),

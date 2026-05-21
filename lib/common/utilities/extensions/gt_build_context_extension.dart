@@ -326,3 +326,9 @@ extension NavigatorExtension on BuildContext {
   /// May pop the top-most route off the navigator.
   Future maybePop() async => Navigator.of(this).maybePop();
 }
+
+extension BuildContextCopyExtension on BuildContext {
+  // void copyToClipboard(String text) {
+  //   .
+  // }
+}

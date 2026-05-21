@@ -70,8 +70,14 @@ Widget buildGtVirtualKeypadFormUsecase(BuildContext context) {
       initialValue:
           "Confirm your secure PIN that will be used to authorize all your transactions in app",
     ),
-    fillInactiveDots: context.knobs.boolean(label: "Fill inactive dots", initialValue: false),
-    color: context.knobs.color(label: "Active dot color", initialValue: context.palette.text.strong),
+    fillInactiveDots: context.knobs.boolean(
+      label: "Fill inactive dots",
+      initialValue: false,
+    ),
+    color: context.knobs.color(
+      label: "Active dot color",
+      initialValue: context.palette.text.strong,
+    ),
     inactiveColor: context.knobs.colorOrNull(label: "Inactive dot color"),
     maxLength: 6,
     controller: controller,

@@ -27,6 +27,9 @@ class GtNetworkImages {
   /// Image URL for the cash illustration.
   static const String cash = '$_baseUrl/Cash.webp';
 
+  /// Image URL for the cash illustration.
+  static const String clipboardCheck = '$_baseUrl/ClipboardCheck.webp';
+
   /// Image URL for the charity illustration.
   static const String heart = '$_baseUrl/Charity.webp';
 
