@@ -65,7 +65,7 @@ class GtTipCard extends GtStatelessWidget {
                       Expanded(child: GtText(title)),
                       GtCancelButton(
                         onTap: onClose,
-                        size: 16,
+                        size: .xSmall,
                         color: palette.text.soft,
                       ),
                     ],

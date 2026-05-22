@@ -12,12 +12,16 @@ class GtActionAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// Whether the app bar should automatically add a back button if [leading] is null and the route can pop.
   final bool implyLeading;
 
+  /// The size of the back button if [leading] is null and the route can pop.
+  final GtBackButtonSize impliedLeadingSize;
+
   /// Creates a [GtActionAppBar].
   const GtActionAppBar({
     this.leading,
     this.trailing,
     super.key,
     this.implyLeading = true,
+    this.impliedLeadingSize = .large,
   });
 
   bool get _hasLeading => leading != null;
@@ -29,7 +33,9 @@ class GtActionAppBar extends GtStatelessWidget implements PreferredSizeWidget {
 
     Widget? leadingWidget = leading;
 
-    if (canImplyLeading && !_hasLeading) leadingWidget = GtBackButton();
+    if (canImplyLeading && !_hasLeading) {
+      leadingWidget = GtBackButton(size: impliedLeadingSize);
+    }
 
     return Material(
       type: .transparency,

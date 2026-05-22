@@ -80,7 +80,7 @@ class GtNotificationCard extends GtStatelessWidget {
             ),
           ),
           const GtGap.hBase(),
-          GtCancelButton(size: 20, alignment: .topRight, onTap: onClose),
+          GtCancelButton(size: .small, alignment: .topRight, onTap: onClose),
         ],
       ),
     );

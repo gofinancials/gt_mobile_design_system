@@ -2,6 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// Defines the standard sizes available for Go Tech cancel button.
+enum GtCancelButtonSize {
+  /// A medium cancel button with a baseline height of 24.
+  xSmall(16),
+
+  /// A medium cancel button with a baseline height of 24.
+  small(20),
+
+  /// A medium cancel button with a baseline height of 24.
+  medium(24),
+
+  /// A large cancel button with a baseline height of 32.
+  large(32),
+
+  /// A large cancel button with a baseline height of 32.
+  xLarge(36);
+
+  const GtCancelButtonSize(this.value);
+
+  /// The baseline height value in logical pixels.
+  final double value;
+}
+
 /// A standardized cancel button component for the Go Tech design system.
 ///
 /// This widget displays a cancel (cross) icon and provides built-in navigation
@@ -18,15 +41,10 @@ class GtCancelButton extends GtStatelessWidget {
   final AlignmentGeometry alignment;
 
   /// The size of the cancel icon in logical pixels. Defaults to 24.
-  final double size;
+  final GtCancelButtonSize size;
 
   /// Whether the button should be wrapped in a [Hero] widget for transition animations.
   final bool asHero;
-
-  /// Indicates whether the button should use primary thematic styling.
-  ///
-  /// *Note: This property is declared but currently unused in the standard build method.*
-  final bool primary;
 
   /// An optional custom color to override the default color of the cancel icon.
   final Color? color;
@@ -36,17 +54,24 @@ class GtCancelButton extends GtStatelessWidget {
     super.key,
     this.subAction,
     this.onTap,
-    this.alignment = Alignment.centerRight,
-    this.size = 24,
+    this.alignment = .centerRight,
+    this.size = .large,
     this.asHero = false,
-    this.primary = false,
     this.color,
   });
 
   @override
   Widget build(BuildContext context) {
+    final cubeSize = context.dp(size.value.px);
+    final iconSize = switch (size) {
+      .xSmall => context.dp(10.px),
+      .small => context.dp(12.px),
+      .medium => context.dp(14.px),
+      .large => context.dp(16.px),
+      _ => context.dp(20.px),
+    };
+
     Widget child = GtInkWell(
-      customBorder: CircleBorder(),
       onTap: () {
         if (subAction != null) subAction!();
         if (onTap != null) return onTap!();
@@ -54,11 +79,9 @@ class GtCancelButton extends GtStatelessWidget {
 
         context.maybePop();
       },
-      child: GtIcon.withColor(
-        GtIcons.cancel,
-        size: context.dp(size.px),
-        alignment: alignment,
-        color: color,
+      child: GtSquareConstrainedBox(
+        cubeSize,
+        child: GtIcon.withColor(GtIcons.cancel, size: iconSize, color: color),
       ),
     );
 
@@ -69,6 +92,6 @@ class GtCancelButton extends GtStatelessWidget {
       );
     }
 
-    return child;
+    return Align(alignment: alignment, child: child);
   }
 }

@@ -61,11 +61,7 @@ class GtAlertBanner extends GtStatelessWidget {
                 mainAxisAlignment: .spaceBetween,
                 children: [
                   GtSquareConstrainedBox(84, child: icon),
-                  GtCancelButton(
-                    onTap: onClose,
-                    size: 20,
-                    alignment: .topRight,
-                  ),
+                  GtCancelButton(onTap: onClose, alignment: .topRight),
                 ],
               ),
               GtText(title.upper, style: context.textStyles.buttonS()),
