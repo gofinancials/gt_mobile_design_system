@@ -30,6 +30,7 @@ migrate_working_dir/
 gallery/lib/main.directories.g.dart
 gallery/android/local.properties
 gallery/lib/main.directories.g.dart
+branch_structure.json
 temp_auto_push.bat
 temp_interactive_push.bat
 .gitignore
