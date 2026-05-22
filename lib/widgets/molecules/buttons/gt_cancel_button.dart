@@ -4,10 +4,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Defines the standard sizes available for Go Tech cancel button.
 enum GtCancelButtonSize {
-  /// A medium cancel button with a baseline height of 24.
+  /// A medium cancel button with a baseline height of 16.
   xSmall(16),
 
-  /// A medium cancel button with a baseline height of 24.
+  /// A medium cancel button with a baseline height of 20.
   small(20),
 
   /// A medium cancel button with a baseline height of 24.
