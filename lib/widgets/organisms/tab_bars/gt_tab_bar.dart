@@ -22,6 +22,9 @@ class GtTabbar<T> extends GtStatefulWidget {
   /// An optional custom style configuration to apply to the tab pills.
   final GtTabPillStyle? style;
 
+  /// An optional custom padding to apply to the tab bar.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtTabbar].
   const GtTabbar({
     super.key,
@@ -30,6 +33,7 @@ class GtTabbar<T> extends GtStatefulWidget {
     this.onChangeTab,
     this.useAlternateStyle = false,
     this.style,
+    this.padding,
   }) : assert(tabs.length > 0);
 
   @override
@@ -45,6 +49,7 @@ class _GtTabbarState extends State<GtTabbar> {
       onChangeTab: widget.onChangeTab,
       useAlternateStyle: widget.useAlternateStyle,
       style: widget.style,
+      padding: widget.padding,
     );
   }
 }

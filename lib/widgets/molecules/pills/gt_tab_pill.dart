@@ -20,6 +20,9 @@ class GtTabPillStyle {
   /// The background color for the pill when it is in an active (selected) state.
   final Color? activeBgColor;
 
+  /// The text style for the pill, overriding the default text style.
+  final TextStyle? textStyle;
+
   /// Creates a style configuration for a [GtTabPill].
   const GtTabPillStyle({
     this.variant,
@@ -27,6 +30,7 @@ class GtTabPillStyle {
     this.bgColor,
     this.activeTextColor,
     this.activeBgColor,
+    this.textStyle,
   });
 }
 
@@ -135,6 +139,7 @@ class GtTabPill<T> extends StatelessWidget {
     final palette = context.palette;
     final textColor = getTextColor(palette);
     final bgColor = getBgColor(palette);
+    final textStyle = style?.textStyle?.copyWith(color: textColor);
     Widget? iconWidget;
     Widget? trailingWidget;
 
@@ -155,7 +160,7 @@ class GtTabPill<T> extends StatelessWidget {
         bgColor: bgColor,
         constraints: const BoxConstraints(minHeight: 32),
         borderStyle: .none,
-        textStyle: context.textStyles.button2s(color: textColor),
+        textStyle: textStyle ?? context.textStyles.buttonS(color: textColor),
         icon: iconWidget,
         padding: context.insets.symmetricDp(vertical: 8.px, horizontal: 12.px),
         trailing: trailingWidget,
@@ -209,6 +214,7 @@ class GtSelectionPill<T> extends GtTabPill<T> {
     final palette = context.palette;
     final textColor = getTextColor(palette);
     final bgColor = getBgColor(palette);
+    final textStyle = style?.textStyle?.copyWith(color: textColor);
     Widget? iconWidget;
     Widget? trailingWidget;
 
@@ -229,7 +235,7 @@ class GtSelectionPill<T> extends GtTabPill<T> {
         bgColor: bgColor,
         borderStyle: .none,
         borderRadius: context.borderRadiusMd,
-        textStyle: context.textStyles.subHeadS(color: textColor),
+        textStyle: textStyle ?? context.textStyles.subHeadS(color: textColor),
         icon: iconWidget,
         padding: context.insets.symmetricDp(vertical: 4.px, horizontal: 12.px),
         trailing: trailingWidget,
