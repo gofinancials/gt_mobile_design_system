@@ -113,6 +113,7 @@ Widget build(BuildContext context) {
   final palette = context.palette;
   final textColor = getTextColor(palette);
   final bgColor = getBgColor(palette);
+  final textStyle = style?.textStyle?.copyWith(color: textColor);
   Widget? iconWidget;
   Widget? trailingWidget;
 
@@ -133,7 +134,7 @@ Widget build(BuildContext context) {
       bgColor: bgColor,
       borderStyle: .none,
       borderRadius: context.borderRadiusMd,
-      textStyle: context.textStyles.subHeadS(color: textColor),
+      textStyle: textStyle ?? context.textStyles.subHeadS(color: textColor),
       icon: iconWidget,
       padding: context.insets.symmetricDp(vertical: 4.px, horizontal: 12.px),
       trailing: trailingWidget,

@@ -109,8 +109,16 @@ and</li>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
+  final cubeSize = context.dp(size.value.px);
+  final iconSize = switch (size) {
+    .xSmall =&gt; context.dp(10.px),
+    .small =&gt; context.dp(12.px),
+    .medium =&gt; context.dp(14.px),
+    .large =&gt; context.dp(16.px),
+    _ =&gt; context.dp(20.px),
+  };
+
   Widget child = GtInkWell(
-    customBorder: CircleBorder(),
     onTap: () {
       if (subAction != null) subAction!();
       if (onTap != null) return onTap!();
@@ -118,11 +126,9 @@ Widget build(BuildContext context) {
 
       context.maybePop();
     },
-    child: GtIcon.withColor(
-      GtIcons.cancel,
-      size: context.dp(size.px),
-      alignment: alignment,
-      color: color,
+    child: GtSquareConstrainedBox(
+      cubeSize,
+      child: GtIcon.withColor(GtIcons.cancel, size: iconSize, color: color),
     ),
   );
 
@@ -133,7 +139,7 @@ Widget build(BuildContext context) {
     );
   }
 
-  return child;
+  return Align(alignment: alignment, child: child);
 }</code></pre>
 </section>
 

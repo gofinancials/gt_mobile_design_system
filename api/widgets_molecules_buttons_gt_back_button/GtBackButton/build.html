@@ -110,28 +110,39 @@ and</li>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   final canPop = context.canPop;
+  final cubeSize = context.dp(size.value.px);
+  final iconSize = switch (size) {
+    .small =&gt; context.dp(18.px),
+    _ =&gt; context.dp(20.px),
+  };
 
   if (!canPop &amp;&amp; routeStackSensitive) {
     return const Offstage();
   }
 
-  return Material(
-    type: MaterialType.transparency,
-    child: Hero(
-      tag: &quot;gt-back-button&quot;,
-      child: GtInkWell(
-        hapticFeedbackType: .medium,
-        customBorder: CircleBorder(),
-        onTap: () {
-          if (action != null) return action!();
-          if (!canPop &amp;&amp; routeStackSensitive) return;
+  return Align(
+    alignment: alignment,
+    child: Material(
+      type: MaterialType.transparency,
+      child: Hero(
+        tag: &quot;gt-back-button&quot;,
+        child: GtInkWell(
+          hapticFeedbackType: .medium,
+          onTap: () {
+            if (action != null) return action!();
+            if (!canPop &amp;&amp; routeStackSensitive) return;
 
-          Navigator.of(context).maybePop();
-        },
-        child: GtIcon(
-          GtIcons.chevronLeft,
-          size: context.dp(32.px),
-          alignment: alignment,
+            Navigator.of(context).maybePop();
+          },
+          child: GtSquareConstrainedBox(
+            cubeSize,
+            child: GtIcon.withColor(
+              GtIcons.chevronLeft,
+              size: iconSize,
+              alignment: .center,
+              color: color ?? context.palette.icon.strong,
+            ),
+          ),
         ),
       ),
     ),

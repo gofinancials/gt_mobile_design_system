@@ -114,7 +114,9 @@ Widget build(BuildContext context) {
 
   Widget? leadingWidget = leading;
 
-  if (canImplyLeading &amp;&amp; !_hasLeading) leadingWidget = GtBackButton();
+  if (canImplyLeading &amp;&amp; !_hasLeading) {
+    leadingWidget = GtBackButton(size: impliedLeadingSize);
+  }
 
   return Material(
     type: .transparency,

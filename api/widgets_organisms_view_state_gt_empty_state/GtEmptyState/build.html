@@ -115,17 +115,17 @@ Widget build(BuildContext context) {
   return Column(
     mainAxisSize: .min,
     crossAxisAlignment: .center,
-    spacing: context.spacingBase,
     children: [
       &#47;&#47; Empty-state illustration.
       GtSvg(icon, width: illustrationSize, height: illustrationSize),
-      const GtGap.yXl(),
+      const GtGap.ySectionSm(),
       &#47;&#47; Primary heading.
       GtText(
         title.upper,
         textAlign: TextAlign.center,
         style: context.textStyles.h6(color: palette.text.strong),
       ),
+      const GtGap.yBase(),
       &#47;&#47; Supporting description.
       GtText(
         subtitle,

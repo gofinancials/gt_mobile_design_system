@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the primary property from the GtCancelButton class, for the Dart programming language.">
-  <title>primary property - GtCancelButton class - gt_cancel_button library - Dart API</title>
+  <meta name="description" content="API docs for the buttonSize property from the GtAppBarTitleSize enum, for the Dart programming language.">
+  <title>buttonSize property - GtAppBarTitleSize enum - gt_app_bar library - Dart API</title>
 
 
   
@@ -25,11 +25,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">gt_mobile_ui</a></li>
-    <li><a href="../../widgets_molecules_buttons_gt_cancel_button/">widgets&#47;molecules&#47;buttons&#47;gt_cancel_button.dart</a></li>
-    <li><a href="../../widgets_molecules_buttons_gt_cancel_button/GtCancelButton-class.html">GtCancelButton</a></li>
-    <li class="self-crumb">primary property</li>
+    <li><a href="../../widgets_organisms_app_bars_gt_app_bar/">widgets&#47;organisms&#47;app_bars&#47;gt_app_bar.dart</a></li>
+    <li><a href="../../widgets_organisms_app_bars_gt_app_bar/GtAppBarTitleSize.html">GtAppBarTitleSize</a></li>
+    <li class="self-crumb">buttonSize property</li>
   </ol>
-  <div class="self-name">primary</div>
+  <div class="self-name">buttonSize</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -46,34 +46,39 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="widgets_molecules_buttons_gt_cancel_button&#47;GtCancelButton-class-sidebar.html"
+    data-above-sidebar="widgets_organisms_app_bars_gt_app_bar&#47;GtAppBarTitleSize-enum-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-property">primary</span> property 
+<h1><span class="kind-property">buttonSize</span> property 
 </h1></div>
 
     
-      <section class="multi-line-signature">
-        
-        <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>
-        <span class="name ">primary</span>
-        <div class="features"><span class="feature">final</span></div>
-
-      </section>
-      
-<section class="desc markdown">
-  <p>Indicates whether the button should use primary thematic styling.</p>
-<p><em>Note: This property is declared but currently unused in the standard build method.</em></p>
-</section>
-
-      
-<section class="summary source-code" id="source">
-  <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">final bool primary;</code></pre>
-</section>
-
 
     
+        
+  <section id="getter">
+    <section class="multi-line-signature">
+      
+      <span class="returntype"><a href="../../widgets_molecules_buttons_gt_back_button/GtBackButtonSize.html">GtBackButtonSize</a></span>
+      get
+      <span class="name ">buttonSize</span>
+      
+
+    </section>
+    
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">GtBackButtonSize get buttonSize =&gt; switch (this) {
+  .small || .medium =&gt; .small,
+  _ =&gt; .large,
+};</code></pre>
+</section>
+
+  </section>
+
+
 </div> <!-- /.main-content -->
 <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
   <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
@@ -84,12 +89,12 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">gt_mobile_ui</a></li>
-    <li><a href="../../widgets_molecules_buttons_gt_cancel_button/">gt_cancel_button</a></li>
-    <li><a href="../../widgets_molecules_buttons_gt_cancel_button/GtCancelButton-class.html">GtCancelButton</a></li>
-    <li class="self-crumb">primary property</li>
+    <li><a href="../../widgets_organisms_app_bars_gt_app_bar/">gt_app_bar</a></li>
+    <li><a href="../../widgets_organisms_app_bars_gt_app_bar/GtAppBarTitleSize.html">GtAppBarTitleSize</a></li>
+    <li class="self-crumb">buttonSize property</li>
 </ol>
 
-  <h5>GtCancelButton class</h5>
+  <h5>GtAppBarTitleSize enum</h5>
   <div id="dartdoc-sidebar-left-content"></div>
 </div><!--/.sidebar-offcanvas-->
 <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
