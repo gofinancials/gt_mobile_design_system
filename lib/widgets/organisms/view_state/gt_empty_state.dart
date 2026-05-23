@@ -35,17 +35,17 @@ class GtEmptyState extends GtStatelessWidget {
     return Column(
       mainAxisSize: .min,
       crossAxisAlignment: .center,
-      spacing: context.spacingBase,
       children: [
         // Empty-state illustration.
         GtSvg(icon, width: illustrationSize, height: illustrationSize),
-        const GtGap.yXl(),
+        const GtGap.ySectionSm(),
         // Primary heading.
         GtText(
           title.upper,
           textAlign: TextAlign.center,
           style: context.textStyles.h6(color: palette.text.strong),
         ),
+        const GtGap.yBase(),
         // Supporting description.
         GtText(
           subtitle,

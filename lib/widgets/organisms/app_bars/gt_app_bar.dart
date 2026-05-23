@@ -20,6 +20,11 @@ enum GtAppBarTitleSize {
       .large => context.textStyles.h5(),
     };
   }
+
+  GtBackButtonSize get buttonSize => switch (this) {
+    .small || .medium => .small,
+    _ => .large,
+  };
 }
 
 /// A highly customizable general-purpose app bar.
@@ -60,7 +65,9 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
 
     Widget? leadingWidget = leading;
 
-    if (canImplyLeading && !_hasLeading) leadingWidget = GtBackButton();
+    if (canImplyLeading && !_hasLeading) {
+      leadingWidget = GtBackButton(size: titleSize.buttonSize);
+    }
 
     return Material(
       type: .transparency,

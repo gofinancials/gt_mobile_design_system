@@ -24,6 +24,9 @@ class GtSelectionTabbar<T> extends GtStatefulWidget {
   /// An optional custom style configuration to apply to the tab pills.
   final GtTabPillStyle? style;
 
+  /// An optional custom padding to apply to the tab bar.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtSelectionTabbar].
   const GtSelectionTabbar({
     super.key,
@@ -32,6 +35,7 @@ class GtSelectionTabbar<T> extends GtStatefulWidget {
     this.onChangeTab,
     this.useAlternateStyle = false,
     this.style,
+    this.padding,
   }) : assert(tabs.length > 0);
 
   @override
@@ -61,6 +65,7 @@ class _GtSelectionTabbarState extends State<GtSelectionTabbar> {
 
         return SingleChildScrollView(
           scrollDirection: .horizontal,
+          padding: widget.padding ?? .zero,
           child: Row(
             spacing: spacing,
             crossAxisAlignment: .center,

@@ -89,17 +89,17 @@ class GtActionableEmptyStateCard extends GtStatelessWidget {
       variant: variant,
       padding: context.insets.symmetricDp(vertical: 24.px, horizontal: 12.px),
       child: Column(
-        spacing: context.spacingSm,
         mainAxisAlignment: .center,
         crossAxisAlignment: .center,
         children: [
           GtIcon(icon, size: 32),
-          const GtGap.ySm(),
+          const GtGap.yBase(),
           GtText(
             title,
             style: context.textStyles.subHeadS(),
             textAlign: .center,
           ),
+          const GtGap.ySm(),
           GtText(
             description,
             style: context.textStyles.subHead2xs(

@@ -75,7 +75,7 @@ class GtReminderBanner extends GtStatelessWidget {
               ),
             ),
             const GtGap.hBase(),
-            GtCancelButton(onTap: onClose, size: 20, alignment: .topRight),
+            GtCancelButton(onTap: onClose, size: .small, alignment: .topRight),
           ],
         ),
       ),

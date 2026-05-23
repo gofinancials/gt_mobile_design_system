@@ -142,7 +142,6 @@ class GtIcons {
   static const crosshairsSlash = GtIconData(0xf03d);
   static const pen = GtIconData(0xf03e);
   static const pencil = GtIconData(0xf106);
-  static const creditCard = GtIconData(0xf03f);
   static const password = GtIconData(0xf040);
   static const copy = GtIconData(0xf041);
   static const paperclip = GtIconData(0xf042);
@@ -380,6 +379,11 @@ class GtIcons {
   static const notificationUnread = GtIconData(0xf13b);
   static const mobileAlt = GtIconData(0xf13c);
 
+  static const pos = GtIconData(0xf03F);
+  static const palmTree = GtIconData(0xf156);
+  static const car = GtIconData(0xf157);
+  static const bag = GtIconData(0xf158);
+
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
   /// This is particularly useful for cataloging, testing, or building
@@ -414,6 +418,7 @@ class GtIcons {
     (label: 'awardCertificate', value: awardCertificate),
     (label: 'awardFilled', value: awardFilled),
     (label: 'badge', value: badge),
+    (label: 'bag', value: bag),
     (label: 'bagShopping', value: bagShopping),
     (label: 'ballBasket', value: ballBasket),
     (label: 'bankCard', value: bankCard),
@@ -443,6 +448,7 @@ class GtIcons {
     (label: 'camera', value: camera),
     (label: 'cameraAlt', value: cameraAlt),
     (label: 'cancel', value: cancel),
+    (label: 'car', value: car),
     (label: 'card', value: card),
     (label: 'cardCheck', value: cardCheck),
     (label: 'cardDark', value: cardDark),
@@ -482,7 +488,6 @@ class GtIcons {
     (label: 'cookie', value: cookie),
     (label: 'copy', value: copy),
     (label: 'copyFilled', value: copyFilled),
-    (label: 'creditCard', value: creditCard),
     (label: 'crosshairs', value: crosshairs),
     (label: 'crosshairsSlash', value: crosshairsSlash),
     (label: 'cryptography', value: cryptography),
@@ -605,6 +610,7 @@ class GtIcons {
     (label: 'office', value: office),
     (label: 'orderedList', value: orderedList),
     (label: 'paintbrush', value: paintbrush),
+    (label: 'palmTree', value: palmTree),
     (label: 'paperclip', value: paperclip),
     (label: 'paperPlane', value: paperPlane),
     (label: 'password', value: password),
@@ -631,6 +637,7 @@ class GtIcons {
     (label: 'plug', value: plug),
     (label: 'plus', value: plus),
     (label: 'pointer', value: pointer),
+    (label: 'pos', value: pos),
     (label: 'presentationScreen', value: presentationScreen),
     (label: 'print', value: print),
     (label: 'product', value: product),

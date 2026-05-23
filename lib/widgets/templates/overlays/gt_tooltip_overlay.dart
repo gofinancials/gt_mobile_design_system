@@ -137,7 +137,7 @@ class GtTooltipWidget extends GtStatelessWidget {
                 ),
                 spacing: context.spacingMd,
                 leading: GtIcon(GtIcons.circleInfo, variant: .soft),
-                trailing: GtCancelButton(onTap: onClose, size: 15),
+                trailing: GtCancelButton(onTap: onClose, size: .small),
                 crossAxisAlignment: .start,
               ),
             ),

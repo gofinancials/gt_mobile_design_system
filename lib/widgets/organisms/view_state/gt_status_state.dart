@@ -181,14 +181,13 @@ class GtStatusState extends GtStatelessWidget {
                       child: Column(
                         mainAxisSize: .min,
                         crossAxisAlignment: .center,
-                        spacing: context.spacingBase,
                         children: [
                           GtSvg(
                             _statusIcon(),
                             width: iconSize,
                             height: iconSize,
                           ),
-                          const GtGap.yXl(),
+                          const GtGap.ySectionSm(),
                           GtText(
                             messageTitle.upper,
                             textAlign: TextAlign.center,
@@ -196,6 +195,7 @@ class GtStatusState extends GtStatelessWidget {
                               color: palette.text.strong,
                             ),
                           ),
+                          const GtGap.yBase(),
                           GtText(
                             subtitle,
                             textAlign: TextAlign.center,

@@ -307,7 +307,7 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal>
                         decoration: context.inputStyles.smWhiteSearchDecoration,
                       ),
                     ),
-                    if (!widget.title.hasValue) GtCancelButton(size: 20),
+                    if (!widget.title.hasValue) GtCancelButton(size: .medium),
                   ],
                 ),
               ),

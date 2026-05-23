@@ -94,10 +94,7 @@ class _GtExtendedModalAppBar extends GtModalAppBar {
         padding: context.insets.fromLTRBDp(16.px, 24.px, 16.px, 0),
         child: Row(
           children: [
-            GtSquareConstrainedBox(
-              24,
-              child: FittedBox(fit: .scaleDown, child: GtBackButton()),
-            ),
+            GtBackButton(size: .small),
             Expanded(
               child: FractionalTranslation(
                 // Slight horizontal offset to balance the visual center of the title

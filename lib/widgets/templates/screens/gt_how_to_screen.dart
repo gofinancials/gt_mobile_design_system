@@ -61,7 +61,7 @@ class GtHowToScreen extends GtStatelessWidget {
               GtGap.yLg(),
               GtCancelButton(
                 alignment: .topRight,
-                size: 26,
+                size: .xLarge,
                 color: palette.icon.white,
               ),
               GtGap.ySection4xl(),

@@ -30,7 +30,7 @@ Widget buildGtOtpFormUsecase(BuildContext context) {
       ),
     ),
     appBar: GtActionAppBar(
-      leading: const GtBackButton(routeStackSensitive: true),
+      leading: const GtBackButton(routeStackSensitive: false),
       trailing: GtOptionalWidgetPair(
         tail: GtRaisedButton(
           text: "Help",
