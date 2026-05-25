@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -117,17 +116,20 @@ class GtLimitEditListTile extends GtStatelessWidget {
                       text: category,
                       children: [
                         TextSpan(text: " "),
-                        WidgetSpan(
-                          child: GtIcon(GtIcons.info, size: 18, variant: .soft),
-                          alignment: .middle,
-                        ),
+                        if (onTapInfo != null)
+                          WidgetSpan(
+                            child: GtInkWell(
+                              onTap: onTapInfo,
+                              child: GtIcon(
+                                GtIcons.info,
+                                size: 18,
+                                variant: .soft,
+                              ),
+                            ),
+                            alignment: .middle,
+                          ),
                       ],
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          if (onTapInfo == null) return;
-                          HapticFeedback.lightImpact();
-                          onTapInfo?.call();
-                        },
+                      recognizer: TapGestureRecognizer()..onTap = onTapInfo,
                     ),
                     style: context.textStyles.subHeadM(),
                   ),
@@ -152,12 +154,11 @@ class GtLimitEditListTile extends GtStatelessWidget {
               ),
           ],
         ),
-        const GtGap.ySm(),
         GtAnimatedProgress(
           value: _fraction,
+          key: ValueKey(_fraction),
           valueColor: context.palette.primary.base,
         ),
-        const GtGap.ySm(),
         Align(
           alignment: Alignment.centerRight,
           child: GtText(

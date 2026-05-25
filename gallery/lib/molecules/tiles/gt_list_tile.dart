@@ -422,14 +422,12 @@ Widget gtListTileAllUseCase(BuildContext context) {
             value: limitAirtime,
             max: 80000,
             onEdit: () {},
+            onTapInfo: () {
+              context.showToast("You clicked info");
+            },
           ),
           const GtGap.yLg(),
-          GtLimitEditListTile(
-            "Bill Payments",
-            value: limitBills,
-            max: 80000,
-            onEdit: () {},
-          ),
+          GtLimitEditListTile("Bill Payments", value: limitBills, max: 80000),
         ],
       ),
     ),

@@ -136,12 +136,18 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
           ),
           Expanded(
             flex: 2,
-            child: GtAutocompleteField<int>(
+            child: GtAutocompleteField<int>.builder(
               key: const ValueKey("gt_dob_field_month"),
               label: "month".ctr(),
               textCapitalization: .words,
               autofillHints: const [AutofillHints.birthdayMonth],
-              suggestions: _dobController.monthSuggestions,
+              builder: (query) {
+                return _dobController.monthSuggestions.whereList((it) {
+                  final digit = int.tryParse(query) ?? 0;
+                  final monthName = it.value.asMonthName.toLowerCase();
+                  return monthName.includes(query) || it.value == digit;
+                });
+              },
               controller: _monthCtrl,
               onChange: (value) {
                 final selectedDay = _dobController.day ?? 1;
