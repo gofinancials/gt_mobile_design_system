@@ -125,17 +125,20 @@ Widget build(BuildContext context) {
                     text: category,
                     children: [
                       TextSpan(text: &quot; &quot;),
-                      WidgetSpan(
-                        child: GtIcon(GtIcons.info, size: 18, variant: .soft),
-                        alignment: .middle,
-                      ),
+                      if (onTapInfo != null)
+                        WidgetSpan(
+                          child: GtInkWell(
+                            onTap: onTapInfo,
+                            child: GtIcon(
+                              GtIcons.info,
+                              size: 18,
+                              variant: .soft,
+                            ),
+                          ),
+                          alignment: .middle,
+                        ),
                     ],
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        if (onTapInfo == null) return;
-                        HapticFeedback.lightImpact();
-                        onTapInfo?.call();
-                      },
+                    recognizer: TapGestureRecognizer()..onTap = onTapInfo,
                   ),
                   style: context.textStyles.subHeadM(),
                 ),
@@ -160,12 +163,11 @@ Widget build(BuildContext context) {
             ),
         ],
       ),
-      const GtGap.ySm(),
       GtAnimatedProgress(
         value: _fraction,
+        key: ValueKey(_fraction),
         valueColor: context.palette.primary.base,
       ),
-      const GtGap.ySm(),
       Align(
         alignment: Alignment.centerRight,
         child: GtText(
