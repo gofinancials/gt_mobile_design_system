@@ -53,51 +53,57 @@ class GtNetworkImage extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageUrl.isEmpty) return const Offstage();
+    return RepaintBoundary(
+      child: Builder(
+        builder: (context) {
+          if (imageUrl.isEmpty) return const Offstage();
 
-    if (imageUrl.startsWith("data:")) {
-      final base64String = imageUrl.replaceAll("data:", "");
-      return GtMemoryImage(
-        base64Decode(base64String),
-        height: height,
-        width: width,
-        alignment: alignment,
-        fit: fit,
-      );
-    }
+          if (imageUrl.startsWith("data:")) {
+            final base64String = imageUrl.replaceAll("data:", "");
+            return GtMemoryImage(
+              base64Decode(base64String),
+              height: height,
+              width: width,
+              alignment: alignment,
+              fit: fit,
+            );
+          }
 
-    if (imageUrl.endsWith(".svg")) {
-      return GtSvg(
-        imageUrl,
-        height: height,
-        width: width,
-        alignment: alignment,
-        fit: fit ?? BoxFit.contain,
-        color: color,
-      );
-    }
+          if (imageUrl.endsWith(".svg")) {
+            return GtSvg(
+              imageUrl,
+              height: height,
+              width: width,
+              alignment: alignment,
+              fit: fit ?? BoxFit.contain,
+              color: color,
+            );
+          }
 
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      height: height,
-      width: width,
-      alignment: alignment,
-      fit: fit,
-      color: color,
-      errorWidget: (_, message, data) {
-        return errorWidget ?? SizedBox(height: height, width: width);
-      },
-      placeholder: (context, _) {
-        if (placeHolderPath == null) {
-          return FittedBox(fit: BoxFit.scaleDown, child: GtSpinner());
-        }
-        return GtAssetImage(
-          placeHolderPath!,
-          width: width,
-          height: height,
-          alignment: alignment,
-        );
-      },
+          return CachedNetworkImage(
+            imageUrl: imageUrl,
+            height: height,
+            width: width,
+            alignment: alignment,
+            fit: fit,
+            color: color,
+            errorWidget: (_, message, data) {
+              return errorWidget ?? SizedBox(height: height, width: width);
+            },
+            placeholder: (context, _) {
+              if (placeHolderPath == null) {
+                return FittedBox(fit: BoxFit.scaleDown, child: GtSpinner());
+              }
+              return GtAssetImage(
+                placeHolderPath!,
+                width: width,
+                height: height,
+                alignment: alignment,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

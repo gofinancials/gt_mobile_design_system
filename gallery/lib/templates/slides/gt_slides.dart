@@ -1,7 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:gt_mobile_ui/widgets/templates/slides/gt_welcome_slides.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -39,6 +40,171 @@ List<GtSlideData> getPersonalAppSlides(BuildContext context) {
   ];
 }
 
+final _lessonsController = GtLessonslideController(
+  slides: [
+    GtLessonSlideData.withHeader(
+      color: GtColors.pink100.value,
+      title: "LESSON 1",
+      data: GtLessonSlideHeader(
+        title: "WHAT IS SAVING",
+        subTitle:
+            "Saving means keeping some of your money to use later instead of spending it all at once.",
+        embedSubtitleInCard: true,
+        offset: Offset(0, 350),
+      ),
+      backgroundImages: [
+        GtLessonSlideImage(
+          image: AppImageData.asset(GtVectorIllustrations.coins),
+          offset: Offset(0, 100),
+          alignment: .topRight,
+          fit: .cover,
+          height: 160,
+        ),
+        GtLessonSlideImage(
+          image: AppImageData.asset(GtVectorIllustrations.cash),
+          offset: Offset(-80, -100),
+          alignment: .bottomLeft,
+          fit: .cover,
+          height: 240,
+        ),
+      ],
+    ),
+    GtLessonSlideData.withHeader(
+      color: GtColors.purple100.value,
+      title: "LESSON 2",
+      data: GtLessonSlideHeader(
+        title: "why saving matters?".upper,
+        subTitle:
+            "Saving helps you plan ahead, buy things you really want, and handle unexpected needs.",
+        embedSubtitleInCard: true,
+        offset: Offset(0, 150),
+      ),
+      backgroundImages: [
+        GtLessonSlideImage(
+          image: AppImageData.asset(GtVectorIllustrations.vault),
+          offset: Offset(80, 0),
+          alignment: .centerRight,
+          fit: .cover,
+          height: 240,
+        ),
+        GtLessonSlideImage(
+          image: AppImageData.asset(GtVectorIllustrations.announcement),
+          offset: Offset(-80, 50),
+          rotation: pi / 250,
+          alignment: .bottomLeft,
+          fit: .cover,
+          height: 240,
+        ),
+      ],
+    ),
+    GtLessonSlideData.withHeader(
+      color: GtColors.yellow100.value,
+      title: "LESSON 3",
+      data: GtLessonSlideHeader(
+        title: "WHAT IS SAVING",
+        subTitle:
+            "Saving means keeping some of your money to use later instead of spending it all at once.",
+        embedSubtitleInCard: true,
+        offset: Offset(0, 300),
+      ),
+      backgroundImages: [
+        GtLessonSlideImage(
+          image: AppImageData.asset(GtVectorIllustrations.coins),
+          offset: Offset(0, 50),
+          alignment: .topLeft,
+          fit: .cover,
+          height: 160,
+        ),
+        GtLessonSlideImage(
+          image: AppImageData.asset(GtVectorIllustrations.cash),
+          offset: .zero,
+          alignment: .bottomCenter,
+          fit: .cover,
+          height: 320,
+        ),
+      ],
+    ),
+    GtLessonSlideData.withImage(
+      color: GtColors.neutral50.value,
+      gradient: LinearGradient(
+        begin: .centerLeft,
+        end: .centerRight,
+        colors: [Color(0x1AB8CDD9), GtColors.neutral50.value],
+      ),
+      alignment: .bottomRight,
+      title: "LESSON 4",
+      data: AppImageData(
+        "https://storage.googleapis.com/dump-storage-jesse/enter_account_number.png",
+      ),
+      header: GtLessonSlideHeader(
+        title: "enter account number".upper,
+        subTitle: "Enter account number in the field below or select contact",
+      ),
+    ),
+    GtLessonSlideData.withImage(
+      color: GtColors.neutral50.value,
+      gradient: LinearGradient(
+        begin: .centerLeft,
+        end: .centerRight,
+        colors: [Color(0x1AB8CDD9), GtColors.neutral50.value],
+      ),
+      alignment: .bottomRight,
+      title: "LESSON 5",
+      data: AppImageData(
+        "https://storage.googleapis.com/dump-storage-jesse/select_bank.png",
+      ),
+      header: GtLessonSlideHeader(
+        title: "select bank".upper,
+        subTitle: "Select beneficiary’s bank from suggested or all banks list",
+      ),
+    ),
+    GtLessonSlideData.withImage(
+      color: GtColors.neutral50.value,
+      gradient: LinearGradient(
+        begin: .centerLeft,
+        end: .centerRight,
+        colors: [Color(0x1AB8CDD9), GtColors.neutral50.value],
+      ),
+      alignment: .bottomRight,
+      title: "LESSON 6",
+      data: AppImageData(
+        "https://storage.googleapis.com/dump-storage-jesse/enter_amount.png",
+      ),
+      header: GtLessonSlideHeader(
+        title: "enter amount".upper,
+        subTitle: "Enter the amount you want to send to beneficary",
+      ),
+    ),
+    GtLessonSlideData.withAV(
+      title: "LESSON 7",
+      data: AppAvData(document: "https://www.youtube.com/shorts/MXAn49kEcj4"),
+    ),
+    GtLessonSlideData.withAV(
+      title: "LESSON 8",
+      header: GtLessonSlideHeader(
+        title: "GT Design System".upper,
+        subTitle: "Learn how to use our Design System",
+      ),
+      data: AppAvData(
+        document:
+            "https://res.cloudinary.com/jesse-dirisu/video/upload/v1776117368/Screen_Recording_2026-04-13_at_22.42.31_brfzia.mov",
+      ),
+    ),
+    GtLessonSlideData.withAV(
+      title: "LESSON 9",
+      header: GtLessonSlideHeader(
+        title: "Interview with Forough Farrokhzad".upper,
+        subTitle:
+            "Iraj Gorgin talks about his experience with Forough Farrokhzad and her poetry",
+      ),
+      data: AppAvData(
+        document:
+            "https://res.cloudinary.com/jesse-dirisu/video/upload/v1768484372/Transcribr%20Audio%20Sources/Iraj_Gorgin_s_Interview_with_Forough_Farrokhzad.mp3",
+      ),
+    ),
+  ],
+);
+
 @widgetbook.UseCase(name: 'GtWelcomeSlides', type: GtWelcomeSlides)
 Widget buildGtWelcomeSlidesUsecase(BuildContext context) {
   List<GtSlideData>? slides = getPersonalAppSlides(context);
@@ -48,5 +214,15 @@ Widget buildGtWelcomeSlidesUsecase(BuildContext context) {
     iconColor: context.knobs.colorOrNull(label: "Icon Color"),
     activeDotColor: context.knobs.colorOrNull(label: "Active dot color"),
     inActiveDotColor: context.knobs.colorOrNull(label: "Inactive dot color"),
+  );
+}
+
+@widgetbook.UseCase(name: 'GtLessonSlides', type: GtLessonSlides)
+Widget buildGtLessonSlidesUsecase(BuildContext context) {
+  return GtLessonSlides(
+    controller: _lessonsController,
+    indicatorColor: context.knobs.colorOrNull(label: "Indicator Color"),
+    onCancel: () {},
+    onCompleted: () {},
   );
 }

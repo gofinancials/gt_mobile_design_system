@@ -112,6 +112,13 @@ class _GtBottomModalState extends State<GtBottomModal>
   }
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    _successController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (!widget.hasController) {
       return Material(

@@ -211,6 +211,11 @@ class GtBottomModalController extends ChangeNotifier {
   @override
   void dispose() {
     _debouncer.abort();
+    _data = _pristineData;
+    _progress = null;
+    _completer = Completer();
+    _completionValue = null;
+    _debouncer.abort();
     super.dispose();
   }
 }

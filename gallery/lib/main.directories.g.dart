@@ -790,6 +790,16 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'slides',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtLessonSlides',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtLessonSlides',
+                    builder: _gallery_templates_slides_gt_slides
+                        .buildGtLessonSlidesUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtWelcomeSlides',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(

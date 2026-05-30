@@ -1,6 +1,6 @@
-export 'gt_duo_tone_screen.dart';
 export 'gt_debit_card_screen.dart';
 export 'gt_debit_card_selection_screen.dart';
+export 'gt_duo_tone_screen.dart';
 export 'gt_how_to_screen.dart';
 export 'gt_splash_screen.dart';
 export 'gt_welcome_screen.dart';
