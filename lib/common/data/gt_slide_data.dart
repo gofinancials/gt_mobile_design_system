@@ -390,6 +390,8 @@ final class GtLessonslideController extends ChangeNotifier {
   /// Navigates to the next slide.
   void next() => currentIndex = _currentIndex + 1;
 
+  void jumpTo(int index) => currentIndex = index;
+
   /// Sets the current slide index.
   ///
   /// If the new index is out of bounds or unchanged, it will be ignored.
@@ -463,7 +465,7 @@ final class GtLessonslideController extends ChangeNotifier {
       await _initialiseAnimation(tickerProvider);
       return;
     }
-    await _initialisePlayer(tickerProvider);
+    await _initialisePlayer();
   }
 
   Future<void> _initialiseAnimation(TickerProvider tickerProvider) async {
@@ -475,7 +477,7 @@ final class GtLessonslideController extends ChangeNotifier {
     notifyListeners(true);
   }
 
-  Future<void> _initialisePlayer(TickerProvider tickerProvider) async {
+  Future<void> _initialisePlayer() async {
     if (currentSlide.media is! AppAvData) return;
 
     final generation = _generation;
