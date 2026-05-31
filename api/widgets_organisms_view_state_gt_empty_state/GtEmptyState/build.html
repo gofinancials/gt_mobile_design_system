@@ -109,32 +109,17 @@ and</li>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  final palette = context.palette;
-  final illustrationSize = context.dp(130.px);
-
-  return Column(
-    mainAxisSize: .min,
-    crossAxisAlignment: .center,
-    children: [
-      &#47;&#47; Empty-state illustration.
-      GtSvg(icon, width: illustrationSize, height: illustrationSize),
-      const GtGap.ySectionSm(),
-      &#47;&#47; Primary heading.
-      GtText(
-        title.upper,
-        textAlign: TextAlign.center,
-        style: context.textStyles.h6(color: palette.text.strong),
-      ),
-      const GtGap.yBase(),
-      &#47;&#47; Supporting description.
-      GtText(
-        subtitle,
-        textAlign: TextAlign.center,
-        style: context.textStyles.subHead2xs(
-          color: GtColors.neutral600.value,
-        ),
-      ),
-    ],
+  return GtViewStateWidget(
+    title: title,
+    description: subtitle,
+    icon: icon,
+    alignment: alignment ?? .center,
+    gapToDescription: gapToSubtitle,
+    actionText: actionText,
+    onActionPressed: onActionPressed,
+    actionVariant: buttonVariant,
+    actionSize: .xsmall,
+    actionAlignment: .center,
   );
 }</code></pre>
 </section>

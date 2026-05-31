@@ -109,78 +109,20 @@ and</li>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  final palette = context.palette;
-  final horizontal = context.insets.defaultHorizontalInsets;
-  final iconSize = context.dp(130.px);
-
-  final barTitle = appBarTitle;
-  final modalBarTitle = (barTitle == null || barTitle.isEmpty)
-      ? null
-      : barTitle;
-
-  &#47;&#47; [GtModalAppBar] is not an [AppBar] slot here — give it a fixed height from
-  &#47;&#47; [PreferredSizeWidget.preferredSize] so it paints correctly in the column.
-  final modalAppBar = GtModalAppBar(title: modalBarTitle);
-
-  return Column(
-    crossAxisAlignment: .stretch,
-    children: [
-      modalAppBar,
-      Expanded(
-        child: Padding(
-          padding: horizontal,
-          child: Column(
-            crossAxisAlignment: .stretch,
-            children: [
-              Expanded(
-                child: Center(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(
-                      vertical: context.spacingLg,
-                    ),
-                    child: Column(
-                      mainAxisSize: .min,
-                      crossAxisAlignment: .center,
-                      children: [
-                        GtSvg(
-                          _statusIcon(),
-                          width: iconSize,
-                          height: iconSize,
-                        ),
-                        const GtGap.ySectionSm(),
-                        GtText(
-                          messageTitle.upper,
-                          textAlign: TextAlign.center,
-                          style: context.textStyles.h4(
-                            color: palette.text.strong,
-                          ),
-                        ),
-                        const GtGap.yBase(),
-                        GtText(
-                          subtitle,
-                          textAlign: TextAlign.center,
-                          style: context.textStyles.bodyS(
-                            color: GtColors.neutral600.value,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(bottom: context.spacingsectionMd),
-                child: GtRaisedButton(
-                  text: actionLabel,
-                  onPressed: onActionPressed,
-                  variant: actionVariant,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ],
+  return GtViewStateWidget(
+    title: title,
+    description: subtitle,
+    icon: _statusIcon,
+    actionText: actionLabel,
+    onActionPressed: onActionPressed,
+    actionVariant: actionVariant,
+    actionSize: actionSize,
+    actionAlignment: actionAlignment,
+    alignment: alignment ?? .center,
+    gapToDescription: gapToSubtitle,
+    gapToAction: gapToAction,
+    titleStyle: titleStyle,
+    descriptionStyle: subtitleStyle,
   );
 }</code></pre>
 </section>

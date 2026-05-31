@@ -56,13 +56,19 @@
       const
       <span class="name ">GtStatusState</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span></li>
 <li><span class="parameter" id="-param-variant"><span>required</span> <span class="type-annotation"><a href="../../widgets_organisms_view_state_gt_status_state/GtStatusStateVariant.html">GtStatusStateVariant</a></span> <span class="parameter-name">variant</span>, </span></li>
-<li><span class="parameter" id="-param-appBarTitle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">appBarTitle</span>, </span></li>
-<li><span class="parameter" id="-param-messageTitle"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">messageTitle</span>, </span></li>
-<li><span class="parameter" id="-param-subtitle"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">subtitle</span>, </span></li>
-<li><span class="parameter" id="-param-statusIcon"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">statusIcon</span>, </span></li>
-<li><span class="parameter" id="-param-actionLabel"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">actionLabel</span>, </span></li>
-<li><span class="parameter" id="-param-onActionPressed"><span>required</span> <span class="type-annotation">OnPressed</span> <span class="parameter-name">onActionPressed</span>, </span></li>
-<li><span class="parameter" id="-param-actionVariant"><span class="type-annotation"><a href="../../widgets_molecules_buttons_gt_button/GtButtonVariant.html">GtButtonVariant</a></span> <span class="parameter-name">actionVariant</span> = <span class="default-value">GtButtonVariant.primary</span>, </span></li>
+<li><span class="parameter" id="-param-title"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span></li>
+<li><span class="parameter" id="-param-subtitle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">subtitle</span>, </span></li>
+<li><span class="parameter" id="-param-statusIcon"><span class="type-annotation">AppImageData?</span> <span class="parameter-name">statusIcon</span>, </span></li>
+<li><span class="parameter" id="-param-actionLabel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">actionLabel</span>, </span></li>
+<li><span class="parameter" id="-param-onActionPressed"><span class="type-annotation">OnPressed?</span> <span class="parameter-name">onActionPressed</span>, </span></li>
+<li><span class="parameter" id="-param-actionVariant"><span class="type-annotation"><a href="../../widgets_molecules_buttons_gt_button/GtButtonVariant.html">GtButtonVariant</a></span> <span class="parameter-name">actionVariant</span> = <span class="default-value">.primary</span>, </span></li>
+<li><span class="parameter" id="-param-gapToSubtitle"><span class="type-annotation"><a href="../../widgets_organisms_view_state_gt_view_state/GtViewStateSpacer-class.html">GtViewStateSpacer</a></span> <span class="parameter-name">gapToSubtitle</span> = <span class="default-value">const GtViewStateGapSpacer(GtGap.yMd())</span>, </span></li>
+<li><span class="parameter" id="-param-gapToAction"><span class="type-annotation"><a href="../../widgets_organisms_view_state_gt_view_state/GtViewStateSpacer-class.html">GtViewStateSpacer</a></span> <span class="parameter-name">gapToAction</span> = <span class="default-value">const GtViewStateGapSpacer(GtGap.yLg())</span>, </span></li>
+<li><span class="parameter" id="-param-actionSize"><span class="type-annotation"><a href="../../widgets_molecules_buttons_gt_button/GtButtonSize.html">GtButtonSize</a></span> <span class="parameter-name">actionSize</span> = <span class="default-value">.medium</span>, </span></li>
+<li><span class="parameter" id="-param-alignment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/AlignmentGeometry-class.html">AlignmentGeometry</a>?</span> <span class="parameter-name">alignment</span>, </span></li>
+<li><span class="parameter" id="-param-actionAlignment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/AlignmentGeometry-class.html">AlignmentGeometry</a>?</span> <span class="parameter-name">actionAlignment</span>, </span></li>
+<li><span class="parameter" id="-param-titleStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">titleStyle</span>, </span></li>
+<li><span class="parameter" id="-param-subtitleStyle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?</span> <span class="parameter-name">subtitleStyle</span>, </span></li>
 </ol>})
     </section>
     
@@ -77,17 +83,26 @@
   <pre class="language-dart"><code class="language-dart">const GtStatusState({
   super.key,
   required this.variant,
-  this.appBarTitle,
-  required this.messageTitle,
-  required this.subtitle,
+  required this.title,
+  this.subtitle,
   this.statusIcon,
-  required this.actionLabel,
-  required this.onActionPressed,
-  this.actionVariant = GtButtonVariant.primary,
+  this.actionLabel,
+  this.onActionPressed,
+  this.actionVariant = .primary,
+  this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
+  this.gapToAction = const GtViewStateGapSpacer(GtGap.yLg()),
+  this.actionSize = .medium,
+  this.alignment,
+  this.actionAlignment,
+  this.titleStyle,
+  this.subtitleStyle,
 }) : assert(
-       variant != GtStatusStateVariant.other ||
-           (statusIcon != null &amp;&amp; statusIcon != &#39;&#39;),
-       &#39;statusIcon is required when variant is GtStatusStateVariant.other&#39;,
+       variant != .custom || (statusIcon != null),
+       &#39;statusIcon is required when variant is GtStatusStateVariant.custom&#39;,
+     ),
+     assert(
+       (onActionPressed == null) == (actionLabel == null),
+       &#39;onActionPressed and actionText must be provided together&#39;,
      );</code></pre>
 </section>
 

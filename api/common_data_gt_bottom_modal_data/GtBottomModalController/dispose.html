@@ -77,6 +77,11 @@
   <pre class="language-dart"><code class="language-dart">@override
 void dispose() {
   _debouncer.abort();
+  _data = _pristineData;
+  _progress = null;
+  _completer = Completer();
+  _completionValue = null;
+  _debouncer.abort();
   super.dispose();
 }</code></pre>
 </section>

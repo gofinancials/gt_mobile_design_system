@@ -53,6 +53,13 @@
 </h1></div>
 
     
+<section class="desc markdown">
+  <p>A configuration class that encapsulates styling and behavior parameters
+for a <a href="https://api.flutter.dev/flutter/painting/DecorationImage-class.html">DecorationImage</a>.</p>
+<p>This class acts as a reusable blueprint, allowing you to define image
+styling rules (like fit, alignment, and filters) once, and easily apply
+them to different <a href="https://api.flutter.dev/flutter/painting/ImageProvider-class.html">ImageProvider</a>s using <a href="../common_data_gt_decoration_image_style/GtDecorationImageStyle/toDecorationImage.html">toDecorationImage</a>.</p>
+</section>
 
 
 
@@ -64,7 +71,7 @@
           <span class="name"><a href="../common_data_gt_decoration_image_style/GtDecorationImageStyle/GtDecorationImageStyle.html">GtDecorationImageStyle</a></span><span class="signature">({<span class="parameter" id="-param-onError"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/ImageErrorListener.html">ImageErrorListener</a>?</span> <span class="parameter-name">onError</span>, </span><span class="parameter" id="-param-colorFilter"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/ColorFilter-class.html">ColorFilter</a>?</span> <span class="parameter-name">colorFilter</span>, </span><span class="parameter" id="-param-fit"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/BoxFit.html">BoxFit</a>?</span> <span class="parameter-name">fit</span>, </span><span class="parameter" id="-param-alignment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/AlignmentGeometry-class.html">AlignmentGeometry</a></span> <span class="parameter-name">alignment</span> = <span class="default-value">Alignment.center</span>, </span><span class="parameter" id="-param-centerSlice"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Rect-class.html">Rect</a>?</span> <span class="parameter-name">centerSlice</span>, </span><span class="parameter" id="-param-repeat"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/ImageRepeat.html">ImageRepeat</a></span> <span class="parameter-name">repeat</span> = <span class="default-value">ImageRepeat.noRepeat</span>, </span><span class="parameter" id="-param-matchTextDirection"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">matchTextDirection</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-scale"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">scale</span> = <span class="default-value">1.0</span>, </span><span class="parameter" id="-param-opacity"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">opacity</span> = <span class="default-value">1.0</span>, </span><span class="parameter" id="-param-filterQuality"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/FilterQuality.html">FilterQuality</a></span> <span class="parameter-name">filterQuality</span> = <span class="default-value">FilterQuality.medium</span>, </span><span class="parameter" id="-param-invertColors"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">invertColors</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-isAntiAlias"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isAntiAlias</span> = <span class="default-value">false</span></span>})</span>
         </dt>
         <dd>
-          
+          Creates a <a href="../common_data_gt_decoration_image_style/GtDecorationImageStyle-class.html">GtDecorationImageStyle</a> instance.
         </dd>
     </dl>
   </section>
@@ -81,7 +88,7 @@
 
 </dt>
 <dd>
-  
+  How to align the image within its bounds.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -93,7 +100,7 @@
 
 </dt>
 <dd>
-  
+  The center slice for a nine-patch image.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -105,7 +112,7 @@
 
 </dt>
 <dd>
-  
+  A color filter to apply to the image before painting it.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -117,7 +124,7 @@
 
 </dt>
 <dd>
-  
+  The quality of the image filter when scaling.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -129,7 +136,7 @@
 
 </dt>
 <dd>
-  
+  How the image should be inscribed into the box.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -153,7 +160,7 @@
 
 </dt>
 <dd>
-  
+  Whether the colors of the image should be inverted.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -165,7 +172,7 @@
 
 </dt>
 <dd>
-  
+  Whether to paint the image with anti-aliasing.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -177,7 +184,7 @@
 
 </dt>
 <dd>
-  
+  Whether to paint the image in the direction of the <a href="https://api.flutter.dev/flutter/dart-ui/TextDirection.html">TextDirection</a>.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -189,7 +196,7 @@
 
 </dt>
 <dd>
-  
+  An optional error callback for errors emitted when loading the image.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -201,7 +208,7 @@
 
 </dt>
 <dd>
-  
+  The opacity of the image.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -213,7 +220,7 @@
 
 </dt>
 <dd>
-  
+  How to paint any portions of the box that would not otherwise be covered by the image.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -237,7 +244,7 @@
 
 </dt>
 <dd>
-  
+  Defines the image pixels to be shown per logical pixels.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -272,7 +279,8 @@
 
 </dt>
 <dd>
-  
+  Converts this styling configuration into a functional <a href="https://api.flutter.dev/flutter/painting/DecorationImage-class.html">DecorationImage</a>
+using the provided <code>provider</code>.
   
 
 </dd>
@@ -324,7 +332,7 @@
 
 </dt>
 <dd>
-  
+  A predefined "pro" styling configuration commonly used across the app.
   <div class="features"><span class="feature">no setter</span></div>
 
 </dd>

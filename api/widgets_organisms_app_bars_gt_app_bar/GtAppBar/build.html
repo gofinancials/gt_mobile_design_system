@@ -118,43 +118,46 @@ Widget build(BuildContext context) {
     leadingWidget = GtBackButton(size: titleSize.buttonSize);
   }
 
-  return Material(
-    type: .transparency,
-    child: Container(
-      padding: (context.insets.defaultHorizontalInsets).add(
-        EdgeInsets.only(top: toolbarHeight),
-      ),
-      color: Colors.transparent,
-      child: Table(
-        defaultVerticalAlignment: .middle,
-        columnWidths: const {
-          0: FlexColumnWidth(4),
-          1: FlexColumnWidth(10),
-          2: FlexColumnWidth(4),
-        },
-        children: [
-          TableRow(
-            children: [
-              Align(
-                alignment: .centerLeft,
-                child: GtSquareConstrainedBox(32, child: leadingWidget),
-              ),
-              GtText(
-                title?.upper,
-                style: titleSize.getStyle(context),
-                textAlign: .center,
-                maxLines: 2,
-              ),
-              Align(
-                alignment: .centerRight,
-                child: GtSquareConstrainedBox(24, child: trailing),
-              ),
-            ],
-          ),
-        ],
-      ),
+  Widget child = Container(
+    padding: (context.insets.defaultHorizontalInsets).add(
+      EdgeInsets.only(top: toolbarHeight),
+    ),
+    color: Colors.transparent,
+    child: Table(
+      defaultVerticalAlignment: .middle,
+      columnWidths: const {
+        0: FlexColumnWidth(4),
+        1: FlexColumnWidth(10),
+        2: FlexColumnWidth(4),
+      },
+      children: [
+        TableRow(
+          children: [
+            Align(
+              alignment: .centerLeft,
+              child: GtSquareConstrainedBox(32, child: leadingWidget),
+            ),
+            GtText(
+              title?.upper,
+              style: titleSize.getStyle(context),
+              textAlign: .center,
+              maxLines: 2,
+            ),
+            Align(
+              alignment: .centerRight,
+              child: GtSquareConstrainedBox(24, child: trailing),
+            ),
+          ],
+        ),
+      ],
     ),
   );
+
+  if (heroTag != null) {
+    child = Hero(tag: heroTag!, child: child);
+  }
+
+  return Material(type: .transparency, child: child);
 }</code></pre>
 </section>
 

@@ -109,51 +109,57 @@ and</li>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
-  if (imageUrl.isEmpty) return const Offstage();
+  return RepaintBoundary(
+    child: Builder(
+      builder: (context) {
+        if (imageUrl.isEmpty) return const Offstage();
 
-  if (imageUrl.startsWith(&quot;data:&quot;)) {
-    final base64String = imageUrl.replaceAll(&quot;data:&quot;, &quot;&quot;);
-    return GtMemoryImage(
-      base64Decode(base64String),
-      height: height,
-      width: width,
-      alignment: alignment,
-      fit: fit,
-    );
-  }
+        if (imageUrl.startsWith(&quot;data:&quot;)) {
+          final base64String = imageUrl.replaceAll(&quot;data:&quot;, &quot;&quot;);
+          return GtMemoryImage(
+            base64Decode(base64String),
+            height: height,
+            width: width,
+            alignment: alignment,
+            fit: fit,
+          );
+        }
 
-  if (imageUrl.endsWith(&quot;.svg&quot;)) {
-    return GtSvg(
-      imageUrl,
-      height: height,
-      width: width,
-      alignment: alignment,
-      fit: fit ?? BoxFit.contain,
-      color: color,
-    );
-  }
+        if (imageUrl.endsWith(&quot;.svg&quot;)) {
+          return GtSvg(
+            imageUrl,
+            height: height,
+            width: width,
+            alignment: alignment,
+            fit: fit ?? BoxFit.contain,
+            color: color,
+          );
+        }
 
-  return CachedNetworkImage(
-    imageUrl: imageUrl,
-    height: height,
-    width: width,
-    alignment: alignment,
-    fit: fit,
-    color: color,
-    errorWidget: (_, message, data) {
-      return errorWidget ?? SizedBox(height: height, width: width);
-    },
-    placeholder: (context, _) {
-      if (placeHolderPath == null) {
-        return FittedBox(fit: BoxFit.scaleDown, child: GtSpinner());
-      }
-      return GtAssetImage(
-        placeHolderPath!,
-        width: width,
-        height: height,
-        alignment: alignment,
-      );
-    },
+        return CachedNetworkImage(
+          imageUrl: imageUrl,
+          height: height,
+          width: width,
+          alignment: alignment,
+          fit: fit,
+          color: color,
+          errorWidget: (_, message, data) {
+            return errorWidget ?? SizedBox(height: height, width: width);
+          },
+          placeholder: (context, _) {
+            if (placeHolderPath == null) {
+              return FittedBox(fit: BoxFit.scaleDown, child: GtSpinner());
+            }
+            return GtAssetImage(
+              placeHolderPath!,
+              width: width,
+              height: height,
+              alignment: alignment,
+            );
+          },
+        );
+      },
+    ),
   );
 }</code></pre>
 </section>

@@ -97,7 +97,7 @@ or modal container as needed.</p>
     <h2>Constructors</h2>
     <dl class="constructor-summary-list">
         <dt id="GtEmptyState.new" class="callable">
-          <span class="name"><a href="../widgets_organisms_view_state_gt_empty_state/GtEmptyState/GtEmptyState.html">GtEmptyState</a></span><span class="signature">({<span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="-param-icon"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">icon</span>, </span><span class="parameter" id="-param-title"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span><span class="parameter" id="-param-subtitle"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">subtitle</span></span>})</span>
+          <span class="name"><a href="../widgets_organisms_view_state_gt_empty_state/GtEmptyState/GtEmptyState.html">GtEmptyState</a></span><span class="signature">({<span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="-param-icon"><span>required</span> <span class="type-annotation">AppImageData</span> <span class="parameter-name">icon</span>, </span><span class="parameter" id="-param-title"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span><span class="parameter" id="-param-subtitle"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">subtitle</span>, </span><span class="parameter" id="-param-gapToSubtitle"><span class="type-annotation"><a href="../widgets_organisms_view_state_gt_view_state/GtViewStateSpacer-class.html">GtViewStateSpacer</a></span> <span class="parameter-name">gapToSubtitle</span> = <span class="default-value">const GtViewStateGapSpacer(GtGap.yMd())</span>, </span><span class="parameter" id="-param-actionText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">actionText</span>, </span><span class="parameter" id="-param-onActionPressed"><span class="type-annotation">OnPressed?</span> <span class="parameter-name">onActionPressed</span>, </span><span class="parameter" id="-param-buttonVariant"><span class="type-annotation"><a href="../widgets_molecules_buttons_gt_button/GtButtonVariant.html">GtButtonVariant</a>?</span> <span class="parameter-name">buttonVariant</span>, </span><span class="parameter" id="-param-alignment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/AlignmentGeometry-class.html">AlignmentGeometry</a>?</span> <span class="parameter-name">alignment</span></span>})</span>
         </dt>
         <dd>
           Creates a <a href="../widgets_organisms_view_state_gt_empty_state/GtEmptyState-class.html">GtEmptyState</a> with required icon/title/subtitle content.
@@ -111,6 +111,30 @@ or modal container as needed.</p>
       id="instance-properties">
     <h2>Properties</h2>
     <dl class="properties">
+        <dt id="actionText" class="property">
+  <span class="name"><a href="../widgets_organisms_view_state_gt_empty_state/GtEmptyState/actionText.html">actionText</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
+  
+
+</dt>
+<dd>
+  The text to display on the call-to-action button.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="alignment" class="property">
+  <span class="name"><a href="../widgets_organisms_view_state_gt_empty_state/GtEmptyState/alignment.html">alignment</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/painting/AlignmentGeometry-class.html">AlignmentGeometry</a>?</span>
+  
+
+</dt>
+<dd>
+  The alignment of the empty state widget.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="analytics" class="property inherited">
   <span class="name"><a href="../widgets_templates_widget_base_gt_stateless_widget/GtStatelessWidget/analytics.html">analytics</a></span>
   <span class="signature">&#8594; AppAnalyticsService</span>
@@ -120,6 +144,30 @@ or modal container as needed.</p>
 <dd class="inherited">
   The injected instance of the analytics service.
   <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="buttonVariant" class="property">
+  <span class="name"><a href="../widgets_organisms_view_state_gt_empty_state/GtEmptyState/buttonVariant.html">buttonVariant</a></span>
+  <span class="signature">&#8594; <a href="../widgets_molecules_buttons_gt_button/GtButtonVariant.html">GtButtonVariant</a>?</span>
+  
+
+</dt>
+<dd>
+  The visual variant of the call-to-action button.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
+        <dt id="gapToSubtitle" class="property">
+  <span class="name"><a href="../widgets_organisms_view_state_gt_empty_state/GtEmptyState/gapToSubtitle.html">gapToSubtitle</a></span>
+  <span class="signature">&#8594; <a href="../widgets_organisms_view_state_gt_view_state/GtViewStateSpacer-class.html">GtViewStateSpacer</a></span>
+  
+
+</dt>
+<dd>
+  The spacing between the title and the subtitle.
+  <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
@@ -137,7 +185,7 @@ or modal container as needed.</p>
 
         <dt id="icon" class="property">
   <span class="name"><a href="../widgets_organisms_view_state_gt_empty_state/GtEmptyState/icon.html">icon</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  <span class="signature">&#8594; AppImageData</span>
   
 
 </dt>
@@ -160,6 +208,18 @@ or modal container as needed.</p>
 
 </dd>
 
+        <dt id="onActionPressed" class="property">
+  <span class="name"><a href="../widgets_organisms_view_state_gt_empty_state/GtEmptyState/onActionPressed.html">onActionPressed</a></span>
+  <span class="signature">&#8594; OnPressed?</span>
+  
+
+</dt>
+<dd>
+  The callback to execute when the call-to-action button is pressed.
+  <div class="features"><span class="feature">final</span></div>
+
+</dd>
+
         <dt id="runtimeType" class="property inherited">
   <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
   <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
@@ -174,7 +234,7 @@ or modal container as needed.</p>
 
         <dt id="subtitle" class="property">
   <span class="name"><a href="../widgets_organisms_view_state_gt_empty_state/GtEmptyState/subtitle.html">subtitle</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span>
   
 
 </dt>

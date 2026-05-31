@@ -105,16 +105,20 @@ Simulation? createBallisticSimulation(
   ScrollMetrics position,
   double velocity,
 ) {
+  &#47;&#47; If the content is smaller than the viewport, fall back to default behavior.
   if (position.maxScrollExtent &lt;= position.minScrollExtent) {
     return super.createBallisticSimulation(position, velocity);
   }
 
+  &#47;&#47; If we&#39;ve reached or exceeded the end of the scrollable area,
+  &#47;&#47; spring back to the beginning (0) to create a continuous loop.
   if (position.pixels &gt;= position.maxScrollExtent) {
     const spring = SpringDescription(mass: 1, stiffness: 0.5, damping: 1);
 
     return SpringSimulation(spring, position.pixels, 0, 1);
   }
 
+  &#47;&#47; Otherwise, apply a constant gravity-like velocity towards the max scroll extent.
   return GravitySimulation(
     1,
     position.pixels,

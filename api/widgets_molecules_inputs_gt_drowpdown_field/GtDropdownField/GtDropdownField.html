@@ -67,12 +67,15 @@
 <li><span class="parameter" id="-param-decoration"><span class="type-annotation"><a href="../../common_styling_gt_input_styles/GtInputDecoration-class.html">GtInputDecoration</a>?</span> <span class="parameter-name">decoration</span>, </span></li>
 <li><span class="parameter" id="-param-textAlign"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/TextAlign.html">TextAlign</a></span> <span class="parameter-name">textAlign</span> = <span class="default-value">TextAlign.start</span>, </span></li>
 <li><span class="parameter" id="-param-hintText"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">hintText</span>, </span></li>
-<li><span class="parameter" id="-param-textInputAction"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/services/TextInputAction.html">TextInputAction</a></span> <span class="parameter-name">textInputAction</span> = <span class="default-value">TextInputAction.next</span>, </span></li>
+<li><span class="parameter" id="-param-textInputAction"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/flutter_test/TextInputAction.html">TextInputAction</a></span> <span class="parameter-name">textInputAction</span> = <span class="default-value">TextInputAction.next</span>, </span></li>
 <li><span class="parameter" id="-param-prefix"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">prefix</span>, </span></li>
 <li><span class="parameter" id="-param-suffix"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">suffix</span>, </span></li>
 <li><span class="parameter" id="-param-debounceTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a>?</span> <span class="parameter-name">debounceTime</span>, </span></li>
 <li><span class="parameter" id="-param-autoFocus"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">autoFocus</span> = <span class="default-value">false</span>, </span></li>
 <li><span class="parameter" id="-param-optionsGap"><span class="type-annotation"><a href="../../widgets_atoms_spacers_gt_gap/GtGap-class.html">GtGap</a></span> <span class="parameter-name">optionsGap</span> = <span class="default-value">const GtGap.yLg()</span>, </span></li>
+<li><span class="parameter" id="-param-emptyWidget"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">emptyWidget</span>, </span></li>
+<li><span class="parameter" id="-param-loadingWidget"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">loadingWidget</span>, </span></li>
+<li><span class="parameter" id="-param-errorWidget"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">errorWidget</span>, </span></li>
 </ol>})
     </section>
     
@@ -104,6 +107,9 @@
   this.debounceTime,
   this.autoFocus = false,
   this.optionsGap = const GtGap.yLg(),
+  this.emptyWidget,
+  this.loadingWidget,
+  this.errorWidget,
 }) : assert(
        optionBuilder == null || optionsBuilder == null,
        &#39;Cannot provide both optionBuilder and optionsBuilder.&#39;,
