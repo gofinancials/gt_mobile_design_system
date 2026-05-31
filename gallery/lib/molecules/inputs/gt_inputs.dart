@@ -108,6 +108,7 @@ final _inputCtrl12 = GtInputController();
 final _inputCtrl13 = GtDobController();
 final _inputCtrl14 = GtDropdownInputController<Country>();
 final _inputCtrl15 = GtInputController<Country>();
+final _inputCtrl16 = GtInputController<Country>();
 final _formKey2 = GlobalKey<FormState>();
 
 FutureOr<List<GtDropdownData<Country>>> get _allCountries async {
@@ -335,6 +336,12 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
             ),
             const GtGap.yXl(),
             GtPhoneField(controller: _inputCtrl15, label: "Phone number"),
+            const GtGap.yXl(),
+            GtPhoneField(
+              controller: _inputCtrl16,
+              label: "Phone number without country code",
+              showCountryCode: false,
+            ),
             const GtGap.ySectionSm(),
             GtRaisedButton(
               onPressed: () {

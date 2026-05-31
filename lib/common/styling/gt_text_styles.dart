@@ -856,6 +856,55 @@ class GtTextStyles {
   // SUBHEADINGS (subHead prefix) | Inter, Medium (500), High Tracking
   // ---------------------------------------------------------------------------
 
+  TextStyle subHeadXl({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 24,
+      heightPx: heightPx ?? 32,
+      widthPct: -1.5,
+      weight: FontWeight.w500,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// subHeadL: 20px, weight 500
+  TextStyle subHeadL({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 20,
+      heightPx: heightPx ?? 24,
+      widthPct: -1.5,
+      weight: FontWeight.w500,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   /// Generates the Medium Subheading (Subhead M) text style.
   TextStyle subHeadM({
     double? heightPx,
@@ -1246,6 +1295,8 @@ class GtTextStyles {
     ('Title S (context.textStyles.titleS)', titleS()),
     ('Title XS (context.textStyles.titleXs)', titleXs()),
     ('Title 2XS (context.textStyles.title2xs)', title2xs()),
+    ('Subhead XL (context.textStyles.subHeadXl)', subHeadXl()),
+    ('Subhead L (context.textStyles.subHeadL)', subHeadL()),
     ('Subhead M (context.textStyles.subHeadM)', subHeadM()),
     ('Subhead S (context.textStyles.subHeadS)', subHeadS()),
     ('Subhead 2S (context.textStyles.subHead2s)', subHead2s()),

@@ -44,6 +44,12 @@ class GtTransferField extends GtStatefulWidget {
   /// The maximum allowable amount for the transfer.
   final num? max;
 
+  /// Callback invoked when the sender is tapped.
+  final OnPressed? onTapSender;
+
+  /// Callback invoked when the recipient is tapped.
+  final OnPressed? onTapReciver;
+
   /// Creates a new [GtTransferField].
   const GtTransferField({
     super.key,
@@ -55,6 +61,8 @@ class GtTransferField extends GtStatefulWidget {
     required this.recipientAvatar,
     required this.balance,
     required this.noteHint,
+    this.onTapSender,
+    this.onTapReciver,
     this.onChange,
     this.isEnabled = true,
     this.max,
@@ -123,13 +131,16 @@ class _GtTransferFieldState extends State<GtTransferField> {
                 mainAxisAlignment: .center,
                 crossAxisAlignment: .stretch,
                 children: [
-                  GtTransactionParticipantListTile(
-                    widget.sender,
-                    superscript: "from".utr(),
-                    leading: GtImage(image: widget.senderImage),
-                    subtitle: sendFooter,
-                    crossAxisAlignment: .start,
-                    subStyle: field.hasError ? decoration.errorStyle : null,
+                  GtInkWell(
+                    onTap: widget.onTapSender,
+                    child: GtTransactionParticipantListTile(
+                      widget.sender,
+                      superscript: "from".utr(),
+                      leading: GtImage(image: widget.senderImage),
+                      subtitle: sendFooter,
+                      crossAxisAlignment: .start,
+                      subStyle: field.hasError ? decoration.errorStyle : null,
+                    ),
                   ),
                   const GtGap.yBase(),
                   Row(
@@ -157,10 +168,13 @@ class _GtTransferFieldState extends State<GtTransferField> {
                     ],
                   ),
                   const GtGap.yMd(),
-                  GtTransactionParticipantListTile(
-                    widget.recipient.upper,
-                    superscript: "to".utr(),
-                    leading: widget.recipientAvatar,
+                  GtInkWell(
+                    onTap: widget.onTapReciver,
+                    child: GtTransactionParticipantListTile(
+                      widget.recipient.upper,
+                      superscript: "to".utr(),
+                      leading: widget.recipientAvatar,
+                    ),
                   ),
                 ],
               ),

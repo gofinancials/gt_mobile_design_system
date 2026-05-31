@@ -87,9 +87,12 @@ class GtDashboardScaffold extends GtStatefulWidget {
 class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
   late final PageController _pageController;
 
+  late int _currentIndex;
+
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.initialIndex;
     _pageController =
         widget.pageController ??
         PageController(initialPage: widget.initialIndex);
@@ -112,10 +115,12 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
       child: ListenableBuilder(
         listenable: _pageController,
         builder: (_, child) {
-          int index = widget.initialIndex;
+          int index = _currentIndex;
           if (_pageController.hasClients) {
             index = _pageController.page?.round() ?? index;
           }
+          _currentIndex = index;
+
           final data = widget.data[index];
           final appBar = data.appBar;
           final bgColor = data.backgroundColor;
@@ -133,10 +138,10 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
           return Scaffold(
             backgroundColor: bgColor ?? context.palette.bg.white,
             extendBodyBehindAppBar: true,
+            extendBody: true,
             appBar: appBar,
             body: body,
             bottomNavigationBar: GtBottomNavigationBar(
-              key: const PageStorageKey("gt-dashboard-nav-bar"),
               items: navItems,
               style: widget.bottomNavigationStyle,
               onTrailingTap: widget.onClickHelp,
@@ -153,9 +158,11 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
         },
         child: SafeArea(
           child: PageView.builder(
-            key: const PageStorageKey("gt-dashboard-page-view"),
             controller: _pageController,
-            onPageChanged: widget.onPageChanged?.call,
+            onPageChanged: (idx) {
+              _currentIndex = idx;
+              widget.onPageChanged?.call(idx);
+            },
             itemBuilder: (_, index) => pages[index],
             itemCount: pages.length,
             physics: const NeverScrollableScrollPhysics(),

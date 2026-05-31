@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gallery/widgets/gallery_page_header.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -24,26 +25,31 @@ class GalleryStatusWidgetShowcase extends StatelessWidget
   }) {
     showSheet<void>(
       context,
-      isScrollable: true,
-      child: Builder(
-        builder: (context) {
-          if (success) {
-            return GtStatusState.success(
-              messageTitle: "successful !",
+      maxHeightFraction: .5,
+      child: Padding(
+        padding: context.insets.defaultAllInsets,
+        child: Builder(
+          builder: (context) {
+            if (success) {
+              return GtStatusState.success(
+                title: "successful !",
+                subtitle:
+                    "Your BVN was added successfully. You can now initiate transactions.",
+                actionLabel: actionLabel,
+                actionVariant: .success,
+                onActionPressed: () => Navigator.of(context).pop(),
+              );
+            }
+            return GtStatusState.error(
+              title: "Verification failed",
               subtitle:
-                  "Your BVN was added successfully. You can now initiate transactions.",
+                  "We could not verify your identity at this moment. Please try again in an hour.",
               actionLabel: actionLabel,
+              actionVariant: .destructive,
               onActionPressed: () => Navigator.of(context).pop(),
             );
-          }
-          return GtStatusState.error(
-            messageTitle: "Verification failed",
-            subtitle:
-                "We could not verify your identity at this moment. Please try again in an hour.",
-            actionLabel: actionLabel,
-            onActionPressed: () => Navigator.of(context).pop(),
-          );
-        },
+          },
+        ),
       ),
     );
   }
@@ -57,13 +63,16 @@ class GalleryStatusWidgetShowcase extends StatelessWidget
   }) {
     showSheet<void>(
       context,
-      isScrollable: true,
-      child: GtStatusState.other(
-        messageTitle: messageTitle,
-        subtitle: subtitle,
-        statusIcon: stausIcon,
-        actionLabel: actionLabel,
-        onActionPressed: () => Navigator.of(context).pop(),
+      maxHeightFraction: .5,
+      child: Padding(
+        padding: context.insets.defaultAllInsets,
+        child: GtStatusState.custom(
+          title: messageTitle,
+          subtitle: subtitle,
+          icon: AppImageData(stausIcon),
+          actionLabel: actionLabel,
+          onActionPressed: () => Navigator.of(context).pop(),
+        ),
       ),
     );
   }

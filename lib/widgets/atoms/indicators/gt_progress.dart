@@ -106,6 +106,9 @@ class GtAnimatedProgress extends StatefulWidget {
   /// Whether to show an underlying indeterminate buffering animation.
   final bool isBuffering;
 
+  /// Optional [onCompleted] callback.
+  final OnPressed? onDone;
+
   /// Creates a new [GtAnimatedProgress].
   const GtAnimatedProgress({
     required this.value,
@@ -115,6 +118,7 @@ class GtAnimatedProgress extends StatefulWidget {
     this.width,
     this.height,
     this.inActiveColor,
+    this.onDone,
     super.key,
   });
 
@@ -136,10 +140,17 @@ class _GtAnimatedProgressState extends State<GtAnimatedProgress>
       upperBound: widget.value > 0 ? widget.value : 0.000001,
       vsync: this,
     )..forward();
+    _ctrl.addListener(_progressListener);
+  }
+
+  void _progressListener() {
+    if (_ctrl.value < 1) return;
+    widget.onDone?.call();
   }
 
   @override
   void dispose() {
+    _ctrl.removeListener(_progressListener);
     _ctrl.dispose();
     super.dispose();
   }

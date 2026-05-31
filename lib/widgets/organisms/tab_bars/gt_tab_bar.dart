@@ -37,10 +37,10 @@ class GtTabbar<T> extends GtStatefulWidget {
   }) : assert(tabs.length > 0);
 
   @override
-  State<GtTabbar> createState() => _GtTabbarState();
+  State<GtTabbar<T>> createState() => _GtTabbarState<T>();
 }
 
-class _GtTabbarState extends State<GtTabbar> {
+class _GtTabbarState<T> extends State<GtTabbar<T>> {
   @override
   Widget build(BuildContext context) {
     return GtSelectionTabbar(

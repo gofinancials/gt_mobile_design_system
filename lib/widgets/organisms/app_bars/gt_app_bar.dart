@@ -46,6 +46,9 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// The predefined size configuration for the [title].
   final GtAppBarTitleSize titleSize;
 
+  /// The optional height of the app bar.
+  final String? heroTag;
+
   /// Creates a [GtAppBar].
   const GtAppBar({
     this.leading,
@@ -54,6 +57,7 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     super.key,
     this.implyLeading = true,
     this.titleSize = .small,
+    this.heroTag,
   });
 
   bool get _hasLeading => leading != null;
@@ -69,43 +73,46 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
       leadingWidget = GtBackButton(size: titleSize.buttonSize);
     }
 
-    return Material(
-      type: .transparency,
-      child: Container(
-        padding: (context.insets.defaultHorizontalInsets).add(
-          EdgeInsets.only(top: toolbarHeight),
-        ),
-        color: Colors.transparent,
-        child: Table(
-          defaultVerticalAlignment: .middle,
-          columnWidths: const {
-            0: FlexColumnWidth(4),
-            1: FlexColumnWidth(10),
-            2: FlexColumnWidth(4),
-          },
-          children: [
-            TableRow(
-              children: [
-                Align(
-                  alignment: .centerLeft,
-                  child: GtSquareConstrainedBox(32, child: leadingWidget),
-                ),
-                GtText(
-                  title?.upper,
-                  style: titleSize.getStyle(context),
-                  textAlign: .center,
-                  maxLines: 2,
-                ),
-                Align(
-                  alignment: .centerRight,
-                  child: GtSquareConstrainedBox(24, child: trailing),
-                ),
-              ],
-            ),
-          ],
-        ),
+    Widget child = Container(
+      padding: (context.insets.defaultHorizontalInsets).add(
+        EdgeInsets.only(top: toolbarHeight),
+      ),
+      color: Colors.transparent,
+      child: Table(
+        defaultVerticalAlignment: .middle,
+        columnWidths: const {
+          0: FlexColumnWidth(4),
+          1: FlexColumnWidth(10),
+          2: FlexColumnWidth(4),
+        },
+        children: [
+          TableRow(
+            children: [
+              Align(
+                alignment: .centerLeft,
+                child: GtSquareConstrainedBox(32, child: leadingWidget),
+              ),
+              GtText(
+                title?.upper,
+                style: titleSize.getStyle(context),
+                textAlign: .center,
+                maxLines: 2,
+              ),
+              Align(
+                alignment: .centerRight,
+                child: GtSquareConstrainedBox(24, child: trailing),
+              ),
+            ],
+          ),
+        ],
       ),
     );
+
+    if (heroTag != null) {
+      child = Hero(tag: heroTag!, child: child);
+    }
+
+    return Material(type: .transparency, child: child);
   }
 
   @override

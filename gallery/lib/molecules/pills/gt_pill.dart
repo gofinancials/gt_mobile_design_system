@@ -196,7 +196,13 @@ Widget buildGtPillUseCase(BuildContext context) {
                   const GalleryPageSectionHeader(
                     title: "GtTabPill [GtSelectionTab]",
                   ),
-                  GtSelectionTabbar(tabs: tabs, controller: activeTab),
+                  GtSelectionTabbar(
+                    tabs: tabs,
+                    controller: activeTab,
+                    onChangeTab: (value) {
+                      AppLogger.info(value);
+                    },
+                  ),
                   const GalleryPageSectionHeader(
                     title: "GtTabPill [selection]",
                   ),

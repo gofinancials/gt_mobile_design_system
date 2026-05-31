@@ -86,6 +86,8 @@ import 'package:gallery/templates/screens/gt_duo_tone_screen.dart'
     as _gallery_templates_screens_gt_duo_tone_screen;
 import 'package:gallery/templates/screens/gt_how_to_screen.dart'
     as _gallery_templates_screens_gt_how_to_screen;
+import 'package:gallery/templates/screens/gt_lesson_complete_screen.dart'
+    as _gallery_templates_screens_gt_lesson_complete_screen;
 import 'package:gallery/templates/screens/gt_splash_screen.dart'
     as _gallery_templates_screens_gt_splash_screen;
 import 'package:gallery/templates/slides/gt_slides.dart'
@@ -750,12 +752,23 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               ),
               _widgetbook.WidgetbookComponent(
-                name: 'GtHowToScreen',
+                name: 'GtHowToLearnScreen',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtHowToScreen',
+                    name: 'GtHowToLearnScreen',
                     builder: _gallery_templates_screens_gt_how_to_screen
-                        .buildGtHowToScreenUsecase,
+                        .buildGtHowToLearnScreenUsecase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtLessonCompleteScreen',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtLessonCompleteScreen',
+                    builder:
+                        _gallery_templates_screens_gt_lesson_complete_screen
+                            .buildGtLessonCompletScreen,
                   ),
                 ],
               ),
@@ -789,6 +802,16 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'slides',
             children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtLessonSlides',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtLessonSlides',
+                    builder: _gallery_templates_slides_gt_slides
+                        .buildGtLessonSlidesUsecase,
+                  ),
+                ],
+              ),
               _widgetbook.WidgetbookComponent(
                 name: 'GtWelcomeSlides',
                 useCases: [

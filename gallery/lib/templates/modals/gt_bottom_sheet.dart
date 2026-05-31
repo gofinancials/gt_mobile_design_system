@@ -49,7 +49,7 @@ class _BottomSheetPreviewState extends State<_BottomSheetPreview>
                   context,
                   maxHeightFraction: .5,
                   child: GtStatusState.success(
-                    messageTitle: "successful !",
+                    title: "successful !",
                     subtitle:
                         "Your BVN was added successfully. You can now initiate transactions.",
                     actionLabel: "SUCCESS",

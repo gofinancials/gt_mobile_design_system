@@ -15,11 +15,12 @@ Widget playgroundImageUseCase(BuildContext context) {
     initialOption:
         "https://res.cloudinary.com/jesse-dirisu/image/upload/v1589648790/bookme_mail/payment.png",
   );
-  String lottierl = context.knobs.object.dropdown(
+  String lottieUrl = context.knobs.object.dropdown(
     label: "Test Lottie Urls",
     options: [
       'https://storage.googleapis.com/dump-storage-jesse/Saving%20the%20Money.json',
       'https://storage.googleapis.com/dump-storage-jesse/Money.json',
+      GtNetworkLotties.waveForm,
     ],
     initialOption:
         "https://storage.googleapis.com/dump-storage-jesse/Saving%20the%20Money.json",
@@ -87,7 +88,7 @@ Widget playgroundImageUseCase(BuildContext context) {
           ),
           SliverToBoxAdapter(
             child: GtLottie(
-              lottierl,
+              lottieUrl,
               height: height,
               width: width,
               alignment: alignment.$2,
