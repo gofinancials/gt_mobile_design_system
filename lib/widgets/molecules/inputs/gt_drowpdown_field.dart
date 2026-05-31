@@ -35,6 +35,15 @@ class GtDropdownField<T> extends GtStatefulWidget {
   /// An optional builder to customize the appearance of individual option items in the list.
   final ValueBuilder2<GtDropdownData, GtDropdownInputController>? optionBuilder;
 
+  /// An optional widget to display when there are no options.
+  final Widget? emptyWidget;
+
+  /// An optional widget to display while loading options.
+  final Widget? loadingWidget;
+
+  /// An optional widget to display when error occurs when getting options.
+  final Widget? errorWidget;
+
   /// An optional builder to entirely customize the list view of the dropdown options.
   final ValueBuilder3<
     List<GtDropdownData>,
@@ -101,6 +110,9 @@ class GtDropdownField<T> extends GtStatefulWidget {
     this.debounceTime,
     this.autoFocus = false,
     this.optionsGap = const GtGap.yLg(),
+    this.emptyWidget,
+    this.loadingWidget,
+    this.errorWidget,
   }) : assert(
          optionBuilder == null || optionsBuilder == null,
          'Cannot provide both optionBuilder and optionsBuilder.',
@@ -156,6 +168,9 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
         listBuilder: widget.optionsBuilder,
         debounceTime: widget.debounceTime ?? 500.milliseconds,
         builder: widget.optionBuilder,
+        emptyWidget: widget.emptyWidget,
+        loadingWidget: widget.loadingWidget,
+        errorWidget: widget.errorWidget,
       ),
     );
   }
@@ -211,6 +226,15 @@ class GtDropDownModal<T> extends GtStatefulWidget {
   /// The list of options to display, or a future resolving to it.
   final OptionsHolder<T> options;
 
+  /// An optional widget to display when there are no options.
+  final Widget? emptyWidget;
+
+  /// An optional widget to display while loading options.
+  final Widget? loadingWidget;
+
+  /// An optional widget to display when error occurs when getting options.
+  final Widget? errorWidget;
+
   /// An optional builder for individual option list tiles.
   final ValueBuilder2<GtDropdownData, GtDropdownInputController>? builder;
 
@@ -232,6 +256,9 @@ class GtDropDownModal<T> extends GtStatefulWidget {
     this.title,
     this.builder,
     this.listBuilder,
+    this.emptyWidget,
+    this.loadingWidget,
+    this.errorWidget,
     required this.options,
     required this.controller,
     required this.debounceTime,
@@ -320,7 +347,17 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal>
                 builder: (_, child) {
                   final options = presentedOptions.value;
 
-                  if (isLoading) return GtSpinner();
+                  if (isLoading) {
+                    return widget.loadingWidget ?? GtSpinner();
+                  }
+
+                  if (task.hasError && widget.errorWidget != null) {
+                    return widget.errorWidget!;
+                  }
+
+                  if (!hasData && widget.emptyWidget != null) {
+                    return widget.emptyWidget!;
+                  }
 
                   if (widget.listBuilder != null) {
                     return widget.listBuilder!(
@@ -329,8 +366,6 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal>
                       widget.scrollController,
                     );
                   }
-
-                  // TODO: Work on empty state
 
                   return ListView.separated(
                     padding: context.insets.allDp(16.px),

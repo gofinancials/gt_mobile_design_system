@@ -11,50 +11,62 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 class GtEmptyState extends GtStatelessWidget {
   /// Illustration asset path rendered at the top (e.g. from
   /// [GtVectorIllustrations]).
-  final String icon;
+  final AppImageData icon;
 
   /// Main heading text for the empty state.
   final String title;
 
   /// Supporting descriptive copy beneath the title.
-  final String subtitle;
+  final String? subtitle;
+
+  /// The spacing between the title and the subtitle.
+  ///
+  /// Defaults to `GtGap.yMd()`.
+  final GtViewStateSpacer gapToSubtitle;
+
+  /// The text to display on the call-to-action button.
+  final String? actionText;
+
+  /// The callback to execute when the call-to-action button is pressed.
+  final OnPressed? onActionPressed;
+
+  /// The visual variant of the call-to-action button.
+  final GtButtonVariant? buttonVariant;
+
+  /// The alignment of the empty state widget.
+  ///
+  /// Defaults to `.center`.
+  final AlignmentGeometry? alignment;
 
   /// Creates a [GtEmptyState] with required icon/title/subtitle content.
   const GtEmptyState({
     super.key,
     required this.icon,
     required this.title,
-    required this.subtitle,
-  });
+    this.subtitle,
+    this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
+    this.actionText,
+    this.onActionPressed,
+    this.buttonVariant,
+    this.alignment,
+  }) : assert(
+         (onActionPressed == null) == (actionText == null),
+         'onActionPressed and actionText must be provided together',
+       );
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
-    final illustrationSize = context.dp(130.px);
-
-    return Column(
-      mainAxisSize: .min,
-      crossAxisAlignment: .center,
-      children: [
-        // Empty-state illustration.
-        GtSvg(icon, width: illustrationSize, height: illustrationSize),
-        const GtGap.ySectionSm(),
-        // Primary heading.
-        GtText(
-          title.upper,
-          textAlign: TextAlign.center,
-          style: context.textStyles.h6(color: palette.text.strong),
-        ),
-        const GtGap.yBase(),
-        // Supporting description.
-        GtText(
-          subtitle,
-          textAlign: TextAlign.center,
-          style: context.textStyles.subHead2xs(
-            color: GtColors.neutral600.value,
-          ),
-        ),
-      ],
+    return GtViewStateWidget(
+      title: title,
+      description: subtitle,
+      icon: icon,
+      alignment: alignment ?? .center,
+      gapToDescription: gapToSubtitle,
+      actionText: actionText,
+      onActionPressed: onActionPressed,
+      actionVariant: buttonVariant,
+      actionSize: .xsmall,
+      actionAlignment: .center,
     );
   }
 }

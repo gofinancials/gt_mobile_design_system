@@ -31,6 +31,21 @@ class GtPhoneField extends GtStatefulWidget {
   /// Whether a valid phone number must be entered to pass validation. Defaults to true.
   final bool isRequired;
 
+  /// An optional widget to display when there are no options.
+  final Widget? emptyWidget;
+
+  /// An optional widget to display while loading options.
+  final Widget? loadingWidget;
+
+  /// An optional widget to display when error occurs when getting options.
+  final Widget? errorWidget;
+
+  /// Indicates whether the country code should be displayed.
+  final bool showCountryCode;
+
+  /// An optional method that validates the input text.
+  final OnValidate<String?>? validator;
+
   /// Creates a new [GtPhoneField].
   const GtPhoneField({
     super.key,
@@ -41,6 +56,11 @@ class GtPhoneField extends GtStatefulWidget {
     this.isRequired = true,
     this.isEnabled = true,
     this.textAlign = .start,
+    this.emptyWidget,
+    this.loadingWidget,
+    this.errorWidget,
+    this.showCountryCode = true,
+    this.validator,
   });
   @override
   State<GtPhoneField> createState() => _GtPhoneFieldState();
@@ -62,6 +82,9 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
   }
 
   String? _validator([String? value]) {
+    if (widget.validator != null) {
+      return widget.validator!(value ?? controller.text);
+    }
     return AppValidators.phoneValidator(
       value ?? controller.text,
       countryCode: controller.selection?.value.countryCode ?? '',
@@ -72,6 +95,18 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
   @override
   Widget build(BuildContext context) {
     final decor = context.inputStyles.phoneInputDecoration;
+    final prefix = GenericListener(
+      valueListenable: controller.selectionNotifier,
+      builder: (country) {
+        if (!widget.showCountryCode) return const Offstage();
+
+        return GtText(
+          country?.value.countryCode ?? config.countryCode,
+          style: decor.hintStyle,
+        );
+      },
+    );
+
     return ListenableBuilder(
       listenable: controller.selectionNotifier,
       child: GtTextField(
@@ -87,15 +122,7 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
           if (error != null) return "";
           return error;
         },
-        prefix: GenericListener(
-          valueListenable: controller.selectionNotifier,
-          builder: (country) {
-            return GtText(
-              country?.value.countryCode ?? config.countryCode,
-              style: decor.hintStyle,
-            );
-          },
-        ),
+        prefix: widget.showCountryCode ? prefix : null,
         suffix: GenericListener(
           valueListenable: controller.controller,
           builder: (value) {
@@ -129,7 +156,8 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
                 Row(
                   spacing: context.spacingBase,
                   children: [
-                    GtCountryCodeField(controller: controller),
+                    if (widget.showCountryCode)
+                      GtCountryCodeField(controller: controller),
                     Expanded(child: child!),
                   ],
                 ),
@@ -173,8 +201,22 @@ class GtCountryCodeField extends GtStatefulWidget {
   /// The controller used to read and manipulate the selected country.
   final GtInputController<Country> controller;
 
+  final Widget? emptyWidget;
+
+  /// An optional widget to display while loading options.
+  final Widget? loadingWidget;
+
+  /// An optional widget to display when error occurs when getting options.
+  final Widget? errorWidget;
+
   /// Creates a new [GtCountryCodeField].
-  const GtCountryCodeField({super.key, required this.controller});
+  const GtCountryCodeField({
+    super.key,
+    required this.controller,
+    this.emptyWidget,
+    this.loadingWidget,
+    this.errorWidget,
+  });
 
   @override
   State<GtCountryCodeField> createState() => _GtCountryCodeFieldState();
@@ -242,6 +284,9 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
         controller: controller,
         options: _allCountries,
         debounceTime: 500.milliseconds,
+        emptyWidget: widget.emptyWidget,
+        loadingWidget: widget.loadingWidget,
+        errorWidget: widget.errorWidget,
         builder: (value, value2) {
           return GtCountrySelectionListTile(
             value.value,

@@ -435,6 +435,9 @@ final class GtLessonslideController extends ChangeNotifier {
     _animationController?.forward(from: _animationController?.value);
   }
 
+  /// Starts or resumes media playback and slide animations.
+  void seekTo(Duration duration) => _mediaPlayer?.seekTo(duration);
+
   /// Pauses active media playback and stops slide animations.
   void pause() {
     _mediaPlayer?.pause();

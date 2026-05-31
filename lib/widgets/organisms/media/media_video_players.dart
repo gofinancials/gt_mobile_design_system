@@ -46,12 +46,7 @@ class _GtVideoPlayerState extends State<GtVideoPlayer> {
                   ),
                 ),
               ),
-              if (!isIntialised || value.isBuffering)
-                Positioned.fill(
-                  child: Center(
-                    child: GtSpinner(color: context.palette.primary.base),
-                  ),
-                ),
+              if (!isIntialised || value.isBuffering) const GtSpinner(),
             ],
           );
         },
@@ -82,16 +77,9 @@ class _GtYoutubePlayerState extends State<GtYoutubePlayer> {
   @override
   Widget build(BuildContext context) {
     return RepaintBoundary(
-      child: IgnorePointer(
-        child: Center(
-          child: FittedBox(
-            fit: .scaleDown,
-            child: YoutubePlayer(
-              controller: widget.controller,
-              bufferIndicator: const GtSpinner(),
-            ),
-          ),
-        ),
+      child: YoutubePlayer(
+        controller: widget.controller,
+        bufferIndicator: const GtSpinner(),
       ),
     );
   }

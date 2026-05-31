@@ -126,7 +126,7 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                           key: ValueKey('title_${data.header.hashCode}'),
                         ),
                       ),
-                    Positioned.fill(
+                    Center(
                       child: Builder(
                         builder: (context) {
                           return switch (data.slideType) {
