@@ -32,8 +32,15 @@ class GtLessonSlides extends GtStatefulWidget {
   State<GtLessonSlides> createState() => _GtLessonSlidesState();
 }
 
-class _GtLessonSlidesState extends State<GtLessonSlides> {
+class _GtLessonSlidesState extends State<GtLessonSlides> with RouteAware {
   late GtLessonslideController _controller;
+
+  @override
+  void didPush() {
+    _controller.pause();
+    _controller.reset(notify: false);
+    super.didPush();
+  }
 
   @override
   void initState() {
@@ -53,6 +60,14 @@ class _GtLessonSlidesState extends State<GtLessonSlides> {
     widget.onCancel();
   }
 
+  Gradient? _getGradient(BuildContext context, GtLessonSlideData data) {
+    if (data.color == null && data.gradient == null) {
+      return context.gradients.slideGradient();
+    }
+
+    return data.gradient;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -68,34 +83,47 @@ class _GtLessonSlidesState extends State<GtLessonSlides> {
         }
 
         final data = _controller.currentSlide;
+        final bgColor = data.color ?? context.palette.bg.soft;
 
         return Scaffold(
           key: ValueKey(data.hashCode),
-          backgroundColor: data.color,
+          backgroundColor: bgColor,
           extendBody: true,
           extendBodyBehindAppBar: true,
           appBar: GtAppBar(
             trailing: GtCancelButton(onTap: _cancel),
             title: data.title,
           ),
-          body: Stack(
-            children: [
-              GtLessonSlide(
-                key: ValueKey(_controller.currentSlide.hashCode),
-                controller: _controller,
-                onTapNext: _controller.next,
-                onTapPrev: _controller.prev,
-                onLongPressDown: _controller.onLongPressDown,
-                onLongPressUp: _controller.onLongPressUp,
-                onSwipeDown: _cancel,
-              ),
-              Positioned(
-                top: context.spacingSectionSm,
-                left: 0,
-                right: 0,
-                child: SafeArea(child: child!),
-              ),
-            ],
+          body: DecoratedBox(
+            decoration: BoxDecoration(
+              color: bgColor,
+              gradient: _getGradient(context, data),
+            ),
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: SafeArea(
+                    bottom: false,
+                    child: GtLessonSlide(
+                      key: ValueKey(_controller.currentSlide.hashCode),
+                      controller: _controller,
+                      onTapNext: _controller.next,
+                      onTapPrev: _controller.prev,
+                      onLongPressDown: _controller.onLongPressDown,
+                      onLongPressUp: _controller.onLongPressUp,
+                      onSwipeDown: _cancel,
+                      indicatorColor: widget.indicatorColor,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: kToolbarHeight + context.dp(30.px),
+                  left: context.dp(32.px),
+                  right: context.dp(32.px),
+                  child: child!,
+                ),
+              ],
+            ),
           ),
         );
       },

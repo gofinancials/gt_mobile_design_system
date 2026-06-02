@@ -68,4 +68,16 @@ class GtGradients {
       end: Alignment.bottomRight,
     );
   }
+
+  /// Creates a two-tone linear gradient.
+  ///
+  /// Transitions from the provided [light] color at the top-left to the [dark] color at the bottom-right.
+  Gradient slideGradient() {
+    return LinearGradient(
+      begin: .bottomLeft,
+      end: .topRight,
+      colors: [context.palette.bg.sky, context.palette.bg.weak],
+      stops: [.8, 1],
+    );
+  }
 }

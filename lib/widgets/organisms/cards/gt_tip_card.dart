@@ -70,7 +70,7 @@ class GtTipCard extends GtStatelessWidget {
                       ),
                     ],
                   ),
-                  GtText(
+                  GtRichText(
                     subtitle,
                     style: context.textStyles.bodyXs(
                       color: palette.text.darkerSub,

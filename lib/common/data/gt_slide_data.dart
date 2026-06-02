@@ -87,37 +87,11 @@ class GtLessonSlideHeader extends AppEquatable {
   /// The secondary subtitle text of the header.
   final String subTitle;
 
-  /// The text style for the [title].
-  final TextStyle? titleStyle;
-
-  /// The text style for the [subTitle].
-  final TextStyle? subtitleStyle;
-
-  /// Whether the subtitle should be visually embedded within a card-like container.
-  final bool embedSubtitleInCard;
-
-  /// The positional offset of the header on the slide.
-  final Offset offset;
-
   /// Creates a [GtLessonSlideHeader] instance.
-  const GtLessonSlideHeader({
-    required this.title,
-    required this.subTitle,
-    this.titleStyle,
-    this.subtitleStyle,
-    this.embedSubtitleInCard = false,
-    this.offset = Offset.zero,
-  });
+  const GtLessonSlideHeader({required this.title, required this.subTitle});
 
   @override
-  List<Object?> get props => [
-    title,
-    subTitle,
-    titleStyle,
-    subtitleStyle,
-    embedSubtitleInCard,
-    offset,
-  ];
+  List<Object?> get props => [title, subTitle];
 }
 
 /// Defines a background image to be rendered behind the slide content.
@@ -175,7 +149,7 @@ class GtLessonSlideImage extends AppEquatable {
 /// of a single lesson slide (e.g., in a story-style format).
 class GtLessonSlideData extends AppEquatable {
   /// The header information displayed over the slide content.
-  final GtLessonSlideHeader? header;
+  final GtLessonSlideHeader header;
 
   /// The main title of the slide.
   final String title;
@@ -186,17 +160,11 @@ class GtLessonSlideData extends AppEquatable {
   /// The background color of the slide.
   final Color? color;
 
-  /// The color of the text on the slide.
-  final Color? textColor;
-
   /// A gradient applied to the background of the slide.
   final Gradient? gradient;
 
   /// The media content (image, video, or audio) for the slide.
   final AppMediaData? media;
-
-  /// A list of background images to layer behind the slide content.
-  final List<GtLessonSlideImage>? backgroundImages;
 
   /// The explicit type of the slide.
   final GtLessonSlideType slideType;
@@ -204,32 +172,46 @@ class GtLessonSlideData extends AppEquatable {
   /// Optional alignment for the media content.
   final Alignment? imageAlignment;
 
+  /// Optional alignment for the media content.
+  final double? imageSize;
+
+  /// Creates a [GtLessonSlideData] instance.
+  const GtLessonSlideData({
+    required this.title,
+    this.color,
+    required this.header,
+    this.gradient,
+    required this.slideType,
+    this.media,
+    this.imageAlignment,
+    this.text,
+    this.imageSize,
+  });
+
   /// Creates a slide that primarily displays an image.
   const GtLessonSlideData.withImage({
     required AppImageData data,
     required Alignment alignment,
     required this.title,
     this.color,
-    this.header,
+    required this.header,
     this.gradient,
+    this.imageSize = 240,
   }) : slideType = .image,
        imageAlignment = alignment,
        media = data,
-       backgroundImages = null,
-       text = null,
-       textColor = null;
+       text = null;
 
   /// Creates a slide that primarily displays text.
   const GtLessonSlideData.withText({
-    this.header,
+    required this.header,
     required String data,
     required this.title,
-    required this.textColor,
     this.color,
     this.gradient,
-    this.backgroundImages,
   }) : slideType = .text,
        media = null,
+       imageSize = null,
        imageAlignment = null,
        text = data;
 
@@ -239,27 +221,25 @@ class GtLessonSlideData extends AppEquatable {
     required this.title,
     this.color,
     this.gradient,
-    this.backgroundImages,
   }) : slideType = .text,
        media = null,
        header = data,
+       imageSize = null,
        imageAlignment = null,
-       text = null,
-       textColor = null;
+       text = null;
 
   /// Creates a slide that displays audio or video media.
   const GtLessonSlideData.withAV({
     required AppAvData data,
     required this.title,
-    this.header,
+    required this.header,
     this.color,
     this.gradient,
   }) : media = data,
        slideType = .audioVisual,
-       backgroundImages = null,
        imageAlignment = null,
-       text = null,
-       textColor = null;
+       imageSize = null,
+       text = null;
 
   /// Calculates the display duration of the slide based on its content.
   ///
@@ -297,8 +277,8 @@ class GtLessonSlideData extends AppEquatable {
   /// Assumes an average reading speed of 200 words per minute.
   Duration get _getTextDuration {
     try {
-      final title = header?.title ?? "";
-      final sub = header?.subTitle ?? "";
+      final title = header.title;
+      final sub = header.subTitle;
       final content = "${text ?? ''} $title $sub";
 
       if (!content.hasValue) return 0.seconds;
@@ -318,10 +298,8 @@ class GtLessonSlideData extends AppEquatable {
     title,
     text,
     color,
-    textColor,
     gradient,
     media,
-    backgroundImages,
     slideType,
     imageAlignment,
   ];
@@ -534,7 +512,7 @@ final class GtLessonslideController extends ChangeNotifier {
   @override
   void dispose() {
     reset(notify: false);
-    _mediaPlayer?.dispose();
+
     super.dispose();
   }
 }

@@ -20,11 +20,6 @@ enum GtAppBarTitleSize {
       .large => context.textStyles.h5(),
     };
   }
-
-  GtBackButtonSize get buttonSize => switch (this) {
-    .small || .medium => .small,
-    _ => .large,
-  };
 }
 
 /// A highly customizable general-purpose app bar.
@@ -49,6 +44,9 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// The optional height of the app bar.
   final String? heroTag;
 
+  /// The size of the back button.
+  final GtBackButtonSize backButtonSize;
+
   /// Creates a [GtAppBar].
   const GtAppBar({
     this.leading,
@@ -57,6 +55,7 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     super.key,
     this.implyLeading = true,
     this.titleSize = .small,
+    this.backButtonSize = .large,
     this.heroTag,
   });
 
@@ -70,7 +69,7 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     Widget? leadingWidget = leading;
 
     if (canImplyLeading && !_hasLeading) {
-      leadingWidget = GtBackButton(size: titleSize.buttonSize);
+      leadingWidget = GtBackButton(size: backButtonSize);
     }
 
     Widget child = Container(
@@ -100,7 +99,7 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
               ),
               Align(
                 alignment: .centerRight,
-                child: GtSquareConstrainedBox(24, child: trailing),
+                child: GtSquareConstrainedBox(32, child: trailing),
               ),
             ],
           ),

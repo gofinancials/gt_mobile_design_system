@@ -148,6 +148,7 @@ class GtPaletteBgColors {
   final Color white;
   final Color warm;
   final Color neutralWarm50;
+  final Color sky;
 
   const GtPaletteBgColors({
     required this.strong,
@@ -159,6 +160,7 @@ class GtPaletteBgColors {
     required this.white,
     required this.warm,
     required this.neutralWarm50,
+    required this.sky,
   });
 
   List<Color> get all => [
@@ -171,6 +173,7 @@ class GtPaletteBgColors {
     warm,
     neutralWarm50,
     white,
+    sky,
   ];
 
   static GtPaletteBgColors lerp(
@@ -188,6 +191,7 @@ class GtPaletteBgColors {
       white: Color.lerp(a?.white, b?.white, t)!,
       neutralWarm50: Color.lerp(a?.neutralWarm50, b?.neutralWarm50, t)!,
       warm: Color.lerp(a?.warm, b?.warm, t)!,
+      sky: Color.lerp(a?.sky, b?.sky, t)!,
     );
   }
 
@@ -203,6 +207,7 @@ class GtPaletteBgColors {
         other.weak == weak &&
         other.white == white &&
         other.warm == warm &&
+        other.sky == sky &&
         other.neutralWarm50 == neutralWarm50;
   }
 

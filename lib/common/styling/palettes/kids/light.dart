@@ -30,6 +30,7 @@ final class KidsLightPalette extends GtPalette {
           warm: GtColors.yellow25.value,
           neutralWarm50: GtColors.neutralWarm50.value,
           weaker: GtColors.neutral25.value,
+          sky: GtColors.skyAlpha5.value,
         ),
         fill: GtPaletteBgColors(
           strong: GtColors.neutral950.value,
@@ -41,6 +42,7 @@ final class KidsLightPalette extends GtPalette {
           warm: GtColors.yellow25.value,
           neutralWarm50: GtColors.neutralWarm50.value,
           weaker: GtColors.neutral25.value,
+          sky: GtColors.skyAlpha5.value,
         ),
         text: GtPaletteTextColors(
           strong: GtColors.neutral950.value,

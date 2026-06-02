@@ -30,6 +30,7 @@ final class PersonalDarkPalette extends GtPalette {
           warm: GtColors.yellow25.dark,
           neutralWarm50: GtColors.neutralWarm50.dark,
           weaker: GtColors.neutral25.dark,
+          sky: GtColors.neutral200.dark,
         ),
         fill: GtPaletteBgColors(
           strong: GtColors.neutral950.dark,
@@ -41,6 +42,7 @@ final class PersonalDarkPalette extends GtPalette {
           warm: GtColors.yellow25.dark,
           neutralWarm50: GtColors.neutralWarm50.dark,
           weaker: GtColors.neutral25.dark,
+          sky: GtColors.neutral200.dark,
         ),
         text: GtPaletteTextColors(
           strong: GtColors.neutral950.dark,

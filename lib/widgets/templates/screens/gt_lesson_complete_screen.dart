@@ -23,7 +23,7 @@ class GtLessonCompleteScreen extends GtStatelessWidget {
   final GtButton primaryButton;
 
   /// The secondary action button (e.g., "back to learn").
-  final GtButton secondaryButton;
+  final GtButton? secondaryButton;
 
   /// Creates a [GtLessonCompleteScreen].
   const GtLessonCompleteScreen({
@@ -41,8 +41,8 @@ class GtLessonCompleteScreen extends GtStatelessWidget {
 
     return Scaffold(
       bottomNavigationBar: GtButtonBottomNavBar(
-        heading: primaryButton,
-        button: secondaryButton,
+        heading: secondaryButton != null ? primaryButton : null,
+        button: secondaryButton ?? primaryButton,
         spacing: context.spacingMd,
       ),
       appBar: const GtAppBar(),
