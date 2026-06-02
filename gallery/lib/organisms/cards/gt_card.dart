@@ -214,7 +214,7 @@ Widget buildGtCardUseCase(BuildContext context) {
               GtReminderBanner(
                 title: "UPGRADE FOLA'S ACCOUNT",
                 subtitle:
-                    "Fola is ready to move to a full OneBank account with full access to their money.",
+                    "You're 18 now! Time to upgrade your account and unlock more features built for you.",
                 icon: GtSvg(GtVectorIllustrations.referral),
                 onClose: () {},
                 variant: alertVariant,

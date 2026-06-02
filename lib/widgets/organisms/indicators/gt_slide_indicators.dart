@@ -36,7 +36,7 @@ class GtSlidesIndicator extends GtStatelessWidget {
             children: [
               for (final (index, slide) in controller.slides.indexed)
                 Flexible(
-                  child: _SlideIndicator(
+                  child: GtSlideIndicator(
                     key: ValueKey('slide_indicator_${index}_${slide.hashCode}'),
                     slide: slide,
                     controller: controller,
@@ -52,13 +52,13 @@ class GtSlidesIndicator extends GtStatelessWidget {
   }
 }
 
-class _SlideIndicator extends StatefulWidget {
+class GtSlideIndicator extends StatefulWidget {
   final GtLessonSlideData slide;
   final GtLessonSlideState state;
   final GtLessonslideController controller;
   final Color? indicatorColor;
 
-  const _SlideIndicator({
+  const GtSlideIndicator({
     required this.slide,
     required this.state,
     required this.controller,
@@ -67,10 +67,10 @@ class _SlideIndicator extends StatefulWidget {
   });
 
   @override
-  State<_SlideIndicator> createState() => _SlideIndicatorState();
+  State<GtSlideIndicator> createState() => _GtSlideIndicatorState();
 }
 
-class _SlideIndicatorState extends State<_SlideIndicator>
+class _GtSlideIndicatorState extends State<GtSlideIndicator>
     with TickerProviderStateMixin {
   Future<void>? _setupFuture;
 
@@ -82,7 +82,7 @@ class _SlideIndicatorState extends State<_SlideIndicator>
   }
 
   @override
-  void didUpdateWidget(covariant _SlideIndicator oldWidget) {
+  void didUpdateWidget(covariant GtSlideIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.state == .active && oldWidget.state != .active) {
       _setupFuture = widget.controller.initialiseProgress(this);
@@ -98,6 +98,7 @@ class _SlideIndicatorState extends State<_SlideIndicator>
     if (widget.state == .done) {
       return GtProgress(
         value: 1,
+        size: 8,
         inactiveColor: inactiveColor,
         color: activeColor,
       );
@@ -105,6 +106,7 @@ class _SlideIndicatorState extends State<_SlideIndicator>
     if (widget.state == .pending) {
       return GtProgress(
         value: 0,
+        size: 8,
         inactiveColor: inactiveColor,
         color: activeColor,
       );
@@ -124,6 +126,7 @@ class _SlideIndicatorState extends State<_SlideIndicator>
               animation: animationController,
               builder: (context, _) {
                 return GtProgress(
+                  size: 8,
                   value: animationController.value,
                   inactiveColor: inactiveColor,
                   color: activeColor,
@@ -142,6 +145,7 @@ class _SlideIndicatorState extends State<_SlideIndicator>
                 final progress = isBuffering ? null : data?.progress;
 
                 return GtProgress(
+                  size: 8,
                   value: progress,
                   inactiveColor: inactiveColor,
                   color: activeColor,
@@ -150,7 +154,11 @@ class _SlideIndicatorState extends State<_SlideIndicator>
             );
           }
 
-          return GtProgress(inactiveColor: inactiveColor, color: activeColor);
+          return GtProgress(
+            size: 8,
+            inactiveColor: inactiveColor,
+            color: activeColor,
+          );
         },
       ),
     );

@@ -80,8 +80,8 @@ class GtAlertIconCard extends GtStatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              top: context.dp(4.px),
-              right: context.dp(4.px),
+              top: context.dp(6.px),
+              right: context.dp(6.px),
               child: GtSquareConstrainedBox(
                 4,
                 child: DecoratedBox(

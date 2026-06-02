@@ -255,6 +255,7 @@ enum GtColors {
   maroonAlpha16(ColorSet(0x29CB0828)),
   maroonAlpha10(ColorSet(0x1ACB0828)),
 
+  skyAlpha5(ColorSet(0x1AB8CDD9)),
   darkGreen(ColorSet(0xFF004045)),
   lemon(ColorSet(0xFF26E36B));
 

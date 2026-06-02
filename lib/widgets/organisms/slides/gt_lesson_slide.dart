@@ -27,6 +27,9 @@ class GtLessonSlide extends GtStatefulWidget {
   /// The controller managing slide navigation and media playback for audio-visual slides.
   final GtLessonslideController controller;
 
+  /// The color of the slide indicator.
+  final Color? indicatorColor;
+
   /// Creates a [GtLessonSlide].
   const GtLessonSlide({
     super.key,
@@ -36,6 +39,7 @@ class GtLessonSlide extends GtStatefulWidget {
     required this.onLongPressUp,
     required this.controller,
     this.onSwipeDown,
+    this.indicatorColor,
   });
 
   @override
@@ -102,54 +106,52 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                 widget.onSwipeDown?.call();
               }
             },
-            child: AnimatedContainer(
-              duration: 500.milliseconds,
-              curve: Curves.decelerate,
+            child: Container(
+              margin: context.insets.onlyDp(
+                top: 24.px,
+                left: 16.px,
+                right: 16.px,
+              ),
+              padding: context.insets.onlyDp(top: 30.px),
               decoration: BoxDecoration(
                 gradient: data.gradient,
-                color: data.color,
+                color: context.palette.bg.weak,
+                borderRadius: BorderRadius.vertical(top: context.radius4Xl),
               ),
               child: SafeArea(
                 bottom: false,
-                child: Stack(
+                child: Column(
+                  crossAxisAlignment: .stretch,
                   children: [
-                    for (final image in (data.backgroundImages ?? []))
-                      GtLessonSlideBackground(
-                        image,
-                        key: ValueKey('bg_${image.hashCode}'),
-                      ),
-                    if (data.header != null)
-                      Positioned.fill(
-                        top: context.spacingsection2xl,
-                        child: GtLessonSlideTitle(
-                          data.header!,
-                          key: ValueKey('title_${data.header.hashCode}'),
-                        ),
-                      ),
-                    Center(
+                    const GtGap.ySectionXl(),
+                    GtLessonSlideTitle(
+                      data.header,
+                      key: ValueKey('title_${data.header.hashCode}'),
+                    ),
+                    Expanded(
                       child: Builder(
                         builder: (context) {
                           return switch (data.slideType) {
                             .image => GtImage(
                               key: ValueKey('img_${data.media.hashCode}'),
-                              fit: .cover,
+                              fit: .contain,
                               useDefaultSize: false,
-                              alignment: data.imageAlignment ?? .bottomCenter,
+                              alignment: data.imageAlignment ?? .center,
+                              width: data.imageSize,
+                              height: data.imageSize,
                               image: data.media as AppImageData,
                             ),
-                            .text => Padding(
-                              padding: context.insets.defaultAllInsets,
+                            .text => SingleChildScrollView(
+                              padding: context.insets.symmetricDp(
+                                vertical: 20.px,
+                                horizontal: 16.px,
+                              ),
                               child: Center(
-                                child: FittedBox(
-                                  fit: .scaleDown,
-                                  child: GtRichText(
-                                    data.text,
-                                    key: ValueKey('txt_${data.text.hashCode}'),
-                                    textAlign: .center,
-                                    style: context.textStyles.h6(
-                                      color: data.textColor,
-                                    ),
-                                  ),
+                                child: GtRichText(
+                                  data.text,
+                                  key: ValueKey('txt_${data.text.hashCode}'),
+                                  textAlign: .center,
+                                  style: context.textStyles.bodyM(),
                                 ),
                               ),
                             ),
@@ -252,16 +254,18 @@ class _GtLessonSlideMediaState extends State<GtLessonSlideMedia>
     final source = widget.controller.mediaSource;
     if (source == null) return const Offstage();
 
-    return IgnorePointer(
-      key: ValueKey(source.hashCode),
-      child: Builder(
-        builder: (context) {
-          if (source.isVideo) return GtVideoPlayer(source.video!);
-          if (source.isYoutube) return GtYoutubePlayer(source.youtube!);
-          if (source.isAudio) return GtLottie(GtNetworkLotties.waveForm);
+    return Center(
+      child: IgnorePointer(
+        key: ValueKey(source.hashCode),
+        child: Builder(
+          builder: (context) {
+            if (source.isVideo) return GtVideoPlayer(source.video!);
+            if (source.isYoutube) return GtYoutubePlayer(source.youtube!);
+            if (source.isAudio) return GtLottie(GtNetworkLotties.waveForm);
 
-          return const SizedBox.shrink();
-        },
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }
@@ -281,53 +285,29 @@ class GtLessonSlideTitle extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final styles = context.textStyles;
-    final titleStyle = styles.h4(color: context.palette.staticColors.black);
-    final subStyle = styles.subHeadS(color: context.palette.staticColors.black);
+    final titleStyle = styles.h5();
+    final subStyle = styles.subHeadS();
 
-    Widget subWidget = GtText(
-      data.subTitle,
-      style: data.subtitleStyle ?? subStyle,
-      maxLines: 20,
-    );
-
-    return TweenAnimationBuilder(
-      tween: Tween<Offset>(begin: .zero, end: data.offset),
-      duration: 500.milliseconds,
-      builder: (_, offset, child) {
-        return Transform.translate(
-          offset: offset,
-          child: Padding(
-            padding: context.insets.fromLTRBDp(16.px, 0, 50.px, 0),
-            child: Column(
-              crossAxisAlignment: .start,
-              spacing: context.spacingMd,
-              children: [
-                GtText(
-                  data.title,
-                  style: data.titleStyle ?? titleStyle,
-                  maxLines: 2,
-                  overflow: .ellipsis,
-                ),
-                if (!data.embedSubtitleInCard)
-                  subWidget
-                else
-                  GtCard(
-                    padding: context.insets.symmetricDp(
-                      vertical: 16.px,
-                      horizontal: 12.px,
-                    ),
-                    color: context.palette.staticColors.white,
-                    border: BorderSide(
-                      color: context.palette.staticColors.black,
-                      width: 2,
-                    ),
-                    child: subWidget,
-                  ),
-              ],
-            ),
+    return Padding(
+      padding: context.insets.defaultHorizontalInsets,
+      child: Column(
+        crossAxisAlignment: .start,
+        spacing: context.spacingMd,
+        children: [
+          GtText(
+            data.title,
+            style: titleStyle,
+            maxLines: 2,
+            overflow: .ellipsis,
           ),
-        );
-      },
+          GtText(
+            data.subTitle,
+            style: subStyle,
+            maxLines: 4,
+            overflow: .ellipsis,
+          ),
+        ],
+      ),
     );
   }
 }

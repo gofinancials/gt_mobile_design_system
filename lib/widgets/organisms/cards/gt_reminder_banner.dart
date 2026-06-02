@@ -25,6 +25,9 @@ class GtReminderBanner extends GtStatelessWidget {
   /// The visual variant of the card, which determines its background color.
   final GtCardVariant variant;
 
+  /// The visual variant of the button.
+  final GtButtonVariant buttonVariant;
+
   /// A callback function that is invoked when the close button is tapped.
   final OnPressed onClose;
 
@@ -35,6 +38,7 @@ class GtReminderBanner extends GtStatelessWidget {
     required this.subtitle,
     this.hidden = false,
     this.variant = .away,
+    this.buttonVariant = .primary,
     required this.icon,
     required this.onClose,
     required this.actionText,
@@ -59,17 +63,17 @@ class GtReminderBanner extends GtStatelessWidget {
             GtSquareConstrainedBox(48, child: icon),
             Expanded(
               child: Column(
-                spacing: context.spacingSm,
                 crossAxisAlignment: .start,
                 children: [
-                  GtText(title.upper, style: context.textStyles.buttonS()),
-                  GtText(subtitle, style: context.textStyles.subHead2xs()),
-                  const GtGap.hSm(),
+                  GtText(title.upper, style: context.textStyles.h7()),
+                  const GtGap.ySm(),
+                  GtText(subtitle, style: context.textStyles.subHeadS()),
+                  const GtGap.yBase(),
                   GtRaisedButton(
                     onPressed: onActionTap,
                     text: actionText,
-                    variant: .verified,
-                    size: .pill,
+                    variant: buttonVariant,
+                    size: .small,
                   ),
                 ],
               ),
