@@ -120,7 +120,7 @@ Widget build(BuildContext context) {
           children: [
             for (final (index, slide) in controller.slides.indexed)
               Flexible(
-                child: _SlideIndicator(
+                child: GtSlideIndicator(
                   key: ValueKey(&#39;slide_indicator_${index}_${slide.hashCode}&#39;),
                   slide: slide,
                   controller: controller,

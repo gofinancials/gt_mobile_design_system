@@ -113,8 +113,8 @@ Widget build(BuildContext context) {
 
   return Scaffold(
     bottomNavigationBar: GtButtonBottomNavBar(
-      heading: primaryButton,
-      button: secondaryButton,
+      heading: secondaryButton != null ? primaryButton : null,
+      button: secondaryButton ?? primaryButton,
       spacing: context.spacingMd,
     ),
     appBar: const GtAppBar(),

@@ -125,17 +125,17 @@ Widget build(BuildContext context) {
           GtSquareConstrainedBox(48, child: icon),
           Expanded(
             child: Column(
-              spacing: context.spacingSm,
               crossAxisAlignment: .start,
               children: [
-                GtText(title.upper, style: context.textStyles.buttonS()),
-                GtText(subtitle, style: context.textStyles.subHead2xs()),
-                const GtGap.hSm(),
+                GtText(title.upper, style: context.textStyles.h7()),
+                const GtGap.ySm(),
+                GtText(subtitle, style: context.textStyles.subHeadS()),
+                const GtGap.yBase(),
                 GtRaisedButton(
                   onPressed: onActionTap,
                   text: actionText,
-                  variant: .verified,
-                  size: .pill,
+                  variant: buttonVariant,
+                  size: .small,
                 ),
               ],
             ),

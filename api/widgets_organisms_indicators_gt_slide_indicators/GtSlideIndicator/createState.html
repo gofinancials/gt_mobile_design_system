@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the operator == method from the GtPaletteBgColors class, for the Dart programming language.">
-  <title>operator == method - GtPaletteBgColors class - gt_palette library - Dart API</title>
+  <meta name="description" content="API docs for the createState method from the GtSlideIndicator class, for the Dart programming language.">
+  <title>createState method - GtSlideIndicator class - gt_slide_indicators library - Dart API</title>
 
 
   
@@ -25,11 +25,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">gt_mobile_ui</a></li>
-    <li><a href="../../common_styling_palettes_gt_palette/">common&#47;styling&#47;palettes&#47;gt_palette.dart</a></li>
-    <li><a href="../../common_styling_palettes_gt_palette/GtPaletteBgColors-class.html">GtPaletteBgColors</a></li>
-    <li class="self-crumb">operator == method</li>
+    <li><a href="../../widgets_organisms_indicators_gt_slide_indicators/">widgets&#47;organisms&#47;indicators&#47;gt_slide_indicators.dart</a></li>
+    <li><a href="../../widgets_organisms_indicators_gt_slide_indicators/GtSlideIndicator-class.html">GtSlideIndicator</a></li>
+    <li class="self-crumb">createState method</li>
   </ol>
-  <div class="self-name">operator ==</div>
+  <div class="self-name">createState</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -46,10 +46,10 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="common_styling_palettes_gt_palette&#47;GtPaletteBgColors-class-sidebar.html"
+    data-above-sidebar="widgets_organisms_indicators_gt_slide_indicators&#47;GtSlideIndicator-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-method">operator ==</span> method 
+<h1><span class="kind-method">createState</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
@@ -59,42 +59,27 @@
         <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
     </ol>
   </div>
-<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
-<span class="name ">operator ==</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span></li>
-</ol>)
+<span class="returntype"><a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../widgets_organisms_indicators_gt_slide_indicators/GtSlideIndicator-class.html">GtSlideIndicator</a></span>&gt;</span></span>
+<span class="name ">createState</span>(<wbr>)
 
       <div class="features"><span class="feature">override</span></div>
 
     </section>
     
 <section class="desc markdown">
-  <p>The equality operator.</p>
-<p>The default behavior for all <a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a>s is to return true if and
-only if this object and <code>other</code> are the same object.</p>
-<p>Override this method to specify a different equality relation on
-a class. The overriding method must still be an equivalence relation.
-That is, it must be:</p>
-<ul>
-<li>
-<p>Total: It must return a boolean for all arguments. It should never throw.</p>
-</li>
-<li>
-<p>Reflexive: For all objects <code>o</code>, <code>o == o</code> must be true.</p>
-</li>
-<li>
-<p>Symmetric: For all objects <code>o1</code> and <code>o2</code>, <code>o1 == o2</code> and <code>o2 == o1</code> must
-either both be true, or both be false.</p>
-</li>
-<li>
-<p>Transitive: For all objects <code>o1</code>, <code>o2</code>, and <code>o3</code>, if <code>o1 == o2</code> and
-<code>o2 == o3</code> are true, then <code>o1 == o3</code> must be true.</p>
-</li>
-</ul>
-<p>The method should also be consistent over time,
-so whether two objects are equal should only change
-if at least one of the objects was modified.</p>
-<p>If a subclass overrides the equality operator, it should override
-the <a href="../../common_styling_palettes_gt_palette/GtPaletteBgColors/hashCode.html">hashCode</a> method as well to maintain consistency.</p>
+  <p>Creates the mutable state for this widget at a given location in the tree.</p>
+<p>Subclasses should override this method to return a newly created
+instance of their associated <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> subclass:</p>
+<pre class="language-dart"><code class="language-dart">@override
+State&lt;SomeWidget&gt; createState() =&gt; _SomeWidgetState();
+</code></pre>
+<p>The framework can call this method multiple times over the lifetime of
+a <a href="https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html">StatefulWidget</a>. For example, if the widget is inserted into the tree
+in multiple locations, the framework will create a separate <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object
+for each location. Similarly, if the widget is removed from the tree and
+later inserted into the tree again, the framework will call <a href="../../widgets_organisms_indicators_gt_slide_indicators/GtSlideIndicator/createState.html">createState</a>
+again to create a fresh <a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> object, simplifying the lifecycle of
+<a href="https://api.flutter.dev/flutter/widgets/State-class.html">State</a> objects.</p>
 </section>
 
 
@@ -102,20 +87,7 @@ the <a href="../../common_styling_palettes_gt_palette/GtPaletteBgColors/hashCode
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
-bool operator ==(Object other) {
-  if (identical(this, other)) return true;
-  if (other is! GtPaletteBgColors) return false;
-
-  return other.strong == strong &amp;&amp;
-      other.surface == surface &amp;&amp;
-      other.sub == sub &amp;&amp;
-      other.soft == soft &amp;&amp;
-      other.weak == weak &amp;&amp;
-      other.white == white &amp;&amp;
-      other.warm == warm &amp;&amp;
-      other.sky == sky &amp;&amp;
-      other.neutralWarm50 == neutralWarm50;
-}</code></pre>
+State&lt;GtSlideIndicator&gt; createState() =&gt; _GtSlideIndicatorState();</code></pre>
 </section>
 
 
@@ -129,12 +101,12 @@ bool operator ==(Object other) {
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">gt_mobile_ui</a></li>
-    <li><a href="../../common_styling_palettes_gt_palette/">gt_palette</a></li>
-    <li><a href="../../common_styling_palettes_gt_palette/GtPaletteBgColors-class.html">GtPaletteBgColors</a></li>
-    <li class="self-crumb">operator == method</li>
+    <li><a href="../../widgets_organisms_indicators_gt_slide_indicators/">gt_slide_indicators</a></li>
+    <li><a href="../../widgets_organisms_indicators_gt_slide_indicators/GtSlideIndicator-class.html">GtSlideIndicator</a></li>
+    <li class="self-crumb">createState method</li>
 </ol>
 
-    <h5>GtPaletteBgColors class</h5>
+    <h5>GtSlideIndicator class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">

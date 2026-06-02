@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the GtLessonSlideData.withText constructor from Class GtLessonSlideData from the gt_slide_data library, for the Dart programming language.">
-  <title>GtLessonSlideData.withText constructor - GtLessonSlideData - gt_slide_data library - Dart API</title>
+  <meta name="description" content="API docs for the GtLessonSlideData.new constructor from Class GtLessonSlideData from the gt_slide_data library, for the Dart programming language.">
+  <title>GtLessonSlideData.new constructor - GtLessonSlideData - gt_slide_data library - Dart API</title>
 
 
   
@@ -27,9 +27,9 @@
     <li><a href="../../index.html">gt_mobile_ui</a></li>
     <li><a href="../../common_data_gt_slide_data/">common&#47;data&#47;gt_slide_data.dart</a></li>
     <li><a href="../../common_data_gt_slide_data/GtLessonSlideData-class.html">GtLessonSlideData</a></li>
-    <li class="self-crumb">GtLessonSlideData.withText const constructor</li>
+    <li class="self-crumb">GtLessonSlideData.new const constructor</li>
   </ol>
-  <div class="self-name">GtLessonSlideData.withText</div>
+  <div class="self-name">GtLessonSlideData.new</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -49,38 +49,42 @@
       data-above-sidebar="common_data_gt_slide_data&#47;GtLessonSlideData-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-constructor">GtLessonSlideData.withText</span> constructor 
+<h1><span class="kind-constructor">GtLessonSlideData</span> constructor 
 </h1></div>
 
     <section class="multi-line-signature">
       const
-      <span class="name ">GtLessonSlideData.withText</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="withText-param-header"><span>required</span> <span class="type-annotation"><a href="../../common_data_gt_slide_data/GtLessonSlideHeader-class.html">GtLessonSlideHeader</a></span> <span class="parameter-name">header</span>, </span></li>
-<li><span class="parameter" id="withText-param-data"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">data</span>, </span></li>
-<li><span class="parameter" id="withText-param-title"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span></li>
-<li><span class="parameter" id="withText-param-color"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">color</span>, </span></li>
-<li><span class="parameter" id="withText-param-gradient"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/Gradient-class.html">Gradient</a>?</span> <span class="parameter-name">gradient</span>, </span></li>
+      <span class="name ">GtLessonSlideData</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-title"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span></li>
+<li><span class="parameter" id="-param-color"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">color</span>, </span></li>
+<li><span class="parameter" id="-param-header"><span>required</span> <span class="type-annotation"><a href="../../common_data_gt_slide_data/GtLessonSlideHeader-class.html">GtLessonSlideHeader</a></span> <span class="parameter-name">header</span>, </span></li>
+<li><span class="parameter" id="-param-gradient"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/Gradient-class.html">Gradient</a>?</span> <span class="parameter-name">gradient</span>, </span></li>
+<li><span class="parameter" id="-param-slideType"><span>required</span> <span class="type-annotation"><a href="../../common_data_gt_slide_data/GtLessonSlideType.html">GtLessonSlideType</a></span> <span class="parameter-name">slideType</span>, </span></li>
+<li><span class="parameter" id="-param-media"><span class="type-annotation">AppMediaData?</span> <span class="parameter-name">media</span>, </span></li>
+<li><span class="parameter" id="-param-imageAlignment"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/painting/Alignment-class.html">Alignment</a>?</span> <span class="parameter-name">imageAlignment</span>, </span></li>
+<li><span class="parameter" id="-param-text"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">text</span>, </span></li>
+<li><span class="parameter" id="-param-imageSize"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">imageSize</span>, </span></li>
 </ol>})
     </section>
     
 <section class="desc markdown">
-  <p>Creates a slide that primarily displays text.</p>
+  <p>Creates a <a href="../../common_data_gt_slide_data/GtLessonSlideData-class.html">GtLessonSlideData</a> instance.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">const GtLessonSlideData.withText({
-  required this.header,
-  required String data,
+  <pre class="language-dart"><code class="language-dart">const GtLessonSlideData({
   required this.title,
   this.color,
+  required this.header,
   this.gradient,
-}) : slideType = .text,
-     media = null,
-     imageSize = null,
-     imageAlignment = null,
-     text = data;</code></pre>
+  required this.slideType,
+  this.media,
+  this.imageAlignment,
+  this.text,
+  this.imageSize,
+});</code></pre>
 </section>
 
 
@@ -96,7 +100,7 @@
     <li><a href="../../index.html">gt_mobile_ui</a></li>
     <li><a href="../../common_data_gt_slide_data/">gt_slide_data</a></li>
     <li><a href="../../common_data_gt_slide_data/GtLessonSlideData-class.html">GtLessonSlideData</a></li>
-    <li class="self-crumb">GtLessonSlideData.withText const constructor</li>
+    <li class="self-crumb">GtLessonSlideData.new const constructor</li>
 </ol>
 
     <h5>GtLessonSlideData class</h5>

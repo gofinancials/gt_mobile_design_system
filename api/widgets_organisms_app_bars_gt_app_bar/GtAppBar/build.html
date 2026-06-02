@@ -115,7 +115,7 @@ Widget build(BuildContext context) {
   Widget? leadingWidget = leading;
 
   if (canImplyLeading &amp;&amp; !_hasLeading) {
-    leadingWidget = GtBackButton(size: titleSize.buttonSize);
+    leadingWidget = GtBackButton(size: backButtonSize);
   }
 
   Widget child = Container(
@@ -145,7 +145,7 @@ Widget build(BuildContext context) {
             ),
             Align(
               alignment: .centerRight,
-              child: GtSquareConstrainedBox(24, child: trailing),
+              child: GtSquareConstrainedBox(32, child: trailing),
             ),
           ],
         ),

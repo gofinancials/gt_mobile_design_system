@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the subtitleStyle property from the GtLessonSlideHeader class, for the Dart programming language.">
-  <title>subtitleStyle property - GtLessonSlideHeader class - gt_slide_data library - Dart API</title>
+  <meta name="description" content="API docs for the slideGradient method from the GtGradients class, for the Dart programming language.">
+  <title>slideGradient method - GtGradients class - gt_gradients library - Dart API</title>
 
 
   
@@ -25,11 +25,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">gt_mobile_ui</a></li>
-    <li><a href="../../common_data_gt_slide_data/">common&#47;data&#47;gt_slide_data.dart</a></li>
-    <li><a href="../../common_data_gt_slide_data/GtLessonSlideHeader-class.html">GtLessonSlideHeader</a></li>
-    <li class="self-crumb">subtitleStyle property</li>
+    <li><a href="../../common_styling_gt_gradients/">common&#47;styling&#47;gt_gradients.dart</a></li>
+    <li><a href="../../common_styling_gt_gradients/GtGradients-class.html">GtGradients</a></li>
+    <li class="self-crumb">slideGradient method</li>
   </ol>
-  <div class="self-name">subtitleStyle</div>
+  <div class="self-name">slideGradient</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -46,36 +46,44 @@
 <div
     id="dartdoc-main-content"
     class="main-content"
-    data-above-sidebar="common_data_gt_slide_data&#47;GtLessonSlideHeader-class-sidebar.html"
+    data-above-sidebar="common_styling_gt_gradients&#47;GtGradients-class-sidebar.html"
     data-below-sidebar="">
     <div>
-<h1><span class="kind-property">subtitleStyle</span> property 
+<h1><span class="kind-method">slideGradient</span> method 
 </h1></div>
 
-    
-      <section class="multi-line-signature">
-        
-        <a href="https://api.flutter.dev/flutter/painting/TextStyle-class.html">TextStyle</a>?
-        <span class="name ">subtitleStyle</span>
-        <div class="features"><span class="feature">final</span></div>
-
-      </section>
+    <section class="multi-line-signature">
       
+<span class="returntype"><a href="https://api.flutter.dev/flutter/painting/Gradient-class.html">Gradient</a></span>
+<span class="name ">slideGradient</span>(<wbr>)
+
+      
+
+    </section>
+    
 <section class="desc markdown">
-  <p>The text style for the <a href="../../common_data_gt_slide_data/GtLessonSlideHeader/subTitle.html">subTitle</a>.</p>
+  <p>Creates a two-tone linear gradient.</p>
+<p>Transitions from the provided <code>light</code> color at the top-left to the <code>dark</code> color at the bottom-right.</p>
 </section>
 
-      
+
+    
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">final TextStyle? subtitleStyle;</code></pre>
+  <pre class="language-dart"><code class="language-dart">Gradient slideGradient() {
+  return LinearGradient(
+    begin: .bottomLeft,
+    end: .topRight,
+    colors: [context.palette.bg.sky, context.palette.bg.weak],
+    stops: [.8, 1],
+  );
+}</code></pre>
 </section>
 
 
-    
-</div> <!-- /.main-content -->
-<div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
-  <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
 <header id="header-search-sidebar" class="hidden-l">
   <form class="search-sidebar" role="search">
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
@@ -83,15 +91,15 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">gt_mobile_ui</a></li>
-    <li><a href="../../common_data_gt_slide_data/">gt_slide_data</a></li>
-    <li><a href="../../common_data_gt_slide_data/GtLessonSlideHeader-class.html">GtLessonSlideHeader</a></li>
-    <li class="self-crumb">subtitleStyle property</li>
+    <li><a href="../../common_styling_gt_gradients/">gt_gradients</a></li>
+    <li><a href="../../common_styling_gt_gradients/GtGradients-class.html">GtGradients</a></li>
+    <li class="self-crumb">slideGradient method</li>
 </ol>
 
-  <h5>GtLessonSlideHeader class</h5>
-  <div id="dartdoc-sidebar-left-content"></div>
-</div><!--/.sidebar-offcanvas-->
-<div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <h5>GtGradients class</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div><!--/.sidebar-offcanvas-->
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
 </div><!--/.sidebar-offcanvas-->
 </main>
 <footer>

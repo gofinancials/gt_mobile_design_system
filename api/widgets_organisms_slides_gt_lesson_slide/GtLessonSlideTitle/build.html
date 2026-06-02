@@ -110,53 +110,29 @@ and</li>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   final styles = context.textStyles;
-  final titleStyle = styles.h4(color: context.palette.staticColors.black);
-  final subStyle = styles.subHeadS(color: context.palette.staticColors.black);
+  final titleStyle = styles.h5();
+  final subStyle = styles.subHeadS();
 
-  Widget subWidget = GtText(
-    data.subTitle,
-    style: data.subtitleStyle ?? subStyle,
-    maxLines: 20,
-  );
-
-  return TweenAnimationBuilder(
-    tween: Tween&lt;Offset&gt;(begin: .zero, end: data.offset),
-    duration: 500.milliseconds,
-    builder: (_, offset, child) {
-      return Transform.translate(
-        offset: offset,
-        child: Padding(
-          padding: context.insets.fromLTRBDp(16.px, 0, 50.px, 0),
-          child: Column(
-            crossAxisAlignment: .start,
-            spacing: context.spacingMd,
-            children: [
-              GtText(
-                data.title,
-                style: data.titleStyle ?? titleStyle,
-                maxLines: 2,
-                overflow: .ellipsis,
-              ),
-              if (!data.embedSubtitleInCard)
-                subWidget
-              else
-                GtCard(
-                  padding: context.insets.symmetricDp(
-                    vertical: 16.px,
-                    horizontal: 12.px,
-                  ),
-                  color: context.palette.staticColors.white,
-                  border: BorderSide(
-                    color: context.palette.staticColors.black,
-                    width: 2,
-                  ),
-                  child: subWidget,
-                ),
-            ],
-          ),
+  return Padding(
+    padding: context.insets.defaultHorizontalInsets,
+    child: Column(
+      crossAxisAlignment: .start,
+      spacing: context.spacingMd,
+      children: [
+        GtText(
+          data.title,
+          style: titleStyle,
+          maxLines: 2,
+          overflow: .ellipsis,
         ),
-      );
-    },
+        GtText(
+          data.subTitle,
+          style: subStyle,
+          maxLines: 4,
+          overflow: .ellipsis,
+        ),
+      ],
+    ),
   );
 }</code></pre>
 </section>

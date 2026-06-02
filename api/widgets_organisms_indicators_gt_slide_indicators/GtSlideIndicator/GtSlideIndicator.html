@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the GtLessonSlideHeader.new constructor from Class GtLessonSlideHeader from the gt_slide_data library, for the Dart programming language.">
-  <title>GtLessonSlideHeader.new constructor - GtLessonSlideHeader - gt_slide_data library - Dart API</title>
+  <meta name="description" content="API docs for the GtSlideIndicator.new constructor from Class GtSlideIndicator from the gt_slide_indicators library, for the Dart programming language.">
+  <title>GtSlideIndicator.new constructor - GtSlideIndicator - gt_slide_indicators library - Dart API</title>
 
 
   
@@ -25,11 +25,11 @@
   <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">gt_mobile_ui</a></li>
-    <li><a href="../../common_data_gt_slide_data/">common&#47;data&#47;gt_slide_data.dart</a></li>
-    <li><a href="../../common_data_gt_slide_data/GtLessonSlideHeader-class.html">GtLessonSlideHeader</a></li>
-    <li class="self-crumb">GtLessonSlideHeader.new const constructor</li>
+    <li><a href="../../widgets_organisms_indicators_gt_slide_indicators/">widgets&#47;organisms&#47;indicators&#47;gt_slide_indicators.dart</a></li>
+    <li><a href="../../widgets_organisms_indicators_gt_slide_indicators/GtSlideIndicator-class.html">GtSlideIndicator</a></li>
+    <li class="self-crumb">GtSlideIndicator.new const constructor</li>
   </ol>
-  <div class="self-name">GtLessonSlideHeader.new</div>
+  <div class="self-name">GtSlideIndicator.new</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -46,28 +46,34 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="common_data_gt_slide_data&#47;GtLessonSlideHeader-class-sidebar.html"
+      data-above-sidebar="widgets_organisms_indicators_gt_slide_indicators&#47;GtSlideIndicator-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-constructor">GtLessonSlideHeader</span> constructor 
+<h1><span class="kind-constructor">GtSlideIndicator</span> constructor 
 </h1></div>
 
     <section class="multi-line-signature">
       const
-      <span class="name ">GtLessonSlideHeader</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-title"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span></li>
-<li><span class="parameter" id="-param-subTitle"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">subTitle</span>, </span></li>
+      <span class="name ">GtSlideIndicator</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-slide"><span>required</span> <span class="type-annotation"><a href="../../common_data_gt_slide_data/GtLessonSlideData-class.html">GtLessonSlideData</a></span> <span class="parameter-name">slide</span>, </span></li>
+<li><span class="parameter" id="-param-state"><span>required</span> <span class="type-annotation"><a href="../../common_data_gt_slide_data/GtLessonSlideState.html">GtLessonSlideState</a></span> <span class="parameter-name">state</span>, </span></li>
+<li><span class="parameter" id="-param-controller"><span>required</span> <span class="type-annotation"><a href="../../common_data_gt_slide_data/GtLessonslideController-class.html">GtLessonslideController</a></span> <span class="parameter-name">controller</span>, </span></li>
+<li><span class="parameter" id="-param-indicatorColor"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a>?</span> <span class="parameter-name">indicatorColor</span>, </span></li>
+<li><span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span></li>
 </ol>})
     </section>
     
-<section class="desc markdown">
-  <p>Creates a <a href="../../common_data_gt_slide_data/GtLessonSlideHeader-class.html">GtLessonSlideHeader</a> instance.</p>
-</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">const GtLessonSlideHeader({required this.title, required this.subTitle});</code></pre>
+  <pre class="language-dart"><code class="language-dart">const GtSlideIndicator({
+  required this.slide,
+  required this.state,
+  required this.controller,
+  required this.indicatorColor,
+  super.key,
+});</code></pre>
 </section>
 
 
@@ -81,12 +87,12 @@
 </header>
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">gt_mobile_ui</a></li>
-    <li><a href="../../common_data_gt_slide_data/">gt_slide_data</a></li>
-    <li><a href="../../common_data_gt_slide_data/GtLessonSlideHeader-class.html">GtLessonSlideHeader</a></li>
-    <li class="self-crumb">GtLessonSlideHeader.new const constructor</li>
+    <li><a href="../../widgets_organisms_indicators_gt_slide_indicators/">gt_slide_indicators</a></li>
+    <li><a href="../../widgets_organisms_indicators_gt_slide_indicators/GtSlideIndicator-class.html">GtSlideIndicator</a></li>
+    <li class="self-crumb">GtSlideIndicator.new const constructor</li>
 </ol>
 
-    <h5>GtLessonSlideHeader class</h5>
+    <h5>GtSlideIndicator class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-left-->
   <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
