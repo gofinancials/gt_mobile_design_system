@@ -106,67 +106,51 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                 widget.onSwipeDown?.call();
               }
             },
-            child: Container(
-              margin: context.insets.onlyDp(
-                top: 24.px,
-                left: 16.px,
-                right: 16.px,
-              ),
-              padding: context.insets.onlyDp(top: 30.px),
-              decoration: BoxDecoration(
-                gradient: data.gradient,
-                color: context.palette.bg.weak,
-                borderRadius: BorderRadius.vertical(top: context.radius4Xl),
-              ),
-              child: SafeArea(
-                bottom: false,
-                child: Column(
-                  crossAxisAlignment: .stretch,
-                  children: [
-                    const GtGap.ySectionXl(),
-                    GtLessonSlideTitle(
-                      data.header,
-                      key: ValueKey('title_${data.header.hashCode}'),
-                    ),
-                    Expanded(
-                      child: Builder(
-                        builder: (context) {
-                          return switch (data.slideType) {
-                            .image => GtImage(
-                              key: ValueKey('img_${data.media.hashCode}'),
-                              fit: .contain,
-                              useDefaultSize: false,
-                              alignment: data.imageAlignment ?? .center,
-                              width: data.imageSize,
-                              height: data.imageSize,
-                              image: data.media as AppImageData,
-                            ),
-                            .text => SingleChildScrollView(
-                              padding: context.insets.symmetricDp(
-                                vertical: 20.px,
-                                horizontal: 16.px,
-                              ),
-                              child: Center(
-                                child: GtRichText(
-                                  data.text,
-                                  key: ValueKey('txt_${data.text.hashCode}'),
-                                  textAlign: .center,
-                                  style: context.textStyles.bodyM(),
-                                ),
-                              ),
-                            ),
-                            .audioVisual => GtLessonSlideMedia(
-                              data.media as AppAvData,
-                              key: ValueKey('media_${data.media.hashCode}'),
-                              controller: widget.controller,
-                            ),
-                          };
-                        },
-                      ),
-                    ),
-                  ],
+            child: Column(
+              crossAxisAlignment: .stretch,
+              children: [
+                const GtGap.ySectionLg(),
+                GtLessonSlideTitle(
+                  data.header,
+                  key: ValueKey('title_${data.header.hashCode}'),
                 ),
-              ),
+                Expanded(
+                  child: Builder(
+                    builder: (context) {
+                      return switch (data.slideType) {
+                        .image => GtImage(
+                          key: ValueKey('img_${data.media.hashCode}'),
+                          fit: .contain,
+                          useDefaultSize: false,
+                          alignment: data.imageAlignment ?? .center,
+                          width: data.imageSize,
+                          height: data.imageSize,
+                          image: data.media as AppImageData,
+                        ),
+                        .text => SingleChildScrollView(
+                          padding: context.insets.symmetricDp(
+                            vertical: 20.px,
+                            horizontal: 16.px,
+                          ),
+                          child: Center(
+                            child: GtRichText(
+                              data.text,
+                              key: ValueKey('txt_${data.text.hashCode}'),
+                              textAlign: .center,
+                              style: context.textStyles.bodyM(),
+                            ),
+                          ),
+                        ),
+                        .audioVisual => GtLessonSlideMedia(
+                          data.media as AppAvData,
+                          key: ValueKey('media_${data.media.hashCode}'),
+                          controller: widget.controller,
+                        ),
+                      };
+                    },
+                  ),
+                ),
+              ],
             ),
           );
         },

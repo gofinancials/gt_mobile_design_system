@@ -344,6 +344,56 @@ class GtInputStyles {
     );
   }
 
+  /// A compact style configuration for search inputs with a white background,
+  /// typically used on slightly darker or off-white surfaces.
+  GtInputDecoration get smWhiteSearchBorderlessDecoration {
+    final textStyle = context.textStyles.bodyXs();
+    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
+    final disabledStyle = textStyle.copyWith(
+      color: context.palette.text.disabled,
+    );
+    final border = Border.all(
+      color: Colors.transparent,
+      width: 0,
+      style: BorderStyle.none,
+    );
+
+    return GtInputDecoration(
+      size: Size(.infinity, 40),
+      textStyle: textStyle,
+      disabledStyle: disabledStyle,
+      hintStyle: hintStyle,
+      errorStyle: textStyle.copyWith(color: context.palette.error.base),
+      helperStyle: context.textStyles.body2s(),
+      decoration: BoxDecoration(
+        borderRadius: context.borderRadiusXl,
+        color: context.palette.bg.white,
+        border: border,
+      ),
+      focusedDecoration: BoxDecoration(
+        borderRadius: context.borderRadiusXl,
+        color: context.palette.bg.white,
+        border: border,
+      ),
+      errorDecoration: BoxDecoration(
+        borderRadius: context.borderRadiusXl,
+        color: context.palette.error.lighter,
+        border: border,
+      ),
+      focusedErrorDecoration: BoxDecoration(
+        borderRadius: context.borderRadiusXl,
+        color: context.palette.error.light,
+        border: border,
+      ),
+      disabledDecoration: BoxDecoration(
+        borderRadius: context.borderRadiusXl,
+        color: context.palette.bg.weaker,
+        border: border,
+      ),
+      padding: context.insets.symmetricDp(horizontal: 8.px),
+    );
+  }
+
   /// A collection containing all predefined [GtInputDecoration] configurations paired with their labels.
   List<(String, GtInputDecoration)> get all => [
     ('Transfer Input Style', transferInputStyle),
@@ -353,6 +403,7 @@ class GtInputStyles {
     ('Search Decoration', searchDecoration),
     ('Small Search Decoration', smSearchDecoration),
     ('Small White Search Decoration', smWhiteSearchDecoration),
+    ('Small White Search Borderless Decoration', smWhiteSearchBorderlessDecoration),
   ];
 }
 
