@@ -73,11 +73,16 @@ For audio-visual slides, it delegates to internal initializers to load the media
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; initialiseProgress(TickerProvider tickerProvider) async {
-  if (currentSlide.slideType != .audioVisual) {
-    await _initialiseAnimation(tickerProvider);
-    return;
+  try {
+    if (currentSlide.slideType != .audioVisual) {
+      await _initialiseAnimation(tickerProvider);
+      return;
+    }
+    await _initialisePlayer();
+  } catch (e, t) {
+    AppLogger.severe(&quot;$e&quot;, stackTrace: t, error: e);
+    next();
   }
-  await _initialisePlayer();
 }</code></pre>
 </section>
 
