@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-final pageController = PageController(initialPage: 0);
+final pageController = ValueNotifier(0);
 
 @widgetbook.UseCase(name: 'Dashboard Scaffold', type: GtDashboardScaffold)
 Widget playgroundGtDashboardScaffoldUseCase(BuildContext context) {

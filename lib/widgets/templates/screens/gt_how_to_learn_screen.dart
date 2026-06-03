@@ -73,6 +73,7 @@ class GtHowToLearnScreen extends GtStatelessWidget {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: GtActionAppBar(
+        implyLeading: false,
         trailing: GtOptionalWidgetPair(
           tail: GtCancelButton(
             alignment: .topRight,

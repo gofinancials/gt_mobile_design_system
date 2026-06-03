@@ -439,14 +439,21 @@ final class GtLessonslideController extends ChangeNotifier {
   /// For text/image slides, it initializes a timed [AnimationController].
   /// For audio-visual slides, it delegates to internal initializers to load the media.
   Future<void> initialiseProgress(TickerProvider tickerProvider) async {
-    if (currentSlide.slideType != .audioVisual) {
-      await _initialiseAnimation(tickerProvider);
-      return;
+    try {
+      if (currentSlide.slideType != .audioVisual) {
+        await _initialiseAnimation(tickerProvider);
+        return;
+      }
+      await _initialisePlayer();
+    } catch (e, t) {
+      AppLogger.severe("$e", stackTrace: t, error: e);
+      next();
     }
-    await _initialisePlayer();
   }
 
   Future<void> _initialiseAnimation(TickerProvider tickerProvider) async {
+    _animationController?.removeStatusListener(_statusListener);
+    _animationController?.dispose();
     _animationController = AnimationController(
       vsync: tickerProvider,
       duration: currentSlide.duration,

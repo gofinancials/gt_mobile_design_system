@@ -89,7 +89,6 @@ class _GtLessonSlidesState extends State<GtLessonSlides> with RouteAware {
           key: ValueKey(data.hashCode),
           backgroundColor: bgColor,
           extendBody: true,
-          extendBodyBehindAppBar: true,
           appBar: GtAppBar(
             trailing: GtCancelButton(onTap: _cancel),
             title: data.title,
@@ -99,11 +98,26 @@ class _GtLessonSlidesState extends State<GtLessonSlides> with RouteAware {
               color: bgColor,
               gradient: _getGradient(context, data),
             ),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: SafeArea(
-                    bottom: false,
+            child: Container(
+              margin: context.insets.onlyDp(
+                top: 24.px,
+                left: 16.px,
+                right: 16.px,
+              ),
+              padding: context.insets.onlyDp(top: 32.px),
+              decoration: BoxDecoration(
+                gradient: data.gradient,
+                color: context.palette.bg.weak,
+                borderRadius: BorderRadius.vertical(top: context.radius4Xl),
+              ),
+              child: Column(
+                crossAxisAlignment: .stretch,
+                children: [
+                  Padding(
+                    padding: context.insets.defaultHorizontalInsets,
+                    child: child,
+                  ),
+                  Expanded(
                     child: GtLessonSlide(
                       key: ValueKey(_controller.currentSlide.hashCode),
                       controller: _controller,
@@ -115,14 +129,8 @@ class _GtLessonSlidesState extends State<GtLessonSlides> with RouteAware {
                       indicatorColor: widget.indicatorColor,
                     ),
                   ),
-                ),
-                Positioned(
-                  top: kToolbarHeight + context.dp(30.px),
-                  left: context.dp(32.px),
-                  right: context.dp(32.px),
-                  child: child!,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

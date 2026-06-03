@@ -64,7 +64,7 @@ class GtDashboardScaffold extends GtStatefulWidget {
   final OnPressed onClickHelp;
 
   /// The page controller to control the page view.
-  final PageController? pageController;
+  final ValueNotifier<int>? pageController;
 
   ///The style of the bottom navigation bar.
   final GtBottomNavigationStyle? bottomNavigationStyle;
@@ -85,25 +85,27 @@ class GtDashboardScaffold extends GtStatefulWidget {
 }
 
 class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
-  late final PageController _pageController;
-
-  late int _currentIndex;
+  late final ValueNotifier<int> _pageController;
 
   @override
   void initState() {
     super.initState();
-    _currentIndex = widget.initialIndex;
     _pageController =
-        widget.pageController ??
-        PageController(initialPage: widget.initialIndex);
+        widget.pageController ?? ValueNotifier(widget.initialIndex);
+    _pageController.addListener(_pageListener);
   }
 
   @override
   void dispose() {
+    _pageController.removeListener(_pageListener);
     if (widget.pageController == null) {
       _pageController.dispose();
     }
     super.dispose();
+  }
+
+  void _pageListener() {
+    widget.onPageChanged?.call(_pageController.value);
   }
 
   @override
@@ -115,16 +117,13 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
       child: ListenableBuilder(
         listenable: _pageController,
         builder: (_, child) {
-          int index = _currentIndex;
-          if (_pageController.hasClients) {
-            index = _pageController.page?.round() ?? index;
-          }
-          _currentIndex = index;
+          int index = _pageController.value;
 
           final data = widget.data[index];
           final appBar = data.appBar;
           final bgColor = data.backgroundColor;
-          Widget body = child ?? const SizedBox.shrink();
+
+          Widget body = SafeArea(child: pages[index]);
 
           if (data.showGradient) {
             body = CustomPaint(
@@ -151,23 +150,11 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
                   navItems[index].onSelected!(index);
                   return;
                 }
-                _pageController.jumpToPage(index);
+                _pageController.value = index;
               },
             ),
           );
         },
-        child: SafeArea(
-          child: PageView.builder(
-            controller: _pageController,
-            onPageChanged: (idx) {
-              _currentIndex = idx;
-              widget.onPageChanged?.call(idx);
-            },
-            itemBuilder: (_, index) => pages[index],
-            itemCount: pages.length,
-            physics: const NeverScrollableScrollPhysics(),
-          ),
-        ),
       ),
     );
   }
