@@ -384,6 +384,22 @@ class GtIcons {
   static const car = GtIconData(0xf157);
   static const bag = GtIconData(0xf158);
 
+  static const cashCoin = GtIconData(0xf168);
+  static const clockCheck = GtIconData(0xf167);
+  static const cuppedHandDot = GtIconData(0xf166);
+  static const document = GtIconData(0xf165);
+  static const fileLink = GtIconData(0xf164);
+  static const invoice = GtIconData(0xf163);
+  static const move = GtIconData(0xf161);
+  static const notes = GtIconData(0xf160);
+  static const retryCircle = GtIconData(0xf15f);
+  static const scanAlt = GtIconData(0xf15e);
+  static const settings = GtIconData(0xf15d);
+  static const split = GtIconData(0xf15c);
+  static const support = GtIconData(0xf15b);
+  static const useStar = GtIconData(0xf15a);
+  static const verified = GtIconData(0xf159);
+
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
   /// This is particularly useful for cataloging, testing, or building
@@ -735,5 +751,20 @@ class GtIcons {
     (label: 'windowPointer', value: windowPointer),
     (label: 'x', value: x),
     (label: 'xmark', value: xmark),
+    (label: 'cashCoin', value: cashCoin),
+    (label: 'clockCheck', value: clockCheck),
+    (label: 'cuppedHandDot', value: cuppedHandDot),
+    (label: 'document', value: document),
+    (label: 'fileLink', value: fileLink),
+    (label: 'invoice', value: invoice),
+    (label: 'move', value: move),
+    (label: 'notes', value: notes),
+    (label: 'retryCircle', value: retryCircle),
+    (label: 'scanAlt', value: scanAlt),
+    (label: 'settings', value: settings),
+    (label: 'split', value: split),
+    (label: 'support', value: support),
+    (label: 'useStar', value: useStar),
+    (label: 'verified', value: verified),
   ];
 }
