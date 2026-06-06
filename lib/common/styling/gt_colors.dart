@@ -257,7 +257,8 @@ enum GtColors {
 
   skyAlpha5(ColorSet(0x1AB8CDD9)),
   darkGreen(ColorSet(0xFF004045)),
-  lemon(ColorSet(0xFF26E36B));
+  lemon(ColorSet(0xFF26E36B)),
+  blue(ColorSet(0xFF407BFF));
 
   final ColorSet _color;
 

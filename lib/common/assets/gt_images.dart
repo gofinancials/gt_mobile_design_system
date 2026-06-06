@@ -72,11 +72,8 @@ class GtNetworkImages {
   /// Image URL for the transfer illustration.
   static const String transfer = '$_baseUrl/Transfer.webp';
 
-  /// Image URL for the vacation illustration.
-  static const String vacation = '$_baseUrl/Vacation.webp';
-
   /// Image URL for the rocket illustration.
-  static const String rocket = '$_baseUrl/Vacations.webp';
+  static const String rocket = '$_baseUrl/Vacation.webp';
 
   /// Image URL for the vault illustration.
   static const String vault = '$_baseUrl/Vault.webp';
@@ -193,6 +190,52 @@ class GtNetworkImages {
   static List<({String label, String value})> get allAvatars => [
     ...threeDAvatars,
     ...textureAvatars,
+  ];
+
+  /// A collection containing all network image URLs.
+  static List<({String label, String value})> get all => [
+    (label: 'bill', value: bill),
+    (label: 'books', value: books),
+    (label: 'box', value: box),
+    (label: 'business', value: business),
+    (label: 'calendar', value: calendar),
+    (label: 'card', value: card),
+    (label: 'cash', value: cash),
+    (label: 'clipboardCheck', value: clipboardCheck),
+    (label: 'heart', value: heart),
+    (label: 'emergency', value: emergency),
+    (label: 'fun', value: fun),
+    (label: 'family', value: family),
+    (label: 'gym', value: gym),
+    (label: 'health', value: health),
+    (label: 'household', value: household),
+    (label: 'medal', value: medal),
+    (label: 'others', value: others),
+    (label: 'personal', value: personal),
+    (label: 'refund', value: refund),
+    (label: 'savings', value: savings),
+    (label: 'shopping', value: shopping),
+    (label: 'transfer', value: transfer),
+    (label: 'rocket', value: rocket),
+    (label: 'vault', value: vault),
+    (label: 'wallet', value: wallet),
+    (label: 'food', value: food),
+    (label: 'charity', value: charity),
+    (label: 'returns', value: returns),
+    (label: 'school', value: school),
+    (label: 'transport', value: transport),
+    (label: 'alarm', value: alarm),
+    (label: 'holiday', value: holiday),
+    (label: 'gift', value: gift),
+    (label: 'sampleAvatar1', value: sampleAvatar1),
+    (label: 'sampleAvatar2', value: sampleAvatar2),
+    (label: 'kidsPattern', value: kidsPattern),
+    (label: 'flexPattern', value: flexPattern),
+    (label: 'hq', value: hq),
+    (label: 'debitCard', value: debitCard),
+    (label: 'physicalCard', value: physicalCard),
+    (label: 'virtualCard', value: virtualCard),
+    ...allAvatars,
   ];
 }
 
