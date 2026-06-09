@@ -52,6 +52,8 @@ import 'package:gallery/organisms/app_bars/gt_home_app_bar.dart'
     as _gallery_organisms_app_bars_gt_home_app_bar;
 import 'package:gallery/organisms/cards/gt_card.dart'
     as _gallery_organisms_cards_gt_card;
+import 'package:gallery/organisms/data_viz/gt_data_viz.dart'
+    as _gallery_organisms_data_viz_gt_data_viz;
 import 'package:gallery/organisms/grids/gt_grids.dart'
     as _gallery_organisms_grids_gt_grids;
 import 'package:gallery/organisms/headers/gt_page_header.dart'
@@ -486,6 +488,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'Cards Gallery',
                     builder:
                         _gallery_organisms_cards_gt_card.buildGtCardUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'data_viz',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtGuageChart',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtGuageChart',
+                    builder: _gallery_organisms_data_viz_gt_data_viz
+                        .buildGtGuageChartUsecase,
                   ),
                 ],
               ),

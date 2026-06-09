@@ -32,6 +32,9 @@ enum GtCardVariant {
   /// An error variant, typically using a red-tinted background.
   error,
 
+  /// A primary variant, typically using a blue-tinted background.
+  primary,
+
   /// A highlighted variant for general emphasis.
   highlighted,
 
@@ -47,6 +50,7 @@ enum GtCardVariant {
   /// Gets the background color associated with the card variant from the theme [palette].
   Color getBgColor(GtPalette palette) {
     return switch (this) {
+      .primary => palette.primary.alpha16,
       .away => palette.away.lighter,
       .error => palette.error.lighter,
       .featured => palette.feature.lighter,
@@ -63,6 +67,7 @@ enum GtCardVariant {
   /// Gets the primary text color associated with the card variant from the theme [palette].
   Color getTextColor(GtPalette palette) {
     return switch (this) {
+      .primary => palette.primary.dark,
       .away => palette.away.dark,
       .error => palette.error.dark,
       .featured => palette.feature.dark,
@@ -79,6 +84,7 @@ enum GtCardVariant {
   /// Gets the icon color associated with the card variant from the theme [palette].
   Color getIconColor(GtPalette palette) {
     return switch (this) {
+      .primary => palette.primary.base,
       .away => palette.away.base,
       .error => palette.error.base,
       .featured => palette.feature.base,
@@ -95,6 +101,7 @@ enum GtCardVariant {
   /// Gets the border color associated with the card variant from the theme [palette].
   Color getBorderColor(GtPalette palette) {
     return switch (this) {
+      .primary => palette.primary.alpha24,
       .away => palette.away.light,
       .error => palette.error.light,
       .featured => palette.feature.light,
@@ -111,6 +118,7 @@ enum GtCardVariant {
   /// Gets the border color associated with the card variant from the theme [palette].
   Color getProgressColor(GtPalette palette) {
     return switch (this) {
+      .primary => palette.primary.darker,
       .away => palette.away.darker,
       .error => palette.error.darker,
       .featured => palette.feature.darker,

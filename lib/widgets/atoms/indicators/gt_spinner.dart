@@ -94,7 +94,7 @@ class _GtSpinnerState extends State<GtSpinner> {
                 duration: 1.seconds,
                 builder: (context, value, child) {
                   return CustomPaint(
-                    painter: GtPiePainter(
+                    painter: GtDonutPainter(
                       value: value,
                       strokeWidth: widget.strokeWidth,
                       trackColor: trackColor ?? color.setOpacity(0.1),

@@ -87,13 +87,12 @@ class _GtCountdownPieState extends State<GtCountdownPie>
           return GtSquareBox(
             size: widget.size,
             child: CustomPaint(
-              painter: GtPiePainter(
+              painter: GtDonutPainter(
                 value: fraction,
                 strokeWidth: widget.strokeWidth,
                 trackColor: trackColor,
                 clockWise: true,
                 valueColor: color,
-                strokeCap: StrokeCap.round,
               ),
               child: Center(
                 child: FittedBox(
