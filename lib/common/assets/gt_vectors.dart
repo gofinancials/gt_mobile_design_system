@@ -48,6 +48,12 @@ class GtVectors {
   /// Path to the trend down SVG.
   static const chip = "$_basePath/chip.svg";
 
+  /// Path to the inflow SVG.
+  static const inflow = "$_basePath/inflow.svg";
+
+  /// Path to the outflow SVG.
+  static const outflow = "$_basePath/outflow.svg";
+
   /// A list containing all available core vector asset paths.
   static List<({String label, String value})> get all => [
     (label: 'logo', value: logo),
@@ -64,5 +70,7 @@ class GtVectors {
     (label: 'whiteLogo', value: whiteLogo),
     (label: 'sterlingCard', value: sterlingCard),
     (label: 'chip', value: chip),
+    (label: 'inflow', value: inflow),
+    (label: 'outflow', value: outflow),
   ];
 }
