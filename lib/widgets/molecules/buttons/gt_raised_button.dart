@@ -166,7 +166,7 @@ class GtRaisedButton extends GtButton {
             },
       child: GtAnimatedFade(
         child1: GtButtonText(
-          alignment: alignment,
+          alignment: .center,
           text.value,
           size: size,
           disabled: isDisabled,

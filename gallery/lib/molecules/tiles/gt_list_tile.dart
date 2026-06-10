@@ -300,12 +300,6 @@ Widget gtListTileAllUseCase(BuildContext context) {
             subtitle: txnSubtitle,
             amount: txnAmount,
             isDebit: true,
-            leading: DecoratedBox(
-              decoration: BoxDecoration(
-                color: context.palette.error.base,
-                shape: BoxShape.circle,
-              ),
-            ),
             onTap: () {},
           ),
           GtTransactionListTile(
@@ -313,12 +307,6 @@ Widget gtListTileAllUseCase(BuildContext context) {
             subtitle: txnSubtitle,
             amount: txnAmount,
             isDebit: false,
-            leading: DecoratedBox(
-              decoration: BoxDecoration(
-                color: context.palette.error.base,
-                shape: BoxShape.circle,
-              ),
-            ),
             onTap: () {},
           ),
         ],

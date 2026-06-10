@@ -16,7 +16,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// {@category tiles}
 class GtTransactionListTile extends GtStatelessWidget {
   /// The widget to display at the start of the tile, typically an icon or logo.
-  final Widget leading;
+  final Widget? leading;
 
   /// The name or description of the transaction.
   final String name;
@@ -43,7 +43,7 @@ class GtTransactionListTile extends GtStatelessWidget {
     required this.subtitle,
     required this.amount,
     required this.isDebit,
-    required this.leading,
+    this.leading,
     this.leadingSize = 36,
     this.onTap,
   });
@@ -61,6 +61,12 @@ class GtTransactionListTile extends GtStatelessWidget {
       true => palette.text.strong,
       _ => palette.success.darker,
     };
+    Widget icon = GtSquareConstrainedBox(leadingSize, child: leading);
+
+    if (leading == null) {
+      final svgAsset = isDebit ? GtVectors.outflow : GtVectors.inflow;
+      icon = GtSvg(svgAsset, width: leadingSize, height: leadingSize);
+    }
 
     return GtInkWell(
       borderRadius: .zero,
@@ -68,9 +74,9 @@ class GtTransactionListTile extends GtStatelessWidget {
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),
         child: Row(
-          spacing: context.spacingBase,
+          spacing: context.spacingMd,
           children: [
-            GtSquareConstrainedBox(leadingSize, child: leading),
+            icon,
             Expanded(
               child: Column(
                 spacing: context.spacingXs,
@@ -89,13 +95,15 @@ class GtTransactionListTile extends GtStatelessWidget {
                       ),
                       GtText(
                         _formattedAmount,
-                        style: context.textStyles.subHeadS(color: amountColor),
+                        style: context.textStyles.buttonS(color: amountColor),
                       ),
                     ],
                   ),
                   GtText(
                     subtitle,
-                    style: context.textStyles.bodyXs(color: palette.text.sub),
+                    style: context.textStyles.subHeadXs(
+                      color: palette.text.sub,
+                    ),
                     textAlign: TextAlign.end,
                   ),
                 ],

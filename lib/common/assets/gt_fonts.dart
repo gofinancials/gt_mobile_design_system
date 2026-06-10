@@ -6,13 +6,12 @@
 class GtFonts {
   /// The font family for our icons.
   static const String icon = 'GtIconFont';
-  static const String calendar = 'Inter';
 
   /// The 'Youth' font family.
   static const String _youth = 'Youth';
 
-  /// The 'Readex' font family.
-  static const String _readex = 'Readex';
+  /// The 'Open Runde' font family.
+  static const String _runde = 'Runde';
 
   /// The font family used for title text.
   final String title;
@@ -20,23 +19,15 @@ class GtFonts {
   /// The font family used for regular body text.
   final String body;
 
-  /// The font family used for large display text.
-  final String display;
-
   /// Creates a new [GtFonts] configuration.
   ///
   /// Defaults to [readex] for titles, [youth] for displays, and [inter] for body text.
-  const GtFonts({
-    this.title = _youth,
-    this.display = _youth,
-    this.body = _readex,
-  });
+  const GtFonts({this.title = _youth, this.body = _runde});
 
   /// A list containing all available font families.
   static List<({String label, String value})> get all => [
     (label: 'icon', value: icon),
-    (label: 'calendar', value: calendar),
     (label: 'youth', value: _youth),
-    (label: 'readex', value: _readex),
+    (label: 'open-runde', value: _runde),
   ];
 }

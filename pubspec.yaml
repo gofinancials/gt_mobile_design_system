@@ -51,12 +51,12 @@ flutter:
       transformers:
         - package: vector_graphics_compiler
   fonts:
-    - family: Readex
+    - family: Runde
       fonts:
-        - asset: assets/fonts/ReadexPro-Regular.ttf
-        - asset: assets/fonts/ReadexPro-Medium.ttf
+        - asset: assets/fonts/OpenRunde-Regular.otf
+        - asset: assets/fonts/OpenRunde-Medium.otf
           weight: 500
-        - asset: assets/fonts/ReadexPro-Bold.ttf
+        - asset: assets/fonts/OpenRunde-Bold.otf
           weight: 700
     - family: Youth
       fonts:
@@ -66,7 +66,3 @@ flutter:
     - family: GtIconFont
       fonts:
         - asset: assets/fonts/GtIconFont.otf
-    - family: Inter
-      fonts:
-        - asset: assets/fonts/Inter-Medium.otf
-          weight: 500
