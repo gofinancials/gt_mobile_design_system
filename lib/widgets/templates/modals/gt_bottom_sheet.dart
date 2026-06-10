@@ -253,6 +253,14 @@ class _GtSheetContainer extends GtStatelessWidget {
       constraints: constraints,
       child: child,
     );
+    if (floating && context.isAndroid) {
+      body = SafeArea(
+        top: false,
+        bottom: true,
+        maintainBottomViewPadding: true,
+        child: child,
+      );
+    }
     return Material(
       type: .transparency,
       child: Align(alignment: alignment, child: body),
