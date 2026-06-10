@@ -72,6 +72,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Color getIconColor(GtPalette palette) {
   return switch (this) {
+    .primary =&gt; palette.primary.base,
     .away =&gt; palette.away.base,
     .error =&gt; palette.error.base,
     .featured =&gt; palette.feature.base,

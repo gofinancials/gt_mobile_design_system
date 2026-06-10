@@ -114,6 +114,12 @@ Widget build(BuildContext context) {
     true =&gt; palette.text.strong,
     _ =&gt; palette.success.darker,
   };
+  Widget icon = GtSquareConstrainedBox(leadingSize, child: leading);
+
+  if (leading == null) {
+    final svgAsset = isDebit ? GtVectors.outflow : GtVectors.inflow;
+    icon = GtSvg(svgAsset, width: leadingSize, height: leadingSize);
+  }
 
   return GtInkWell(
     borderRadius: .zero,
@@ -121,9 +127,9 @@ Widget build(BuildContext context) {
     child: Padding(
       padding: context.insets.symmetricDp(vertical: 8.px),
       child: Row(
-        spacing: context.spacingBase,
+        spacing: context.spacingMd,
         children: [
-          GtSquareConstrainedBox(leadingSize, child: leading),
+          icon,
           Expanded(
             child: Column(
               spacing: context.spacingXs,
@@ -142,13 +148,15 @@ Widget build(BuildContext context) {
                     ),
                     GtText(
                       _formattedAmount,
-                      style: context.textStyles.subHeadS(color: amountColor),
+                      style: context.textStyles.buttonS(color: amountColor),
                     ),
                   ],
                 ),
                 GtText(
                   subtitle,
-                  style: context.textStyles.bodyXs(color: palette.text.sub),
+                  style: context.textStyles.subHeadXs(
+                    color: palette.text.sub,
+                  ),
                   textAlign: TextAlign.end,
                 ),
               ],

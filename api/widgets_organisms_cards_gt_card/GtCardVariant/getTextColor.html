@@ -72,6 +72,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Color getTextColor(GtPalette palette) {
   return switch (this) {
+    .primary =&gt; palette.primary.dark,
     .away =&gt; palette.away.dark,
     .error =&gt; palette.error.dark,
     .featured =&gt; palette.feature.dark,

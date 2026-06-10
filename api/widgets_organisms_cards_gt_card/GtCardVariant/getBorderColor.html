@@ -72,6 +72,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Color getBorderColor(GtPalette palette) {
   return switch (this) {
+    .primary =&gt; palette.primary.alpha24,
     .away =&gt; palette.away.light,
     .error =&gt; palette.error.light,
     .featured =&gt; palette.feature.light,

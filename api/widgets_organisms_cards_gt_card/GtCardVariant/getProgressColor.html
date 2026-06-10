@@ -72,6 +72,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Color getProgressColor(GtPalette palette) {
   return switch (this) {
+    .primary =&gt; palette.primary.darker,
     .away =&gt; palette.away.darker,
     .error =&gt; palette.error.darker,
     .featured =&gt; palette.feature.darker,

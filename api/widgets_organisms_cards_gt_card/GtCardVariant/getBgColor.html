@@ -72,6 +72,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Color getBgColor(GtPalette palette) {
   return switch (this) {
+    .primary =&gt; palette.primary.alpha16,
     .away =&gt; palette.away.lighter,
     .error =&gt; palette.error.lighter,
     .featured =&gt; palette.feature.lighter,
