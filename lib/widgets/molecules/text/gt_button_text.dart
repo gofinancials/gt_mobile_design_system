@@ -54,7 +54,7 @@ class GtButtonText extends GtStatelessWidget {
     required this.disabled,
     required this.size,
     this.textAlign = .center,
-    this.alignment = Alignment.center,
+    this.alignment = .center,
     this.icon,
     this.trailingIcon,
     this.decoration,

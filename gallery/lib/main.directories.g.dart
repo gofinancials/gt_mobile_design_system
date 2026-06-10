@@ -506,6 +506,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                   ),
                 ],
               ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtLineChart',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtLineChart',
+                    builder: _gallery_organisms_data_viz_gt_data_viz
+                        .buildGtLineChartUsecase,
+                  ),
+                ],
+              ),
             ],
           ),
           _widgetbook.WidgetbookFolder(

@@ -71,7 +71,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 64,
       heightPx: heightPx ?? 72,
       widthPct: -2.0,
@@ -96,7 +96,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 56,
       heightPx: heightPx ?? 64,
       widthPct: -0.5,
@@ -121,7 +121,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 48,
       heightPx: heightPx ?? 50,
       widthPct: 0.0,
@@ -146,7 +146,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 32,
       heightPx: heightPx ?? 40,
       widthPct: 0.0,
@@ -175,7 +175,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 60,
       heightPx: heightPx ?? 52,
       widthPct: -1.0,
@@ -200,7 +200,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 56,
       heightPx: heightPx ?? 64,
       widthPct: -1.0,
@@ -1055,6 +1055,31 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Extra Small Subheading (Subhead XS) text style.
+  TextStyle chartYtick({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.title,
+      size: 12,
+      heightPx: heightPx ?? 16,
+      widthPct: 4.0,
+      weight: FontWeight.w500,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
   TextStyle subHead2xs({
     double? heightPx,
@@ -1091,7 +1116,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 18,
       heightPx: heightPx ?? 32,
       widthPct: 1,
@@ -1116,7 +1141,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 14,
       heightPx: heightPx ?? 16,
       widthPct: 0,
@@ -1141,7 +1166,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 12,
       heightPx: heightPx ?? 16,
       widthPct: 0,
@@ -1166,7 +1191,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 10,
       heightPx: heightPx ?? 12,
       widthPct: 0,
@@ -1191,7 +1216,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: fonts.display,
+      family: fonts.title,
       size: 8,
       heightPx: heightPx ?? 8,
       widthPct: 0,
@@ -1225,7 +1250,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: isAndroid ? fonts.display : '',
+      family: isAndroid ? fonts.title : '',
       size: isAndroid ? 11 : 9,
       heightPx: heightPx ?? 12,
       widthPct: 0,
@@ -1250,7 +1275,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: GtFonts.calendar,
+      family: fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
       widthPct: -.6,

@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -64,6 +67,76 @@ Widget buildGtGuageChartUsecase(BuildContext context) {
                 ),
               ),
             ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+final _range = DateTimeRange<DateTime>(
+  start: .now().subtract(30.days),
+  end: .now(),
+);
+final _calendarCtrl = GtCalendarController(GtCalendarValue(range: _range));
+
+List<GtLineChartItem> _lineChartItems(DateTimeRange range) {
+  return List.generate(range.duration.inDays, (index) {
+    return GtLineChartItem(
+      Random().nextDouble() * 100_000_000,
+      date: .now().add(index.days),
+    );
+  });
+}
+
+final data = ValueNotifier(_lineChartItems(_range));
+
+@widgetbook.UseCase(name: 'GtLineChart', type: GtLineChart)
+Widget buildGtLineChartUsecase(BuildContext context) {
+  return Scaffold(
+    appBar: GtModalAppBar(),
+    body: CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: context.insets.defaultHorizontalInsets,
+          sliver: SliverList.list(
+            children: [
+              GtPageHeader(
+                title: "Line Charts",
+                subtitle: "Simple and effective way to display data.",
+                subTitleColor: context.palette.text.darkerSub,
+              ),
+              const GtGap.ySectionSm(),
+            ],
+          ),
+        ),
+        SliverPadding(
+          padding: context.insets.defaultAllInsets,
+          sliver: SliverToBoxAdapter(
+            child: ValueListenableBuilder(
+              valueListenable: data,
+              builder: (context, items, _) => GtLineChart(
+                items: items,
+                calendarTitle: "Select Range",
+                title: "Total Balance",
+                maxValue: 100_000_000,
+                color: context.palette.bg.strong,
+                gradient: LinearGradient(
+                  colors: [
+                    context.palette.error.base,
+                    context.palette.away.base,
+                    context.palette.success.base,
+                  ],
+                  stops: [0.2, 0.6, 1],
+                  begin: .bottomCenter,
+                  end: .topCenter,
+                ),
+                controller: _calendarCtrl,
+                onRangeUpdate: (range) {
+                  data.value = _lineChartItems(range);
+                },
+              ),
+            ),
           ),
         ),
       ],
