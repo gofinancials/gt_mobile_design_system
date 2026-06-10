@@ -64,6 +64,7 @@ Widget buildGtGuageChartUsecase(BuildContext context) {
                   "₦1,000,000.00",
                   pillText: "5% interest",
                   footerText: "Available to spend: ₦19,000",
+                  valueColor: context.palette.error.base,
                 ),
               ),
             ],
