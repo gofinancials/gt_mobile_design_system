@@ -75,6 +75,98 @@ class GtInfoListTile extends GtStatelessWidget {
   }
 }
 
+/// A statistical list tile designed to prominently display a key metric or data point.
+///
+/// This widget is commonly used for dashboards and summary screens to highlight
+/// key values (e.g., account balances, counts, percentages) along with an optional trend icon.
+///
+/// It can be rendered as a standalone tile or wrapped in a stylized card using
+/// the [GtStatListTile.asCard] constructor.
+class GtStatListTile extends GtStatelessWidget {
+  /// The primary label or title for the information being displayed.
+  final String title;
+
+  /// The main text value or data associated with the [title].
+  final String value;
+
+  /// An optional widget, typically an icon, displayed alongside the title.
+  final Widget? icon;
+
+  /// A callback triggered when the tile is tapped.
+  ///
+  /// If provided, the tile becomes interactive and provides haptic feedback.
+  final OnPressed? onTap;
+
+  /// Optional custom [TextStyle] for the [value].
+  ///
+  /// If null, defaults to [GtTextStyles.h5].
+  final TextStyle? valueStyle;
+
+  /// Optional custom [TextStyle] for the [title].
+  ///
+  /// If null, defaults to [GtTextStyles.buttonXs] with a subtle color.
+  final TextStyle? titleStyle;
+
+  /// Internal flag to determine if the tile should be wrapped in a [GtCard].
+  final bool _asCard;
+
+  /// Creates a standard [GtStatListTile] without a card container.
+  const GtStatListTile(
+    this.title, {
+    super.key,
+    required this.value,
+    this.icon,
+    this.titleStyle,
+    this.valueStyle,
+    this.onTap,
+  }) : _asCard = false;
+
+  /// Creates a [GtStatListTile] that is automatically wrapped in a [GtCard].
+  const GtStatListTile.asCard(
+    this.title, {
+    super.key,
+    required this.value,
+    this.icon,
+    this.titleStyle,
+    this.valueStyle,
+    this.onTap,
+  }) : _asCard = true;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = valueStyle ?? context.textStyles.h5();
+    final labelStyle = (titleStyle ?? context.textStyles.buttonXs()).copyWith(
+      color: context.palette.text.sub,
+    );
+
+    Widget child = Column(
+      spacing: context.spacingBase,
+      crossAxisAlignment: .start,
+      children: [
+        Row(
+          spacing: context.spacingSm,
+          children: [
+            ?icon,
+            Expanded(child: GtText(title.upper, style: labelStyle)),
+          ],
+        ),
+        GtText(value, style: style),
+      ],
+    );
+
+    if (_asCard) {
+      child = GtCard(
+        borderRadius: context.borderRadiusXl,
+
+        padding: context.insets.allDp(8.px),
+        child: child,
+      );
+    }
+
+    return GtInkWell(borderRadius: .zero, onTap: onTap, child: child);
+  }
+}
+
 /// A list tile designed to display a descriptive label and its corresponding text value.
 ///
 /// This widget is commonly used for summarizing form inputs, displaying read-only

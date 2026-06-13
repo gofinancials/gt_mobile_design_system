@@ -1,10 +1,23 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:styled_text/styled_text.dart';
 
-/// A type definition for rich text action tags, mapping to [StyledTextActionTag].
-typedef GtRichTextTag = StyledTextActionTag;
+class GtStyledTextTag extends StyledTextTag {
+  /// A callback to be called when the tag is tapped.
+  final StyledTextTagActionCallback? onTap;
+
+  const GtStyledTextTag({super.style, this.onTap});
+
+  @override
+  GestureRecognizer? createRecognizer(
+    String? text,
+    Map<String?, String?> attributes,
+  ) {
+    return TapGestureRecognizer()..onTap = () => onTap?.call(text, attributes);
+  }
+}
 
 /// A versatile rich text widget that parses and renders HTML-like tags using the Go Tech design system.
 ///
@@ -41,7 +54,7 @@ class GtRichText extends GtStatelessWidget {
   final OnChanged<String>? onTextTap;
 
   /// Additional custom styling tags to merge with the default set.
-  final Map<String, StyledTextActionTag>? tags;
+  final Map<String, GtStyledTextTag>? tags;
 
   /// Creates a new [GtRichText] widget.
   const GtRichText(
@@ -75,108 +88,62 @@ class GtRichText extends GtStatelessWidget {
     return splitText.join(" ");
   }
 
+  void _launch(String? text, Map<String?, String?> attributes) {
+    final url = attributes["href"] ?? text.value;
+    if (!url.hasValue) return;
+    launchUrl(url);
+  }
+
   @override
   Widget build(BuildContext context) {
     final style = this.style ?? context.textStyles.bodyM();
     final content = _parsedText.value;
 
-    launch(String? text, Map<String?, String?> attributes) {
-      final url = attributes["href"] ?? text.value;
-      if (onTextTap != null) {
-        onTextTap?.call(url);
-        return;
-      }
-      launchUrl(url);
-    }
-
-    final defaultTags = {
-      'i': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: style.copyWith(fontStyle: .italic),
-      ),
-      'im': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
+    final Map<String, StyledTextTag> defaultTags = {
+      'i': StyledTextTag(style: style.copyWith(fontStyle: .italic)),
+      'im': StyledTextTag(
         style: style.copyWith(fontStyle: .italic, fontWeight: .w500),
       ),
-      'ib': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
+      'ib': StyledTextTag(
         style: style.copyWith(fontStyle: .italic, fontWeight: .bold),
       ),
-      'p': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: style,
-      ),
-      'e': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
+      'p': StyledTextTag(style: style),
+      'e': StyledTextTag(
         style: style.copyWith(color: context.palette.error.base),
       ),
-      'ht': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
+      'ht': GtStyledTextTag(
         style: style.copyWith(
           color: hashTagColor ?? context.palette.highlighted.base,
         ),
+        onTap: (text, attributes) => onTextTap?.call(text.value),
       ),
-      'h1': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: context.textStyles.h1(),
-      ),
-      'h2': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: context.textStyles.h2(),
-      ),
-      'h3': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: context.textStyles.h3(),
-      ),
-      'h4': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: context.textStyles.h4(),
-      ),
-      'h5': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: context.textStyles.h5(),
-      ),
-      'h6': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: context.textStyles.h6(),
-      ),
-      'b': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
+      'h1': StyledTextTag(style: context.textStyles.h1()),
+      'h2': StyledTextTag(style: context.textStyles.h2()),
+      'h3': StyledTextTag(style: context.textStyles.h3()),
+      'h4': StyledTextTag(style: context.textStyles.h4()),
+      'h5': StyledTextTag(style: context.textStyles.h5()),
+      'h6': StyledTextTag(style: context.textStyles.h6()),
+      'b': StyledTextTag(style: style.copyWith(fontWeight: FontWeight.bold)),
+      'sb': StyledTextTag(style: style.copyWith(fontWeight: FontWeight.w600)),
+      'm': StyledTextTag(style: style.copyWith(fontWeight: FontWeight.w500)),
+      'em': StyledTextTag(style: style.copyWith(fontStyle: FontStyle.italic)),
+      'strong': StyledTextTag(
         style: style.copyWith(fontWeight: FontWeight.bold),
       ),
-      'sb': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: style.copyWith(fontWeight: FontWeight.w600),
-      ),
-      'm': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: style.copyWith(fontWeight: FontWeight.w500),
-      ),
-      'em': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: style.copyWith(fontStyle: FontStyle.italic),
-      ),
-      'strong': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
-        style: style.copyWith(fontWeight: FontWeight.bold),
-      ),
-      'u': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
+      'u': StyledTextTag(
         style: style.copyWith(
           decoration: TextDecoration.underline,
           decorationColor: style.color,
         ),
       ),
-      'bu': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
+      'bu': StyledTextTag(
         style: style.copyWith(
           decoration: TextDecoration.underline,
           decorationColor: style.color,
           fontWeight: FontWeight.bold,
         ),
       ),
-      'mu': StyledTextActionTag(
-        (text, attributes) => onTextTap?.call(text.value),
+      'mu': StyledTextTag(
         style: style.copyWith(
           decoration: TextDecoration.underline,
           decorationColor: style.color,
@@ -184,25 +151,25 @@ class GtRichText extends GtStatelessWidget {
         ),
       ),
       'a': StyledTextActionTag(
-        launch,
+        _launch,
         style: style.copyWith(color: linkColor ?? style.color),
       ),
       'ba': StyledTextActionTag(
-        launch,
+        _launch,
         style: style.copyWith(
           color: linkColor ?? style.color,
           fontWeight: FontWeight.w600,
         ),
       ),
       'sba': StyledTextActionTag(
-        launch,
+        _launch,
         style: style.copyWith(
           color: linkColor ?? style.color,
           fontWeight: FontWeight.w600,
         ),
       ),
       'ma': StyledTextActionTag(
-        launch,
+        _launch,
         style: style.copyWith(
           color: linkColor ?? style.color,
           fontWeight: FontWeight.w500,
@@ -215,6 +182,7 @@ class GtRichText extends GtStatelessWidget {
     if (tags != null) computedTags.addAll(tags!);
 
     return StyledText(
+      key: ValueKey(Object.hash(computedTags, context.isInDarkMode)),
       text: content,
       textAlign: textAlign,
       style: style,

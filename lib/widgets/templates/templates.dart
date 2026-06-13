@@ -1,5 +1,6 @@
 export 'adaptive/adaptive.dart';
 export 'carousels/carousels.dart';
+export 'data_viz/data_viz.dart';
 export 'dialogs/dialogs.dart';
 export 'forms/forms.dart';
 export 'gt_style_guide.dart';

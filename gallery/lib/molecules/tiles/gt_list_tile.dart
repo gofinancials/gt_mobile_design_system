@@ -812,8 +812,29 @@ Widget gtListTileAllUseCase(BuildContext context) {
     // --- 6. INFORMATION & ACTIONS ---
     const GalleryPageSectionHeader(
       title:
-          "Information & Actions [GtInfoListTile/GtInputListTile/GtCopyTile/GtExportListTile/GtDeviceListTile/GtInstructionListTile]",
+          "Information & Actions [GtInfoListTile/GtStatListTile/GtInputListTile/GtCopyTile/GtExportListTile/GtDeviceListTile/GtInstructionListTile]",
     ),
+
+    GtStatListTile.asCard(
+      "Starting Balance",
+      value: "N20,400,070",
+      icon: GtIcon.withColor(
+        GtIcons.trendUp,
+        color: context.palette.success.base,
+        size: 12,
+      ),
+    ),
+    const GtGap.yBase(),
+    GtStatListTile.asCard(
+      "money out",
+      value: "N400,070",
+      icon: GtIcon.withColor(
+        GtIcons.trendDown,
+        color: context.palette.error.base,
+        size: 12,
+      ),
+    ),
+    const GtGap.yBase(),
     GtCard(
       child: GtInputListTile(inputLabel, text: inputText, onTap: () {}),
     ),

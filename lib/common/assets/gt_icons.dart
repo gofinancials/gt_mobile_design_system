@@ -399,6 +399,8 @@ class GtIcons {
   static const support = GtIconData(0xf15b);
   static const useStar = GtIconData(0xf15a);
   static const verified = GtIconData(0xf159);
+  static const trendUp = GtIconData(0xf162);
+  static const trendDown = GtIconData(0xf169);
 
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
@@ -766,5 +768,7 @@ class GtIcons {
     (label: 'support', value: support),
     (label: 'useStar', value: useStar),
     (label: 'verified', value: verified),
+    (label: 'trendUp', value: trendUp),
+    (label: 'trendDown', value: trendDown),
   ];
 }
