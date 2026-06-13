@@ -98,7 +98,7 @@ class GtArcPainter extends CustomPainter {
     // 1. Draw the background track
     final trackPaint = Paint()
       ..color = trackColor
-      ..style = PaintingStyle.stroke
+      ..style = .stroke
       ..strokeCap = strokeCap
       ..isAntiAlias = true
       ..strokeWidth = strokeWidth;
@@ -114,10 +114,9 @@ class GtArcPainter extends CustomPainter {
     // 2. Draw the value slice
     final valuePaint = Paint()
       ..color = valueColor
-      ..style = PaintingStyle.stroke
+      ..style = .stroke
       ..strokeWidth = strokeWidth
       ..isAntiAlias = true
-      ..maskFilter = MaskFilter.blur(BlurStyle.inner, 0.6)
       ..strokeCap = strokeCap;
 
     // Ensure value is between 0 and 1

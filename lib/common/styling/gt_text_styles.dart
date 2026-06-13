@@ -1250,7 +1250,7 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     return _buildStyle(
-      family: isAndroid ? fonts.title : '',
+      family: isAndroid ? fonts.title : fonts.body,
       size: isAndroid ? 11 : 9,
       heightPx: heightPx ?? 12,
       widthPct: 0,

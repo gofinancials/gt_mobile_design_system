@@ -506,16 +506,6 @@ final directories = <_widgetbook.WidgetbookNode>[
                   ),
                 ],
               ),
-              _widgetbook.WidgetbookComponent(
-                name: 'GtLineChart',
-                useCases: [
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'GtLineChart',
-                    builder: _gallery_organisms_data_viz_gt_data_viz
-                        .buildGtLineChartUsecase,
-                  ),
-                ],
-              ),
             ],
           ),
           _widgetbook.WidgetbookFolder(
@@ -624,6 +614,21 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookFolder(
         name: 'templates',
         children: [
+          _widgetbook.WidgetbookFolder(
+            name: 'data_viz',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtLineChartContainer',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtLineChart',
+                    builder: _gallery_organisms_data_viz_gt_data_viz
+                        .buildGtLineChartUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
           _widgetbook.WidgetbookFolder(
             name: 'dialogs',
             children: [

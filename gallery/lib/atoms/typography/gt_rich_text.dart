@@ -83,6 +83,8 @@ Widget playgroundGtRichTextUseCase(BuildContext context) {
               maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
               textAlign: alignment.$2,
               hashTagColor: hashColor.$2,
+              linkColor: hashColor.$2,
+              onTextTap: context.showToast,
               key: ValueKey(Theme.of(context).brightness),
             ),
           ),

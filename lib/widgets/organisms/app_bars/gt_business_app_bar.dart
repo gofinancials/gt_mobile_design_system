@@ -66,7 +66,6 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 mainAxisAlignment: .center,
                 crossAxisAlignment: .start,
                 mainAxisSize: .min,
-                spacing: context.spacingXs,
                 children: [
                   GtText(
                     "$_firstName,".upper,
@@ -76,19 +75,20 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                   if (businessName.hasValue)
                     Text.rich(
                       TextSpan(
-                        text: businessName.upper,
+                        text: businessName.capitalise(),
                         children: [
-                          if (verified)
+                          if (verified) ...[
+                            const WidgetSpan(child: GtGap.hXs()),
                             WidgetSpan(
                               child: GtIcon.withColor(
-                                GtIcons.star,
+                                GtIcons.verified,
                                 size: 10,
                                 color: context.palette.information.base,
                               ),
-                              alignment: .middle,
                             ),
+                          ],
                         ],
-                        style: context.textStyles.buttonXs(
+                        style: context.textStyles.body2Xs(
                           color: context.palette.text.soft,
                         ),
                       ),

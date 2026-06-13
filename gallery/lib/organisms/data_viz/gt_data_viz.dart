@@ -79,7 +79,10 @@ final _range = DateTimeRange<DateTime>(
   start: .now().subtract(30.days),
   end: .now(),
 );
-final _calendarCtrl = GtCalendarController(GtCalendarValue(range: _range));
+final _calendarCtrl = GtCalendarController(
+  GtCalendarValue(range: _range),
+  dateRange: DateTimeRange(start: .now().subtract(365.days), end: .now()),
+);
 
 List<GtLineChartItem> _lineChartItems(DateTimeRange range) {
   return List.generate(range.duration.inDays, (index) {
@@ -92,7 +95,7 @@ List<GtLineChartItem> _lineChartItems(DateTimeRange range) {
 
 final data = ValueNotifier(_lineChartItems(_range));
 
-@widgetbook.UseCase(name: 'GtLineChart', type: GtLineChart)
+@widgetbook.UseCase(name: 'GtLineChart', type: GtLineChartContainer)
 Widget buildGtLineChartUsecase(BuildContext context) {
   return Scaffold(
     appBar: GtModalAppBar(),
@@ -116,7 +119,7 @@ Widget buildGtLineChartUsecase(BuildContext context) {
           sliver: SliverToBoxAdapter(
             child: ValueListenableBuilder(
               valueListenable: data,
-              builder: (context, items, _) => GtLineChart(
+              builder: (context, items, _) => GtLineChartContainer(
                 items: items,
                 calendarTitle: "Select Range",
                 title: "Total Balance",
