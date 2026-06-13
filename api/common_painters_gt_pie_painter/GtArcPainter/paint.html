@@ -122,7 +122,7 @@ void paint(Canvas canvas, Size size) {
   &#47;&#47; 1. Draw the background track
   final trackPaint = Paint()
     ..color = trackColor
-    ..style = PaintingStyle.stroke
+    ..style = .stroke
     ..strokeCap = strokeCap
     ..isAntiAlias = true
     ..strokeWidth = strokeWidth;
@@ -138,10 +138,9 @@ void paint(Canvas canvas, Size size) {
   &#47;&#47; 2. Draw the value slice
   final valuePaint = Paint()
     ..color = valueColor
-    ..style = PaintingStyle.stroke
+    ..style = .stroke
     ..strokeWidth = strokeWidth
     ..isAntiAlias = true
-    ..maskFilter = MaskFilter.blur(BlurStyle.inner, 0.6)
     ..strokeCap = strokeCap;
 
   &#47;&#47; Ensure value is between 0 and 1

@@ -112,103 +112,51 @@ Widget build(BuildContext context) {
   final style = this.style ?? context.textStyles.bodyM();
   final content = _parsedText.value;
 
-  launch(String? text, Map&lt;String?, String?&gt; attributes) {
-    final url = attributes[&quot;href&quot;] ?? text.value;
-    if (onTextTap != null) {
-      onTextTap?.call(url);
-      return;
-    }
-    launchUrl(url);
-  }
-
-  final defaultTags = {
-    &#39;i&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: style.copyWith(fontStyle: .italic),
-    ),
-    &#39;im&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
+  final Map&lt;String, StyledTextTag&gt; defaultTags = {
+    &#39;i&#39;: StyledTextTag(style: style.copyWith(fontStyle: .italic)),
+    &#39;im&#39;: StyledTextTag(
       style: style.copyWith(fontStyle: .italic, fontWeight: .w500),
     ),
-    &#39;ib&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
+    &#39;ib&#39;: StyledTextTag(
       style: style.copyWith(fontStyle: .italic, fontWeight: .bold),
     ),
-    &#39;p&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: style,
-    ),
-    &#39;e&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
+    &#39;p&#39;: StyledTextTag(style: style),
+    &#39;e&#39;: StyledTextTag(
       style: style.copyWith(color: context.palette.error.base),
     ),
-    &#39;ht&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
+    &#39;ht&#39;: GtStyledTextTag(
       style: style.copyWith(
         color: hashTagColor ?? context.palette.highlighted.base,
       ),
+      onTap: (text, attributes) =&gt; onTextTap?.call(text.value),
     ),
-    &#39;h1&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: context.textStyles.h1(),
-    ),
-    &#39;h2&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: context.textStyles.h2(),
-    ),
-    &#39;h3&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: context.textStyles.h3(),
-    ),
-    &#39;h4&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: context.textStyles.h4(),
-    ),
-    &#39;h5&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: context.textStyles.h5(),
-    ),
-    &#39;h6&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: context.textStyles.h6(),
-    ),
-    &#39;b&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
+    &#39;h1&#39;: StyledTextTag(style: context.textStyles.h1()),
+    &#39;h2&#39;: StyledTextTag(style: context.textStyles.h2()),
+    &#39;h3&#39;: StyledTextTag(style: context.textStyles.h3()),
+    &#39;h4&#39;: StyledTextTag(style: context.textStyles.h4()),
+    &#39;h5&#39;: StyledTextTag(style: context.textStyles.h5()),
+    &#39;h6&#39;: StyledTextTag(style: context.textStyles.h6()),
+    &#39;b&#39;: StyledTextTag(style: style.copyWith(fontWeight: FontWeight.bold)),
+    &#39;sb&#39;: StyledTextTag(style: style.copyWith(fontWeight: FontWeight.w600)),
+    &#39;m&#39;: StyledTextTag(style: style.copyWith(fontWeight: FontWeight.w500)),
+    &#39;em&#39;: StyledTextTag(style: style.copyWith(fontStyle: FontStyle.italic)),
+    &#39;strong&#39;: StyledTextTag(
       style: style.copyWith(fontWeight: FontWeight.bold),
     ),
-    &#39;sb&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: style.copyWith(fontWeight: FontWeight.w600),
-    ),
-    &#39;m&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: style.copyWith(fontWeight: FontWeight.w500),
-    ),
-    &#39;em&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: style.copyWith(fontStyle: FontStyle.italic),
-    ),
-    &#39;strong&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
-      style: style.copyWith(fontWeight: FontWeight.bold),
-    ),
-    &#39;u&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
+    &#39;u&#39;: StyledTextTag(
       style: style.copyWith(
         decoration: TextDecoration.underline,
         decorationColor: style.color,
       ),
     ),
-    &#39;bu&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
+    &#39;bu&#39;: StyledTextTag(
       style: style.copyWith(
         decoration: TextDecoration.underline,
         decorationColor: style.color,
         fontWeight: FontWeight.bold,
       ),
     ),
-    &#39;mu&#39;: StyledTextActionTag(
-      (text, attributes) =&gt; onTextTap?.call(text.value),
+    &#39;mu&#39;: StyledTextTag(
       style: style.copyWith(
         decoration: TextDecoration.underline,
         decorationColor: style.color,
@@ -216,25 +164,25 @@ Widget build(BuildContext context) {
       ),
     ),
     &#39;a&#39;: StyledTextActionTag(
-      launch,
+      _launch,
       style: style.copyWith(color: linkColor ?? style.color),
     ),
     &#39;ba&#39;: StyledTextActionTag(
-      launch,
+      _launch,
       style: style.copyWith(
         color: linkColor ?? style.color,
         fontWeight: FontWeight.w600,
       ),
     ),
     &#39;sba&#39;: StyledTextActionTag(
-      launch,
+      _launch,
       style: style.copyWith(
         color: linkColor ?? style.color,
         fontWeight: FontWeight.w600,
       ),
     ),
     &#39;ma&#39;: StyledTextActionTag(
-      launch,
+      _launch,
       style: style.copyWith(
         color: linkColor ?? style.color,
         fontWeight: FontWeight.w500,
@@ -247,6 +195,7 @@ Widget build(BuildContext context) {
   if (tags != null) computedTags.addAll(tags!);
 
   return StyledText(
+    key: ValueKey(Object.hash(computedTags, context.isInDarkMode)),
     text: content,
     textAlign: textAlign,
     style: style,
