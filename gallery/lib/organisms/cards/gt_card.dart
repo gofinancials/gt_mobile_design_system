@@ -272,6 +272,20 @@ Widget buildGtCardUseCase(BuildContext context) {
                 ),
                 variant: cardVariant,
               ),
+              const GtGap.yBase(),
+              GtAddressCard(
+                line1: context.knobs.string(
+                  label: "Address Line 1",
+                  initialValue: "210 Sanusi Street",
+                ),
+                line2: context.knobs.string(
+                  label: "Address Line 2",
+                  initialValue: "Surulere, Lagos Nigeria 234768",
+                ),
+                line1Style: context.textStyles.subHeadS(),
+                borderStyle: .none,
+                variant: cardVariant,
+              ),
               const GalleryPageSectionHeader(title: "GtHelpCard"),
               GtHelpCard(
                 title: "Need more help?",
