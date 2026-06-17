@@ -43,24 +43,21 @@ class GtProductCard extends GtStatelessWidget {
       );
     }
 
-    return GtInkWell(
-      borderRadius: context.borderRadius2Xl,
-      onTap: onTap,
-      child: GtCard(
-        padding: context.insets.allDp(12.px),
-        variant: variant,
-        child: Column(
-          crossAxisAlignment: .start,
-          mainAxisAlignment: .center,
-          spacing: context.spacingSm,
-          mainAxisSize: .min,
-          children: [
-            GtIcon.withColor(icon, color: iconColor, size: 24),
-            if (footer == null) const Spacer() else const GtGap.ySm(),
-            GtText(name, style: context.textStyles.subHeadS(), maxLines: 1),
-            ?footer,
-          ],
-        ),
+    return GtCard(
+      padding: context.insets.allDp(12.px),
+      variant: variant,
+      onPressed: onTap,
+      child: Column(
+        crossAxisAlignment: .start,
+        mainAxisAlignment: .center,
+        spacing: context.spacingSm,
+        mainAxisSize: .min,
+        children: [
+          GtIcon.withColor(icon, color: iconColor, size: 24),
+          if (footer == null) const Spacer() else const GtGap.ySm(),
+          GtText(name, style: context.textStyles.subHeadS(), maxLines: 1),
+          ?footer,
+        ],
       ),
     );
   }
