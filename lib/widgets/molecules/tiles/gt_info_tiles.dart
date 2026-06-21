@@ -107,6 +107,9 @@ class GtStatListTile extends GtStatelessWidget {
   /// If null, defaults to [GtTextStyles.buttonXs] with a subtle color.
   final TextStyle? titleStyle;
 
+  /// if true, the value will be displayed in green color, else in red color
+  final bool isPositive;
+
   /// Internal flag to determine if the tile should be wrapped in a [GtCard].
   final bool _asCard;
 
@@ -119,6 +122,7 @@ class GtStatListTile extends GtStatelessWidget {
     this.titleStyle,
     this.valueStyle,
     this.onTap,
+    this.isPositive = true,
   }) : _asCard = false;
 
   /// Creates a [GtStatListTile] that is automatically wrapped in a [GtCard].
@@ -129,12 +133,15 @@ class GtStatListTile extends GtStatelessWidget {
     this.icon,
     this.titleStyle,
     this.valueStyle,
+    this.isPositive = true,
     this.onTap,
   }) : _asCard = true;
 
   @override
   Widget build(BuildContext context) {
-    final style = valueStyle ?? context.textStyles.h5();
+    final palette = context.palette;
+    final valueColor = isPositive ? palette.success.base : palette.error.base;
+    final style = valueStyle ?? context.textStyles.h5(color: valueColor);
     final labelStyle = (titleStyle ?? context.textStyles.buttonXs()).copyWith(
       color: context.palette.text.sub,
     );

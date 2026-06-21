@@ -828,6 +828,7 @@ Widget gtListTileAllUseCase(BuildContext context) {
     GtStatListTile.asCard(
       "money out",
       value: "N400,070",
+      isPositive: false,
       icon: GtIcon.withColor(
         GtIcons.trendDown,
         color: context.palette.error.base,

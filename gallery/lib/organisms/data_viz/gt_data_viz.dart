@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
+import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtGuageChart', type: GtGuageChart)
@@ -125,15 +126,9 @@ Widget buildGtLineChartUsecase(BuildContext context) {
                 title: "Total Balance",
                 maxValue: 100_000_000,
                 color: context.palette.bg.strong,
-                gradient: LinearGradient(
-                  colors: [
-                    context.palette.error.base,
-                    context.palette.away.base,
-                    context.palette.success.base,
-                  ],
-                  stops: [0.2, 0.6, 1],
-                  begin: .bottomCenter,
-                  end: .topCenter,
+                hideYAxisLabels: context.knobs.boolean(
+                  label: "Hide Y Axis Labels",
+                  initialValue: false,
                 ),
                 controller: _calendarCtrl,
                 onRangeUpdate: (range) {
