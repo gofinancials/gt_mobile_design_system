@@ -48,7 +48,7 @@ class GtInfoListTile extends GtStatelessWidget {
     final styles = context.textStyles;
     final textColors = context.palette.text;
     final style = textStyle ?? styles.subHead3M(heightPx: 0);
-    final hintStyle = (labelStyle ?? styles.bodyS(color: textColors.sub));
+    final hintStyle = labelStyle ?? styles.bodyS(color: textColors.sub);
 
     return GtInkWell(
       borderRadius: .zero,
@@ -107,6 +107,9 @@ class GtStatListTile extends GtStatelessWidget {
   /// If null, defaults to [GtTextStyles.buttonXs] with a subtle color.
   final TextStyle? titleStyle;
 
+  /// if true, the value will be displayed in green color, else in red color
+  final bool isPositive;
+
   /// Internal flag to determine if the tile should be wrapped in a [GtCard].
   final bool _asCard;
 
@@ -119,6 +122,7 @@ class GtStatListTile extends GtStatelessWidget {
     this.titleStyle,
     this.valueStyle,
     this.onTap,
+    this.isPositive = true,
   }) : _asCard = false;
 
   /// Creates a [GtStatListTile] that is automatically wrapped in a [GtCard].
@@ -129,14 +133,17 @@ class GtStatListTile extends GtStatelessWidget {
     this.icon,
     this.titleStyle,
     this.valueStyle,
+    this.isPositive = true,
     this.onTap,
   }) : _asCard = true;
 
   @override
   Widget build(BuildContext context) {
-    final style = valueStyle ?? context.textStyles.h5();
-    final labelStyle = (titleStyle ?? context.textStyles.buttonXs()).copyWith(
-      color: context.palette.text.sub,
+    final palette = context.palette;
+    final valueColor = isPositive ? palette.success.base : palette.error.base;
+    final style = valueStyle ?? context.textStyles.h5(color: valueColor);
+    final defaultTitleStyle = context.textStyles.buttonXs(
+      color: palette.text.sub,
     );
 
     Widget child = Column(
@@ -147,7 +154,12 @@ class GtStatListTile extends GtStatelessWidget {
           spacing: context.spacingSm,
           children: [
             ?icon,
-            Expanded(child: GtText(title.upper, style: labelStyle)),
+            Expanded(
+              child: GtText(
+                title.upper,
+                style: titleStyle ?? defaultTitleStyle,
+              ),
+            ),
           ],
         ),
         GtText(value, style: style),
@@ -227,9 +239,9 @@ class GtInputListTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = textStyle ?? context.textStyles.subHeadS();
-    final hintStyle = (labelStyle ?? context.textStyles.bodyXs()).copyWith(
-      color: context.palette.text.sub,
-    );
+    final hintStyle =
+        (labelStyle ??
+        context.textStyles.bodyXs(color: context.palette.text.sub));
 
     Widget child = Column(
       spacing: context.spacingSm,

@@ -35,6 +35,11 @@ class GtLineChartArea extends StatefulWidget {
   /// The minimum value of the y-axis. If null, it will be calculated from the data.
   final num? min;
 
+  /// Controls the visibility of the Y-axis labels.
+  ///
+  /// If `true`, the labels will be hidden. Defaults to `false`.
+  final bool hideYAxisLabels;
+
   /// Creates a new [GtLineChartArea].
   ///
   /// The [items] and [color] parameters must not be null.
@@ -47,6 +52,7 @@ class GtLineChartArea extends StatefulWidget {
     required this.color,
     this.max,
     this.min,
+    this.hideYAxisLabels = false,
   });
 
   @override
@@ -131,7 +137,8 @@ class _GtLineChartAreaState extends State<GtLineChartArea> {
                     painter: GtTrendPainter(
                       values,
                       color: widget.color,
-                      gradient: widget.gradient,
+                      gradient:
+                          widget.gradient ?? context.gradients.chartGradient,
                       maxValue: _max,
                       selectedIndex: index,
                       selectedFillColor: context.palette.bg.weak,
@@ -139,16 +146,18 @@ class _GtLineChartAreaState extends State<GtLineChartArea> {
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: GtText(yMax, style: yTextStyle),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: GtText(yMin, style: yTextStyle),
-                        ),
+                        if (!widget.hideYAxisLabels) ...[
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: GtText(yMax, style: yTextStyle),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GtText(yMin, style: yTextStyle),
+                          ),
+                        ],
                         if (index != null)
                           _ChartTooltip(
                             item: widget.items.elementAtOrNull(index),

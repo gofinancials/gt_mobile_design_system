@@ -57,6 +57,22 @@ class GtGradients {
     );
   }
 
+  /// A gradient tailored for line charts.
+  ///
+  /// Transitions from the error color at the bottom to the success color at the top.
+  LinearGradient get chartGradient {
+    return LinearGradient(
+      colors: [
+        context.palette.error.base,
+        context.palette.away.base,
+        context.palette.success.base,
+      ],
+      stops: [0.2, 0.6, 1],
+      begin: .bottomCenter,
+      end: .topCenter,
+    );
+  }
+
   /// Creates a two-tone linear gradient.
   ///
   /// Transitions from the provided [light] color at the top-left to the [dark] color at the bottom-right.
