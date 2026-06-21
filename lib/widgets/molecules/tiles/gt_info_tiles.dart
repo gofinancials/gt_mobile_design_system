@@ -48,7 +48,7 @@ class GtInfoListTile extends GtStatelessWidget {
     final styles = context.textStyles;
     final textColors = context.palette.text;
     final style = textStyle ?? styles.subHead3M(heightPx: 0);
-    final hintStyle = (labelStyle ?? styles.bodyS(color: textColors.sub));
+    final hintStyle = labelStyle ?? styles.bodyS(color: textColors.sub);
 
     return GtInkWell(
       borderRadius: .zero,
@@ -142,8 +142,8 @@ class GtStatListTile extends GtStatelessWidget {
     final palette = context.palette;
     final valueColor = isPositive ? palette.success.base : palette.error.base;
     final style = valueStyle ?? context.textStyles.h5(color: valueColor);
-    final labelStyle = (titleStyle ?? context.textStyles.buttonXs()).copyWith(
-      color: context.palette.text.sub,
+    final defaultTitleStyle = context.textStyles.buttonXs(
+      color: palette.text.sub,
     );
 
     Widget child = Column(
@@ -154,7 +154,12 @@ class GtStatListTile extends GtStatelessWidget {
           spacing: context.spacingSm,
           children: [
             ?icon,
-            Expanded(child: GtText(title.upper, style: labelStyle)),
+            Expanded(
+              child: GtText(
+                title.upper,
+                style: titleStyle ?? defaultTitleStyle,
+              ),
+            ),
           ],
         ),
         GtText(value, style: style),
@@ -234,9 +239,9 @@ class GtInputListTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = textStyle ?? context.textStyles.subHeadS();
-    final hintStyle = (labelStyle ?? context.textStyles.bodyXs()).copyWith(
-      color: context.palette.text.sub,
-    );
+    final hintStyle =
+        (labelStyle ??
+        context.textStyles.bodyXs(color: context.palette.text.sub));
 
     Widget child = Column(
       spacing: context.spacingSm,
