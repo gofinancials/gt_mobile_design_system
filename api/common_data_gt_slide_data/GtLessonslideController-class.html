@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the GtLessonslideController class from the gt_slide_data library, for the Dart programming language.">
+  <title>GtLessonslideController class - gt_slide_data library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">gt_mobile_ui</a></li>
+    <li><a href="../common_data_gt_slide_data/">common&#47;data&#47;gt_slide_data.dart</a></li>
+    <li class="self-crumb">GtLessonslideController class</li>
+  </ol>
+  <div class="self-name">GtLessonslideController</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <button class="toggle" id="theme-button" title="Toggle between light and dark mode" aria-label="Light and dark mode toggle">
+    <span id="dark-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      dark_mode
+    </span>
+    <span id="light-theme-button" class="material-symbols-outlined" aria-hidden="true">
+      light_mode
+    </span>
+  </button>
+</header>
+<main>
+<div
+    id="dartdoc-main-content"
+    class="main-content"
+    data-above-sidebar="common_data_gt_slide_data&#47;common_data_gt_slide_data-library-sidebar.html"
+    data-below-sidebar="common_data_gt_slide_data&#47;GtLessonslideController-class-sidebar.html">
+    <div>
+<h1><span class="kind-class">GtLessonslideController</span> class 
+    <a href="https://dart.dev/language/class-modifiers#final" class="feature feature-final" title="This class can neither be extended, implemented, nor mixed in.">final</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>Manages the state and playback of a sequence of <a href="../common_data_gt_slide_data/GtLessonSlideData-class.html">GtLessonSlideData</a> objects.</p>
+<p>This controller handles automatic progression between slides, media initialization,
+animation controllers for timed slides, and pausing/resuming based on user interactions.</p>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        
+  <dt>Inheritance</dt>
+  <dd>
+    <ul class="gt-separated dark clazz-relationships">
+      <li><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></li>
+        <li><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html">ChangeNotifier</a></li>
+      <li>GtLessonslideController</li>
+    </ul>
+  </dd>
+
+        
+        
+
+
+        
+        
+
+
+      </dl>
+    </section>
+
+    
+  <section class="summary offset-anchor" id="constructors">
+    <h2>Constructors</h2>
+    <dl class="constructor-summary-list">
+        <dt id="GtLessonslideController.new" class="callable">
+          <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/GtLessonslideController.html">GtLessonslideController</a></span><span class="signature">({<span class="parameter" id="-param-slides"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../common_data_gt_slide_data/GtLessonSlideData-class.html">GtLessonSlideData</a></span>&gt;</span></span> <span class="parameter-name">slides</span> = <span class="default-value">const []</span>, </span><span class="parameter" id="-param-onStoryCompleted"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/VoidCallback.html">VoidCallback</a>?</span> <span class="parameter-name">onStoryCompleted</span></span>})</span>
+        </dt>
+        <dd>
+          Creates a new <a href="../common_data_gt_slide_data/GtLessonslideController-class.html">GtLessonslideController</a> with an optional initial list of <code>slides</code>.
+        </dd>
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-properties">
+    <h2>Properties</h2>
+    <dl class="properties">
+        <dt id="animationController" class="property">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/animationController.html">animationController</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/animation/AnimationController-class.html">AnimationController</a>?</span>
+  
+
+</dt>
+<dd>
+  The animation controller used to track progress for non-media slides.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="currentIndex" class="property">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/currentIndex.html">currentIndex</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd>
+  The index of the currently active slide.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="currentSlide" class="property">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/currentSlide.html">currentSlide</a></span>
+  <span class="signature">&#8594; <a href="../common_data_gt_slide_data/GtLessonSlideData-class.html">GtLessonSlideData</a></span>
+  
+
+</dt>
+<dd>
+  Returns the current <a href="../common_data_gt_slide_data/GtLessonSlideData-class.html">GtLessonSlideData</a> being displayed.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  The hash code for this object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="hasListeners" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/hasListeners.html">hasListeners</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  Whether any listeners are currently registered.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="mediaSource" class="property">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/mediaSource.html">mediaSource</a></span>
+  <span class="signature">&#8594; MediaSource?</span>
+  
+
+</dt>
+<dd>
+  The loaded <code>MediaSource</code> for the current audio/visual slide, if any.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+        <dt id="onStoryCompleted" class="property">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/onStoryCompleted.html">onStoryCompleted</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-ui/VoidCallback.html">VoidCallback</a>?</span>
+  
+
+</dt>
+<dd>
+  Optional callback invoked when the user tries to advance past the final slide.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span>
+  
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object.
+  <div class="features"><span class="feature">no setter</span><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="slides" class="property">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/slides.html">slides</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../common_data_gt_slide_data/GtLessonSlideData-class.html">GtLessonSlideData</a></span>&gt;</span></span>
+  
+
+</dt>
+<dd>
+  The list of slides to display.
+  <div class="features"><span class="feature">getter/setter pair</span></div>
+
+</dd>
+
+        <dt id="streamController" class="property">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/streamController.html">streamController</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/StreamController-class.html">StreamController</a><span class="signature">&lt;<wbr><span class="type-parameter">MediaPlayStreamData</span>&gt;</span>?</span>
+  
+
+</dt>
+<dd>
+  A stream of <code>MediaPlayStreamData</code> events broadcasted from the underlying media player.
+  <div class="features"><span class="feature">no setter</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+
+    
+  <section
+      class="summary offset-anchor"
+      id="instance-methods">
+    <h2>Methods</h2>
+    <dl class="callables">
+        <dt id="addListener" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/addListener.html">addListener</a></span><span class="signature">(<wbr><span class="parameter" id="addListener-param-listener"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/VoidCallback.html">VoidCallback</a></span> <span class="parameter-name">listener</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Register a closure to be called when the object changes.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="dispose" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/dispose.html">dispose</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Discards any resources used by the object. After this is called, the
+object is not in a usable state and should be discarded (calls to
+<a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/addListener.html">addListener</a> will throw after the object is disposed).
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="initialiseProgress" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/initialiseProgress.html">initialiseProgress</a></span><span class="signature">(<wbr><span class="parameter" id="initialiseProgress-param-tickerProvider"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/scheduler/TickerProvider-class.html">TickerProvider</a></span> <span class="parameter-name">tickerProvider</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/flutter_test/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Initializes the progress tracking for the current slide.
+  
+
+</dd>
+
+        <dt id="jumpTo" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/jumpTo.html">jumpTo</a></span><span class="signature">(<wbr><span class="parameter" id="jumpTo-param-index"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">index</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  
+  
+
+</dd>
+
+        <dt id="next" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/next.html">next</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Navigates to the next slide.
+  
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a nonexistent method or property is accessed.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="notifyListeners" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/notifyListeners.html">notifyListeners</a></span><span class="signature">(<wbr>[<span class="parameter" id="notifyListeners-param-defer"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">defer</span> = <span class="default-value">false</span></span>])
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Call all the registered listeners.
+  <div class="features"><span class="feature">override</span></div>
+
+</dd>
+
+        <dt id="onLongPressDown" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/onLongPressDown.html">onLongPressDown</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Pauses the current slide progression and media playback when the user presses down.
+  
+
+</dd>
+
+        <dt id="onLongPressUp" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/onLongPressUp.html">onLongPressUp</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Resumes slide progression and media playback when the user lifts their press.
+  
+
+</dd>
+
+        <dt id="pause" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/pause.html">pause</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Pauses active media playback and stops slide animations.
+  
+
+</dd>
+
+        <dt id="play" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/play.html">play</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Starts or resumes media playback and slide animations.
+  
+
+</dd>
+
+        <dt id="prev" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/prev.html">prev</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Navigates to the previous slide.
+  
+
+</dd>
+
+        <dt id="removeListener" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/removeListener.html">removeListener</a></span><span class="signature">(<wbr><span class="parameter" id="removeListener-param-listener"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/VoidCallback.html">VoidCallback</a></span> <span class="parameter-name">listener</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Remove a previously registered closure from the list of closures that are
+notified when the object changes.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="reset" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/reset.html">reset</a></span><span class="signature">(<wbr>{<span class="parameter" id="reset-param-notify"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">notify</span> = <span class="default-value">true</span>, </span><span class="parameter" id="reset-param-resetIndex"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">resetIndex</span> = <span class="default-value">true</span></span>})
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Resets the internal state, stopping media and animations.
+  
+
+</dd>
+
+        <dt id="seekTo" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/seekTo.html">seekTo</a></span><span class="signature">(<wbr><span class="parameter" id="seekTo-param-duration"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Duration-class.html">Duration</a></span> <span class="parameter-name">duration</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Starts or resumes media playback and slide animations.
+  
+
+</dd>
+
+        <dt id="toggleMute" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/toggleMute.html">toggleMute</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Toggles the mute state of the media player.
+  
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+        <dt id="updateSlides" class="callable">
+  <span class="name"><a href="../common_data_gt_slide_data/GtLessonslideController/updateSlides.html">updateSlides</a></span><span class="signature">(<wbr><span class="parameter" id="updateSlides-param-slides"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../common_data_gt_slide_data/GtLessonSlideData-class.html">GtLessonSlideData</a></span>&gt;</span></span> <span class="parameter-name">slides</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Replaces the current <code>slides</code> with a new list and resets playback to the first slide.
+  
+
+</dd>
+
+    </dl>
+  </section>
+    
+  <section
+      class="summary offset-anchor inherited"
+      id="operators">
+    <h2>Operators</h2>
+    <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator.
+  <div class="features"><span class="feature">inherited</span></div>
+
+</dd>
+
+    </dl>
+  </section>
+    
+    
+    
+
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">gt_mobile_ui</a></li>
+    <li><a href="../common_data_gt_slide_data/">gt_slide_data</a></li>
+    <li class="self-crumb">GtLessonslideController class</li>
+</ol>
+
+    <h5>gt_slide_data library</h5>
+    <div id="dartdoc-sidebar-left-content"></div>
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+</main>
+<footer>
+  <span class="no-break">
+    gt_mobile_ui
+      0.0.1
+  </span>
+  
+</footer>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
