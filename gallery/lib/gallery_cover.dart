@@ -1,29 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
-// ignore: depend_on_referenced_packages
-import 'package:provider/provider.dart';
 
 @widgetbook.UseCase(name: 'Cover', type: DesignSystemCover)
 Widget buildCover(BuildContext context) {
-  final state = context.watch<GtThemeState>();
-  final theme = context.knobs.object.dropdown(
-    label: "Switch Theme",
-    initialOption: state.themeSetting.theme,
-    options: kAllThemes,
-    labelBuilder: (value) => value.name.capitalise(),
-  );
-  final mode = context.knobs.object.dropdown(
-    label: "Switch Theme Mode",
-    initialOption: state.themeSetting.mode,
-    options: ThemeMode.values,
-    labelBuilder: (value) => value.name.capitalise(),
-  );
-
-  state.switchTheme(theme);
-  state.changeMode(mode);
   return const DesignSystemCover();
 }
 
