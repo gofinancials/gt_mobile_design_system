@@ -77,6 +77,16 @@ class GtThemeState extends StateModel {
     await _service.setItem(AppStorageKey.themeName, theme.name);
   }
 
+  bool isInDarkMode(BuildContext context) {
+    final mode = _themeSetting.mode;
+    if (mode != .system) return mode == .dark;
+
+    final themeBrightness = Theme.maybeBrightnessOf(context);
+    final platformBrightness = MediaQuery.maybePlatformBrightnessOf(context);
+
+    return (themeBrightness ?? platformBrightness) == .dark;
+  }
+
   @override
   void dispose() {
     _service.unWatchItems([AppStorageKey.themeMode, AppStorageKey.themeName]);

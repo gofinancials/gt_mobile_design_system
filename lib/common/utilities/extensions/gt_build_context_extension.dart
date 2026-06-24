@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/extensions/extensions.dart';
+import 'package:gt_mobile_foundation/utilities/app_logger.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
+import 'package:provider/provider.dart';
 
 /// An extension on [BuildContext] providing convenient access to the design system's
 /// theming, typography, sizing utilities, and responsive breakpoints.
@@ -69,8 +71,20 @@ extension ThemeContextExtension on BuildContext {
     return fracSizer.getShortestSideFraction(fraction);
   }
 
+  GtThemeState? get themeState {
+    try {
+      return read<GtThemeState>();
+    } catch (e, t) {
+      AppLogger.severe("$e", error: e, stackTrace: t);
+      return null;
+    }
+  }
+
   /// Checks if the current theme is dark mode.
-  bool get isInDarkMode => Theme.of(this).brightness == .dark;
+  bool get isInDarkMode {
+    final defualtValue = Theme.of(this).brightness == .dark;
+    return themeState?.isInDarkMode(this) ?? defualtValue;
+  }
 
   /// Retrieves the color palette defined in the current theme.
   GtPalette get palette =>
