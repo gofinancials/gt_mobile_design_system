@@ -73,7 +73,10 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">bool get isInDarkMode =&gt; Theme.of(this).brightness == .dark;</code></pre>
+  <pre class="language-dart"><code class="language-dart">bool get isInDarkMode {
+  final defualtValue = Theme.of(this).brightness == .dark;
+  return themeState?.isInDarkMode(this) ?? defualtValue;
+}</code></pre>
 </section>
 
   </section>
