@@ -1446,8 +1446,8 @@ packages:
     dependency: transitive
     description:
       path: styled_text
-      ref: master
-      resolved-ref: f92bd97bcc62cf4f5a2bce2774ce9454b671f874
+      ref: "v0.0.1"
+      resolved-ref: ecf13c9ed284a4c40f9a01d89f75e91de0042466
       url: "https://github.com/dirisujesse/styled_text_package.git"
     source: git
     version: "9.0.0-beta-4"
