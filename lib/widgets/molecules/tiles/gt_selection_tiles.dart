@@ -315,7 +315,7 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = context.textStyles.bodyS();
+    final style = context.textStyles.bodyS(color: context.palette.text.soft);
     final size = context.dp(34.px);
 
     return GtInkWell(
@@ -338,10 +338,7 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
               TextSpan(
                 children: [
                   if (showCountryCode)
-                    TextSpan(
-                      text: "${value.countryCode} ",
-                      style: style.copyWith(color: context.palette.text.soft),
-                    ),
+                    TextSpan(text: "${value.countryCode} ", style: style),
                   TextSpan(text: value.displayName.capitalise(), style: style),
                 ],
               ),

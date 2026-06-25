@@ -50,6 +50,11 @@ class GtLineChartContainer extends GtStatelessWidget with GtBottomSheetMixin {
   /// Defaults to 165.0.
   final double height;
 
+  /// Controls the visibility of the Y-axis labels.
+  ///
+  /// If `true`, the labels will be hidden. Defaults to `false`.
+  final bool hideYAxisLabels;
+
   /// Creates a new [GtLineChartContainer].
   ///
   /// The [items], [calendarTitle], [title], [color], [controller], and
@@ -67,6 +72,7 @@ class GtLineChartContainer extends GtStatelessWidget with GtBottomSheetMixin {
     this.gradient,
     this.width,
     this.height = 165,
+    this.hideYAxisLabels = false,
   });
 
   /// Retrieves the currently selected date range from the [controller].
@@ -159,6 +165,7 @@ class GtLineChartContainer extends GtStatelessWidget with GtBottomSheetMixin {
               color: color,
               gradient: gradient,
               max: maxValue,
+              hideYAxisLabels: hideYAxisLabels,
               key: ValueKey(
                 Object.hash(items, width, height, color, gradient, maxValue),
               ),
