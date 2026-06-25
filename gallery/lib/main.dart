@@ -3,8 +3,6 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
-// ignore: depend_on_referenced_packages
-import 'package:provider/provider.dart';
 
 import 'main.directories.g.dart';
 import 'addons/gt_theme_addon.dart';
@@ -107,23 +105,8 @@ void main() {
   locator.registerLazySingleton<AppConfig>(() {
     return GalleryConfig();
   });
-  locator.registerLazySingleton<AppStorageService>(() {
-    return AppSecureStorageService();
-  });
-  locator.registerLazySingleton<GtThemeState>(() {
-    return GtThemeState(locator(), kPersonalTheme);
-  });
-  runApp(
-    GtStateWrapper(
-      providers: [
-        ChangeNotifierProvider<GtThemeState>(
-          create: (_) => locator(),
-          lazy: true,
-        ),
-      ],
-      child: const WidgetbookApp(),
-    ),
-  );
+
+  runApp(const WidgetbookApp());
 }
 
 final ValueNotifier<GtThemeSetting> themeNotifier = ValueNotifier(
@@ -136,9 +119,9 @@ class WidgetbookApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<GtThemeState>();
-    final activeTheme = state.themeSetting.theme;
-    final activeMode = state.themeSetting.mode;
+    final state = GtThemeSetting(theme: kPersonalTheme, mode: .system);
+    final activeTheme = state.theme;
+    final activeMode = state.mode;
 
     return GtThemeProvider(
       theme: activeTheme,

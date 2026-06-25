@@ -200,6 +200,7 @@ class _GtTextFieldState extends State<GtTextField>
         listenable: Listenable.merge([_ctrl, _inputFocus]),
         builder: (context, child) {
           return FormField<TextEditingController>(
+            initialValue: _ctrl,
             validator: (value) {
               return widget.validator?.call(value?.text);
             },

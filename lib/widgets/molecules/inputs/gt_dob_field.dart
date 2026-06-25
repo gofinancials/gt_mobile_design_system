@@ -102,8 +102,10 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
               ],
             );
           },
-          initialValue: _dobController.dob,
-          validator: (value) {
+          onReset: _dobController.reset,
+          initialValue: _dobController,
+          validator: (controller) {
+            final value = controller?.dob;
             return AppValidators.dobValidator(
               value?.toIso8601String(),
               minAge: _dobController.minAge,
