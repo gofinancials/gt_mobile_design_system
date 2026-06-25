@@ -185,7 +185,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               suffix: suffix.$2,
               textAlign: textAlign,
               decoration: decoration.$2,
-              validator: (_) => "Field is invalid",
+              validator: AppValidators.required,
               helperText: helperText,
             ),
             const GtGap.yXl(),
@@ -198,7 +198,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               suffix: suffix.$2,
               textAlign: textAlign,
               decoration: decoration.$2,
-              validator: (_) => "Field is invalid",
+              validator: AppValidators.required,
               helperText: helperText,
             ),
             const GtGap.yXl(),
@@ -266,7 +266,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               controller: _inputCtrl12,
               hintText: "Search for a country",
               decoration: decoration.$2,
-              validator: (_) => "Field is invalid",
+              validator: AppValidators.required,
               textInputAction: TextInputAction.done,
               builder: (query) async {
                 final countries = await AppCountryUtility.searchCountries(
@@ -284,6 +284,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               controller: _inputCtrl14,
               decoration: decoration.$2,
               options: allCountries,
+              validator: AppValidators.required,
               sheetTitle: "Select Country",
               label: "Select a country [Default tiles with Title]",
             ),
@@ -293,6 +294,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               decoration: decoration.$2,
               options: allCountries,
               label: "Select a country [Custom tiles]",
+              validator: AppValidators.required,
               optionBuilder: (value, value2) {
                 return GtCountrySelectionListTile(
                   value.value,
@@ -311,6 +313,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               decoration: decoration.$2,
               options: allCountries,
               label: "Select a country [Custom list]",
+              validator: AppValidators.required,
               optionsBuilder: (options, controller, scrollContoller) {
                 return ListView.separated(
                   padding: context.insets.allDp(16.px),

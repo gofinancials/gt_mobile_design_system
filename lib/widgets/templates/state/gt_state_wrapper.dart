@@ -9,15 +9,15 @@ class GtStateWrapper extends GtStatelessWidget {
 
   const GtStateWrapper({
     super.key,
-    required this.child,
     required this.providers,
+    required this.child,
   }) : path = null;
 
   const GtStateWrapper.forPath({
     super.key,
-    required this.child,
     required this.providers,
     required String initialRoute,
+    required this.child,
   }) : path = initialRoute;
 
   @override

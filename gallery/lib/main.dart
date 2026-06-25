@@ -105,6 +105,7 @@ void main() {
   locator.registerLazySingleton<AppConfig>(() {
     return GalleryConfig();
   });
+
   runApp(const WidgetbookApp());
 }
 
@@ -118,27 +119,26 @@ class WidgetbookApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GenericListener(
-      valueListenable: themeNotifier,
-      builder: (activeTheme) {
-        return GtThemeProvider(
-          theme: activeTheme.theme,
-          child: Widgetbook.material(
-            initialRoute: "?path=designsystemcover/cover",
-            directories: directories,
-            darkTheme: activeTheme.theme.materialDark,
-            lightTheme: activeTheme.theme.materialLight,
-            themeMode: activeTheme.mode,
-            addons: [
-              ViewportAddon(Viewports.all),
-              GtThemeAddon(themes: kAllThemes, themeNotifier: themeNotifier),
-              InspectorAddon(),
-              TextScaleAddon(max: 1.5),
-              ZoomAddon(),
-            ],
-          ),
-        );
-      },
+    final state = GtThemeSetting(theme: kPersonalTheme, mode: .system);
+    final activeTheme = state.theme;
+    final activeMode = state.mode;
+
+    return GtThemeProvider(
+      theme: activeTheme,
+      child: Widgetbook.material(
+        initialRoute: "?path=designsystemcover/cover",
+        directories: directories,
+        darkTheme: activeTheme.materialDark,
+        lightTheme: activeTheme.materialLight,
+        themeMode: activeMode,
+        addons: [
+          ViewportAddon(Viewports.all),
+          GtThemeAddon(themes: kAllThemes, themeNotifier: themeNotifier),
+          InspectorAddon(),
+          TextScaleAddon(max: 1.5),
+          ZoomAddon(),
+        ],
+      ),
     );
   }
 }

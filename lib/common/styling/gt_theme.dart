@@ -392,7 +392,7 @@ final kFlexTheme = GtTheme(
 /// The pre-configured theme for the Sterling Pro application.
 ///
 /// Uses `SterlingProLightPalette` and `SterlingProDarkPalette` for a premium, professional look.
-final kPProTheme = GtTheme(
+final kProTheme = GtTheme(
   lightPalette: SterlingProLightPalette(),
   darkPalette: SterlingProDarkPalette(),
   name: "Pro",
@@ -414,7 +414,7 @@ List<GtTheme> kAllThemes = [
   kPersonalTheme,
   kKidsTheme,
   kFlexTheme,
-  kPProTheme,
+  kProTheme,
   kGoTechTheme,
 ];
 
