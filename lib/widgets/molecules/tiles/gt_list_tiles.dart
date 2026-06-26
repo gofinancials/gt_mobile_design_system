@@ -38,17 +38,9 @@ class GtListTile extends GtStatelessWidget {
         child: Row(
           spacing: context.spacingMd,
           children: [
-            if (leading != null)
-              ConstrainedBox(
-                constraints: BoxConstraints.tight(Size.square(24)),
-                child: leading,
-              ),
+            ?leading,
             Expanded(child: GtText(text, style: context.textStyles.subHeadS())),
-            if (trailing != null)
-              ConstrainedBox(
-                constraints: BoxConstraints.tight(Size.square(20)),
-                child: trailing,
-              ),
+            ?trailing,
           ],
         ),
       ),

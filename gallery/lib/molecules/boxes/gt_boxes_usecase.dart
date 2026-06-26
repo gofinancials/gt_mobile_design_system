@@ -56,16 +56,16 @@ Widget playgroundGtBoxesUseCase(BuildContext context) {
 
   // Knobs for alignment of the fractional box
 
-  final alignmentOptions = [
-    ("Center", Alignment.center),
-    ("Top Left", Alignment.topLeft),
-    ("Top Right", Alignment.topRight),
-    ("Bottom Left", Alignment.bottomLeft),
-    ("Bottom Right", Alignment.bottomRight),
-    ("Top Center", Alignment.topCenter),
-    ("Bottom Center", Alignment.bottomCenter),
-    ("Left Center", Alignment.centerLeft),
-    ("Right Center", Alignment.centerRight),
+  final List<(String, Alignment)> alignmentOptions = [
+    ("Center", .center),
+    ("Top Left", .topLeft),
+    ("Top Right", .topRight),
+    ("Bottom Left", .bottomLeft),
+    ("Bottom Right", .bottomRight),
+    ("Top Center", .topCenter),
+    ("Bottom Center", .bottomCenter),
+    ("Left Center", .centerLeft),
+    ("Right Center", .centerRight),
   ];
 
   final selectedGrid = context.knobs.object.dropdown<(String, GtGridLayout)>(

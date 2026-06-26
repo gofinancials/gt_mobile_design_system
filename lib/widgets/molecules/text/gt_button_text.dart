@@ -152,9 +152,9 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
     }
 
     child = Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: .center,
+      mainAxisAlignment: .center,
+      mainAxisSize: .min,
       spacing: context.spacingBase,
       children: [
         if (leadingIcon != null) _ButtonIconContainer(leadingIcon, size),
@@ -167,7 +167,7 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
       child = Align(alignment: alignment!, child: child);
     }
 
-    return child;
+    return UnconstrainedBox(child: child);
   }
 }
 

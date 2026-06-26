@@ -23,6 +23,9 @@ class GtSearchField extends GtStatefulWidget {
   /// Whether a valid input must be entered to pass validation. Defaults to true.
   final bool isRequired;
 
+  /// Whether the input should automatically gain focus when built. Defaults to true.
+  final bool autoFocus;
+
   /// An optional custom validator. Defaults to a URL validator if omitted.
   final OnValidate<String?>? validator;
 
@@ -51,6 +54,7 @@ class GtSearchField extends GtStatefulWidget {
     this.isEnabled = true,
     this.prefix,
     this.suffix,
+    this.autoFocus = true,
   });
   @override
   State<GtSearchField> createState() => _GtSearchFieldState();
@@ -97,7 +101,7 @@ class _GtSearchFieldState extends State<GtSearchField> {
       decoration: widget.decoration ?? context.inputStyles.searchDecoration,
       helperText: widget.helperText,
       autoCorrect: false,
-      autoFocus: true,
+      autoFocus: widget.autoFocus,
       hintText: widget.hintText,
       controller: controller,
       suffix: widget.suffix ?? suffix,

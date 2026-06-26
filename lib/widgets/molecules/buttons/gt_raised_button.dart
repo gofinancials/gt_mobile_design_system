@@ -60,6 +60,7 @@ class GtRaisedButton extends GtButton {
 
   Color _iconColor(GtPalette palette) {
     if (isDisabled) return palette.text.disabled;
+    if (textColor != null) return textColor!;
     return switch (variant) {
       .neutral => palette.text.disabled,
       _ => _textColor(palette),

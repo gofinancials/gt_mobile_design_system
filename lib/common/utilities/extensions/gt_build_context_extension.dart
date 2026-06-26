@@ -311,11 +311,7 @@ extension ThemeContextExtension on BuildContext {
   /// Automatically scrolls this tab into view immediately if it is currently selected.
   void scrollIntoView() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Scrollable.ensureVisible(
-        this,
-        curve: Curves.decelerate,
-        duration: 500.milliseconds,
-      );
+      scrollIntoViewNow();
     });
   }
 
@@ -345,4 +341,14 @@ extension BuildContextCopyExtension on BuildContext {
   // void copyToClipboard(String text) {
   //   .
   // }
+}
+
+/// Extension to convert a CSS hex string to a [Color].
+extension CssHexStringExtension on String {
+  Color get asColor {
+    final buffer = StringBuffer();
+    if (length == 6 || length == 7) buffer.write('FF');
+    buffer.write(replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
 }

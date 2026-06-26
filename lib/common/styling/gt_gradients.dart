@@ -26,8 +26,8 @@ class GtGradients {
         context.palette.primary.alpha10,
         context.palette.primary.alpha24,
       ],
-      begin: Alignment.topRight,
-      end: Alignment.bottomLeft,
+      begin: .topRight,
+      end: .bottomLeft,
     );
   }
 
@@ -38,8 +38,8 @@ class GtGradients {
     return LinearGradient(
       colors: [context.palette.primary.alpha24, context.palette.primary.base],
       stops: [0, .6],
-      begin: Alignment.topRight,
-      end: Alignment.bottomLeft,
+      begin: .topRight,
+      end: .bottomLeft,
     );
   }
 
@@ -52,8 +52,8 @@ class GtGradients {
         context.palette.bg.white,
         context.palette.bg.white.setOpacity(.16),
       ],
-      begin: Alignment.topRight,
-      end: Alignment.bottomLeft,
+      begin: .topRight,
+      end: .bottomLeft,
     );
   }
 
@@ -80,8 +80,8 @@ class GtGradients {
     return LinearGradient(
       colors: [light, dark],
       stops: [0, 1],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
+      begin: .topLeft,
+      end: .bottomRight,
     );
   }
 

@@ -42,6 +42,12 @@ class GtSwitchTile extends GtStatelessWidget {
   /// Custom padding to apply to the tile.
   final EdgeInsetsGeometry? padding;
 
+  /// Custom text style to apply to the [title].
+  final TextStyle? titleStyle;
+
+  /// Custom text style to apply to the [subtitle].
+  final TextStyle? subTitleStyle;
+
   /// Creates a [GtSwitchTile].
   const GtSwitchTile(
     this.title, {
@@ -55,6 +61,8 @@ class GtSwitchTile extends GtStatelessWidget {
     this.leading,
     this.subtitle,
     this.padding,
+    this.titleStyle,
+    this.subTitleStyle,
   });
 
   @override
@@ -66,7 +74,9 @@ class GtSwitchTile extends GtStatelessWidget {
       },
       padding: padding,
       title,
+      titleStyle: titleStyle,
       subtitle: subtitle,
+      subTitleStyle: subTitleStyle,
       icon: leading,
       footer: footer,
       trailing: GtSwitch(

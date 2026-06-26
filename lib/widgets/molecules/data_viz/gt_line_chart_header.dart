@@ -87,7 +87,7 @@ class GtLineChartHeader extends GtStatelessWidget {
           textColor: palette.text.strong,
           variant: .black,
           size: .pill,
-          alignment: .topRight,
+          alignment: .centerRight,
         ),
       ],
     );
