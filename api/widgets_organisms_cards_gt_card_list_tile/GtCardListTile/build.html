@@ -110,8 +110,13 @@ and</li>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   return GtCard(
-    padding: type.padding(context.insets),
-    borderRadius: type.borderRadius(context),
+    padding: type.padding(
+      context.insets,
+      hPadding: horizontalPadding ?? 16,
+      vPadding: verticalPadding ?? 12,
+    ),
+    borderRadius: type.borderRadius(context, radius: edgeRadius),
+    variant: variant,
     child: child,
   );
 }</code></pre>

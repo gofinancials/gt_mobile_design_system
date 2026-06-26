@@ -57,6 +57,10 @@
       <span class="name ">GtCardListTile</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span></li>
 <li><span class="parameter" id="-param-type"><span class="type-annotation"><a href="../../widgets_organisms_cards_gt_card_list_tile/GtCardListTileType.html">GtCardListTileType</a></span> <span class="parameter-name">type</span> = <span class="default-value">.medial</span>, </span></li>
 <li><span class="parameter" id="-param-child"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span> <span class="parameter-name">child</span>, </span></li>
+<li><span class="parameter" id="-param-variant"><span class="type-annotation"><a href="../../widgets_organisms_cards_gt_card/GtCardVariant.html">GtCardVariant</a></span> <span class="parameter-name">variant</span> = <span class="default-value">.normal</span>, </span></li>
+<li><span class="parameter" id="-param-horizontalPadding"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">horizontalPadding</span>, </span></li>
+<li><span class="parameter" id="-param-verticalPadding"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a>?</span> <span class="parameter-name">verticalPadding</span>, </span></li>
+<li><span class="parameter" id="-param-edgeRadius"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Radius-class.html">Radius</a>?</span> <span class="parameter-name">edgeRadius</span>, </span></li>
 </ol>})
     </section>
     
@@ -68,7 +72,15 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">const GtCardListTile({super.key, this.type = .medial, required this.child});</code></pre>
+  <pre class="language-dart"><code class="language-dart">const GtCardListTile({
+  super.key,
+  this.type = .medial,
+  required this.child,
+  this.variant = .normal,
+  this.horizontalPadding,
+  this.verticalPadding,
+  this.edgeRadius,
+});</code></pre>
 </section>
 
 

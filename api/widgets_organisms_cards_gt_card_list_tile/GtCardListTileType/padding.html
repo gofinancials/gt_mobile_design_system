@@ -55,8 +55,10 @@
     <section class="multi-line-signature">
       
 <span class="returntype"><a href="https://api.flutter.dev/flutter/painting/EdgeInsetsGeometry-class.html">EdgeInsetsGeometry</a></span>
-<span class="name ">padding</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="padding-param-insets"><span class="type-annotation"><a href="../../common_utilities_gt_adaptive_sizing_utilities/GtInsets-class.html">GtInsets</a></span> <span class="parameter-name">insets</span></span></li>
-</ol>)
+<span class="name ">padding</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="padding-param-insets"><span class="type-annotation"><a href="../../common_utilities_gt_adaptive_sizing_utilities/GtInsets-class.html">GtInsets</a></span> <span class="parameter-name">insets</span>, {</span></li>
+<li><span class="parameter" id="padding-param-hPadding"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">hPadding</span> = <span class="default-value">16</span>, </span></li>
+<li><span class="parameter" id="padding-param-vPadding"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">vPadding</span> = <span class="default-value">12</span>, </span></li>
+</ol>})
 
       
 
@@ -70,12 +72,16 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">EdgeInsetsGeometry padding(GtInsets insets) {
-  final defualtPadding = insets.defaultHorizontalInsets;
+  <pre class="language-dart"><code class="language-dart">EdgeInsetsGeometry padding(
+  GtInsets insets, {
+  double hPadding = 16,
+  double vPadding = 12,
+}) {
+  final defualtPadding = insets.symmetricDp(horizontal: hPadding.px);
   final EdgeInsetsGeometry addend = switch (this) {
-    .starter =&gt; insets.onlyDp(top: 12.px),
-    .terminus =&gt; insets.onlyDp(bottom: 12.px),
-    .sole =&gt; insets.symmetricDp(vertical: 12.px),
+    .starter =&gt; insets.onlyDp(top: vPadding.px),
+    .terminus =&gt; insets.onlyDp(bottom: vPadding.px),
+    .sole =&gt; insets.symmetricDp(vertical: vPadding.px),
     _ =&gt; .zero,
   };
   return defualtPadding.add(addend);

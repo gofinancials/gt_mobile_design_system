@@ -55,8 +55,9 @@
     <section class="multi-line-signature">
       
 <span class="returntype"><a href="https://api.flutter.dev/flutter/painting/BorderRadius-class.html">BorderRadius</a></span>
-<span class="name ">borderRadius</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="borderRadius-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span></li>
-</ol>)
+<span class="name ">borderRadius</span>(<wbr><ol class="parameter-list"> <li><span class="parameter" id="borderRadius-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, {</span></li>
+<li><span class="parameter" id="borderRadius-param-radius"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Radius-class.html">Radius</a>?</span> <span class="parameter-name">radius</span>, </span></li>
+</ol>})
 
       
 
@@ -70,12 +71,12 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">BorderRadius borderRadius(BuildContext context) {
+  <pre class="language-dart"><code class="language-dart">BorderRadius borderRadius(BuildContext context, {Radius? radius}) {
   return switch (this) {
     .divider || medial =&gt; .zero,
-    .starter =&gt; BorderRadius.vertical(top: context.radiusXl),
-    .terminus =&gt; BorderRadius.vertical(bottom: context.radiusXl),
-    .sole =&gt; context.borderRadiusXl,
+    .starter =&gt; .vertical(top: radius ?? context.radiusXl),
+    .terminus =&gt; .vertical(bottom: radius ?? context.radiusXl),
+    .sole =&gt; .all(radius ?? context.radiusXl),
   };
 }</code></pre>
 </section>

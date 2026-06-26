@@ -125,9 +125,10 @@ Widget build(BuildContext context) {
           GtAvatar(
             avatar: avatar,
             alignment: .centerLeft,
-            initials: AppHelpers.getInitials(fullName),
+            initials: fullName.initials,
             gradient: context.gradients.appbarAvatarGradient,
             initialsColor: context.palette.text.white,
+            onPressed: onClickProfile,
           ),
           Expanded(
             child: Column(
