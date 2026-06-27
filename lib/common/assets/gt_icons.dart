@@ -23,6 +23,7 @@ class GtIcons {
   static const sendSolid = GtIconData(0xf114);
   static const search = GtIconData(0xf115);
   static const scan = GtIconData(0xf116);
+  static const userScan = GtIconData(0xf127);
   static const refreshSolid = GtIconData(0xf117);
   static const qr = GtIconData(0xf118);
   static const qrMain = GtIconData(0xf119);
@@ -32,6 +33,7 @@ class GtIcons {
   static const info = GtIconData(0xf11c);
   static const help = GtIconData(0xf11d);
   static const gem = GtIconData(0xf11e);
+  static const filter = GtIconData(0xf16a);
   static const filterSolid = GtIconData(0xf11f);
 
   static const chevronUp = GtIconData(0xf120);
@@ -84,7 +86,7 @@ class GtIcons {
   static const scale = GtIconData(0xf006);
   static const filters = GtIconData(0xf007);
   static const satellite = GtIconData(0xf008);
-  static const filter = GtIconData(0xf009);
+  static const funnel = GtIconData(0xf009);
   static const rulerPen = GtIconData(0xf00a);
   static const film = GtIconData(0xf00b);
   static const rotation360 = GtIconData(0xf00c);
@@ -143,6 +145,7 @@ class GtIcons {
   static const pen = GtIconData(0xf03e);
   static const pencil = GtIconData(0xf106);
   static const password = GtIconData(0xf040);
+  static const passcode = GtIconData(0xf13c);
   static const copy = GtIconData(0xf041);
   static const paperclip = GtIconData(0xf042);
   static const cookie = GtIconData(0xf043);
@@ -357,7 +360,6 @@ class GtIcons {
   static const delete = GtIconData(0xf129);
   static const faceId = GtIconData(0xf128);
 
-  static const money = GtIconData(0xf127);
   static const temple = GtIconData(0xf12c);
   static const childHead = GtIconData(0xf146);
   static const verifiedUsers = GtIconData(0xf12b);
@@ -377,7 +379,6 @@ class GtIcons {
   static const clock = GtIconData(0xf152);
   static const arrowNorthEast = GtIconData(0xf153);
   static const notificationUnread = GtIconData(0xf13b);
-  static const mobileAlt = GtIconData(0xf13c);
 
   static const pos = GtIconData(0xf03F);
   static const palmTree = GtIconData(0xf156);
@@ -538,9 +539,10 @@ class GtIcons {
     (label: 'fileFilled', value: fileFilled),
     (label: 'files', value: files),
     (label: 'film', value: film),
+    (label: 'funnel', value: funnel),
     (label: 'filter', value: filter),
-    (label: 'filters', value: filters),
     (label: 'filterSolid', value: filterSolid),
+    (label: 'filters', value: filters),
     (label: 'fingerprint', value: fingerprint),
     (label: 'flag', value: flag),
     (label: 'flame', value: flame),
@@ -612,8 +614,6 @@ class GtIcons {
     (label: 'microphoneSlash', value: microphoneSlash),
     (label: 'minus', value: minus),
     (label: 'mobile', value: mobile),
-    (label: 'mobileAlt', value: mobileAlt),
-    (label: 'money', value: money),
     (label: 'moneyBillCoin', value: moneyBillCoin),
     (label: 'more', value: more),
     (label: 'moreHorizontal', value: moreHorizontal),
@@ -632,6 +632,7 @@ class GtIcons {
     (label: 'paperclip', value: paperclip),
     (label: 'paperPlane', value: paperPlane),
     (label: 'password', value: password),
+    (label: 'passcode', value: passcode),
     (label: 'payment', value: payment),
     (label: 'paymentFilled', value: paymentFilled),
     (label: 'paypal', value: paypal),
@@ -735,6 +736,7 @@ class GtIcons {
     (label: 'users', value: users),
     (label: 'userSearch', value: userSearch),
     (label: 'userSolid', value: userSolid),
+    (label: 'userScan', value: userScan),
     (label: 'vault', value: vault),
     (label: 'vending', value: vending),
     (label: 'verifiedUsers', value: verifiedUsers),

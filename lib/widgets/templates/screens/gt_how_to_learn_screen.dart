@@ -66,9 +66,11 @@ class GtHowToLearnScreen extends GtStatelessWidget {
     final palette = context.palette;
     final color = palette.staticColors.white;
     final bgColor = GtColors.neutralGray800.value;
-    final List<Widget> tiles = [
-      for (final Widget instruction in instructions) instruction,
-    ].intersperse(GtGap.ySectionSm()).toList();
+    final List<Widget> tiles =
+        [
+          for (final Widget instruction in instructions) instruction,
+        ].intersperse(GtGap.ySectionSm())?.cast() ??
+        [];
 
     return Scaffold(
       backgroundColor: bgColor,
