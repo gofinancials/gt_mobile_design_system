@@ -403,7 +403,10 @@ class GtInputStyles {
     ('Search Decoration', searchDecoration),
     ('Small Search Decoration', smSearchDecoration),
     ('Small White Search Decoration', smWhiteSearchDecoration),
-    ('Small White Search Borderless Decoration', smWhiteSearchBorderlessDecoration),
+    (
+      'Small White Search Borderless Decoration',
+      smWhiteSearchBorderlessDecoration,
+    ),
   ];
 }
 

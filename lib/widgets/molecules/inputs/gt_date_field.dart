@@ -56,7 +56,7 @@ class GtDateField extends GtStatefulWidget {
     super.key,
     this.controller,
     this.dateFormat = "dd-MM-yyyy",
-    this.hintText = "DD--MM-YYYY",
+    this.hintText = "DD-MM-YYYY",
     this.validator,
     this.decoration,
     this.suffix,

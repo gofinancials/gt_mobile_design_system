@@ -225,6 +225,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               hintText: "Search here",
               prefix: GtIcon(GtIcons.magnifier, variant: .soft),
               decoration: decoration.$2,
+              autoFocus: false,
             ),
             const GtGap.yXl(),
             GtUrlField(
@@ -280,10 +281,9 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
             const GtGap.yXl(),
             GtDobField(controller: _inputCtrl13, decoration: decoration.$2),
             const GtGap.yXl(),
-            GtDropdownField<Country>(
+            GtCountryField(
               controller: _inputCtrl14,
               decoration: decoration.$2,
-              options: allCountries,
               validator: AppValidators.required,
               sheetTitle: "Select Country",
               label: "Select a country [Default tiles with Title]",
