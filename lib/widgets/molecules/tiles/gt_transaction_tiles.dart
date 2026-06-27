@@ -145,6 +145,12 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// Custom styling for the [subtitle] text.
   final TextStyle? subStyle;
 
+  /// Custom styling for the [title] text.
+  final TextStyle? titleStyle;
+
+  /// Custom styling for the [superscript] text.
+  final TextStyle? superscriptStyle;
+
   /// Creates a [GtTransactionParticipantListTile].
   const GtTransactionParticipantListTile(
     this.title, {
@@ -155,11 +161,16 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
     this.trailing,
     this.superscript,
     this.subStyle,
+    this.titleStyle,
+    this.superscriptStyle,
   });
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final style = context.textStyles;
+    final defaultSubStyle = style.subHead2xs(color: palette.text.soft);
+    final defaultSupStyle = style.title2xs(color: palette.text.disabled);
 
     return Row(
       crossAxisAlignment: crossAxisAlignment,
@@ -178,19 +189,12 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
               if (superscript.hasValue)
                 GtText(
                   superscript?.upper,
-                  style: context.textStyles.title2xs(
-                    color: palette.text.disabled,
-                  ),
+                  style: superscriptStyle ?? defaultSupStyle,
                 ),
-              GtText(title, style: context.textStyles.h7()),
+              GtText(title, style: titleStyle ?? style.h7()),
               if (subtitle.hasValue) ...[
                 const GtGap.ySm(),
-                GtText(
-                  subtitle,
-                  style:
-                      subStyle ??
-                      context.textStyles.subHead2xs(color: palette.text.soft),
-                ),
+                GtText(subtitle, style: subStyle ?? defaultSubStyle),
               ],
             ],
           ),
