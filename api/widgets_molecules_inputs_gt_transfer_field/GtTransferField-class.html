@@ -96,7 +96,7 @@ note field. It handles basic balance validation and custom visual styling native
     <h2>Constructors</h2>
     <dl class="constructor-summary-list">
         <dt id="GtTransferField.new" class="callable">
-          <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/GtTransferField.html">GtTransferField</a></span><span class="signature">({<span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="-param-amountController"><span>required</span> <span class="type-annotation"><a href="../common_data_gt_input_data/GtInputController-class.html">GtInputController</a></span> <span class="parameter-name">amountController</span>, </span><span class="parameter" id="-param-noteController"><span>required</span> <span class="type-annotation"><a href="../common_data_gt_input_data/GtInputController-class.html">GtInputController</a></span> <span class="parameter-name">noteController</span>, </span><span class="parameter" id="-param-sender"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sender</span>, </span><span class="parameter" id="-param-recipient"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">recipient</span>, </span><span class="parameter" id="-param-senderImage"><span>required</span> <span class="type-annotation">AppImageData</span> <span class="parameter-name">senderImage</span>, </span><span class="parameter" id="-param-recipientAvatar"><span>required</span> <span class="type-annotation"><a href="../widgets_molecules_media_gt_avatar/GtAvatar-class.html">GtAvatar</a></span> <span class="parameter-name">recipientAvatar</span>, </span><span class="parameter" id="-param-balance"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">balance</span>, </span><span class="parameter" id="-param-noteHint"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">noteHint</span>, </span><span class="parameter" id="-param-onTapSender"><span class="type-annotation">OnPressed?</span> <span class="parameter-name">onTapSender</span>, </span><span class="parameter" id="-param-onTapReciver"><span class="type-annotation">OnPressed?</span> <span class="parameter-name">onTapReciver</span>, </span><span class="parameter" id="-param-onChange"><span class="type-annotation">OnChanged<span class="signature">&lt;<wbr><span class="type-parameter">(<span class="field">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="field-name">amount</span>, </span><span class="field"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="field-name">note</span>}</span>)</span>&gt;</span>?</span> <span class="parameter-name">onChange</span>, </span><span class="parameter" id="-param-isEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isEnabled</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-max"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/num-class.html">num</a>?</span> <span class="parameter-name">max</span>, </span><span class="parameter" id="-param-min"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/num-class.html">num</a>?</span> <span class="parameter-name">min</span></span>})</span>
+          <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/GtTransferField.html">GtTransferField</a></span><span class="signature">({<span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span><span class="parameter" id="-param-amountController"><span>required</span> <span class="type-annotation"><a href="../common_data_gt_input_data/GtInputController-class.html">GtInputController</a></span> <span class="parameter-name">amountController</span>, </span><span class="parameter" id="-param-noteController"><span>required</span> <span class="type-annotation"><a href="../common_data_gt_input_data/GtInputController-class.html">GtInputController</a></span> <span class="parameter-name">noteController</span>, </span><span class="parameter" id="-param-firstParticipant"><span>required</span> <span class="type-annotation"><a href="../common_data_gt_transfer_participant_data/GtTransferParticipantData-class.html">GtTransferParticipantData</a></span> <span class="parameter-name">firstParticipant</span>, </span><span class="parameter" id="-param-secondParticipant"><span>required</span> <span class="type-annotation"><a href="../common_data_gt_transfer_participant_data/GtTransferParticipantData-class.html">GtTransferParticipantData</a></span> <span class="parameter-name">secondParticipant</span>, </span><span class="parameter" id="-param-noteHint"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">noteHint</span>, </span><span class="parameter" id="-param-onChange"><span class="type-annotation">OnChanged<span class="signature">&lt;<wbr><span class="type-parameter">(<span class="field">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="field-name">amount</span>, </span><span class="field"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="field-name">note</span>}</span>)</span>&gt;</span>?</span> <span class="parameter-name">onChange</span>, </span><span class="parameter" id="-param-isEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isEnabled</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-max"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/num-class.html">num</a>?</span> <span class="parameter-name">max</span>, </span><span class="parameter" id="-param-min"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/num-class.html">num</a>?</span> <span class="parameter-name">min</span>, </span><span class="parameter" id="-param-participantSeparator"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">participantSeparator</span></span>})</span>
         </dt>
         <dd>
           Creates a new <a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField-class.html">GtTransferField</a>.
@@ -134,14 +134,14 @@ note field. It handles basic balance validation and custom visual styling native
 
 </dd>
 
-        <dt id="balance" class="property">
-  <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/balance.html">balance</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+        <dt id="firstParticipant" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/firstParticipant.html">firstParticipant</a></span>
+  <span class="signature">&#8594; <a href="../common_data_gt_transfer_participant_data/GtTransferParticipantData-class.html">GtTransferParticipantData</a></span>
   
 
 </dt>
 <dd>
-  The available balance of the sender, used for validation and display.
+  
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -242,50 +242,14 @@ note field. It handles basic balance validation and custom visual styling native
 
 </dd>
 
-        <dt id="onTapReciver" class="property">
-  <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/onTapReciver.html">onTapReciver</a></span>
-  <span class="signature">&#8594; OnPressed?</span>
+        <dt id="participantSeparator" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/participantSeparator.html">participantSeparator</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span>
   
 
 </dt>
 <dd>
-  Callback invoked when the recipient is tapped.
-  <div class="features"><span class="feature">final</span></div>
-
-</dd>
-
-        <dt id="onTapSender" class="property">
-  <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/onTapSender.html">onTapSender</a></span>
-  <span class="signature">&#8594; OnPressed?</span>
   
-
-</dt>
-<dd>
-  Callback invoked when the sender is tapped.
-  <div class="features"><span class="feature">final</span></div>
-
-</dd>
-
-        <dt id="recipient" class="property">
-  <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/recipient.html">recipient</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
-  
-
-</dt>
-<dd>
-  The name or identifier of the user receiving the funds.
-  <div class="features"><span class="feature">final</span></div>
-
-</dd>
-
-        <dt id="recipientAvatar" class="property">
-  <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/recipientAvatar.html">recipientAvatar</a></span>
-  <span class="signature">&#8594; <a href="../widgets_molecules_media_gt_avatar/GtAvatar-class.html">GtAvatar</a></span>
-  
-
-</dt>
-<dd>
-  The avatar widget representing the recipient.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -302,26 +266,14 @@ note field. It handles basic balance validation and custom visual styling native
 
 </dd>
 
-        <dt id="sender" class="property">
-  <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/sender.html">sender</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+        <dt id="secondParticipant" class="property">
+  <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/secondParticipant.html">secondParticipant</a></span>
+  <span class="signature">&#8594; <a href="../common_data_gt_transfer_participant_data/GtTransferParticipantData-class.html">GtTransferParticipantData</a></span>
   
 
 </dt>
 <dd>
-  The name or identifier of the user sending the funds.
-  <div class="features"><span class="feature">final</span></div>
-
-</dd>
-
-        <dt id="senderImage" class="property">
-  <span class="name"><a href="../widgets_molecules_inputs_gt_transfer_field/GtTransferField/senderImage.html">senderImage</a></span>
-  <span class="signature">&#8594; AppImageData</span>
   
-
-</dt>
-<dd>
-  The image data representing the sender.
   <div class="features"><span class="feature">final</span></div>
 
 </dd>

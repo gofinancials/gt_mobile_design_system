@@ -110,6 +110,9 @@ and</li>
   <pre class="language-dart"><code class="language-dart">@override
 Widget build(BuildContext context) {
   final palette = context.palette;
+  final style = context.textStyles;
+  final defaultSubStyle = style.subHead2xs(color: palette.text.soft);
+  final defaultSupStyle = style.title2xs(color: palette.text.disabled);
 
   return Row(
     crossAxisAlignment: crossAxisAlignment,
@@ -128,19 +131,12 @@ Widget build(BuildContext context) {
             if (superscript.hasValue)
               GtText(
                 superscript?.upper,
-                style: context.textStyles.title2xs(
-                  color: palette.text.disabled,
-                ),
+                style: superscriptStyle ?? defaultSupStyle,
               ),
-            GtText(title, style: context.textStyles.h7()),
+            GtText(title, style: titleStyle ?? style.h7()),
             if (subtitle.hasValue) ...[
               const GtGap.ySm(),
-              GtText(
-                subtitle,
-                style:
-                    subStyle ??
-                    context.textStyles.subHead2xs(color: palette.text.soft),
-              ),
+              GtText(subtitle, style: subStyle ?? defaultSubStyle),
             ],
           ],
         ),

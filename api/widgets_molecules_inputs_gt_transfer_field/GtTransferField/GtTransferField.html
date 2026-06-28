@@ -57,18 +57,14 @@
       <span class="name ">GtTransferField</span>(<wbr>{<ol class="parameter-list"> <li><span class="parameter" id="-param-key"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/foundation/Key-class.html">Key</a>?</span> <span class="parameter-name">key</span>, </span></li>
 <li><span class="parameter" id="-param-amountController"><span>required</span> <span class="type-annotation"><a href="../../common_data_gt_input_data/GtInputController-class.html">GtInputController</a></span> <span class="parameter-name">amountController</span>, </span></li>
 <li><span class="parameter" id="-param-noteController"><span>required</span> <span class="type-annotation"><a href="../../common_data_gt_input_data/GtInputController-class.html">GtInputController</a></span> <span class="parameter-name">noteController</span>, </span></li>
-<li><span class="parameter" id="-param-sender"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">sender</span>, </span></li>
-<li><span class="parameter" id="-param-recipient"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">recipient</span>, </span></li>
-<li><span class="parameter" id="-param-senderImage"><span>required</span> <span class="type-annotation">AppImageData</span> <span class="parameter-name">senderImage</span>, </span></li>
-<li><span class="parameter" id="-param-recipientAvatar"><span>required</span> <span class="type-annotation"><a href="../../widgets_molecules_media_gt_avatar/GtAvatar-class.html">GtAvatar</a></span> <span class="parameter-name">recipientAvatar</span>, </span></li>
-<li><span class="parameter" id="-param-balance"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">balance</span>, </span></li>
+<li><span class="parameter" id="-param-firstParticipant"><span>required</span> <span class="type-annotation"><a href="../../common_data_gt_transfer_participant_data/GtTransferParticipantData-class.html">GtTransferParticipantData</a></span> <span class="parameter-name">firstParticipant</span>, </span></li>
+<li><span class="parameter" id="-param-secondParticipant"><span>required</span> <span class="type-annotation"><a href="../../common_data_gt_transfer_participant_data/GtTransferParticipantData-class.html">GtTransferParticipantData</a></span> <span class="parameter-name">secondParticipant</span>, </span></li>
 <li><span class="parameter" id="-param-noteHint"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">noteHint</span>, </span></li>
-<li><span class="parameter" id="-param-onTapSender"><span class="type-annotation">OnPressed?</span> <span class="parameter-name">onTapSender</span>, </span></li>
-<li><span class="parameter" id="-param-onTapReciver"><span class="type-annotation">OnPressed?</span> <span class="parameter-name">onTapReciver</span>, </span></li>
 <li><span class="parameter" id="-param-onChange"><span class="type-annotation">OnChanged<span class="signature">&lt;<wbr><span class="type-parameter">(<span class="field">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="field-name">amount</span>, </span><span class="field"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="field-name">note</span>}</span>)</span>&gt;</span>?</span> <span class="parameter-name">onChange</span>, </span></li>
 <li><span class="parameter" id="-param-isEnabled"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isEnabled</span> = <span class="default-value">true</span>, </span></li>
 <li><span class="parameter" id="-param-max"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/num-class.html">num</a>?</span> <span class="parameter-name">max</span>, </span></li>
 <li><span class="parameter" id="-param-min"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/num-class.html">num</a>?</span> <span class="parameter-name">min</span>, </span></li>
+<li><span class="parameter" id="-param-participantSeparator"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a>?</span> <span class="parameter-name">participantSeparator</span>, </span></li>
 </ol>})
     </section>
     
@@ -84,18 +80,14 @@
   super.key,
   required this.amountController,
   required this.noteController,
-  required this.sender,
-  required this.recipient,
-  required this.senderImage,
-  required this.recipientAvatar,
-  required this.balance,
+  required this.firstParticipant,
+  required this.secondParticipant,
   required this.noteHint,
-  this.onTapSender,
-  this.onTapReciver,
   this.onChange,
   this.isEnabled = true,
   this.max,
   this.min,
+  this.participantSeparator,
 });</code></pre>
 </section>
 
