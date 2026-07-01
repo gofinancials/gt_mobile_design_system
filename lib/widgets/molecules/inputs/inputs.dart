@@ -1,6 +1,7 @@
 export 'gt_amount_field.dart';
 export 'gt_autocomplete_field.dart';
 export 'gt_calendar.dart';
+export 'gt_country_field.dart';
 export 'gt_date_field.dart';
 export 'gt_dob_field.dart';
 export 'gt_dot_form_field.dart';

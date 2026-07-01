@@ -195,25 +195,23 @@ class GtPill extends StatelessWidget {
             WidgetSpan(child: trailing!, alignment: .middle),
           ],
         ],
-        style: textStyle ?? context.textStyles.buttonXs(color: textColor),
       ),
       maxLines: 1,
+      style: textStyle ?? context.textStyles.buttonXs(color: textColor),
+      overflow: .ellipsis,
     );
 
-    child = UnconstrainedBox(
-      child: AnimatedContainer(
-        alignment: .center,
-        duration: 500.milliseconds,
-        constraints: constraints,
-        padding: padding ?? context.insets.allDp(4.px),
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: borderRadius ?? context.borderRadiusSm,
-          border: Border.all(color: borderColor ?? bgColor, style: borderStyle),
-          boxShadow: shadow,
-        ),
-        child: child,
+    child = AnimatedContainer(
+      duration: 500.milliseconds,
+      constraints: constraints,
+      padding: padding ?? context.insets.allDp(4.px),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: borderRadius ?? context.borderRadiusSm,
+        border: Border.all(color: borderColor ?? bgColor, style: borderStyle),
+        boxShadow: shadow,
       ),
+      child: child,
     );
 
     return Align(alignment: alignment ?? .center, child: child);

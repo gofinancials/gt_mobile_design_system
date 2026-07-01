@@ -16,6 +16,9 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// Callback triggered when the hide/visibility icon is pressed.
   final OnPressed onClickStat;
 
+  /// Callback triggered when the profile detail is pressed.
+  final OnPressed onClickProfile;
+
   /// Callback triggered when the notification icon is pressed.
   final OnPressed onClickNotification;
 
@@ -26,6 +29,7 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   const GtProAppBar({
     this.avatar,
     required this.onClickStat,
+    required this.onClickProfile,
     required this.onClickNotification,
     required this.fullName,
     required this.businessName,
@@ -57,9 +61,10 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
             GtAvatar(
               avatar: avatar,
               alignment: .centerLeft,
-              initials: AppHelpers.getInitials(fullName),
+              initials: fullName.initials,
               gradient: context.gradients.appbarAvatarGradient,
               initialsColor: context.palette.text.white,
+              onPressed: onClickProfile,
             ),
             Expanded(
               child: Column(

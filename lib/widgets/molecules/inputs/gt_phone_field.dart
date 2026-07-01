@@ -280,6 +280,7 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
     showDraggableSheet(
       context,
       builder: (scrollController) => GtDropDownModal<Country>(
+        autoFocus: true,
         scrollController,
         controller: controller,
         options: _allCountries,

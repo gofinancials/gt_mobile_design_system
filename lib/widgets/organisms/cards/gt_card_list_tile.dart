@@ -33,22 +33,26 @@ enum GtCardListTileType {
   }
 
   /// Returns the appropriate [BorderRadius] for this tile type based on the [context].
-  BorderRadius borderRadius(BuildContext context) {
+  BorderRadius borderRadius(BuildContext context, {Radius? radius}) {
     return switch (this) {
       .divider || medial => .zero,
-      .starter => BorderRadius.vertical(top: context.radiusXl),
-      .terminus => BorderRadius.vertical(bottom: context.radiusXl),
-      .sole => context.borderRadiusXl,
+      .starter => .vertical(top: radius ?? context.radiusXl),
+      .terminus => .vertical(bottom: radius ?? context.radiusXl),
+      .sole => .all(radius ?? context.radiusXl),
     };
   }
 
   /// Returns the appropriate [EdgeInsetsGeometry] for this tile type.
-  EdgeInsetsGeometry padding(GtInsets insets) {
-    final defualtPadding = insets.defaultHorizontalInsets;
+  EdgeInsetsGeometry padding(
+    GtInsets insets, {
+    double hPadding = 16,
+    double vPadding = 12,
+  }) {
+    final defualtPadding = insets.symmetricDp(horizontal: hPadding.px);
     final EdgeInsetsGeometry addend = switch (this) {
-      .starter => insets.onlyDp(top: 12.px),
-      .terminus => insets.onlyDp(bottom: 12.px),
-      .sole => insets.symmetricDp(vertical: 12.px),
+      .starter => insets.onlyDp(top: vPadding.px),
+      .terminus => insets.onlyDp(bottom: vPadding.px),
+      .sole => insets.symmetricDp(vertical: vPadding.px),
       _ => .zero,
     };
     return defualtPadding.add(addend);
@@ -63,17 +67,41 @@ class GtCardListTile extends GtStatelessWidget {
   /// The positional type of the tile within a list. Defaults to [GtCardListTileType.medial].
   final GtCardListTileType type;
 
+  /// The variant of the card.
+  final GtCardVariant variant;
+
+  /// The horizontal padding for the tile.
+  final double? horizontalPadding;
+
+  /// The vertical padding for the tile.
+  final double? verticalPadding;
+
   /// The primary content of the card list tile.
   final Widget child;
 
+  final Radius? edgeRadius;
+
   /// Creates a [GtCardListTile].
-  const GtCardListTile({super.key, this.type = .medial, required this.child});
+  const GtCardListTile({
+    super.key,
+    this.type = .medial,
+    required this.child,
+    this.variant = .normal,
+    this.horizontalPadding,
+    this.verticalPadding,
+    this.edgeRadius,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GtCard(
-      padding: type.padding(context.insets),
-      borderRadius: type.borderRadius(context),
+      padding: type.padding(
+        context.insets,
+        hPadding: horizontalPadding ?? 16,
+        vPadding: verticalPadding ?? 12,
+      ),
+      borderRadius: type.borderRadius(context, radius: edgeRadius),
+      variant: variant,
       child: child,
     );
   }

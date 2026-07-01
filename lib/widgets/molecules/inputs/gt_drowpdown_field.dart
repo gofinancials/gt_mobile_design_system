@@ -134,9 +134,7 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
     controller = widget.controller ?? GtDropdownInputController();
     focusNode = controller.focusNode;
     if (!widget.autoFocus) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      focusNode.requestFocus();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showSheet());
   }
 
   @override
@@ -160,6 +158,7 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
     showDraggableSheet(
       context,
       builder: (scrollController) => GtDropDownModal(
+        autoFocus: widget.autoFocus,
         scrollController,
         controller: controller,
         title: widget.sheetTitle,
@@ -235,6 +234,9 @@ class GtDropDownModal<T> extends GtStatefulWidget {
   /// An optional widget to display when error occurs when getting options.
   final Widget? errorWidget;
 
+  /// Whether the dropdown modal should open automatically when the widget builds.
+  final bool autoFocus;
+
   /// An optional builder for individual option list tiles.
   final ValueBuilder2<GtDropdownData, GtDropdownInputController>? builder;
 
@@ -262,6 +264,7 @@ class GtDropDownModal<T> extends GtStatefulWidget {
     required this.options,
     required this.controller,
     required this.debounceTime,
+    required this.autoFocus,
     this.gap = const GtGap.yLg(),
   });
 
@@ -331,6 +334,7 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal>
                     Expanded(
                       child: GtSearchField(
                         onChange: _filterOptions,
+                        autoFocus: widget.autoFocus,
                         decoration: context.inputStyles.smWhiteSearchDecoration,
                       ),
                     ),

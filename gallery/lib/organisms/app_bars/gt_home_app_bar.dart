@@ -33,6 +33,7 @@ Widget buildGtProAppbarUsecase(BuildContext context) {
   return Scaffold(
     appBar: GtProAppBar(
       onClickStat: () {},
+      onClickProfile: () {},
       onClickNotification: () {},
       verified: context.knobs.boolean(label: "Verified"),
       fullName: context.knobs.string(

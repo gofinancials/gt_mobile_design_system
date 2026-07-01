@@ -79,17 +79,13 @@ class GtToastOverlay extends GtStatelessWidget {
       color: context.shadowColor,
       child: SafeArea(
         minimum: context.insets.defaultAllInsets,
-        bottom: false,
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: GtButtonPill(
-            text: message,
-            variant: type,
-            icon: icon,
-            showShadow: true,
-            alignment: .topCenter,
-            size: .larger,
-          ),
+        child: GtButtonPill(
+          text: message,
+          variant: type,
+          icon: icon,
+          showShadow: true,
+          size: .larger,
+          alignment: .topCenter,
         ),
       ),
     );
