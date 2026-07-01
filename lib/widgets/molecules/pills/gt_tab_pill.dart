@@ -87,7 +87,7 @@ class GtTabPill<T> extends StatelessWidget {
     required T value,
     required T? activeValue,
     required OnChanged<T> onSelect,
-    GtPillVariant variant,
+    GtPillVariant? variant,
     IconData? icon,
     IconData? trailing,
     Alignment? alignment,
