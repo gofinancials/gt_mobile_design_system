@@ -1,10 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:gt_mobile_ui/common/common.dart';
 
-class GtIconData extends IconData {
-  const GtIconData(super.codePoint)
-    : super(fontFamily: GtFonts.icon, fontPackage: 'gt_mobile_ui');
-}
+typedef GtIconData = IconData;
 
 /// A centralized class for the application's custom icon font.
 ///
@@ -14,394 +11,647 @@ class GtIcons {
   /// Private constructor to prevent instantiation of this utility class.
   GtIcons._();
 
+  static const _f = GtFonts.icon;
+  static const _p = 'gt_mobile_ui';
+
   /// ---------------------------------------------------------------------------
   /// NAVIGATION & CORE ICONS (Solid / High-Emphasis)
   /// ---------------------------------------------------------------------------
-  static const userSolid = GtIconData(0xf110);
-  static const spark = GtIconData(0xf112);
-  static const shareSolid = GtIconData(0xf113);
-  static const sendSolid = GtIconData(0xf114);
-  static const search = GtIconData(0xf115);
-  static const scan = GtIconData(0xf116);
-  static const userScan = GtIconData(0xf127);
-  static const refreshSolid = GtIconData(0xf117);
-  static const qr = GtIconData(0xf118);
-  static const qrMain = GtIconData(0xf119);
-  static const notificationSolid = GtIconData(0xf11a);
-  static const more = GtIconData(0xf11b);
-  static const moreHorizontal = GtIconData(0xf12a);
-  static const info = GtIconData(0xf11c);
-  static const help = GtIconData(0xf11d);
-  static const gem = GtIconData(0xf11e);
-  static const filter = GtIconData(0xf16a);
-  static const filterSolid = GtIconData(0xf11f);
+  static const userSolid = IconData(0xf110, fontFamily: _f, fontPackage: _p);
+  static const spark = IconData(0xf112, fontFamily: _f, fontPackage: _p);
+  static const shareSolid = IconData(0xf113, fontFamily: _f, fontPackage: _p);
+  static const sendSolid = IconData(0xf114, fontFamily: _f, fontPackage: _p);
+  static const search = IconData(0xf115, fontFamily: _f, fontPackage: _p);
+  static const scan = IconData(0xf116, fontFamily: _f, fontPackage: _p);
+  static const userScan = IconData(0xf127, fontFamily: _f, fontPackage: _p);
+  static const refreshSolid = IconData(0xf117, fontFamily: _f, fontPackage: _p);
+  static const qr = IconData(0xf118, fontFamily: _f, fontPackage: _p);
+  static const qrMain = IconData(0xf119, fontFamily: _f, fontPackage: _p);
+  static const notificationSolid = IconData(
+    0xf11a,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const more = IconData(0xf11b, fontFamily: _f, fontPackage: _p);
+  static const moreHorizontal = IconData(
+    0xf12a,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const info = IconData(0xf11c, fontFamily: _f, fontPackage: _p);
+  static const help = IconData(0xf11d, fontFamily: _f, fontPackage: _p);
+  static const gem = IconData(0xf11e, fontFamily: _f, fontPackage: _p);
+  static const filter = IconData(0xf16a, fontFamily: _f, fontPackage: _p);
+  static const filterSolid = IconData(0xf11f, fontFamily: _f, fontPackage: _p);
 
-  static const chevronUp = GtIconData(0xf120);
-  static const chevronRight = GtIconData(0xf121);
-  static const chevronLeft = GtIconData(0xf122);
-  static const chevronDown = GtIconData(0xf123);
+  static const chevronUp = IconData(0xf120, fontFamily: _f, fontPackage: _p);
+  static const chevronRight = IconData(0xf121, fontFamily: _f, fontPackage: _p);
+  static const chevronLeft = IconData(0xf122, fontFamily: _f, fontPackage: _p);
+  static const chevronDown = IconData(0xf123, fontFamily: _f, fontPackage: _p);
 
-  static const checkSolid = GtIconData(0xf124);
-  static const cautionSolid = GtIconData(0xf109);
-  static const cancel = GtIconData(0xf126);
-  static const add = GtIconData(0xf127);
+  static const checkSolid = IconData(0xf124, fontFamily: _f, fontPackage: _p);
+  static const cautionSolid = IconData(0xf109, fontFamily: _f, fontPackage: _p);
+  static const cancel = IconData(0xf126, fontFamily: _f, fontPackage: _p);
+  static const add = IconData(0xf127, fontFamily: _f, fontPackage: _p);
 
   /// ---------------------------------------------------------------------------
   /// CREDIT CARD ICONS
   /// ---------------------------------------------------------------------------
-  static const wechat = GtIconData(0xf102);
-  static const visaLight = GtIconData(0xf103);
-  static const visa = GtIconData(0xf104);
-  static const unionpay = GtIconData(0xf105);
-  static const shoppay = GtIconData(0xf107);
-  static const paypal = GtIconData(0xf108);
-  static const paypalAlt = GtIconData(0xf10A);
-  static const mastercard = GtIconData(0xf10B);
-  static const mastercardLight = GtIconData(0xf10C);
-  static const masterCardDuoTone = GtIconData(0xf10D);
-  static const jcbGrey = GtIconData(0xf10F);
-  static const gpay = GtIconData(0xf111);
-  static const eftpos = GtIconData(0xf12D);
-  static const discover = GtIconData(0xf12E);
-  static const dinersclub = GtIconData(0xf139);
-  static const cvv = GtIconData(0xf13A);
-  static const cardLight = GtIconData(0xf13E);
-  static const cardDark = GtIconData(0xf13F);
-  static const bitcoin = GtIconData(0xf140);
-  static const bankCard = GtIconData(0xf141);
-  static const applepay = GtIconData(0xf142);
-  static const amex = GtIconData(0xf143);
-  static const amazon = GtIconData(0xf144);
-  static const alipay = GtIconData(0xf145);
+  static const wechat = IconData(0xf102, fontFamily: _f, fontPackage: _p);
+  static const visaLight = IconData(0xf103, fontFamily: _f, fontPackage: _p);
+  static const visa = IconData(0xf104, fontFamily: _f, fontPackage: _p);
+  static const unionpay = IconData(0xf105, fontFamily: _f, fontPackage: _p);
+  static const shoppay = IconData(0xf107, fontFamily: _f, fontPackage: _p);
+  static const paypal = IconData(0xf108, fontFamily: _f, fontPackage: _p);
+  static const paypalAlt = IconData(0xf10A, fontFamily: _f, fontPackage: _p);
+  static const mastercard = IconData(0xf10B, fontFamily: _f, fontPackage: _p);
+  static const mastercardLight = IconData(
+    0xf10C,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const masterCardDuoTone = IconData(
+    0xf10D,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const jcbGrey = IconData(0xf10F, fontFamily: _f, fontPackage: _p);
+  static const gpay = IconData(0xf111, fontFamily: _f, fontPackage: _p);
+  static const eftpos = IconData(0xf12D, fontFamily: _f, fontPackage: _p);
+  static const discover = IconData(0xf12E, fontFamily: _f, fontPackage: _p);
+  static const dinersclub = IconData(0xf139, fontFamily: _f, fontPackage: _p);
+  static const cvv = IconData(0xf13A, fontFamily: _f, fontPackage: _p);
+  static const cardLight = IconData(0xf13E, fontFamily: _f, fontPackage: _p);
+  static const cardDark = IconData(0xf13F, fontFamily: _f, fontPackage: _p);
+  static const bitcoin = IconData(0xf140, fontFamily: _f, fontPackage: _p);
+  static const bankCard = IconData(0xf141, fontFamily: _f, fontPackage: _p);
+  static const applepay = IconData(0xf142, fontFamily: _f, fontPackage: _p);
+  static const amex = IconData(0xf143, fontFamily: _f, fontPackage: _p);
+  static const amazon = IconData(0xf144, fontFamily: _f, fontPackage: _p);
+  static const alipay = IconData(0xf145, fontFamily: _f, fontPackage: _p);
 
   /// ---------------------------------------------------------------------------
   /// DEFAULT ICONS (Outline / Standard)
   /// ---------------------------------------------------------------------------
-  static const scribble = GtIconData(0xf000);
-  static const flame = GtIconData(0xf001);
-  static const scissors = GtIconData(0xf002);
-  static const flag = GtIconData(0xf003);
-  static const scissorsCoupon = GtIconData(0xf004);
-  static const fingerprint = GtIconData(0xf005);
-  static const scale = GtIconData(0xf006);
-  static const filters = GtIconData(0xf007);
-  static const satellite = GtIconData(0xf008);
-  static const funnel = GtIconData(0xf009);
-  static const rulerPen = GtIconData(0xf00a);
-  static const film = GtIconData(0xf00b);
-  static const rotation360 = GtIconData(0xf00c);
-  static const files = GtIconData(0xf00d);
-  static const rocket = GtIconData(0xf00e);
-  static const file = GtIconData(0xf00f);
-  static const copyFilled = GtIconData(0xf125);
-  static const roadmap = GtIconData(0xf010);
-  static const fileContent = GtIconData(0xf011);
-  static const refresh = GtIconData(0xf012);
-  static const feather = GtIconData(0xf013);
-  static const receipts = GtIconData(0xf014);
-  static const question = GtIconData(0xf016);
-  static const faceSmile = GtIconData(0xf017);
-  static const qrCode = GtIconData(0xf018);
-  static const facePlus = GtIconData(0xf019);
-  static const puzzlePiece = GtIconData(0xf01a);
-  static const eyeOpen = GtIconData(0xf01b);
-  static const progressBar = GtIconData(0xf01c);
-  static const eyeClosed = GtIconData(0xf01d);
-  static const print = GtIconData(0xf01e);
-  static const exchange = GtIconData(0xf01f);
-  static const presentationScreen = GtIconData(0xf020);
-  static const envelope = GtIconData(0xf021);
-  static const pointer = GtIconData(0xf022);
-  static const envelopeOpen = GtIconData(0xf023);
-  static const plus = GtIconData(0xf024);
-  static const envelopCheck = GtIconData(0xf025);
-  static const plug = GtIconData(0xf026);
-  static const calendarEmpty = GtIconData(0xf027);
-  static const calendarEmptyFilled = GtIconData(0xf137);
-  static const reorder = GtIconData(0xf12f);
-  static const switchOutline = GtIconData(0xf138);
-  static const pizzaSlice = GtIconData(0xf028);
-  static const editDoc = GtIconData(0xf029);
-  static const pinTack = GtIconData(0xf02a);
-  static const earth = GtIconData(0xf02b);
-  static const phonebook = GtIconData(0xf02c);
-  static const drawCompass = GtIconData(0xf02d);
-  static const phone = GtIconData(0xf02e);
-  static const download = GtIconData(0xf02f);
-  static const phoneShake = GtIconData(0xf030);
-  static const dots = GtIconData(0xf031);
-  static const phoneCheck = GtIconData(0xf032);
-  static const desktopArrowDown = GtIconData(0xf033);
-  static const percentage = GtIconData(0xf034);
-  static const sortDescending = GtIconData(0xf035);
-  static const penWriting = GtIconData(0xf036);
-  static const darkLight = GtIconData(0xf037);
-  static const penWritingAlt = GtIconData(0xf038);
-  static const cryptography = GtIconData(0xf039);
-  static const penSparkle = GtIconData(0xf03a);
-  static const crosshairs = GtIconData(0xf03b);
-  static const penNib = GtIconData(0xf03c);
-  static const crosshairsSlash = GtIconData(0xf03d);
-  static const pen = GtIconData(0xf03e);
-  static const pencil = GtIconData(0xf106);
-  static const password = GtIconData(0xf040);
-  static const passcode = GtIconData(0xf13c);
-  static const copy = GtIconData(0xf041);
-  static const paperclip = GtIconData(0xf042);
-  static const cookie = GtIconData(0xf043);
-  static const paperPlane = GtIconData(0xf044);
-  static const computer = GtIconData(0xf045);
-  static const paintbrush = GtIconData(0xf046);
-  static const cloud = GtIconData(0xf047);
-  static const orderedList = GtIconData(0xf048);
-  static const clipboard = GtIconData(0xf049);
-  static const office = GtIconData(0xf04a);
-  static const clipboardSlash = GtIconData(0xf04b);
-  static const notification = GtIconData(0xf04c);
-  static const clipboardCheck = GtIconData(0xf04d);
-  static const nodes = GtIconData(0xf04e);
-  static const circleInfo = GtIconData(0xf04f);
-  static const musicNoteSparkle = GtIconData(0xf050);
-  static const circleHashtag = GtIconData(0xf051);
-  static const messages = GtIconData(0xf052);
-  static const circleDottedCheck = GtIconData(0xf053);
-  static const msgWriting = GtIconData(0xf054);
-  static const circleCompose = GtIconData(0xf055);
-  static const xmark = GtIconData(0xf056);
-  static const msgSmile = GtIconData(0xf057);
-  static const chevronUpOutline = GtIconData(0xf058);
-  static const x = GtIconData(0xf059);
-  static const msgBubbleUser = GtIconData(0xf05a);
-  static const chevronRightOutline = GtIconData(0xf05b);
-  static const windowPointer = GtIconData(0xf05c);
-  static const moneyBillCoin = GtIconData(0xf05d);
-  static const chevronLeftOutline = GtIconData(0xf05e);
-  static const windowExpandBottomRight = GtIconData(0xf05f);
-  static const mobile = GtIconData(0xf060);
-  static const chevronExpandY = GtIconData(0xf061);
-  static const windowChartLine = GtIconData(0xf062);
-  static const minus = GtIconData(0xf063);
-  static const chevronDownOutline = GtIconData(0xf064);
-  static const whatsapp = GtIconData(0xf065);
-  static const microphone = GtIconData(0xf066);
-  static const checkOutline = GtIconData(0xf067);
-  static const watch = GtIconData(0xf068);
-  static const microphoneSlash = GtIconData(0xf069);
-  static const checkBox = GtIconData(0xf06a);
-  static const wandSparkle = GtIconData(0xf06b);
-  static const message = GtIconData(0xf06c);
-  static const chartBarTrendUp = GtIconData(0xf06d);
-  static const wallet = GtIconData(0xf06e);
-  static const map = GtIconData(0xf06f);
-  static const chair = GtIconData(0xf070);
-  static const volume = GtIconData(0xf071);
-  static const magnifier = GtIconData(0xf072);
-  static const cautionOutline = GtIconData(0xf073);
-  static const volumeUp = GtIconData(0xf074);
-  static const magnifierFaceWorried = GtIconData(0xf075);
-  static const cashEmpty = GtIconData(0xf076);
-  static const video = GtIconData(0xf077);
-  static const magicWand = GtIconData(0xf078);
-  static const cartShopping = GtIconData(0xf079);
-  static const vending = GtIconData(0xf07a);
-  static const lock = GtIconData(0xf07b);
-  static const cardCheck = GtIconData(0xf07c);
-  static const vault = GtIconData(0xf07d);
-  static const lockOpen = GtIconData(0xf07e);
-  static const camera = GtIconData(0xf07f);
-  static const users = GtIconData(0xf080);
-  static const location = GtIconData(0xf081);
-  static const cameraAlt = GtIconData(0xf082);
-  static const user = GtIconData(0xf083);
-  static const loader = GtIconData(0xf084);
-  static const calendar = GtIconData(0xf085);
-  static const userSearch = GtIconData(0xf086);
-  static const link = GtIconData(0xf087);
-  static const calendarDays = GtIconData(0xf088);
-  static const userLaptop = GtIconData(0xf089);
-  static const lightbulb = GtIconData(0xf08a);
-  static const bullhorn = GtIconData(0xf08b);
-  static const uploadOutline = GtIconData(0xf08c);
-  static const lifeRing = GtIconData(0xf08d);
-  static const bug = GtIconData(0xf08e);
-  static const uploadFolder = GtIconData(0xf08f);
-  static const leaf = GtIconData(0xf090);
-  static const bugSlash = GtIconData(0xf091);
-  static const unorderedList = GtIconData(0xf092);
-  static const layers = GtIconData(0xf093);
-  static const box = GtIconData(0xf094);
-  static const unhide = GtIconData(0xf095);
-  static const laptop = GtIconData(0xf096);
-  static const boxArchive = GtIconData(0xf097);
-  static const umbrella = GtIconData(0xf098);
-  static const laptopMobile = GtIconData(0xf099);
-  static const bookmarks = GtIconData(0xf09a);
-  static const ufo = GtIconData(0xf09b);
-  static const language = GtIconData(0xf09c);
-  static const bookmark = GtIconData(0xf09d);
-  static const triangleWarning = GtIconData(0xf09e);
-  static const keyboard = GtIconData(0xf09f);
-  static const bookmarkSlash = GtIconData(0xf0a0);
-  static const trash = GtIconData(0xf0a1);
-  static const key = GtIconData(0xf0a2);
-  static const bookOpen = GtIconData(0xf0a3);
-  static const transfer = GtIconData(0xf0a4);
-  static const industry = GtIconData(0xf0a5);
-  static const bookBookmark = GtIconData(0xf0a6);
-  static const toggle = GtIconData(0xf0a7);
-  static const inboxArrowDown = GtIconData(0xf0a8);
-  static const bolt = GtIconData(0xf0a9);
-  static const timer = GtIconData(0xf0aa);
-  static const images = GtIconData(0xf0ab);
-  static const boltSlash = GtIconData(0xf0ac);
-  static const ticket = GtIconData(0xf0ad);
-  static const image = GtIconData(0xf0ae);
-  static const boltLightning = GtIconData(0xf0af);
-  static const thumbsUp = GtIconData(0xf0b0);
-  static const imageSparkle = GtIconData(0xf0b1);
-  static const bicycle = GtIconData(0xf0b2);
-  static const textTool = GtIconData(0xf0b3);
-  static const imageMountain = GtIconData(0xf0b4);
-  static const bell = GtIconData(0xf0b5);
-  static const textHighlight = GtIconData(0xf0b6);
-  static const imageDepth = GtIconData(0xf0b7);
-  static const battery = GtIconData(0xf0b8);
-  static const tasks = GtIconData(0xf0b9);
-  static const house = GtIconData(0xf0ba);
-  static const batteryHigh = GtIconData(0xf0bb);
-  static const target = GtIconData(0xf0bc);
-  static const houseAlt = GtIconData(0xf0bd);
-  static const basketShopping = GtIconData(0xf0be);
-  static const tags = GtIconData(0xf0bf);
-  static const hotDrink = GtIconData(0xf0c0);
-  static const ballBasket = GtIconData(0xf0c1);
-  static const tag = GtIconData(0xf0c2);
-  static const hide = GtIconData(0xf0c3);
-  static const bagShopping = GtIconData(0xf0c4);
-  static const suitcase = GtIconData(0xf0c5);
-  static const heart = GtIconData(0xf0c6);
-  static const badge = GtIconData(0xf0c7);
-  static const subscription = GtIconData(0xf0c8);
-  static const heartHand = GtIconData(0xf0c9);
-  static const award = GtIconData(0xf0ca);
-  static const awardFilled = GtIconData(0xf149);
-  static const piggyBank = GtIconData(0xf147);
-  static const piggyBankFilled = GtIconData(0xf148);
-  static const stopwatch = GtIconData(0xf0cb);
-  static const heartBreak = GtIconData(0xf0cc);
-  static const awardCertificate = GtIconData(0xf0cd);
-  static const stickerSmile = GtIconData(0xf0ce);
-  static const headset = GtIconData(0xf0cf);
-  static const attach = GtIconData(0xf0d0);
-  static const star = GtIconData(0xf0d1);
-  static const handshake = GtIconData(0xf0d2);
-  static const atSign = GtIconData(0xf0d3);
-  static const starSparkle = GtIconData(0xf0d4);
-  static const hand = GtIconData(0xf0d5);
-  static const aspectRatioSquare = GtIconData(0xf0d6);
-  static const stackPerspective = GtIconData(0xf0d7);
-  static const halfDottedCirclePlay = GtIconData(0xf0d8);
-  static const art = GtIconData(0xf0d9);
-  static const squarePlus = GtIconData(0xf0da);
-  static const gridCirclePlus = GtIconData(0xf0db);
-  static const rotateAnticlockwise = GtIconData(0xf0dc);
-  static const squareMinus = GtIconData(0xf0dd);
-  static const graduationCap = GtIconData(0xf0de);
-  static const arrowDoorOut = GtIconData(0xf0df);
-  static const arrowBottomRight = GtIconData(0xf0e0);
-  static const globePointer = GtIconData(0xf0e1);
-  static const arrowDoorIn = GtIconData(0xf0e2);
-  static const sparkle = GtIconData(0xf0e3);
-  static const gift = GtIconData(0xf0e4);
-  static const android = GtIconData(0xf0e5);
-  static const sliders = GtIconData(0xf0e6);
-  static const gemSparkle = GtIconData(0xf0e7);
-  static const anchor = GtIconData(0xf0e8);
-  static const sitemap = GtIconData(0xf0e9);
-  static const gear = GtIconData(0xf0ea);
-  static const alignVertical = GtIconData(0xf0eb);
-  static const signal = GtIconData(0xf0ec);
-  static const gauge = GtIconData(0xf0ed);
-  static const alignTop = GtIconData(0xf0ee);
-  static const sideProfile = GtIconData(0xf0ef);
-  static const gasPump = GtIconData(0xf0f0);
-  static const alignRight = GtIconData(0xf0f1);
-  static const shop = GtIconData(0xf0f2);
-  static const gamingButtons = GtIconData(0xf0f3);
-  static const alignLeft = GtIconData(0xf0f4);
-  static const shieldCheck = GtIconData(0xf0f5);
-  static const gamepad = GtIconData(0xf0f6);
-  static const alignHorizontal = GtIconData(0xf0f7);
-  static const share = GtIconData(0xf0f8);
-  static const forklift = GtIconData(0xf0f9);
-  static const alignBottom = GtIconData(0xf0fa);
-  static const shareIos = GtIconData(0xf0fb);
-  static const folder = GtIconData(0xf0fc);
-  static const alert = GtIconData(0xf0fd);
-  static const shapes = GtIconData(0xf0fe);
-  static const folderOpen = GtIconData(0xf0ff);
-  static const alarmClock = GtIconData(0xf100);
+  static const scribble = IconData(0xf000, fontFamily: _f, fontPackage: _p);
+  static const flame = IconData(0xf001, fontFamily: _f, fontPackage: _p);
+  static const scissors = IconData(0xf002, fontFamily: _f, fontPackage: _p);
+  static const flag = IconData(0xf003, fontFamily: _f, fontPackage: _p);
+  static const scissorsCoupon = IconData(
+    0xf004,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const fingerprint = IconData(0xf005, fontFamily: _f, fontPackage: _p);
+  static const scale = IconData(0xf006, fontFamily: _f, fontPackage: _p);
+  static const filters = IconData(0xf007, fontFamily: _f, fontPackage: _p);
+  static const satellite = IconData(0xf008, fontFamily: _f, fontPackage: _p);
+  static const funnel = IconData(0xf009, fontFamily: _f, fontPackage: _p);
+  static const rulerPen = IconData(0xf00a, fontFamily: _f, fontPackage: _p);
+  static const film = IconData(0xf00b, fontFamily: _f, fontPackage: _p);
+  static const rotation360 = IconData(0xf00c, fontFamily: _f, fontPackage: _p);
+  static const files = IconData(0xf00d, fontFamily: _f, fontPackage: _p);
+  static const rocket = IconData(0xf00e, fontFamily: _f, fontPackage: _p);
+  static const file = IconData(0xf00f, fontFamily: _f, fontPackage: _p);
+  static const copyFilled = IconData(0xf125, fontFamily: _f, fontPackage: _p);
+  static const roadmap = IconData(0xf010, fontFamily: _f, fontPackage: _p);
+  static const fileContent = IconData(0xf011, fontFamily: _f, fontPackage: _p);
+  static const refresh = IconData(0xf012, fontFamily: _f, fontPackage: _p);
+  static const feather = IconData(0xf013, fontFamily: _f, fontPackage: _p);
+  static const receipts = IconData(0xf014, fontFamily: _f, fontPackage: _p);
+  static const question = IconData(0xf016, fontFamily: _f, fontPackage: _p);
+  static const faceSmile = IconData(0xf017, fontFamily: _f, fontPackage: _p);
+  static const qrCode = IconData(0xf018, fontFamily: _f, fontPackage: _p);
+  static const facePlus = IconData(0xf019, fontFamily: _f, fontPackage: _p);
+  static const puzzlePiece = IconData(0xf01a, fontFamily: _f, fontPackage: _p);
+  static const eyeOpen = IconData(0xf01b, fontFamily: _f, fontPackage: _p);
+  static const progressBar = IconData(0xf01c, fontFamily: _f, fontPackage: _p);
+  static const eyeClosed = IconData(0xf01d, fontFamily: _f, fontPackage: _p);
+  static const print = IconData(0xf01e, fontFamily: _f, fontPackage: _p);
+  static const exchange = IconData(0xf01f, fontFamily: _f, fontPackage: _p);
+  static const presentationScreen = IconData(
+    0xf020,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const envelope = IconData(0xf021, fontFamily: _f, fontPackage: _p);
+  static const pointer = IconData(0xf022, fontFamily: _f, fontPackage: _p);
+  static const envelopeOpen = IconData(0xf023, fontFamily: _f, fontPackage: _p);
+  static const plus = IconData(0xf024, fontFamily: _f, fontPackage: _p);
+  static const envelopCheck = IconData(0xf025, fontFamily: _f, fontPackage: _p);
+  static const plug = IconData(0xf026, fontFamily: _f, fontPackage: _p);
+  static const calendarEmpty = IconData(
+    0xf027,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const calendarEmptyFilled = IconData(
+    0xf137,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const reorder = IconData(0xf12f, fontFamily: _f, fontPackage: _p);
+  static const switchOutline = IconData(
+    0xf138,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const pizzaSlice = IconData(0xf028, fontFamily: _f, fontPackage: _p);
+  static const editDoc = IconData(0xf029, fontFamily: _f, fontPackage: _p);
+  static const pinTack = IconData(0xf02a, fontFamily: _f, fontPackage: _p);
+  static const earth = IconData(0xf02b, fontFamily: _f, fontPackage: _p);
+  static const phonebook = IconData(0xf02c, fontFamily: _f, fontPackage: _p);
+  static const drawCompass = IconData(0xf02d, fontFamily: _f, fontPackage: _p);
+  static const phone = IconData(0xf02e, fontFamily: _f, fontPackage: _p);
+  static const download = IconData(0xf02f, fontFamily: _f, fontPackage: _p);
+  static const phoneShake = IconData(0xf030, fontFamily: _f, fontPackage: _p);
+  static const dots = IconData(0xf031, fontFamily: _f, fontPackage: _p);
+  static const phoneCheck = IconData(0xf032, fontFamily: _f, fontPackage: _p);
+  static const desktopArrowDown = IconData(
+    0xf033,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const percentage = IconData(0xf034, fontFamily: _f, fontPackage: _p);
+  static const sortDescending = IconData(
+    0xf035,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const penWriting = IconData(0xf036, fontFamily: _f, fontPackage: _p);
+  static const darkLight = IconData(0xf037, fontFamily: _f, fontPackage: _p);
+  static const penWritingAlt = IconData(
+    0xf038,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const cryptography = IconData(0xf039, fontFamily: _f, fontPackage: _p);
+  static const penSparkle = IconData(0xf03a, fontFamily: _f, fontPackage: _p);
+  static const crosshairs = IconData(0xf03b, fontFamily: _f, fontPackage: _p);
+  static const penNib = IconData(0xf03c, fontFamily: _f, fontPackage: _p);
+  static const crosshairsSlash = IconData(
+    0xf03d,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const pen = IconData(0xf03e, fontFamily: _f, fontPackage: _p);
+  static const pencil = IconData(0xf106, fontFamily: _f, fontPackage: _p);
+  static const password = IconData(0xf040, fontFamily: _f, fontPackage: _p);
+  static const passcode = IconData(0xf13c, fontFamily: _f, fontPackage: _p);
+  static const copy = IconData(0xf041, fontFamily: _f, fontPackage: _p);
+  static const paperclip = IconData(0xf042, fontFamily: _f, fontPackage: _p);
+  static const cookie = IconData(0xf043, fontFamily: _f, fontPackage: _p);
+  static const paperPlane = IconData(0xf044, fontFamily: _f, fontPackage: _p);
+  static const computer = IconData(0xf045, fontFamily: _f, fontPackage: _p);
+  static const paintbrush = IconData(0xf046, fontFamily: _f, fontPackage: _p);
+  static const cloud = IconData(0xf047, fontFamily: _f, fontPackage: _p);
+  static const orderedList = IconData(0xf048, fontFamily: _f, fontPackage: _p);
+  static const clipboard = IconData(0xf049, fontFamily: _f, fontPackage: _p);
+  static const office = IconData(0xf04a, fontFamily: _f, fontPackage: _p);
+  static const clipboardSlash = IconData(
+    0xf04b,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const notification = IconData(0xf04c, fontFamily: _f, fontPackage: _p);
+  static const clipboardCheck = IconData(
+    0xf04d,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const nodes = IconData(0xf04e, fontFamily: _f, fontPackage: _p);
+  static const circleInfo = IconData(0xf04f, fontFamily: _f, fontPackage: _p);
+  static const musicNoteSparkle = IconData(
+    0xf050,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const circleHashtag = IconData(
+    0xf051,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const messages = IconData(0xf052, fontFamily: _f, fontPackage: _p);
+  static const circleDottedCheck = IconData(
+    0xf053,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const msgWriting = IconData(0xf054, fontFamily: _f, fontPackage: _p);
+  static const circleCompose = IconData(
+    0xf055,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const xmark = IconData(0xf056, fontFamily: _f, fontPackage: _p);
+  static const msgSmile = IconData(0xf057, fontFamily: _f, fontPackage: _p);
+  static const chevronUpOutline = IconData(
+    0xf058,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const x = IconData(0xf059, fontFamily: _f, fontPackage: _p);
+  static const msgBubbleUser = IconData(
+    0xf05a,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const chevronRightOutline = IconData(
+    0xf05b,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const windowPointer = IconData(
+    0xf05c,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const moneyBillCoin = IconData(
+    0xf05d,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const chevronLeftOutline = IconData(
+    0xf05e,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const windowExpandBottomRight = IconData(
+    0xf05f,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const mobile = IconData(0xf060, fontFamily: _f, fontPackage: _p);
+  static const chevronExpandY = IconData(
+    0xf061,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const windowChartLine = IconData(
+    0xf062,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const minus = IconData(0xf063, fontFamily: _f, fontPackage: _p);
+  static const chevronDownOutline = IconData(
+    0xf064,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const whatsapp = IconData(0xf065, fontFamily: _f, fontPackage: _p);
+  static const microphone = IconData(0xf066, fontFamily: _f, fontPackage: _p);
+  static const checkOutline = IconData(0xf067, fontFamily: _f, fontPackage: _p);
+  static const watch = IconData(0xf068, fontFamily: _f, fontPackage: _p);
+  static const microphoneSlash = IconData(
+    0xf069,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const checkBox = IconData(0xf06a, fontFamily: _f, fontPackage: _p);
+  static const wandSparkle = IconData(0xf06b, fontFamily: _f, fontPackage: _p);
+  static const message = IconData(0xf06c, fontFamily: _f, fontPackage: _p);
+  static const chartBarTrendUp = IconData(
+    0xf06d,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const wallet = IconData(0xf06e, fontFamily: _f, fontPackage: _p);
+  static const map = IconData(0xf06f, fontFamily: _f, fontPackage: _p);
+  static const chair = IconData(0xf070, fontFamily: _f, fontPackage: _p);
+  static const volume = IconData(0xf071, fontFamily: _f, fontPackage: _p);
+  static const magnifier = IconData(0xf072, fontFamily: _f, fontPackage: _p);
+  static const cautionOutline = IconData(
+    0xf073,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const volumeUp = IconData(0xf074, fontFamily: _f, fontPackage: _p);
+  static const magnifierFaceWorried = IconData(
+    0xf075,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const cashEmpty = IconData(0xf076, fontFamily: _f, fontPackage: _p);
+  static const video = IconData(0xf077, fontFamily: _f, fontPackage: _p);
+  static const magicWand = IconData(0xf078, fontFamily: _f, fontPackage: _p);
+  static const cartShopping = IconData(0xf079, fontFamily: _f, fontPackage: _p);
+  static const vending = IconData(0xf07a, fontFamily: _f, fontPackage: _p);
+  static const lock = IconData(0xf07b, fontFamily: _f, fontPackage: _p);
+  static const cardCheck = IconData(0xf07c, fontFamily: _f, fontPackage: _p);
+  static const vault = IconData(0xf07d, fontFamily: _f, fontPackage: _p);
+  static const lockOpen = IconData(0xf07e, fontFamily: _f, fontPackage: _p);
+  static const camera = IconData(0xf07f, fontFamily: _f, fontPackage: _p);
+  static const users = IconData(0xf080, fontFamily: _f, fontPackage: _p);
+  static const location = IconData(0xf081, fontFamily: _f, fontPackage: _p);
+  static const cameraAlt = IconData(0xf082, fontFamily: _f, fontPackage: _p);
+  static const user = IconData(0xf083, fontFamily: _f, fontPackage: _p);
+  static const loader = IconData(0xf084, fontFamily: _f, fontPackage: _p);
+  static const calendar = IconData(0xf085, fontFamily: _f, fontPackage: _p);
+  static const userSearch = IconData(0xf086, fontFamily: _f, fontPackage: _p);
+  static const link = IconData(0xf087, fontFamily: _f, fontPackage: _p);
+  static const calendarDays = IconData(0xf088, fontFamily: _f, fontPackage: _p);
+  static const userLaptop = IconData(0xf089, fontFamily: _f, fontPackage: _p);
+  static const lightbulb = IconData(0xf08a, fontFamily: _f, fontPackage: _p);
+  static const bullhorn = IconData(0xf08b, fontFamily: _f, fontPackage: _p);
+  static const uploadOutline = IconData(
+    0xf08c,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const lifeRing = IconData(0xf08d, fontFamily: _f, fontPackage: _p);
+  static const bug = IconData(0xf08e, fontFamily: _f, fontPackage: _p);
+  static const uploadFolder = IconData(0xf08f, fontFamily: _f, fontPackage: _p);
+  static const leaf = IconData(0xf090, fontFamily: _f, fontPackage: _p);
+  static const bugSlash = IconData(0xf091, fontFamily: _f, fontPackage: _p);
+  static const unorderedList = IconData(
+    0xf092,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const layers = IconData(0xf093, fontFamily: _f, fontPackage: _p);
+  static const box = IconData(0xf094, fontFamily: _f, fontPackage: _p);
+  static const unhide = IconData(0xf095, fontFamily: _f, fontPackage: _p);
+  static const laptop = IconData(0xf096, fontFamily: _f, fontPackage: _p);
+  static const boxArchive = IconData(0xf097, fontFamily: _f, fontPackage: _p);
+  static const umbrella = IconData(0xf098, fontFamily: _f, fontPackage: _p);
+  static const laptopMobile = IconData(0xf099, fontFamily: _f, fontPackage: _p);
+  static const bookmarks = IconData(0xf09a, fontFamily: _f, fontPackage: _p);
+  static const ufo = IconData(0xf09b, fontFamily: _f, fontPackage: _p);
+  static const language = IconData(0xf09c, fontFamily: _f, fontPackage: _p);
+  static const bookmark = IconData(0xf09d, fontFamily: _f, fontPackage: _p);
+  static const triangleWarning = IconData(
+    0xf09e,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const keyboard = IconData(0xf09f, fontFamily: _f, fontPackage: _p);
+  static const bookmarkSlash = IconData(
+    0xf0a0,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const trash = IconData(0xf0a1, fontFamily: _f, fontPackage: _p);
+  static const key = IconData(0xf0a2, fontFamily: _f, fontPackage: _p);
+  static const bookOpen = IconData(0xf0a3, fontFamily: _f, fontPackage: _p);
+  static const transfer = IconData(0xf0a4, fontFamily: _f, fontPackage: _p);
+  static const industry = IconData(0xf0a5, fontFamily: _f, fontPackage: _p);
+  static const bookBookmark = IconData(0xf0a6, fontFamily: _f, fontPackage: _p);
+  static const toggle = IconData(0xf0a7, fontFamily: _f, fontPackage: _p);
+  static const inboxArrowDown = IconData(
+    0xf0a8,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const bolt = IconData(0xf0a9, fontFamily: _f, fontPackage: _p);
+  static const timer = IconData(0xf0aa, fontFamily: _f, fontPackage: _p);
+  static const images = IconData(0xf0ab, fontFamily: _f, fontPackage: _p);
+  static const boltSlash = IconData(0xf0ac, fontFamily: _f, fontPackage: _p);
+  static const ticket = IconData(0xf0ad, fontFamily: _f, fontPackage: _p);
+  static const image = IconData(0xf0ae, fontFamily: _f, fontPackage: _p);
+  static const boltLightning = IconData(
+    0xf0af,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const thumbsUp = IconData(0xf0b0, fontFamily: _f, fontPackage: _p);
+  static const imageSparkle = IconData(0xf0b1, fontFamily: _f, fontPackage: _p);
+  static const bicycle = IconData(0xf0b2, fontFamily: _f, fontPackage: _p);
+  static const textTool = IconData(0xf0b3, fontFamily: _f, fontPackage: _p);
+  static const imageMountain = IconData(
+    0xf0b4,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const bell = IconData(0xf0b5, fontFamily: _f, fontPackage: _p);
+  static const textHighlight = IconData(
+    0xf0b6,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const imageDepth = IconData(0xf0b7, fontFamily: _f, fontPackage: _p);
+  static const battery = IconData(0xf0b8, fontFamily: _f, fontPackage: _p);
+  static const tasks = IconData(0xf0b9, fontFamily: _f, fontPackage: _p);
+  static const house = IconData(0xf0ba, fontFamily: _f, fontPackage: _p);
+  static const batteryHigh = IconData(0xf0bb, fontFamily: _f, fontPackage: _p);
+  static const target = IconData(0xf0bc, fontFamily: _f, fontPackage: _p);
+  static const houseAlt = IconData(0xf0bd, fontFamily: _f, fontPackage: _p);
+  static const basketShopping = IconData(
+    0xf0be,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const tags = IconData(0xf0bf, fontFamily: _f, fontPackage: _p);
+  static const hotDrink = IconData(0xf0c0, fontFamily: _f, fontPackage: _p);
+  static const ballBasket = IconData(0xf0c1, fontFamily: _f, fontPackage: _p);
+  static const tag = IconData(0xf0c2, fontFamily: _f, fontPackage: _p);
+  static const hide = IconData(0xf0c3, fontFamily: _f, fontPackage: _p);
+  static const bagShopping = IconData(0xf0c4, fontFamily: _f, fontPackage: _p);
+  static const suitcase = IconData(0xf0c5, fontFamily: _f, fontPackage: _p);
+  static const heart = IconData(0xf0c6, fontFamily: _f, fontPackage: _p);
+  static const badge = IconData(0xf0c7, fontFamily: _f, fontPackage: _p);
+  static const subscription = IconData(0xf0c8, fontFamily: _f, fontPackage: _p);
+  static const heartHand = IconData(0xf0c9, fontFamily: _f, fontPackage: _p);
+  static const award = IconData(0xf0ca, fontFamily: _f, fontPackage: _p);
+  static const awardFilled = IconData(0xf149, fontFamily: _f, fontPackage: _p);
+  static const piggyBank = IconData(0xf147, fontFamily: _f, fontPackage: _p);
+  static const piggyBankFilled = IconData(
+    0xf148,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const stopwatch = IconData(0xf0cb, fontFamily: _f, fontPackage: _p);
+  static const heartBreak = IconData(0xf0cc, fontFamily: _f, fontPackage: _p);
+  static const awardCertificate = IconData(
+    0xf0cd,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const stickerSmile = IconData(0xf0ce, fontFamily: _f, fontPackage: _p);
+  static const headset = IconData(0xf0cf, fontFamily: _f, fontPackage: _p);
+  static const attach = IconData(0xf0d0, fontFamily: _f, fontPackage: _p);
+  static const star = IconData(0xf0d1, fontFamily: _f, fontPackage: _p);
+  static const handshake = IconData(0xf0d2, fontFamily: _f, fontPackage: _p);
+  static const atSign = IconData(0xf0d3, fontFamily: _f, fontPackage: _p);
+  static const starSparkle = IconData(0xf0d4, fontFamily: _f, fontPackage: _p);
+  static const hand = IconData(0xf0d5, fontFamily: _f, fontPackage: _p);
+  static const aspectRatioSquare = IconData(
+    0xf0d6,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const stackPerspective = IconData(
+    0xf0d7,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const halfDottedCirclePlay = IconData(
+    0xf0d8,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const art = IconData(0xf0d9, fontFamily: _f, fontPackage: _p);
+  static const squarePlus = IconData(0xf0da, fontFamily: _f, fontPackage: _p);
+  static const gridCirclePlus = IconData(
+    0xf0db,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const rotateAnticlockwise = IconData(
+    0xf0dc,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const squareMinus = IconData(0xf0dd, fontFamily: _f, fontPackage: _p);
+  static const graduationCap = IconData(
+    0xf0de,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const arrowDoorOut = IconData(0xf0df, fontFamily: _f, fontPackage: _p);
+  static const arrowBottomRight = IconData(
+    0xf0e0,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const globePointer = IconData(0xf0e1, fontFamily: _f, fontPackage: _p);
+  static const arrowDoorIn = IconData(0xf0e2, fontFamily: _f, fontPackage: _p);
+  static const sparkle = IconData(0xf0e3, fontFamily: _f, fontPackage: _p);
+  static const gift = IconData(0xf0e4, fontFamily: _f, fontPackage: _p);
+  static const android = IconData(0xf0e5, fontFamily: _f, fontPackage: _p);
+  static const sliders = IconData(0xf0e6, fontFamily: _f, fontPackage: _p);
+  static const gemSparkle = IconData(0xf0e7, fontFamily: _f, fontPackage: _p);
+  static const anchor = IconData(0xf0e8, fontFamily: _f, fontPackage: _p);
+  static const sitemap = IconData(0xf0e9, fontFamily: _f, fontPackage: _p);
+  static const gear = IconData(0xf0ea, fontFamily: _f, fontPackage: _p);
+  static const alignVertical = IconData(
+    0xf0eb,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const signal = IconData(0xf0ec, fontFamily: _f, fontPackage: _p);
+  static const gauge = IconData(0xf0ed, fontFamily: _f, fontPackage: _p);
+  static const alignTop = IconData(0xf0ee, fontFamily: _f, fontPackage: _p);
+  static const sideProfile = IconData(0xf0ef, fontFamily: _f, fontPackage: _p);
+  static const gasPump = IconData(0xf0f0, fontFamily: _f, fontPackage: _p);
+  static const alignRight = IconData(0xf0f1, fontFamily: _f, fontPackage: _p);
+  static const shop = IconData(0xf0f2, fontFamily: _f, fontPackage: _p);
+  static const gamingButtons = IconData(
+    0xf0f3,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const alignLeft = IconData(0xf0f4, fontFamily: _f, fontPackage: _p);
+  static const shieldCheck = IconData(0xf0f5, fontFamily: _f, fontPackage: _p);
+  static const gamepad = IconData(0xf0f6, fontFamily: _f, fontPackage: _p);
+  static const alignHorizontal = IconData(
+    0xf0f7,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const share = IconData(0xf0f8, fontFamily: _f, fontPackage: _p);
+  static const forklift = IconData(0xf0f9, fontFamily: _f, fontPackage: _p);
+  static const alignBottom = IconData(0xf0fa, fontFamily: _f, fontPackage: _p);
+  static const shareIos = IconData(0xf0fb, fontFamily: _f, fontPackage: _p);
+  static const folder = IconData(0xf0fc, fontFamily: _f, fontPackage: _p);
+  static const alert = IconData(0xf0fd, fontFamily: _f, fontPackage: _p);
+  static const shapes = IconData(0xf0fe, fontFamily: _f, fontPackage: _p);
+  static const folderOpen = IconData(0xf0ff, fontFamily: _f, fontPackage: _p);
+  static const alarmClock = IconData(0xf100, fontFamily: _f, fontPackage: _p);
 
   /// ---------------------------------------------------------------------------
   /// BOTTOM NAVIGATION ICONS (Outline / Standard)
   /// ---------------------------------------------------------------------------
-  static const home = GtIconData(0xf101);
-  static const homeFilled = GtIconData(0xf132);
-  static const payment = GtIconData(0xf133);
-  static const paymentFilled = GtIconData(0xf134);
-  static const product = GtIconData(0xf135);
-  static const productFilled = GtIconData(0xf136);
-  static const card = GtIconData(0xf131);
-  static const cardFilled = GtIconData(0xf154);
-  static const cardEdit = GtIconData(0xf155);
-  static const fileFilled = GtIconData(0xf130);
-  static const helpInfo = GtIconData(0xf10e);
+  static const home = IconData(0xf101, fontFamily: _f, fontPackage: _p);
+  static const homeFilled = IconData(0xf132, fontFamily: _f, fontPackage: _p);
+  static const payment = IconData(0xf133, fontFamily: _f, fontPackage: _p);
+  static const paymentFilled = IconData(
+    0xf134,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const product = IconData(0xf135, fontFamily: _f, fontPackage: _p);
+  static const productFilled = IconData(
+    0xf136,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const card = IconData(0xf131, fontFamily: _f, fontPackage: _p);
+  static const cardFilled = IconData(0xf154, fontFamily: _f, fontPackage: _p);
+  static const cardEdit = IconData(0xf155, fontFamily: _f, fontPackage: _p);
+  static const fileFilled = IconData(0xf130, fontFamily: _f, fontPackage: _p);
+  static const helpInfo = IconData(0xf10e, fontFamily: _f, fontPackage: _p);
 
-  static const delete = GtIconData(0xf129);
-  static const faceId = GtIconData(0xf128);
+  static const delete = IconData(0xf129, fontFamily: _f, fontPackage: _p);
+  static const faceId = IconData(0xf128, fontFamily: _f, fontPackage: _p);
 
-  static const temple = GtIconData(0xf12c);
-  static const childHead = GtIconData(0xf146);
-  static const verifiedUsers = GtIconData(0xf12b);
+  static const temple = IconData(0xf12c, fontFamily: _f, fontPackage: _p);
+  static const childHead = IconData(0xf146, fontFamily: _f, fontPackage: _p);
+  static const verifiedUsers = IconData(
+    0xf12b,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
 
-  static const airtime = GtIconData(0xf14d);
-  static const cuppedHand = GtIconData(0xf14c);
-  static const eyeOutline = GtIconData(0xf14b);
-  static const snowFlake = GtIconData(0xf14a);
+  static const airtime = IconData(0xf14d, fontFamily: _f, fontPackage: _p);
+  static const cuppedHand = IconData(0xf14c, fontFamily: _f, fontPackage: _p);
+  static const eyeOutline = IconData(0xf14b, fontFamily: _f, fontPackage: _p);
+  static const snowFlake = IconData(0xf14a, fontFamily: _f, fontPackage: _p);
 
-  static const keyPadA = GtIconData(0xf150);
-  static const play = GtIconData(0xf14f);
-  static const alignLeftLines = GtIconData(0xf151);
-  static const contact = GtIconData(0xf14e);
+  static const keyPadA = IconData(0xf150, fontFamily: _f, fontPackage: _p);
+  static const play = IconData(0xf14f, fontFamily: _f, fontPackage: _p);
+  static const alignLeftLines = IconData(
+    0xf151,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const contact = IconData(0xf14e, fontFamily: _f, fontPackage: _p);
 
-  static const trendUpSolid = GtIconData(0xf015);
-  static const logout = GtIconData(0xf13d);
-  static const clock = GtIconData(0xf152);
-  static const arrowNorthEast = GtIconData(0xf153);
-  static const notificationUnread = GtIconData(0xf13b);
+  static const trendUpSolid = IconData(0xf015, fontFamily: _f, fontPackage: _p);
+  static const logout = IconData(0xf13d, fontFamily: _f, fontPackage: _p);
+  static const clock = IconData(0xf152, fontFamily: _f, fontPackage: _p);
+  static const arrowNorthEast = IconData(
+    0xf153,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const notificationUnread = IconData(
+    0xf13b,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
 
-  static const pos = GtIconData(0xf03F);
-  static const palmTree = GtIconData(0xf156);
-  static const car = GtIconData(0xf157);
-  static const bag = GtIconData(0xf158);
+  static const pos = IconData(0xf03F, fontFamily: _f, fontPackage: _p);
+  static const palmTree = IconData(0xf156, fontFamily: _f, fontPackage: _p);
+  static const car = IconData(0xf157, fontFamily: _f, fontPackage: _p);
+  static const bag = IconData(0xf158, fontFamily: _f, fontPackage: _p);
 
-  static const cashCoin = GtIconData(0xf168);
-  static const clockCheck = GtIconData(0xf167);
-  static const cuppedHandDot = GtIconData(0xf166);
-  static const document = GtIconData(0xf165);
-  static const fileLink = GtIconData(0xf164);
-  static const invoice = GtIconData(0xf163);
-  static const move = GtIconData(0xf161);
-  static const notes = GtIconData(0xf160);
-  static const retryCircle = GtIconData(0xf15f);
-  static const scanAlt = GtIconData(0xf15e);
-  static const settings = GtIconData(0xf15d);
-  static const split = GtIconData(0xf15c);
-  static const support = GtIconData(0xf15b);
-  static const useStar = GtIconData(0xf15a);
-  static const verified = GtIconData(0xf159);
-  static const trendUp = GtIconData(0xf162);
-  static const trendDown = GtIconData(0xf169);
+  static const cashCoin = IconData(0xf168, fontFamily: _f, fontPackage: _p);
+  static const clockCheck = IconData(0xf167, fontFamily: _f, fontPackage: _p);
+  static const cuppedHandDot = IconData(
+    0xf166,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const document = IconData(0xf165, fontFamily: _f, fontPackage: _p);
+  static const fileLink = IconData(0xf164, fontFamily: _f, fontPackage: _p);
+  static const invoice = IconData(0xf163, fontFamily: _f, fontPackage: _p);
+  static const move = IconData(0xf161, fontFamily: _f, fontPackage: _p);
+  static const notes = IconData(0xf160, fontFamily: _f, fontPackage: _p);
+  static const retryCircle = IconData(0xf15f, fontFamily: _f, fontPackage: _p);
+  static const scanAlt = IconData(0xf15e, fontFamily: _f, fontPackage: _p);
+  static const settings = IconData(0xf15d, fontFamily: _f, fontPackage: _p);
+  static const split = IconData(0xf15c, fontFamily: _f, fontPackage: _p);
+  static const support = IconData(0xf15b, fontFamily: _f, fontPackage: _p);
+  static const useStar = IconData(0xf15a, fontFamily: _f, fontPackage: _p);
+  static const verified = IconData(0xf159, fontFamily: _f, fontPackage: _p);
+  static const trendUp = IconData(0xf162, fontFamily: _f, fontPackage: _p);
+  static const trendDown = IconData(0xf169, fontFamily: _f, fontPackage: _p);
+  static const waterBill = IconData(0xf16b, fontFamily: _f, fontPackage: _p);
+  static const wasteBill = IconData(0xf16c, fontFamily: _f, fontPackage: _p);
+  static const walletAlt = IconData(0xf16d, fontFamily: _f, fontPackage: _p);
+  static const refreshAlt = IconData(0xf16f, fontFamily: _f, fontPackage: _p);
+  static const locationPin = IconData(0xf170, fontFamily: _f, fontPackage: _p);
+  static const landBill = IconData(0xf171, fontFamily: _f, fontPackage: _p);
 
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
@@ -588,6 +838,7 @@ class GtIcons {
     (label: 'key', value: key),
     (label: 'keyboard', value: keyboard),
     (label: 'keyPadA', value: keyPadA),
+    (label: 'landBill', value: landBill),
     (label: 'language', value: language),
     (label: 'laptop', value: laptop),
     (label: 'laptopMobile', value: laptopMobile),
@@ -598,6 +849,7 @@ class GtIcons {
     (label: 'link', value: link),
     (label: 'loader', value: loader),
     (label: 'location', value: location),
+    (label: 'locationPin', value: locationPin),
     (label: 'lock', value: lock),
     (label: 'lockOpen', value: lockOpen),
     (label: 'logout', value: logout),
@@ -669,6 +921,7 @@ class GtIcons {
     (label: 'question', value: question),
     (label: 'receipts', value: receipts),
     (label: 'refresh', value: refresh),
+    (label: 'refreshAlt', value: refreshAlt),
     (label: 'refreshSolid', value: refreshSolid),
     (label: 'reorder', value: reorder),
     (label: 'roadmap', value: roadmap),
@@ -746,7 +999,10 @@ class GtIcons {
     (label: 'volume', value: volume),
     (label: 'volumeUp', value: volumeUp),
     (label: 'wallet', value: wallet),
+    (label: 'walletAlt', value: walletAlt),
     (label: 'wandSparkle', value: wandSparkle),
+    (label: 'wasteBill', value: wasteBill),
+    (label: 'waterBill', value: waterBill),
     (label: 'watch', value: watch),
     (label: 'wechat', value: wechat),
     (label: 'whatsapp', value: whatsapp),
