@@ -11,6 +11,7 @@ class GtOtpForm extends GtStatefulWidget {
   final OnPressed onResendCode;
   final OnChanged<String?>? onDone;
   final TextEditingController? controller;
+  final GtCountdownController? countdownController;
   final int pinLength;
 
   const GtOtpForm({
@@ -20,6 +21,7 @@ class GtOtpForm extends GtStatefulWidget {
     required this.title,
     required this.subtitle,
     this.onDone,
+    this.countdownController,
     this.pinLength = 6,
     super.key,
   });
@@ -60,7 +62,10 @@ class _GtOtpFormState extends State<GtOtpForm> with GtOtpFormMixin {
                 if ((count ?? 0) <= 0) {
                   return GtInkWell(
                     key: const Key("gt-otp-code-resend-button"),
-                    onTap: startCountDown,
+                    onTap: () {
+                      widget.onResendCode();
+                      if (widget.countdownController == null) startCountDown();
+                    },
                     child: Row(
                       spacing: context.spacingBase,
                       mainAxisAlignment: .center,
@@ -94,33 +99,60 @@ class _GtOtpFormState extends State<GtOtpForm> with GtOtpFormMixin {
 }
 
 mixin GtOtpFormMixin<T extends GtOtpForm> on State<T> {
-  late final ValueNotifier<int> countDown;
+  late final GtCountdownController countdownController;
   late final TextEditingController pinCtrl;
-  StreamSubscription<int>? countDownSubscription;
+
+  ValueNotifier<int> get countDown => countdownController.countDown;
 
   @override
   void initState() {
     super.initState();
-    countDown = ValueNotifier(60);
+    countdownController = widget.countdownController ?? GtCountdownController();
     pinCtrl = widget.controller ?? TextEditingController();
-    startCountDown();
+    if (widget.countdownController == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        startCountDown();
+      });
+    }
   }
 
   @override
   void dispose() {
-    countDownSubscription?.cancel();
-    countDown.dispose();
+    if (widget.countdownController == null) countdownController.dispose();
     if (widget.controller == null) pinCtrl.dispose();
     super.dispose();
   }
 
   void startCountDown() {
-    countDownSubscription?.cancel();
-    countDownSubscription = AppHelpers.countDown().asBroadcastStream().listen((
-      count,
-    ) {
+    countdownController.startCountDown();
+  }
+}
+
+class GtCountdownController {
+  final int seconds;
+  late final ValueNotifier<int> countDown;
+  StreamSubscription<int>? _subscription;
+
+  GtCountdownController({this.seconds = 60}) {
+    countDown = ValueNotifier(seconds);
+  }
+
+  void startCountDown() {
+    _subscription?.cancel();
+    countDown.value = seconds;
+    _subscription = _startCountDownSubscription();
+  }
+
+  StreamSubscription<int> _startCountDownSubscription() {
+    return AppHelpers.countDown(
+      seconds > 0 ? seconds - 1 : 0,
+    ).asBroadcastStream().listen((count) {
       countDown.value = count;
     });
-    widget.onResendCode();
+  }
+
+  void dispose() {
+    _subscription?.cancel();
+    countDown.dispose();
   }
 }
