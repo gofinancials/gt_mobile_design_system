@@ -374,6 +374,15 @@ Widget gtListTileAllUseCase(BuildContext context) {
     GtCard(
       padding: context.insets.allDp(12.px),
       borderRadius: 12.circularBorderRadius,
+      child: GtDoubleColumnListTile(
+        context.knobs.string(label: "Label", initialValue: "Category"),
+        value: context.knobs.string(label: "Value", initialValue: "Bills"),
+      ),
+    ),
+    const GtGap.yBase(),
+    GtCard(
+      padding: context.insets.allDp(12.px),
+      borderRadius: 12.circularBorderRadius,
       child: Column(
         children: [
           GtDoubleColumnListTile(

@@ -41,7 +41,7 @@ class GtEmptyState extends GtStatelessWidget {
   /// Creates a [GtEmptyState] with required icon/title/subtitle content.
   const GtEmptyState({
     super.key,
-    required this.icon,
+    this.icon = const AppImageData(GtVectorIllustrations.empty),
     required this.title,
     this.subtitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
