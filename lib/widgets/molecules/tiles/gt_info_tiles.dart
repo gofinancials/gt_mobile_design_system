@@ -455,6 +455,7 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     this.valueSuffix,
     this.labelMaxLines = 1,
     this.valueMaxLines = 2,
+    @Deprecated('Use valueTextStyle and labelTextStyle instead')
     this.highlightValue = true,
     this.valueTextStyle,
     this.labelTextStyle,
