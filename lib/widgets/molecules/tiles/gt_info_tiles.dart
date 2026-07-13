@@ -426,10 +426,25 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   /// An optional widget displayed immediately after the [value].
   final Widget? valueSuffix;
 
+  ///Maximum number of lines for the label.
+  final int labelMaxLines;
+
+  ///Maximum number of lines for the value.
+  final int valueMaxLines;
+
   /// Whether to emphasize the [value] text over the [label].
   ///
   /// If true (default), the value uses a stronger style while the label is subtler.
+  @Deprecated(
+    'Use valueTextStyle and labelTextStyle instead, removalVersion: 1.0.0',
+  )
   final bool highlightValue;
+
+  /// Optional custom [TextStyle] for the [value].
+  final TextStyle? valueTextStyle;
+
+  /// Optional custom [TextStyle] for the [label].
+  final TextStyle? labelTextStyle;
 
   /// Creates a [GtDoubleColumnListTile].
   const GtDoubleColumnListTile(
@@ -438,28 +453,62 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     required this.value,
     this.valuePrefix,
     this.valueSuffix,
+    this.labelMaxLines = 1,
+    this.valueMaxLines = 2,
+    @Deprecated('Use valueTextStyle and labelTextStyle instead')
     this.highlightValue = true,
-  });
+    this.valueTextStyle,
+    this.labelTextStyle,
+  }) : assert(
+         highlightValue || (valueTextStyle == null && labelTextStyle == null),
+         'valueTextStyle and labelTextStyle must be null if highlightValue is false',
+       );
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
+    final palette = context.palette.text;
     final textStyles = context.textStyles;
-    TextStyle labelStyle = textStyles.bodyS(color: palette.text.sub);
-    TextStyle valueStyle = textStyles.subHeadS();
+    TextStyle labelStyle =
+        labelTextStyle ?? textStyles.bodyS(color: palette.sub);
+    TextStyle valueStyle = valueTextStyle ?? textStyles.subHeadS();
 
     if (!highlightValue) {
-      labelStyle = labelStyle.copyWith(color: palette.text.strong);
-      valueStyle = valueStyle.copyWith(color: palette.text.soft);
+      labelStyle = labelStyle.copyWith(color: palette.strong);
+      valueStyle = valueStyle.copyWith(color: palette.soft);
     }
 
     return Row(
-      spacing: context.spacingBase,
+      spacing: context.spacingMd,
       children: [
-        Expanded(child: GtText(label, style: labelStyle)),
-        ?valuePrefix,
-        Text(value, style: valueStyle, textAlign: TextAlign.end),
-        ?valueSuffix,
+        Expanded(
+          flex: 4,
+          child: GtText(
+            label,
+            style: labelStyle,
+            maxLines: labelMaxLines,
+            overflow: .ellipsis,
+          ),
+        ),
+        Expanded(
+          flex: 5,
+          child: Row(
+            mainAxisAlignment: .end,
+            spacing: context.spacingBase,
+            children: [
+              ?valuePrefix,
+              Flexible(
+                child: GtText(
+                  value,
+                  style: valueStyle,
+                  textAlign: TextAlign.end,
+                  overflow: .ellipsis,
+                  maxLines: valueMaxLines,
+                ),
+              ),
+              ?valueSuffix,
+            ],
+          ),
+        ),
       ],
     );
   }
