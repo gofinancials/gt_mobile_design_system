@@ -66,6 +66,9 @@ class GtTabPill<T> extends StatelessWidget {
   /// The style configuration for this tab pill, allowing for custom color overrides.
   final GtTabPillStyle? style;
 
+  /// Whether to scroll the pill into view when selected.
+  final bool autoScroll;
+
   /// Creates a [GtTabPill].
   const GtTabPill({
     super.key,
@@ -78,6 +81,7 @@ class GtTabPill<T> extends StatelessWidget {
     this.trailing,
     this.alignment = .centerLeft,
     this.style,
+    this.autoScroll = false,
   });
 
   /// Creates a specialized selection variant of the tab pill.
@@ -92,6 +96,7 @@ class GtTabPill<T> extends StatelessWidget {
     IconData? trailing,
     Alignment? alignment,
     GtTabPillStyle? style,
+    bool autoScroll,
   }) = GtSelectionPill<T>;
 
   GtPillVariant get effectiveVariant => style?.variant ?? variant ?? .strong;
@@ -135,7 +140,7 @@ class GtTabPill<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isSelected) context.scrollIntoView();
+    if (isSelected && autoScroll) context.scrollIntoView();
     final palette = context.palette;
     final textColor = getTextColor(palette);
     final bgColor = getBgColor(palette);
@@ -188,6 +193,7 @@ class GtSelectionPill<T> extends GtTabPill<T> {
     super.trailing,
     super.alignment = .centerLeft,
     super.style,
+    super.autoScroll,
   });
 
   @override
@@ -210,7 +216,7 @@ class GtSelectionPill<T> extends GtTabPill<T> {
 
   @override
   Widget build(BuildContext context) {
-    if (isSelected) context.scrollIntoView();
+    if (isSelected && autoScroll) context.scrollIntoView();
     final palette = context.palette;
     final textColor = getTextColor(palette);
     final bgColor = getBgColor(palette);
