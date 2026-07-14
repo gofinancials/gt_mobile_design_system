@@ -27,6 +27,9 @@ class GtSelectionTabbar<T> extends GtStatefulWidget {
   /// An optional custom padding to apply to the tab bar.
   final EdgeInsetsGeometry? padding;
 
+  /// Whether to scroll the tab into view when selected.
+  final bool autoScroll;
+
   /// Creates a [GtSelectionTabbar].
   const GtSelectionTabbar({
     super.key,
@@ -36,6 +39,7 @@ class GtSelectionTabbar<T> extends GtStatefulWidget {
     this.useAlternateStyle = false,
     this.style,
     this.padding,
+    this.autoScroll = false,
   }) : assert(tabs.length > 0);
 
   @override
@@ -78,6 +82,7 @@ class _GtSelectionTabbarState<T> extends State<GtSelectionTabbar<T>> {
                     value: tab,
                     activeValue: value,
                     icon: tab.icon,
+                    autoScroll: widget.autoScroll,
                     onSelect: (newTab) {
                       widget.controller.value = newTab;
                       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -93,6 +98,7 @@ class _GtSelectionTabbarState<T> extends State<GtSelectionTabbar<T>> {
                     value: tab,
                     activeValue: value,
                     icon: tab.icon,
+                    autoScroll: widget.autoScroll,
                     onSelect: (newTab) {
                       widget.controller.value = newTab;
                       WidgetsBinding.instance.addPostFrameCallback((_) {
