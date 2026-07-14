@@ -25,6 +25,9 @@ class GtTabbar<T> extends GtStatefulWidget {
   /// An optional custom padding to apply to the tab bar.
   final EdgeInsetsGeometry? padding;
 
+  /// Whether to scroll the tab into view when selected.
+  final bool autoScroll;
+
   /// Creates a [GtTabbar].
   const GtTabbar({
     super.key,
@@ -34,6 +37,7 @@ class GtTabbar<T> extends GtStatefulWidget {
     this.useAlternateStyle = false,
     this.style,
     this.padding,
+    this.autoScroll = false,
   }) : assert(tabs.length > 0);
 
   @override
@@ -50,6 +54,7 @@ class _GtTabbarState<T> extends State<GtTabbar<T>> {
       useAlternateStyle: widget.useAlternateStyle,
       style: widget.style,
       padding: widget.padding,
+      autoScroll: widget.autoScroll,
     );
   }
 }

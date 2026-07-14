@@ -435,9 +435,6 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   /// Whether to emphasize the [value] text over the [label].
   ///
   /// If true (default), the value uses a stronger style while the label is subtler.
-  @Deprecated(
-    'Use valueTextStyle and labelTextStyle instead, removalVersion: 1.0.0',
-  )
   final bool highlightValue;
 
   /// Optional custom [TextStyle] for the [value].
@@ -455,7 +452,6 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     this.valueSuffix,
     this.labelMaxLines = 1,
     this.valueMaxLines = 2,
-    @Deprecated('Use valueTextStyle and labelTextStyle instead')
     this.highlightValue = true,
     this.valueTextStyle,
     this.labelTextStyle,
