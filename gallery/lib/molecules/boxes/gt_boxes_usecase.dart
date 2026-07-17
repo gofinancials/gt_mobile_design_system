@@ -61,6 +61,19 @@ class _BoxesPlaygroundState extends State<_BoxesPlayground> {
       min: 0.1,
       max: 1.0,
     );
+    final fractionalAlignment = context.knobs.object.dropdown<Alignment>(
+      label: "Fractional Alignment",
+      options: const [
+        Alignment.center,
+        Alignment.topLeft,
+        Alignment.topRight,
+        Alignment.bottomLeft,
+        Alignment.bottomRight,
+        Alignment.centerLeft,
+        Alignment.centerRight,
+      ],
+      initialOption: Alignment.center,
+    );
 
     return Scaffold(
       key: const PageStorageKey("boxes_scaffold_key"),
@@ -94,7 +107,7 @@ GtSizedBox(
   child: Container(color: palette.primary.base),
 )''',
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 310),
+                        constraints: const BoxConstraints(maxHeight: 310),
                         child: Center(
                           child: GtSizedBox(
                             width: boxWidth,
@@ -124,7 +137,7 @@ GtSquareBox(
   child: Container(color: palette.warning.base),
 )''',
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxHeight: 310,
                           minHeight: 50,
                         ),
@@ -154,23 +167,32 @@ GtSquareBox(
 GtFractionalBox(
   widthFactor: $fractionalWidth,
   heightFactor: $fractionalHeight,
+  alignment: Alignment.${fractionalAlignment.toString().split('.').last},
   child: Container(color: palette.information.base),
 )''',
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxHeight: 310,
                           maxWidth: double.infinity,
                         ),
-                        child: GtFractionalBox(
-                          widthFactor: fractionalWidth,
-                          heightFactor: fractionalHeight,
-                          child: Container(
-                            color: context.palette.information.base,
-                            alignment: Alignment.center,
-                            child: GtText(
-                              "${(fractionalWidth * 100).toInt()}% W x ${(fractionalHeight * 100).toInt()}% H",
-                              style: context.textStyles.bodyXs(
-                                color: context.palette.text.white,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: context.palette.stroke.sub,
+                            ),
+                          ),
+                          child: GtFractionalBox(
+                            widthFactor: fractionalWidth,
+                            heightFactor: fractionalHeight,
+                            alignment: fractionalAlignment,
+                            child: Container(
+                              color: context.palette.information.base,
+                              alignment: Alignment.center,
+                              child: GtText(
+                                "${(fractionalWidth * 100).toInt()}% W x ${(fractionalHeight * 100).toInt()}% H",
+                                style: context.textStyles.bodyXs(
+                                  color: context.palette.text.white,
+                                ),
                               ),
                             ),
                           ),

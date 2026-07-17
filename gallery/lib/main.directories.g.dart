@@ -96,8 +96,6 @@ import 'package:gallery/molecules/inputs/gt_dropdown_field_usecase.dart'
     as _gallery_molecules_inputs_gt_dropdown_field_usecase;
 import 'package:gallery/molecules/inputs/gt_email_field_usecase.dart'
     as _gallery_molecules_inputs_gt_email_field_usecase;
-import 'package:gallery/molecules/inputs/gt_input_fields_usecase.dart'
-    as _gallery_molecules_inputs_gt_input_fields_usecase;
 import 'package:gallery/molecules/inputs/gt_inputs.dart'
     as _gallery_molecules_inputs_gt_inputs;
 import 'package:gallery/molecules/inputs/gt_password_field_usecase.dart'
@@ -116,10 +114,20 @@ import 'package:gallery/molecules/inputs/gt_url_field_usecase.dart'
     as _gallery_molecules_inputs_gt_url_field_usecase;
 import 'package:gallery/molecules/media/gt_avatar.dart'
     as _gallery_molecules_media_gt_avatar;
-import 'package:gallery/molecules/pills/gt_pill.dart'
-    as _gallery_molecules_pills_gt_pill;
+import 'package:gallery/molecules/pills/gt_button_pill_usecase.dart'
+    as _gallery_molecules_pills_gt_button_pill_usecase;
+import 'package:gallery/molecules/pills/gt_copy_pill_usecase.dart'
+    as _gallery_molecules_pills_gt_copy_pill_usecase;
+import 'package:gallery/molecules/pills/gt_info_pill_usecase.dart'
+    as _gallery_molecules_pills_gt_info_pill_usecase;
+import 'package:gallery/molecules/pills/gt_pill_usecase.dart'
+    as _gallery_molecules_pills_gt_pill_usecase;
+import 'package:gallery/molecules/pills/gt_status_pill_usecase.dart'
+    as _gallery_molecules_pills_gt_status_pill_usecase;
 import 'package:gallery/molecules/text/gt_balance_text.dart'
     as _gallery_molecules_text_gt_balance_text;
+import 'package:gallery/molecules/text/gt_button_text.dart'
+    as _gallery_molecules_text_gt_button_text;
 import 'package:gallery/molecules/text/gt_status_text.dart'
     as _gallery_molecules_text_gt_status_text;
 import 'package:gallery/molecules/tiles/gt_action_tiles_usecase.dart'
@@ -730,11 +738,6 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder: _gallery_molecules_inputs_gt_calendar_usecase
                         .playgroundGtCalendarUseCase,
                   ),
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'GtCalendar Inputs',
-                    builder: _gallery_molecules_inputs_gt_inputs
-                        .buildGtCalendarUsecase,
-                  ),
                 ],
               ),
               _widgetbook.WidgetbookComponent(
@@ -821,11 +824,6 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtPinInput',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtPinInput',
-                    builder: _gallery_molecules_inputs_gt_inputs
-                        .buildGtPinInputUsecase,
-                  ),
-                  _widgetbook.WidgetbookUseCase(
                     name: 'GtPinInput code',
                     builder: _gallery_molecules_inputs_gt_pin_input_usecase
                         .playgroundGtPinInputUseCase,
@@ -849,16 +847,6 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtTextField',
                     builder: _gallery_molecules_inputs_gt_text_field_usecase
                         .playgroundGtTextFieldUseCase,
-                  ),
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'GtTextField (legacy)',
-                    builder: _gallery_molecules_inputs_gt_inputs
-                        .buildGtTextFieldUsecase,
-                  ),
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'Input Fields',
-                    builder: _gallery_molecules_inputs_gt_input_fields_usecase
-                        .playgroundInputFieldsUseCase,
                   ),
                 ],
               ),
@@ -893,17 +881,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtAvatar',
                     builder:
-                        _gallery_molecules_media_gt_avatar.buildGtAvatarUsecase,
-                  ),
-                ],
-              ),
-              _widgetbook.WidgetbookComponent(
-                name: 'GtSquareAvatar',
-                useCases: [
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'GtSquareAvatar',
-                    builder: _gallery_molecules_media_gt_avatar
-                        .buildGtSquareAvatarUsecase,
+                        _gallery_molecules_media_gt_avatar.buildGtAvatarUseCase,
                   ),
                 ],
               ),
@@ -913,12 +891,52 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'pills',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtButtonPill',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtButtonPill',
+                    builder: _gallery_molecules_pills_gt_button_pill_usecase
+                        .playgroundGtButtonPillUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtCopyPill',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtCopyPill',
+                    builder: _gallery_molecules_pills_gt_copy_pill_usecase
+                        .playgroundGtCopyPillUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtInfoPill',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtInfoPill',
+                    builder: _gallery_molecules_pills_gt_info_pill_usecase
+                        .playgroundGtInfoPillUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtPill',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'Pills Gallery',
-                    builder:
-                        _gallery_molecules_pills_gt_pill.buildGtPillUseCase,
+                    name: 'GtPill',
+                    builder: _gallery_molecules_pills_gt_pill_usecase
+                        .playgroundGtPillUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtStatusPill',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtStatusPill',
+                    builder: _gallery_molecules_pills_gt_status_pill_usecase
+                        .playgroundGtStatusPillUseCase,
                   ),
                 ],
               ),
@@ -934,6 +952,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'Balance',
                     builder: _gallery_molecules_text_gt_balance_text
                         .playgroundGtBalanceTextUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtButtonText',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Button Text',
+                    builder: _gallery_molecules_text_gt_button_text
+                        .playgroundGtButtonTextUseCase,
                   ),
                 ],
               ),
@@ -1664,6 +1692,11 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'Documentation',
                     builder: _gallery_templates_forms_gt_form_doc
                         .playgroundGtFormDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtFormExample',
+                    builder: _gallery_molecules_inputs_gt_inputs
+                        .buildGtTextFieldUsecase,
                   ),
                   _widgetbook.WidgetbookUseCase(
                     name: 'Interactive Preview',

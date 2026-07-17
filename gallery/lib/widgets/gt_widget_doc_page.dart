@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntax_view/flutter_syntax_view.dart';
 import 'package:gallery/lib.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gt_mobile_foundation/extensions/string_extensions.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 class GtWidgetDocPage extends GtStatelessWidget {
@@ -36,12 +37,10 @@ class GtWidgetDocPage extends GtStatelessWidget {
               GallerySectionCard('Preview', child: child),
 
               // Interactive Controls (Knobs)
-              if (knobs != null && knobs!.isNotEmpty) ...[
-                GtSectionHeader('Interactive Controls'),
-                const GtGap.yMd(),
-                GtCard(
-                  padding: context.insets.allDp(24.px),
-                  variant: GtCardVariant.normal,
+              if (knobs != null && knobs!.isNotEmpty)
+                GallerySectionCard(
+                  'Interactive Controls',
+                  padding: .zero,
                   child: Wrap(
                     spacing: 24.px,
                     runSpacing: 24.px,
@@ -49,14 +48,13 @@ class GtWidgetDocPage extends GtStatelessWidget {
                     children: knobs!,
                   ),
                 ),
-                const GtGap.ySectionLg(),
-              ],
 
-              GallerySectionCard(
-                'Implementation',
-                padding: .zero,
-                child: _CodeBlock(code: code!.trim()),
-              ),
+              if (code.hasValue)
+                GallerySectionCard(
+                  'Implementation',
+                  padding: .zero,
+                  child: _CodeBlock(code: code!.trim()),
+                ),
             ],
           ),
         ),

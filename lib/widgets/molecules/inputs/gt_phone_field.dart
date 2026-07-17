@@ -161,7 +161,10 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
                   spacing: context.spacingBase,
                   children: [
                     if (widget.showCountryCode)
-                      GtCountryCodeField(controller: controller),
+                      GtCountryCodeField(
+                        controller: controller,
+                        isEnabled: widget.isEnabled,
+                      ),
                     Expanded(child: child!),
                   ],
                 ),
@@ -213,6 +216,9 @@ class GtCountryCodeField extends GtStatefulWidget {
   /// An optional widget to display when error occurs when getting options.
   final Widget? errorWidget;
 
+  /// Indicates whether the country code field is enabled.
+  final bool isEnabled;
+
   /// Creates a new [GtCountryCodeField].
   const GtCountryCodeField({
     super.key,
@@ -220,6 +226,7 @@ class GtCountryCodeField extends GtStatefulWidget {
     this.emptyWidget,
     this.loadingWidget,
     this.errorWidget,
+    this.isEnabled = true,
   });
 
   @override
@@ -281,6 +288,7 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
   }
 
   void _showSheet() {
+    if (!widget.isEnabled) return;
     showDraggableSheet(
       context,
       builder: (scrollController) => GtDropDownModal<Country>(
@@ -312,43 +320,46 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
   Widget build(BuildContext context) {
     final decoration = context.inputStyles.phoneCodeDecoration;
 
-    return GtInkWell(
-      borderRadius: context.borderRadiusXl,
-      hapticFeedbackType: .medium,
-      onTap: _showSheet,
-      child: Container(
-        constraints: decoration.constraints,
-        padding: decoration.padding,
-        decoration: decoration.decoration,
-        alignment: .center,
-        child: FutureBuilder(
-          future: _countryFuture,
-          builder: (context, task) {
-            final country = task.data ?? _fallbackCountry;
-            final size = context.dp(32.px);
+    return GtDisabledOverlay(
+      !widget.isEnabled,
+      child: GtInkWell(
+        borderRadius: context.borderRadiusXl,
+        hapticFeedbackType: .medium,
+        onTap: _showSheet,
+        child: Container(
+          constraints: decoration.constraints,
+          padding: decoration.padding,
+          decoration: decoration.decoration,
+          alignment: .center,
+          child: FutureBuilder(
+            future: _countryFuture,
+            builder: (context, task) {
+              final country = task.data ?? _fallbackCountry;
+              final size = context.dp(32.px);
 
-            return Row(
-              crossAxisAlignment: .center,
-              mainAxisAlignment: .center,
-              spacing: context.spacingBase,
-              mainAxisSize: .min,
-              children: [
-                ClipOval(
-                  child: GtNetworkImage(
-                    country.rasterFlagUrl,
-                    fit: .fill,
-                    width: size,
-                    height: size,
+              return Row(
+                crossAxisAlignment: .center,
+                mainAxisAlignment: .center,
+                spacing: context.spacingBase,
+                mainAxisSize: .min,
+                children: [
+                  ClipOval(
+                    child: GtNetworkImage(
+                      country.rasterFlagUrl,
+                      fit: .fill,
+                      width: size,
+                      height: size,
+                    ),
                   ),
-                ),
-                GtIcon(
-                  GtIcons.chevronDown,
-                  size: context.dp(16.px),
-                  variant: .soft,
-                ),
-              ],
-            );
-          },
+                  GtIcon(
+                    GtIcons.chevronDown,
+                    size: context.dp(16.px),
+                    variant: .soft,
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
