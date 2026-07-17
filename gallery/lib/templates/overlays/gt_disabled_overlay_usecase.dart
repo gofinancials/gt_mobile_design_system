@@ -5,42 +5,51 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtDisabledOverlay', type: GtDisabledOverlay)
-Widget gtDisabledOverlayUseCase(BuildContext context) {
+Widget playgroundGtDisabledOverlayUseCase(BuildContext context) {
+  final isDisabled = context.knobs.boolean(
+    label: 'Is Disabled',
+    initialValue: true,
+  );
+
   return GtWidgetDocPage(
-    title: "Disabled Overlay",
+    title: 'GtDisabledOverlay',
     description:
-        "A semi-transparent overlay to indicate an inactive or disabled state.",
-    code: '''
+        'A semi-transparent overlay to indicate an inactive or disabled widget state.',
+    code:
+        '''
+// Wrap any interactive widget tree to block clicks and dim content
 GtDisabledOverlay(
-  true,
-  child: Container(),
-)
-''',
+  $isDisabled, // Toggles the disabled overlay state
+  child: Card(
     child: Column(
       children: [
-        GalleryPageSectionHeader(title: "GtDisabledOverlay"),
-        GtSizedBox(
-          height: 200,
-          width: double.infinity,
-          child: GtDisabledOverlay(
-            context.knobs.boolean(label: 'Is Disabled', initialValue: true),
-            child: Container(
-              decoration: BoxDecoration(
-                color: context.palette.primary.base,
-                borderRadius: 16.circularBorderRadius,
-              ),
-              child: Center(
-                child: GtText(
-                  "Interactive Content",
-                  style: context.textStyles.h5(
-                    color: context.palette.text.white,
-                  ),
-                ),
-              ),
+        Text("Interactive Form Content"),
+        ElevatedButton(
+          onPressed: () => handleAction(),
+          child: Text("Submit"),
+        ),
+      ],
+    ),
+  ),
+)''',
+    child: GtSizedBox(
+      height: 200,
+      width: double.infinity,
+      child: GtDisabledOverlay(
+        isDisabled,
+        child: Container(
+          decoration: BoxDecoration(
+            color: context.palette.primary.base,
+            borderRadius: 16.circularBorderRadius,
+          ),
+          child: Center(
+            child: GtText(
+              "Interactive Content",
+              style: context.textStyles.h6(color: context.palette.text.white),
             ),
           ),
         ),
-      ],
+      ),
     ),
   );
 }

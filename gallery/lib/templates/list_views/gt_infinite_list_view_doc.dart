@@ -6,9 +6,13 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'Documentation', type: GtInfiniteListView)
 Widget playgroundGtInfiniteListViewDoc(BuildContext context) {
-  final hasMore = context.knobs.boolean(label: 'Has More Pages', initialValue: true);
+  final hasMore = context.knobs.boolean(
+    label: 'Has More Pages',
+    initialValue: true,
+  );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtInfiniteListView<Transaction>(
   itemBuilder: (context, item, index) {
     return GtTransactionListTile(
@@ -24,7 +28,7 @@ GtInfiniteListView<Transaction>(
     // Refresh data
   },
   hasMore: $hasMore,
-  items: transactionsList,
+  items: PaginatedData(),
 )''';
 
   return GtWidgetDocPage(
@@ -37,16 +41,10 @@ It supports:
 • Automatic load-more callbacks when the scroll offset approaches the bottom.
 • Built-in indicator spinner while loading a page.''',
     code: codeSnippet,
-    child: SizedBox(
-      width: 360.px,
-      height: 250.px,
-      child: Center(
-        child: GtText(
+    child: GtEmptyStateCard(
+      description:
           'Select "Interactive Preview" in the sidebar\nto test the infinite scrolling list view in full screen.',
-          style: context.textStyles.bodyM(color: context.palette.text.sub),
-          textAlign: TextAlign.center,
-        ),
-      ),
+      icon: GtIcons.alarmClock,
     ),
   );
 }

@@ -1,14 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:gallery/lib.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
+// --- GtSplashScreen Usecases ---
+
 @widgetbook.UseCase(name: 'GtSplashScreen', type: GtSplashScreen)
+Widget buildGtSplashScreenDoc(BuildContext context) {
+  return GtWidgetDocPage(
+    title: 'GtSplashScreen',
+    description: 'A template for display at application launch that executes asynchronous initialization tasks.',
+    code: '''
+GtSplashScreen(
+  task: () async => initializeApp(),
+  backgroundImage: AssetImage("assets/pattern.png"),
+  logo: AppImageData.asset(GtVectors.logo),
+)''',
+    child: GtEmptyStateCard(
+      description: 'Select "GtSplashScreen Gallery" in the sidebar to view the interactive splash screen in full screen.',
+      icon: GtIcons.alarmClock,
+    ),
+  );
+}
+
+@widgetbook.UseCase(name: 'GtSplashScreen Gallery', type: GtSplashScreen)
 Widget buildGtSplashScreenUsecase(BuildContext context) {
   final bgImage = context.knobs.object.dropdown<(String, ImageProvider?)>(
     label: "Background Image",
-    options: [
+    options: const [
       ("None", null),
       ("Kids Pattern", NetworkImage(GtNetworkImages.kidsPattern)),
       ("Flex Pattern", NetworkImage(GtNetworkImages.flexPattern)),
@@ -22,8 +43,8 @@ Widget buildGtSplashScreenUsecase(BuildContext context) {
     logo: context.knobs.object
         .dropdown(
           label: "Logo",
-          initialOption: ("None", null),
-          options: [
+          initialOption: const ("None", null),
+          options: const [
             ("None", null),
             ("Logo", AppImageData.asset(GtVectors.logo)),
             ("OneBankProLogo", AppImageData.asset(GtVectors.oneBankProLogo)),
@@ -35,11 +56,38 @@ Widget buildGtSplashScreenUsecase(BuildContext context) {
   );
 }
 
+// --- GtWelcomeScreen Usecases ---
+
 @widgetbook.UseCase(name: 'GtWelcomeScreen', type: GtWelcomeScreen)
+Widget buildGtWelcomeScreenDoc(BuildContext context) {
+  return GtWidgetDocPage(
+    title: 'GtWelcomeScreen',
+    description: 'An onboarding/welcome landing screen template supporting logos, customized background images, and entry CTA buttons.',
+    code: '''
+GtWelcomeScreen(
+  title: "Your everyday money app",
+  backgroundImage: AssetImage("assets/hq.png"),
+  primaryButton: GtRaisedButton(
+    text: "Get Started",
+    onPressed: () => handleGetStarted(),
+  ),
+  secondaryButton: GtOutlineButton(
+    text: "Login",
+    onPressed: () => handleLogin(),
+  ),
+)''',
+    child: GtEmptyStateCard(
+      description: 'Select "GtWelcomeScreen Gallery" in the sidebar to view the interactive welcome screen in full screen.',
+      icon: GtIcons.alarmClock,
+    ),
+  );
+}
+
+@widgetbook.UseCase(name: 'GtWelcomeScreen Gallery', type: GtWelcomeScreen)
 Widget buildtGWelcomeScreenUsecase(BuildContext context) {
   final bgImage = context.knobs.object.dropdown<(String, ImageProvider?)>(
     label: "Background Image",
-    options: [
+    options: const [
       ("None", null),
       ("Kids Pattern", NetworkImage(GtNetworkImages.kidsPattern)),
       ("Flex Pattern", NetworkImage(GtNetworkImages.flexPattern)),
@@ -51,7 +99,7 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
     logo: context.knobs.object
         .dropdown(
           label: "Logo",
-          initialOption: ("None", null),
+          initialOption: const ("None", null),
           options: [
             ("None", null),
             (
@@ -69,7 +117,7 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
         .dropdown<(String, GtDecorationImageStyle?)>(
           label: "Decoration Image Style",
           options: [("None", null), ("Pro", GtDecorationImageStyle.pro)],
-          initialOption: ("None", null),
+          initialOption: const ("None", null),
           labelBuilder: (value) => value.$1,
         )
         .$2,
@@ -80,8 +128,8 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
     backgroundImage: bgImage.$2,
     titleAlignment: context.knobs.object.dropdown<Alignment>(
       label: "Title Alignment",
-      options: [Alignment.topLeft, Alignment.bottomLeft],
-      initialOption: .bottomLeft,
+      options: const [Alignment.topLeft, Alignment.bottomLeft],
+      initialOption: Alignment.bottomLeft,
       labelBuilder: (value) => value.toString(),
     ),
     showLogo: context.knobs.boolean(label: "Show Logo", initialValue: true),
@@ -97,7 +145,7 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
         )
         .$2,
     primaryButton: GtRaisedButton(
-      variant: .white,
+      variant: GtButtonVariant.white,
       text: context.knobs.string(
         label: "Primary Button Text",
         initialValue: "Get Started",
@@ -110,7 +158,7 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
           options: [
             (
               "Outline Button",
-              GtOutlineButton(text: "Login", onPressed: () {}, variant: .white),
+              GtOutlineButton(text: "Login", onPressed: () {}, variant: GtButtonVariant.white),
             ),
             (
               "Filled Button",
@@ -124,13 +172,13 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
 }
 
 @widgetbook.UseCase(
-  name: 'GtWelcomeScreen.withTitleWidget',
+  name: 'GtWelcomeScreen.withTitleWidget Gallery',
   type: GtWelcomeScreen,
 )
 Widget buildGtWelcomeScreenTitleUsecase(BuildContext context) {
   final bgImage = context.knobs.object.dropdown<(String, ImageProvider?)>(
     label: "Background Image",
-    options: [
+    options: const [
       ("None", null),
       ("Kids Pattern", NetworkImage(GtNetworkImages.kidsPattern)),
       ("Flex Pattern", NetworkImage(GtNetworkImages.flexPattern)),
@@ -150,28 +198,28 @@ Widget buildGtWelcomeScreenTitleUsecase(BuildContext context) {
   return GtWelcomeScreen.withTitleWidget(
     title: context.knobs.object.dropdown<Widget>(
       label: "Title",
-      initialOption: GtText("OneBank", textAlign: .center, style: titleStyle),
+      initialOption: GtText("OneBank", textAlign: TextAlign.center, style: titleStyle),
       options: [
-        GtText("OneBank", textAlign: .center, style: titleStyle),
+        GtText("OneBank", textAlign: TextAlign.center, style: titleStyle),
         GtNetworkImage(
           GtNetworkImages.avatar3d1,
           height: context.fractionalLongest(.4),
           width: context.fractionalShortest(.6),
-          fit: .fitHeight,
-          alignment: .topCenter,
+          fit: BoxFit.fitHeight,
+          alignment: Alignment.topCenter,
         ),
       ],
     ),
     backgroundImage: bgImage.$2,
     titleAlignment: context.knobs.object.dropdown<Alignment>(
       label: "Title Alignment",
-      options: [.topLeft, .topCenter, .bottomLeft, .bottomCenter],
-      initialOption: .topCenter,
+      options: const [Alignment.topLeft, Alignment.topCenter, Alignment.bottomLeft, Alignment.bottomCenter],
+      initialOption: Alignment.topCenter,
       labelBuilder: (value) => value.toString(),
     ),
     showLogo: context.knobs.boolean(label: "Show Logo", initialValue: false),
     primaryButton: GtRaisedButton(
-      variant: .white,
+      variant: GtButtonVariant.white,
       text: context.knobs.string(
         label: "Primary Button Text",
         initialValue: "Get Started",
@@ -184,7 +232,7 @@ Widget buildGtWelcomeScreenTitleUsecase(BuildContext context) {
           options: [
             (
               "Outline Button",
-              GtOutlineButton(text: "Login", onPressed: () {}, variant: .white),
+              GtOutlineButton(text: "Login", onPressed: () {}, variant: GtButtonVariant.white),
             ),
             (
               "Filled Button",

@@ -5,38 +5,41 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtAlertOverlay', type: GtAlertOverlay)
-Widget gtAlertOverlayUseCase(BuildContext context) {
+Widget playgroundGtAlertOverlayUseCase(BuildContext context) {
+  final title = context.knobs.string(
+    label: 'Alert Title',
+    initialValue: 'Payment Successful',
+  );
+  final message = context.knobs.string(
+    label: 'Alert Message',
+    initialValue: 'Your transaction was completed successfully.',
+  );
+  final variant = context.knobs.object.dropdown<GtNotificationVariant>(
+    label: 'Variant',
+    options: GtNotificationVariant.values,
+    initialOption: GtNotificationVariant.success,
+    labelBuilder: (v) => v.name,
+  );
+
   return GtWidgetDocPage(
-    title: "Alert Overlay",
-    description: "Displays an alert notification over the screen.",
-    code: '''
-GtAlertOverlay(
-  'Payment Successful',
-  message: 'Your transaction was completed successfully.',
-  type: .success,
-  onClose: () {},
-)
+    title: 'GtAlertOverlay',
+    description:
+        'An alert message overlay widget representing operation outcomes. Present it via the BuildContext extension method.',
+    code:
+        '''
+// Display alert overlay via BuildContext extension
+context.showAlert(
+  "$title",
+  message: "$message",
+  type: GtNotificationVariant.${variant.name},
+  duration: 3000, // Optional milliseconds
+);
 ''',
-    child: Column(
-      children: [
-        GalleryPageSectionHeader(title: "GtAlertOverlay"),
-        GtAlertOverlay(
-          context.knobs.string(
-            label: 'Alert Title',
-            initialValue: 'Payment Successful',
-          ),
-          message: context.knobs.string(
-            label: 'Alert Message',
-            initialValue: 'Your transaction was completed successfully.',
-          ),
-          type: context.knobs.object.dropdown<GtNotificationVariant>(
-            label: 'Variant',
-            options: GtNotificationVariant.values,
-            initialOption: .success,
-          ),
-          onClose: () {},
-        ),
-      ],
+    child: GtRaisedButton(
+      text: 'Trigger Alert Overlay',
+      onPressed: () {
+        context.showAlert(title, message: message, type: variant);
+      },
     ),
   );
 }
