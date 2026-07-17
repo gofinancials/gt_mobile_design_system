@@ -24,10 +24,17 @@ Widget playgroundGtIconButtonUseCase(BuildContext context) {
     initialOption: GtButtonSize.large,
     labelBuilder: (s) => s.name,
   );
-  final isDisabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
-  final isLoading = context.knobs.boolean(label: 'Loading', initialValue: false);
+  final isDisabled = context.knobs.boolean(
+    label: 'Disabled',
+    initialValue: false,
+  );
+  final isLoading = context.knobs.boolean(
+    label: 'Loading',
+    initialValue: false,
+  );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtIconButton(
   icon: GtIcons.add,
   variant: GtButtonVariant.${variant.name},
@@ -52,6 +59,7 @@ GtIconButton(
       size: size,
       isDisabled: isDisabled,
       isLoading: isLoading,
+      alignment: .center,
       onPressed: () {},
     ),
   );

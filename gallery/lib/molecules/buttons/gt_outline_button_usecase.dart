@@ -19,12 +19,20 @@ Widget playgroundGtOutlineButtonUseCase(BuildContext context) {
     initialOption: GtButtonSize.large,
     labelBuilder: (s) => s.name,
   );
+  final isDisabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
+  final isLoading = context.knobs.boolean(label: 'Loading', initialValue: false);
+
+  final hasIcon = context.knobs.boolean(label: 'Has Icon', initialValue: false);
+  final icon = hasIcon ? GtIcons.checkSolid : null;
 
   final codeSnippet = '''
 GtOutlineButton(
   text: '$text',
   variant: GtButtonVariant.${variant.name},
   size: GtButtonSize.${size.name},
+  isDisabled: $isDisabled,
+  isLoading: $isLoading,
+  ${hasIcon ? "leading: GtIcons.checkSolid," : ""}
   onPressed: () {},
 )''';
 
@@ -39,6 +47,9 @@ GtOutlineButton(
       text: text,
       variant: variant,
       size: size,
+      isDisabled: isDisabled,
+      isLoading: isLoading,
+      leading: icon,
       onPressed: () {},
     ),
   );

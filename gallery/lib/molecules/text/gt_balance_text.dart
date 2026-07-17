@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gallery/widgets/gallery_page_header.dart';
+import 'package:gallery/lib.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-/// Widgetbook preview for [GtBalanceText] (currency + amount, optional masking).
 @widgetbook.UseCase(name: 'Balance', type: GtBalanceText)
 Widget playgroundGtBalanceTextUseCase(BuildContext context) {
   final amount = context.knobs.double.input(
     label: 'Amount',
-    initialValue: 20_250_499.99,
+    initialValue: 20250499.99,
   );
   final hidden = context.knobs.boolean(
     label: 'Hidden (mask amount)',
@@ -21,26 +20,25 @@ Widget playgroundGtBalanceTextUseCase(BuildContext context) {
     initialValue: AppStrings.naira,
   );
 
-  return Scaffold(
-    body: Padding(
-      padding: context.insets.symmetricDp(
-        horizontal: context.grid.singleColumn.margins.px,
-      ),
-      child: Column(
-        crossAxisAlignment: .stretch,
-        children: [
-          GalleryPageHeader(
-            title: "Balance Text",
-            rider: "Balance text Playground",
-          ),
-          const GtGap.yXl(),
-          GtBalanceText(
-            amount: amount,
-            hidden: hidden,
-            currencySymbol: currencySymbol,
-            textAlign: .start,
-          ),
-        ],
+  final codeSnippet =
+      '''
+GtBalanceText(
+  amount: $amount,
+  hidden: $hidden,
+  currencySymbol: "$currencySymbol",
+)''';
+
+  return GtWidgetDocPage(
+    title: "GtBalanceText",
+    description:
+        "Displays a currency symbol and amount formatted properly, with optional double-strikethrough styling for Naira and amount masking.",
+    code: codeSnippet,
+    child: Center(
+      child: GtBalanceText(
+        amount: amount,
+        hidden: hidden,
+        currencySymbol: currencySymbol,
+        textAlign: TextAlign.center,
       ),
     ),
   );

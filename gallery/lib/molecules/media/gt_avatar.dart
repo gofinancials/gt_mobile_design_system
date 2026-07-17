@@ -1,148 +1,144 @@
 import 'package:flutter/material.dart';
+import 'package:gallery/lib.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'GtAvatar', type: GtAvatar)
-Widget buildGtAvatarUsecase(BuildContext context) {
-  final fit = context.knobs.object.dropdown(
-    label: "Avatar Fit",
-    options: BoxFit.values,
-    initialOption: BoxFit.cover,
-    labelBuilder: (value) => value.name.capitalise(),
-  );
-  final alignment = context.knobs.object.dropdown<(String, Alignment)>(
-    label: "Avatar Alignment",
-    options: [
-      ("Centre", Alignment.center),
-      ("Left", Alignment.centerLeft),
-      ("Right", Alignment.centerRight),
-    ],
-    initialOption: ("Centre", Alignment.center),
-    labelBuilder: (value) => value.$1,
-  );
-  final images = context.knobs.object
-      .dropdown<(String, AppImageData?, bool, Widget?, String?)>(
-        label: "Image",
-        options: [
-          ("None", null, false, null, null),
-          ("Initials", null, false, null, "JD"),
-          (
-            "Simple Image",
-            AppImageData.network(GtNetworkImages.sampleAvatar1),
-            false,
-            null,
-            null,
-          ),
-          (
-            "Simple Asset Image",
-            AppImageData.asset(GtAssetImages.avatar),
-            false,
-            null,
-            null,
-          ),
-          (
-            "Avatar with border and tag",
-            AppImageData.network(GtNetworkImages.sampleAvatar2),
-            true,
-            GtSvg(GtVectors.logo),
-            null,
-          ),
-        ],
-        labelBuilder: (value) => value.$1,
-      );
+final _tabs = [
+  GtTabData(label: "GtAvatar", value: "avatar"),
+  GtTabData(label: "GtSquareAvatar", value: "square_avatar"),
+];
+final _controller = GtTabController<String>(initialValue: _tabs.first);
 
-  return Scaffold(
-    appBar: GtTitleAppBar(title: "GtSquareAvatar Widget"),
-    body: Center(
-      child: GtAvatar(
-        avatar: images.$2,
-        showBorder: images.$3,
-        tag: images.$4,
-        initials: images.$5,
-        fit: fit,
-        alignment: alignment.$2,
-        size: context.knobs.double.slider(
-          label: "Avatar Size",
-          min: 20,
-          max: 200,
-          initialValue: 36,
-        ),
-      ),
-    ),
-  );
+@widgetbook.UseCase(name: 'GtAvatar', type: GtAvatar)
+Widget buildGtAvatarUseCase(BuildContext context) {
+  return const _AvatarPlayground();
 }
 
-@widgetbook.UseCase(name: 'GtSquareAvatar', type: GtSquareAvatar)
-Widget buildGtSquareAvatarUsecase(BuildContext context) {
-  final fit = context.knobs.object.dropdown(
-    label: "Avatar Fit",
-    options: BoxFit.values,
-    initialOption: BoxFit.cover,
-    labelBuilder: (value) => value.name.capitalise(),
-  );
-  final alignment = context.knobs.object.dropdown<(String, Alignment)>(
-    label: "Avatar Alignment",
-    options: [
-      ("Centre", Alignment.center),
-      ("Left", Alignment.centerLeft),
-      ("Right", Alignment.centerRight),
-    ],
-    initialOption: ("Centre", Alignment.center),
-    labelBuilder: (value) => value.$1,
-  );
-  final images = context.knobs.object.dropdown<(String, AppImageData?)>(
-    label: "Image",
-    options: [
-      ("None", null),
-      (
-        "Sample 1",
-        AppImageData.network(
-          "https://images.unsplash.com/photo-1728577740843-5f29c7586afe?q=80&w=1160&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        ),
-      ),
-      (
-        "Sample 2",
-        AppImageData.network(
-          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        ),
-      ),
-      (
-        "Sample 3",
-        AppImageData.network(
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=928&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        ),
-      ),
-      (
-        "Sample 4",
-        AppImageData.network(
-          "https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        ),
-      ),
-    ],
-    labelBuilder: (value) => value.$1,
-  );
+class _AvatarPlayground extends GtStatefulWidget {
+  const _AvatarPlayground();
 
-  return Scaffold(
-    appBar: GtTitleAppBar(title: "GtSquareAvatar Widget"),
-    body: Center(
-      child: GtSquareAvatar(
-        showBorder: context.knobs.boolean(
-          label: "Show Border",
-          initialValue: false,
-        ),
-        avatar: images.$2,
-        fit: fit,
-        alignment: alignment.$2,
-        onEdit: () {},
-        size: context.knobs.double.slider(
-          label: "Avatar Size",
-          min: 100,
-          max: 400,
-          initialValue: 180,
+  @override
+  State<_AvatarPlayground> createState() => _AvatarPlaygroundState();
+}
+
+class _AvatarPlaygroundState extends State<_AvatarPlayground> {
+  @override
+  Widget build(BuildContext context) {
+    // GtAvatar Knobs
+    final fit = context.knobs.object.dropdown(
+      label: "Avatar Fit",
+      options: BoxFit.values,
+      initialOption: BoxFit.cover,
+      labelBuilder: (value) => value.name.capitalise(),
+    );
+    final size = context.knobs.double.slider(
+      label: "Avatar Size",
+      min: 20,
+      max: 200,
+      initialValue: 80,
+    );
+    final showBorder = context.knobs.boolean(
+      label: "Show Border",
+      initialValue: false,
+    );
+    final initials = context.knobs.string(
+      label: "Initials",
+      initialValue: "JD",
+    );
+    final imageType = context.knobs.object.dropdown(
+      label: "Image Type",
+      options: const ["Network", "Asset", "None"],
+      initialOption: "Network",
+    );
+
+    AppImageData? avatarImage;
+    if (imageType == "Network") {
+      avatarImage = AppImageData.network(GtNetworkImages.sampleAvatar1);
+    } else if (imageType == "Asset") {
+      avatarImage = AppImageData.asset(GtAssetImages.avatar);
+    }
+
+    // GtSquareAvatar Knobs
+    final squareSize = context.knobs.double.slider(
+      label: "Square Avatar Size",
+      min: 80,
+      max: 300,
+      initialValue: 150,
+    );
+    final squareShowBorder = context.knobs.boolean(
+      label: "Square Show Border",
+      initialValue: false,
+    );
+
+    return Scaffold(
+      backgroundColor: context.palette.bg.white,
+      body: SafeArea(
+        child: Padding(
+          padding: context.insets.defaultAllInsets,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              GtTabbar<String>(controller: _controller, tabs: _tabs),
+              const GtGap.yMd(),
+              Expanded(
+                child: GtTabbarView<String>(
+                  controller: _controller,
+                  tabViews: {
+                    "avatar": GtWidgetDocPage(
+                      title: "GtAvatar",
+                      description:
+                          "A circular avatar component displaying user profile picture or fallback initials.",
+                      code:
+                          '''
+GtAvatar(
+  avatar: AppImageData("${avatarImage?.imageData}"),
+  initials: "$initials",
+  size: $size,
+  showBorder: $showBorder,
+  fit: BoxFit.${fit.name},
+)''',
+                      child: Center(
+                        child: GtAvatar(
+                          avatar: avatarImage,
+                          showBorder: showBorder,
+                          initials: initials.isEmpty ? null : initials,
+                          fit: fit,
+                          size: size,
+                        ),
+                      ),
+                    ),
+                    "square_avatar": GtWidgetDocPage(
+                      title: "GtSquareAvatar",
+                      description:
+                          "A square, rounded avatar commonly used for business profile headers or list representations.",
+                      code:
+                          '''
+GtSquareAvatar(
+  avatar: AppImageData("${GtNetworkImages.avatarTexture1}"),
+  size: $squareSize,
+  showBorder: $squareShowBorder,
+  fit: BoxFit.${fit.name},
+  onEdit: () {},
+)''',
+                      child: Center(
+                        child: GtSquareAvatar(
+                          showBorder: squareShowBorder,
+                          avatar: AppImageData(GtNetworkImages.avatarTexture1),
+                          fit: fit,
+                          onEdit: () {},
+                          size: squareSize,
+                        ),
+                      ),
+                    ),
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

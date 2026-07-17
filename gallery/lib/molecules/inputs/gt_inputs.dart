@@ -2,98 +2,11 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gallery/widgets/gt_widget_doc_page.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
-
-final _formKey = GlobalKey<FormState>();
-
-@widgetbook.UseCase(name: 'GtPinInput', type: GtPinInput)
-Widget buildGtPinInputUsecase(BuildContext context) {
-  return Scaffold(
-    appBar: GtTitleAppBar(title: "GtPinInput Showcase"),
-    body: GtForm(
-      formKey: _formKey,
-      child: Scaffold(
-        body: SingleChildScrollView(
-          padding: context.insets.defaultAllInsets,
-          child: Column(
-            crossAxisAlignment: .stretch,
-            children: [
-              ...GtGap.ySection4xl() * 2,
-              GtText(
-                "Pin Input Example",
-                style: context.textStyles.bodyS(),
-                textAlign: .center,
-              ),
-              const GtGap.yLg(),
-              GtPinInput(
-                onFieldSubmitted: (value) {
-                  context.showToast("Completed input with vale $value");
-                },
-                validator: (value) => "Pin Is Invalid",
-              ),
-              const GtGap.ySectionSm(),
-              GtRaisedButton(
-                onPressed: () => context.validateForm(_formKey),
-                text: "Simulate Error",
-                alignment: .center,
-                size: .medium,
-              ),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
-final _calendarCtrl = GtCalendarController(GtCalendarValue());
-
-@widgetbook.UseCase(name: 'GtCalendar Inputs', type: GtCalendar)
-Widget buildGtCalendarUsecase(BuildContext context) {
-  return Scaffold(
-    appBar: GtTitleAppBar(title: "GtCalendar Showcase"),
-    body: Padding(
-      padding: context.insets.defaultAllInsets,
-      child: Column(
-        crossAxisAlignment: .stretch,
-        mainAxisSize: .min,
-        children: [
-          ...GtGap.ySection4xl() * 2,
-          GenericListener(
-            valueListenable: _calendarCtrl,
-            builder: (data) {
-              final day =
-                  data.day?.format("EEE, dd MMM yyyy") ?? "No day selected";
-              final range = data.range;
-              final start =
-                  range?.start.format("dd MMM yyyy") ?? "No start selected";
-              final end = range?.end.format("dd MMM yyyy") ?? "No endselected";
-
-              return GtText(
-                "Selected day is: $day, selected range is $start - $end",
-                textAlign: .center,
-              );
-            },
-          ),
-          const GtGap.yLg(),
-          GtCalendar(
-            controller: _calendarCtrl,
-            key: PageStorageKey("gt-calendar"),
-            selectionMode: context.knobs.object.dropdown(
-              label: "Selection Mode",
-              options: GtCalendarSelectionMode.values,
-              initialOption: GtCalendarSelectionMode.day,
-              labelBuilder: (value) => value.name.capitalise(),
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
 
 final _inputCtrl = GtInputController();
 final _inputCtrl2 = GtInputController();
@@ -132,7 +45,7 @@ FutureOr<List<GtDropdownData<Country>>> get _allCountries async {
 
 final allCountries = _allCountries;
 
-@widgetbook.UseCase(name: 'GtTextField (legacy)', type: GtTextField)
+@widgetbook.UseCase(name: 'GtFormExample', type: GtForm)
 Widget buildGtTextFieldUsecase(BuildContext context) {
   final prefix = context.knobs.object.dropdown<(String, Widget?)>(
     label: "Prefix Icon",
@@ -168,216 +81,222 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
   return GtForm(
     formKey: _formKey2,
     child: Scaffold(
-      body: SingleChildScrollView(
-        padding: context.insets.defaultAllInsets,
-        child: Column(
-          crossAxisAlignment: .stretch,
-          mainAxisSize: .min,
-          children: [
-            GtGap.ySectionSm(),
-            GtTextField(
-              controller: _inputCtrl,
-              label: isSearch ? null : "Enter text here",
-              hintText: !isSearch ? null : "Enter multiline text here",
-              key: PageStorageKey("gt-input"),
-              prefix: prefix.$2,
-              suffix: suffix.$2,
-              textAlign: textAlign,
-              decoration: decoration.$2,
-              validator: AppValidators.required,
-              helperText: helperText,
-            ),
-            const GtGap.yXl(),
-            GtTextField.multiline(
-              controller: _inputCtrl2,
-              label: isSearch ? null : "Enter multiline text here",
-              hintText: !isSearch ? null : "Enter multiline text here",
-              key: PageStorageKey("gt-multiline-input"),
-              prefix: prefix.$2,
-              suffix: suffix.$2,
-              textAlign: textAlign,
-              decoration: decoration.$2,
-              validator: AppValidators.required,
-              helperText: helperText,
-            ),
-            const GtGap.yXl(),
-            GtEmailField(
-              controller: _inputCtrl3,
-              label: "Enter email here",
-              decoration: decoration.$2,
-            ),
-            const GtGap.yXl(),
-            GtPasswordField(
-              controller: _inputCtrl4,
-              label: "Enter password here",
-              decoration: decoration.$2,
-            ),
-            const GtGap.yXl(),
-            GtAmountField(
-              controller: _inputCtrl5,
-              label: "Enter amount here",
-              decoration: decoration.$2,
-            ),
-            const GtGap.yXl(),
-            GtSearchField(
-              controller: _inputCtrl6,
-              hintText: "Search here",
-              prefix: GtIcon(GtIcons.magnifier, variant: .soft),
-              decoration: decoration.$2,
-              autoFocus: false,
-            ),
-            const GtGap.yXl(),
-            GtUrlField(
-              controller: _inputCtrl7,
-              label: "Enter URL here",
-              decoration: decoration.$2,
-            ),
-            const GtGap.yXl(),
-            GtTransferField(
-              amountController: _inputCtrl8,
-              noteController: _inputCtrl9,
-              firstParticipant: GtTransferParticipantData(
-                label: "from",
-                image: AppImageData(GtNetworkImages.savings),
-                validate: true,
-                name: "FLEX",
-                balance: 2000,
-                imageType: .image,
-                data: "1234567890",
-              ),
-              secondParticipant: GtTransferParticipantData(
-                label: "to",
-                image: AppImageData(GtNetworkImages.sampleAvatar1),
-                validate: false,
-                name: "Alex Lobaloba",
-                tag: AppImageData(GtVectors.logo),
-                imageType: .avatar,
-                data: "1234567890",
-              ),
-              noteHint: "Add a note (optional)",
-            ),
-            const GtGap.yXl(),
-            GtTransferField(
-              amountController: _inputCtrl8,
-              noteController: _inputCtrl9,
-              participantSeparator: GtSvg(GtVectors.moveMoney),
-              min: 400,
-              max: 1000,
-              firstParticipant: GtTransferParticipantData(
-                label: "from",
-                image: AppImageData(GtNetworkImages.savings),
-                validate: true,
-                name: "FLEX",
-                balance: 2000,
-                imageType: .image,
-                data: "1234567890",
-              ),
-              secondParticipant: GtTransferParticipantData.empty(label: "to"),
-              noteHint: "Add a note (optional)",
-            ),
-            const GtGap.yXl(),
-            GtDateField(
-              controller: _inputCtrl10,
-              calendarTitle: "Select your birthday",
-              decoration: decoration.$2,
-            ),
-            const GtGap.yXl(),
-            GtDateField.range(
-              controller: _inputCtrl11,
-              calendarTitle: "Select your vacation dates",
-              decoration: decoration.$2,
-            ),
-            const GtGap.yXl(),
-            GtAutocompleteField.builder(
-              controller: _inputCtrl12,
-              hintText: "Search for a country",
-              decoration: decoration.$2,
-              validator: AppValidators.required,
-              textInputAction: TextInputAction.done,
-              builder: (query) async {
-                final countries = await AppCountryUtility.searchCountries(
-                  query,
-                );
-                return countries.mapList(
-                  (it) => GtAutocompleteItem(value: it.displayName),
-                );
-              },
-            ),
-            const GtGap.yXl(),
-            GtDobField(controller: _inputCtrl13, decoration: decoration.$2),
-            const GtGap.yXl(),
-            GtCountryField(
-              controller: _inputCtrl14,
-              decoration: decoration.$2,
-              validator: AppValidators.required,
-              sheetTitle: "Select Country",
-              label: "Select a country [Default tiles with Title]",
-            ),
-            const GtGap.yXl(),
-            GtDropdownField<Country>(
-              controller: _inputCtrl14,
-              decoration: decoration.$2,
-              options: allCountries,
-              label: "Select a country [Custom tiles]",
-              validator: AppValidators.required,
-              optionBuilder: (value, value2) {
-                return GtCountrySelectionListTile(
-                  value.value,
-                  isSelected: value == value2.selection,
-                  onSelect: (val) {
-                    value2.selection = value;
-                    context.maybePop();
+      body: SafeArea(
+        child: Padding(
+          padding: context.insets.defaultAllInsets,
+          child: GtWidgetDocPage(
+            title: "GtForm Example",
+            child: Column(
+              crossAxisAlignment: .stretch,
+              mainAxisSize: .min,
+              children: [
+                GtTextField(
+                  controller: _inputCtrl,
+                  label: isSearch ? null : "Enter text here",
+                  hintText: !isSearch ? null : "Enter multiline text here",
+                  key: PageStorageKey("gt-input"),
+                  prefix: prefix.$2,
+                  suffix: suffix.$2,
+                  textAlign: textAlign,
+                  decoration: decoration.$2,
+                  validator: AppValidators.required,
+                  helperText: helperText,
+                ),
+                const GtGap.yXl(),
+                GtTextField.multiline(
+                  controller: _inputCtrl2,
+                  label: isSearch ? null : "Enter multiline text here",
+                  hintText: !isSearch ? null : "Enter multiline text here",
+                  key: PageStorageKey("gt-multiline-input"),
+                  prefix: prefix.$2,
+                  suffix: suffix.$2,
+                  textAlign: textAlign,
+                  decoration: decoration.$2,
+                  validator: AppValidators.required,
+                  helperText: helperText,
+                ),
+                const GtGap.yXl(),
+                GtEmailField(
+                  controller: _inputCtrl3,
+                  label: "Enter email here",
+                  decoration: decoration.$2,
+                ),
+                const GtGap.yXl(),
+                GtPasswordField(
+                  controller: _inputCtrl4,
+                  label: "Enter password here",
+                  decoration: decoration.$2,
+                ),
+                const GtGap.yXl(),
+                GtAmountField(
+                  controller: _inputCtrl5,
+                  label: "Enter amount here",
+                  decoration: decoration.$2,
+                ),
+                const GtGap.yXl(),
+                GtSearchField(
+                  controller: _inputCtrl6,
+                  hintText: "Search here",
+                  prefix: GtIcon(GtIcons.magnifier, variant: .soft),
+                  decoration: decoration.$2,
+                  autoFocus: false,
+                ),
+                const GtGap.yXl(),
+                GtUrlField(
+                  controller: _inputCtrl7,
+                  label: "Enter URL here",
+                  decoration: decoration.$2,
+                ),
+                const GtGap.yXl(),
+                GtTransferField(
+                  amountController: _inputCtrl8,
+                  noteController: _inputCtrl9,
+                  firstParticipant: GtTransferParticipantData(
+                    label: "from",
+                    image: AppImageData(GtNetworkImages.savings),
+                    validate: true,
+                    name: "FLEX",
+                    balance: 2000,
+                    imageType: .image,
+                    data: "1234567890",
+                  ),
+                  secondParticipant: GtTransferParticipantData(
+                    label: "to",
+                    image: AppImageData(GtNetworkImages.sampleAvatar1),
+                    validate: false,
+                    name: "Alex Lobaloba",
+                    tag: AppImageData(GtVectors.logo),
+                    imageType: .avatar,
+                    data: "1234567890",
+                  ),
+                  noteHint: "Add a note (optional)",
+                ),
+                const GtGap.yXl(),
+                GtTransferField(
+                  amountController: _inputCtrl8,
+                  noteController: _inputCtrl9,
+                  participantSeparator: GtSvg(GtVectors.moveMoney),
+                  min: 400,
+                  max: 1000,
+                  firstParticipant: GtTransferParticipantData(
+                    label: "from",
+                    image: AppImageData(GtNetworkImages.savings),
+                    validate: true,
+                    name: "FLEX",
+                    balance: 2000,
+                    imageType: .image,
+                    data: "1234567890",
+                  ),
+                  secondParticipant: GtTransferParticipantData.empty(
+                    label: "to",
+                  ),
+                  noteHint: "Add a note (optional)",
+                ),
+                const GtGap.yXl(),
+                GtDateField(
+                  controller: _inputCtrl10,
+                  calendarTitle: "Select your birthday",
+                  decoration: decoration.$2,
+                ),
+                const GtGap.yXl(),
+                GtDateField.range(
+                  controller: _inputCtrl11,
+                  calendarTitle: "Select your vacation dates",
+                  decoration: decoration.$2,
+                ),
+                const GtGap.yXl(),
+                GtAutocompleteField.builder(
+                  controller: _inputCtrl12,
+                  hintText: "Search for a country",
+                  decoration: decoration.$2,
+                  validator: AppValidators.required,
+                  textInputAction: TextInputAction.done,
+                  builder: (query) async {
+                    final countries = await AppCountryUtility.searchCountries(
+                      query,
+                    );
+                    return countries.mapList(
+                      (it) => GtAutocompleteItem(value: it.displayName),
+                    );
                   },
-                  showCountryCode: true,
-                );
-              },
-            ),
-            const GtGap.yXl(),
-            GtDropdownField<Country>(
-              controller: _inputCtrl14,
-              decoration: decoration.$2,
-              options: allCountries,
-              label: "Select a country [Custom list]",
-              validator: AppValidators.required,
-              optionsBuilder: (options, controller, scrollContoller) {
-                return ListView.separated(
-                  padding: context.insets.allDp(16.px),
-                  controller: scrollContoller,
-                  itemCount: options.length,
-                  separatorBuilder: (context, index) => const GtGap.yLg(),
-                  itemBuilder: (context, index) {
-                    final value = options[index];
-                    final isSelected = value == controller.selection;
-
+                ),
+                const GtGap.yXl(),
+                GtDobField(controller: _inputCtrl13, decoration: decoration.$2),
+                const GtGap.yXl(),
+                GtCountryField(
+                  controller: _inputCtrl14,
+                  decoration: decoration.$2,
+                  validator: AppValidators.required,
+                  sheetTitle: "Select Country",
+                  label: "Select a country [Default tiles with Title]",
+                ),
+                const GtGap.yXl(),
+                GtDropdownField<Country>(
+                  controller: _inputCtrl14,
+                  decoration: decoration.$2,
+                  options: allCountries,
+                  label: "Select a country [Custom tiles]",
+                  validator: AppValidators.required,
+                  optionBuilder: (value, value2) {
                     return GtCountrySelectionListTile(
                       value.value,
-                      isSelected: isSelected,
+                      isSelected: value == value2.selection,
                       onSelect: (val) {
-                        controller.selection = value;
+                        value2.selection = value;
                         context.maybePop();
                       },
                       showCountryCode: true,
                     );
                   },
-                );
-              },
+                ),
+                const GtGap.yXl(),
+                GtDropdownField<Country>(
+                  controller: _inputCtrl14,
+                  decoration: decoration.$2,
+                  options: allCountries,
+                  label: "Select a country [Custom list]",
+                  validator: AppValidators.required,
+                  optionsBuilder: (options, controller, scrollContoller) {
+                    return ListView.separated(
+                      padding: context.insets.allDp(16.px),
+                      controller: scrollContoller,
+                      itemCount: options.length,
+                      separatorBuilder: (context, index) => const GtGap.yLg(),
+                      itemBuilder: (context, index) {
+                        final value = options[index];
+                        final isSelected = value == controller.selection;
+
+                        return GtCountrySelectionListTile(
+                          value.value,
+                          isSelected: isSelected,
+                          onSelect: (val) {
+                            controller.selection = value;
+                            context.maybePop();
+                          },
+                          showCountryCode: true,
+                        );
+                      },
+                    );
+                  },
+                ),
+                const GtGap.yXl(),
+                GtPhoneField(controller: _inputCtrl15, label: "Phone number"),
+                const GtGap.yXl(),
+                GtPhoneField(
+                  controller: _inputCtrl16,
+                  label: "Phone number without country code",
+                  showCountryCode: false,
+                ),
+                const GtGap.ySectionSm(),
+                GtRaisedButton(
+                  onPressed: () {
+                    context.validateForm(_formKey2);
+                  },
+                  text: "Simulate error",
+                ),
+              ],
             ),
-            const GtGap.yXl(),
-            GtPhoneField(controller: _inputCtrl15, label: "Phone number"),
-            const GtGap.yXl(),
-            GtPhoneField(
-              controller: _inputCtrl16,
-              label: "Phone number without country code",
-              showCountryCode: false,
-            ),
-            const GtGap.ySectionSm(),
-            GtRaisedButton(
-              onPressed: () {
-                context.validateForm(_formKey2);
-              },
-              text: "Simulate error",
-            ),
-          ],
+          ),
         ),
       ),
     ),

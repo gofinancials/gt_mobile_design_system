@@ -19,12 +19,27 @@ Widget playgroundGtTextButtonUseCase(BuildContext context) {
     initialOption: GtButtonTextCase.upper,
     labelBuilder: (c) => c.name,
   );
+  final size = context.knobs.object.dropdown(
+    label: 'Size',
+    options: GtButtonSize.values,
+    initialOption: GtButtonSize.large,
+    labelBuilder: (s) => s.name,
+  );
+  final isDisabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
+  final isLoading = context.knobs.boolean(label: 'Loading', initialValue: false);
+
+  final hasIcon = context.knobs.boolean(label: 'Has Icon', initialValue: false);
+  final icon = hasIcon ? GtIcons.chevronRight : null;
 
   final codeSnippet = '''
 GtTextButton(
   text: '$text',
   variant: GtButtonVariant.${variant.name},
   textCase: GtButtonTextCase.${textCase.name},
+  size: GtButtonSize.${size.name},
+  isDisabled: $isDisabled,
+  isLoading: $isLoading,
+  ${hasIcon ? "trailing: GtIcons.chevronRight," : ""}
   onPressed: () {},
 )''';
 
@@ -39,6 +54,10 @@ GtTextButton(
       text: text,
       variant: variant,
       textCase: textCase,
+      size: size,
+      isDisabled: isDisabled,
+      isLoading: isLoading,
+      trailing: icon,
       onPressed: () {},
     ),
   );
