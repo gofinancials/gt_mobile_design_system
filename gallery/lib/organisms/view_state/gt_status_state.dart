@@ -12,12 +12,19 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
     options: ['success', 'error', 'custom'],
     initialOption: 'success',
   );
-  final title = context.knobs.string(label: 'Title', initialValue: 'successful !');
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'successful !',
+  );
   final subtitle = context.knobs.string(
     label: 'Subtitle',
-    initialValue: 'Your BVN was added successfully. You can now initiate transactions.',
+    initialValue:
+        'Your BVN was added successfully. You can now initiate transactions.',
   );
-  final actionLabel = context.knobs.string(label: 'Action Label', initialValue: 'Go Home');
+  final actionLabel = context.knobs.string(
+    label: 'Action Label',
+    initialValue: 'Go Home',
+  );
 
   Widget statusWidget;
   String codeSnippet;
@@ -27,12 +34,17 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
       title: title,
       subtitle: subtitle,
       actionLabel: actionLabel,
+      actionSize: .small,
+      actionAlignment: .center,
       onActionPressed: () {},
     );
-    codeSnippet = '''GtStatusState.success(
+    codeSnippet =
+        '''GtStatusState.success(
   title: "$title",
   subtitle: "$subtitle",
   actionLabel: "$actionLabel",
+  actionSize: .small,
+  actionAlignment: .center,
   onActionPressed: () {},
 )''';
   } else if (mode == 'error') {
@@ -40,11 +52,16 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
       title: title,
       subtitle: subtitle,
       actionLabel: actionLabel,
+      actionSize: .small,
+      actionAlignment: .center,
       onActionPressed: () {},
     );
-    codeSnippet = '''GtStatusState.error(
+    codeSnippet =
+        '''GtStatusState.error(
   title: "$title",
   subtitle: "$subtitle",
+  actionSize: .small,
+  actionAlignment: .center,
   actionLabel: "$actionLabel",
   onActionPressed: () {},
 )''';
@@ -53,13 +70,18 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
       title: title,
       subtitle: subtitle,
       icon: AppImageData(GtVectorIllustrations.maintenance),
+      actionSize: .small,
+      actionAlignment: .center,
       actionLabel: actionLabel,
       onActionPressed: () {},
     );
-    codeSnippet = '''GtStatusState.custom(
+    codeSnippet =
+        '''GtStatusState.custom(
   title: "$title",
   subtitle: "$subtitle",
   icon: AppImageData(GtVectorIllustrations.maintenance),
+  actionSize: .small,
+  actionAlignment: .center,
   actionLabel: "$actionLabel",
   onActionPressed: () {},
 )''';
@@ -67,17 +89,13 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtStatusState',
-    description: 'Displays fullscreen or card status screens representing operation success, failure, or maintenance.',
+    description:
+        'Displays fullscreen or card status screens representing operation success, failure, or maintenance.',
     code: codeSnippet,
-    child: Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 600),
-        child: GtCard(
-          padding: context.insets.allDp(16.px),
-          variant: GtCardVariant.normal,
-          child: statusWidget,
-        ),
-      ),
+    child: GtCard(
+      padding: context.insets.allDp(16.px),
+      variant: GtCardVariant.normal,
+      child: statusWidget,
     ),
   );
 }

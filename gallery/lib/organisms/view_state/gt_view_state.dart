@@ -7,15 +7,29 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtViewStateWidget', type: GtViewStateWidget)
 Widget playgroundGtViewStateWidgetUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'No Internet Connection');
-  final description = context.knobs.string(label: 'Description', initialValue: 'Please check your connection and try again.');
-  final actionText = context.knobs.string(label: 'Action Text', initialValue: 'Retry');
-  final hasAction = context.knobs.boolean(label: 'Has Action', initialValue: true);
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'No Internet Connection',
+  );
+  final description = context.knobs.string(
+    label: 'Description',
+    initialValue: 'Please check your connection and try again.',
+  );
+  final actionText = context.knobs.string(
+    label: 'Action Text',
+    initialValue: 'Retry Action',
+  );
+  final hasAction = context.knobs.boolean(
+    label: 'Has Action',
+    initialValue: true,
+  );
 
   return GtWidgetDocPage(
     title: 'GtViewStateWidget',
-    description: 'A customizable generic view state component offering flexible layout spacers and alignments.',
-    code: '''
+    description:
+        'A customizable generic view state component offering flexible layout spacers and alignments.',
+    code:
+        '''
 GtViewStateWidget(
   title: "$title",
   description: "$description",
@@ -31,6 +45,7 @@ GtViewStateWidget(
           title: title,
           description: description.isEmpty ? null : description,
           icon: AppImageData(GtVectorIllustrations.disconnected),
+          actionAlignment: .center,
           actionText: hasAction && actionText.isNotEmpty ? actionText : null,
           onActionPressed: hasAction ? () {} : null,
         ),

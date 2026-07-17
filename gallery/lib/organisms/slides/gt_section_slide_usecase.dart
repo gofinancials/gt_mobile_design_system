@@ -7,7 +7,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 Widget playgroundGtSectionSlideUseCase(BuildContext context) {
   return GtWidgetDocPage(
     title: 'GtSectionSlide',
-    description: 'Documentation for GtSectionSlide',
+    description: 'A horizontal scrollable section for displaying a series of slides or cards.',
     code: '''
 GtSectionSlide(
   title: "Featured Products",
@@ -23,24 +23,23 @@ GtSectionSlide(
       onTap: () {},
     ),
   ],
-)
-''',
-    child: SizedBox(
-      height: 350,
-      child: GtSectionSlide(
-        title: "Featured Products",
-        children: [
-          GtProductCard(
-            name: "Savings",
-            icon: GtIcons.wallet,
-            onTap: () {},
-          ),
-          GtProductCard(
-            name: "Investments",
-            icon: GtIcons.chartBarTrendUp,
-            onTap: () {},
-          ),
-        ],
+)''',
+    child: Center(
+      child: GtCard(
+        padding: context.insets.allDp(24.px),
+        variant: GtCardVariant.normal,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: context.spacingMd,
+          children: [
+            const GtIcon(GtIcons.spark, size: 48),
+            GtText(
+              "Please refer to the visual display page in Widgetbook to preview the section slide widgets in their full horizontal-scroll context.",
+              style: context.textStyles.bodyS(color: context.palette.text.sub),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     ),
   );
