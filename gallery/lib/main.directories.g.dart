@@ -27,12 +27,20 @@ import 'package:gallery/atoms/indicators/gt_spinner_usecase.dart'
     as _gallery_atoms_indicators_gt_spinner_usecase;
 import 'package:gallery/atoms/indicators/gt_switch_usecase.dart'
     as _gallery_atoms_indicators_gt_switch_usecase;
+import 'package:gallery/atoms/media/gt_asset_image_usecase.dart'
+    as _gallery_atoms_media_gt_asset_image_usecase;
+import 'package:gallery/atoms/media/gt_file_image_usecase.dart'
+    as _gallery_atoms_media_gt_file_image_usecase;
 import 'package:gallery/atoms/media/gt_icons.dart'
     as _gallery_atoms_media_gt_icons;
 import 'package:gallery/atoms/media/gt_images.dart'
     as _gallery_atoms_media_gt_images;
 import 'package:gallery/atoms/media/gt_lottie_usecase.dart'
     as _gallery_atoms_media_gt_lottie_usecase;
+import 'package:gallery/atoms/media/gt_media_gallery_usecase.dart'
+    as _gallery_atoms_media_gt_media_gallery_usecase;
+import 'package:gallery/atoms/media/gt_memory_image_usecase.dart'
+    as _gallery_atoms_media_gt_memory_image_usecase;
 import 'package:gallery/atoms/media/gt_network_image_usecase.dart'
     as _gallery_atoms_media_gt_network_image_usecase;
 import 'package:gallery/atoms/media/gt_svg_usecase.dart'
@@ -432,6 +440,26 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'media',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtAssetImage',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAssetImage',
+                    builder: _gallery_atoms_media_gt_asset_image_usecase
+                        .playgroundGtAssetImageUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtFileImage',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtFileImage',
+                    builder: _gallery_atoms_media_gt_file_image_usecase
+                        .playgroundGtFileImageUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtIcon',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -444,6 +472,11 @@ final directories = <_widgetbook.WidgetbookNode>[
               _widgetbook.WidgetbookComponent(
                 name: 'GtImage',
                 useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Central Media Gallery',
+                    builder: _gallery_atoms_media_gt_media_gallery_usecase
+                        .centralMediaGalleryUseCase,
+                  ),
                   _widgetbook.WidgetbookUseCase(
                     name: 'Images',
                     builder:
@@ -458,6 +491,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtLottie',
                     builder: _gallery_atoms_media_gt_lottie_usecase
                         .playgroundGtLottieUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtMemoryImage',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtMemoryImage',
+                    builder: _gallery_atoms_media_gt_memory_image_usecase
+                        .playgroundGtMemoryImageUseCase,
                   ),
                 ],
               ),

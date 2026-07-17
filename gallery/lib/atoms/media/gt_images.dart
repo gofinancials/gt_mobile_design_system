@@ -1,205 +1,172 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
-import 'package:widgetbook/widgetbook.dart';
-import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
+import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'Images', type: GtImage)
 Widget playgroundImageUseCase(BuildContext context) {
-  String imageUrl = context.knobs.object.dropdown(
-    label: "Test Image Urls",
-    options: [
-      'https://res.cloudinary.com/jesse-dirisu/image/upload/v1589648790/bookme_mail/payment.png',
-      'https://storage.googleapis.com/dump-storage-jesse/Security.png',
-    ],
-    initialOption:
-        "https://res.cloudinary.com/jesse-dirisu/image/upload/v1589648790/bookme_mail/payment.png",
-  );
-  double height = context.knobs.double.slider(
-    label: "Image Height",
-    max: 200,
-    min: 30,
-    initialValue: 100,
-  );
-  double width = context.knobs.double.slider(
-    label: "Image Width",
-    initialValue: 100,
-    max: 200,
-    min: 30,
-  );
-  final alignment = context.knobs.object.dropdown<(String, Alignment)>(
-    label: "Image Alignment",
-    initialOption: ("Center", Alignment.center),
-    options: [
-      ("Center", Alignment.center),
-      ("Center Left", Alignment.centerLeft),
-      ("Center Right", Alignment.centerRight),
-    ],
-    labelBuilder: (value) => value.$1,
-  );
-  final fit = context.knobs.object.dropdown<(String, BoxFit)>(
-    label: "Image Fit",
-    initialOption: ("Contain", BoxFit.contain),
-    options: [
-      ("Contain", BoxFit.contain),
-      ("Cover", BoxFit.cover),
-      ("Fill", BoxFit.fill),
-      ("Fit Height", BoxFit.fitHeight),
-      ("Fit Width", BoxFit.fitWidth),
-      ("None", BoxFit.none),
-      ("Scale Down", BoxFit.scaleDown),
-    ],
-    labelBuilder: (value) => value.$1,
-  );
-  final allImages = GtNetworkImages.all;
-  final gridTemplate = context.grid.eightColumn;
+  return const _ImagesPlayground();
+}
 
-  return Scaffold(
-    body: Padding(
-      padding: context.insets.symmetricDp(
-        horizontal: context.grid.singleColumn.margins.px,
-      ),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: GalleryPageHeader(
-              title: "images",
-              rider: "Images Playground",
-              sectionHeader: "Network Image [GtNetworkImage]",
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: GtNetworkImage(
-              imageUrl,
-              height: height,
-              width: width,
-              alignment: alignment.$2,
-              fit: fit.$2,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Catalogue of Image Type"),
-          ),
-          SliverToBoxAdapter(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  headingRowColor: WidgetStateProperty.resolveWith(
-                    (states) => context.palette.bg.sub,
-                  ),
-                  columns: const [
-                    DataColumn(
-                      label: GtText(
-                        'Class Name',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    DataColumn(
-                      label: GtText(
-                        'Purpose',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                  rows: const [
-                    DataRow(
-                      cells: [
-                        DataCell(GtText('GtImage')),
-                        DataCell(
-                          GtText(
-                            'Conditionally Renders all Raster image types (i.e Network, File, Asset and Memory images)',
-                          ),
-                        ),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(GtText('GtSvg')),
-                        DataCell(
-                          GtText(
-                            'Renders Network and Asset SVGs, has an asIcon constructor for rendering SVGs like icons',
-                          ),
-                        ),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(GtText('GtNetworkImage')),
-                        DataCell(
-                          GtText(
-                            'Renders Network Images from URLs; internally parses data URLs into bytes to be rendered as memory images',
-                          ),
-                        ),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(GtText('GtFileImage')),
-                        DataCell(GtText('Renders Images from Files')),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(GtText('GtMemoryImage')),
-                        DataCell(GtText('Renders images from raw bytes')),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(GtText('GtIcon')),
-                        DataCell(
-                          GtText(
-                            'Renders IconData following our Icon color pallete by default, has a withColor constructor for passing custom colou rs',
-                          ),
-                        ),
-                      ],
-                    ),
-                    DataRow(
-                      cells: [
-                        DataCell(GtText('GtLottie')),
-                        DataCell(
-                          GtText(
-                            'Conditionally renders Nestwork or Asset Lottie files',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+class _ImagesPlayground extends GtStatefulWidget {
+  const _ImagesPlayground();
+
+  @override
+  State<_ImagesPlayground> createState() => _ImagesPlaygroundState();
+}
+
+class _ImagesPlaygroundState extends State<_ImagesPlayground> {
+  late final GtTabController<String> _controller;
+  late final List<GtTabData<String>> _tabs;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabs = [
+      GtTabData(label: "GtImage", value: "gt_image"),
+      GtTabData(label: "Network Image", value: "network"),
+      GtTabData(label: "Asset Image", value: "asset"),
+      GtTabData(label: "Memory Image", value: "memory"),
+      GtTabData(label: "File Image", value: "file"),
+    ];
+    _controller = GtTabController<String>(initialValue: _tabs.first);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bytes = base64Decode(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+    );
+
+    return Scaffold(
+      backgroundColor: context.palette.bg.white,
+      body: SafeArea(
+        child: Padding(
+          padding: context.insets.defaultHorizontalInsets,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: context.insets.symmetricDp(vertical: 16.px),
+                child: const GalleryPageHeader(
+                  title: "Images",
+                  rider:
+                      "Interactive documentation for unified image rendering.",
                 ),
               ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(
-              title: "All Images [GtNetworkImages]",
-            ),
-          ),
-          SliverGrid.builder(
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 120,
-              mainAxisSpacing: context.dp(gridTemplate.gutter.px),
-              crossAxisSpacing: context.dp(gridTemplate.gutter.px),
-            ),
-            itemBuilder: (_, index) {
-              final image = allImages[index];
-              return GalleryIconCard(
-                label: image.label,
-                child: GtImage(
-                  image: AppImageData(image.value),
-                  fit: .contain,
-                  height: 40,
-                  width: 40,
+              GtTabbar<String>(controller: _controller, tabs: _tabs),
+              const GtGap.yMd(),
+              Expanded(
+                child: GtTabbarView<String>(
+                  controller: _controller,
+                  tabViews: {
+                    "gt_image": GtWidgetDocPage(
+                      title: "GtImage (Unified)",
+                      description:
+                          "A unified image widget that dynamically delegates rendering based on AppImageData.",
+                      code:
+                          '''
+GtImage(
+  image: AppImageData("${GtNetworkImages.sampleAvatar1}"),
+  width: 80,
+  height: 80,
+)''',
+                      child: GtImage(
+                        image: AppImageData(GtNetworkImages.sampleAvatar1),
+                        width: 80,
+                        height: 80,
+                      ),
+                    ),
+                    "network": GtWidgetDocPage(
+                      title: "Network Image",
+                      description:
+                          "Loads a remote image URL using GtNetworkImage.",
+                      code:
+                          '''
+GtImage(
+  image: AppImageData("${GtNetworkImages.sampleAvatar1}"),
+  width: 80,
+  height: 80,
+)''',
+                      child: GtImage(
+                        image: AppImageData.network(
+                          GtNetworkImages.sampleAvatar1,
+                        ),
+                        width: 80,
+                        height: 80,
+                      ),
+                    ),
+                    "asset": GtWidgetDocPage(
+                      title: "Asset Image",
+                      description:
+                          "Loads a bundled asset image using GtAssetImage.",
+                      code:
+                          '''
+GtImage(
+  image: AppImageData("${GtAssetImages.avatar}"),
+  width: 80,
+  height: 80,
+)''',
+                      child: GtImage(
+                        image: AppImageData.asset(GtAssetImages.avatar),
+                        width: 80,
+                        height: 80,
+                      ),
+                    ),
+                    "memory": GtWidgetDocPage(
+                      title: "Memory Image",
+                      description:
+                          "Loads raw image bytes directly from memory using GtMemoryImage.",
+                      code:
+                          '''
+GtImage(
+  image: AppImageData($bytes),
+  width: 80,
+  height: 80,
+)''',
+                      child: Container(
+                        color: Colors.amber,
+                        child: GtImage(
+                          image: AppImageData.bytes(bytes),
+                          width: 80,
+                          height: 80,
+                        ),
+                      ),
+                    ),
+                    "file": GtWidgetDocPage(
+                      title: "File Image",
+                      description:
+                          "Loads an image from local storage. Fallback is shown when null.",
+                      code: '''
+GtImage(
+  image: AppImageData(File.fromRawPath(bytes)),
+  width: 80,
+  height: 80,
+)''',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: context.palette.stroke.strong,
+                          ),
+                        ),
+                        child: GtImage(image: null, width: 80, height: 80),
+                      ),
+                    ),
+                  },
                 ),
-              );
-            },
-            itemCount: allImages.length,
+              ),
+            ],
           ),
-          SliverToBoxAdapter(child: GtGap.ySectionLg()),
-        ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
