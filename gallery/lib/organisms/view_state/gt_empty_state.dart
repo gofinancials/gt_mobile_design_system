@@ -7,15 +7,31 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtEmptyState', type: GtEmptyState)
 Widget playgroundGtEmptyStateUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: "You're all caught up");
-  final subtitle = context.knobs.string(label: 'Subtitle', initialValue: 'No new notifications at the moment.');
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: "You're all caught up",
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'No new notifications at the moment.',
+  );
   final illustration = context.knobs.object.dropdown<String>(
     label: 'Illustration',
-    options: [GtVectorIllustrations.empty, GtVectorIllustrations.search, GtVectorIllustrations.notFound],
+    options: [
+      GtVectorIllustrations.empty,
+      GtVectorIllustrations.search,
+      GtVectorIllustrations.notFound,
+    ],
     initialOption: GtVectorIllustrations.empty,
   );
-  final hasAction = context.knobs.boolean(label: 'Has Action Button', initialValue: true);
-  final actionText = context.knobs.string(label: 'Action Text', initialValue: 'Add Beneficiary');
+  final hasAction = context.knobs.boolean(
+    label: 'Has Action Button',
+    initialValue: true,
+  );
+  final actionText = context.knobs.string(
+    label: 'Action Text',
+    initialValue: 'Add Beneficiary',
+  );
   final buttonVariant = context.knobs.object.dropdown<GtButtonVariant>(
     label: 'Button Variant',
     options: GtButtonVariant.values,
@@ -25,8 +41,10 @@ Widget playgroundGtEmptyStateUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtEmptyState',
-    description: 'A component used to inform users when a screen has no data or actions, featuring SVG illustration.',
-    code: '''
+    description:
+        'A component used to inform users when a screen has no data or actions, featuring SVG illustration.',
+    code:
+        '''
 GtEmptyState(
   icon: AppImageData("$illustration"),
   title: "$title",
@@ -35,18 +53,16 @@ GtEmptyState(
   ${hasAction ? 'buttonVariant: GtButtonVariant.${buttonVariant.name},' : ''}
   ${hasAction ? 'onActionPressed: () {},' : ''}
 )''',
-    child: Center(
-      child: GtCard(
-        padding: context.insets.allDp(16.px),
-        variant: GtCardVariant.normal,
-        child: GtEmptyState(
-          icon: AppImageData(illustration),
-          title: title,
-          subtitle: subtitle,
-          actionText: hasAction ? actionText : null,
-          onActionPressed: hasAction ? () {} : null,
-          buttonVariant: buttonVariant,
-        ),
+    child: GtCard(
+      padding: context.insets.allDp(16.px),
+      variant: GtCardVariant.normal,
+      child: GtEmptyState(
+        icon: AppImageData(illustration),
+        title: title,
+        subtitle: subtitle,
+        actionText: hasAction ? actionText : null,
+        onActionPressed: hasAction ? () {} : null,
+        buttonVariant: buttonVariant,
       ),
     ),
   );

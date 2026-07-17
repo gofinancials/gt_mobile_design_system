@@ -38,13 +38,21 @@ class _TabbarPlaygroundState extends State<_TabbarPlayground> {
 
   @override
   Widget build(BuildContext context) {
-    final useAlternateStyle = context.knobs.boolean(label: 'Use Alternate Style', initialValue: false);
-    final autoScroll = context.knobs.boolean(label: 'Auto Scroll', initialValue: false);
+    final useAlternateStyle = context.knobs.boolean(
+      label: 'Use Alternate Style',
+      initialValue: false,
+    );
+    final autoScroll = context.knobs.boolean(
+      label: 'Auto Scroll',
+      initialValue: false,
+    );
 
     return GtWidgetDocPage(
       title: 'GtTabbar',
-      description: 'The standard application tab bar widget rendering horizontal selectable tabs.',
-      code: '''
+      description:
+          'The standard application tab bar widget rendering horizontal selectable tabs.',
+      code:
+          '''
 GtTabbar<String>(
   controller: tabController,
   useAlternateStyle: $useAlternateStyle,
@@ -55,27 +63,22 @@ GtTabbar<String>(
     GtTabData(label: "Tab 3", value: "tab3"),
   ],
 )''',
-      child: Center(
-        child: GtCard(
-          padding: context.insets.allDp(12.px),
-          variant: GtCardVariant.normal,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GtTabbar<String>(
-                controller: _controller,
-                useAlternateStyle: useAlternateStyle,
-                autoScroll: autoScroll,
-                tabs: _tabs,
-              ),
-              const GtGap.yMd(),
-              ListenableBuilder(
-                listenable: _controller,
-                builder: (context, _) => GtText("Active Selection: \${_controller.value?.value}"),
-              ),
-            ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GtTabbar<String>(
+            controller: _controller,
+            useAlternateStyle: useAlternateStyle,
+            autoScroll: autoScroll,
+            tabs: _tabs,
           ),
-        ),
+          const GtGap.yMd(),
+          ListenableBuilder(
+            listenable: _controller,
+            builder: (context, _) =>
+                GtText("Active Selection: ${_controller.value?.value}"),
+          ),
+        ],
       ),
     );
   }
