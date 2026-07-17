@@ -1,89 +1,172 @@
 import 'package:flutter/material.dart';
-import 'package:gallery/widgets/gallery_page_header.dart';
-import 'package:widgetbook/widgetbook.dart';
+import 'package:gallery/lib.dart';
+import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-
-@widgetbook.UseCase(
-  name: 'Dividers',
-  type: GtDivider,
-)
+@widgetbook.UseCase(name: 'Dividers', type: GtDivider)
 Widget playgroundDividerUseCase(BuildContext context) {
-  final gapColor = context.knobs.object.dropdown<(String, Color)>(
-    label: 'Divider Color',
-    options: [
-      ('Theme Divider Color', Theme.of(context).dividerColor),
-      ('Primary Dark', context.palette.primary.darker),
-      ('Success Dark', context.palette.success.base),
-      ('Error Dark', context.palette.error.base),
-      ('Text Strong', context.palette.text.strong),
-    ],
-    initialOption: ('Theme Divider Color', Theme.of(context).dividerColor),
-  );
-
-  final inComponentDividers = [
-    GtDividerContainer(divider: GtDivider.xs(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.sm(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.sm(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.base(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.md(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.lg(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.xl(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.sectionSm(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.sectionMd(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.sectionLg(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.sectionXl(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.section2Xl(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.section3Xl(color: gapColor.$2)),
-    GtDividerContainer(divider: GtDivider.section4Xl(color: gapColor.$2)),
-  ];
-
-  return Scaffold(
-    body: Padding(
-      padding: context.insets.symmetricDp(
-        horizontal: context.grid.singleColumn.margins.px,
-      ),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: GalleryPageHeader(
-              title: "dividers",
-              rider: "Demarcate space between between componments",
-            ),
-          ),
-          SliverPadding(
-            padding: context.insets.onlyDp(
-              bottom: context.spacing.sectionLg.px,
-            ),
-            sliver: SliverList.separated(
-              itemBuilder: (_, index) => inComponentDividers[index],
-              separatorBuilder: (_, index) => const GtGap.yLg(),
-              itemCount: inComponentDividers.length,
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
+  return const _DividersPlayground();
 }
 
-class GtDividerContainer extends StatelessWidget {
-  final GtDivider divider;
-  const GtDividerContainer({required this.divider, super.key});
+class _DividersPlayground extends GtStatefulWidget {
+  const _DividersPlayground();
+
+  @override
+  State<_DividersPlayground> createState() => _DividersPlaygroundState();
+}
+
+class _DividersPlaygroundState extends State<_DividersPlayground> {
+  late final GtTabController<String> _controller;
+  late final List<GtTabData<String>> _tabs;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabs = [
+      GtTabData(label: "In-Component", value: "in_component"),
+      GtTabData(label: "Section", value: "section"),
+    ];
+    _controller = GtTabController<String>(initialValue: _tabs.first);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final dividerValue = divider.getDividerSize(context);
+    return Scaffold(
+      backgroundColor: context.palette.bg.white,
+      body: SafeArea(
+        child: Padding(
+          padding: context.insets.defaultAllInsets,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              GtTabbar<String>(controller: _controller, tabs: _tabs),
+              const GtGap.yMd(),
+              Expanded(
+                child: GtTabbarView<String>(
+                  controller: _controller,
+                  tabViews: {
+                    "in_component": GtWidgetDocPage(
+                      title: "In-Component Dividers",
+                      description:
+                          "Dividers used to separate content inside widgets.",
+                      code: '''
+GtDivider.xs()    // Extra Small (1px)
+GtDivider.sm()    // Small (2px)
+GtDivider.base()  // Base (4px)
+GtDivider.md()    // Medium (8px)
+GtDivider.lg()    // Large (12px)
+GtDivider.xl()    // Extra Large (16px)''',
+                      child: Column(
+                        spacing: context.spacingLg,
+                        children: [
+                          _DividerExampleRow(
+                            label: "xs (1px)",
+                            child: GtDivider.xs(),
+                          ),
+                          _DividerExampleRow(
+                            label: "sm (2px)",
+                            child: GtDivider.sm(),
+                          ),
+                          _DividerExampleRow(
+                            label: "base (4px)",
+                            child: GtDivider.base(),
+                          ),
+                          _DividerExampleRow(
+                            label: "md (8px)",
+                            child: GtDivider.md(),
+                          ),
+                          _DividerExampleRow(
+                            label: "lg (12px)",
+                            child: GtDivider.lg(),
+                          ),
+                          _DividerExampleRow(
+                            label: "xl (16px)",
+                            child: GtDivider.xl(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    "section": GtWidgetDocPage(
+                      title: "Section Dividers",
+                      description:
+                          "Dividers used to separate distinct content sections of a page.",
+                      code: '''
+GtDivider.sectionSm()   // Small Section (20px)
+GtDivider.sectionMd()   // Medium Section (24px)
+GtDivider.sectionLg()   // Large Section (32px)
+GtDivider.sectionXl()   // Extra Large Section (40px)
+GtDivider.section2Xl()  // 2X Large Section (48px)
+GtDivider.section3Xl()  // 3X Large Section (64px)
+GtDivider.section4Xl()  // 4X Large Section (80px)''',
+                      child: Column(
+                        spacing: context.spacingLg,
+                        children: [
+                          _DividerExampleRow(
+                            label: "sectionSm (20px)",
+                            child: GtDivider.sectionSm(),
+                          ),
+                          _DividerExampleRow(
+                            label: "sectionMd (24px)",
+                            child: GtDivider.sectionMd(),
+                          ),
+                          _DividerExampleRow(
+                            label: "sectionLg (32px)",
+                            child: GtDivider.sectionLg(),
+                          ),
+                          _DividerExampleRow(
+                            label: "sectionXl (40px)",
+                            child: GtDivider.sectionXl(),
+                          ),
+                          _DividerExampleRow(
+                            label: "section2Xl (48px)",
+                            child: GtDivider.section2Xl(),
+                          ),
+                          _DividerExampleRow(
+                            label: "section3Xl (64px)",
+                            child: GtDivider.section3Xl(),
+                          ),
+                          _DividerExampleRow(
+                            label: "section4Xl (80px)",
+                            child: GtDivider.section4Xl(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DividerExampleRow extends StatelessWidget {
+  final String label;
+  final Widget child;
+
+  const _DividerExampleRow({required this.label, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         GtText(
-          "Size: ${dividerValue.toStringAsFixed(0)} px".toUpperCase(),
-          style: context.textStyles.h4(),
+          label,
+          style: context.textStyles.bodyM(color: context.palette.text.sub),
         ),
-        divider,
-        GtText("Thickness: 1px", style: context.textStyles.bodyL()),
+        const GtGap.yXs(),
+        child,
       ],
     );
   }

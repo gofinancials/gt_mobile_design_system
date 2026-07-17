@@ -6,226 +6,183 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtBoxes', type: GtSizedBox)
 Widget playgroundGtBoxesUseCase(BuildContext context) {
-  // Knobs for GtSizedBox
-  final boxWidth = context.knobs.double.slider(
-    label: "GtSizedBox Width",
-    initialValue: 100,
-    min: 0,
-    max: 300,
-    divisions: 150,
-  );
-  final boxHeight = context.knobs.double.slider(
-    label: "GtSizedBox Height",
-    initialValue: 100,
-    min: 0,
-    max: 300,
-    divisions: 150,
-  );
-
-  // Knobs for GtSquareBox
-  final squareSize = context.knobs.double.slider(
-    label: "GtSquareBox Size",
-    initialValue: 80,
-    min: 0,
-    max: 300,
-    divisions: 150,
-  );
-
-  // Knobs for GtFractionalBox
-  final fractionalWidth = context.knobs.double.slider(
-    label: "Fractional Width",
-    initialValue: 0.5,
-    min: 0.0,
-    max: 1.0,
-  );
-  final fractionalHeight = context.knobs.double.slider(
-    label: "Fractional Height",
-    initialValue: 0.8,
-    min: 0.0,
-    max: 1.0,
-  );
-
-  // Knobs for the Grid Layout demonstration
-  final gridOptions = [
-    ("Single Column", context.grid.singleColumn),
-    ("Double Column", context.grid.doubleColumn),
-    ("Triple Column", context.grid.tripleColumn),
-    ("4-Column", context.grid.fourColumn),
-    ("8-Column", context.grid.eightColumn),
-  ];
-
-  // Knobs for alignment of the fractional box
-
-  final List<(String, Alignment)> alignmentOptions = [
-    ("Center", .center),
-    ("Top Left", .topLeft),
-    ("Top Right", .topRight),
-    ("Bottom Left", .bottomLeft),
-    ("Bottom Right", .bottomRight),
-    ("Top Center", .topCenter),
-    ("Bottom Center", .bottomCenter),
-    ("Left Center", .centerLeft),
-    ("Right Center", .centerRight),
-  ];
-
-  final selectedGrid = context.knobs.object.dropdown<(String, GtGridLayout)>(
-    label: "Grid Configuration",
-    options: gridOptions,
-    labelBuilder: (value) => value.$1,
-    initialOption: gridOptions[1], // Default to Double Column
-  );
-
-  final selectedAlignment = context.knobs.object.dropdown<(String, Alignment)>(
-    label: "Box Alignment in Grid",
-    options: alignmentOptions,
-    labelBuilder: (value) => value.$1,
-    initialOption: alignmentOptions[1], // Default to Double Column
-  );
-
-  return Scaffold(
-    key: const PageStorageKey("Boxes Playground"),
-    body: Padding(
-      padding: context.insets.symmetricDp(
-        horizontal: context.grid.singleColumn.margins.px,
-      ),
-      child: CustomScrollView(
-        key: const PageStorageKey("Boxes Playground Scroll View"),
-        slivers: [
-          SliverToBoxAdapter(
-            child: GalleryPageHeader(
-              title: "Boxes Playground",
-              rider: "Explore standardized sizing and fractional layouts.",
-              sectionHeader: "GtSizedBox",
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: GtBoxDescriptionContainer(
-              title: "GtSizedBox",
-              description:
-                  "A standardized box that automatically scales height and width to DP.",
-              child: GtSizedBox(
-                width: boxWidth,
-                height: boxHeight,
-                child: Container(
-                  color: context.palette.primary.base,
-                  alignment: Alignment.center,
-                  child: GtText(
-                    "${boxWidth.toInt()} x ${boxHeight.toInt()}",
-                    style: context.textStyles.bodyS(
-                      color: context.palette.text.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "GtSquaredBox"),
-          ),
-          SliverToBoxAdapter(
-            child: GtBoxDescriptionContainer(
-              title: "GtSquareBox",
-              description:
-                  "Forces its child to have equal width and height, scaled to DP.",
-              child: GtSquareBox(
-                size: squareSize,
-                child: Container(
-                  color: context.palette.warning.base,
-                  alignment: Alignment.center,
-                  child: GtText(
-                    "${squareSize.toInt()}px sq",
-                    style: context.textStyles.bodyS(
-                      color: context.palette.text.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "GtFractionalBox"),
-          ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: context.insets.onlyDp(bottom: 8.px),
-              child: GtText(
-                "GtFractionalBox & Grid Integration",
-                style: context.textStyles.h4(),
-              ),
-            ),
-          ),
-          SliverGrid.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: selectedGrid.$2.columns,
-              mainAxisSpacing: selectedGrid.$2.gutter,
-              crossAxisSpacing: selectedGrid.$2.gutter,
-              mainAxisExtent: 120,
-            ),
-            itemCount: selectedGrid.$2.columns,
-            itemBuilder: (context, index) {
-              return GtFractionalBox(
-                widthFactor: fractionalWidth,
-                heightFactor: fractionalHeight,
-                alignment: selectedAlignment.$2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: context.palette.stroke.sub),
-                    color: context.palette.information.base,
-                  ),
-                  child: Center(
-                    child: GtText(
-                      "${(fractionalWidth * 100).toInt()}% W\n${(fractionalHeight * 100).toInt()}% H",
-                      style: context.textStyles.bodyXs(
-                        color: context.palette.text.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    ),
-  );
+  return const _BoxesPlayground();
 }
 
-// Local description container to keep the use-case self-contained.
-class GtBoxDescriptionContainer extends GtStatelessWidget {
-  final String title;
-  final String description;
-  final Widget child;
-
-  const GtBoxDescriptionContainer({
-    required this.title,
-    required this.description,
-    required this.child,
-    super.key,
-  });
+class _BoxesPlayground extends GtStatefulWidget {
+  const _BoxesPlayground();
 
   @override
+  State<_BoxesPlayground> createState() => _BoxesPlaygroundState();
+}
+
+final _tabs = [
+  GtTabData(label: "GtSizedBox", value: "sized_box"),
+  GtTabData(label: "GtSquareBox", value: "square_box"),
+  GtTabData(label: "GtFractionalBox", value: "fractional_box"),
+];
+final _controller = GtTabController<String>(initialValue: _tabs.first);
+
+class _BoxesPlaygroundState extends State<_BoxesPlayground> {
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: context.insets.allDp(16.px),
-      decoration: BoxDecoration(
-        border: Border.all(color: context.palette.bg.sub, width: 1),
-        borderRadius: context.radii.md.circularBorderRadius,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          GtText(title, style: context.textStyles.h4()),
-          GtGap.yXs(),
-          GtText(description, style: context.textStyles.bodyS()),
-          GtGap.yMd(),
-          Container(
-            alignment: Alignment.center,
-            padding: context.insets.allDp(8.px),
-            width: double.infinity,
-            child: child,
+    // GtSizedBox Knobs
+    final boxWidth = context.knobs.double.slider(
+      label: "GtSizedBox Width",
+      initialValue: 100,
+      min: 30,
+      max: 300,
+    );
+    final boxHeight = context.knobs.double.slider(
+      label: "GtSizedBox Height",
+      initialValue: 100,
+      min: 30,
+      max: 300,
+    );
+
+    // GtSquareBox Knobs
+    final squareSize = context.knobs.double.slider(
+      label: "GtSquareBox Size",
+      initialValue: 80,
+      min: 30,
+      max: 300,
+    );
+
+    // GtFractionalBox Knobs
+    final fractionalWidth = context.knobs.double.slider(
+      label: "Fractional Width",
+      initialValue: 0.5,
+      min: 0.1,
+      max: 1.0,
+    );
+    final fractionalHeight = context.knobs.double.slider(
+      label: "Fractional Height",
+      initialValue: 0.8,
+      min: 0.1,
+      max: 1.0,
+    );
+
+    return Scaffold(
+      key: const PageStorageKey("boxes_scaffold_key"),
+      backgroundColor: context.palette.bg.white,
+      body: SafeArea(
+        child: Padding(
+          padding: context.insets.defaultAllInsets,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              GtTabbar<String>(
+                controller: _controller,
+                tabs: _tabs,
+                key: const PageStorageKey("boxes_key_tabbar"),
+              ),
+              const GtGap.yMd(),
+              Expanded(
+                child: GtTabbarView<String>(
+                  key: const PageStorageKey("boxes_key"),
+                  controller: _controller,
+                  tabViews: {
+                    "sized_box": GtWidgetDocPage(
+                      title: "GtSizedBox",
+                      description:
+                          "A standardized box that automatically scales height and width to DP.",
+                      code:
+                          '''
+GtSizedBox(
+  width: $boxWidth,
+  height: $boxHeight,
+  child: Container(color: palette.primary.base),
+)''',
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxHeight: 310),
+                        child: Center(
+                          child: GtSizedBox(
+                            width: boxWidth,
+                            height: boxHeight,
+                            child: Container(
+                              color: context.palette.primary.base,
+                              alignment: Alignment.center,
+                              child: GtText(
+                                "${boxWidth.toInt()} x ${boxHeight.toInt()}",
+                                style: context.textStyles.bodyS(
+                                  color: context.palette.text.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    "square_box": GtWidgetDocPage(
+                      title: "GtSquareBox",
+                      description:
+                          "Forces its child to have equal width and height, scaled to DP.",
+                      code:
+                          '''
+GtSquareBox(
+  size: $squareSize,
+  child: Container(color: palette.warning.base),
+)''',
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: 310,
+                          minHeight: 50,
+                        ),
+                        child: Center(
+                          child: GtSquareBox(
+                            size: squareSize,
+                            child: Container(
+                              color: context.palette.warning.base,
+                              alignment: Alignment.center,
+                              child: GtText(
+                                "${squareSize.toInt()}px sq",
+                                style: context.textStyles.bodyS(
+                                  color: context.palette.text.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    "fractional_box": GtWidgetDocPage(
+                      title: "GtFractionalBox",
+                      description:
+                          "Sizes its child fractionally based on parent constraints.",
+                      code:
+                          '''
+GtFractionalBox(
+  widthFactor: $fractionalWidth,
+  heightFactor: $fractionalHeight,
+  child: Container(color: palette.information.base),
+)''',
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: 310,
+                          maxWidth: double.infinity,
+                        ),
+                        child: GtFractionalBox(
+                          widthFactor: fractionalWidth,
+                          heightFactor: fractionalHeight,
+                          child: Container(
+                            color: context.palette.information.base,
+                            alignment: Alignment.center,
+                            child: GtText(
+                              "${(fractionalWidth * 100).toInt()}% W x ${(fractionalHeight * 100).toInt()}% H",
+                              style: context.textStyles.bodyXs(
+                                color: context.palette.text.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
