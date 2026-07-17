@@ -4,38 +4,88 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'GtTransactionTiles', type: GtTransactionListTile)
-Widget gtTransactionTilesUseCase(BuildContext context) {
+@widgetbook.UseCase(name: 'GtTransactionListTile', type: GtTransactionListTile)
+Widget playgroundGtTransactionListTileUseCase(BuildContext context) {
+  final name = context.knobs.string(
+    label: 'Name',
+    initialValue: 'Transfer to Alex',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: '21 Jun 2026, 14:32 PM',
+  );
+  final amount = context.knobs.double.input(
+    label: 'Amount',
+    initialValue: 5000.0,
+  );
+  final isDebit = context.knobs.boolean(label: 'Is Debit', initialValue: true);
+
   return GtWidgetDocPage(
-    title: "Transaction Tiles",
-    description: "List tiles designed for displaying transaction details.",
-    code: '''
+    title: 'GtTransactionListTile',
+    description:
+        'A list tile tailored for displaying financial transactions (debits/credits) with currency amounts.',
+    code:
+        '''
 GtTransactionListTile(
-  'Netflix Subscription',
-  subtitle: 'Oct 24, 2023 - 10:30 AM',
-  amount: 4500.0,
-  isDebit: true,
+  "$name",
+  subtitle: "$subtitle",
+  amount: $amount,
+  isDebit: $isDebit,
+  onTap: () {},
+)''',
+    child: GtTransactionListTile(
+      name,
+      subtitle: subtitle,
+      amount: amount,
+      isDebit: isDebit,
+      onTap: () {},
+    ),
+  );
+}
+
+@widgetbook.UseCase(
+  name: 'GtTransactionParticipantListTile',
+  type: GtTransactionParticipantListTile,
 )
-''',
-    child: Column(
-      children: [
-        GalleryPageSectionHeader(title: "GtTransactionListTile"),
-        GtTransactionListTile(
-          context.knobs.string(label: 'Transaction Name', initialValue: 'Netflix Subscription'),
-          subtitle: context.knobs.string(label: 'Transaction Date', initialValue: 'Oct 24, 2023 - 10:30 AM'),
-          amount: 4500.0,
-          isDebit: context.knobs.boolean(label: 'Is Debit', initialValue: true),
+Widget playgroundGtTransactionParticipantListTileUseCase(BuildContext context) {
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Alex Lobaloba',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'Sterling Bank • 1029384756',
+  );
+  final superscript = context.knobs.string(
+    label: 'Superscript',
+    initialValue: 'TO',
+  );
+
+  return GtWidgetDocPage(
+    title: 'GtTransactionParticipantListTile',
+    description:
+        'A specialized list tile for displaying transaction participants (senders or receivers).',
+    code:
+        '''
+GtTransactionParticipantListTile(
+  "$title",
+  subtitle: "$subtitle",
+  superscript: "$superscript",
+  leading: GtAvatar(initials: "AL"),
+  trailing: GtIcon(GtIcons.chevronRight),
+)''',
+    child: Center(
+      child: GtCard(
+        padding: context.insets.allDp(12.px),
+        variant: GtCardVariant.normal,
+        child: GtTransactionParticipantListTile(
+          title,
+          subtitle: subtitle.isEmpty ? null : subtitle,
+          superscript: superscript.isEmpty ? null : superscript,
+          leading: const GtAvatar(initials: "AL"),
+          trailing: const GtIcon(GtIcons.chevronRight),
         ),
-        const GtGap.yLg(),
-        
-        GalleryPageSectionHeader(title: "GtTransactionParticipantListTile"),
-        GtTransactionParticipantListTile(
-          context.knobs.string(label: 'Participant Name', initialValue: 'Jane Doe'),
-          subtitle: context.knobs.string(label: 'Bank Details', initialValue: 'GTBank - 0123456789'),
-          superscript: 'TO',
-          leading: GtAvatar(initials: 'JD'),
-        ),
-      ],
+      ),
     ),
   );
 }
