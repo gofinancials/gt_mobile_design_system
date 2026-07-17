@@ -531,13 +531,16 @@ class GtSimpleInfoTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: context.spacingXs,
+      spacing: context.spacingSm,
       mainAxisSize: .min,
       children: [
         GtSquareConstrainedBox(16, child: leading),
-        GtText(
-          text,
-          style: context.textStyles.bodyXs(color: context.palette.text.sub),
+        FractionalTranslation(
+          translation: Offset(0, .1),
+          child: GtText(
+            text,
+            style: context.textStyles.bodyXs(color: context.palette.text.sub),
+          ),
         ),
       ],
     );

@@ -4,52 +4,82 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'GtStatusTiles', type: GtStatusListTile)
-Widget gtStatusTilesUseCase(BuildContext context) {
+@widgetbook.UseCase(name: 'GtStatusListTile', type: GtStatusListTile)
+Widget playgroundGtStatusListTileUseCase(BuildContext context) {
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Identity Verification',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'Verify your ID to proceed.',
+  );
+  final isDone = context.knobs.boolean(label: 'Is Done', initialValue: false);
+
   return GtWidgetDocPage(
-    title: "Status Tiles",
+    title: "GtStatusListTile",
     description:
         "List tiles tailored for displaying step completions and statuses.",
-    code: '''
+    code:
+        '''
 GtStatusListTile(
-  title: 'Identity Verification',
-  description: 'Verify your ID to proceed.',
+  title: '$title',
+  subtitle: '$subtitle',
   icon: Icons.person,
+  isDone: $isDone,
   onPressed: () {},
-)
-''',
-    child: Column(
-      children: [
-        GalleryPageSectionHeader(title: "GtStatusListTile"),
-        GtStatusListTile(
-          title: context.knobs.string(
-            label: 'Title',
-            initialValue: 'Identity Verification',
-          ),
-          subtitle: context.knobs.string(
-            label: 'Subtitle',
-            initialValue: 'Verify your ID to proceed.',
-          ),
-          icon: Icons.person,
-          isDone: context.knobs.boolean(label: 'Is Done', initialValue: false),
+)''',
+    child: Center(
+      child: GtCard(
+        padding: context.insets.allDp(12.px),
+        variant: GtCardVariant.normal,
+        child: GtStatusListTile(
+          title: title,
+          subtitle: subtitle,
+          icon: GtIcons.verifiedUsers,
+          isDone: isDone,
           onPressed: () {},
         ),
-        const GtGap.yLg(),
+      ),
+    ),
+  );
+}
 
-        GalleryPageSectionHeader(title: "GtIllustratedStepTile"),
-        GtIllustratedStepTile(
-          title: context.knobs.string(
-            label: 'Step Title',
-            initialValue: 'Profile Setup',
-          ),
-          subtitle: context.knobs.string(
-            label: 'Step Subtitle',
-            initialValue: 'Complete your profile setup',
-          ),
+@widgetbook.UseCase(name: 'GtIllustratedStepTile', type: GtIllustratedStepTile)
+Widget playgroundGtIllustratedStepTileUseCase(BuildContext context) {
+  final title = context.knobs.string(
+    label: 'Step Title',
+    initialValue: 'Profile Setup',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Step Subtitle',
+    initialValue: 'Complete your profile setup',
+  );
+  final isDone = context.knobs.boolean(label: 'Is Done', initialValue: false);
+
+  return GtWidgetDocPage(
+    title: "GtIllustratedStepTile",
+    description:
+        "A card tile featuring custom illustrations representing workflow steps.",
+    code:
+        '''
+GtIllustratedStepTile(
+  title: '$title',
+  subtitle: '$subtitle',
+  illustrationPath: GtVectorIllustrations.security,
+  isDone: $isDone,
+)''',
+    child: Center(
+      child: GtCard(
+        padding: context.insets.allDp(12.px),
+        variant: GtCardVariant.normal,
+        child: GtIllustratedStepTile(
+          title: title,
+          subtitle: subtitle,
           illustrationPath: GtVectorIllustrations.security,
-          isDone: context.knobs.boolean(label: 'Is Done', initialValue: false),
+          isDone: isDone,
         ),
-      ],
+      ),
     ),
   );
 }
