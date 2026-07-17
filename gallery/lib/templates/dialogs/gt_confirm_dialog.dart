@@ -38,6 +38,29 @@ class _ConfirmDialogPreviewState extends State<_ConfirmDialogPreview>
     return GtWidgetDocPage(
       title: 'GtConfirmDialog',
       description: 'An adaptive confirmation dialog for the design system.',
+      code:
+          '''
+class ConfirmDialogExample extends StatelessWidget with GtConfirmDialogMixin {
+  @override
+  Widget build(BuildContext context) {
+    GtRaisedButton(
+      text: "Confirm Action",
+      onPressed: () {
+        confirmAction(
+          context,
+          title: "$title",
+          denyText: "$denyText",
+          allowText: "$allowText",
+          description: "$description",
+          isDismissable: "$isDissmissable",
+          onContinue: () {
+            context.showToast("You confirmed the action and executed same");
+          },
+        );
+      },
+    );
+  }
+}''',
       child: GtRaisedButton(
         text: "Confirm Action",
         onPressed: () {

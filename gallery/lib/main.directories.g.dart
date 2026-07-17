@@ -260,12 +260,18 @@ import 'package:gallery/templates/dialogs/gt_confirm_dialog.dart'
     as _gallery_templates_dialogs_gt_confirm_dialog;
 import 'package:gallery/templates/forms/gt_form_doc.dart'
     as _gallery_templates_forms_gt_form_doc;
-import 'package:gallery/templates/forms/gt_form_usecase.dart'
-    as _gallery_templates_forms_gt_form_usecase;
+import 'package:gallery/templates/forms/gt_otp_form_doc.dart'
+    as _gallery_templates_forms_gt_otp_form_doc;
 import 'package:gallery/templates/forms/gt_otp_form_usecase.dart'
     as _gallery_templates_forms_gt_otp_form_usecase;
+import 'package:gallery/templates/forms/gt_virtual_keypad_form_doc.dart'
+    as _gallery_templates_forms_gt_virtual_keypad_form_doc;
 import 'package:gallery/templates/forms/gt_virtual_keypad_form_usecase.dart'
     as _gallery_templates_forms_gt_virtual_keypad_form_usecase;
+import 'package:gallery/templates/forms/gt_virtual_keypad_form_with_avatar_doc.dart'
+    as _gallery_templates_forms_gt_virtual_keypad_form_with_avatar_doc;
+import 'package:gallery/templates/forms/gt_virtual_keypad_form_with_avatar_usecase.dart'
+    as _gallery_templates_forms_gt_virtual_keypad_form_with_avatar_usecase;
 import 'package:gallery/templates/list_views/gt_infinite_list_view_doc.dart'
     as _gallery_templates_list_views_gt_infinite_list_view_doc;
 import 'package:gallery/templates/list_views/gt_infinite_list_view_usecase.dart'
@@ -274,18 +280,16 @@ import 'package:gallery/templates/modals/gt_bottom_modal.dart'
     as _gallery_templates_modals_gt_bottom_modal;
 import 'package:gallery/templates/modals/gt_bottom_sheet.dart'
     as _gallery_templates_modals_gt_bottom_sheet;
-import 'package:gallery/templates/nav_aware/gt_pop_scope_doc.dart'
-    as _gallery_templates_nav_aware_gt_pop_scope_doc;
 import 'package:gallery/templates/nav_aware/gt_pop_scope_usecase.dart'
     as _gallery_templates_nav_aware_gt_pop_scope_usecase;
 import 'package:gallery/templates/overlays/gt_alert_overlay_usecase.dart'
     as _gallery_templates_overlays_gt_alert_overlay_usecase;
 import 'package:gallery/templates/overlays/gt_disabled_overlay_usecase.dart'
     as _gallery_templates_overlays_gt_disabled_overlay_usecase;
-import 'package:gallery/templates/overlays/gt_overlay.dart'
-    as _gallery_templates_overlays_gt_overlay;
 import 'package:gallery/templates/overlays/gt_toast_overlay_usecase.dart'
     as _gallery_templates_overlays_gt_toast_overlay_usecase;
+import 'package:gallery/templates/overlays/gt_tooltip_usecase.dart'
+    as _gallery_templates_overlays_gt_tooltip_usecase;
 import 'package:gallery/templates/scaffolds/gt_dashboard_scaffold.dart'
     as _gallery_templates_scaffolds_gt_dashboard_scaffold;
 import 'package:gallery/templates/screens/gt_debit_card_screen.dart'
@@ -300,8 +304,10 @@ import 'package:gallery/templates/screens/gt_lesson_complete_screen.dart'
     as _gallery_templates_screens_gt_lesson_complete_screen;
 import 'package:gallery/templates/screens/gt_splash_screen.dart'
     as _gallery_templates_screens_gt_splash_screen;
-import 'package:gallery/templates/slides/gt_slides.dart'
-    as _gallery_templates_slides_gt_slides;
+import 'package:gallery/templates/slides/gt_lesson_slides_usecase.dart'
+    as _gallery_templates_slides_gt_lesson_slides_usecase;
+import 'package:gallery/templates/slides/gt_welcome_slides_usecase.dart'
+    as _gallery_templates_slides_gt_welcome_slides_usecase;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -2034,7 +2040,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtForm',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'Documentation',
+                    name: 'GtForm',
                     builder: _gallery_templates_forms_gt_form_doc
                         .playgroundGtFormDoc,
                   ),
@@ -2043,11 +2049,6 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder: _gallery_molecules_inputs_gt_inputs
                         .buildGtTextFieldUsecase,
                   ),
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'Interactive Preview',
-                    builder: _gallery_templates_forms_gt_form_usecase
-                        .playgroundGtFormUseCase,
-                  ),
                 ],
               ),
               _widgetbook.WidgetbookComponent(
@@ -2055,8 +2056,13 @@ final directories = <_widgetbook.WidgetbookNode>[
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtOtpForm',
+                    builder: _gallery_templates_forms_gt_otp_form_doc
+                        .playgroundGtOtpFormDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Interactive Preview',
                     builder: _gallery_templates_forms_gt_otp_form_usecase
-                        .gtOtpFormUseCase,
+                        .playgroundGtOtpFormUseCase,
                   ),
                 ],
               ),
@@ -2065,9 +2071,26 @@ final directories = <_widgetbook.WidgetbookNode>[
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtVirtualKeypadForm',
+                    builder: _gallery_templates_forms_gt_virtual_keypad_form_doc
+                        .playgroundGtVirtualKeypadFormDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtVirtualKeypadForm.withAvatar',
+                    builder:
+                        _gallery_templates_forms_gt_virtual_keypad_form_with_avatar_doc
+                            .playgroundGtVirtualKeypadFormWithAvatarDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Interactive Preview',
                     builder:
                         _gallery_templates_forms_gt_virtual_keypad_form_usecase
-                            .gtVirtualKeypadFormUseCase,
+                            .playgroundGtVirtualKeypadFormUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Interactive Preview (Avatar)',
+                    builder:
+                        _gallery_templates_forms_gt_virtual_keypad_form_with_avatar_usecase
+                            .playgroundGtVirtualKeypadFormWithAvatarUseCase,
                   ),
                 ],
               ),
@@ -2086,7 +2109,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                             .playgroundGtInfiniteListViewDoc,
                   ),
                   _widgetbook.WidgetbookUseCase(
-                    name: 'Interactive Preview',
+                    name: 'GtInfiniteListView',
                     builder:
                         _gallery_templates_list_views_gt_infinite_list_view_usecase
                             .playgroundGtInfiniteListViewUseCase,
@@ -2104,7 +2127,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtBottomModal',
                     builder: _gallery_templates_modals_gt_bottom_modal
-                        .buildGtBottomModalUsecase,
+                        .playgroundGtBottomModalUseCase,
                   ),
                 ],
               ),
@@ -2114,7 +2137,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtBottomSheet',
                     builder: _gallery_templates_modals_gt_bottom_sheet
-                        .buildGtBottomSheetUsecase,
+                        .playgroundGtBottomSheetUseCase,
                   ),
                 ],
               ),
@@ -2127,12 +2150,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtPopScope',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'Documentation',
-                    builder: _gallery_templates_nav_aware_gt_pop_scope_doc
-                        .playgroundGtPopScopeDoc,
-                  ),
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'Interactive Preview',
+                    name: 'GtPopScope',
                     builder: _gallery_templates_nav_aware_gt_pop_scope_usecase
                         .playgroundGtPopScopeUseCase,
                   ),
@@ -2144,23 +2162,13 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'overlays',
             children: [
               _widgetbook.WidgetbookComponent(
-                name: 'GtAlert',
-                useCases: [
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'GtAlert',
-                    builder: _gallery_templates_overlays_gt_overlay
-                        .buildGtAlertUsecase,
-                  ),
-                ],
-              ),
-              _widgetbook.WidgetbookComponent(
                 name: 'GtAlertOverlay',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtAlertOverlay',
                     builder:
                         _gallery_templates_overlays_gt_alert_overlay_usecase
-                            .gtAlertOverlayUseCase,
+                            .playgroundGtAlertOverlayUseCase,
                   ),
                 ],
               ),
@@ -2171,17 +2179,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtDisabledOverlay',
                     builder:
                         _gallery_templates_overlays_gt_disabled_overlay_usecase
-                            .gtDisabledOverlayUseCase,
-                  ),
-                ],
-              ),
-              _widgetbook.WidgetbookComponent(
-                name: 'GtToast',
-                useCases: [
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'GtToast',
-                    builder: _gallery_templates_overlays_gt_overlay
-                        .buildGtToastUsecase,
+                            .playgroundGtDisabledOverlayUseCase,
                   ),
                 ],
               ),
@@ -2192,7 +2190,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtToastOverlay',
                     builder:
                         _gallery_templates_overlays_gt_toast_overlay_usecase
-                            .gtToastOverlayUseCase,
+                            .playgroundGtToastOverlayUseCase,
                   ),
                 ],
               ),
@@ -2201,8 +2199,8 @@ final directories = <_widgetbook.WidgetbookNode>[
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtTooltipWidget',
-                    builder: _gallery_templates_overlays_gt_overlay
-                        .buildGtToolTipUsecase,
+                    builder: _gallery_templates_overlays_gt_tooltip_usecase
+                        .playgroundGtTooltipUseCase,
                   ),
                 ],
               ),
@@ -2215,9 +2213,14 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtDashboardScaffold',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'Dashboard Scaffold',
+                    name: 'GtDashboardScaffold',
                     builder: _gallery_templates_scaffolds_gt_dashboard_scaffold
                         .playgroundGtDashboardScaffoldUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtDashboardScaffold Gallery',
+                    builder: _gallery_templates_scaffolds_gt_dashboard_scaffold
+                        .buildGtDashboardScaffoldGallery,
                   ),
                 ],
               ),
@@ -2232,6 +2235,11 @@ final directories = <_widgetbook.WidgetbookNode>[
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtDebitCardScreen',
                     builder: _gallery_templates_screens_gt_debit_card_screen
+                        .buildGtDebitCardScreenDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtDebitCardScreen Gallery',
+                    builder: _gallery_templates_screens_gt_debit_card_screen
                         .buildGtDebitCardScreenUsecase,
                   ),
                 ],
@@ -2241,6 +2249,12 @@ final directories = <_widgetbook.WidgetbookNode>[
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtDebitCardSelectionScreen',
+                    builder:
+                        _gallery_templates_screens_gt_debit_card_selection_screen
+                            .buildGtDebitCardSelectionScreenDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtDebitCardSelectionScreen Gallery',
                     builder:
                         _gallery_templates_screens_gt_debit_card_selection_screen
                             .buildGtDebitCardSelectionScreenUsecase,
@@ -2253,6 +2267,11 @@ final directories = <_widgetbook.WidgetbookNode>[
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtDuotoneScreen',
                     builder: _gallery_templates_screens_gt_duo_tone_screen
+                        .buildGtDuotoneScreenDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtDuotoneScreen Gallery',
+                    builder: _gallery_templates_screens_gt_duo_tone_screen
                         .buildGtDuotoneScreenUsecase,
                   ),
                 ],
@@ -2262,6 +2281,11 @@ final directories = <_widgetbook.WidgetbookNode>[
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtHowToLearnScreen',
+                    builder: _gallery_templates_screens_gt_how_to_screen
+                        .buildGtHowToLearnScreenDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtHowToLearnScreen Gallery',
                     builder: _gallery_templates_screens_gt_how_to_screen
                         .buildGtHowToLearnScreenUsecase,
                   ),
@@ -2274,7 +2298,13 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtLessonCompleteScreen',
                     builder:
                         _gallery_templates_screens_gt_lesson_complete_screen
-                            .buildGtLessonCompletScreen,
+                            .buildGtLessonCompleteScreenDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtLessonCompleteScreen Gallery',
+                    builder:
+                        _gallery_templates_screens_gt_lesson_complete_screen
+                            .buildGtLessonCompleteScreenUsecase,
                   ),
                 ],
               ),
@@ -2283,6 +2313,11 @@ final directories = <_widgetbook.WidgetbookNode>[
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtSplashScreen',
+                    builder: _gallery_templates_screens_gt_splash_screen
+                        .buildGtSplashScreenDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSplashScreen Gallery',
                     builder: _gallery_templates_screens_gt_splash_screen
                         .buildGtSplashScreenUsecase,
                   ),
@@ -2294,10 +2329,15 @@ final directories = <_widgetbook.WidgetbookNode>[
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtWelcomeScreen',
                     builder: _gallery_templates_screens_gt_splash_screen
+                        .buildGtWelcomeScreenDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtWelcomeScreen Gallery',
+                    builder: _gallery_templates_screens_gt_splash_screen
                         .buildtGWelcomeScreenUsecase,
                   ),
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtWelcomeScreen.withTitleWidget',
+                    name: 'GtWelcomeScreen.withTitleWidget Gallery',
                     builder: _gallery_templates_screens_gt_splash_screen
                         .buildGtWelcomeScreenTitleUsecase,
                   ),
@@ -2313,8 +2353,13 @@ final directories = <_widgetbook.WidgetbookNode>[
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtLessonSlides',
-                    builder: _gallery_templates_slides_gt_slides
-                        .buildGtLessonSlidesUsecase,
+                    builder: _gallery_templates_slides_gt_lesson_slides_usecase
+                        .playgroundGtLessonSlidesDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtLessonSlides Gallery',
+                    builder: _gallery_templates_slides_gt_lesson_slides_usecase
+                        .playgroundGtLessonSlidesUseCase,
                   ),
                 ],
               ),
@@ -2323,8 +2368,13 @@ final directories = <_widgetbook.WidgetbookNode>[
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtWelcomeSlides',
-                    builder: _gallery_templates_slides_gt_slides
-                        .buildGtWelcomeSlidesUsecase,
+                    builder: _gallery_templates_slides_gt_welcome_slides_usecase
+                        .playgroundGtWelcomeSlidesDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtWelcomeSlides Gallery',
+                    builder: _gallery_templates_slides_gt_welcome_slides_usecase
+                        .playgroundGtWelcomeSlidesUseCase,
                   ),
                 ],
               ),

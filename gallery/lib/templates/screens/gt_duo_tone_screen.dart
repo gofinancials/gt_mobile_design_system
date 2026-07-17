@@ -1,14 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:gallery/lib.dart';
 import 'package:gt_mobile_foundation/data/models/media_data.dart';
 import 'package:gt_mobile_foundation/extensions/extensions.dart';
+import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
-import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 @widgetbook.UseCase(name: 'GtDuotoneScreen', type: GtDuotoneScreen)
+Widget buildGtDuotoneScreenDoc(BuildContext context) {
+  return GtWidgetDocPage(
+    title: 'GtDuotoneScreen',
+    description: 'A screen layout utilizing a two-tone color contrast header layout with illustration badges and footer metadata.',
+    code: '''
+GtDuotoneScreen(
+  title: "saving smart",
+  description: "Why saving matters and how to build good habits.",
+  illustration: AppImageData.asset(GtVectorIllustrations.grow),
+  buttonText: "get started",
+  onTap: () => handleGetStarted(),
+  variant: GtCardVariant.featured,
+)''',
+    child: GtEmptyStateCard(
+      description: 'Select "GtDuotoneScreen Gallery" in the sidebar to view the interactive duotone screen in full screen.',
+      icon: GtIcons.alarmClock,
+    ),
+  );
+}
+
+@widgetbook.UseCase(name: 'GtDuotoneScreen Gallery', type: GtDuotoneScreen)
 Widget buildGtDuotoneScreenUsecase(BuildContext context) {
   void showToast() {
-    context.showToast("Clicked Button", type: .highlighted);
+    context.showToast("Clicked Button", type: GtPillVariant.highlighted);
   }
 
   final title = context.knobs.string(
@@ -46,15 +68,15 @@ Widget buildGtDuotoneScreenUsecase(BuildContext context) {
   );
   final footer = context.knobs.object.dropdown<(String, Widget?)>(
     label: "Footer",
-    options: [
+    options: const [
       ("None", null),
       (
         "GtLessonInfoTile",
         GtLessonInfoTile(
           progress: "3/10",
           progressDuration: "5 Mins",
-          alignment: .center,
-          crossAlignment: .center,
+          alignment: WrapAlignment.center,
+          crossAlignment: WrapCrossAlignment.center,
         ),
       ),
     ],
@@ -71,7 +93,7 @@ Widget buildGtDuotoneScreenUsecase(BuildContext context) {
     footer: footer.$2,
     titleMaxLines: context.knobs.object.dropdown(
       label: "Title Max Lines",
-      options: [1, 2, 3],
+      options: const [1, 2, 3],
       initialOption: 2,
     ),
     titleOverflow: context.knobs.object.dropdown(

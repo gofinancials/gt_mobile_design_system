@@ -3,13 +3,9 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'Interactive Preview', type: GtVirtualKeypadForm)
-Widget playgroundGtVirtualKeypadFormUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Enter PIN');
-  final subtitle = context.knobs.string(
-    label: 'Subtitle',
-    initialValue: 'Please enter your secure 4-digit transaction PIN.',
-  );
+@widgetbook.UseCase(name: 'Interactive Preview (Avatar)', type: GtVirtualKeypadForm)
+Widget playgroundGtVirtualKeypadFormWithAvatarUseCase(BuildContext context) {
+  final name = context.knobs.string(label: 'User Name', initialValue: 'Alex Lobaloba');
   final maxLength = context.knobs.int.slider(
     label: 'PIN Length',
     initialValue: 4,
@@ -18,12 +14,12 @@ Widget playgroundGtVirtualKeypadFormUseCase(BuildContext context) {
   );
 
   return Scaffold(
-    body: GtVirtualKeypadForm(
+    body: GtVirtualKeypadForm.withAvatar(
       formKey: GlobalKey<FormState>(),
       controller: TextEditingController(),
-      title: title,
-      subtitle: subtitle,
+      name: name,
       maxLength: maxLength,
+      onBioAuth: () {},
     ),
   );
 }

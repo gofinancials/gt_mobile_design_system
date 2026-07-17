@@ -5,33 +5,35 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtToastOverlay', type: GtToastOverlay)
-Widget gtToastOverlayUseCase(BuildContext context) {
+Widget playgroundGtToastOverlayUseCase(BuildContext context) {
+  final message = context.knobs.string(label: 'Toast Message', initialValue: 'Item added to favorites');
+  final variant = context.knobs.object.dropdown<GtPillVariant>(
+    label: 'Variant',
+    options: GtPillVariant.values,
+    initialOption: GtPillVariant.success,
+    labelBuilder: (v) => v.name,
+  );
+
   return GtWidgetDocPage(
-    title: "Toast Overlay",
-    description: "Displays a brief toast notification over the screen.",
+    title: 'GtToastOverlay',
+    description: 'A transient floating toast message banner. Present it via the BuildContext extension method.',
     code: '''
-GtToastOverlay(
-  'Item added to favorites',
-  type: .success,
-  icon: Icons.check_circle,
-)
+// Display toast overlay via BuildContext extension
+context.showToast(
+  "$message",
+  type: GtPillVariant.${variant.name},
+  icon: Icons.check_circle, // Optional
+);
 ''',
-    child: Column(
-      children: [
-        GalleryPageSectionHeader(title: "GtToastOverlay"),
-        GtToastOverlay(
-          context.knobs.string(
-            label: 'Toast Message',
-            initialValue: 'Item added to favorites',
-          ),
-          type: context.knobs.object.dropdown<GtPillVariant>(
-            label: 'Variant',
-            options: GtPillVariant.values,
-            initialOption: .success,
-          ),
+    child: GtRaisedButton(
+      text: 'Trigger Toast Overlay',
+      onPressed: () {
+        context.showToast(
+          message,
+          type: variant,
           icon: Icons.check_circle,
-        ),
-      ],
+        );
+      },
     ),
   );
 }

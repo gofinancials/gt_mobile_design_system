@@ -1,13 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
+import 'package:gallery/lib.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 final pageController = ValueNotifier(0);
 
-@widgetbook.UseCase(name: 'Dashboard Scaffold', type: GtDashboardScaffold)
+@widgetbook.UseCase(name: 'GtDashboardScaffold', type: GtDashboardScaffold)
 Widget playgroundGtDashboardScaffoldUseCase(BuildContext context) {
+  final style = context.knobs.object.dropdown<GtBottomNavigationStyle>(
+    label: 'Navigation Style',
+    options: GtBottomNavigationStyle.values,
+    initialOption: GtBottomNavigationStyle.ios,
+    labelBuilder: (v) => v.name,
+  );
+
+  return GtWidgetDocPage(
+    title: 'GtDashboardScaffold',
+    description: 'A complete dashboard scaffold that coordinates pages, app bars, and bottom navigation states.',
+    code: '''
+GtDashboardScaffold(
+  pageController: pageController,
+  bottomNavigationStyle: GtBottomNavigationStyle.${style.name},
+  data: [
+    GtDashboardPageData(
+      page: HomePage(),
+      appBar: GtHomeAppBar(),
+      navItem: GtBottomNavigationItem(
+        selectedIcon: GtIcons.homeFilled,
+        unselectedIcon: GtIcons.home,
+        label: 'Home',
+      ),
+    ),
+  ],
+)''',
+    child: GtEmptyStateCard(
+      variant: GtCardVariant.normal,
+      icon: GtIcons.alarmClock,
+      description: 'Please refer to the "GtDashboardScaffold Gallery" page in Widgetbook to preview the active dashboard scaffold layout in its full-screen interactive context.',
+    ),
+  );
+}
+
+@widgetbook.UseCase(name: 'GtDashboardScaffold Gallery', type: GtDashboardScaffold)
+Widget buildGtDashboardScaffoldGallery(BuildContext context) {
   return const _DashboardScaffoldPreview();
 }
 
@@ -15,8 +51,7 @@ class _DashboardScaffoldPreview extends StatefulWidget {
   const _DashboardScaffoldPreview();
 
   @override
-  State<_DashboardScaffoldPreview> createState() =>
-      _DashboardScaffoldPreviewState();
+  State<_DashboardScaffoldPreview> createState() => _DashboardScaffoldPreviewState();
 }
 
 class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
@@ -25,16 +60,6 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       selectedIcon: GtIcons.homeFilled,
       unselectedIcon: GtIcons.home,
       label: 'Home',
-    ),
-    GtBottomNavigationItem(
-      selectedIcon: GtIcons.paymentFilled,
-      unselectedIcon: GtIcons.payment,
-      label: 'Payments',
-    ),
-    GtBottomNavigationItem(
-      selectedIcon: GtIcons.productFilled,
-      unselectedIcon: GtIcons.product,
-      label: 'Products',
     ),
     GtBottomNavigationItem(
       selectedIcon: GtIcons.cardFilled,
@@ -48,53 +73,27 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       page: Center(
         child: GtText(
           'Home Page',
-          style: context.textStyles.h4(),
-          key: const ValueKey("home"),
+          style: context.textStyles.h6(),
         ),
       ),
-      backgroundColor: context.isIos || context.isMacos
-          ? context.palette.bg.warm
-          : null,
       appBar: GtHomeAppBar(
+        userFullName: "Alex Lobaloba",
         onClickSearch: () {},
-        onClickHide: () {},
         onClickNotification: () {},
+        onClickAvatar: () {},
       ),
       navItem: _items[0],
       showGradient: true,
-    ),
-    GtDashboardPageData(
-      appBar: GtTitleAppBar(title: "Payments"),
-      page: Center(
-        child: GtText(
-          'Payments Page',
-          style: context.textStyles.h4(),
-          key: const ValueKey("payments"),
-        ),
-      ),
-      navItem: _items[1],
-    ),
-    GtDashboardPageData(
-      appBar: GtTitleAppBar(title: "Products"),
-      page: Center(
-        child: GtText(
-          'Products Page',
-          style: context.textStyles.h4(),
-          key: const ValueKey("products"),
-        ),
-      ),
-      navItem: _items[2],
     ),
     GtDashboardPageData(
       appBar: GtTitleAppBar(title: "Cards"),
       page: Center(
         child: GtText(
           'Cards Page',
-          style: context.textStyles.h4(),
-          key: const ValueKey("cards"),
+          style: context.textStyles.h6(),
         ),
       ),
-      navItem: _items[3],
+      navItem: _items[1],
     ),
   ];
 
@@ -104,12 +103,12 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       onClickHelp: () {},
       data: data,
       pageController: pageController,
-      bottomNavigationStyle: context.knobs.object
-          .dropdown<GtBottomNavigationStyle>(
-            label: "Bottom Navigation Style",
-            options: [.android, .ios],
-            labelBuilder: (value) => value.name.capitalise(),
-          ),
+      bottomNavigationStyle: context.knobs.object.dropdown<GtBottomNavigationStyle>(
+        label: "Bottom Navigation Style",
+        options: GtBottomNavigationStyle.values,
+        initialOption: GtBottomNavigationStyle.ios,
+        labelBuilder: (value) => value.name,
+      ),
     );
   }
 }

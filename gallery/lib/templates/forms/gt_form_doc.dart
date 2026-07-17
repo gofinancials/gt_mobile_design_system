@@ -3,7 +3,7 @@ import 'package:gallery/lib.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'Documentation', type: GtForm)
+@widgetbook.UseCase(name: 'GtForm', type: GtForm)
 Widget playgroundGtFormDoc(BuildContext context) {
   final codeSnippet = '''
 final _formKey = GlobalKey<FormState>();
@@ -30,16 +30,10 @@ GtForm(
 
 It uses an extension <b>context.validateForm(formKey)</b> to trigger validators on all descendent inputs.''',
     code: codeSnippet,
-    child: SizedBox(
-      width: 320.px,
-      height: 120.px,
-      child: Center(
-        child: GtText(
+    child: GtEmptyStateCard(
+      description:
           'Select "Interactive Preview" in the sidebar\nto test validation behavior on mock inputs.',
-          style: context.textStyles.bodyM(color: context.palette.text.sub),
-          textAlign: TextAlign.center,
-        ),
-      ),
+      icon: GtIcons.alarmClock,
     ),
   );
 }

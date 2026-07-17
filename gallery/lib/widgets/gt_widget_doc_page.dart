@@ -87,7 +87,7 @@ class _CodeBlockState extends State<_CodeBlock> {
           code: widget.code,
           syntax: Syntax.DART,
           syntaxTheme: SyntaxThemeExtension.shadesOfPurpleSuperDark, // Theme
-          fontSize: context.textStyles.bodyM().fontSize?.toDouble() ?? 12,
+          fontSize: context.textStyles.bodyS().fontSize?.toDouble() ?? 14,
           withZoom: false,
           withLinesCount: false,
         ),
