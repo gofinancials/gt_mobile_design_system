@@ -7,7 +7,7 @@ enum GtButtonSize {
   /// A pill style extra small button with a baseline height of 20.
   pill(24),
 
-  /// An extra small button with a baseline height of 36.
+  /// An extra small button with a baseline height of 28.
   xsmall(28),
 
   /// A small button with a baseline height of 36.
@@ -188,9 +188,8 @@ abstract class GtButton extends GtStatelessWidget {
   /// Calculates the internal padding for the button based on its [size].
   BorderRadius borderRadius(BuildContext context) {
     final radius = switch (size) {
-      .pill => 6.8,
-      .xsmall => 8,
-      _ => 10,
+      .large || .xlarge || .medium => 10,
+      _ => 6,
     };
     return BorderRadius.circular(context.dp(radius.px));
   }

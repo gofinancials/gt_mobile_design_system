@@ -5,7 +5,10 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(name: 'Dividers', type: GtDivider)
+@widgetbook.UseCase(
+  name: 'Dividers',
+  type: GtDivider,
+)
 Widget playgroundDividerUseCase(BuildContext context) {
   final gapColor = context.knobs.object.dropdown<(String, Color)>(
     label: 'Divider Color',
@@ -75,12 +78,12 @@ class GtDividerContainer extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
+        GtText(
           "Size: ${dividerValue.toStringAsFixed(0)} px".toUpperCase(),
           style: context.textStyles.h4(),
         ),
         divider,
-        Text("Thickness: 1px", style: context.textStyles.bodyL()),
+        GtText("Thickness: 1px", style: context.textStyles.bodyL()),
       ],
     );
   }

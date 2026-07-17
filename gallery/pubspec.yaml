@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_syntax_view: ^4.1.7
   gt_mobile_ui:
     path: ../
   widgetbook_annotation: ^3.11.0
@@ -18,6 +19,8 @@ dependencies:
     git:
       url: https://github.com/gofinancials/gt_mobile_foundation.git
       ref: v0.0.38
+  google_fonts: ^8.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -277,6 +277,7 @@ class GtCard extends GtStatelessWidget {
         },
         behavior: .translucent,
         child: AnimatedContainer(
+          clipBehavior: .hardEdge,
           constraints: constraints,
           decoration: ShapeDecoration(
             color: gradient == null ? computedColor : null,

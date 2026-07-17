@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gallery/widgets/gallery_page_header.dart';
+import 'package:gallery/lib.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-/// Widgetbook playground for [GtLoaderConfirmDialog].
+/// Widgetbook playground for [GtConfirmDialog].
 @widgetbook.UseCase(name: 'GtConfirmDialog', type: GtConfirmDialog)
 Widget buildGtConfirmDialogUsecase(BuildContext context) {
   return const _ConfirmDialogPreview();
@@ -35,38 +35,24 @@ class _ConfirmDialogPreviewState extends State<_ConfirmDialogPreview>
       initialValue: true,
     );
 
-    return Scaffold(
-      body: Padding(
-        padding: context.insets.defaultHorizontalInsets,
-        child: Column(
-          mainAxisAlignment: .start,
-          crossAxisAlignment: .stretch,
-          spacing: context.spacingLg,
-          children: [
-            GalleryPageHeader(
-              title: 'Confirm Dialog',
-              rider: 'Confirm Dialog playground',
-            ),
-            GtRaisedButton(
-              text: "Confirm Action",
-              onPressed: () {
-                confirmAction(
-                  context,
-                  title: title,
-                  denyText: denyText,
-                  allowText: allowText,
-                  description: description,
-                  isDismissable: isDissmissable,
-                  onContinue: () {
-                    context.showToast(
-                      "You confirmed the action and executed same",
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
+    return GtWidgetDocPage(
+      title: 'GtConfirmDialog',
+      description: 'An adaptive confirmation dialog for the design system.',
+      child: GtRaisedButton(
+        text: "Confirm Action",
+        onPressed: () {
+          confirmAction(
+            context,
+            title: title,
+            denyText: denyText,
+            allowText: allowText,
+            description: description,
+            isDismissable: isDissmissable,
+            onContinue: () {
+              context.showToast("You confirmed the action and executed same");
+            },
+          );
+        },
       ),
     );
   }

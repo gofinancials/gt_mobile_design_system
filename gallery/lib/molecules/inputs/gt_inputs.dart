@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:widgetbook/widgetbook.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 final _formKey = GlobalKey<FormState>();
@@ -15,32 +15,34 @@ Widget buildGtPinInputUsecase(BuildContext context) {
     appBar: GtTitleAppBar(title: "GtPinInput Showcase"),
     body: GtForm(
       formKey: _formKey,
-      child: SingleChildScrollView(
-        padding: context.insets.defaultAllInsets,
-        child: Column(
-          crossAxisAlignment: .stretch,
-          children: [
-            ...GtGap.ySection4xl() * 2,
-            GtText(
-              "Pin Input Example",
-              style: context.textStyles.bodyS(),
-              textAlign: .center,
-            ),
-            const GtGap.yLg(),
-            GtPinInput(
-              onFieldSubmitted: (value) {
-                context.showToast("Completed input with vale $value");
-              },
-              validator: (value) => "Pin Is Invalid",
-            ),
-            const GtGap.ySectionSm(),
-            GtRaisedButton(
-              onPressed: () => context.validateForm(_formKey),
-              text: "Simulate Error",
-              alignment: .center,
-              size: .medium,
-            ),
-          ],
+      child: Scaffold(
+        body: SingleChildScrollView(
+          padding: context.insets.defaultAllInsets,
+          child: Column(
+            crossAxisAlignment: .stretch,
+            children: [
+              ...GtGap.ySection4xl() * 2,
+              GtText(
+                "Pin Input Example",
+                style: context.textStyles.bodyS(),
+                textAlign: .center,
+              ),
+              const GtGap.yLg(),
+              GtPinInput(
+                onFieldSubmitted: (value) {
+                  context.showToast("Completed input with vale $value");
+                },
+                validator: (value) => "Pin Is Invalid",
+              ),
+              const GtGap.ySectionSm(),
+              GtRaisedButton(
+                onPressed: () => context.validateForm(_formKey),
+                text: "Simulate Error",
+                alignment: .center,
+                size: .medium,
+              ),
+            ],
+          ),
         ),
       ),
     ),
@@ -49,7 +51,7 @@ Widget buildGtPinInputUsecase(BuildContext context) {
 
 final _calendarCtrl = GtCalendarController(GtCalendarValue());
 
-@widgetbook.UseCase(name: 'GtCalendar', type: GtCalendar)
+@widgetbook.UseCase(name: 'GtCalendar Inputs', type: GtCalendar)
 Widget buildGtCalendarUsecase(BuildContext context) {
   return Scaffold(
     appBar: GtTitleAppBar(title: "GtCalendar Showcase"),
@@ -130,7 +132,7 @@ FutureOr<List<GtDropdownData<Country>>> get _allCountries async {
 
 final allCountries = _allCountries;
 
-@widgetbook.UseCase(name: 'GtTextField', type: GtTextField)
+@widgetbook.UseCase(name: 'GtTextField (legacy)', type: GtTextField)
 Widget buildGtTextFieldUsecase(BuildContext context) {
   final prefix = context.knobs.object.dropdown<(String, Widget?)>(
     label: "Prefix Icon",
@@ -162,13 +164,10 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
   final helperText = context.knobs.stringOrNull(label: "Helper Text");
 
   final isSearch = decoration.$1.includes("Search");
-  final isWhite = decoration.$1.includes("white");
 
   return GtForm(
     formKey: _formKey2,
     child: Scaffold(
-      appBar: GtTitleAppBar(title: "GtTextField Showcase"),
-      backgroundColor: isWhite ? context.palette.bg.weak : null,
       body: SingleChildScrollView(
         padding: context.insets.defaultAllInsets,
         child: Column(

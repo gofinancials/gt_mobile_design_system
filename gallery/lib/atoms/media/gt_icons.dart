@@ -31,19 +31,14 @@ Widget playgroundIconsUseCase(BuildContext context) {
   );
 
   return Scaffold(
+    backgroundColor: context.palette.bg.white,
     body: Padding(
       padding: context.insets.symmetricDp(
         horizontal: context.grid.singleColumn.margins.px,
       ),
       child: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: GalleryPageHeader(
-              title: "Icon Playground",
-              rider: "IconFonts, Vector Icons & Illustrations",
-              sectionHeader: "Icon fonts [GtIcon]",
-            ),
-          ),
+          SliverToBoxAdapter(child: GtPageHeader(title: "GtIcons")),
           SliverGrid.builder(
             gridDelegate: delegate,
             itemBuilder: (_, index) {
@@ -84,23 +79,6 @@ Widget playgroundIconsUseCase(BuildContext context) {
               );
             },
             itemCount: allIllustrations.length,
-          ),
-
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(
-              title: "Default Icons [GtSvg.asIcon]",
-            ),
-          ),
-          SliverGrid.builder(
-            gridDelegate: delegate,
-            itemBuilder: (_, index) {
-              final icon = allIcons[index];
-              return GalleryIconCard(
-                label: icon.label,
-                child: GtSvg.asIcon(icon.value, size: 24, variant: variant.$2),
-              );
-            },
-            itemCount: allIcons.length,
           ),
           SliverToBoxAdapter(
             child: GalleryPageSectionHeader(title: "Icons with color [GtSvg]"),

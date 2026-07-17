@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -10,167 +9,139 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 @widgetbook.UseCase(name: 'GtText', type: GtText)
 Widget playgroundGtTextUseCase(BuildContext context) {
-  const text = "The quick brown fox jumps over the lazy dog.";
-  final styles = context.textStyles;
+  final text = context.knobs.string(
+    label: "Text Content",
+    initialValue: "The quick brown fox jumps over the lazy dog.",
+  );
+
+  final styleName = context.knobs.list<String>(
+    label: "Text Style",
+    options: [
+      'd1',
+      'd2',
+      'd3',
+      'd4',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'bodyXl',
+      'bodyL',
+      'bodyM',
+      'bodyS',
+      'bodyXs',
+      'labelXl',
+      'labelL',
+      'labelM',
+      'labelS',
+      'labelXs',
+    ],
+    initialOption: 'bodyM',
+  );
 
   final softWrap = context.knobs.boolean(
     label: "Soft wrap text",
     initialValue: true,
   );
-  final direction = context.knobs.object.dropdown<TextDirection>(
+
+  final direction = context.knobs.listOrNull<TextDirection?>(
     label: "Text Direction",
-    initialOption: TextDirection.ltr,
-    options: [TextDirection.ltr, TextDirection.rtl],
+    initialOption: null,
+    options: [null, TextDirection.ltr, TextDirection.rtl],
+    labelBuilder: (val) => val == null ? 'Default' : val.name,
   );
-  final maxLines = context.knobs.object.dropdown<(String, int)>(
+
+  final maxLines = context.knobs.listOrNull<int?>(
     label: "Max Lines",
-    initialOption: ("None", 0),
-    options: [("None", 0), ("1 Line", 1)],
-    labelBuilder: (value) => value.$1,
+    initialOption: null,
+    options: [null, 1, 2, 3],
+    labelBuilder: (val) => val == null ? 'None' : val.toString(),
   );
-  final alignment = context.knobs.object.dropdown<(String, TextAlign)>(
+
+  final alignment = context.knobs.listOrNull<TextAlign?>(
     label: "Text Alignment",
-    initialOption: ("Start", TextAlign.start),
+    initialOption: null,
     options: [
-      ("Start", TextAlign.start),
-      ("Center", TextAlign.center),
-      ("End", TextAlign.end),
-      ("Justify", TextAlign.justify),
+      null,
+      TextAlign.start,
+      TextAlign.center,
+      TextAlign.end,
+      TextAlign.justify,
     ],
-    labelBuilder: (value) => value.$1,
+    labelBuilder: (val) => val == null ? 'Default' : val.name,
   );
 
-  final allStyles = [
-    for (final style in styles.all)
-      (
-        style.$1,
-        GtText(
-          text.upper,
-          style: style.$2,
-          softWrap: softWrap,
-          textDirection: direction,
-          maxLines: maxLines.$2 <= 0 ? null : maxLines.$2,
-          textAlign: alignment.$2,
-        ),
-      ),
-  ];
+  TextStyle getStyle() {
+    switch (styleName) {
+      case 'd1':
+        return context.textStyles.d1();
+      case 'd2':
+        return context.textStyles.d2();
+      case 'd3':
+        return context.textStyles.d3();
+      case 'd4':
+        return context.textStyles.d4();
+      case 'h1':
+        return context.textStyles.h1();
+      case 'h2':
+        return context.textStyles.h2();
+      case 'h3':
+        return context.textStyles.h3();
+      case 'h4':
+        return context.textStyles.h4();
+      case 'h5':
+        return context.textStyles.h5();
+      case 'h6':
+        return context.textStyles.h6();
+      case 'bodyXl':
+        return context.textStyles.bodyXl();
+      case 'bodyL':
+        return context.textStyles.bodyL();
+      case 'bodyM':
+        return context.textStyles.bodyM();
+      case 'bodyS':
+        return context.textStyles.bodyS();
+      case 'bodyXs':
+        return context.textStyles.bodyXs();
+      case 'labelXl':
+        return context.textStyles.labelXl();
+      case 'labelL':
+        return context.textStyles.labelL();
+      case 'labelM':
+        return context.textStyles.labelM();
+      case 'labelS':
+        return context.textStyles.labelS();
+      case 'labelXs':
+        return context.textStyles.labelXs();
+      default:
+        return context.textStyles.bodyM();
+    }
+  }
 
-  return Scaffold(
-    body: Padding(
-      padding: context.insets.symmetricDp(
-        horizontal: context.grid.singleColumn.margins.px,
-      ),
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: GalleryPageHeader(
-              title: "Typography",
-              rider: "Typography Playground",
-              sectionHeader: "Text Styles",
-            ),
-          ),
-          SliverList.separated(
-            itemBuilder: (_, index) {
-              final (label, text) = allStyles[index];
-              return GtTextContainer(label: label, text: text);
-            },
-            separatorBuilder: (_, index) => const GtDivider.lg(),
-            itemCount: allStyles.length,
-          ),
-          SliverToBoxAdapter(child: GtGap.ySectionLg()),
-        ],
-      ),
+  return GtWidgetDocPage(
+    title: 'GtText',
+    description:
+        'A standardized text widget that uses the design system typography.',
+    code:
+        '''
+GtText(
+  '$text',
+  style: context.textStyles.$styleName(),
+  softWrap: $softWrap,
+  maxLines: $maxLines,
+  textAlign: $alignment,
+  textDirection: $direction,
+)
+''',
+    child: GtText(
+      text,
+      style: getStyle(),
+      softWrap: softWrap,
+      textDirection: direction,
+      maxLines: maxLines,
+      textAlign: alignment,
     ),
   );
-}
-
-class GtTextContainer extends StatelessWidget {
-  final String label;
-  final GtText text;
-
-  const GtTextContainer({required this.text, required this.label, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: context.insets.allDp(16.px),
-      alignment: Alignment.bottomLeft,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: context.dp(context.spacing.sectionMd.px),
-        children: [
-          GtText(
-            label,
-            style: context.textStyles.bodyS(color: context.palette.text.sub),
-          ),
-          text,
-          GtTextInfoRow(text.style ?? context.textStyles.bodyM()),
-        ],
-      ),
-    );
-  }
-}
-
-class GtTextInfoRow extends StatelessWidget {
-  final TextStyle style;
-
-  const GtTextInfoRow(this.style, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.start,
-      crossAxisAlignment: WrapCrossAlignment.start,
-      spacing: context.dp(context.spacing.md.px),
-      runSpacing: context.dp(context.spacing.md.px),
-      children: [
-        GtTextInfoPill("${style.fontWeight?.value ?? 400}", label: "weight"),
-        GtTextInfoPill(
-          "${((style.fontSize ?? 1) * (style.height ?? 1)).toStringAsFixed(0)}PX",
-          label: "line height",
-        ),
-        GtTextInfoPill(
-          (style.letterSpacing ?? 0).toStringAsFixed(1),
-          label: "letter spacing",
-        ),
-        GtTextInfoPill(
-          "${(style.fontSize ?? 0).toStringAsFixed(0)}PX",
-          label: "font size",
-        ),
-      ],
-    );
-  }
-}
-
-class GtTextInfoPill extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const GtTextInfoPill(this.value, {required this.label, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: context.insets.symmetricDp(horizontal: 12.px, vertical: 6.px),
-      decoration: BoxDecoration(
-        border: Border.all(color: context.palette.stroke.soft),
-        borderRadius: context.dp(context.radii.md.px).circularBorderRadius,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        spacing: context.dp(context.spacing.sm.px),
-        children: [
-          GtText(
-            "${label.upper}:",
-            style: context.textStyles.bodyXs(color: context.palette.text.soft),
-          ),
-          GtText(
-            value,
-            style: context.textStyles.bodyXs(color: context.palette.text.sub),
-          ),
-        ],
-      ),
-    );
-  }
 }
