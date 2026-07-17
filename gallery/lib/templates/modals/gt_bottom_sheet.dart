@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gallery/widgets/gallery_page_header.dart';
+import 'package:gallery/lib.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -30,18 +30,13 @@ class _BottomSheetPreviewState extends State<_BottomSheetPreview>
     with GtBottomSheetMixin {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: context.insets.defaultHorizontalInsets,
-        child: Column(
-          mainAxisAlignment: .start,
-          crossAxisAlignment: .stretch,
-          spacing: context.spacingLg,
-          children: [
-            GalleryPageHeader(
-              title: 'Bottom Sheet',
-              rider: 'Bottom shet playground draggable and static',
-            ),
+    return GtWidgetDocPage(
+      title: 'Bottom Sheet',
+      description: 'Bottom sheet playground draggable and static',
+      child: Column(
+        crossAxisAlignment: .stretch,
+        spacing: context.spacingLg,
+        children: [
             GtRaisedButton(
               text: 'Show Simple Bottom Sheet',
               onPressed: () {
@@ -195,8 +190,7 @@ class _BottomSheetPreviewState extends State<_BottomSheetPreview>
                 );
               },
             ),
-          ],
-        ),
+        ],
       ),
     );
   }

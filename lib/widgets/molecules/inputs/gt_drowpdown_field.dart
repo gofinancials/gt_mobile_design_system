@@ -144,15 +144,6 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
     super.dispose();
   }
 
-  @override
-  void didUpdateWidget(covariant GtDropdownField<T> oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.controller != oldWidget.controller &&
-        widget.controller != null) {
-      controller = widget.controller!;
-    }
-  }
-
   void _showSheet() {
     if (!widget.isEnabled) return;
     showDraggableSheet(

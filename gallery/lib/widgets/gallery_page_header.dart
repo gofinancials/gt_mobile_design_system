@@ -4,12 +4,12 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 class GalleryPageHeader extends StatelessWidget {
   final String title;
-  final String rider;
+  final String? rider;
   final String? sectionHeader;
 
   const GalleryPageHeader({
     required this.title,
-    required this.rider,
+    this.rider,
     this.sectionHeader,
     super.key,
   });
@@ -19,23 +19,23 @@ class GalleryPageHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: .stretch,
       children: [
-        const GtGap.ySectionXl(),
-        Text(title.upper, style: context.textStyles.d1()),
-        const GtGap.ySectionMd(),
-        Text(
-          rider,
-          style: context.textStyles.subHeadM(color: context.palette.text.sub),
-        ),
-        const GtGap.ySectionLg(),
-        const GtDivider.none(),
+        GtText(title.upper, style: context.textStyles.d2()),
+        if (rider.hasValue) ...[
+          const GtGap.ySm(),
+          GtRichText(
+            rider,
+            style: context.textStyles.bodyM(color: context.palette.text.sub),
+          ),
+        ],
+
+        const GtDivider.sectionMd(),
         if (sectionHeader.hasValue) ...[
-          const GtGap.yMd(),
-          Text(
+          GtText(
             sectionHeader?.upper ?? "",
             style: context.textStyles.subHeadS(color: context.palette.text.sub),
           ),
+          const GtGap.ySectionSm(),
         ],
-        const GtGap.ySectionLg(),
       ],
     );
   }

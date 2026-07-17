@@ -4,7 +4,10 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(name: 'Gaps', type: GtGap)
+@widgetbook.UseCase(
+  name: 'Gaps',
+  type: GtGap,
+)
 Widget playgroundGapUseCase(BuildContext context) {
   final inComponentGaps = const [
     GtGapRow(gap: GtGap.yXs(), label: "GtGap.yXs"),
@@ -224,7 +227,7 @@ class GtGapRow extends StatelessWidget {
       children: [
         TableRow(
           children: [
-            Text(
+            GtText(
               "$label (${gapValue.toStringAsFixed(0)}px)",
               style: context.textStyles.bodyM(),
             ),
@@ -257,7 +260,7 @@ class GtGapColumn extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       spacing: context.dp(context.spacing.xs.px),
       children: [
-        Text(
+        GtText(
           "$label (${gapValue.toStringAsFixed(0)}px)",
           style: context.textStyles.bodyM(),
         ),

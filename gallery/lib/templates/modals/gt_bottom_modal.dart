@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gallery/widgets/gallery_page_header.dart';
+import 'package:gallery/lib.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
@@ -75,75 +75,68 @@ class _BottomModalPreviewState extends State<_BottomModalPreview>
     with GtBottomModalMixin {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: context.insets.defaultHorizontalInsets,
-        child: Column(
-          mainAxisAlignment: .start,
-          crossAxisAlignment: .stretch,
-          spacing: context.spacingLg,
-          children: [
-            GalleryPageHeader(
-              title: 'Bottom Modal',
-              rider:
-                  'Representation of the static, loading, success, and error states',
-            ),
-            GtRaisedButton(
-              text: 'Open Simple modal',
-              onPressed: () {
-                showBottomModal(
-                  context,
-                  title: "NOT FOUND",
-                  description: "The system couldn’t find what you asked for",
-                  icon: AppImageData.asset(GtVectors.caution),
-                );
-              },
-            ),
-            GtRaisedButton(
-              text: 'Open Task bottom modal',
-              variant: .success,
-              onPressed: () async {
-                showTaskBottomModal(context, controller: _controller);
-                _controller.complete(await _getSuccessFuture());
-              },
-            ),
-            GtRaisedButton(
-              text: 'Open Failing Task bottom modal',
-              variant: .destructive,
-              onPressed: () async {
-                showTaskBottomModal(context, controller: _controller);
-                _controller.complete(
-                  await _getFailureFuture(
-                    onError: () {
-                      _controller.title = "Something went wrong";
-                    },
-                  ),
-                );
-              },
-            ),
-            GtRaisedButton(
-              text: 'Open Progressive Task bottom modal',
-              variant: .highlighted,
-              onPressed: () async {
-                showTaskBottomModal(context, controller: _controller);
-                _controller.complete(
-                  await _getProgressFuture(
-                    onProgress: (value) {
-                      if (value == 1.0) {
-                        _controller.title = "Completed";
-                        _controller.description = "Data has been downloaded";
-                        _controller.progress = null;
-                        return;
-                      }
-                      _controller.title = "Downloading...";
-                      _controller.progress = value;
-                    },
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+    return GtWidgetDocPage(
+      title: 'Bottom Modal',
+      description: 'Representation of the static, loading, success, and error states',
+      child: Column(
+        crossAxisAlignment: .stretch,
+        spacing: context.spacingLg,
+        children: [
+          GtRaisedButton(
+            text: 'Open Simple modal',
+            onPressed: () {
+              showBottomModal(
+                context,
+                title: "NOT FOUND",
+                description: "The system couldn’t find what you asked for",
+                icon: AppImageData.asset(GtVectors.caution),
+              );
+            },
+          ),
+          GtRaisedButton(
+            text: 'Open Task bottom modal',
+            variant: .success,
+            onPressed: () async {
+              showTaskBottomModal(context, controller: _controller);
+              _controller.complete(await _getSuccessFuture());
+            },
+          ),
+          GtRaisedButton(
+            text: 'Open Failing Task bottom modal',
+            variant: .destructive,
+            onPressed: () async {
+              showTaskBottomModal(context, controller: _controller);
+              _controller.complete(
+                await _getFailureFuture(
+                  onError: () {
+                    _controller.title = "Something went wrong";
+                  },
+                ),
+              );
+            },
+          ),
+          GtRaisedButton(
+            text: 'Open Progressive Task bottom modal',
+            variant: .highlighted,
+            onPressed: () async {
+              showTaskBottomModal(context, controller: _controller);
+              _controller.complete(
+                await _getProgressFuture(
+                  onProgress: (value) {
+                    if (value == 1.0) {
+                      _controller.title = "Completed";
+                      _controller.description = "Data has been downloaded";
+                      _controller.progress = null;
+                      return;
+                    }
+                    _controller.title = "Downloading...";
+                    _controller.progress = value;
+                  },
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'package:gallery/widgets/widgets.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'GtContextMenu', type: GtContextMenu)
+@widgetbook.UseCase(name: 'GtContextMenu (legacy)', type: GtContextMenu)
 Widget buildGtContextMeunuUsecase(BuildContext context) {
   return Scaffold(
     extendBodyBehindAppBar: true,

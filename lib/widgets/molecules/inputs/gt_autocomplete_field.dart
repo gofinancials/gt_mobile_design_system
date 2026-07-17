@@ -150,15 +150,6 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
     super.dispose();
   }
 
-  @override
-  void didUpdateWidget(covariant GtAutocompleteField<T> oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.controller != oldWidget.controller &&
-        widget.controller != null) {
-      controller = widget.controller!;
-    }
-  }
-
   /// Filter the suggestions based on the query.
   FutureOr<List<GtAutocompleteItem<T>>> _filterSuggestions(String query) async {
     if (!widget.isEnabled || !query.hasValue) return [];

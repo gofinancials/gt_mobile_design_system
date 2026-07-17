@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
+// ignore: depend_on_referenced_packages
+import 'package:provider/provider.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'main.directories.g.dart';
@@ -105,6 +107,9 @@ void main() {
   locator.registerLazySingleton<AppConfig>(() {
     return GalleryConfig();
   });
+  locator.registerLazySingleton<GtThemeState>(() {
+    return GtThemeState(AppMockStorageService(), kPersonalTheme);
+  });
 
   runApp(const WidgetbookApp());
 }
@@ -123,21 +128,33 @@ class WidgetbookApp extends StatelessWidget {
     final activeTheme = state.theme;
     final activeMode = state.mode;
 
-    return GtThemeProvider(
-      theme: activeTheme,
-      child: Widgetbook.material(
-        initialRoute: "?path=designsystemcover/cover",
-        directories: directories,
-        darkTheme: activeTheme.materialDark,
-        lightTheme: activeTheme.materialLight,
-        themeMode: activeMode,
-        addons: [
-          ViewportAddon(Viewports.all),
-          GtThemeAddon(themes: kAllThemes, themeNotifier: themeNotifier),
-          InspectorAddon(),
-          TextScaleAddon(max: 1.5),
-          ZoomAddon(),
-        ],
+    themeNotifier.addListener(() {
+      locator<GtThemeState>().switchTheme(themeNotifier.value.theme);
+    });
+
+    return GtStateWrapper(
+      providers: [
+        ChangeNotifierProvider<GtThemeState>(
+          create: (_) => locator(),
+          lazy: true,
+        ),
+      ],
+      child: GtThemeProvider(
+        theme: activeTheme,
+        child: Widgetbook.material(
+          initialRoute: "?path=designsystemcover/cover",
+          directories: directories,
+          darkTheme: activeTheme.materialDark,
+          lightTheme: activeTheme.materialLight,
+          themeMode: activeMode,
+          addons: [
+            ViewportAddon(Viewports.all),
+            GtThemeAddon(themes: kAllThemes, themeNotifier: themeNotifier),
+            InspectorAddon(),
+            TextScaleAddon(max: 1.5),
+            ZoomAddon(),
+          ],
+        ),
       ),
     );
   }

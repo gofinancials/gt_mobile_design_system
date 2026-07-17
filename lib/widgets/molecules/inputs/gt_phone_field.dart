@@ -13,6 +13,9 @@ class GtPhoneField extends GtStatefulWidget {
   /// The controller used to read and manipulate the input text and selected country code.
   final GtInputController<Country>? controller;
 
+  /// Custom visual styling for the input.
+  final GtInputDecoration? decoration;
+
   /// An optional label displayed for the input field.
   final String? label;
 
@@ -50,6 +53,7 @@ class GtPhoneField extends GtStatefulWidget {
   const GtPhoneField({
     super.key,
     this.controller,
+    this.decoration,
     this.label,
     this.hintText,
     this.onChange,
@@ -94,7 +98,7 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
 
   @override
   Widget build(BuildContext context) {
-    final decor = context.inputStyles.phoneInputDecoration;
+    final decor = widget.decoration ?? context.inputStyles.phoneInputDecoration;
     final prefix = GenericListener(
       valueListenable: controller.selectionNotifier,
       builder: (country) {

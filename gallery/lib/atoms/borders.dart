@@ -54,84 +54,206 @@ Widget playgroundBordersUseCase(BuildContext context) {
               title: "Borders",
               rider:
                   "Borders are used to separate content and create visual hierarchy. They can be used to create cards, buttons, and other UI elements.",
-              sectionHeader: "Design System Border Radii",
             ),
           ),
           SliverToBoxAdapter(
-            child: Table(
-              defaultVerticalAlignment: .middle,
-              columnWidths: {
-                0: const FlexColumnWidth(4),
-                1: const FixedColumnWidth(5),
-                2: const FlexColumnWidth(4),
-              },
-              children: [
-                TableRow(
-                  children: [
-                    GtCard(
-                      borderRadius: .zero,
-                      color: context.palette.feature.base,
-                      padding: context.insets.allDp(10.px),
-                      child: GtText(
-                        "Accessor".upper,
-                        textAlign: .start,
-                        style: context.textStyles.h7(
-                          color: context.palette.text.white,
-                        ),
-                      ),
-                    ),
-                    const Offstage(),
-                    GtCard(
-                      borderRadius: .zero,
-                      color: context.palette.highlighted.base,
-                      padding: context.insets.allDp(10.px),
-                      child: GtText(
-                        "DP Value".upper,
-                        textAlign: .start,
-                        style: context.textStyles.h7(
-                          color: context.palette.text.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                for (final radius in borderRadii)
+            child: GallerySectionCard(
+              "Design System Border Radii",
+              child: Table(
+                defaultVerticalAlignment: .middle,
+                columnWidths: {
+                  0: const FlexColumnWidth(4),
+                  1: const FixedColumnWidth(5),
+                  2: const FlexColumnWidth(4),
+                },
+                children: [
                   TableRow(
                     children: [
                       GtCard(
                         borderRadius: .zero,
-                        variant: .featured,
+                        color: context.palette.feature.base,
                         padding: context.insets.allDp(10.px),
-                        child: GtText(radius.$1, textAlign: .start),
+                        child: GtText(
+                          "Accessor".upper,
+                          textAlign: .start,
+                          style: context.textStyles.h7(
+                            color: context.palette.text.white,
+                          ),
+                        ),
                       ),
                       const Offstage(),
                       GtCard(
                         borderRadius: .zero,
-                        variant: .highlighted,
+                        color: context.palette.highlighted.base,
                         padding: context.insets.allDp(10.px),
                         child: GtText(
-                          "${radius.$2.x.toStringAsFixed(0)}dp",
+                          "DP Value".upper,
                           textAlign: .start,
+                          style: context.textStyles.h7(
+                            color: context.palette.text.white,
+                          ),
                         ),
                       ),
                     ],
                   ),
-              ],
+                  for (final radius in borderRadii)
+                    TableRow(
+                      children: [
+                        GtCard(
+                          borderRadius: .zero,
+                          variant: .featured,
+                          padding: context.insets.allDp(10.px),
+                          child: GtText(radius.$1, textAlign: .start),
+                        ),
+                        const Offstage(),
+                        GtCard(
+                          borderRadius: .zero,
+                          variant: .highlighted,
+                          padding: context.insets.allDp(10.px),
+                          child: GtText(
+                            "${radius.$2.x.toStringAsFixed(0)}dp",
+                            textAlign: .start,
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
             ),
           ),
           SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Circular Borders"),
+            child: GallerySectionCard(
+              "Circular Borders",
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) {
+                  final border = circularBorders[index];
+                  return GtBorderContainer(
+                    borderRadius: border.$2,
+                    label: border.$1,
+                  );
+                },
+                itemCount: circularBorders.length,
+                gridDelegate: delegate,
+              ),
+            ),
           ),
-          SliverGrid.builder(
-            itemBuilder: (_, index) {
-              final border = circularBorders[index];
-              return GtBorderContainer(
-                borderRadius: border.$2,
-                label: border.$1,
-              );
-            },
-            itemCount: circularBorders.length,
-            gridDelegate: delegate,
+          SliverToBoxAdapter(
+            child: GallerySectionCard(
+              "Top Borders",
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) {
+                  final border = borderRadii[index];
+                  return GtBorderContainer(
+                    borderRadius: BorderRadius.vertical(top: border.$2),
+                    label: "BorderRadius.vertical(top: ${border.$1})",
+                  );
+                },
+                itemCount: borderRadii.length,
+                gridDelegate: delegate,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: GallerySectionCard(
+              "Bottom Borders",
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) {
+                  final border = borderRadii[index];
+                  return GtBorderContainer(
+                    borderRadius: BorderRadius.vertical(bottom: border.$2),
+                    label: "BorderRadius.vertical(bottom: ${border.$1})",
+                  );
+                },
+                itemCount: borderRadii.length,
+                gridDelegate: delegate,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: GallerySectionCard(
+              "Left Borders",
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) {
+                  final border = borderRadii[index];
+                  return GtBorderContainer(
+                    borderRadius: BorderRadius.horizontal(left: border.$2),
+                    label: "BorderRadius.horizontal(left: ${border.$1})",
+                  );
+                },
+                itemCount: borderRadii.length,
+                gridDelegate: delegate,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: GallerySectionCard(
+              "Right Borders",
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) {
+                  final border = borderRadii[index];
+                  return GtBorderContainer(
+                    borderRadius: BorderRadius.horizontal(right: border.$2),
+                    label: "BorderRadius.horizontal(right: ${border.$1})",
+                  );
+                },
+                itemCount: borderRadii.length,
+                gridDelegate: delegate,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: GallerySectionCard(
+              "Top Left <> Bottom Right Borders",
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) {
+                  final border = borderRadii[index];
+                  return GtBorderContainer(
+                    borderRadius: BorderRadius.only(
+                      topLeft: border.$2,
+                      bottomRight: border.$2,
+                    ),
+                    label:
+                        """BorderRadius.only(topLeft: ${border.$1}, bottomRight: ${border.$1},)""",
+                  );
+                },
+                itemCount: borderRadii.length,
+                gridDelegate: delegate,
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: GallerySectionCard(
+              "Top Right <> Bottom Left Borders",
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (_, index) {
+                  final border = borderRadii[index];
+                  return GtBorderContainer(
+                    borderRadius: BorderRadius.only(
+                      topRight: border.$2,
+                      bottomLeft: border.$2,
+                    ),
+                    label:
+                        """BorderRadius.only(topRight: ${border.$1}, bottomLeft: ${border.$1},)""",
+                  );
+                },
+                itemCount: borderRadii.length,
+                gridDelegate: delegate,
+              ),
+            ),
           ),
 
           SliverToBoxAdapter(child: GtGap.ySectionLg()),

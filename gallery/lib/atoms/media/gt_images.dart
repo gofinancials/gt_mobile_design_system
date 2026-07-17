@@ -16,25 +16,17 @@ Widget playgroundImageUseCase(BuildContext context) {
     initialOption:
         "https://res.cloudinary.com/jesse-dirisu/image/upload/v1589648790/bookme_mail/payment.png",
   );
-  String lottieUrl = context.knobs.object.dropdown(
-    label: "Test Lottie Urls",
-    options: [
-      'https://storage.googleapis.com/dump-storage-jesse/Saving%20the%20Money.json',
-      'https://storage.googleapis.com/dump-storage-jesse/Money.json',
-      GtNetworkLotties.waveForm,
-    ],
-    initialOption:
-        "https://storage.googleapis.com/dump-storage-jesse/Saving%20the%20Money.json",
-  );
-  double height = context.knobs.object.dropdown<double>(
+  double height = context.knobs.double.slider(
     label: "Image Height",
-    initialOption: 100,
-    options: [20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220],
+    max: 200,
+    min: 30,
+    initialValue: 100,
   );
-  double width = context.knobs.object.dropdown<double>(
+  double width = context.knobs.double.slider(
     label: "Image Width",
-    initialOption: 100,
-    options: [20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220],
+    initialValue: 100,
+    max: 200,
+    min: 30,
   );
   final alignment = context.knobs.object.dropdown<(String, Alignment)>(
     label: "Image Alignment",
@@ -80,18 +72,6 @@ Widget playgroundImageUseCase(BuildContext context) {
           SliverToBoxAdapter(
             child: GtNetworkImage(
               imageUrl,
-              height: height,
-              width: width,
-              alignment: alignment.$2,
-              fit: fit.$2,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: GalleryPageSectionHeader(title: "Lottie Images [GTLOTTIE]"),
-          ),
-          SliverToBoxAdapter(
-            child: GtLottie(
-              lottieUrl,
               height: height,
               width: width,
               alignment: alignment.$2,
