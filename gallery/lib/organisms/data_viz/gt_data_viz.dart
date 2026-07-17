@@ -113,7 +113,7 @@ Widget buildGtLineChartUsecase(BuildContext context) {
     code:
         '''
 GtLineChartContainer(
-  items: items,
+  items: [],
   calendarTitle: "$calendarTitle",
   title: "$title",
   maxValue: $maxValue,
