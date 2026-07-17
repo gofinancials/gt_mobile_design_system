@@ -109,40 +109,40 @@ class DesignSystemCover extends GtStatelessWidget {
                 ),
                 children: [
                   _GuideSectionCard(
-                    title: 'Browse',
+                    title: 'Browse Hierarchy',
                     icon: GtIcons.shapes,
                     content:
-                        'Navigate the left sidebar by component complexity from atoms to templates.',
+                        'Navigate the sidebar by component complexity from basic atoms up to templates.',
                   ),
                   _GuideSectionCard(
-                    title: 'Search',
-                    icon: GtIcons.magnifier,
-                    content:
-                        'Use the search field to find any widget by name across all folders.',
-                  ),
-                  _GuideSectionCard(
-                    title: 'Inspect Code',
+                    title: 'Tabbed Experience',
                     icon: GtIcons.fileContent,
                     content:
-                        'Click the Inspector icon to toggle between live preview and code.',
+                        'Switch between the interactive "Visual Display" and copyable "Code Snippet" tabs on doc pages.',
                   ),
                   _GuideSectionCard(
-                    title: 'Experiment',
+                    title: 'Interactive Gallery',
+                    icon: GtIcons.phone,
+                    content:
+                        'For complex screens and scaffolds, select the dedicated "Gallery" usecase to view them in full screen.',
+                  ),
+                  _GuideSectionCard(
+                    title: 'Knob Playgrounds',
                     icon: GtIcons.gear,
                     content:
-                        'Use the knobs panel to change variants, sizes, colors, and states interactively.',
+                        'Experiment with variants, sizes, colors, and states using live controls in the knobs panel.',
                   ),
                   _GuideSectionCard(
-                    title: 'Switch Themes',
+                    title: 'Copy-Paste Code',
+                    icon: GtIcons.copy,
+                    content:
+                        'Instantly copy ready-to-use Flutter snippets that sync dynamically with your selected knobs.',
+                  ),
+                  _GuideSectionCard(
+                    title: 'Clean Design Tokens',
                     icon: GtIcons.paintbrush,
                     content:
-                        'Use the theme addon to switch between product themes in real time.',
-                  ),
-                  _GuideSectionCard(
-                    title: 'Key Conventions',
-                    icon: GtIcons.circleInfo,
-                    content:
-                        'Always use GtGap, context.palette, and context.textStyles. Avoid raw SizedBox.',
+                        'All components are built using context.palette, context.textStyles, and GtGap tokens.',
                   ),
                 ],
               ),
