@@ -16,24 +16,32 @@ GtAnimatedFade(
   child2: Container(),
 )
 ''',
-    child: Column(
-      children: [
-        GalleryPageSectionHeader(title: "GtAnimatedFade"),
-        GtAnimatedFade(
-          showFirst: context.knobs.boolean(label: 'Show First Child', initialValue: true),
-          duration: 300,
-          child1: Container(
-            height: 100.px,
-            color: context.palette.primary.base,
-            child: Center(child: GtText("First Child", style: context.textStyles.bodyM(color: context.palette.text.white))),
-          ),
-          child2: Container(
-            height: 100.px,
-            color: context.palette.success.base,
-            child: Center(child: GtText("Second Child", style: context.textStyles.bodyM(color: context.palette.text.white))),
+    child: GtAnimatedFade(
+      showFirst: context.knobs.boolean(
+        label: 'Show First Child',
+        initialValue: true,
+      ),
+      duration: 300,
+      child1: Container(
+        height: 100.px,
+        color: context.palette.primary.base,
+        child: Center(
+          child: GtText(
+            "First Child",
+            style: context.textStyles.bodyM(color: context.palette.text.white),
           ),
         ),
-      ],
+      ),
+      child2: Container(
+        height: 100.px,
+        color: context.palette.success.base,
+        child: Center(
+          child: GtText(
+            "Second Child",
+            style: context.textStyles.bodyM(color: context.palette.text.white),
+          ),
+        ),
+      ),
     ),
   );
 }

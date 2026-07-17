@@ -4,37 +4,36 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'GtTipCard', type: GtTipCard)
-Widget playgroundGtTipCardUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Confirm Referee Details');
+@widgetbook.UseCase(name: 'GtAlertBanner', type: GtAlertBanner)
+Widget playgroundGtAlertBannerUseCase(BuildContext context) {
+  final title = context.knobs.string(label: 'Title', initialValue: 'Nearly there');
   final subtitle = context.knobs.string(
     label: 'Subtitle',
-    initialValue: 'Please ensure your referees’ details are accurate. They will be contacted to complete a form.',
+    initialValue: 'Your fixed savings plan matures in 7 days with ₦45,000 earned.',
   );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
     options: GtCardVariant.values,
-    initialOption: GtCardVariant.away,
+    initialOption: GtCardVariant.warning,
     labelBuilder: (v) => v.name,
   );
-  final hidden = context.knobs.boolean(label: 'Hidden', initialValue: false);
 
   return GtWidgetDocPage(
-    title: 'GtTipCard',
-    description: 'A informational card tailored for displaying helpful tips or contextual alerts.',
+    title: 'GtAlertBanner',
+    description: 'A full-width banner alert with a dismiss/close button and variant styling.',
     code: '''
-GtTipCard(
+GtAlertBanner(
   title: "$title",
   subtitle: "$subtitle",
   variant: GtCardVariant.${variant.name},
-  hidden: $hidden,
+  icon: GtSvg(GtVectorIllustrations.fuel),
   onClose: () {},
 )''',
-    child: GtTipCard(
+    child: GtAlertBanner(
       title: title,
       subtitle: subtitle,
       variant: variant,
-      hidden: hidden,
+      icon: GtSvg(GtVectorIllustrations.fuel),
       onClose: () {},
     ),
   );

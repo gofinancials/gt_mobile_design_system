@@ -20,14 +20,19 @@ GtLessonCard(
   onTap: () {},
 )
 ''',
-    child: GtLessonCard(
-      illustration: const AppImageData.asset("assets/images/placeholder.png"), // use real asset
-      title: "Introduction to Saving",
-      description: "Learn the basics of saving money.",
-      totalLessons: 10,
-      watchedLessons: 3,
-      duration: const Duration(minutes: 45),
-      onTap: () {},
+    child: GtSizedBox(
+      height: 300,
+      child: GtLessonCard(
+        illustration: const AppImageData(
+          GtVectorIllustrations.savingsCat,
+        ), // use real asset
+        title: "Introduction to Saving",
+        description: "Learn the basics of saving money.",
+        totalLessons: 10,
+        watchedLessons: 3,
+        duration: const Duration(minutes: 45),
+        onTap: () {},
+      ),
     ),
   );
 }

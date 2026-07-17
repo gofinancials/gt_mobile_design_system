@@ -5,7 +5,6 @@ export 'gt_status_tiles_usecase.dart';
 export 'gt_transaction_tiles_usecase.dart';
 export 'gt_limit_tiles_usecase.dart';
 export 'gt_action_tiles_usecase.dart';
-export 'gt_progress_cards_usecase.dart';
 export 'gt_check_box_tile_usecase.dart';
 export 'gt_radio_tile_usecase.dart';
 export 'gt_switch_tile_usecase.dart';

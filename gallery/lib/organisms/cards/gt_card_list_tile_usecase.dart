@@ -5,34 +5,37 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtCardListTile', type: GtCardListTile)
-Widget gtCardListTileUseCase(BuildContext context) {
+Widget playgroundGtCardListTileUseCase(BuildContext context) {
+  final text = context.knobs.string(label: 'Tile Title', initialValue: 'Security Settings');
+  final subtitle = context.knobs.string(label: 'Tile Subtitle', initialValue: 'Manage password and biometric security');
+  final type = context.knobs.object.dropdown<GtCardListTileType>(
+    label: 'Tile Group Position',
+    options: GtCardListTileType.values,
+    initialOption: GtCardListTileType.sole,
+    labelBuilder: (v) => v.name,
+  );
+
   return GtWidgetDocPage(
-    title: "Card List Tile",
-    description: "A list tile styled as a card, often used for settings or selectable items.",
+    title: 'GtCardListTile',
+    description: 'A layout wrapper designed to encase standard list tiles within custom-bordered card configurations.',
     code: '''
 GtCardListTile(
-  type: .sole,
+  type: GtCardListTileType.${type.name},
   child: GtListTile(
-    text: 'Security Settings',
-    trailing: GtText('Manage your password and PIN'),
-    leading: GtIcon.withColor(Icons.security, color: context.palette.primary.base),
+    text: "$text",
+    trailing: GtText("$subtitle"),
+    leading: GtIcon(GtIcons.lock, size: 24),
     onTap: () {},
   ),
-)
-''',
-    child: Column(
-      children: [
-        GalleryPageSectionHeader(title: "GtCardListTile"),
-        GtCardListTile(
-          type: .sole,
-          child: GtListTile(
-            text: context.knobs.string(label: 'Card Title', initialValue: 'Security Settings'),
-            trailing: GtText(context.knobs.string(label: 'Card Subtitle', initialValue: 'Manage your password and PIN')),
-            leading: GtIcon.withColor(Icons.security, color: context.palette.primary.base),
-            onTap: () {},
-          ),
-        ),
-      ],
+)''',
+    child: GtCardListTile(
+      type: type,
+      child: GtListTile(
+        text: text,
+        trailing: GtText(subtitle),
+        leading: GtIcon(GtIcons.lock, size: 24),
+        onTap: () {},
+      ),
     ),
   );
 }

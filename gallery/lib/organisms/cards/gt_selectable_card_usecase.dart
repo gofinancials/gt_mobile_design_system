@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
+import 'package:gt_mobile_foundation/extensions/extensions.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(
-  name: 'GtSelectableCard',
-  type: GtSelectableCard,
-)
+@widgetbook.UseCase(name: 'GtSelectableCard', type: GtSelectableCard)
 Widget playgroundGtSelectableCardUseCase(BuildContext context) {
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
@@ -18,7 +16,8 @@ Widget playgroundGtSelectableCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtSelectableCard',
-    description: 'Card wrapper with selection state and coloured border accent.',
+    description:
+        'Card wrapper with selection state and coloured border accent.',
     child: Column(
       children: [
         Row(
@@ -35,7 +34,7 @@ Widget playgroundGtSelectableCardUseCase(BuildContext context) {
                     children: [
                       GtIcon(GtIcons.gemSparkle, variant: .featured, size: 32),
                       const GtGap.ySm(),
-                      GtText('Selected', style: context.textStyles.h4()),
+                      GtText('Selected'.upper, style: context.textStyles.h6()),
                     ],
                   ),
                 ),
@@ -54,7 +53,10 @@ Widget playgroundGtSelectableCardUseCase(BuildContext context) {
                     children: [
                       GtIcon(GtIcons.moneyBillCoin, variant: .sub, size: 32),
                       const GtGap.ySm(),
-                      GtText('Unselected', style: context.textStyles.h4()),
+                      GtText(
+                        'Unselected'.upper,
+                        style: context.textStyles.h6(),
+                      ),
                     ],
                   ),
                 ),
