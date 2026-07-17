@@ -1,53 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:gallery/widgets/gallery_page_header.dart';
-import 'package:gt_mobile_foundation/extensions/string_extensions.dart';
+import 'package:gallery/lib.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-/// Interactive preview for [GtPageHeader] (screen title + optional subtitle).
-@widgetbook.UseCase(name: 'Page header', type: GtPageHeader)
+@widgetbook.UseCase(name: 'GtPageHeader', type: GtPageHeader)
 Widget playgroundGtPageHeaderUseCase(BuildContext context) {
   final title = context.knobs.string(
     label: 'Title',
     initialValue: 'Almost there!',
   );
-  final hasSubtitle = context.knobs.boolean(
-    label: 'Show subtitle',
-    initialValue: true,
-  );
   final subtitle = context.knobs.string(
     label: 'Subtitle',
     initialValue: 'See balances and recent activity in one place.',
   );
+
+  return GtWidgetDocPage(
+    title: 'GtPageHeader',
+    description:
+        'A standard header layout displaying a screen title and description subtitle.',
+    code:
+        '''
+GtPageHeader(
+  title: "$title",
+  subtitle: "$subtitle",
+)''',
+    child: Center(
+      child: GtCard(
+        padding: context.insets.allDp(16.px),
+        variant: GtCardVariant.normal,
+        child: GtPageHeader(
+          title: title,
+          subtitle: subtitle.isEmpty ? null : subtitle,
+        ),
+      ),
+    ),
+  );
+}
+
+@widgetbook.UseCase(name: 'GtPageHeader.rich', type: GtPageHeader)
+Widget playgroundGtPageHeaderRichUseCase(BuildContext context) {
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Terms & Conditions',
+  );
   final richSubtitle = context.knobs.string(
     label: 'Rich Subtitle',
     initialValue:
-        "See balances and recent activity in one place <a href=\"https://en.wikipedia.org/wiki/Terms_of_service\">T&C apply</a> <e>error</e> <b>bold</b> <i>italic</i> ",
+        'Please read the terms. <a href="https://sterling.ng">T&C apply</a> <b>bold</b> <i>italic</i>',
   );
 
-  return Scaffold(
-    body: Padding(
-      padding: context.insets.symmetricDp(
-        horizontal: context.grid.singleColumn.margins.px,
-      ),
-      child: Column(
-        crossAxisAlignment: .stretch,
-        children: [
-          GalleryPageHeader(title: "Headers", rider: "headers Playground"),
-          const GtGap.yXl(),
-          GtPageHeader(
-            title: title,
-            subtitle: hasSubtitle && subtitle.hasValue ? subtitle : null,
-          ),
-          const GtGap.yXl(),
-          GtPageHeader.rich(
-            title: title,
-            subtitle: hasSubtitle && richSubtitle.hasValue
-                ? richSubtitle
-                : null,
-          ),
-        ],
+  return GtWidgetDocPage(
+    title: 'GtPageHeader.rich',
+    description:
+        'A page header supporting rich/HTML-tagged markup inside the subtitle.',
+    code:
+        '''
+GtPageHeader.rich(
+  title: "$title",
+  subtitle: '$richSubtitle',
+)''',
+    child: Center(
+      child: GtCard(
+        padding: context.insets.allDp(16.px),
+        variant: GtCardVariant.normal,
+        child: GtPageHeader.rich(
+          title: title,
+          subtitle: richSubtitle.isEmpty ? null : richSubtitle,
+        ),
       ),
     ),
   );

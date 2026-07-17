@@ -7,23 +7,31 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtVideoPlayer', type: GtVideoPlayer)
 Widget gtVideoPlayerUseCase(BuildContext context) {
+  final videoController = VideoPlayerController.networkUrl(
+    Uri.parse(
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+    ),
+  );
   return GtWidgetDocPage(
     title: "Video Player",
     description: "A standard video player for remote or local video sources.",
     code: '''
 GtVideoPlayer(
-  'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+  VideoPlayerController.networkUrl(
+    Uri.parse(
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+    ),
+  )
 )
 ''',
     child: Column(
       children: [
         GalleryPageSectionHeader(title: "GtVideoPlayer"),
-        GtVideoPlayer(
-          VideoPlayerController.networkUrl(
-            Uri.parse(
-              'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-            ),
-          ),
+        GtInkWell(
+          onTap: () => videoController.value.isPlaying
+              ? videoController.pause()
+              : videoController.play(),
+          child: GtVideoPlayer(videoController),
         ),
       ],
     ),

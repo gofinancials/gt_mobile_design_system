@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'GtHomeAppbar', type: GtHomeAppBar)
+@widgetbook.UseCase(name: 'GtHomeAppbarGallery', type: GtHomeAppBar)
 Widget buildGtHomeAppbarUsecase(BuildContext context) {
   final showGradient = context.knobs.boolean(label: "Show Gradient");
   final color = showGradient
@@ -24,7 +24,7 @@ Widget buildGtHomeAppbarUsecase(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'GtProAppbar', type: GtProAppBar)
+@widgetbook.UseCase(name: 'GtProAppbarGallery', type: GtProAppBar)
 Widget buildGtProAppbarUsecase(BuildContext context) {
   final showGradient = context.knobs.boolean(label: "Show Gradient");
   final color = showGradient
@@ -56,7 +56,7 @@ Widget buildGtProAppbarUsecase(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'GtTitleAppbar', type: GtTitleAppBar)
+@widgetbook.UseCase(name: 'GtTitleAppbarGallery', type: GtTitleAppBar)
 Widget buildGtTitleAppbarUsecase(BuildContext context) {
   int count = context.knobs.object.dropdown(
     label: "Trailing Option",
@@ -82,7 +82,7 @@ Widget buildGtTitleAppbarUsecase(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'GtAppbar', type: GtAppBar)
+@widgetbook.UseCase(name: 'GtAppbarGallery', type: GtAppBar)
 Widget buildGtAppbarUsecase(BuildContext context) {
   final leading = context.knobs.object.dropdown<(String, Widget?)>(
     label: "Leading Icon",
@@ -123,7 +123,7 @@ Widget buildGtAppbarUsecase(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'GtActionAppbar', type: GtActionAppBar)
+@widgetbook.UseCase(name: 'GtActionAppbarGallery', type: GtActionAppBar)
 Widget buildGtActionAppbarUsecase(BuildContext context) {
   final leading = context.knobs.object.dropdown<(String, Widget?)>(
     label: "Leading Icon",
@@ -170,7 +170,7 @@ Widget buildGtActionAppbarUsecase(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'GtTitleAppbar', type: GtModalAppBar)
+@widgetbook.UseCase(name: 'GtTitleAppbarGallery', type: GtModalAppBar)
 Widget buildGtModalAppbarUsecase(BuildContext context) {
   final leading = GtNetworkImage(
     "https://res.cloudinary.com/jesse-dirisu/image/upload/v1530348058/samples/cloudinary-icon.png",
