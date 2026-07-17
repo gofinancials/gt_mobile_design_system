@@ -4,7 +4,7 @@ import 'package:gt_mobile_foundation/extensions/extensions.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-@widgetbook.UseCase(name: 'GtSectionSlide (legacy)', type: GtSectionSlide)
+@widgetbook.UseCase(name: 'GtSectionSlide Gallery', type: GtSectionSlide)
 Widget buildGtSectionSlideUsecase(BuildContext context) {
   void showToast() {
     context.showToast("Clicked Lesson Card", type: .highlighted);

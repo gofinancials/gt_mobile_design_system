@@ -7,7 +7,8 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 Widget playgroundGtLessonSlideUseCase(BuildContext context) {
   return GtWidgetDocPage(
     title: 'GtLessonSlide',
-    description: 'An interactive lesson/story slide component that manages text and video layouts.',
+    description:
+        'An interactive lesson/story slide component that manages text and video layouts.',
     code: '''
 GtLessonSlide(
   controller: GtLessonslideController(
@@ -27,23 +28,11 @@ GtLessonSlide(
   onLongPressDown: () {},
   onLongPressUp: () {},
 )''',
-    child: Center(
-      child: GtCard(
-        padding: context.insets.allDp(24.px),
-        variant: GtCardVariant.normal,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          spacing: context.spacingMd,
-          children: [
-            const GtIcon(GtIcons.spark, size: 48),
-            GtText(
-              "Please refer to the visual display page in Widgetbook to preview the lesson slide widgets in their full-screen/animated context.",
-              style: context.textStyles.bodyS(color: context.palette.text.sub),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+    child: GtEmptyStateCard(
+      variant: GtCardVariant.normal,
+      icon: GtIcons.alarmClock,
+      description:
+          "Please refer to the visual display page in Widgetbook to preview the lesson slide widgets in their full-screen/animated context.",
     ),
   );
 }

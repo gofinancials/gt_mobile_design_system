@@ -25,18 +25,30 @@ Widget playgroundGtButtonBottomNavBarUseCase(BuildContext context) {
     code:
         '''
 GtButtonBottomNavBar(
-  button: GtRaisedButton(
+  spacing: context.spacingSm,
+  heading: GtRaisedButton(
     text: "$text",
     isDisabled: $isDisabled,
     isLoading: $isLoading,
     onPressed: () {},
   ),
+  button: GtTextButton(
+    text: "Cancel",
+    variant: .destructive,
+    onPressed: () {},
+  ),
 )''',
     child: GtButtonBottomNavBar(
-      button: GtRaisedButton(
+      spacing: context.spacingSm,
+      heading: GtRaisedButton(
         text: text,
         isDisabled: isDisabled,
         isLoading: isLoading,
+        onPressed: () {},
+      ),
+      button: GtTextButton(
+        text: "Cancel",
+        variant: .destructive,
         onPressed: () {},
       ),
     ),
