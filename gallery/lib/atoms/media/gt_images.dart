@@ -50,18 +50,10 @@ class _ImagesPlaygroundState extends State<_ImagesPlayground> {
       backgroundColor: context.palette.bg.white,
       body: SafeArea(
         child: Padding(
-          padding: context.insets.defaultHorizontalInsets,
+          padding: context.insets.defaultAllInsets,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Padding(
-                padding: context.insets.symmetricDp(vertical: 16.px),
-                child: const GalleryPageHeader(
-                  title: "Images",
-                  rider:
-                      "Interactive documentation for unified image rendering.",
-                ),
-              ),
               GtTabbar<String>(controller: _controller, tabs: _tabs),
               const GtGap.yMd(),
               Expanded(
