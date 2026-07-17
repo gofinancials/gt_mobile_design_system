@@ -1,144 +1,142 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
+import 'package:gallery/lib.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtGuageChart', type: GtGuageChart)
 Widget buildGtGuageChartUsecase(BuildContext context) {
-  return Scaffold(
-    appBar: GtModalAppBar(),
-    body: CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: context.insets.defaultHorizontalInsets,
-          sliver: SliverList.list(
-            children: [
-              GtPageHeader(
-                title: "Guage Charts",
-                subtitle: "Simple and effective way to display data.",
-                subTitleColor: context.palette.text.darkerSub,
-              ),
-              const GtGap.ySectionSm(),
-            ],
+  final value = context.knobs.double.slider(
+    label: 'Guage Progress',
+    initialValue: 0.5,
+    min: 0.0,
+    max: 1.0,
+  );
+  final variant = context.knobs.object.dropdown<GtCardVariant>(
+    label: 'Guage Variant',
+    options: GtCardVariant.values,
+    initialOption: GtCardVariant.highlighted,
+    labelBuilder: (v) => v.name,
+  );
+  final centerValue = context.knobs.string(
+    label: 'Center Value Text',
+    initialValue: '₦ 250,000.00',
+  );
+  final pillText = context.knobs.string(
+    label: 'Pill Text',
+    initialValue: '5% interest',
+  );
+  final footerText = context.knobs.string(
+    label: 'Footer Text',
+    initialValue: 'Available to spend: ₦ 19,000',
+  );
+
+  return GtWidgetDocPage(
+    title: 'GtGuageChart',
+    description:
+        'A circular gauge chart used for representing progress or metrics.',
+    code:
+        '''
+GtGuageChart(
+  value: $value,
+  variant: GtCardVariant.${variant.name},
+  center: GtGuageChartCenter(
+    "$centerValue",
+    pillText: "$pillText",
+    footerText: "$footerText",
+  ),
+)''',
+    child: Center(
+      child: GtSizedBox(
+        height: 400,
+        child: GtGuageChart(
+          value: value,
+          variant: variant,
+          center: GtGuageChartCenter(
+            centerValue,
+            pillText: pillText,
+            footerText: footerText,
           ),
         ),
-        SliverPadding(
-          padding: context.insets.defaultAllInsets,
-          sliver: SliverGrid.extent(
-            maxCrossAxisExtent: 600,
-            mainAxisSpacing: context.spacingMd,
-            crossAxisSpacing: context.spacingMd,
-            children: [
-              GtGuageChart(
-                value: 0.1,
-                center: GtGuageChartCenter(
-                  "₦130,000.00",
-                  pillText: "5% interest",
-                  footerText: "Available to spend: ₦19,000",
-                ),
-              ),
-              GtGuageChart(
-                value: 0.5,
-                variant: .highlighted,
-                center: GtGuageChartCenter(
-                  "₦250,000.00",
-                  pillText: "5% interest",
-                  footerText: "Available to spend: ₦19,000",
-                ),
-              ),
-              GtGuageChart(
-                value: 0.9,
-                variant: .warning,
-                center: GtGuageChartCenter(
-                  "₦750,000.00",
-                  pillText: "5% interest",
-                  footerText: "Available to spend: ₦19,000",
-                ),
-              ),
-              GtGuageChart(
-                value: 1,
-                variant: .error,
-                center: GtGuageChartCenter(
-                  "₦1,000,000.00",
-                  pillText: "5% interest",
-                  footerText: "Available to spend: ₦19,000",
-                  valueColor: context.palette.error.base,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+      ),
     ),
   );
 }
 
 final _range = DateTimeRange<DateTime>(
-  start: .now().subtract(30.days),
-  end: .now(),
+  start: DateTime.now().subtract(const Duration(days: 30)),
+  end: DateTime.now(),
 );
 final _calendarCtrl = GtCalendarController(
   GtCalendarValue(range: _range),
-  dateRange: DateTimeRange(start: .now().subtract(365.days), end: .now()),
+  dateRange: DateTimeRange(
+    start: DateTime.now().subtract(const Duration(days: 365)),
+    end: DateTime.now(),
+  ),
 );
 
 List<GtLineChartItem> _lineChartItems(DateTimeRange range) {
   return List.generate(range.duration.inDays, (index) {
     return GtLineChartItem(
-      Random().nextDouble() * 100_000_000,
-      date: .now().add(index.days),
+      Random().nextDouble() * 100000000,
+      date: DateTime.now().add(Duration(days: index)),
     );
   });
 }
 
 final data = ValueNotifier(_lineChartItems(_range));
 
-@widgetbook.UseCase(name: 'GtLineChart', type: GtLineChartContainer)
+@widgetbook.UseCase(name: 'GtLineChartContainer', type: GtLineChartContainer)
 Widget buildGtLineChartUsecase(BuildContext context) {
-  return Scaffold(
-    appBar: GtModalAppBar(),
-    body: CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: context.insets.defaultHorizontalInsets,
-          sliver: SliverList.list(
-            children: [
-              GtPageHeader(
-                title: "Line Charts",
-                subtitle: "Simple and effective way to display data.",
-                subTitleColor: context.palette.text.darkerSub,
-              ),
-              const GtGap.ySectionSm(),
-            ],
-          ),
+  final hideYAxisLabels = context.knobs.boolean(
+    label: 'Hide Y Axis Labels',
+    initialValue: false,
+  );
+  final calendarTitle = context.knobs.string(
+    label: 'Calendar Title',
+    initialValue: 'Select Range',
+  );
+  final title = context.knobs.string(
+    label: 'Chart Title',
+    initialValue: 'Total Balance',
+  );
+  final maxValue = context.knobs.double.input(
+    label: 'Max Y Value',
+    initialValue: 100000000.0,
+  );
+
+  return GtWidgetDocPage(
+    title: 'GtLineChartContainer',
+    description:
+        'A container combining a header, date range filter, and an interactive line chart.',
+    code:
+        '''
+GtLineChartContainer(
+  items: items,
+  calendarTitle: "$calendarTitle",
+  title: "$title",
+  maxValue: $maxValue,
+  hideYAxisLabels: $hideYAxisLabels,
+  controller: calendarController,
+  onRangeUpdate: (range) {},
+)''',
+    child: Center(
+      child: ValueListenableBuilder(
+        valueListenable: data,
+        builder: (context, items, _) => GtLineChartContainer(
+          items: items,
+          calendarTitle: calendarTitle,
+          title: title,
+          maxValue: maxValue,
+          color: context.palette.bg.strong,
+          hideYAxisLabels: hideYAxisLabels,
+          controller: _calendarCtrl,
+          onRangeUpdate: (range) {
+            data.value = _lineChartItems(range);
+          },
         ),
-        SliverPadding(
-          padding: context.insets.defaultAllInsets,
-          sliver: SliverToBoxAdapter(
-            child: ValueListenableBuilder(
-              valueListenable: data,
-              builder: (context, items, _) => GtLineChartContainer(
-                items: items,
-                calendarTitle: "Select Range",
-                title: "Total Balance",
-                maxValue: 100_000_000,
-                color: context.palette.bg.strong,
-                hideYAxisLabels: context.knobs.boolean(
-                  label: "Hide Y Axis Labels",
-                  initialValue: false,
-                ),
-                controller: _calendarCtrl,
-                onRangeUpdate: (range) {
-                  data.value = _lineChartItems(range);
-                },
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     ),
   );
 }

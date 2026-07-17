@@ -160,12 +160,12 @@ import 'package:gallery/molecules/tiles/gt_user_tiles_usecase.dart'
     as _gallery_molecules_tiles_gt_user_tiles_usecase;
 import 'package:gallery/organisms/app_bars/gt_action_app_bar_usecase.dart'
     as _gallery_organisms_app_bars_gt_action_app_bar_usecase;
+import 'package:gallery/organisms/app_bars/gt_app_bar_gallery.dart'
+    as _gallery_organisms_app_bars_gt_app_bar_gallery;
 import 'package:gallery/organisms/app_bars/gt_app_bar_usecase.dart'
     as _gallery_organisms_app_bars_gt_app_bar_usecase;
 import 'package:gallery/organisms/app_bars/gt_business_app_bar_usecase.dart'
     as _gallery_organisms_app_bars_gt_business_app_bar_usecase;
-import 'package:gallery/organisms/app_bars/gt_home_app_bar.dart'
-    as _gallery_organisms_app_bars_gt_home_app_bar;
 import 'package:gallery/organisms/app_bars/gt_home_app_bar_usecase.dart'
     as _gallery_organisms_app_bars_gt_home_app_bar_usecase;
 import 'package:gallery/organisms/app_bars/gt_modal_app_bar_usecase.dart'
@@ -226,14 +226,10 @@ import 'package:gallery/organisms/listeners/generic_listener_usecase.dart'
     as _gallery_organisms_listeners_generic_listener_usecase;
 import 'package:gallery/organisms/media/gt_video_player_usecase.dart'
     as _gallery_organisms_media_gt_video_player_usecase;
-import 'package:gallery/organisms/menus/gt_context_menu.dart'
-    as _gallery_organisms_menus_gt_context_menu;
 import 'package:gallery/organisms/menus/gt_context_menu_usecase.dart'
     as _gallery_organisms_menus_gt_context_menu_usecase;
 import 'package:gallery/organisms/navigation/gt_bottom_button_navigation_bar_usecase.dart'
     as _gallery_organisms_navigation_gt_bottom_button_navigation_bar_usecase;
-import 'package:gallery/organisms/navigation/gt_bottom_navigation_bar.dart'
-    as _gallery_organisms_navigation_gt_bottom_navigation_bar;
 import 'package:gallery/organisms/navigation/gt_bottom_navigation_bar_usecase.dart'
     as _gallery_organisms_navigation_gt_bottom_navigation_bar_usecase;
 import 'package:gallery/organisms/slides/gt_lesson_slide_usecase.dart'
@@ -256,6 +252,8 @@ import 'package:gallery/organisms/view_state/gt_empty_state.dart'
     as _gallery_organisms_view_state_gt_empty_state;
 import 'package:gallery/organisms/view_state/gt_status_state.dart'
     as _gallery_organisms_view_state_gt_status_state;
+import 'package:gallery/organisms/view_state/gt_view_state.dart'
+    as _gallery_organisms_view_state_gt_view_state;
 import 'package:gallery/templates/dialogs/gt_confirm_dialog.dart'
     as _gallery_templates_dialogs_gt_confirm_dialog;
 import 'package:gallery/templates/forms/gt_form_doc.dart'
@@ -1352,8 +1350,8 @@ final directories = <_widgetbook.WidgetbookNode>[
                             .playgroundGtActionAppBarUseCase,
                   ),
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtActionAppbar',
-                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                    name: 'GtActionAppbarGallery',
+                    builder: _gallery_organisms_app_bars_gt_app_bar_gallery
                         .buildGtActionAppbarUsecase,
                   ),
                 ],
@@ -1367,8 +1365,8 @@ final directories = <_widgetbook.WidgetbookNode>[
                         .playgroundGtAppBarUseCase,
                   ),
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtAppbar',
-                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                    name: 'GtAppbarGallery',
+                    builder: _gallery_organisms_app_bars_gt_app_bar_gallery
                         .buildGtAppbarUsecase,
                   ),
                 ],
@@ -1382,8 +1380,8 @@ final directories = <_widgetbook.WidgetbookNode>[
                         .playgroundGtHomeAppBarUseCase,
                   ),
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtHomeAppbar',
-                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                    name: 'GtHomeAppbarGallery',
+                    builder: _gallery_organisms_app_bars_gt_app_bar_gallery
                         .buildGtHomeAppbarUsecase,
                   ),
                 ],
@@ -1398,8 +1396,8 @@ final directories = <_widgetbook.WidgetbookNode>[
                             .playgroundGtModalAppBarUseCase,
                   ),
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtTitleAppbar',
-                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                    name: 'GtTitleAppbarGallery',
+                    builder: _gallery_organisms_app_bars_gt_app_bar_gallery
                         .buildGtModalAppbarUsecase,
                   ),
                 ],
@@ -1414,8 +1412,8 @@ final directories = <_widgetbook.WidgetbookNode>[
                             .playgroundGtProAppBarUseCase,
                   ),
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtProAppbar',
-                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                    name: 'GtProAppbarGallery',
+                    builder: _gallery_organisms_app_bars_gt_app_bar_gallery
                         .buildGtProAppbarUsecase,
                   ),
                 ],
@@ -1430,8 +1428,8 @@ final directories = <_widgetbook.WidgetbookNode>[
                             .playgroundGtTitleAppBarUseCase,
                   ),
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtTitleAppbar',
-                    builder: _gallery_organisms_app_bars_gt_home_app_bar
+                    name: 'GtTitleAppbarGallery',
+                    builder: _gallery_organisms_app_bars_gt_app_bar_gallery
                         .buildGtTitleAppbarUsecase,
                   ),
                 ],
@@ -1703,9 +1701,14 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtPageHeader',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'Page header',
+                    name: 'GtPageHeader',
                     builder: _gallery_organisms_headers_gt_page_header
                         .playgroundGtPageHeaderUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtPageHeader.rich',
+                    builder: _gallery_organisms_headers_gt_page_header
+                        .playgroundGtPageHeaderRichUseCase,
                   ),
                 ],
               ),
@@ -1758,11 +1761,6 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder: _gallery_organisms_menus_gt_context_menu_usecase
                         .playgroundGtContextMenuUseCase,
                   ),
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'GtContextMenu (legacy)',
-                    builder: _gallery_organisms_menus_gt_context_menu
-                        .buildGtContextMeunuUsecase,
-                  ),
                 ],
               ),
             ],
@@ -1773,12 +1771,6 @@ final directories = <_widgetbook.WidgetbookNode>[
               _widgetbook.WidgetbookComponent(
                 name: 'GtBottomNavigationBar',
                 useCases: [
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'Bottom Navigation Bar',
-                    builder:
-                        _gallery_organisms_navigation_gt_bottom_navigation_bar
-                            .playgroundGtBottomNavigationBarUseCase,
-                  ),
                   _widgetbook.WidgetbookUseCase(
                     name: 'GtBottomNavigationBar',
                     builder:
@@ -1900,7 +1892,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtEmptyState',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'Empty state',
+                    name: 'GtEmptyState',
                     builder: _gallery_organisms_view_state_gt_empty_state
                         .playgroundGtEmptyStateUseCase,
                   ),
@@ -1913,6 +1905,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtStatusState',
                     builder: _gallery_organisms_view_state_gt_status_state
                         .playgroundGtStatusStateUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtViewStateWidget',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtViewStateWidget',
+                    builder: _gallery_organisms_view_state_gt_view_state
+                        .playgroundGtViewStateWidgetUseCase,
                   ),
                 ],
               ),
@@ -1930,7 +1932,7 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtLineChartContainer',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
-                    name: 'GtLineChart',
+                    name: 'GtLineChartContainer',
                     builder: _gallery_organisms_data_viz_gt_data_viz
                         .buildGtLineChartUsecase,
                   ),
