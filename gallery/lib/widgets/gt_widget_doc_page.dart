@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_syntax_view/flutter_syntax_view.dart';
 import 'package:gallery/lib.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 class GtWidgetDocPage extends GtStatelessWidget {

@@ -14,32 +14,16 @@ Widget playgroundGtTextUseCase(BuildContext context) {
     initialValue: "The quick brown fox jumps over the lazy dog.",
   );
 
-  final styleName = context.knobs.list<String>(
+  final style = context.knobs.list(
     label: "Text Style",
-    options: [
-      'd1',
-      'd2',
-      'd3',
-      'd4',
-      'h1',
-      'h2',
-      'h3',
-      'h4',
-      'h5',
-      'h6',
-      'bodyXl',
-      'bodyL',
-      'bodyM',
-      'bodyS',
-      'bodyXs',
-      'labelXl',
-      'labelL',
-      'labelM',
-      'labelS',
-      'labelXs',
-    ],
-    initialOption: 'bodyM',
+    options: context.textStyles.all,
+    initialOption: context.textStyles.all.first,
+    labelBuilder: (value) => value.$1,
   );
+
+  final pattern = RegExp(r"(?<name>.+)\s+(\((?<args>.*)\))?$");
+  final match = pattern.firstMatch(style.$1);
+  final args = match?.namedGroup("args");
 
   final softWrap = context.knobs.boolean(
     label: "Soft wrap text",
@@ -73,53 +57,6 @@ Widget playgroundGtTextUseCase(BuildContext context) {
     labelBuilder: (val) => val == null ? 'Default' : val.name,
   );
 
-  TextStyle getStyle() {
-    switch (styleName) {
-      case 'd1':
-        return context.textStyles.d1();
-      case 'd2':
-        return context.textStyles.d2();
-      case 'd3':
-        return context.textStyles.d3();
-      case 'd4':
-        return context.textStyles.d4();
-      case 'h1':
-        return context.textStyles.h1();
-      case 'h2':
-        return context.textStyles.h2();
-      case 'h3':
-        return context.textStyles.h3();
-      case 'h4':
-        return context.textStyles.h4();
-      case 'h5':
-        return context.textStyles.h5();
-      case 'h6':
-        return context.textStyles.h6();
-      case 'bodyXl':
-        return context.textStyles.bodyXl();
-      case 'bodyL':
-        return context.textStyles.bodyL();
-      case 'bodyM':
-        return context.textStyles.bodyM();
-      case 'bodyS':
-        return context.textStyles.bodyS();
-      case 'bodyXs':
-        return context.textStyles.bodyXs();
-      case 'labelXl':
-        return context.textStyles.labelXl();
-      case 'labelL':
-        return context.textStyles.labelL();
-      case 'labelM':
-        return context.textStyles.labelM();
-      case 'labelS':
-        return context.textStyles.labelS();
-      case 'labelXs':
-        return context.textStyles.labelXs();
-      default:
-        return context.textStyles.bodyM();
-    }
-  }
-
   return GtWidgetDocPage(
     title: 'GtText',
     description:
@@ -128,7 +65,7 @@ Widget playgroundGtTextUseCase(BuildContext context) {
         '''
 GtText(
   '$text',
-  style: context.textStyles.$styleName(),
+  style: $args(),
   softWrap: $softWrap,
   maxLines: $maxLines,
   textAlign: $alignment,
@@ -137,7 +74,7 @@ GtText(
 ''',
     child: GtText(
       text,
-      style: getStyle(),
+      style: style.$2,
       softWrap: softWrap,
       textDirection: direction,
       maxLines: maxLines,
