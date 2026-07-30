@@ -1289,6 +1289,31 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the text style used for calendar days and headers.
+  TextStyle fxInput({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.title,
+      size: 28,
+      heightPx: heightPx ?? 32,
+      widthPct: 0,
+      weight: FontWeight.bold,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   /// A collection containing all predefined [TextStyle] configurations paired with their labels.
   List<(String, TextStyle)> get all => [
     ('Display 1 (context.textStyles.d1)', d1()),
@@ -1334,5 +1359,6 @@ class GtTextStyles {
     ('Button XXS (context.textStyles.buttonXxs)', buttonXxs()),
     ('Nav Bar Label (context.textStyles.navBarLabel)', navBarLabel()),
     ('Calendar (context.textStyles.calendar)', calendar()),
+    ('FX Input (context.textStyles.fxInput)', fxInput()),
   ];
 }

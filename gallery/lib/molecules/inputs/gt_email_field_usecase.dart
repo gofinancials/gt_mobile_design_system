@@ -6,17 +6,24 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtEmailField', type: GtEmailField)
 Widget playgroundGtEmailFieldUseCase(BuildContext context) {
-  final label = context.knobs.string(label: 'Label', initialValue: 'Email address');
+  final label = context.knobs.string(
+    label: 'Label',
+    initialValue: 'Email address',
+  );
   final isEnabled = context.knobs.boolean(label: 'Enabled', initialValue: true);
-  final isRequired = context.knobs.boolean(label: 'Required', initialValue: true);
+  final isRequired = context.knobs.boolean(
+    label: 'Required',
+    initialValue: true,
+  );
   final decoration = context.knobs.object.dropdown(
     label: 'Style',
     options: context.inputStyles.all,
-    initialOption: context.inputStyles.all[1],
+    initialOption: context.inputStyles.all.first,
     labelBuilder: (d) => d.$1,
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 final _emailCtrl = GtInputController();
 
 GtEmailField(

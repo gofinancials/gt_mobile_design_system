@@ -3,7 +3,7 @@ import 'package:gallery/lib.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-final _categoryCtrl = GtTransferCategoryController(null);
+final _categoryCtrl = GtTransactionCategoryController(null, categories: []);
 
 @widgetbook.UseCase(
   name: 'GtTransferCategoryGrid',
@@ -12,7 +12,8 @@ final _categoryCtrl = GtTransferCategoryController(null);
 Widget buildGtTransferCategoryGridUsecase(BuildContext context) {
   return GtWidgetDocPage(
     title: 'GtTransferCategoryGrid',
-    description: 'A structured grid layout designed for choosing transaction categories.',
+    description:
+        'A structured grid layout designed for choosing transaction categories.',
     code: '''
 GtTransferCategoryGrid(
   controller: categoryController,
@@ -22,10 +23,7 @@ GtTransferCategoryGrid(
       child: GtCard(
         padding: context.insets.allDp(12.px),
         variant: GtCardVariant.normal,
-        child: GtTransferCategoryGrid(
-          controller: _categoryCtrl,
-          onAdd: () {},
-        ),
+        child: GtTransferCategoryGrid(controller: _categoryCtrl, onAdd: () {}),
       ),
     ),
   );

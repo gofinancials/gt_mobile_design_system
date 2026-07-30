@@ -2,21 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-/// A controller that manages the selection state of a [GtTransactionCategory].
-///
-/// It extends [ValueNotifier] to allow widgets to rebuild when the selected
-/// category changes.
-class GtTransferCategoryController
-    extends ValueNotifier<GtTransactionCategory?> {
-  /// Creates a [GtTransferCategoryController] with an initial [value].
-  GtTransferCategoryController(super.value);
-
-  /// Updates the currently selected category to the provided [category].
-  void select(GtTransactionCategory category) {
-    value = category;
-  }
-}
-
 /// A widget that displays a grid of selectable transaction categories.
 ///
 /// Uses a [Wrap] layout to present categories in a responsive grid. It combines
@@ -28,7 +13,7 @@ class GtTransferCategoryController
 class GtTransferCategoryGrid extends GtStatelessWidget
     with GtTransactionCategoryMixin {
   /// The controller managing the currently selected category.
-  final GtTransferCategoryController controller;
+  final GtTransactionCategoryController controller;
 
   /// An optional list of additional custom categories to append to the default list.
   final List<GtTransactionCategory> categories;
@@ -46,7 +31,7 @@ class GtTransferCategoryGrid extends GtStatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final allCategories = [...defaultCategories, ...categories];
+    final allCategories = [...defaultGridCategories, ...categories];
     final isMobile = context.screenType.isMobile;
 
     return GenericListener<GtTransactionCategory?>(
@@ -131,109 +116,4 @@ class GtTransactionCategoryGridCell extends GtStatelessWidget {
       ),
     );
   }
-}
-
-/// A mixin that provides a comprehensive list of default transaction categories.
-///
-/// These categories are commonly used in financial applications for classifying
-/// transfers, payments, and other transactions.
-mixin GtTransactionCategoryMixin {
-  /// A predefined list of standard [GtTransactionCategory] objects.
-  List<GtTransactionCategory> get defaultCategories => [
-    GtTransactionCategory(
-      label: "transfers".ctr(),
-      image: AppImageData.network(GtNetworkImages.transfer),
-      variant: .info,
-    ),
-    GtTransactionCategory(
-      label: "shopping".ctr(),
-      image: AppImageData.network(GtNetworkImages.shopping),
-      variant: .featured,
-    ),
-    GtTransactionCategory(
-      label: "payroll".ctr(),
-      image: AppImageData.network(GtNetworkImages.cash),
-      variant: .success,
-    ),
-    GtTransactionCategory(
-      label: "family".ctr(),
-      image: AppImageData.network(GtNetworkImages.family),
-      variant: .info,
-    ),
-    GtTransactionCategory(
-      label: "food".ctr(),
-      image: AppImageData.network(GtNetworkImages.food),
-      variant: .error,
-    ),
-    GtTransactionCategory(
-      label: "savings".ctr(),
-      image: AppImageData.network(GtNetworkImages.savings),
-      variant: .success,
-    ),
-    GtTransactionCategory(
-      label: "bills".ctr(),
-      image: AppImageData.network(GtNetworkImages.bill),
-      variant: .error,
-    ),
-    GtTransactionCategory(
-      label: "card".ctr(),
-      image: AppImageData.network(GtNetworkImages.card),
-      variant: .success,
-    ),
-    GtTransactionCategory(
-      label: "household".ctr(),
-      image: AppImageData.network(GtNetworkImages.household),
-      variant: .info,
-    ),
-    GtTransactionCategory(
-      label: "health".ctr(),
-      image: AppImageData.network(GtNetworkImages.health),
-      variant: .error,
-    ),
-    GtTransactionCategory(
-      label: "gift".ctr(),
-      image: AppImageData.network(GtNetworkImages.gift),
-      variant: .featured,
-    ),
-    GtTransactionCategory(
-      label: "charity".ctr(),
-      image: AppImageData.network(GtNetworkImages.charity),
-      variant: .success,
-    ),
-    GtTransactionCategory(
-      label: "holiday".ctr(),
-      image: AppImageData.network(GtNetworkImages.holiday),
-      variant: .featured,
-    ),
-    GtTransactionCategory(
-      label: "transport".ctr(),
-      image: AppImageData.network(GtNetworkImages.transport),
-      variant: .info,
-    ),
-    GtTransactionCategory(
-      label: "education".ctr(),
-      image: AppImageData.network(GtNetworkImages.school),
-      variant: .success,
-    ),
-    GtTransactionCategory(
-      label: "emergency".ctr(),
-      image: AppImageData.network(GtNetworkImages.alarm),
-      variant: .error,
-    ),
-    GtTransactionCategory(
-      label: "refund".ctr(),
-      image: AppImageData.network(GtNetworkImages.returns),
-      variant: .error,
-    ),
-    GtTransactionCategory(
-      label: "books".ctr(),
-      image: AppImageData.network(GtNetworkImages.books),
-      variant: .featured,
-    ),
-    GtTransactionCategory(
-      label: "fitness".ctr(),
-      image: AppImageData.network(GtNetworkImages.gym),
-      variant: .success,
-    ),
-  ];
 }

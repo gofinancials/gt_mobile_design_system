@@ -8,15 +8,21 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 Widget playgroundGtPasswordFieldUseCase(BuildContext context) {
   final label = context.knobs.string(label: 'Label', initialValue: 'Password');
   final isEnabled = context.knobs.boolean(label: 'Enabled', initialValue: true);
-  final minLength = context.knobs.int.slider(label: 'Min Length', initialValue: 6, min: 3, max: 12);
+  final minLength = context.knobs.int.slider(
+    label: 'Min Length',
+    initialValue: 6,
+    min: 3,
+    max: 12,
+  );
   final decoration = context.knobs.object.dropdown(
     label: 'Style',
     options: context.inputStyles.all,
-    initialOption: context.inputStyles.all[1],
+    initialOption: context.inputStyles.all.first,
     labelBuilder: (d) => d.$1,
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 final _passCtrl = GtInputController();
 
 GtPasswordField(
