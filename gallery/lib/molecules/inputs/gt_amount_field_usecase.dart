@@ -27,7 +27,7 @@ Widget playgroundGtAmountFieldUseCase(BuildContext context) {
   final decoration = context.knobs.object.dropdown<(String, GtInputDecoration)>(
     label: 'Input Style',
     options: context.inputStyles.all,
-    initialOption: context.inputStyles.all[1],
+    initialOption: context.inputStyles.all.first,
     labelBuilder: (v) => v.$1,
   );
 

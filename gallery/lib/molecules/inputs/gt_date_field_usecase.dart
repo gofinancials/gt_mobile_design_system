@@ -6,13 +6,22 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtDateField', type: GtDateField)
 Widget playgroundGtDateFieldUseCase(BuildContext context) {
-  final label = context.knobs.string(label: 'Label', initialValue: 'Select date');
-  final calendarTitle = context.knobs.string(label: 'Calendar Title', initialValue: 'Pick a date');
-  final isRange = context.knobs.boolean(label: 'Range Picker Mode', initialValue: false);
+  final label = context.knobs.string(
+    label: 'Label',
+    initialValue: 'Select date',
+  );
+  final calendarTitle = context.knobs.string(
+    label: 'Calendar Title',
+    initialValue: 'Pick a date',
+  );
+  final isRange = context.knobs.boolean(
+    label: 'Range Picker Mode',
+    initialValue: false,
+  );
   final decoration = context.knobs.object.dropdown<(String, GtInputDecoration)>(
     label: 'Input Style',
     options: context.inputStyles.all,
-    initialOption: context.inputStyles.all[1],
+    initialOption: context.inputStyles.all.first,
     labelBuilder: (v) => v.$1,
   );
 

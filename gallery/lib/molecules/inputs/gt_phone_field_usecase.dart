@@ -6,18 +6,28 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtPhoneField', type: GtPhoneField)
 Widget playgroundGtPhoneFieldUseCase(BuildContext context) {
-  final label = context.knobs.string(label: 'Label', initialValue: 'Phone number');
-  final showCountryCode = context.knobs.boolean(label: 'Show Country Code', initialValue: true);
+  final label = context.knobs.string(
+    label: 'Label',
+    initialValue: 'Phone number',
+  );
+  final showCountryCode = context.knobs.boolean(
+    label: 'Show Country Code',
+    initialValue: true,
+  );
   final isEnabled = context.knobs.boolean(label: 'Enabled', initialValue: true);
-  final isRequired = context.knobs.boolean(label: 'Required', initialValue: true);
+  final isRequired = context.knobs.boolean(
+    label: 'Required',
+    initialValue: true,
+  );
   final decoration = context.knobs.object.dropdown<(String, GtInputDecoration)>(
     label: 'Input Style',
     options: context.inputStyles.all,
-    initialOption: context.inputStyles.all[1],
+    initialOption: context.inputStyles.all.first,
     labelBuilder: (v) => v.$1,
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtPhoneField(
   label: '$label',
   showCountryCode: $showCountryCode,

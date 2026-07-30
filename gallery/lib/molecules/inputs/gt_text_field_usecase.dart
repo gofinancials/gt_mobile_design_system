@@ -7,16 +7,20 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 @widgetbook.UseCase(name: 'GtTextField', type: GtTextField)
 Widget playgroundGtTextFieldUseCase(BuildContext context) {
   final label = context.knobs.string(label: 'Label', initialValue: 'Name');
-  final hintText = context.knobs.string(label: 'Hint Text', initialValue: 'Enter your name');
+  final hintText = context.knobs.string(
+    label: 'Hint Text',
+    initialValue: 'Enter your name',
+  );
   final isEnabled = context.knobs.boolean(label: 'Enabled', initialValue: true);
   final decoration = context.knobs.object.dropdown<(String, GtInputDecoration)>(
     label: 'Input Style',
     options: context.inputStyles.all,
-    initialOption: context.inputStyles.all[1],
+    initialOption: context.inputStyles.all.first,
     labelBuilder: (v) => v.$1,
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtTextField(
   controller: GtInputController(),
   label: "$label",
@@ -27,7 +31,8 @@ GtTextField(
 
   return GtWidgetDocPage(
     title: 'GtTextField',
-    description: 'A customizable text input field conforming to the design system styling.',
+    description:
+        'A customizable text input field conforming to the design system styling.',
     code: codeSnippet,
     child: GtTextField(
       controller: GtInputController(),

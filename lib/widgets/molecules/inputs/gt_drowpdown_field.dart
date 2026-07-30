@@ -229,7 +229,7 @@ class GtDropDownModal<T> extends GtStatefulWidget {
   final bool autoFocus;
 
   /// An optional builder for individual option list tiles.
-  final ValueBuilder2<GtDropdownData, GtDropdownInputController>? builder;
+  final ValueBuilder2<GtDropdownData<T>, GtDropdownInputController>? builder;
 
   /// An optional builder to completely override the list rendering.
   final ValueBuilder3<
@@ -263,7 +263,7 @@ class GtDropDownModal<T> extends GtStatefulWidget {
   State<GtDropDownModal> createState() => _GtDropDownModalState<T>();
 }
 
-class _GtDropDownModalState<T> extends State<GtDropDownModal>
+class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
     with AppTaskMixin {
   late final AppDebouncer debouncer;
   List<GtDropdownData<T>> options = [];
@@ -287,7 +287,7 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal>
 
   Future<List<GtDropdownData<T>>> _getOptions() async {
     final data = await tryRunThrowableTask(() async => await widget.options);
-    options = (data ?? []) as List<GtDropdownData<T>>;
+    options = data ?? [];
     presentedOptions.value = options;
     return options;
   }

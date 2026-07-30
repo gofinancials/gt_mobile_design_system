@@ -25,6 +25,8 @@ final _inputCtrl14 = GtDropdownInputController<Country>();
 final _inputCtrl15 = GtInputController<Country>();
 final _inputCtrl16 = GtInputController<Country>();
 final _formKey2 = GlobalKey<FormState>();
+final _fxSource = GtInputController();
+final _fxTarget = GtInputController();
 
 FutureOr<List<GtDropdownData<Country>>> get _allCountries async {
   final countries = await AppCountryUtility.fetchCountries();
@@ -71,7 +73,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
   final decoration = context.knobs.object.dropdown<(String, GtInputDecoration)>(
     label: "Input Style",
     options: context.inputStyles.all,
-    initialOption: context.inputStyles.all[1],
+    initialOption: context.inputStyles.all.first,
     labelBuilder: (value) => value.$1,
   );
   final helperText = context.knobs.stringOrNull(label: "Helper Text");
@@ -173,7 +175,7 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
               GtTransferField(
                 amountController: _inputCtrl8,
                 noteController: _inputCtrl9,
-                participantSeparator: GtSvg(GtVectors.moveMoney),
+                middleIcon: GtSvg(GtVectors.moveMoney),
                 min: 400,
                 max: 1000,
                 firstParticipant: GtTransferParticipantData(
@@ -187,6 +189,62 @@ Widget buildGtTextFieldUsecase(BuildContext context) {
                 ),
                 secondParticipant: GtTransferParticipantData.empty(label: "to"),
                 noteHint: "Add a note (optional)",
+              ),
+              const GtGap.yXl(),
+              GtFxTransferField(
+                sourceAmountController: _fxSource,
+                targetAmountController: _fxTarget,
+                onSourceAmountChanged: (value) {
+                  if (!value.hasValue) {
+                    _fxTarget.clear();
+                    return;
+                  }
+
+                  final amount = (value.asAmount ?? 0) * 1350;
+                  _fxTarget.text = amount.formattedNumberLong;
+                },
+                onTargetAmountChanged: (value) {
+                  if (!value.hasValue) {
+                    _fxSource.clear();
+                    return;
+                  }
+
+                  final amount = (value.asAmount ?? 0) / 1350;
+                  _fxSource.text = amount.formattedNumberLong;
+                },
+                noteController: GtInputController(),
+                firstParticipant: GtTransferParticipantData(
+                  label: "from",
+                  image: AppImageData(GtNetworkImages.business),
+                  imageType: .image,
+                  validate: true,
+                  name: "usd account · 1020293939",
+                  balance: 200015,
+                  currency: AppStrings.dollar,
+                ),
+                secondParticipant: GtTransferParticipantData(
+                  label: "to",
+                  image: AppImageData(GtNetworkImages.sampleAvatar1),
+                  validate: false,
+                  name: "Dubai Trip",
+                  balance: 1000000000,
+                  currency: AppStrings.naira,
+                ),
+                noteHint: "Add a note (optional)",
+                child: Text.rich(
+                  TextSpan(
+                    text: "Live exchange rate: ",
+                    children: [
+                      TextSpan(
+                        text: "\$1 = ${1350.asCurrency()}",
+                        style: context.textStyles.subHeadXs(
+                          color: context.palette.primary.dark,
+                        ),
+                      ),
+                    ],
+                  ),
+                  style: context.textStyles.subHeadXs(),
+                ),
               ),
               const GtGap.yXl(),
               GtDateField(

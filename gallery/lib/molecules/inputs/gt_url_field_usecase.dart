@@ -11,11 +11,12 @@ Widget playgroundGtUrlFieldUseCase(BuildContext context) {
   final decoration = context.knobs.object.dropdown<(String, GtInputDecoration)>(
     label: 'Input Style',
     options: context.inputStyles.all,
-    initialOption: context.inputStyles.all[1],
+    initialOption: context.inputStyles.all.first,
     labelBuilder: (v) => v.$1,
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtUrlField(
   controller: GtInputController(),
   label: "$label",
@@ -25,7 +26,8 @@ GtUrlField(
 
   return GtWidgetDocPage(
     title: 'GtUrlField',
-    description: 'A text field specialized for entering URLs with standard URL format validation.',
+    description:
+        'A text field specialized for entering URLs with standard URL format validation.',
     code: codeSnippet,
     child: GtUrlField(
       controller: GtInputController(),

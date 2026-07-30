@@ -817,6 +817,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               ),
               _widgetbook.WidgetbookComponent(
+                name: 'GtFxTransferField',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtFxTransferField',
+                    builder: _gallery_molecules_inputs_gt_transfer_field_usecase
+                        .playgroundGtFxTransferFieldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtPasswordField',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(

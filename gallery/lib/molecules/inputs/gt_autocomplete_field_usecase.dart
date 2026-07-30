@@ -7,16 +7,20 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 @widgetbook.UseCase(name: 'GtAutocompleteField', type: GtAutocompleteField)
 Widget playgroundGtAutocompleteFieldUseCase(BuildContext context) {
   final label = context.knobs.string(label: 'Label', initialValue: 'Fruit');
-  final hintText = context.knobs.string(label: 'Hint Text', initialValue: 'Type to search fruits...');
+  final hintText = context.knobs.string(
+    label: 'Hint Text',
+    initialValue: 'Type to search fruits...',
+  );
   final isEnabled = context.knobs.boolean(label: 'Enabled', initialValue: true);
   final decoration = context.knobs.object.dropdown<(String, GtInputDecoration)>(
     label: 'Input Style',
     options: context.inputStyles.all,
-    initialOption: context.inputStyles.all[1],
+    initialOption: context.inputStyles.all.first,
     labelBuilder: (v) => v.$1,
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtAutocompleteField<String>(
   controller: GtInputController(),
   suggestions: [
@@ -32,7 +36,8 @@ GtAutocompleteField<String>(
 
   return GtWidgetDocPage(
     title: 'GtAutocompleteField',
-    description: 'A text input field that provides a list of selectable suggestions as the user types.',
+    description:
+        'A text input field that provides a list of selectable suggestions as the user types.',
     code: codeSnippet,
     child: GtAutocompleteField<String>(
       controller: GtInputController(),

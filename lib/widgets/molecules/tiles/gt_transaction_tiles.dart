@@ -151,6 +151,8 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// Custom styling for the [superscript] text.
   final TextStyle? superscriptStyle;
 
+  final int? maxLines;
+
   /// Creates a [GtTransactionParticipantListTile].
   const GtTransactionParticipantListTile(
     this.title, {
@@ -163,6 +165,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
     this.subStyle,
     this.titleStyle,
     this.superscriptStyle,
+    this.maxLines,
   });
 
   @override
@@ -190,11 +193,21 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
                 GtText(
                   superscript?.upper,
                   style: superscriptStyle ?? defaultSupStyle,
+                  maxLines: 1,
                 ),
-              GtText(title, style: titleStyle ?? style.h7()),
+              GtText(
+                title,
+                style: titleStyle ?? style.buttonS(),
+                maxLines: maxLines,
+                overflow: maxLines != null ? .ellipsis : null,
+              ),
               if (subtitle.hasValue) ...[
                 const GtGap.ySm(),
-                GtText(subtitle, style: subStyle ?? defaultSubStyle),
+                GtText(
+                  subtitle,
+                  style: subStyle ?? defaultSubStyle,
+                  maxLines: maxLines,
+                ),
               ],
             ],
           ),

@@ -80,6 +80,25 @@ class GtInputStyles {
     );
   }
 
+  /// The style configuration used for large, emphasis-heavy inputs,
+  /// typically seen in money transfer screens.
+  GtInputDecoration get fxTransferInputStyle {
+    final textStyle = context.textStyles.fxInput();
+    final disabledStyle = textStyle.copyWith(
+      color: context.palette.text.disabled,
+    );
+    return GtInputDecoration(
+      size: Size(.infinity, 48),
+      textStyle: textStyle,
+      disabledStyle: disabledStyle,
+      hintStyle: disabledStyle,
+      errorStyle: context.textStyles.body2s(color: context.palette.error.base),
+      helperStyle: context.textStyles.body2s(),
+      decoration: BoxDecoration(),
+      padding: context.insets.allDp(8.px),
+    );
+  }
+
   /// The default style configuration for standard form text fields,
   /// featuring a weak background and standard height.
   GtInputDecoration get defaultDecoration {
@@ -396,8 +415,9 @@ class GtInputStyles {
 
   /// A collection containing all predefined [GtInputDecoration] configurations paired with their labels.
   List<(String, GtInputDecoration)> get all => [
-    ('Transfer Input Style', transferInputStyle),
     ('Default Decoration', defaultDecoration),
+    ('Transfer Input Style', transferInputStyle),
+    ('FX Transfer Input Style', fxTransferInputStyle),
     ('Plain Decoration', plainDecoration),
     ('Small Decoration', smDecoration),
     ('Search Decoration', searchDecoration),
