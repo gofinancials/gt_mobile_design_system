@@ -8,6 +8,7 @@ enum GtColors {
   // ---------------------------------------------------------------------------
   white(ColorSet(0xFFFFFFFF)),
   black(ColorSet(0xFF000000)),
+  tertiaryText(ColorSet(0xFF7A7A7A)),
   transparent(ColorSet(0x00000000)),
 
   // ---------------------------------------------------------------------------

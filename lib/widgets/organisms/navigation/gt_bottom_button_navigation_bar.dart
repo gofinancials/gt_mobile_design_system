@@ -4,6 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 class GtButtonBottomNavBar extends GtStatelessWidget {
   final Widget button;
   final Widget? heading;
+  final Widget? footer;
   final double? spacing;
 
   const GtButtonBottomNavBar({
@@ -11,6 +12,7 @@ class GtButtonBottomNavBar extends GtStatelessWidget {
     required this.button,
     this.heading,
     this.spacing,
+    this.footer,
   });
 
   @override
@@ -28,7 +30,7 @@ class GtButtonBottomNavBar extends GtStatelessWidget {
           mainAxisSize: .min,
           crossAxisAlignment: .stretch,
           spacing: spacing ?? context.spacingLg,
-          children: [?heading, button],
+          children: [?heading, button, ?footer],
         ),
       ),
     );

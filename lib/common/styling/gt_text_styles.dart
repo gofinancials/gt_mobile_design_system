@@ -1105,6 +1105,31 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Double Extra Small Subheading (Subhead #XS) text style.
+  TextStyle subHead3xs({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 10,
+      heightPx: heightPx ?? 14,
+      widthPct: 0,
+      weight: FontWeight.w500,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   /// Generates the standard Button text style.
   TextStyle button({
     double? heightPx,
@@ -1352,6 +1377,7 @@ class GtTextStyles {
     ('Subhead 2S (context.textStyles.subHead2s)', subHead2s()),
     ('Subhead XS (context.textStyles.subHeadXs)', subHeadXs()),
     ('Subhead 2XS (context.textStyles.subHead2xs)', subHead2xs()),
+    ('Subhead 3XS (context.textStyles.subHead3xs)', subHead3xs()),
     ('Button (context.textStyles.button)', button()),
     ('Button S (context.textStyles.buttonS)', buttonS()),
     ('Button 2S (context.textStyles.button2s)', button2s()),

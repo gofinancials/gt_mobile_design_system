@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
+import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A data class that represents the content and styling for a single slide
 /// within a carousel or welcome screen, such as `GtWelcomeSlides`.
@@ -34,6 +35,49 @@ class GtSlideData {
     required this.backgroundColor,
     this.backgroundImage,
     this.textColor,
+  });
+}
+
+/// A data class that represents the content and styling for a single slide
+/// within a carousel or onboarding screen, such as `GtOnboardingSlides`.
+class GtOnboardingSlideData {
+  /// The primary heading text displayed on the slide.
+  final String title;
+
+  /// The alignment of the [title].
+  ///
+  /// Defaults to `.center`.
+  final TextAlign? titleTextAlign;
+
+  /// The main image or illustration to display on the slide.
+  final ImageProvider image;
+
+  /// The primary background color of the slide.
+  final Color backgroundColor;
+
+  /// An optional image that covers the content area.
+  final AppImageData? contentImage;
+
+  /// An optional background image that covers the slide.
+  final double? contentImageWidth;
+
+  final Widget? contentImageSpacer;
+
+  /// The color of the text (both [title] and [subtitle]).
+  ///
+  /// If null, the text color typically falls back to a default theme color.
+  final Color? textColor;
+
+  /// Creates a [GtOnboardingSlideData] instance.
+  const GtOnboardingSlideData({
+    required this.title,
+    required this.image,
+    required this.backgroundColor,
+    this.contentImage,
+    this.textColor,
+    this.titleTextAlign = .center,
+    this.contentImageWidth,
+    this.contentImageSpacer,
   });
 }
 

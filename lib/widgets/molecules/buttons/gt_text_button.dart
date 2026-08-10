@@ -53,6 +53,8 @@ class GtTextButton extends GtButton {
     this.leading,
     this.trailing,
     super.alignment,
+    super.semanticLabel,
+    super.loadingSemanticLabel,
     this.textCase = .upper,
     this.style,
     super.key,
@@ -107,18 +109,22 @@ class GtTextButton extends GtButton {
     final iconSize = context.dp(16.px);
 
     if (leading != null) {
-      leadingIcon = GtIcon.withColor(
-        leading!,
-        color: textColor,
-        size: iconSize,
+      leadingIcon = ExcludeSemantics(
+        child: GtIcon.withColor(
+          leading!,
+          color: textColor,
+          size: iconSize,
+        ),
       );
     }
 
     if (trailing != null) {
-      trailingIcon = GtIcon.withColor(
-        trailing!,
-        color: textColor,
-        size: iconSize,
+      trailingIcon = ExcludeSemantics(
+        child: GtIcon.withColor(
+          trailing!,
+          color: textColor,
+          size: iconSize,
+        ),
       );
     }
 
@@ -161,6 +167,15 @@ class GtTextButton extends GtButton {
 
     if (alignment != null) {
       child = Align(alignment: alignment!, child: child);
+    }
+
+    if (computedSemanticLabel != null) {
+      child = Semantics(
+        label: computedSemanticLabel,
+        button: true,
+        excludeSemantics: true,
+        child: child,
+      );
     }
 
     return child;

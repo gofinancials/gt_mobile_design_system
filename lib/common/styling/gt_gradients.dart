@@ -96,4 +96,17 @@ class GtGradients {
       stops: [.8, 1],
     );
   }
+
+  /// Creates a two-tone linear gradient.
+  Gradient onboardingSlideGradient() {
+    return LinearGradient(
+      begin: Alignment(0.50, 0.72),
+      end: Alignment(0.50, 0.01),
+      colors: [
+        context.palette.staticColors.black,
+        context.palette.staticColors.black.setOpacity(0),
+      ],
+      stops: [.4547, .9871],
+    );
+  }
 }

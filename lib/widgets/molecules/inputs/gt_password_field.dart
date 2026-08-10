@@ -32,6 +32,12 @@ class GtPasswordField extends GtStatefulWidget {
   /// The type of action button to use for the keyboard. Defaults to [TextInputAction.next].
   final TextInputAction action;
 
+  /// A semantic label for the show password button.
+  final String? showPasswordSemanticLabel;
+
+  /// A semantic label for the hide password button.
+  final String? hidePasswordSemanticLabel;
+
   /// Creates a new [GtPasswordField].
   const GtPasswordField({
     required this.controller,
@@ -41,6 +47,8 @@ class GtPasswordField extends GtStatefulWidget {
     this.validator,
     this.action = TextInputAction.next,
     this.onFieldSubmitted,
+    this.showPasswordSemanticLabel,
+    this.hidePasswordSemanticLabel,
     super.key,
     this.decoration,
   });
@@ -86,8 +94,11 @@ class _GtPasswordFieldState extends State<GtPasswordField> {
                 minLength: widget.minLength,
               ),
           suffix: GtInkWell(
+            semanticsLabel: passwordHidden ? widget.showPasswordSemanticLabel : widget.hidePasswordSemanticLabel,
             borderRadius: context.borderRadiusXl,
-            child: GtAnimatedSwitcher(child: GtIcon(icon, key: ValueKey(icon))),
+            child: RepaintBoundary(
+              child: GtAnimatedSwitcher(child: GtIcon(icon, key: ValueKey(icon))),
+            ),
             onTap: () {
               hidePass.value = !passwordHidden;
             },

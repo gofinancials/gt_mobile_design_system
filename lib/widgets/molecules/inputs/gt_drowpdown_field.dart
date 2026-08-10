@@ -89,6 +89,9 @@ class GtDropdownField<T> extends GtStatefulWidget {
   /// Defaults to a large vertical gap ([GtGap.yLg()]).
   final GtGap optionsGap;
 
+  /// A semantic label for the dropdown button.
+  final String? dropdownSemanticLabel;
+
   /// Creates a dropdown field with the provided [options].
   const GtDropdownField({
     super.key,
@@ -113,6 +116,7 @@ class GtDropdownField<T> extends GtStatefulWidget {
     this.emptyWidget,
     this.loadingWidget,
     this.errorWidget,
+    this.dropdownSemanticLabel,
   }) : assert(
          optionBuilder == null || optionsBuilder == null,
          'Cannot provide both optionBuilder and optionsBuilder.',
@@ -168,6 +172,7 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
+      semanticsLabel: widget.dropdownSemanticLabel,
       borderRadius: context.borderRadiusXl,
       hapticFeedbackType: .medium,
       onTap: _showSheet,
