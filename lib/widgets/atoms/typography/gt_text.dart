@@ -35,6 +35,9 @@ class GtText extends GtStatelessWidget {
   /// How visual overflow should be handled.
   final TextOverflow? overflow;
 
+  /// An alternative semantics label for this text.
+  final String? semanticsLabel;
+
   /// Creates a new [GtText] widget.
   const GtText(
     this.data, {
@@ -46,6 +49,7 @@ class GtText extends GtStatelessWidget {
     this.softWrap,
     this.strutStyle,
     this.textDirection,
+    this.semanticsLabel,
     super.key,
   });
 
@@ -64,6 +68,7 @@ class GtText extends GtStatelessWidget {
       softWrap: softWrap,
       textDirection: textDirection,
       textWidthBasis: TextWidthBasis.parent,
+      semanticsLabel: semanticsLabel,
     );
   }
 }

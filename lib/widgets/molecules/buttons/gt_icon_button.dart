@@ -90,6 +90,12 @@ class GtIconButton extends GtButton {
     /// The alignment of the button's content.
     super.alignment,
 
+    /// An optional semantic label for the button.
+    super.semanticLabel,
+
+    /// An optional semantic label for the button when in a loading state.
+    super.loadingSemanticLabel,
+
     /// An optional gradient to apply to the button's background.
     this.gradient,
 
@@ -222,15 +228,17 @@ class GtIconButton extends GtButton {
     };
 
     Widget child = IconButton(
-      icon: GtAnimatedFade(
-        child1: GtIcon.withColor(
-          icon,
-          color: iconColor,
-          size: iconSize,
-          alignment: .center,
+      icon: ExcludeSemantics(
+        child: GtAnimatedFade(
+          child1: GtIcon.withColor(
+            icon,
+            color: iconColor,
+            size: iconSize,
+            alignment: .center,
+          ),
+          child2: GtSpinner(color: iconColor),
+          showFirst: !isLoading,
         ),
-        child2: GtSpinner(color: iconColor),
-        showFirst: !isLoading,
       ),
       alignment: alignment,
       style: style.copyWith(
@@ -278,6 +286,15 @@ class GtIconButton extends GtButton {
 
     if (alignment != null) {
       child = Align(alignment: alignment!, child: child);
+    }
+
+    if (computedSemanticLabel != null) {
+      child = Semantics(
+        label: computedSemanticLabel,
+        button: true,
+        excludeSemantics: true,
+        child: child,
+      );
     }
 
     return child;

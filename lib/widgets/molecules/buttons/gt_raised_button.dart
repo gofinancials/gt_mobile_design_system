@@ -38,6 +38,8 @@ class GtRaisedButton extends GtButton {
     this.leading,
     this.trailing,
     super.alignment,
+    super.semanticLabel,
+    super.loadingSemanticLabel,
     super.textColor,
     super.key,
   });
@@ -129,20 +131,24 @@ class GtRaisedButton extends GtButton {
     final iconSize = context.dp(16.px);
 
     if (leading != null) {
-      leadingIcon = GtIcon.withColor(
-        leading!,
-        color: iconColor,
-        size: iconSize,
-        alignment: alignment,
+      leadingIcon = ExcludeSemantics(
+        child: GtIcon.withColor(
+          leading!,
+          color: iconColor,
+          size: iconSize,
+          alignment: alignment,
+        ),
       );
     }
 
     if (trailing != null) {
-      trailingIcon = GtIcon.withColor(
-        trailing!,
-        color: iconColor,
-        size: iconSize,
-        alignment: alignment,
+      trailingIcon = ExcludeSemantics(
+        child: GtIcon.withColor(
+          trailing!,
+          color: iconColor,
+          size: iconSize,
+          alignment: alignment,
+        ),
       );
     }
 
@@ -182,6 +188,15 @@ class GtRaisedButton extends GtButton {
 
     if (alignment != null) {
       child = Align(alignment: alignment!, child: child);
+    }
+
+    if (computedSemanticLabel != null) {
+      child = Semantics(
+        label: computedSemanticLabel,
+        button: true,
+        excludeSemantics: true,
+        child: child,
+      );
     }
 
     return child;

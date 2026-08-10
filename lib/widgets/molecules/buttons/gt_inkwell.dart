@@ -3,9 +3,15 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 class GtInkWell extends InkWell {
   final HapticFeedbackType hapticFeedbackType;
+  final String? semanticsLabel;
+  final String? semanticHint;
+  final bool isSemanticButton;
 
   const GtInkWell({
     this.hapticFeedbackType = .light,
+    this.semanticsLabel,
+    this.semanticHint,
+    this.isSemanticButton = true,
     super.onTap,
     super.key,
     super.child,
@@ -43,7 +49,7 @@ class GtInkWell extends InkWell {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    Widget inkWell = InkWell(
       onTap: () {
         super.onTap?.call();
         triggerHaptic(hapticFeedbackType);
@@ -106,5 +112,16 @@ class GtInkWell extends InkWell {
       radius: radius,
       child: child,
     );
+
+    if (semanticsLabel != null || semanticHint != null || isSemanticButton) {
+      inkWell = Semantics(
+        label: semanticsLabel,
+        hint: semanticHint,
+        button: isSemanticButton,
+        child: inkWell,
+      );
+    }
+    
+    return inkWell;
   }
 }

@@ -39,6 +39,12 @@ class GtBalanceText extends GtStatelessWidget {
   /// Maximum lines for the amount [GtText].
   final int? maxLines;
 
+  /// A semantic label to use when the balance is hidden.
+  final String? hiddenSemanticsLabel;
+
+  /// An overriding semantic label to use when the balance is visible.
+  final String? semanticsLabel;
+
   /// Returns `true` if the [currencySymbol] represents Naira.
   bool get isNaira {
     bool isNaira = currencySymbol == AppStrings.naira;
@@ -62,6 +68,8 @@ class GtBalanceText extends GtStatelessWidget {
     this.hidden = false,
     this.textAlign = TextAlign.center,
     this.maxLines = 1,
+    this.hiddenSemanticsLabel,
+    this.semanticsLabel,
   });
 
   @override
@@ -90,18 +98,25 @@ class GtBalanceText extends GtStatelessWidget {
         ? AppTextFormatter.maskedCurrency(amount, symbol: '')
         : AppTextFormatter.formatCurrency(amount, ignoreSymbol: true);
 
-    return Text.rich(
-      TextSpan(
-        children: [
-          WidgetSpan(
-            child: GtText('$computedSymbol ', style: currencyStyle),
-            alignment: .middle,
-          ),
-          TextSpan(text: amtDisplay),
-        ],
+    final String semanticLabel = hidden
+        ? (hiddenSemanticsLabel ?? 'Balance is hidden')
+        : (semanticsLabel ?? '${AppTextFormatter.formatCurrency(amount, ignoreSymbol: true)} ${isNaira ? "Naira" : currencySymbol}');
+
+    return Semantics(
+      label: semanticLabel,
+      child: Text.rich(
+        TextSpan(
+          children: [
+            WidgetSpan(
+              child: GtText('$computedSymbol ', style: currencyStyle),
+              alignment: .middle,
+            ),
+            TextSpan(text: amtDisplay),
+          ],
+        ),
+        textAlign: textAlign,
+        style: amtStyle,
       ),
-      textAlign: textAlign,
-      style: amtStyle,
     );
   }
 }

@@ -225,6 +225,7 @@ class _GtTextFieldState extends State<GtTextField>
                 onTap: () => context.requestFocus(_inputFocus),
                 behavior: .translucent,
                 child: _GtTextFieldLayout(
+                  hasError: hasError,
                   decoration: decoration,
                   activeDecoration: decor,
                   helperText: helpText,
@@ -284,6 +285,7 @@ class _GtTextFieldLayout extends GtStatelessWidget {
   final BoxDecoration activeDecoration;
   final String? helperText;
   final TextStyle helperStyle;
+  final bool hasError;
   final String? labelText;
   final TextStyle? labelStyle;
   final int maxLines;
@@ -299,6 +301,7 @@ class _GtTextFieldLayout extends GtStatelessWidget {
     required this.activeDecoration,
     required this.helperText,
     required this.helperStyle,
+    required this.hasError,
     required this.maxLines,
     required this.textAlign,
     required this.prefix,
@@ -315,55 +318,62 @@ class _GtTextFieldLayout extends GtStatelessWidget {
     final constraints = multiline
         ? decoration.multilineConstraints
         : decoration.constraints;
-    return Column(
-      spacing: context.spacingBase,
-      crossAxisAlignment: .stretch,
-      mainAxisSize: .min,
-      children: [
-        AnimatedContainer(
-          duration: 300.milliseconds,
-          constraints: constraints,
-          padding: decoration.padding,
-          height: multiline ? null : decoration.size.height,
-          decoration: activeDecoration,
-          alignment: .center,
-          clipBehavior: .hardEdge,
-          child: Column(
-            crossAxisAlignment: .stretch,
-            mainAxisAlignment: .center,
-            spacing: context.spacingSm,
-            mainAxisSize: .min,
-            children: [
-              if (focused && labelText.hasValue)
-                Flexible(
-                  child: GtText(
-                    labelText,
-                    style: labelStyle,
-                    maxLines: 1,
-                    overflow: .ellipsis,
-                  ),
-                ),
-              Row(
-                spacing: context.spacingBase,
-                mainAxisAlignment: .start,
-                crossAxisAlignment: .center,
+    return MergeSemantics(
+      child: Column(
+        spacing: context.spacingBase,
+        crossAxisAlignment: .stretch,
+        mainAxisSize: .min,
+        children: [
+          RepaintBoundary(
+            child: AnimatedContainer(
+              duration: 300.milliseconds,
+              constraints: constraints,
+              padding: decoration.padding,
+              height: multiline ? null : decoration.size.height,
+              decoration: activeDecoration,
+              alignment: .center,
+              clipBehavior: .hardEdge,
+              child: Column(
+                crossAxisAlignment: .stretch,
+                mainAxisAlignment: .center,
+                spacing: context.spacingSm,
+                mainAxisSize: .min,
                 children: [
-                  ?prefix,
-                  Expanded(child: child),
-                  ?suffix,
+                  if (focused && labelText.hasValue)
+                    Flexible(
+                      child: GtText(
+                        labelText,
+                        style: labelStyle,
+                        maxLines: 1,
+                        overflow: .ellipsis,
+                      ),
+                    ),
+                  Row(
+                    spacing: context.spacingBase,
+                    mainAxisAlignment: .start,
+                    crossAxisAlignment: .center,
+                    children: [
+                      ?prefix,
+                      Expanded(child: child),
+                      ?suffix,
+                    ],
+                  ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-        if (helperText.hasValue)
-          GtText(
-            helperText,
-            style: helperStyle,
-            textAlign: textAlign,
-            maxLines: maxLines,
-          ),
-      ],
+          if (helperText.hasValue)
+            Semantics(
+              liveRegion: hasError,
+              child: GtText(
+                helperText,
+                style: helperStyle,
+                textAlign: textAlign,
+                maxLines: maxLines,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

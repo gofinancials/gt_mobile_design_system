@@ -114,6 +114,12 @@ abstract class GtButton extends GtStatelessWidget {
   /// The alignment of the button's content (e.g., text and icons) within the button's bounds.
   final AlignmentGeometry? alignment;
 
+  /// An optional semantic label for the button.
+  final String? semanticLabel;
+
+  /// An optional semantic label for the button when in a loading state.
+  final String? loadingSemanticLabel;
+
   /// Creates a [GtButton].
   const GtButton({
     required this.onPressed,
@@ -124,8 +130,18 @@ abstract class GtButton extends GtStatelessWidget {
     this.isLoading = false,
     this.textColor,
     this.alignment,
+    this.semanticLabel,
+    this.loadingSemanticLabel,
     super.key,
   });
+
+  /// Computes the semantic label dynamically based on the loading state.
+  String? get computedSemanticLabel {
+    if (isLoading) {
+      return loadingSemanticLabel ?? semanticLabel;
+    }
+    return semanticLabel;
+  }
 
   /// Returns true if the button is currently in a focused state.
   bool isFocused(Set<WidgetState> states) {

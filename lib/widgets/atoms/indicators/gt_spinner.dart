@@ -36,6 +36,9 @@ class GtSpinner extends GtStatefulWidget {
   /// Defaults to [Alignment.center].
   final Alignment alignment;
 
+  /// A semantic label for the spinner, used by accessibility frameworks.
+  final String? semanticsLabel;
+
   /// Creates a new [GtSpinner].
   const GtSpinner({
     this.value,
@@ -43,6 +46,7 @@ class GtSpinner extends GtStatefulWidget {
     this.color,
     this.strokeWidth = 4.0,
     this.size = 22,
+    this.semanticsLabel,
     super.key,
     this.alignment = .center,
   });
@@ -65,8 +69,10 @@ class _GtSpinnerState extends State<GtSpinner> {
 
     return Align(
       alignment: widget.alignment,
-      child: RepaintBoundary(
-        child: SizedBox(
+      child: Semantics(
+        label: widget.semanticsLabel,
+        child: RepaintBoundary(
+          child: SizedBox(
           width: widget.size,
           height: widget.size,
           child: Builder(
@@ -106,6 +112,7 @@ class _GtSpinnerState extends State<GtSpinner> {
             },
           ),
         ),
+      ),
       ),
     );
   }

@@ -23,17 +23,19 @@ class GtAnimatedFade extends GtStatefulWidget {
 class _GtAnimatedFadeState extends State<GtAnimatedFade> {
   @override
   Widget build(BuildContext context) {
-    return AnimatedCrossFade(
-      duration: widget.duration.milliseconds,
-      alignment: Alignment.center,
-      reverseDuration: widget.duration.milliseconds,
-      crossFadeState: widget.showFirst
-          ? CrossFadeState.showFirst
-          : CrossFadeState.showSecond,
-      firstCurve: Curves.decelerate,
-      secondCurve: Curves.decelerate,
-      firstChild: widget.child1,
-      secondChild: widget.child2,
+    return RepaintBoundary(
+      child: AnimatedCrossFade(
+        duration: widget.duration.milliseconds,
+        alignment: Alignment.center,
+        reverseDuration: widget.duration.milliseconds,
+        crossFadeState: widget.showFirst
+            ? CrossFadeState.showFirst
+            : CrossFadeState.showSecond,
+        firstCurve: Curves.decelerate,
+        secondCurve: Curves.decelerate,
+        firstChild: widget.child1,
+        secondChild: widget.child2,
+      ),
     );
   }
 }
