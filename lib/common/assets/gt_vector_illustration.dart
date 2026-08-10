@@ -262,6 +262,9 @@ class GtVectorIllustrations {
   /// Path to the walletCat SVG.
   static const walletCat = "$_basePath/wallet_cat.svg";
 
+  /// Path to the fx SVG.
+  static const fx = "$_basePath/fx.svg";
+
   /// A list containing all available vector illustration SVG paths.
   static List<({String label, String value})> get all => [
     (label: 'announcement', value: announcement),
@@ -348,5 +351,6 @@ class GtVectorIllustrations {
     (label: 'transferCat', value: transferCat),
     (label: 'transportCat', value: transportCat),
     (label: 'walletCat', value: walletCat),
+    (label: 'fx', value: fx),
   ];
 }

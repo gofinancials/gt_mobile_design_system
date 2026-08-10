@@ -306,6 +306,8 @@ import 'package:gallery/templates/screens/gt_splash_screen.dart'
     as _gallery_templates_screens_gt_splash_screen;
 import 'package:gallery/templates/slides/gt_lesson_slides_usecase.dart'
     as _gallery_templates_slides_gt_lesson_slides_usecase;
+import 'package:gallery/templates/slides/gt_onboarding_slides_usecase.dart'
+    as _gallery_templates_slides_gt_onboarding_slides_usecase;
 import 'package:gallery/templates/slides/gt_welcome_slides_usecase.dart'
     as _gallery_templates_slides_gt_welcome_slides_usecase;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
@@ -2370,6 +2372,23 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtLessonSlides Gallery',
                     builder: _gallery_templates_slides_gt_lesson_slides_usecase
                         .playgroundGtLessonSlidesUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtOnboardingSlides',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtOnboardingSlides',
+                    builder:
+                        _gallery_templates_slides_gt_onboarding_slides_usecase
+                            .playgroundGtOnboardingSlidesDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtOnboardingSlides Gallery',
+                    builder:
+                        _gallery_templates_slides_gt_onboarding_slides_usecase
+                            .playgroundGtWelcomeSlidesUseCase,
                   ),
                 ],
               ),

@@ -167,6 +167,28 @@ class GtNetworkImages {
   /// Virtual debit card
   static const String virtualCard = '$_baseUrl/VirtualDebitCard.webp';
 
+  // Onboarding
+
+  /// Image URL for the first onboarding slide background.
+  static const String personalSlide1Bg =
+      '$_baseUrl/personal_onboarding/personal_slide_1.webp';
+
+  /// Image URL for the second onboarding slide background.
+  static const String personalSlide2Bg =
+      '$_baseUrl/personal_onboarding/personal_slide_2_bg.webp';
+
+  /// Image URL for the third onboarding slide background.
+  static const String personalSlide3Bg =
+      '$_baseUrl/personal_onboarding/personal_slide_3_bg.webp';
+
+  /// Image URL for the fourth onboarding slide background.
+  static const String personalSlide4Bg =
+      '$_baseUrl/personal_onboarding/personal_slide_4_bg.webp';
+
+  /// Image URL for the fourth onboarding slide header.
+  static const String personalSlide4Header =
+      '$_baseUrl/personal_onboarding/personal_slide_4_header.webp';
+
   /// A collection containing all 3D avatar template URLs.
   static List<({String label, String value})> get threeDAvatars => [
     (label: 'avatar3d1', value: avatar3d1),
@@ -184,6 +206,14 @@ class GtNetworkImages {
     (label: 'avatarTexture3', value: avatarTexture3),
     (label: 'avatarTexture4', value: avatarTexture4),
     (label: 'avatarTexture5', value: avatarTexture5),
+  ];
+
+  static List<({String label, String value})> get personalOnboardingSlides => [
+    (label: 'personalSlide1Bg', value: personalSlide1Bg),
+    (label: 'personalSlide2Bg', value: personalSlide2Bg),
+    (label: 'personalSlide3Bg', value: personalSlide3Bg),
+    (label: 'personalSlide4Bg', value: personalSlide4Bg),
+    (label: 'personalSlide4Header', value: personalSlide4Header),
   ];
 
   /// A combined collection of all avatar template URLs (both 3D and texture).
@@ -236,6 +266,7 @@ class GtNetworkImages {
     (label: 'physicalCard', value: physicalCard),
     (label: 'virtualCard', value: virtualCard),
     ...allAvatars,
+    ...personalOnboardingSlides,
   ];
 }
 
