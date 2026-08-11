@@ -27,7 +27,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
-          cache: false
+          cache: true
           flutter-version: "3.41.6"
 
       - name: Install Dependencies
@@ -38,6 +38,14 @@ jobs:
 
       - name: Build Docs
         run: pwd && dart doc --output=gallery/build/web/api
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
