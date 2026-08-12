@@ -6,36 +6,63 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This widget uses a [PageView] to display a list of [GtOnboardingSlideData] objects.
 /// It includes automatic slide transitions, page indicators ([GtDots]), and
-/// an optional logo and action buttons in an app bar.
+/// primary and secondary action buttons with a customizable rich text footer.
 class GtOnboardingSlides extends GtStatefulWidget {
   /// The list of data for each slide to be displayed.
   final List<GtOnboardingSlideData> slides;
 
   /// The color of the dot indicator for the currently active slide.
   ///
-  /// If null, it defaults to `context.palette.staticColors.white`.
+  /// If null, it defaults to [GtColors.tertiaryText].
   final Color? activeDotColor;
 
   /// The color of the dot indicators for inactive slides.
   ///
-  /// If null, it defaults to `context.palette.staticColors.black`.
+  /// If null, it defaults to [GtColors.whiteAlpha24].
   final Color? inActiveDotColor;
 
+  /// The text displayed in the footer area, which can contain HTML-like link tags.
   final String footerText;
 
+  /// The primary action button displayed at the bottom.
   final GtRaisedButton primaryButton;
 
+  /// The secondary action button displayed at the bottom.
   final GtOutlineButton secondaryButton;
 
-  /// Creates a [GtWelcomeSlides] widget.
+  /// The background color of the onboarding screen.
+  ///
+  /// If null, it defaults to `context.palette.bg.strong`.
+  final Color? backgroundColor;
+
+  /// The gradient overlay applied behind the bottom section.
+  ///
+  /// If null, it defaults to `context.gradients.onboardingSlideGradient()`.
+  final LinearGradient? footerGradient;
+
+  /// Optional color for the footer text.
+  ///
+  /// If null, it defaults to [activeDotColor] or [GtColors.tertiaryText].
+  final Color? footerTextColor;
+
+  /// Optional color for links within the footer text.
+  ///
+  /// If null, it defaults to [GtColors.neutral50].
+  final Color? footerLinkColor;
+
+  /// Creates a [GtOnboardingSlides] widget.
   const GtOnboardingSlides({
     super.key,
     required this.slides,
     this.activeDotColor,
     this.inActiveDotColor,
+    this.backgroundColor,
+    this.footerGradient,
     required this.footerText,
     required this.primaryButton,
     required this.secondaryButton,
+    this.footerTextColor,
+    this.footerLinkColor,
   });
 
   @override
@@ -97,27 +124,24 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
         return;
       }
 
-      if (next == 0) {
-        _controller.jumpToPage(next);
-        return;
-      }
+      final curve = next == 0 ? Curves.easeOutBack : Curves.easeIn;
 
-      _controller.animateToPage(
-        next,
-        duration: 500.milliseconds,
-        curve: Curves.easeIn,
-      );
+      _controller.animateToPage(next, duration: 500.milliseconds, curve: curve);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final palette = context.palette;
     final activeColor = widget.activeDotColor ?? GtColors.tertiaryText.value;
     final inActiveColor =
         widget.inActiveDotColor ?? GtColors.whiteAlpha24.value;
+    final defaultGradient = context.gradients.onboardingSlideGradient();
+    final backgroundColor = widget.backgroundColor ?? palette.bg.strong;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
+      backgroundColor: backgroundColor,
       body: Stack(
         children: [
           Positioned.fill(
@@ -142,7 +166,7 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
-                gradient: context.gradients.onboardingSlideGradient(),
+                gradient: widget.footerGradient ?? defaultGradient,
               ),
               child: ValueListenableBuilder(
                 valueListenable: _activeSlide,
@@ -156,9 +180,10 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
                       padding: context.insets.onlyDp(top: 2.px),
                       child: GtRichText(
                         widget.footerText,
-                        linkColor: GtColors.neutral50.value,
+                        linkColor:
+                            widget.footerLinkColor ?? GtColors.neutral50.value,
                         style: context.textStyles.subHead3xs(
-                          color: activeColor,
+                          color: widget.footerTextColor ?? activeColor,
                         ),
                         textAlign: .center,
                       ),
@@ -167,6 +192,9 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
                 ),
                 builder: (context, index, child) {
                   final slide = widget.slides[index];
+                  final textColor =
+                      slide.textColor ?? palette.staticColors.white;
+
                   return Column(
                     mainAxisAlignment: .end,
                     mainAxisSize: .min,
@@ -185,9 +213,7 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
                         child: GtText(
                           slide.title.upper,
                           style: context.textStyles.h3(
-                            color:
-                                slide.textColor ??
-                                context.palette.staticColors.white,
+                            color: textColor,
                             heightPx: 40,
                           ),
                           textAlign: slide.titleTextAlign,

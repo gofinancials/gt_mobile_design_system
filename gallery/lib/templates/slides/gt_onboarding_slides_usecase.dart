@@ -6,12 +6,10 @@ import 'package:gt_mobile_ui/widgets/templates/slides/gt_onboarding_slides.dart'
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 List<GtOnboardingSlideData> getPersonalOnboardingSlides(BuildContext context) {
-  final palette = context.palette;
   return [
     GtOnboardingSlideData(
       title: "banking,\neveryday",
       image: NetworkImage(GtNetworkImages.personalSlide1Bg),
-      backgroundColor: context.palette.bg.strong,
       contentImage: AppImageData(GtVectors.whiteLogo),
       contentImageWidth: 40,
       contentImageSpacer: const GtGap.yLg(),
@@ -20,19 +18,16 @@ List<GtOnboardingSlideData> getPersonalOnboardingSlides(BuildContext context) {
       title: "Everything a bank account should do.",
       titleTextAlign: .start,
       image: NetworkImage(GtNetworkImages.personalSlide2Bg),
-      backgroundColor: palette.bg.strong,
     ),
     GtOnboardingSlideData(
       title: "Earn 3.9% p.a. Just by banking with us.",
       titleTextAlign: .start,
       image: NetworkImage(GtNetworkImages.personalSlide3Bg),
-      backgroundColor: palette.bg.strong,
     ),
     GtOnboardingSlideData(
       title: "SEND & receive payments from abroad.",
       titleTextAlign: .start,
       image: NetworkImage(GtNetworkImages.personalSlide4Bg),
-      backgroundColor: palette.bg.strong,
       contentImage: AppImageData(GtVectorIllustrations.fx),
       contentImageSpacer: const GtGap.ySection4xl(),
     ),

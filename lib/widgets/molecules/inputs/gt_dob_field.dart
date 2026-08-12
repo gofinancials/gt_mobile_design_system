@@ -82,6 +82,18 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
     _yearCtrl.text = _dobController.year?.toString() ?? '';
   }
 
+  void _updateFocus([FocusNode? node]) {
+    if (node == null) {
+      context.resetFocus();
+      return;
+    }
+    if (node.hasFocus) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      node.requestFocus();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final decoration =
@@ -130,6 +142,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
               },
               onChange: (value) {
                 _dobController.day = value?.value;
+                if (value != null) _updateFocus(_monthCtrl.focusNode);
               },
               controller: _dayCtrl,
               textInputAction: .next,
@@ -154,11 +167,14 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
               onChange: (value) {
                 final selectedDay = _dobController.day ?? 1;
                 final monthLastDay = value?.value.monthDays.length ?? 31;
+                FocusNode next = _yearCtrl.focusNode;
                 if (selectedDay > monthLastDay) {
                   _dayCtrl.text = "";
                   _dobController.day = null;
+                  next = _dayCtrl.focusNode;
                 }
                 _dobController.month = value?.value;
+                if (value != null) _updateFocus(next);
               },
               textInputAction: .next,
               suffix: Offstage(),
@@ -173,6 +189,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
               controller: _yearCtrl,
               onChange: (value) {
                 _dobController.year = value?.value;
+                if (value != null) _updateFocus();
               },
               keyboardType: .number,
               textInputAction: .next,
