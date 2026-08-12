@@ -252,6 +252,8 @@ import 'package:gallery/organisms/tab_bars/gt_selection_tab_bar_usecase.dart'
     as _gallery_organisms_tab_bars_gt_selection_tab_bar_usecase;
 import 'package:gallery/organisms/tab_bars/gt_tab_bar_usecase.dart'
     as _gallery_organisms_tab_bars_gt_tab_bar_usecase;
+import 'package:gallery/organisms/tiles/gt_expansion_tile_usecase.dart'
+    as _gallery_organisms_tiles_gt_expansion_tile_usecase;
 import 'package:gallery/organisms/view_state/gt_empty_state.dart'
     as _gallery_organisms_view_state_gt_empty_state;
 import 'package:gallery/organisms/view_state/gt_status_state.dart'
@@ -1987,6 +1989,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtTabbar',
                     builder: _gallery_organisms_tab_bars_gt_tab_bar_usecase
                         .playgroundGtTabbarUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'tiles',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtExpansionTile',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtExpansionTile',
+                    builder: _gallery_organisms_tiles_gt_expansion_tile_usecase
+                        .playgroundGtExpansionTileUseCase,
                   ),
                 ],
               ),
