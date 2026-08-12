@@ -52,9 +52,6 @@ class GtOnboardingSlideData {
   /// The main image or illustration to display on the slide.
   final ImageProvider image;
 
-  /// The primary background color of the slide.
-  final Color backgroundColor;
-
   /// An optional image that covers the content area.
   final AppImageData? contentImage;
 
@@ -72,7 +69,6 @@ class GtOnboardingSlideData {
   const GtOnboardingSlideData({
     required this.title,
     required this.image,
-    required this.backgroundColor,
     this.contentImage,
     this.textColor,
     this.titleTextAlign = .center,
