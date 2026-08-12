@@ -240,6 +240,8 @@ import 'package:gallery/organisms/slides/gt_slide.dart'
     as _gallery_organisms_slides_gt_slide;
 import 'package:gallery/organisms/slides/gt_slide_usecase.dart'
     as _gallery_organisms_slides_gt_slide_usecase;
+import 'package:gallery/organisms/status/gt_status_tracker_usecase.dart'
+    as _gallery_organisms_status_gt_status_tracker_usecase;
 import 'package:gallery/organisms/switchers/gt_animated_fade_usecase.dart'
     as _gallery_organisms_switchers_gt_animated_fade_usecase;
 import 'package:gallery/organisms/switchers/gt_animated_slider_usecase.dart'
@@ -1906,6 +1908,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtWelcomeSlide',
                     builder: _gallery_organisms_slides_gt_slide_usecase
                         .playgroundGtWelcomeSlideUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'status',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtStatusTracker',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtStatusTracker',
+                    builder: _gallery_organisms_status_gt_status_tracker_usecase
+                        .playgroundGtStatusTrackerUseCase,
                   ),
                 ],
               ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-/// An animated bottom modal container for displaying static content or tracking asynchronous tasks.
+/// An animated bottom modal container for displaying static content, custom child widgets, or tracking asynchronous tasks.
 ///
 /// This widget can be used standalone or presented via overlay APIs (like [showModalBottomSheet]).
 /// When driven by a [GtBottomModalController], it animates seamlessly between loading, success,
@@ -10,6 +10,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 class GtBottomModal extends StatefulWidget {
   final GtBottomModalController? _controller;
   final GtBottomModalData? _data;
+  final Widget? _child;
 
   /// Optional margin to apply around the modal container.
   ///
@@ -28,6 +29,7 @@ class GtBottomModal extends StatefulWidget {
     super.key,
     this.alignment = .bottomCenter,
   }) : _data = data,
+       _child = null,
        _controller = null;
 
   /// Creates a [GtBottomModal] whose state is managed dynamically by a [controller].
@@ -37,7 +39,18 @@ class GtBottomModal extends StatefulWidget {
     super.key,
     this.alignment = .bottomCenter,
   }) : _controller = controller,
+       _child = null,
        _data = null;
+
+  /// Creates a [GtBottomModal] that displays a custom [child] widget.
+  const GtBottomModal.child({
+    required Widget child,
+    this.margin,
+    super.key,
+    this.alignment = .bottomCenter,
+  }) : _controller = null,
+       _data = null,
+       _child = child;
 
   /// The controller managing this modal, if any.
   GtBottomModalController? get controller => _controller;
@@ -120,7 +133,7 @@ class _GtBottomModalState extends State<GtBottomModal>
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.hasController) {
+    if (widget._child != null || !widget.hasController) {
       return Material(
         type: .transparency,
         child: GestureDetector(
@@ -128,18 +141,29 @@ class _GtBottomModalState extends State<GtBottomModal>
           onTap: context.pop,
           child: Align(
             alignment: widget.alignment,
-            child: _GtModalBody(
-              titleSlide: _titleSlide,
-              titleFade: _titleFade,
-              successSlide: _successSlide,
-              successFade: _successFade,
-              title: widget.title,
-              icon: _GtBottomModalIconWidget(
-                GtBottomModalPhase.idle,
-                icon: widget.icon,
-              ),
-              description: widget.description,
-              margin: widget.margin,
+            child: Builder(
+              builder: (context) {
+                if (widget._child != null) {
+                  return _GtModalBodyWithChild(
+                    margin: widget.margin,
+                    child: widget._child!,
+                  );
+                }
+
+                return _GtModalBody(
+                  titleSlide: _titleSlide,
+                  titleFade: _titleFade,
+                  successSlide: _successSlide,
+                  successFade: _successFade,
+                  title: widget.title,
+                  icon: _GtBottomModalIconWidget(
+                    GtBottomModalPhase.idle,
+                    icon: widget.icon,
+                  ),
+                  description: widget.description,
+                  margin: widget.margin,
+                );
+              },
             ),
           ),
         ),
@@ -274,18 +298,7 @@ class _GtModalBody extends GtStatelessWidget {
                 mainAxisSize: .min,
                 crossAxisAlignment: .center,
                 children: [
-                  Align(
-                    alignment: .topCenter,
-                    child: Container(
-                      margin: context.insets.onlyDp(bottom: 16.px),
-                      width: context.dp(32.px),
-                      height: context.dp(4.px),
-                      decoration: BoxDecoration(
-                        color: palette.stroke.sub,
-                        borderRadius: context.borderRadiusXxs,
-                      ),
-                    ),
-                  ),
+                  const _GtBottomModalHandle(),
                   ?icon,
                   const GtGap.yBase(),
                   Flexible(
@@ -324,6 +337,53 @@ class _GtModalBody extends GtStatelessWidget {
   }
 }
 
+/// Internal widget that renders a modal container wrapping a custom child widget.
+class _GtModalBodyWithChild extends GtStatelessWidget {
+  /// The child widget displayed inside the modal.
+  final Widget child;
+
+  /// Margin applied around the modal container.
+  final EdgeInsetsGeometry? margin;
+
+  const _GtModalBodyWithChild({required this.child, this.margin});
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final resolvedMargin =
+        margin ??
+        context.insets.onlyDp(left: 16.px, right: 16.px, bottom: 34.px);
+
+    return SafeArea(
+      top: false,
+      child: GestureDetector(
+        onVerticalDragEnd: (details) {
+          if (details.velocity.pixelsPerSecond.dy < 0.0) return;
+          context.pop();
+        },
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 500),
+          width: double.infinity,
+          margin: resolvedMargin,
+          padding: context.insets.symmetricDp(vertical: 8.px),
+          decoration: BoxDecoration(
+            color: palette.bg.white,
+            borderRadius: context.borderRadius4Xl,
+          ),
+          child: Column(
+            mainAxisSize: .min,
+            crossAxisAlignment: .center,
+            children: [
+              const _GtBottomModalHandle(),
+              Flexible(child: child),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Resolves leading icon/loader for the current phase.
 class _GtBottomModalIconWidget extends StatelessWidget {
   /// The current phase of the modal (idle, loading, success, error).
@@ -354,5 +414,26 @@ class _GtBottomModalIconWidget extends StatelessWidget {
       .error => GtSvg(GtVectorIllustrations.failed, width: size, height: size),
       _ => child,
     };
+  }
+}
+
+/// Renders the top drag handle pill for the modal.
+class _GtBottomModalHandle extends StatelessWidget {
+  const _GtBottomModalHandle();
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: .topCenter,
+      child: Container(
+        margin: context.insets.onlyDp(bottom: 16.px),
+        width: context.dp(32.px),
+        height: context.dp(4.px),
+        decoration: BoxDecoration(
+          color: context.palette.stroke.sub,
+          borderRadius: context.borderRadiusXxs,
+        ),
+      ),
+    );
   }
 }
