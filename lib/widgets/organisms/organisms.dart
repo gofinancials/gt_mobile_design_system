@@ -10,6 +10,7 @@ export 'media/media.dart';
 export 'menus/menus.dart';
 export 'navigation/navigation.dart';
 export 'slides/slides.dart';
+export 'status/status.dart';
 export 'switchers/switchers.dart';
 export 'tab_bars/tab_bars.dart';
 export 'view_state/view_state.dart';

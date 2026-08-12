@@ -27,6 +27,20 @@ mixin GtBottomModalMixin {
     );
   }
 
+  /// Displays a simple bottom modal with a [title], an optional [description], and an optional [icon].
+  ///
+  /// The modal adapts its alignment based on the platform (bottom center on mobile, center elsewhere).
+  void showBottomModalWithChild(BuildContext context, {required Widget child}) {
+    _showModal(
+      context,
+      modal: GtBottomModal.child(
+        key: ValueKey(("gt-bottom-modal-child", child.hashCode)),
+        alignment: context.isMobile ? .bottomCenter : .center,
+        child: child,
+      ),
+    );
+  }
+
   /// Displays a bottom modal that is driven by a [GtBottomModalController].
   ///
   /// This is typically used for modals that reflect the progress or state of an asynchronous task.
