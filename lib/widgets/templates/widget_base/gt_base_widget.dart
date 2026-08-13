@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -26,24 +27,19 @@ class GtBaseWidget extends GtStatelessWidget {
       child: MediaQuery(
         key: ValueKey(config.windowSize),
         data: mediaQuery,
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (_) {
+        child: Listener(
+          behavior: .translucent,
+          onPointerDown: (_) => targetActivityState?.registerActivity(),
+          onPointerSignal: (event) {
+            if (event is! PointerScrollEvent) return;
             targetActivityState?.registerActivity();
-            return false;
           },
-          child: Listener(
-            behavior: HitTestBehavior.translucent,
-            onPointerDown: (_) => targetActivityState?.registerActivity(),
-            onPointerMove: (_) => targetActivityState?.registerActivity(),
-            onPointerSignal: (_) => targetActivityState?.registerActivity(),
-            child: GestureDetector(
-              onTap: context.resetFocus,
-              child: child ?? const Offstage(),
-            ),
+          child: GestureDetector(
+            onTap: context.resetFocus,
+            child: child ?? const Offstage(),
           ),
         ),
       ),
     );
   }
 }
-
