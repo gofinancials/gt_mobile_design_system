@@ -38,6 +38,9 @@ class GtExpansionTile extends GtStatefulWidget {
   /// Defaults to `false`.
   final bool isInitiallyExpanded;
 
+  /// Optional padding for the list of [children].
+  final EdgeInsetsGeometry? childrenPadding;
+
   /// Creates a [GtExpansionTile].
   const GtExpansionTile({
     super.key,
@@ -50,6 +53,7 @@ class GtExpansionTile extends GtStatefulWidget {
     this.autoScroll = true,
     this.isInitiallyExpanded = false,
     this.iconSize,
+    this.childrenPadding,
   });
 
   @override
@@ -94,7 +98,7 @@ class _GtExpansionTileState extends State<GtExpansionTile> {
           },
         ),
         tilePadding: context.insets.zero,
-        childrenPadding: context.insets.zero,
+        childrenPadding: widget.childrenPadding ?? .zero,
         onExpansionChanged: (expansionValue) {
           _expansionRef.value = expansionValue;
           widget.onExpandedChange?.call(expansionValue);

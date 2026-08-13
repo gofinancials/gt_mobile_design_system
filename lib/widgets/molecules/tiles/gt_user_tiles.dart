@@ -23,6 +23,12 @@ class GtAccountListTile extends GtStatelessWidget {
   /// Whether the [subtitle] should be rendered with a bolder text style. Defaults to true.
   final bool hasBoldSubtitle;
 
+  /// Optional style override for the [title].
+  final TextStyle? titleStyle;
+
+  /// Optional style override for the [subtitle].
+  final TextStyle? subtitleStyle;
+
   /// Creates a [GtAccountListTile].
   const GtAccountListTile(
     this.title, {
@@ -32,12 +38,14 @@ class GtAccountListTile extends GtStatelessWidget {
     this.trailing,
     this.onTap,
     this.hasBoldSubtitle = true,
+    this.titleStyle,
+    this.subtitleStyle,
   });
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final subStyle = switch (hasBoldSubtitle) {
+    final defaultSubStyle = switch (hasBoldSubtitle) {
       true => context.textStyles.subHeadXs(color: palette.text.sub),
       _ => context.textStyles.bodyXs(color: palette.text.sub),
     };
@@ -58,8 +66,11 @@ class GtAccountListTile extends GtStatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GtText(title, style: context.textStyles.subHeadS()),
-                  GtText(subtitle, style: subStyle),
+                  GtText(
+                    title,
+                    style: titleStyle ?? context.textStyles.subHeadS(),
+                  ),
+                  GtText(subtitle, style: subtitleStyle ?? defaultSubStyle),
                 ],
               ),
             ),

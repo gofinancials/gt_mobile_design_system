@@ -852,6 +852,56 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Double Extra Small Title (Title 2XS) text style.
+  TextStyle title3xs({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 10,
+      heightPx: heightPx ?? 11,
+      widthPct: 2.0,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Double Extra Small Title (Title 2XS) text style.
+  TextStyle title4xs({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 8,
+      heightPx: heightPx ?? 9,
+      widthPct: 2.0,
+      weight: FontWeight.w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   // ---------------------------------------------------------------------------
   // SUBHEADINGS (subHead prefix) | Inter, Medium (500), High Tracking
   // ---------------------------------------------------------------------------
@@ -859,6 +909,7 @@ class GtTextStyles {
   TextStyle subHeadXl({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -870,7 +921,7 @@ class GtTextStyles {
       size: 24,
       heightPx: heightPx ?? 32,
       widthPct: -1.5,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -884,6 +935,7 @@ class GtTextStyles {
   TextStyle subHeadL({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -895,7 +947,7 @@ class GtTextStyles {
       size: 20,
       heightPx: heightPx ?? 24,
       widthPct: -1.5,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -909,6 +961,7 @@ class GtTextStyles {
   TextStyle subHeadM({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -920,7 +973,7 @@ class GtTextStyles {
       size: 16,
       heightPx: heightPx ?? 24,
       widthPct: 6.0,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -934,6 +987,7 @@ class GtTextStyles {
   TextStyle subHead2M({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -945,7 +999,7 @@ class GtTextStyles {
       size: 16,
       heightPx: heightPx ?? 24,
       widthPct: 0,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -959,6 +1013,7 @@ class GtTextStyles {
   TextStyle subHead3M({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -970,7 +1025,7 @@ class GtTextStyles {
       size: 15,
       heightPx: heightPx ?? 24,
       widthPct: 0,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -984,6 +1039,7 @@ class GtTextStyles {
   TextStyle subHeadS({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -995,7 +1051,7 @@ class GtTextStyles {
       size: 14,
       heightPx: heightPx ?? 20,
       widthPct: 6.0,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1009,6 +1065,7 @@ class GtTextStyles {
   TextStyle subHead2s({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -1020,7 +1077,7 @@ class GtTextStyles {
       size: 13,
       heightPx: heightPx ?? 16,
       widthPct: 0,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1034,6 +1091,7 @@ class GtTextStyles {
   TextStyle subHeadXs({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -1045,7 +1103,7 @@ class GtTextStyles {
       size: 12,
       heightPx: heightPx ?? 16,
       widthPct: 4.0,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1059,6 +1117,7 @@ class GtTextStyles {
   TextStyle chartYtick({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -1070,7 +1129,7 @@ class GtTextStyles {
       size: 12,
       heightPx: heightPx ?? 16,
       widthPct: 4.0,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1084,6 +1143,7 @@ class GtTextStyles {
   TextStyle subHead2xs({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -1095,7 +1155,7 @@ class GtTextStyles {
       size: 11,
       heightPx: heightPx ?? 12,
       widthPct: 2.0,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1109,6 +1169,7 @@ class GtTextStyles {
   TextStyle subHead3xs({
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
@@ -1120,7 +1181,59 @@ class GtTextStyles {
       size: 10,
       heightPx: heightPx ?? 14,
       widthPct: 0,
-      weight: FontWeight.w500,
+      weight: weight ?? FontWeight.w500,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Double Extra Small Subheading (Subhead #XS) text style.
+  TextStyle subHead3_5xs({
+    double? heightPx,
+    Color? color,
+    FontWeight? weight,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 9,
+      heightPx: heightPx ?? 12,
+      widthPct: 0,
+      weight: weight ?? FontWeight.w500,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
+  /// Generates the Double Extra Small Subheading (Subhead #XS) text style.
+  TextStyle subHead4xs({
+    double? heightPx,
+    Color? color,
+    FontWeight? weight,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 8,
+      heightPx: heightPx ?? 12,
+      widthPct: 0,
+      weight: weight ?? FontWeight.w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,

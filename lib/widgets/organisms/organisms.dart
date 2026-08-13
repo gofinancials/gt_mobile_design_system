@@ -9,6 +9,7 @@ export 'listeners/listeners.dart';
 export 'media/media.dart';
 export 'menus/menus.dart';
 export 'navigation/navigation.dart';
+export 'receipts/receipts.dart';
 export 'slides/slides.dart';
 export 'status/status.dart';
 export 'switchers/switchers.dart';

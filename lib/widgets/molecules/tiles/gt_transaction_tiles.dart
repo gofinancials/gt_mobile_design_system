@@ -36,6 +36,21 @@ class GtTransactionListTile extends GtStatelessWidget {
   /// The size (width and height) of the square leading widget. Defaults to 36.
   final double leadingSize;
 
+  /// The currency used for formatting the amount. Defaults to `AppStrings.naira`.
+  final String currency;
+
+  /// Determines if amount is masked
+  final bool maskAmount;
+
+  /// Optional custom style override for the [name] text.
+  final TextStyle? nameStyle;
+
+  /// Optional custom style override for the [subtitle] text.
+  final TextStyle? subtitleStyle;
+
+  /// Optional custom style override for the [amount] text.
+  final TextStyle? amountStyle;
+
   /// Creates a [GtTransactionListTile].
   const GtTransactionListTile(
     this.name, {
@@ -46,10 +61,19 @@ class GtTransactionListTile extends GtStatelessWidget {
     this.leading,
     this.leadingSize = 36,
     this.onTap,
+    this.currency = AppStrings.naira,
+    this.maskAmount = false,
+    this.nameStyle,
+    this.subtitleStyle,
+    this.amountStyle,
   });
 
   String get _formattedAmount {
-    final formatted = AppTextFormatter.formatCurrency(amount, symbol: "N");
+    if (maskAmount) return '*' * ("$amount".length).clamp(4, 10);
+    final bool isLong = amount >= 100_000_000;
+    final formatted = isLong
+        ? amount.asCurrencyShort(currency)
+        : amount.asCurrency(currency);
     if (!isDebit) return "+$formatted";
     return formatted;
   }
@@ -57,6 +81,7 @@ class GtTransactionListTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final style = context.textStyles;
     final amountColor = switch (isDebit) {
       true => palette.text.strong,
       _ => palette.success.darker,
@@ -67,6 +92,9 @@ class GtTransactionListTile extends GtStatelessWidget {
       final svgAsset = isDebit ? GtVectors.outflow : GtVectors.inflow;
       icon = GtSvg(svgAsset, width: leadingSize, height: leadingSize);
     }
+
+    final valueStyle = style.subHeadS(color: amountColor);
+    final subStyle = style.subHeadXs(color: palette.text.sub);
 
     return GtInkWell(
       borderRadius: .zero,
@@ -89,22 +117,156 @@ class GtTransactionListTile extends GtStatelessWidget {
                       Expanded(
                         child: GtText(
                           name,
-                          style: context.textStyles.subHeadM(),
+                          style: nameStyle ?? style.subHeadS(),
                           textAlign: TextAlign.start,
+                          maxLines: 2,
                         ),
                       ),
                       GtText(
                         _formattedAmount,
-                        style: context.textStyles.buttonS(color: amountColor),
+                        style: amountStyle ?? valueStyle,
+                        textAlign: .end,
+                        maxLines: 2,
                       ),
                     ],
                   ),
                   GtText(
                     subtitle,
-                    style: context.textStyles.subHeadXs(
-                      color: palette.text.sub,
-                    ),
+                    style: subtitleStyle ?? subStyle,
                     textAlign: TextAlign.end,
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A specialized list tile designed for payment and checkout summaries.
+///
+/// Displays payment [title], [subtitle] (e.g. account details or dates),
+/// formatted monetary [amount], optional [fees] breakdown text, and leading icon/avatar.
+///
+/// {@category molecules}
+/// {@category tiles}
+class GtPaymentListTile extends GtStatelessWidget {
+  /// The widget to display at the start of the tile, typically an icon or avatar.
+  final Widget? leading;
+
+  /// The primary title or name of the payment.
+  final String title;
+
+  /// Additional details about the payment, such as the account number, biller, or date.
+  final String subtitle;
+
+  /// The monetary value of the payment.
+  final String amount;
+
+  /// Optional fee or surcharge breakdown text displayed below the amount.
+  final String? fees;
+
+  /// The callback triggered when the tile is tapped. Provides light haptic feedback.
+  final OnPressed? onTap;
+
+  /// The size (width and height) of the square leading widget. Defaults to 32.
+  final double leadingSize;
+
+  /// The currency used for formatting the amount. Defaults to [AppStrings.naira].
+  final String currency;
+
+  /// Determines if the amount is masked.
+  final bool maskAmount;
+
+  /// Optional custom style override for the [title] text.
+  final TextStyle? nameStyle;
+
+  /// Optional custom style override for the [subtitle] text.
+  final TextStyle? subtitleStyle;
+
+  /// Optional custom style override for the [amount] text.
+  final TextStyle? amountStyle;
+
+  /// Creates a [GtPaymentListTile].
+  const GtPaymentListTile(
+    this.title, {
+    super.key,
+    required this.subtitle,
+    required this.amount,
+    this.fees,
+    this.leading,
+    this.leadingSize = 32,
+    this.onTap,
+    this.currency = AppStrings.naira,
+    this.maskAmount = false,
+    this.nameStyle,
+    this.subtitleStyle,
+    this.amountStyle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final style = context.textStyles;
+    final subStyle = style.subHead3_5xs(color: palette.text.sub);
+
+    return GtInkWell(
+      borderRadius: .zero,
+      onTap: onTap,
+      child: Padding(
+        padding: context.insets.symmetricDp(vertical: 8.px),
+        child: Row(
+          spacing: context.spacingBase,
+          crossAxisAlignment: .start,
+          children: [
+            ?leading,
+            Expanded(
+              child: Row(
+                spacing: context.spacingBase,
+                crossAxisAlignment: .start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      spacing: context.spacingSm,
+                      crossAxisAlignment: .start,
+                      children: [
+                        GtText(
+                          title,
+                          style: nameStyle ?? style.subHeadS(),
+                          maxLines: 1,
+                          textAlign: TextAlign.start,
+                        ),
+                        GtText(
+                          subtitle,
+                          style: subtitleStyle ?? subStyle,
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: .end,
+                      children: [
+                        GtText(
+                          amount,
+                          style: amountStyle ?? style.subHeadM(weight: .w600),
+                          textAlign: .end,
+                          maxLines: 1,
+                        ),
+                        if (fees.hasValue)
+                          GtText(
+                            fees,
+                            style: subtitleStyle ?? subStyle,
+                            textAlign: .end,
+                            maxLines: 1,
+                            overflow: .ellipsis,
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -151,7 +313,10 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// Custom styling for the [superscript] text.
   final TextStyle? superscriptStyle;
 
+  /// The maximum number of lines to display for the [title], [subtitle], and [superscript].
   final int? maxLines;
+
+  final Widget? subSpacer;
 
   /// Creates a [GtTransactionParticipantListTile].
   const GtTransactionParticipantListTile(
@@ -166,6 +331,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
     this.titleStyle,
     this.superscriptStyle,
     this.maxLines,
+    this.subSpacer,
   });
 
   @override
@@ -202,7 +368,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
                 overflow: maxLines != null ? .ellipsis : null,
               ),
               if (subtitle.hasValue) ...[
-                const GtGap.ySm(),
+                subSpacer ?? const GtGap.ySm(),
                 GtText(
                   subtitle,
                   style: subStyle ?? defaultSubStyle,

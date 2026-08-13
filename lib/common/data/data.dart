@@ -5,6 +5,7 @@ export 'gt_data_viz_data.dart';
 export 'gt_decoration_image_style.dart';
 export 'gt_input_data.dart';
 export 'gt_keycell_data.dart';
+export 'gt_receipt_data.dart';
 export 'gt_slide_data.dart';
 export 'gt_status_step_data.dart';
 export 'gt_theme_setting.dart';

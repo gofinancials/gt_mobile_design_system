@@ -465,8 +465,8 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     final palette = context.palette.text;
     final textStyles = context.textStyles;
     TextStyle labelStyle =
-        labelTextStyle ?? textStyles.bodyS(color: palette.sub);
-    TextStyle valueStyle = valueTextStyle ?? textStyles.subHeadS();
+        labelTextStyle ?? textStyles.subHeadXs(color: palette.sub);
+    TextStyle valueStyle = valueTextStyle ?? textStyles.subHeadXs();
 
     if (!highlightValue) {
       labelStyle = labelStyle.copyWith(color: palette.strong);
@@ -541,6 +541,77 @@ class GtSimpleInfoTile extends GtStatelessWidget {
             text,
             style: context.textStyles.bodyXs(color: context.palette.text.sub),
           ),
+        ),
+      ],
+    );
+  }
+}
+
+/// A list tile designed to display a service or bank name alongside its operational success rate percentage pill.
+///
+/// Dynamically formats the [successRate] percentage (0.0 to 1.0) and applies semantic color
+/// variants (stable for >= 90%, away for >= 80%, warning for >= 70%, and error below 70%).
+///
+/// {@category molecules}
+/// {@category tiles}
+class GtSuccessRateTile extends GtStatelessWidget {
+  /// The widget to display at the start, such as an institution logo or avatar.
+  final Widget leading;
+
+  /// The informational text content, typically the bank or service name.
+  final String text;
+
+  /// The success rate of the transaction as a decimal between 0.0 and 1.0.
+  final double successRate;
+
+  /// Creates a [GtSuccessRateTile].
+  const GtSuccessRateTile({
+    super.key,
+    required this.leading,
+    required this.text,
+    required this.successRate,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final style = context.textStyles;
+
+    GtPillVariant variant = switch (successRate) {
+      >= .9 => .stable,
+      >= .8 => .away,
+      >= .7 => .warning,
+      _ => .error,
+    };
+    final percentage = (100 * successRate.clamp(0, 1)).round();
+    final textColor = switch (variant) {
+      .stable => palette.stable.dark,
+      .away => palette.away.dark,
+      .warning => palette.warning.dark,
+      _ => palette.error.dark,
+    };
+
+    return Row(
+      spacing: context.spacingBase,
+      children: [
+        leading,
+        Expanded(
+          child: GtText(
+            text,
+            style: style.subHeadS(weight: .w600),
+            maxLines: 1,
+            overflow: .ellipsis,
+          ),
+        ),
+        GtPill(
+          text: "$percentage%",
+          variant: variant,
+          bgColor: variant.getBgColor(context.palette),
+          textColor: textColor,
+          textStyle: style.subHeadS(weight: .w600, color: textColor),
+          borderRadius: context.borderRadius4Xl,
+          padding: context.insets.symmetricDp(vertical: 4.px, horizontal: 8.px),
+          alignment: .centerRight,
         ),
       ],
     );
