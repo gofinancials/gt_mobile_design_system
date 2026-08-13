@@ -140,6 +140,18 @@ List<_PaletteCategory> _buildCategories(GtPalette p) => [
     ],
   ),
   _PaletteCategory(
+    name: 'Alternative Information',
+    description: 'Alternative info alerts, banners, badges',
+    id: 'infoAlt',
+    colors: [
+      _NamedColor(label: 'darker', color: (p) => p.infoAlt.darker),
+      _NamedColor(label: 'dark', color: (p) => p.infoAlt.dark),
+      _NamedColor(label: 'base', color: (p) => p.infoAlt.base),
+      _NamedColor(label: 'light', color: (p) => p.infoAlt.light),
+      _NamedColor(label: 'lighter', color: (p) => p.infoAlt.lighter),
+    ],
+  ),
+  _PaletteCategory(
     name: 'Warning',
     description: 'Warning alerts, banners, badges',
     id: 'warning',

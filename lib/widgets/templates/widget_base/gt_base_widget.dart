@@ -19,16 +19,31 @@ class GtBaseWidget extends GtStatelessWidget {
       ),
     );
 
+    final targetActivityState = context.activityState;
+
     return Material(
       type: MaterialType.transparency,
       child: MediaQuery(
         key: ValueKey(config.windowSize),
         data: mediaQuery,
-        child: GestureDetector(
-          onTap: context.resetFocus,
-          child: child ?? const Offstage(),
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (_) {
+            targetActivityState?.registerActivity();
+            return false;
+          },
+          child: Listener(
+            behavior: HitTestBehavior.translucent,
+            onPointerDown: (_) => targetActivityState?.registerActivity(),
+            onPointerMove: (_) => targetActivityState?.registerActivity(),
+            onPointerSignal: (_) => targetActivityState?.registerActivity(),
+            child: GestureDetector(
+              onTap: context.resetFocus,
+              child: child ?? const Offstage(),
+            ),
+          ),
         ),
       ),
     );
   }
 }
+

@@ -55,6 +55,9 @@ void main() {
       final GtRichText richText = tester.widget(richTextFinder);
       expect(richText.linkColor, customLinkColor);
       expect(richText.style?.color, customTextColor);
+
+      await tester.pumpWidget(const SizedBox());
     });
   });
 }
+

@@ -24,7 +24,7 @@ class GtStatusTrackerStep extends GtStatelessWidget {
 
     final textColor = data.state.textColor(palette);
 
-    Color subColor = palette.text.disabled;
+    Color subColor = palette.text.soft;
     if (data.subtitleColor != null) {
       subColor = data.subtitleColor!;
     }
