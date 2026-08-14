@@ -137,21 +137,6 @@ enum GtColors {
   purple50(ColorSet(0xFFEFEBFF)),
 
   // ---------------------------------------------------------------------------
-  // VIBRANTS - SKY
-  // ---------------------------------------------------------------------------
-  sky950(ColorSet(0xFF124B68)),
-  sky900(ColorSet(0xFF18658B)),
-  sky800(ColorSet(0xFF1F7EAD)),
-  sky700(ColorSet(0xFF2597D0)),
-  sky600(ColorSet(0xFF35ADE9)),
-  sky500(ColorSet(0xFF47C2FF)),
-  sky400(ColorSet(0xFF68CDFF)),
-  sky300(ColorSet(0xFF97DCFF)),
-  sky200(ColorSet(0xFFC0EAFF)),
-  sky100(ColorSet(0xFFD5F1FF)),
-  sky50(ColorSet(0xFFEBF8FF)),
-
-  // ---------------------------------------------------------------------------
   // VIBRANTS - PINK
   // ---------------------------------------------------------------------------
   pink950(ColorSet(0xFF68123D)),
@@ -184,11 +169,24 @@ enum GtColors {
   // ---------------------------------------------------------------------------
   // VIBRANTS - TEAL BLUE
   // ---------------------------------------------------------------------------
-  // tealBlue950(ColorSet(0xFF0C3B48)),
-  // tealBlue800(ColorSet(0xFF0C3B48)),
   tealBlue800(ColorSet(0xFF0C3B48)),
   tealBlue700(ColorSet(0xFF2787A1)),
   tealBlue600(ColorSet(0xFF01CBEA)),
+
+  // ---------------------------------------------------------------------------
+  // VIBRANTS - SKY
+  // ---------------------------------------------------------------------------
+  sky950(ColorSet(0xFF124B68)),
+  sky900(ColorSet(0xFF18658B)),
+  sky800(ColorSet(0xFF1F7EAD)),
+  sky700(ColorSet(0xFF2597D0)),
+  sky600(ColorSet(0xFF35ADE9)),
+  sky500(ColorSet(0xFF47C2FF)),
+  sky400(ColorSet(0xFF68CDFF)),
+  sky300(ColorSet(0xFF97DCFF)),
+  sky200(ColorSet(0xFFC0EAFF)),
+  sky100(ColorSet(0xFFD5F1FF)),
+  sky50(ColorSet(0xFFEBF8FF)),
 
   // ---------------------------------------------------------------------------
   // VIBRANTS - MAROON

@@ -5,3 +5,5 @@ export 'navigation/navigation.dart';
 export 'slides/slides.dart';
 export 'status/status.dart';
 export 'tab_bars/tab_bars.dart';
+export 'tiles/tiles.dart';
+

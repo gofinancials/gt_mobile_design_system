@@ -67,11 +67,13 @@ class GtPaletteStaticColors {
   final Color black;
   final Color white;
   final Color shadow;
+  final Color transparent;
 
   const GtPaletteStaticColors({
     required this.black,
     required this.white,
     required this.shadow,
+    required this.transparent,
   });
 
   List<Color> get all => [black, white, shadow];
@@ -85,6 +87,7 @@ class GtPaletteStaticColors {
       black: Color.lerp(a?.black, b?.black, t)!,
       white: Color.lerp(a?.white, b?.white, t)!,
       shadow: Color.lerp(a?.shadow, b?.shadow, t)!,
+      transparent: Color.lerp(a?.transparent, b?.transparent, t)!,
     );
   }
 
@@ -95,11 +98,12 @@ class GtPaletteStaticColors {
 
     return other.black == black &&
         other.white == white &&
-        other.shadow == shadow;
+        other.shadow == shadow &&
+        other.transparent == transparent;
   }
 
   @override
-  int get hashCode => Object.hash(black, white, shadow);
+  int get hashCode => Object.hash(black, white, shadow, transparent);
 }
 
 /// Colors specifically tailored for large cover areas, marketing screens, or
@@ -455,6 +459,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
   final GtPaletteStateColors verified;
   final GtPaletteStateColors highlighted;
   final GtPaletteStateColors stable;
+  final GtPaletteStateColors infoAlt;
 
   const GtPalette({
     required this.primary,
@@ -475,6 +480,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
     required this.verified,
     required this.highlighted,
     required this.stable,
+    required this.infoAlt,
   });
 
   List<Color> get all => [
@@ -487,6 +493,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
     ...icon.all,
     ...faded.all,
     ...information.all,
+    ...infoAlt.all,
     ...warning.all,
     ...error.all,
     ...success.all,
@@ -519,6 +526,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
       icon: GtPaletteContentColors.lerp(icon, other.icon, t),
       faded: GtPaletteStateColors.lerp(faded, other.faded, t),
       information: GtPaletteStateColors.lerp(information, other.information, t),
+      infoAlt: GtPaletteStateColors.lerp(infoAlt, other.infoAlt, t),
       warning: GtPaletteStateColors.lerp(warning, other.warning, t),
       error: GtPaletteStateColors.lerp(error, other.error, t),
       success: GtPaletteStateColors.lerp(success, other.success, t),
@@ -550,6 +558,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
         other.icon == icon &&
         other.faded == faded &&
         other.information == information &&
+        other.infoAlt == infoAlt &&
         other.warning == warning &&
         other.error == error &&
         other.success == success &&
@@ -572,6 +581,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
     icon,
     faded,
     information,
+    infoAlt,
     warning,
     error,
     success,
@@ -600,6 +610,7 @@ base class GtLightPalette extends GtPalette {
     GtPaletteStrokeColors? stroke,
     GtPaletteStateColors? faded,
     GtPaletteStateColors? information,
+    GtPaletteStateColors? infoAlt,
     GtPaletteStateColors? warning,
     GtPaletteStateColors? error,
     GtPaletteStateColors? success,
@@ -615,6 +626,7 @@ base class GtLightPalette extends GtPalette {
                black: GtColors.neutral950.value,
                white: GtColors.neutral0.value,
                shadow: GtColors.neutralGray700.value,
+               transparent: GtColors.transparent.value,
              ),
          bg:
              bg ??
@@ -688,6 +700,15 @@ base class GtLightPalette extends GtPalette {
                base: GtColors.blue500.value,
                light: GtColors.blue200.value,
                lighter: GtColors.blue50.value,
+             ),
+         infoAlt:
+             infoAlt ??
+             GtPaletteStateColors(
+               darker: GtColors.tealBlue800.value,
+               dark: GtColors.tealBlue700.value,
+               base: GtColors.tealBlue600.value,
+               light: GtColors.tealBlueAlpha24.value,
+               lighter: GtColors.tealBlueAlpha16.value,
              ),
          warning:
              warning ??
@@ -777,6 +798,7 @@ base class GtDarkPalette extends GtPalette {
     GtPaletteStrokeColors? stroke,
     GtPaletteStateColors? faded,
     GtPaletteStateColors? information,
+    GtPaletteStateColors? infoAlt,
     GtPaletteStateColors? warning,
     GtPaletteStateColors? error,
     GtPaletteStateColors? success,
@@ -792,6 +814,7 @@ base class GtDarkPalette extends GtPalette {
                black: GtColors.neutral950.value,
                white: GtColors.neutral0.value,
                shadow: GtColors.neutralGray700.dark,
+               transparent: GtColors.transparent.value,
              ),
          bg:
              bg ??
@@ -851,92 +874,101 @@ base class GtDarkPalette extends GtPalette {
          faded:
              faded ??
              GtPaletteStateColors(
-               darker: GtColors.neutral700.dark,
-               dark: GtColors.neutral800.dark,
-               base: GtColors.neutral500.dark,
-               light: GtColors.neutral200.dark,
-               lighter: GtColors.neutral100.dark,
+               darker: GtColors.neutral200.value,
+               dark: GtColors.neutral300.value,
+               base: GtColors.neutral500.value,
+               light: GtColors.neutralAlpha24.value,
+               lighter: GtColors.neutralAlpha16.value,
              ),
          information:
              information ??
              GtPaletteStateColors(
-               darker: GtColors.blue700.dark,
-               dark: GtColors.blue950.dark,
-               base: GtColors.blue500.dark,
-               light: GtColors.blue200.dark,
-               lighter: GtColors.blue50.dark,
+               darker: GtColors.blue200.value,
+               dark: GtColors.blue400.value,
+               base: GtColors.blue600.value,
+               light: GtColors.blueAlpha24.value,
+               lighter: GtColors.blueAlpha16.value,
+             ),
+         infoAlt:
+             infoAlt ??
+             GtPaletteStateColors(
+               darker: GtColors.tealBlue600.value,
+               dark: GtColors.tealBlue700.value,
+               base: GtColors.tealBlue800.value,
+               light: GtColors.tealBlueAlpha24.value,
+               lighter: GtColors.tealBlueAlpha16.value,
              ),
          warning:
              warning ??
              GtPaletteStateColors(
-               darker: GtColors.orange700.dark,
-               dark: GtColors.orange950.dark,
-               base: GtColors.orange500.dark,
-               light: GtColors.orange200.dark,
-               lighter: GtColors.orange50.dark,
+               darker: GtColors.orange200.value,
+               dark: GtColors.orange400.value,
+               base: GtColors.orange600.value,
+               light: GtColors.orangeAlpha24.value,
+               lighter: GtColors.orangeAlpha16.value,
              ),
          error:
              error ??
              GtPaletteStateColors(
-               darker: GtColors.red700.dark,
-               dark: GtColors.red950.dark,
-               base: GtColors.red500.dark,
-               light: GtColors.red200.dark,
-               lighter: GtColors.red50.dark,
+               darker: GtColors.red200.value,
+               dark: GtColors.red400.value,
+               base: GtColors.red600.value,
+               light: GtColors.redAlpha24.value,
+               lighter: GtColors.redAlpha16.value,
              ),
          success:
              success ??
              GtPaletteStateColors(
-               darker: GtColors.green700.dark,
-               dark: GtColors.green950.dark,
-               base: GtColors.green500.dark,
-               light: GtColors.green200.dark,
-               lighter: GtColors.green50.dark,
+               darker: GtColors.green200.value,
+               dark: GtColors.green400.value,
+               base: GtColors.green600.value,
+               light: GtColors.greenAlpha24.value,
+               lighter: GtColors.greenAlpha16.value,
              ),
          away:
              away ??
              GtPaletteStateColors(
-               darker: GtColors.yellow700.dark,
-               dark: GtColors.yellow950.dark,
-               base: GtColors.yellow500.dark,
-               light: GtColors.yellow200.dark,
-               lighter: GtColors.yellow50.dark,
+               darker: GtColors.yellow200.value,
+               dark: GtColors.yellow400.value,
+               base: GtColors.yellow600.value,
+               light: GtColors.yellowAlpha24.value,
+               lighter: GtColors.yellowAlpha16.value,
              ),
          feature:
              feature ??
              GtPaletteStateColors(
-               darker: GtColors.purple700.dark,
-               dark: GtColors.purple950.dark,
-               base: GtColors.purple500.dark,
-               light: GtColors.purple200.dark,
-               lighter: GtColors.purple50.dark,
+               darker: GtColors.purple200.value,
+               dark: GtColors.purple400.value,
+               base: GtColors.purple600.value,
+               light: GtColors.purpleAlpha24.value,
+               lighter: GtColors.purpleAlpha16.value,
              ),
          verified:
              verified ??
              GtPaletteStateColors(
-               darker: GtColors.sky700.dark,
-               dark: GtColors.sky950.dark,
-               base: GtColors.sky500.dark,
-               light: GtColors.sky200.dark,
-               lighter: GtColors.sky50.dark,
+               darker: GtColors.sky200.value,
+               dark: GtColors.sky400.value,
+               base: GtColors.sky600.value,
+               light: GtColors.skyAlpha24.value,
+               lighter: GtColors.skyAlpha16.value,
              ),
          highlighted:
              highlighted ??
              GtPaletteStateColors(
-               darker: GtColors.pink700.dark,
-               dark: GtColors.pink950.dark,
-               base: GtColors.pink500.dark,
-               light: GtColors.pink200.dark,
-               lighter: GtColors.pink50.dark,
+               darker: GtColors.pink200.value,
+               dark: GtColors.pink400.value,
+               base: GtColors.pink600.value,
+               light: GtColors.pinkAlpha24.value,
+               lighter: GtColors.pinkAlpha16.value,
              ),
          stable:
              stable ??
              GtPaletteStateColors(
-               darker: GtColors.teal700.dark,
-               dark: GtColors.teal950.dark,
-               base: GtColors.teal500.dark,
-               light: GtColors.teal200.dark,
-               lighter: GtColors.teal50.dark,
+               darker: GtColors.teal200.value,
+               dark: GtColors.teal400.value,
+               base: GtColors.teal600.value,
+               light: GtColors.tealAlpha24.value,
+               lighter: GtColors.tealAlpha16.value,
              ),
        );
 }

@@ -25,6 +25,7 @@ class GtIcons {
   static const scan = IconData(0xf116, fontFamily: _f, fontPackage: _p);
   static const userScan = IconData(0xf127, fontFamily: _f, fontPackage: _p);
   static const refreshSolid = IconData(0xf117, fontFamily: _f, fontPackage: _p);
+  static const repeat = IconData(0xf172, fontFamily: _f, fontPackage: _p);
   static const qr = IconData(0xf118, fontFamily: _f, fontPackage: _p);
   static const qrMain = IconData(0xf119, fontFamily: _f, fontPackage: _p);
   static const notificationSolid = IconData(
@@ -923,6 +924,7 @@ class GtIcons {
     (label: 'refresh', value: refresh),
     (label: 'refreshAlt', value: refreshAlt),
     (label: 'refreshSolid', value: refreshSolid),
+    (label: 'repeat', value: repeat),
     (label: 'reorder', value: reorder),
     (label: 'roadmap', value: roadmap),
     (label: 'rocket', value: rocket),

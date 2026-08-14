@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
@@ -271,6 +272,59 @@ GtSimpleInfoTile(
     child: GtSimpleInfoTile(
       leading: const GtIcon(GtIcons.circleInfo),
       text: text,
+    ),
+  );
+}
+
+@widgetbook.UseCase(name: 'GtSuccessRateTile', type: GtSuccessRateTile)
+Widget playgroundGtSuccessRateTileUseCase(BuildContext context) {
+  final text = context.knobs.string(
+    label: 'Service / Bank Name',
+    initialValue: 'Sterling Bank',
+  );
+  final successRate = context.knobs.double.slider(
+    label: 'Success Rate (0.0 - 1.0)',
+    initialValue: 0.95,
+    min: 0.0,
+    max: 1.0,
+  );
+  final asCard = context.knobs.boolean(
+    label: 'Wrap in Card',
+    initialValue: true,
+  );
+
+  final widget = GtSuccessRateTile(
+    leading: const GtImage(
+      image: AppImageData(GtVectors.logo),
+      width: 24,
+      height: 24,
+    ),
+    text: text,
+    successRate: successRate,
+  );
+
+  return GtWidgetDocPage(
+    title: 'GtSuccessRateTile',
+    description:
+        'Displays service/bank names alongside semantic success rate percentage pills (stable for ≥90%, away for ≥80%, warning for ≥70%, error below 70%).',
+    code:
+        '''
+GtSuccessRateTile(
+  leading: const GtAvatar(
+    avatar: AppImageData(GtNetworkImages.sampleAvatar1),
+    size: 32,
+  ),
+  text: "$text",
+  successRate: $successRate,
+)''',
+    child: Center(
+      child: asCard
+          ? GtCard(
+              padding: context.insets.allDp(12.px),
+              variant: GtCardVariant.normal,
+              child: widget,
+            )
+          : Padding(padding: context.insets.allDp(12.px), child: widget),
     ),
   );
 }

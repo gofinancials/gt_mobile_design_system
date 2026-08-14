@@ -80,6 +80,15 @@ extension ThemeContextExtension on BuildContext {
     }
   }
 
+  /// Safely retrieves the [GtActivityState] instance from the nearest provider if available.
+  GtActivityState? get activityState {
+    try {
+      return read<GtActivityState>();
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// Checks if the current theme is dark mode.
   bool get isInDarkMode {
     final defualtValue = Theme.of(this).brightness == .dark;
