@@ -1,5 +1,6 @@
 export 'gt_bottom_modal_data.dart';
 export 'gt_calendar_data.dart';
+export 'gt_confirmation_data.dart';
 export 'gt_context_menu_data.dart';
 export 'gt_data_viz_data.dart';
 export 'gt_decoration_image_style.dart';

@@ -49,50 +49,33 @@ class GtInkWell extends InkWell {
 
   @override
   Widget build(BuildContext context) {
+    // Callbacks are forwarded with their nullability intact rather than wrapped
+    // in always non-null closures. [InkResponse] registers a gesture recognizer
+    // for every non-null callback it is given, so wrapping them unconditionally
+    // used to register a [DoubleTapGestureRecognizer] on every GtInkWell. That
+    // forced each single tap to wait out the double-tap window before it could
+    // win the gesture arena, adding a perceptible delay to every tappable
+    // surface in the design system.
     Widget inkWell = InkWell(
-      onTap: () {
-        super.onTap?.call();
-        triggerHaptic(hapticFeedbackType);
-      },
-      onDoubleTap: () {
-        super.onDoubleTap?.call();
-      },
-      onLongPress: () {
-        super.onLongPress?.call();
-      },
-      onLongPressUp: () {
-        super.onLongPressUp?.call();
-      },
-      onTapDown: (details) {
-        super.onTapDown?.call(details);
-      },
-      onTapUp: (details) {
-        super.onTapUp?.call(details);
-      },
-      onTapCancel: () {
-        super.onTapCancel?.call();
-      },
-      onSecondaryTap: () {
-        super.onSecondaryTap?.call();
-      },
-      onSecondaryTapUp: (details) {
-        super.onSecondaryTapUp?.call(details);
-      },
-      onSecondaryTapDown: (details) {
-        super.onSecondaryTapDown?.call(details);
-      },
-      onSecondaryTapCancel: () {
-        super.onSecondaryTapCancel?.call();
-      },
-      onHighlightChanged: (value) {
-        super.onHighlightChanged?.call(value);
-      },
-      onHover: (value) {
-        super.onHover?.call(value);
-      },
-      onFocusChange: (value) {
-        super.onFocusChange?.call(value);
-      },
+      onTap: onTap == null
+          ? null
+          : () {
+              onTap!.call();
+              triggerHaptic(hapticFeedbackType);
+            },
+      onDoubleTap: onDoubleTap,
+      onLongPress: onLongPress,
+      onLongPressUp: onLongPressUp,
+      onTapDown: onTapDown,
+      onTapUp: onTapUp,
+      onTapCancel: onTapCancel,
+      onSecondaryTap: onSecondaryTap,
+      onSecondaryTapUp: onSecondaryTapUp,
+      onSecondaryTapDown: onSecondaryTapDown,
+      onSecondaryTapCancel: onSecondaryTapCancel,
+      onHighlightChanged: onHighlightChanged,
+      onHover: onHover,
+      onFocusChange: onFocusChange,
       borderRadius: borderRadius,
       customBorder: customBorder,
       enableFeedback: enableFeedback,
@@ -121,7 +104,7 @@ class GtInkWell extends InkWell {
         child: inkWell,
       );
     }
-    
+
     return inkWell;
   }
 }

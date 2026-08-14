@@ -294,6 +294,8 @@ import 'package:gallery/templates/overlays/gt_toast_overlay_usecase.dart'
     as _gallery_templates_overlays_gt_toast_overlay_usecase;
 import 'package:gallery/templates/overlays/gt_tooltip_usecase.dart'
     as _gallery_templates_overlays_gt_tooltip_usecase;
+import 'package:gallery/templates/scaffolds/gt_confirmation_scaffold_usecase.dart'
+    as _gallery_templates_scaffolds_gt_confirmation_scaffold_usecase;
 import 'package:gallery/templates/scaffolds/gt_dashboard_scaffold.dart'
     as _gallery_templates_scaffolds_gt_dashboard_scaffold;
 import 'package:gallery/templates/scaffolds/gt_receipt_scaffold_usecase.dart'
@@ -1902,6 +1904,17 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'receipts',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtConfirmationBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtConfirmationBody',
+                    builder:
+                        _gallery_templates_scaffolds_gt_confirmation_scaffold_usecase
+                            .playgroundGtConfirmationBodyUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtReceiptBody',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -2294,6 +2307,17 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'scaffolds',
             children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtConfirmationScaffold',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtConfirmationScaffold',
+                    builder:
+                        _gallery_templates_scaffolds_gt_confirmation_scaffold_usecase
+                            .playgroundGtConfirmationScaffoldUseCase,
+                  ),
+                ],
+              ),
               _widgetbook.WidgetbookComponent(
                 name: 'GtDashboardScaffold',
                 useCases: [
