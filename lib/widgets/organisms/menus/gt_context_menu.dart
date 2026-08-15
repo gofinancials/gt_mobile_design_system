@@ -202,7 +202,7 @@ class GtContextMenuTile<T> extends GtStatelessWidget {
         padding: context.insets.symmetricDp(vertical: 8.px, horizontal: 12.px),
         constraints: BoxConstraints(minHeight: 40),
         child: Row(
-          spacing: context.spacingsectionMd,
+          spacing: context.spacingSectionMd,
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(

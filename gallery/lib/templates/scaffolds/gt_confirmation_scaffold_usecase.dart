@@ -24,6 +24,8 @@ const _disclaimer =
     "Sterling Bank is therefore not liable for any failures not within our "
     "control. All transactions are also subject to verification.";
 
+const _note = "Please reach out to support for more information.";
+
 List<GtConfirmationSection> _getSections(String preset, BuildContext context) {
   final reference = GtReceiptTileData(
     label: "Reference",
@@ -113,6 +115,8 @@ GtConfirmationBody _buildConfiguredConfirmationBody({
   required bool showStamp,
   required String sectionsPreset,
   required bool showDisclaimer,
+  required bool showFooterNote,
+  required bool showFooterTrailing,
   required String physicsChoice,
 }) {
   final statusData = GtReceiptStatusData(
@@ -136,7 +140,18 @@ GtConfirmationBody _buildConfiguredConfirmationBody({
     status: statusData,
     stamp: showStamp ? const AppImageData(GtVectors.logo) : null,
     sections: _getSections(sectionsPreset, context),
-    disclaimer: showDisclaimer ? _disclaimer : null,
+    footer: GtConfirmationFooter(
+      disclaimer: showDisclaimer ? _disclaimer : null,
+      note: showFooterNote ? _note : null,
+      // The design system ships no QR asset, so the brand mark stands in for
+      // the code a real receipt would carry.
+      trailing: showFooterTrailing
+          ? const AppImageData(
+              "https://images.unsplash.com/vector-1784356508877-c80e59b18c24?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            )
+          : null,
+      trailingLabel: "Receipt QR code",
+    ),
   );
 }
 
@@ -152,6 +167,8 @@ class _ConfirmationKnobs {
   final bool showStamp;
   final String sectionsPreset;
   final bool showDisclaimer;
+  final bool showFooterNote;
+  final bool showFooterTrailing;
   final bool showShare;
   final String physicsChoice;
 
@@ -167,6 +184,8 @@ class _ConfirmationKnobs {
     required this.showStamp,
     required this.sectionsPreset,
     required this.showDisclaimer,
+    required this.showFooterNote,
+    required this.showFooterTrailing,
     required this.showShare,
     required this.physicsChoice,
   });
@@ -215,6 +234,14 @@ class _ConfirmationKnobs {
         label: 'Show Disclaimer',
         initialValue: true,
       ),
+      showFooterNote: context.knobs.boolean(
+        label: 'Show Footer Note',
+        initialValue: true,
+      ),
+      showFooterTrailing: context.knobs.boolean(
+        label: 'Show Footer QR',
+        initialValue: true,
+      ),
       showShare: context.knobs.boolean(
         label: 'Show Share Action',
         initialValue: true,
@@ -244,7 +271,49 @@ class _ConfirmationKnobs {
       showStamp: showStamp,
       sectionsPreset: sectionsPreset,
       showDisclaimer: showDisclaimer,
+      showFooterNote: showFooterNote,
+      showFooterTrailing: showFooterTrailing,
       physicsChoice: physicsChoice,
+    );
+  }
+
+  /// The same receipt, described as an exportable PDF document.
+  ///
+  /// The cards shown on screen map straight across through
+  /// [GtPdfReceiptSection.fromConfirmation]. The amount, status and timestamp
+  /// the body renders above those cards have no card of their own, so they are
+  /// promoted into a leading summary section rather than being dropped from
+  /// the export.
+  GtPdfReceiptData buildReceiptData(BuildContext context) {
+    final statusTitle = GtReceiptStatusData(
+      status: status,
+      title: customStatusTitle ? statusTitleText : null,
+    ).displayTitle;
+
+    return GtPdfReceiptData(
+      title: title,
+      issuedOn: date,
+      issuedOnLabel: 'Issued on:',
+      sections: [
+        GtPdfReceiptSection(
+          title: 'Transfer Summary',
+          entries: [
+            GtPdfReceiptEntry(label: 'Amount', value: amount),
+            GtPdfReceiptEntry(label: 'Status', value: statusTitle),
+            GtPdfReceiptEntry(label: 'Date', value: date),
+            GtPdfReceiptEntry(label: 'Time', value: time),
+          ],
+        ),
+        for (final section in _getSections(sectionsPreset, context))
+          GtPdfReceiptSection.fromConfirmation(section),
+      ],
+      footer: GtPdfReceiptFooter(
+        disclaimer: showDisclaimer ? _disclaimer : null,
+        note: showFooterNote ? _note : null,
+        qrData: showFooterTrailing
+            ? 'https://sterling.ng/receipts/TRX24072983910527NGN'
+            : null,
+      ),
     );
   }
 }
@@ -260,6 +329,32 @@ class _ConfirmationScaffoldPreview extends StatefulWidget {
 class _ConfirmationScaffoldPreviewState
     extends State<_ConfirmationScaffoldPreview>
     with GtBottomSheetMixin {
+  bool _sharing = false;
+
+  /// Renders the receipt on screen as a PDF and hands it to the share sheet.
+  ///
+  /// [anchor] positions the share popover on iPad and macOS, so it is the
+  /// context of the page the sheet was opened from rather than a root one.
+  /// Export can fail — content outside the Latin-1 range the standard PDF
+  /// fonts cover, for one — so the result is never assumed.
+  Future<void> _shareReceipt(
+    BuildContext anchor,
+    _ConfirmationKnobs knobs,
+  ) async {
+    if (_sharing) return;
+    _sharing = true;
+
+    try {
+      const exporter = GtPdfReceiptExporter();
+      await exporter.share(anchor, knobs.buildReceiptData(anchor));
+    } catch (error) {
+      if (!anchor.mounted) return;
+      GtToast.of(anchor).show("Share failed: $error");
+    } finally {
+      _sharing = false;
+    }
+  }
+
   void _openConfirmationModal(BuildContext context, _ConfirmationKnobs knobs) {
     showDraggableSheet(
       context,
@@ -270,9 +365,7 @@ class _ConfirmationScaffoldPreviewState
         return GtConfirmationScaffold(
           title: knobs.title,
           onClose: () => GtRouter.forcePopView(),
-          onShare: knobs.showShare
-              ? () => GtToast.of(context).show("Share tapped")
-              : null,
+          onShare: knobs.showShare ? () => _shareReceipt(context, knobs) : null,
           body: knobs.buildBody(context, controller),
         );
       },
@@ -290,7 +383,10 @@ class _ConfirmationScaffoldPreviewState
           'chevron dismisses the sheet, the title is centred, and an optional '
           'share action sits on the right. Unlike GtReceiptScaffold it renders '
           'no bottom navigation bar. Designed to be presented modally via '
-          'GtBottomSheetMixin.',
+          'GtBottomSheetMixin. Here the share action exports the receipt on '
+          'screen as a PDF through GtPdfReceiptExporter and hands it to the '
+          'native share sheet, so the same sections drive both the screen and '
+          'the file.',
       code:
           '''
 showDraggableSheet(
@@ -299,7 +395,17 @@ showDraggableSheet(
     return GtConfirmationScaffold(
       title: "${knobs.title}",
       onClose: () => GtRouter.popView(),
-      onShare: () => handleShare(),
+      onShare: () => const GtPdfReceiptExporter().share(
+        context,
+        GtPdfReceiptData(
+          title: "${knobs.title}",
+          issuedOn: "${knobs.date}",
+          sections: [
+            for (final section in sections)
+              GtPdfReceiptSection.fromConfirmation(section),
+          ],
+        ),
+      ),
       body: GtConfirmationBody(
         controller: controller,
         amount: "${knobs.amount}",
@@ -318,7 +424,11 @@ showDraggableSheet(
             ],
           ),
         ],
-        disclaimer: "Your transfer has been processed successfully...",
+        footer: const GtConfirmationFooter(
+          disclaimer: "Your transfer has been processed successfully...",
+          note: "Please reach out to support for more information.",
+          trailing: AppImageData("https://images.unsplash.com/vector-1784356508877-c80e59b18c24?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
+        ),
       ),
     );
   },
@@ -343,8 +453,9 @@ class _ConfirmationBodyInlinePreview extends StatelessWidget {
       description:
           'Organism widget containing a transaction status pill, an optional '
           'stamp, the amount, a date and time row, one card per titled section '
-          'of label/value rows, and an optional disclaimer. Requires at least '
-          'one section.',
+          'of label/value rows, and an optional footer carrying the fine '
+          'print, a closing note and a trailing image such as a QR code. '
+          'Requires at least one section.',
       code:
           '''
 GtConfirmationBody(
@@ -377,7 +488,11 @@ GtConfirmationBody(
       ],
     ),
   ],
-  ${knobs.showDisclaimer ? 'disclaimer: "Your transfer has been processed successfully...",' : ''}
+  footer: const GtConfirmationFooter(
+    ${knobs.showDisclaimer ? 'disclaimer: "Your transfer has been processed successfully...",' : ''}
+    ${knobs.showFooterNote ? 'note: "Please reach out to support for more information.",' : ''}
+    ${knobs.showFooterTrailing ? 'trailing: AppImageData(GtVectors.logo),' : ''}
+  ),
 )''',
       child: GtSizedBox(height: 650, child: knobs.buildBody(context)),
     );

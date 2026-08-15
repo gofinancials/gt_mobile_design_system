@@ -408,7 +408,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
                   ),
                   const GtGap.yBase(),
                   Row(
-                    spacing: context.spacingsectionMd,
+                    spacing: context.spacingSectionMd,
                     children: [
                       GtSizedBox(
                         height: 90,

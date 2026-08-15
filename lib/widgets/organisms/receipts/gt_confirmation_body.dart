@@ -10,7 +10,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// - The [date] and [time] the transaction was completed.
 /// - One card per [GtConfirmationSection], each headed by a [GtSectionHeader]
 ///   and filled with [GtReceiptDetailTile] rows.
-/// - An optional [disclaimer] paragraph.
+/// - An optional [footer] carrying fine print, a closing note and a trailing
+///   image such as a QR code.
 ///
 /// Unlike [GtReceiptBody], which models a fixed sender/recipient/details shape,
 /// this body is section-driven: callers supply arbitrary titled groups of
@@ -39,7 +40,11 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///       ],
 ///     ),
 ///   ],
-///   disclaimer: "Your transfer has been processed successfully...",
+///   footer: const GtConfirmationFooter(
+///     disclaimer: "Your transfer has been processed successfully...",
+///     note: "Please reach out to support for more information.",
+///     trailing: AppImageData(GtVectors.qrCode),
+///   ),
 /// )
 /// ```
 class GtConfirmationBody extends GtStatelessWidget {
@@ -79,7 +84,20 @@ class GtConfirmationBody extends GtStatelessWidget {
   ///
   /// Typed rather than a free widget slot so legal copy is styled consistently
   /// across every screen that uses this body.
+  ///
+  /// Retained as a shorthand for the common case of a footer that carries
+  /// nothing but a disclaimer. When [footer] is supplied it wins, because a
+  /// footer models the same block in full.
   final String? disclaimer;
+
+  /// Optional closing block rendered beneath the final section.
+  ///
+  /// Carries the fine print, an optional trailing image such as a QR code, and
+  /// a short closing note. Typed rather than a free widget slot so the block is
+  /// styled consistently across every screen that uses this body.
+  ///
+  /// When null, a footer is derived from [disclaimer] if one was supplied.
+  final GtConfirmationFooter? footer;
 
   /// Creates a [GtConfirmationBody].
   ///
@@ -91,6 +109,7 @@ class GtConfirmationBody extends GtStatelessWidget {
     this.physics,
     this.stamp,
     this.disclaimer,
+    this.footer,
     required this.amount,
     required this.date,
     required this.time,
@@ -112,6 +131,13 @@ class GtConfirmationBody extends GtStatelessWidget {
     final cardPadding = context.insets.allDp(12.px);
     final cardRadius = context.borderRadiusXl;
     final stampSize = context.dp(32.px);
+    final resolvedFooter = switch ((footer, disclaimer)) {
+      (GtConfirmationFooter footer, _) => footer,
+      (_, String disclaimer) when disclaimer.hasValue => GtConfirmationFooter(
+        disclaimer: disclaimer,
+      ),
+      _ => null,
+    };
 
     return ListView(
       physics: physics ?? const ClampingScrollPhysics(),
@@ -184,15 +210,72 @@ class GtConfirmationBody extends GtStatelessWidget {
           ),
           const GtGap.yBase(),
         ],
-        if (disclaimer.hasValue) ...[
+        if (resolvedFooter case GtConfirmationFooter footer
+            when footer.hasContent) ...[
           const GtGap.yLg(),
-          GtText(
-            disclaimer!,
-            key: const Key('confirmation-disclaimer'),
-            style: context.textStyles.body3Xs(color: context.palette.text.soft),
-          ),
+          _ConfirmationFooter(footer, key: const Key('confirmation-footer')),
         ],
         const GtGap.yLg(),
+      ],
+    );
+  }
+}
+
+/// The closing block of a [GtConfirmationBody].
+///
+/// Lays the [GtConfirmationFooter.disclaimer] out beside
+/// [GtConfirmationFooter.trailing] — typically a QR code — and stacks
+/// [GtConfirmationFooter.note] beneath the pair. Any of the three may be
+/// absent, in which case the remaining content closes up around it.
+class _ConfirmationFooter extends GtStatelessWidget {
+  final GtConfirmationFooter footer;
+
+  const _ConfirmationFooter(this.footer, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final style = context.textStyles.body3Xs(color: context.palette.text.soft);
+    final trailingSize = context.dp(36.px);
+
+    final hasFullLeading = footer.disclaimer.hasValue && footer.note.hasValue;
+
+    return Row(
+      spacing: context.spacingSectionMd,
+      crossAxisAlignment: hasFullLeading ? .start : .center,
+      children: [
+        if ((footer.disclaimer, footer.note) case (
+          String? footer,
+          String? note,
+        ) when (footer.hasValue || note.hasValue))
+          Expanded(
+            child: Column(
+              spacing: context.spacingLg,
+              mainAxisSize: .min,
+              crossAxisAlignment: .stretch,
+              children: [
+                if (footer.hasValue)
+                  GtText(
+                    footer,
+                    style: style,
+                    key: const Key('confirmation-disclaimer'),
+                  ),
+                if (note.hasValue)
+                  GtText(
+                    note,
+                    style: context.textStyles.body3Xs(),
+                    key: const Key('confirmation-footer-note'),
+                  ),
+              ],
+            ),
+          ),
+        if (footer.trailing case AppImageData image)
+          GtImage(
+            image: image,
+            width: trailingSize,
+            height: trailingSize,
+            semanticsLabel: footer.displayTrailingLabel,
+            key: const Key('confirmation-footer-trailing'),
+          ),
       ],
     );
   }

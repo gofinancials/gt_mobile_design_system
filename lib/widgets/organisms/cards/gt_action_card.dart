@@ -95,7 +95,7 @@ class GtActionCard extends GtStatelessWidget {
         padding: context.insets.allDp(12.px),
         variant: variant,
         child: Row(
-          spacing: context.spacingsectionMd,
+          spacing: context.spacingSectionMd,
           crossAxisAlignment: .start,
           children: [
             Expanded(

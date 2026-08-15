@@ -41,6 +41,7 @@ void main() {
     List<GtConfirmationSection> sections = sections,
     AppImageData? stamp,
     String? disclaimer,
+    GtConfirmationFooter? footer,
     GtReceiptStatusData status = const GtReceiptStatusData(
       status: GtReceiptStatus.success,
       title: 'Delivered',
@@ -53,6 +54,7 @@ void main() {
       status: status,
       stamp: stamp,
       disclaimer: disclaimer,
+      footer: footer,
       sections: sections,
     );
   }
@@ -130,6 +132,97 @@ void main() {
 
       expect(find.byKey(const Key('confirmation-disclaimer')), findsOneWidget);
       expect(find.text('Transfers may be delayed.'), findsOneWidget);
+    });
+
+    testWidgets('omits the footer when it carries no content', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(buildBody(footer: const GtConfirmationFooter())),
+      );
+
+      expect(find.byKey(const Key('confirmation-footer')), findsNothing);
+    });
+
+    testWidgets('renders every part of a fully populated footer', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          buildBody(
+            footer: const GtConfirmationFooter(
+              disclaimer: 'Transfers may be delayed.',
+              note: 'Please reach out to support.',
+              trailing: AppImageData(GtVectors.logo),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byKey(const Key('confirmation-footer')), findsOneWidget);
+      expect(find.byKey(const Key('confirmation-disclaimer')), findsOneWidget);
+      expect(find.byKey(const Key('confirmation-footer-note')), findsOneWidget);
+      expect(
+        find.byKey(const Key('confirmation-footer-trailing')),
+        findsOneWidget,
+      );
+      expect(find.text('Transfers may be delayed.'), findsOneWidget);
+      expect(find.text('Please reach out to support.'), findsOneWidget);
+    });
+
+    testWidgets('renders a trailing-only footer', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          buildBody(
+            footer: const GtConfirmationFooter(
+              trailing: AppImageData(GtVectors.logo),
+            ),
+          ),
+        ),
+      );
+
+      expect(
+        find.byKey(const Key('confirmation-footer-trailing')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('confirmation-disclaimer')), findsNothing);
+      expect(find.byKey(const Key('confirmation-footer-note')), findsNothing);
+    });
+
+    testWidgets('labels the trailing image for screen readers', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          buildBody(
+            footer: const GtConfirmationFooter(
+              trailing: AppImageData(GtVectors.logo),
+              trailingLabel: 'Receipt QR code',
+            ),
+          ),
+        ),
+      );
+
+      final image = tester.widget<GtImage>(
+        find.byKey(const Key('confirmation-footer-trailing')),
+      );
+
+      expect(image.semanticsLabel, 'Receipt QR code');
+      expect(image.isDecorative, isFalse);
+    });
+
+    testWidgets('prefers an explicit footer over the disclaimer shorthand', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          buildBody(
+            disclaimer: 'Shorthand disclaimer.',
+            footer: const GtConfirmationFooter(
+              disclaimer: 'Footer disclaimer.',
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Footer disclaimer.'), findsOneWidget);
+      expect(find.text('Shorthand disclaimer.'), findsNothing);
     });
 
     testWidgets('asserts when no sections are supplied', (tester) async {
