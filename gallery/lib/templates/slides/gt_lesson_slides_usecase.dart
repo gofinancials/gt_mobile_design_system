@@ -14,7 +14,8 @@ final _lessonsController = GtLessonslideController(
       alignment: Alignment.center,
       header: const GtLessonSlideHeader(
         title: "WHAT IS SAVING",
-        subTitle: "Saving means keeping some of your money to use later instead of spending it all at once.",
+        subTitle:
+            "Saving means keeping some of your money to use later instead of spending it all at once.",
       ),
     ),
     GtLessonSlideData.withImage(
@@ -24,7 +25,8 @@ final _lessonsController = GtLessonslideController(
       alignment: Alignment.center,
       header: GtLessonSlideHeader(
         title: "why saving matters?".toUpperCase(),
-        subTitle: "Saving helps you plan ahead, buy things you really want, and handle unexpected needs.",
+        subTitle:
+            "Saving helps you plan ahead, buy things you really want, and handle unexpected needs.",
       ),
     ),
   ],
@@ -34,7 +36,8 @@ final _lessonsController = GtLessonslideController(
 Widget playgroundGtLessonSlidesDoc(BuildContext context) {
   return GtWidgetDocPage(
     title: 'GtLessonSlides',
-    description: 'An educational slides template supporting lessons, images, audio/video playback, and navigation controls.',
+    description:
+        'An educational slides template supporting lessons, images, audio/video playback, and navigation controls.',
     code: '''
 GtLessonSlides(
   controller: lessonsController,
@@ -42,7 +45,8 @@ GtLessonSlides(
   onCompleted: () => handleCompleted(),
 )''',
     child: GtEmptyStateCard(
-      description: 'Select "GtLessonSlides Gallery" in the sidebar to view the interactive lesson slides in full screen.',
+      description:
+          'Select "GtLessonSlides Gallery" in the sidebar to view the interactive lesson slides in full screen.',
       icon: GtIcons.alarmClock,
     ),
   );

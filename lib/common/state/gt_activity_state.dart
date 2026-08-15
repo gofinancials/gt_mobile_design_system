@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 
@@ -12,13 +14,20 @@ typedef GtInactivityCallback = OnChanged<RouteSettings?>;
 /// automatic session termination after a period of user inactivity.
 ///
 /// ### Features:
-/// - Uses [AppDebouncer] to efficiently schedule and debounce inactivity timers.
+/// - Schedules inactivity via a single replaceable [Timer].
 /// - Leverages duration extension getters (e.g., `5.minutes`, `500.milliseconds`).
 /// - Throttled activity registration (`registerActivity`) for minimal overhead.
-/// - Lifecycle-aware: pauses debouncer when app enters background and evaluates elapsed
-///   inactivity duration immediately on app resume before rendering sensitive content.
+/// - Lifecycle-aware: cancels the pending timer when the app enters background and
+///   evaluates elapsed inactivity duration immediately on app resume before
+///   rendering sensitive content.
 /// - Route-aware: tracks active [RouteSettings] to pass location details back to the
 ///   host app when triggering [onInactivityDetected].
+///
+/// ### Testing note:
+/// Elapsed time is measured with `DateTime.now()`, i.e. the real wall clock.
+/// `testWidgets` runs inside a fake-async zone where that clock does not
+/// advance, so widget tests that need the throttle window to elapse must let
+/// real time pass via `tester.runAsync`.
 ///
 /// ### Typical Usage:
 /// ```dart
@@ -45,9 +54,10 @@ class GtActivityState extends StateModel with WidgetsBindingObserver {
 
   DateTime? _lastActivityTime;
   bool _isTrackingActive = false;
+  bool _isObservingLifecycle = false;
   RouteSettings? _currentRouteSettings;
   GtInactivityCallback? _onInactivityDetected;
-  AppDebouncer? _debouncer;
+  Timer? _inactivityTimer;
 
   /// Creates a [GtActivityState] instance.
   ///
@@ -104,18 +114,28 @@ class GtActivityState extends StateModel with WidgetsBindingObserver {
     _isTrackingActive = true;
     _lastActivityTime = DateTime.now();
 
-    WidgetsBinding.instance.addObserver(this);
+    // Guarded: startTracking may be called again on an already-tracking state
+    // (for example to change the duration). Registering twice would leave one
+    // observer behind after stopTracking and double every lifecycle callback.
+    if (!_isObservingLifecycle) {
+      WidgetsBinding.instance.addObserver(this);
+      _isObservingLifecycle = true;
+    }
+
     _scheduleInactivityCheck();
     notifyListeners();
   }
-
 
   /// Stops tracking activity and resets state.
   ///
   /// Call this when user logs out or session ends.
   void stopTracking() {
     _cancelInactivityCheck();
-    WidgetsBinding.instance.removeObserver(this);
+
+    if (_isObservingLifecycle) {
+      WidgetsBinding.instance.removeObserver(this);
+      _isObservingLifecycle = false;
+    }
 
     _isTrackingActive = false;
     _lastActivityTime = null;
@@ -154,16 +174,23 @@ class GtActivityState extends StateModel with WidgetsBindingObserver {
     registerActivity(force: true);
   }
 
+  /// Schedules the inactivity callback, replacing any pending schedule.
+  ///
+  /// Uses a bare [Timer] rather than an [AppDebouncer]. This runs on every
+  /// throttle-passing pointer event, and an [AppDebouncer] cannot be reused
+  /// across differing delays (its `delay` is final), so it would allocate both
+  /// a debouncer and a timer per event where one timer suffices.
   void _scheduleInactivityCheck([Duration? delay]) {
     _cancelInactivityCheck();
-    final duration = delay ?? _maxInactivityDuration;
-    _debouncer = AppDebouncer(duration);
-    _debouncer?.run(_handleInactivityTimeout);
+    _inactivityTimer = Timer(
+      delay ?? _maxInactivityDuration,
+      _handleInactivityTimeout,
+    );
   }
 
   void _cancelInactivityCheck() {
-    _debouncer?.abort();
-    _debouncer = null;
+    _inactivityTimer?.cancel();
+    _inactivityTimer = null;
   }
 
   void _handleInactivityTimeout() {
@@ -177,13 +204,13 @@ class GtActivityState extends StateModel with WidgetsBindingObserver {
     if (!_isTrackingActive) return;
 
     switch (state) {
-      case AppLifecycleState.paused:
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.detached:
-      case AppLifecycleState.hidden:
+      case .paused:
+      case .inactive:
+      case .detached:
+      case .hidden:
         _cancelInactivityCheck();
         break;
-      case AppLifecycleState.resumed:
+      case .resumed:
         if (_lastActivityTime != null) {
           final elapsed = DateTime.now().difference(_lastActivityTime!);
           if (elapsed >= _maxInactivityDuration) {

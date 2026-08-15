@@ -6,8 +6,14 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtHelpCard', type: GtHelpCard)
 Widget playgroundGtHelpCardUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Need more help?');
-  final subtitle = context.knobs.string(label: 'Subtitle', initialValue: 'Chat with us');
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Need more help?',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'Chat with us',
+  );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
     options: GtCardVariant.values,
@@ -17,17 +23,15 @@ Widget playgroundGtHelpCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtHelpCard',
-    description: 'A help support card providing interactive customer care linkages.',
-    code: '''
+    description:
+        'A help support card providing interactive customer care linkages.',
+    code:
+        '''
 GtHelpCard(
   title: "$title",
   subtitle: "$subtitle",
   variant: GtCardVariant.${variant.name},
 )''',
-    child: GtHelpCard(
-      title: title,
-      subtitle: subtitle,
-      variant: variant,
-    ),
+    child: GtHelpCard(title: title, subtitle: subtitle, variant: variant),
   );
 }

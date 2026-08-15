@@ -73,46 +73,46 @@ class _GtSpinnerState extends State<GtSpinner> {
         label: widget.semanticsLabel,
         child: RepaintBoundary(
           child: SizedBox(
-          width: widget.size,
-          height: widget.size,
-          child: Builder(
-            builder: (context) {
-              if (widget.value == null) {
-                return RepeatingAnimationBuilder(
-                  animatable: Tween<double>(begin: 0.0, end: 360),
-                  duration: 1.seconds,
-                  builder: (context, value, child) {
-                    return Transform.rotate(
-                      angle: value * math.pi / 180,
-                      child: child,
-                    );
-                  },
-                  child: CustomPaint(
-                    painter: GtCircularProgressPainter(
-                      color: color,
-                      strokeWidth: widget.strokeWidth,
-                    ),
-                  ),
-                );
-              }
-              return TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0.0, end: widget.value),
-                duration: 1.seconds,
-                builder: (context, value, child) {
-                  return CustomPaint(
-                    painter: GtDonutPainter(
-                      value: value,
-                      strokeWidth: widget.strokeWidth,
-                      trackColor: trackColor ?? color.setOpacity(0.1),
-                      valueColor: color,
+            width: widget.size,
+            height: widget.size,
+            child: Builder(
+              builder: (context) {
+                if (widget.value == null) {
+                  return RepeatingAnimationBuilder(
+                    animatable: Tween<double>(begin: 0.0, end: 360),
+                    duration: 1.seconds,
+                    builder: (context, value, child) {
+                      return Transform.rotate(
+                        angle: value * math.pi / 180,
+                        child: child,
+                      );
+                    },
+                    child: CustomPaint(
+                      painter: GtCircularProgressPainter(
+                        color: color,
+                        strokeWidth: widget.strokeWidth,
+                      ),
                     ),
                   );
-                },
-              );
-            },
+                }
+                return TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0.0, end: widget.value),
+                  duration: 1.seconds,
+                  builder: (context, value, child) {
+                    return CustomPaint(
+                      painter: GtDonutPainter(
+                        value: value,
+                        strokeWidth: widget.strokeWidth,
+                        trackColor: trackColor ?? color.setOpacity(0.1),
+                        valueColor: color,
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ),
-      ),
       ),
     );
   }

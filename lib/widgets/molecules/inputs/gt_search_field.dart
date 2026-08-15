@@ -110,7 +110,9 @@ class _GtSearchFieldState extends State<GtSearchField> {
       hintText: widget.hintText,
       controller: controller,
       suffix: widget.suffix ?? suffix,
-      prefix: widget.prefix ?? ExcludeSemantics(child: GtIcon(GtIcons.magnifier, variant: .soft)),
+      prefix:
+          widget.prefix ??
+          ExcludeSemantics(child: GtIcon(GtIcons.magnifier, variant: .soft)),
       validator: widget.validator,
       keyboardType: TextInputType.url,
       onChanged: widget.onChange,

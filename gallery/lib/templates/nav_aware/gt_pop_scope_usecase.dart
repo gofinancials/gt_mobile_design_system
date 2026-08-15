@@ -10,8 +10,10 @@ Widget playgroundGtPopScopeUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtPopScope',
-    description: 'System back-navigation interception tool for preventing accidental page exits.',
-    code: '''
+    description:
+        'System back-navigation interception tool for preventing accidental page exits.',
+    code:
+        '''
 GtPopScope(
   canPop: $canPop,
   onPopInvokedWithResult: (didPop, result) {
@@ -38,7 +40,9 @@ GtRootPopScope(
               children: [
                 GtIcon(
                   canPop ? GtIcons.checkSolid : GtIcons.triangleWarning,
-                  variant: canPop ? GtIconVariant.success : GtIconVariant.warning,
+                  variant: canPop
+                      ? GtIconVariant.success
+                      : GtIconVariant.warning,
                   size: 32,
                 ),
                 const GtGap.yMd(),
@@ -51,7 +55,9 @@ GtRootPopScope(
                   canPop
                       ? 'Back navigation works normally'
                       : 'Back navigation triggers onPopInvoked',
-                  style: context.textStyles.bodyM(color: context.palette.text.sub),
+                  style: context.textStyles.bodyM(
+                    color: context.palette.text.sub,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],

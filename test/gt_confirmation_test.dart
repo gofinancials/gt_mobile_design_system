@@ -65,9 +65,13 @@ void main() {
 
       expect(find.byKey(const Key('confirmation-amount')), findsOneWidget);
       expect(find.text('20,000.00'), findsOneWidget);
-      expect(find.byKey(const Key('confirmation-timestamp')), findsOneWidget);
-      expect(find.text('September 29, 2025'), findsOneWidget);
-      expect(find.text('02:45 PM'), findsOneWidget);
+      // The timestamp renders through Text.rich, so find.text cannot match it.
+      final timestamp = tester.widget<Text>(
+        find.byKey(const Key('confirmation-timestamp')),
+      );
+      final timestampText = timestamp.textSpan?.toPlainText();
+      expect(timestampText, contains('September 29, 2025'));
+      expect(timestampText, contains('02:45 PM'));
 
       // GtSectionHeader uppercases the section title.
       expect(find.text('ACCOUNT DETAILS'), findsOneWidget);

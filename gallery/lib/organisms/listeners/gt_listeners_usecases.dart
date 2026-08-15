@@ -6,7 +6,11 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 final _boolNotifier = ValueNotifier<bool>(true);
 final _intNotifier = ValueNotifier<int>(42);
-final _listNotifier = ValueNotifier<List<String>?>(['Apple', 'Banana', 'Orange']);
+final _listNotifier = ValueNotifier<List<String>?>([
+  'Apple',
+  'Banana',
+  'Orange',
+]);
 final _numberNotifier = ValueNotifier<double?>(3.14);
 final _stringNotifier = ValueNotifier<String?>('Hello GtListeners');
 
@@ -19,7 +23,8 @@ Widget playgroundBoolListenerUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'BoolListener',
-    description: 'A convenience listener widget that observes a boolean ValueListenable.',
+    description:
+        'A convenience listener widget that observes a boolean ValueListenable.',
     code: '''
 BoolListener(
   valueListenable: boolNotifier,
@@ -30,7 +35,11 @@ BoolListener(
         valueListenable: _boolNotifier,
         builder: (value) => GtText(
           "Current State: $value",
-          style: context.textStyles.h5(color: value ? context.palette.success.base : context.palette.error.base),
+          style: context.textStyles.h5(
+            color: value
+                ? context.palette.success.base
+                : context.palette.error.base,
+          ),
         ),
       ),
     ),
@@ -39,14 +48,20 @@ BoolListener(
 
 @widgetbook.UseCase(name: 'GenericListener', type: GenericListener)
 Widget playgroundGenericListenerUseCase(BuildContext context) {
-  final val = context.knobs.int.slider(label: 'Counter Value', min: 0, max: 100, initialValue: 42);
+  final val = context.knobs.int.slider(
+    label: 'Counter Value',
+    min: 0,
+    max: 100,
+    initialValue: 42,
+  );
   WidgetsBinding.instance.addPostFrameCallback((_) {
     _intNotifier.value = val;
   });
 
   return GtWidgetDocPage(
     title: 'GenericListener',
-    description: 'A generic ValueListenable builder for observing any data type.',
+    description:
+        'A generic ValueListenable builder for observing any data type.',
     code: '''
 GenericListener<int>(
   valueListenable: intNotifier,
@@ -55,10 +70,8 @@ GenericListener<int>(
     child: Center(
       child: GenericListener<int>(
         valueListenable: _intNotifier,
-        builder: (value) => GtText(
-          "Counter: $value",
-          style: context.textStyles.h3(),
-        ),
+        builder: (value) =>
+            GtText("Counter: $value", style: context.textStyles.h3()),
       ),
     ),
   );
@@ -66,14 +79,18 @@ GenericListener<int>(
 
 @widgetbook.UseCase(name: 'ListListener', type: ListListener)
 Widget playgroundListListenerUseCase(BuildContext context) {
-  final hasItems = context.knobs.boolean(label: 'Has Items', initialValue: true);
+  final hasItems = context.knobs.boolean(
+    label: 'Has Items',
+    initialValue: true,
+  );
   WidgetsBinding.instance.addPostFrameCallback((_) {
     _listNotifier.value = hasItems ? ['Apple', 'Banana', 'Orange'] : null;
   });
 
   return GtWidgetDocPage(
     title: 'ListListener',
-    description: 'Listens to a list ValueListenable, guaranteeing a non-null list (defaulting to empty).',
+    description:
+        'Listens to a list ValueListenable, guaranteeing a non-null list (defaulting to empty).',
     code: '''
 ListListener<String>(
   valueListenable: listNotifier,
@@ -87,8 +104,19 @@ ListListener<String>(
         builder: (items) => Column(
           mainAxisSize: MainAxisSize.min,
           children: items.isEmpty
-              ? [GtText("Empty List", style: context.textStyles.bodyS(color: context.palette.text.sub))]
-              : items.map((item) => GtText(item, style: context.textStyles.bodyM())).toList(),
+              ? [
+                  GtText(
+                    "Empty List",
+                    style: context.textStyles.bodyS(
+                      color: context.palette.text.sub,
+                    ),
+                  ),
+                ]
+              : items
+                    .map(
+                      (item) => GtText(item, style: context.textStyles.bodyM()),
+                    )
+                    .toList(),
         ),
       ),
     ),
@@ -97,7 +125,12 @@ ListListener<String>(
 
 @widgetbook.UseCase(name: 'NumberListener', type: NumberListener)
 Widget playgroundNumberListenerUseCase(BuildContext context) {
-  final numVal = context.knobs.double.slider(label: 'Number Value', min: 0.0, max: 10.0, initialValue: 3.14);
+  final numVal = context.knobs.double.slider(
+    label: 'Number Value',
+    min: 0.0,
+    max: 10.0,
+    initialValue: 3.14,
+  );
   WidgetsBinding.instance.addPostFrameCallback((_) {
     _numberNotifier.value = numVal;
   });
@@ -124,14 +157,18 @@ NumberListener<double>(
 
 @widgetbook.UseCase(name: 'StringListener', type: StringListener)
 Widget playgroundStringListenerUseCase(BuildContext context) {
-  final text = context.knobs.string(label: 'Text', initialValue: 'Hello GtListeners');
+  final text = context.knobs.string(
+    label: 'Text',
+    initialValue: 'Hello GtListeners',
+  );
   WidgetsBinding.instance.addPostFrameCallback((_) {
     _stringNotifier.value = text;
   });
 
   return GtWidgetDocPage(
     title: 'StringListener',
-    description: 'A dedicated listener for observing string state modifications.',
+    description:
+        'A dedicated listener for observing string state modifications.',
     code: '''
 StringListener(
   valueListenable: stringNotifier,
@@ -140,10 +177,8 @@ StringListener(
     child: Center(
       child: StringListener(
         valueListenable: _stringNotifier,
-        builder: (value) => GtText(
-          value ?? 'Empty',
-          style: context.textStyles.bodyM(),
-        ),
+        builder: (value) =>
+            GtText(value ?? 'Empty', style: context.textStyles.bodyM()),
       ),
     ),
   );

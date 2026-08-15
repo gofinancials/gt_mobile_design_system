@@ -7,8 +7,14 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 @widgetbook.UseCase(name: 'GtPaymentSourceCard', type: GtPaymentSourceCard)
 Widget playgroundGtPaymentSourceCardUseCase(BuildContext context) {
   final title = context.knobs.string(label: 'Title', initialValue: 'Pay from');
-  final accountDetail = context.knobs.string(label: 'Account Details', initialValue: 'SAVINGS • 1020293939');
-  final balance = context.knobs.string(label: 'Balance Text', initialValue: 'Balance ₦200,015.00');
+  final accountDetail = context.knobs.string(
+    label: 'Account Details',
+    initialValue: 'SAVINGS • 1020293939',
+  );
+  final balance = context.knobs.string(
+    label: 'Balance Text',
+    initialValue: 'Balance ₦200,015.00',
+  );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
     options: GtCardVariant.values,
@@ -18,8 +24,10 @@ Widget playgroundGtPaymentSourceCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtPaymentSourceCard',
-    description: 'A transaction card displaying account information, branding image, and current balances.',
-    code: '''
+    description:
+        'A transaction card displaying account information, branding image, and current balances.',
+    code:
+        '''
 GtPaymentSourceCard(
   title: "$title",
   accountDetail: "$accountDetail",

@@ -9,8 +9,15 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   final String? _title;
   final Widget? _titleLeading;
 
+  /// An optional widget rendered at the leading edge, opposite the cancel
+  /// button (e.g. a refresh action).
+  ///
+  /// The layout already reserves this column, so supplying a leading widget
+  /// does not shift the centered title.
+  final Widget? leading;
+
   /// Creates a standard [GtModalAppBar] with an optional [title].
-  const GtModalAppBar({String? title, super.key})
+  const GtModalAppBar({String? title, this.leading, super.key})
     : _title = title,
       _titleLeading = null;
 
@@ -19,6 +26,7 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   const GtModalAppBar.withLeadingTitleimage({
     required String title,
     required Widget titleLeading,
+    this.leading,
     super.key,
   }) : _titleLeading = titleLeading,
        _title = title;
@@ -50,7 +58,7 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
           children: [
             TableRow(
               children: [
-                const Offstage(),
+                leading ?? const Offstage(),
                 Row(
                   mainAxisAlignment: .center,
                   spacing: context.spacingSm,

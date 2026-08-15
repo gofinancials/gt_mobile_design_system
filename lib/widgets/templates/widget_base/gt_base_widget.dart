@@ -11,7 +11,13 @@ class GtBaseWidget extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
-    config.windowSize = mediaQuery.size;
+    final windowSize = mediaQuery.size;
+
+    // Published as a side channel for host apps that read AppConfig.windowSize.
+    // Guarded because the locator may have no AppConfig registered (widget
+    // tests, embedded previews), and a missing optional config should not tear
+    // down the entire widget tree.
+    if (locator.isRegistered<AppConfig>()) config.windowSize = windowSize;
 
     mediaQuery = mediaQuery.copyWith(
       textScaler: mediaQuery.textScaler.clamp(
@@ -25,7 +31,7 @@ class GtBaseWidget extends GtStatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: MediaQuery(
-        key: ValueKey(config.windowSize),
+        key: ValueKey(windowSize),
         data: mediaQuery,
         child: Listener(
           behavior: .translucent,

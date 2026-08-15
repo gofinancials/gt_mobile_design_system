@@ -11,10 +11,22 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
     options: ['standard', 'dismissible', 'dismissibleTrailing'],
     initialOption: 'standard',
   );
-  final title = context.knobs.string(label: 'Title', initialValue: 'Refer a Friend, Earn ₦5,000 each');
-  final subtitle = context.knobs.string(label: 'Subtitle', initialValue: 'Love your Pro account? Share with your friends.');
-  final actionText = context.knobs.string(label: 'Action Text', initialValue: 'Share Invite');
-  final dismissText = context.knobs.string(label: 'Dismiss Text', initialValue: 'DISMISS');
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Refer a Friend, Earn ₦5,000 each',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'Love your Pro account? Share with your friends.',
+  );
+  final actionText = context.knobs.string(
+    label: 'Action Text',
+    initialValue: 'Share Invite',
+  );
+  final dismissText = context.knobs.string(
+    label: 'Dismiss Text',
+    initialValue: 'DISMISS',
+  );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
     options: GtCardVariant.values,
@@ -36,7 +48,8 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
       onDismiss: () {},
       dismissText: dismissText,
     );
-    codeSnippet = '''GtActionCard.dismissible(
+    codeSnippet =
+        '''GtActionCard.dismissible(
   title: "$title",
   subtitle: "$subtitle",
   icon: GtIcons.gift,
@@ -62,7 +75,8 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
       onDismiss: () {},
       dismissText: dismissText,
     );
-    codeSnippet = '''GtActionCard.dismissibleTrailing(
+    codeSnippet =
+        '''GtActionCard.dismissibleTrailing(
   title: "$title",
   subtitle: "$subtitle",
   trailing: GtSvg(GtVectorIllustrations.serviceStatus, width: 80, height: 80),
@@ -81,7 +95,8 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
       actionText: actionText,
       variant: variant,
     );
-    codeSnippet = '''GtActionCard(
+    codeSnippet =
+        '''GtActionCard(
   title: "$title",
   subtitle: "$subtitle",
   icon: GtIcons.gift,
@@ -93,7 +108,8 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtActionCard',
-    description: 'An actionable card featuring promo information, call-to-actions, and optional dismiss buttons.',
+    description:
+        'An actionable card featuring promo information, call-to-actions, and optional dismiss buttons.',
     code: codeSnippet,
     child: cardWidget,
   );

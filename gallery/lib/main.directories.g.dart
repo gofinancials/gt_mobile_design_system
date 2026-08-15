@@ -284,6 +284,10 @@ import 'package:gallery/templates/modals/gt_bottom_modal.dart'
     as _gallery_templates_modals_gt_bottom_modal;
 import 'package:gallery/templates/modals/gt_bottom_sheet.dart'
     as _gallery_templates_modals_gt_bottom_sheet;
+import 'package:gallery/templates/modals/gt_success_rate_modal_usecase.dart'
+    as _gallery_templates_modals_gt_success_rate_modal_usecase;
+import 'package:gallery/templates/nav_aware/gt_activity_state_usecase.dart'
+    as _gallery_templates_nav_aware_gt_activity_state_usecase;
 import 'package:gallery/templates/nav_aware/gt_pop_scope_usecase.dart'
     as _gallery_templates_nav_aware_gt_pop_scope_usecase;
 import 'package:gallery/templates/overlays/gt_alert_overlay_usecase.dart'
@@ -334,6 +338,21 @@ final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
     name: 'common',
     children: [
+      _widgetbook.WidgetbookFolder(
+        name: 'state',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtActivityState',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtActivityState',
+                builder: _gallery_templates_nav_aware_gt_activity_state_usecase
+                    .playgroundGtActivityStateUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
       _widgetbook.WidgetbookFolder(
         name: 'styling',
         children: [
@@ -1983,6 +2002,22 @@ final directories = <_widgetbook.WidgetbookNode>[
             ],
           ),
           _widgetbook.WidgetbookFolder(
+            name: 'success_rates',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSuccessRateBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSuccessRateBody',
+                    builder:
+                        _gallery_templates_modals_gt_success_rate_modal_usecase
+                            .playgroundGtSuccessRateBodyUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
             name: 'switchers',
             children: [
               _widgetbook.WidgetbookComponent(
@@ -2236,6 +2271,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtBottomSheet',
                     builder: _gallery_templates_modals_gt_bottom_sheet
                         .playgroundGtBottomSheetUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSuccessRateModal',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSuccessRateModal',
+                    builder:
+                        _gallery_templates_modals_gt_success_rate_modal_usecase
+                            .playgroundGtSuccessRateModalUseCase,
                   ),
                 ],
               ),

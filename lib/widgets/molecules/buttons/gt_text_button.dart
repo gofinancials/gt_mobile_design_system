@@ -110,21 +110,13 @@ class GtTextButton extends GtButton {
 
     if (leading != null) {
       leadingIcon = ExcludeSemantics(
-        child: GtIcon.withColor(
-          leading!,
-          color: textColor,
-          size: iconSize,
-        ),
+        child: GtIcon.withColor(leading!, color: textColor, size: iconSize),
       );
     }
 
     if (trailing != null) {
       trailingIcon = ExcludeSemantics(
-        child: GtIcon.withColor(
-          trailing!,
-          color: textColor,
-          size: iconSize,
-        ),
+        child: GtIcon.withColor(trailing!, color: textColor, size: iconSize),
       );
     }
 

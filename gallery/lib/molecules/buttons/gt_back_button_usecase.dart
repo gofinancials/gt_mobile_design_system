@@ -17,7 +17,8 @@ Widget playgroundGtBackButtonUseCase(BuildContext context) {
     labelBuilder: (s) => s.name,
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtBackButton(
   routeStackSensitive: $sensitive,
   size: GtBackButtonSize.${size.name},

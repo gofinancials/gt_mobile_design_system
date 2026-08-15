@@ -6,10 +6,14 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtTipCard', type: GtTipCard)
 Widget playgroundGtTipCardUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Confirm Referee Details');
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Confirm Referee Details',
+  );
   final subtitle = context.knobs.string(
     label: 'Subtitle',
-    initialValue: 'Please ensure your referees’ details are accurate. They will be contacted to complete a form.',
+    initialValue:
+        'Please ensure your referees’ details are accurate. They will be contacted to complete a form.',
   );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
@@ -21,8 +25,10 @@ Widget playgroundGtTipCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtTipCard',
-    description: 'A informational card tailored for displaying helpful tips or contextual alerts.',
-    code: '''
+    description:
+        'A informational card tailored for displaying helpful tips or contextual alerts.',
+    code:
+        '''
 GtTipCard(
   title: "$title",
   subtitle: "$subtitle",

@@ -6,15 +6,23 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtIndicatorTile', type: GtIndicatorTile)
 Widget playgroundGtIndicatorTileUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Indicator Tile');
-  final subtitle = context.knobs.string(label: 'Subtitle', initialValue: 'Standard layout subtext for indicator items.');
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Indicator Tile',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'Standard layout subtext for indicator items.',
+  );
   final hasIcon = context.knobs.boolean(label: 'Has Icon', initialValue: true);
   final leading = hasIcon ? const GtIcon(GtIcons.star) : null;
 
   return GtWidgetDocPage(
     title: 'GtIndicatorTile',
-    description: 'A layout helper tile for structuring title, subtitle, leading and trailing widgets consistently.',
-    code: '''
+    description:
+        'A layout helper tile for structuring title, subtitle, leading and trailing widgets consistently.',
+    code:
+        '''
 GtIndicatorTile(
   "Indicator Tile",
   subtitle: "Standard layout subtext for indicator items.",

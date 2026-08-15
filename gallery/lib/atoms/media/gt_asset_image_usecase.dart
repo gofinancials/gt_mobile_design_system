@@ -39,7 +39,8 @@ Widget playgroundGtAssetImageUseCase(BuildContext context) {
     labelBuilder: (f) => f.name,
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtAssetImage(
   '$selectedAsset',
   width: $width,
@@ -57,11 +58,6 @@ It dynamically handles SVG file extensions using <b>GtSvg</b> internally.
 • <b>GtNetworkImage:</b> For remote URLs
 • <b>GtImage:</b> Universal image handler''',
     code: codeSnippet,
-    child: GtAssetImage(
-      selectedAsset,
-      width: width,
-      height: height,
-      fit: fit,
-    ),
+    child: GtAssetImage(selectedAsset, width: width, height: height, fit: fit),
   );
 }

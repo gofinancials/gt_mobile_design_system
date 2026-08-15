@@ -6,9 +6,18 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtInstructionCard', type: GtInstructionCard)
 Widget playgroundGtInstructionCardUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Take picture of front of ID');
-  final description = context.knobs.string(label: 'Description', initialValue: 'JPEG, JPG and PNG formats, up to 10 MB.');
-  final isFilled = context.knobs.boolean(label: 'Is Filled Style', initialValue: false);
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Take picture of front of ID',
+  );
+  final description = context.knobs.string(
+    label: 'Description',
+    initialValue: 'JPEG, JPG and PNG formats, up to 10 MB.',
+  );
+  final isFilled = context.knobs.boolean(
+    label: 'Is Filled Style',
+    initialValue: false,
+  );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
     options: GtCardVariant.values,
@@ -18,8 +27,10 @@ Widget playgroundGtInstructionCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtInstructionCard',
-    description: 'An interactive onboarding instruction card prompting users to upload files or documents.',
-    code: '''
+    description:
+        'An interactive onboarding instruction card prompting users to upload files or documents.',
+    code:
+        '''
 GtInstructionCard(
   title: "$title",
   description: "$description",

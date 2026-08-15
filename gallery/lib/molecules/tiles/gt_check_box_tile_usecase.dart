@@ -6,9 +6,18 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtCheckBoxTile', type: GtCheckBoxTile)
 Widget playgroundGtCheckBoxTileUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Enable Notifications');
-  final subtitle = context.knobs.string(label: 'Subtitle', initialValue: 'Get alerts for incoming transfers.');
-  final disabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Enable Notifications',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'Get alerts for incoming transfers.',
+  );
+  final disabled = context.knobs.boolean(
+    label: 'Disabled',
+    initialValue: false,
+  );
   final shape = context.knobs.object.dropdown<GtCheckBoxShape>(
     label: 'Shape',
     options: GtCheckBoxShape.values,
@@ -20,8 +29,10 @@ Widget playgroundGtCheckBoxTileUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtCheckBoxTile',
-    description: 'A customizable list tile with built-in selection using GtCheckBox.',
-    code: '''
+    description:
+        'A customizable list tile with built-in selection using GtCheckBox.',
+    code:
+        '''
 GtCheckBoxTile<String>(
   "Enable Notifications",
   value: "notifications",

@@ -100,7 +100,8 @@ class GtBalanceText extends GtStatelessWidget {
 
     final String semanticLabel = hidden
         ? (hiddenSemanticsLabel ?? 'Balance is hidden')
-        : (semanticsLabel ?? '${AppTextFormatter.formatCurrency(amount, ignoreSymbol: true)} ${isNaira ? "Naira" : currencySymbol}');
+        : (semanticsLabel ??
+              '${AppTextFormatter.formatCurrency(amount, ignoreSymbol: true)} ${isNaira ? "Naira" : currencySymbol}');
 
     return Semantics(
       label: semanticLabel,

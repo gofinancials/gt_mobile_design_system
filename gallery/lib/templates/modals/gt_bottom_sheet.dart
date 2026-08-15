@@ -26,15 +26,23 @@ const List<(IconData, String)> _items = [
   (GtIcons.whatsapp, "Verify with a Selfie"),
 ];
 
-class _BottomSheetPreviewState extends State<_BottomSheetPreview> with GtBottomSheetMixin {
+class _BottomSheetPreviewState extends State<_BottomSheetPreview>
+    with GtBottomSheetMixin {
   @override
   Widget build(BuildContext context) {
-    final title = context.knobs.string(label: 'Sheet Title', initialValue: 'Manage payroll');
-    final floating = context.knobs.boolean(label: 'Floating Style', initialValue: false);
+    final title = context.knobs.string(
+      label: 'Sheet Title',
+      initialValue: 'Manage payroll',
+    );
+    final floating = context.knobs.boolean(
+      label: 'Floating Style',
+      initialValue: false,
+    );
 
     return GtWidgetDocPage(
       title: 'GtBottomSheet',
-      description: 'Modal and draggable bottom sheets supporting custom height, scrollability, and floating cards. Access these helper methods by mixing GtBottomSheetMixin into your State class.',
+      description:
+          'Modal and draggable bottom sheets supporting custom height, scrollability, and floating cards. Access these helper methods by mixing GtBottomSheetMixin into your State class.',
       code: '''
 // 1. Add GtBottomSheetMixin to your State class
 class MyState extends State<MyWidget> with GtBottomSheetMixin {
@@ -105,7 +113,8 @@ class MyState extends State<MyWidget> with GtBottomSheetMixin {
                 floating: floating,
                 child: GtStatusState.success(
                   title: "successful !",
-                  subtitle: "Your BVN was added successfully. You can now initiate transactions.",
+                  subtitle:
+                      "Your BVN was added successfully. You can now initiate transactions.",
                   actionLabel: "SUCCESS",
                   onActionPressed: () => Navigator.of(context).pop(),
                 ),
@@ -154,7 +163,8 @@ class MyState extends State<MyWidget> with GtBottomSheetMixin {
                           const GtGap.yBase(),
                           GtInfoListTile(
                             "Billing address",
-                            text: "20 Marina Boulevard, Ipaja, Lagos, 1274, Nigeria",
+                            text:
+                                "20 Marina Boulevard, Ipaja, Lagos, 1274, Nigeria",
                           ),
                         ],
                       ),
@@ -237,7 +247,8 @@ class MyState extends State<MyWidget> with GtBottomSheetMixin {
                             const GtGap.yBase(),
                             GtInfoListTile(
                               "Billing address",
-                              text: "20 Marina Boulevard, Ipaja, Lagos, 1274, Nigeria",
+                              text:
+                                  "20 Marina Boulevard, Ipaja, Lagos, 1274, Nigeria",
                             ),
                           ],
                         ),

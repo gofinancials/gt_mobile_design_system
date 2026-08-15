@@ -3,7 +3,10 @@ import 'package:gallery/lib.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'GtVirtualKeypadForm.withAvatar', type: GtVirtualKeypadForm)
+@widgetbook.UseCase(
+  name: 'GtVirtualKeypadForm.withAvatar',
+  type: GtVirtualKeypadForm,
+)
 Widget playgroundGtVirtualKeypadFormWithAvatarDoc(BuildContext context) {
   const codeSnippet = '''
 Scaffold(
@@ -21,10 +24,12 @@ Scaffold(
 
   return GtWidgetDocPage(
     title: 'GtVirtualKeypadForm.withAvatar',
-    description: 'A specialized virtual keypad form designed for authenticated user PIN validation displaying an avatar profile picture.',
+    description:
+        'A specialized virtual keypad form designed for authenticated user PIN validation displaying an avatar profile picture.',
     code: codeSnippet,
     child: GtEmptyStateCard(
-      description: 'Select "Interactive Preview (Avatar)" in the sidebar to test numerical pin keypad entry with avatar profile display.',
+      description:
+          'Select "Interactive Preview (Avatar)" in the sidebar to test numerical pin keypad entry with avatar profile display.',
       icon: GtIcons.alarmClock,
     ),
   );

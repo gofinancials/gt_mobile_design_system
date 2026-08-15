@@ -6,7 +6,10 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtBillCard', type: GtBillCard)
 Widget playgroundGtBillCardUseCase(BuildContext context) {
-  final name = context.knobs.string(label: 'Bill Name', initialValue: 'Airtime');
+  final name = context.knobs.string(
+    label: 'Bill Name',
+    initialValue: 'Airtime',
+  );
   final mode = context.knobs.object.dropdown<String>(
     label: 'Card Mode',
     options: ['standard', 'tile'],
@@ -21,7 +24,8 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
       name: name,
       icon: GtSvg(GtVectorIllustrations.building),
     );
-    codeSnippet = '''GtBillCard.tile(
+    codeSnippet =
+        '''GtBillCard.tile(
   name: "$name",
   icon: GtSvg(GtVectorIllustrations.building),
 )''';
@@ -30,7 +34,8 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
       name: name,
       icon: GtSvg(GtVectorIllustrations.building),
     );
-    codeSnippet = '''GtBillCard(
+    codeSnippet =
+        '''GtBillCard(
   name: "$name",
   icon: GtSvg(GtVectorIllustrations.building),
 )''';
@@ -38,7 +43,8 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtBillCard',
-    description: 'A dedicated bill payment category card displayed as standard grid item or inline list tile.',
+    description:
+        'A dedicated bill payment category card displayed as standard grid item or inline list tile.',
     code: codeSnippet,
     child: Center(
       child: ConstrainedBox(

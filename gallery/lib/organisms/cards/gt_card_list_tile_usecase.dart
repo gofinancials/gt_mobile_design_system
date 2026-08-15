@@ -6,8 +6,14 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtCardListTile', type: GtCardListTile)
 Widget playgroundGtCardListTileUseCase(BuildContext context) {
-  final text = context.knobs.string(label: 'Tile Title', initialValue: 'Security Settings');
-  final subtitle = context.knobs.string(label: 'Tile Subtitle', initialValue: 'Manage password and biometric security');
+  final text = context.knobs.string(
+    label: 'Tile Title',
+    initialValue: 'Security Settings',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Tile Subtitle',
+    initialValue: 'Manage password and biometric security',
+  );
   final type = context.knobs.object.dropdown<GtCardListTileType>(
     label: 'Tile Group Position',
     options: GtCardListTileType.values,
@@ -17,8 +23,10 @@ Widget playgroundGtCardListTileUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtCardListTile',
-    description: 'A layout wrapper designed to encase standard list tiles within custom-bordered card configurations.',
-    code: '''
+    description:
+        'A layout wrapper designed to encase standard list tiles within custom-bordered card configurations.',
+    code:
+        '''
 GtCardListTile(
   type: GtCardListTileType.${type.name},
   child: GtListTile(

@@ -6,7 +6,10 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtToastOverlay', type: GtToastOverlay)
 Widget playgroundGtToastOverlayUseCase(BuildContext context) {
-  final message = context.knobs.string(label: 'Toast Message', initialValue: 'Item added to favorites');
+  final message = context.knobs.string(
+    label: 'Toast Message',
+    initialValue: 'Item added to favorites',
+  );
   final variant = context.knobs.object.dropdown<GtPillVariant>(
     label: 'Variant',
     options: GtPillVariant.values,
@@ -16,8 +19,10 @@ Widget playgroundGtToastOverlayUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtToastOverlay',
-    description: 'A transient floating toast message banner. Present it via the BuildContext extension method.',
-    code: '''
+    description:
+        'A transient floating toast message banner. Present it via the BuildContext extension method.',
+    code:
+        '''
 // Display toast overlay via BuildContext extension
 context.showToast(
   "$message",
@@ -28,11 +33,7 @@ context.showToast(
     child: GtRaisedButton(
       text: 'Trigger Toast Overlay',
       onPressed: () {
-        context.showToast(
-          message,
-          type: variant,
-          icon: Icons.check_circle,
-        );
+        context.showToast(message, type: variant, icon: Icons.check_circle);
       },
     ),
   );

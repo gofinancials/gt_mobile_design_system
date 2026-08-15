@@ -13,8 +13,6 @@ GtDobField(
   controller: GtDobController(),
 )
 ''',
-    child: GtDobField(
-      controller: GtDobController(),
-    ),
+    child: GtDobField(controller: GtDobController()),
   );
 }
