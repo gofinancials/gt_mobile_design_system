@@ -323,6 +323,7 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
     return GtDisabledOverlay(
       !widget.isEnabled,
       child: GtInkWell(
+        role: .button,
         borderRadius: context.borderRadiusXl,
         hapticFeedbackType: .medium,
         onTap: _showSheet,
@@ -349,6 +350,7 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
                       fit: .fill,
                       width: size,
                       height: size,
+                      isDecorative: true,
                     ),
                   ),
                   GtIcon(

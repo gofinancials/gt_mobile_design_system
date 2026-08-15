@@ -44,7 +44,13 @@ class GtIllustratedStepTile extends GtStatelessWidget {
       spacing: context.spacingMd,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GtSvg(illustrationPath, height: 36, width: 36, alignment: .topLeft),
+        GtSvg(
+          illustrationPath,
+          height: 36,
+          width: 36,
+          alignment: .topLeft,
+          isDecorative: true,
+        ),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,6 +192,7 @@ class GtStatusListTile extends GtStatelessWidget {
     return GtDisabledOverlay(
       isDone,
       child: GtInkWell(
+        role: .button,
         borderRadius: _asCard ? context.borderRadius2Xl : .zero,
         onTap: onPressed,
         child: child,

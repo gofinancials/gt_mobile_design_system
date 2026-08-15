@@ -205,6 +205,7 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
                           width: slide.contentImageWidth,
                           alignment: .center,
                           useDefaultSize: false,
+                          isDecorative: true,
                         ),
                         ?slide.contentImageSpacer,
                       ],

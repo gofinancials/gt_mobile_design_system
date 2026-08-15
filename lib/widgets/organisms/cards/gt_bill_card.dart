@@ -57,6 +57,7 @@ class GtBillCard extends GtStatelessWidget {
     }
 
     return GtInkWell(
+      role: .button,
       borderRadius: context.borderRadiusXl,
       onTap: onTap,
       child: child,

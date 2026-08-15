@@ -29,14 +29,15 @@ class GtSummaryTile extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final child = switch (layout) {
-      .columns => _columns(context),
-      .stacked => _stacked(context),
+    final Widget child = switch (layout) {
+      .columns => _GtSummaryColumnsTile(tile),
+      .stacked => _GtSummaryStackedTile(tile),
     };
 
     // The stacked layout is a GtInfoListTile, which wires up its own ink well.
-    if (tile.onTap != null && layout == GtSummaryTileLayout.columns) {
+    if (tile.onTap != null && layout == .columns) {
       return GtInkWell(
+        role: .button,
         onTap: tile.onTap,
         borderRadius: context.borderRadiusSm,
         child: child,
@@ -45,28 +46,65 @@ class GtSummaryTile extends GtStatelessWidget {
 
     return child;
   }
+}
 
-  Widget _columns(BuildContext context) {
+/// The side-by-side layout, with the value emphasised over the label.
+class _GtSummaryColumnsTile extends GtStatelessWidget {
+  /// The label, value and optional images for this row.
+  final GtSummaryTileData tile;
+
+  const _GtSummaryColumnsTile(this.tile);
+
+  @override
+  Widget build(BuildContext context) {
     final styles = context.textStyles;
-    final imageSize = context.dp(20.px);
-
-    Widget? image(AppImageData? data) {
-      if (data == null) return null;
-      return GtImage(image: data, width: imageSize, height: imageSize);
-    }
+    final leading = tile.leading;
+    final trailing = tile.trailing;
 
     return GtDoubleColumnListTile(
       tile.label,
       value: tile.value,
-      valuePrefix: image(tile.leading),
-      valueSuffix: image(tile.trailing),
+      // Left null rather than given an empty widget, because the tile uses the
+      // absence of a slot to decide its own spacing.
+      valuePrefix: leading == null ? null : _GtSummaryTileImage(leading),
+      valueSuffix: trailing == null ? null : _GtSummaryTileImage(trailing),
       labelTextStyle: styles.subHeadXs(color: context.palette.text.sub),
       valueTextStyle: styles.subHeadS(color: tile.valueColor),
       valueMaxLines: 1,
     );
   }
+}
 
-  Widget _stacked(BuildContext context) {
+/// A bank logo, recipient avatar or category glyph bracketing the value.
+class _GtSummaryTileImage extends GtStatelessWidget {
+  /// The image to render.
+  final AppImageData data;
+
+  const _GtSummaryTileImage(this.data);
+
+  @override
+  Widget build(BuildContext context) {
+    final size = context.dp(20.px);
+
+    return GtImage(
+      image: data,
+      width: size,
+      height: size,
+      // The label and value beside it already name what the image depicts.
+      isDecorative: true,
+    );
+  }
+}
+
+/// The stacked layout, with the label above the value.
+class _GtSummaryStackedTile extends GtStatelessWidget {
+  /// The label, value and optional tap handler for this row.
+  final GtSummaryTileData tile;
+
+  const _GtSummaryStackedTile(this.tile);
+
+  @override
+  Widget build(BuildContext context) {
     return GtInfoListTile(
       tile.label,
       text: tile.value,

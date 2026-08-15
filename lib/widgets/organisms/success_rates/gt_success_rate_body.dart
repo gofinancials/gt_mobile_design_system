@@ -359,6 +359,7 @@ class _SuccessRateRow extends GtStatelessWidget {
               image: logo,
               width: logoSize,
               height: logoSize,
+              isDecorative: true,
             ),
             _ => GtAvatar(size: logoSize, initials: entry.name.initials),
           },
@@ -366,6 +367,7 @@ class _SuccessRateRow extends GtStatelessWidget {
 
     if (entry.onTap != null) {
       child = GtInkWell(
+        role: .button,
         onTap: entry.onTap,
         borderRadius: context.borderRadiusSm,
         child: child,

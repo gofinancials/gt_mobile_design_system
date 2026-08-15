@@ -12,12 +12,21 @@ class GtWidgetDocPage extends GtStatelessWidget {
   final Widget child;
   final List<Widget>? knobs;
 
+  /// What a consumer has to do to make this component accessible.
+  ///
+  /// Use it for the obligations the API cannot enforce on its own: which label
+  /// to supply, which role the surface should declare, what a screen reader
+  /// announces, and any known limitation. Toggle the Accessibility addon while
+  /// reading these to see the component under the settings they describe.
+  final List<String>? accessibilityNotes;
+
   const GtWidgetDocPage({
     required this.title,
     this.description,
     this.code,
     required this.child,
     this.knobs,
+    this.accessibilityNotes,
     super.key,
   });
 
@@ -46,6 +55,19 @@ class GtWidgetDocPage extends GtStatelessWidget {
                     runSpacing: 24.px,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: knobs!,
+                  ),
+                ),
+
+              if (accessibilityNotes != null && accessibilityNotes!.isNotEmpty)
+                GallerySectionCard(
+                  'Accessibility',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 8,
+                    children: [
+                      for (final note in accessibilityNotes!)
+                        _AccessibilityNote(note),
+                    ],
                   ),
                 ),
 
@@ -239,3 +261,34 @@ extension SyntaxThemeExtension on SyntaxTheme {
 //         .replaceAll('>', '&gt;');
 //   }
 // }
+
+/// A single accessibility obligation or caveat in the docs page.
+class _AccessibilityNote extends StatelessWidget {
+  final String note;
+
+  const _AccessibilityNote(this.note);
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 8,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: Container(
+            width: 6,
+            height: 6,
+            decoration: BoxDecoration(
+              color: palette.primary.base,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+        Expanded(child: GtText(note, style: context.textStyles.bodyS())),
+      ],
+    );
+  }
+}

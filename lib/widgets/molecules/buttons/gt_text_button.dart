@@ -170,6 +170,10 @@ class GtTextButton extends GtButton {
       );
     }
 
+    if (needsMinimumTapTarget) {
+      child = GtTapTarget(child: child);
+    }
+
     return child;
   }
 }

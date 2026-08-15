@@ -47,6 +47,7 @@ class GtTitleAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 title.upper,
                 style: context.textStyles.h5(),
                 maxLines: 1,
+                headingLevel: 1,
               ),
             ),
             ?trailing?.head,

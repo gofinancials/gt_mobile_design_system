@@ -152,6 +152,10 @@ class GtOutlineButton extends GtButton {
       child = Align(alignment: alignment!, child: child);
     }
 
+    if (needsMinimumTapTarget) {
+      child = GtTapTarget(child: child);
+    }
+
     return child;
   }
 }

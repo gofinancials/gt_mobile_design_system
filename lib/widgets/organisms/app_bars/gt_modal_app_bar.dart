@@ -69,6 +69,8 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                       style: context.textStyles.h6(),
                       textAlign: .center,
                       maxLines: 1,
+                      // Level 1 within the modal's own route scope.
+                      headingLevel: 1,
                     ),
                   ],
                 ),

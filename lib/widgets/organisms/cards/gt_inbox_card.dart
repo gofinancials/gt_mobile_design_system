@@ -41,6 +41,7 @@ class GtInboxCard extends GtStatelessWidget {
       color: context.palette.text.soft,
     );
     return GtInkWell(
+      role: .button,
       borderRadius: context.borderRadiusXl,
       onTap: onTap,
       child: GtCard(

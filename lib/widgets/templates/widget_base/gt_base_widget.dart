@@ -42,6 +42,10 @@ class GtBaseWidget extends GtStatelessWidget {
           },
           child: GestureDetector(
             onTap: context.resetFocus,
+            // Dismisses the keyboard on a background tap. Screen reader users
+            // dismiss it their own way, and announcing the whole app as
+            // tappable would be actively harmful.
+            excludeFromSemantics: true,
             child: child ?? const Offstage(),
           ),
         ),

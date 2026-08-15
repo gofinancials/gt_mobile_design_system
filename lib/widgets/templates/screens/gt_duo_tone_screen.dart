@@ -90,6 +90,7 @@ class GtDuotoneScreen extends GtStatelessWidget {
                 height: illustrationSize?.height ?? context.dp(320.px),
                 width: illustrationSize?.width,
                 alignment: .bottomCenter,
+                isDecorative: true,
               ),
             ),
           ),

@@ -51,6 +51,7 @@ class GtAccountListTile extends GtStatelessWidget {
     };
 
     return GtInkWell(
+      role: .button,
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
@@ -116,6 +117,7 @@ class GtContactListTile extends GtStatelessWidget {
     final subStyle = context.textStyles.subHead2xs(color: palette.text.sub);
 
     return GtInkWell(
+      role: .button,
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
@@ -221,6 +223,7 @@ class GtStakeHolderListTile extends GtStatelessWidget {
     );
 
     return GtInkWell(
+      role: .button,
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
@@ -376,6 +379,7 @@ class GtAccountTypeListTile extends GtStatelessWidget {
     );
 
     return GtInkWell(
+      role: .button,
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(

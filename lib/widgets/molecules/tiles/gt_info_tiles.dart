@@ -51,6 +51,7 @@ class GtInfoListTile extends GtStatelessWidget {
     final hintStyle = labelStyle ?? styles.bodyS(color: textColors.sub);
 
     return GtInkWell(
+      role: .button,
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
@@ -175,7 +176,12 @@ class GtStatListTile extends GtStatelessWidget {
       );
     }
 
-    return GtInkWell(borderRadius: .zero, onTap: onTap, child: child);
+    return GtInkWell(
+      role: .button,
+      borderRadius: .zero,
+      onTap: onTap,
+      child: child,
+    );
   }
 }
 
@@ -270,7 +276,12 @@ class GtInputListTile extends GtStatelessWidget {
       child = GtCard(borderRadius: context.borderRadiusXl, child: child);
     }
 
-    return GtInkWell(borderRadius: .zero, onTap: onTap, child: child);
+    return GtInkWell(
+      role: .button,
+      borderRadius: .zero,
+      onTap: onTap,
+      child: child,
+    );
   }
 }
 
@@ -303,6 +314,7 @@ class GtCopyTile extends GtStatelessWidget {
     final textColors = context.palette.text;
 
     return GtInkWell(
+      role: .button,
       borderRadius: .zero,
       onTap: () {
         context.copyTextToClipboard(value);
@@ -385,6 +397,7 @@ class GtInstructionListTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
+      role: .button,
       borderRadius: .zero,
       onTap: onTap,
       child: Row(

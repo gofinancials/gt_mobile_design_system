@@ -96,6 +96,9 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 style: titleSize.getStyle(context),
                 textAlign: .center,
                 maxLines: 2,
+                // The screen's own title, and the anchor a screen reader user
+                // jumps to when moving by heading.
+                headingLevel: 1,
               ),
               Align(
                 alignment: .centerRight,

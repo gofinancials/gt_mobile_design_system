@@ -47,6 +47,7 @@ class GtSummaryRatesCard extends GtStatelessWidget {
                   image: logo,
                   width: logoSize,
                   height: logoSize,
+                  isDecorative: true,
                 ),
                 _ => GtAvatar(size: logoSize, initials: rate.name.initials),
               },

@@ -94,6 +94,7 @@ class _GtPasswordFieldState extends State<GtPasswordField> {
                 minLength: widget.minLength,
               ),
           suffix: GtInkWell(
+            role: .button,
             semanticsLabel: passwordHidden
                 ? widget.showPasswordSemanticLabel
                 : widget.hidePasswordSemanticLabel,

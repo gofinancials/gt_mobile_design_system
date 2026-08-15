@@ -73,6 +73,7 @@ class GtBackButton extends GtStatelessWidget {
         child: Hero(
           tag: "gt-back-button",
           child: GtInkWell(
+            role: .button,
             hapticFeedbackType: .medium,
             onTap: () {
               if (action != null) return action!();

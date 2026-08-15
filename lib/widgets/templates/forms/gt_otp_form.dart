@@ -61,6 +61,7 @@ class _GtOtpFormState extends State<GtOtpForm> with GtOtpFormMixin {
               builder: (count) {
                 if ((count ?? 0) <= 0) {
                   return GtInkWell(
+                    role: .button,
                     key: const Key("gt-otp-code-resend-button"),
                     onTap: () {
                       widget.onResendCode();

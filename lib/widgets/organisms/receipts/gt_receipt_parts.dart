@@ -22,7 +22,12 @@ class GtReceiptDetailTile extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final imageSize = context.dp(20.px);
     final suffix = tile.image != null
-        ? GtImage(image: tile.image!, width: imageSize, height: imageSize)
+        ? GtImage(
+            image: tile.image!,
+            width: imageSize,
+            height: imageSize,
+            isDecorative: true,
+          )
         : null;
 
     final child = GtDoubleColumnListTile(
@@ -34,6 +39,7 @@ class GtReceiptDetailTile extends GtStatelessWidget {
 
     if (tile.onTap != null) {
       return GtInkWell(
+        role: .button,
         onTap: tile.onTap,
         borderRadius: context.borderRadiusSm,
         child: child,
@@ -100,7 +106,7 @@ class GtReceiptStatusPill extends GtStatelessWidget {
     );
 
     if (status.onPressed != null) {
-      return GtInkWell(onTap: status.onPressed, child: pill);
+      return GtInkWell(role: .button, onTap: status.onPressed, child: pill);
     }
 
     return pill;

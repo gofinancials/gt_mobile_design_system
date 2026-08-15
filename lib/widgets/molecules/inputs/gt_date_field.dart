@@ -166,6 +166,7 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
+      role: .button,
       borderRadius: context.borderRadiusXl,
       onTap: () {
         if (!widget.isEnabled) return;

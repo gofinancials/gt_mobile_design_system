@@ -95,6 +95,7 @@ class GtLessonCard extends GtStatelessWidget {
                 image: illustration,
                 height: context.dp(150.px),
                 alignment: .center,
+                isDecorative: true,
               ),
             ),
           ),
@@ -181,7 +182,12 @@ class GtLessonInfoTile extends GtStatelessWidget {
       crossAxisAlignment: crossAlignment ?? .start,
       children: [
         GtSimpleInfoTile(
-          leading: GtSvg(GtVectors.coin, width: 16, height: 16),
+          leading: GtSvg(
+            GtVectors.coin,
+            width: 16,
+            height: 16,
+            isDecorative: true,
+          ),
           text: progress,
         ),
         GtSimpleInfoTile(
@@ -190,6 +196,7 @@ class GtLessonInfoTile extends GtStatelessWidget {
             width: 16,
             height: 16,
             color: context.palette.feature.dark,
+            isDecorative: true,
           ),
           text: progressDuration,
         ),

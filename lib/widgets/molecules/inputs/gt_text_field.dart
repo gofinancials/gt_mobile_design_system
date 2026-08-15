@@ -224,6 +224,10 @@ class _GtTextFieldState extends State<GtTextField>
               return GestureDetector(
                 onTap: () => context.requestFocus(_inputFocus),
                 behavior: .translucent,
+                // A convenience for pointer users that widens the focus area.
+                // The field itself is the control, so this must not appear as
+                // a second tappable thing beside it.
+                excludeFromSemantics: true,
                 child: _GtTextFieldLayout(
                   hasError: hasError,
                   decoration: decoration,

@@ -31,6 +31,7 @@ class GtListTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
+      role: .button,
       borderRadius: context.borderRadius2Xl,
       onTap: onTap,
       child: Padding(
@@ -94,6 +95,7 @@ class GtIconListTile extends GtStatelessWidget {
     final palette = context.palette;
 
     return GtInkWell(
+      role: .button,
       borderRadius: context.borderRadius2Xl,
       onTap: onTap,
       child: Padding(
@@ -141,6 +143,7 @@ class _GtIconListTileAlt extends GtIconListTile {
     final palette = context.palette;
 
     return GtInkWell(
+      role: .button,
       borderRadius: context.borderRadius2Xl,
       onTap: onTap,
       child: Padding(
@@ -206,6 +209,7 @@ class GtSimpleActionListTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
+      role: .button,
       borderRadius: context.borderRadius2Xl,
       onTap: onTap,
       child: Padding(

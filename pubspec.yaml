@@ -35,6 +35,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  custom_lint: ^0.8.1
+  gt_a11y_lints:
+    path: tools/gt_a11y_lints
   build_runner: ^2.0.0
   vector_graphics_compiler: ^1.1.19
 

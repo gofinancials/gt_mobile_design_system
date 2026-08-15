@@ -25,6 +25,13 @@ class GtAvatar extends GtStatelessWidget {
   /// Optional callback invoked when the avatar is tapped.
   final OnPressed? onPressed;
 
+  /// An accessible name for the avatar, already localised.
+  ///
+  /// Supply the person or entity the avatar represents. Only announced when
+  /// [onPressed] makes the avatar interactive; a decorative avatar beside a
+  /// name that is already on screen should stay silent.
+  final String? semanticsLabel;
+
   /// Indicates whether this avatar represents the primary user.
   ///
   /// If `true`, it provides a default placeholder asset if [avatar] is null, applies
@@ -63,6 +70,7 @@ class GtAvatar extends GtStatelessWidget {
     this.fit,
     this.size,
     this.onPressed,
+    this.semanticsLabel,
     this.initials,
     this.isUserAvatar = false,
     this.tag,
@@ -122,12 +130,20 @@ class GtAvatar extends GtStatelessWidget {
 
     Widget child = Align(
       alignment: alignment,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          HapticFeedback.lightImpact();
-          onPressed?.call();
-        },
+      child: GtInkWell(
+        // GestureDetector took no focus and reported no semantics, and it
+        // registered a tap handler even when onPressed was null, leaving a
+        // dead target that still swallowed touches.
+        role: onPressed == null ? .none : .button,
+        semanticsLabel: onPressed == null ? null : semanticsLabel,
+        excludeDescendantSemantics: true,
+        customBorder: const CircleBorder(),
+        onTap: onPressed == null
+            ? null
+            : () {
+                HapticFeedback.lightImpact();
+                onPressed!.call();
+              },
         child: Container(
           width: computedSize,
           height: computedSize,

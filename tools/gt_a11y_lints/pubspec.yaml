@@ -1,0 +1,14 @@
+name: gt_a11y_lints
+description: Authoring-time accessibility lints for the Go Tech design system.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ">=3.10.0 <=5.0.0"
+
+dependencies:
+  analyzer: ^8.4.0
+  custom_lint_builder: ^0.8.1
+
+dev_dependencies:
+  lints: ^6.0.0

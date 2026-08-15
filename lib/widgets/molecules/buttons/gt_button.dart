@@ -163,6 +163,22 @@ abstract class GtButton extends GtStatelessWidget {
     return isFocused(states) || isHovered(states) || isPressed(states);
   }
 
+  /// Whether this button is drawn shorter than the platform minimum touch
+  /// target and therefore needs a [GtTapTarget] around it.
+  ///
+  /// The smaller sizes are 24, 28, and 32 logical pixels tall against a
+  /// platform minimum of 44, and [baseStyle] sets
+  /// [MaterialTapTargetSize.shrinkWrap], which switches off the padding
+  /// Material would otherwise add. Growing them visually would reshape every
+  /// screen that uses them, so subclasses widen the responsive area instead and
+  /// leave the painted button alone.
+  ///
+  /// The wrap must be outermost: hit slop only works for positions the parent
+  /// also accepts.
+  bool get needsMinimumTapTarget {
+    return buttonHeight < GtTapTarget.defaultMinSize.height;
+  }
+
   /// Calculates the required height of the button based on its [size] and the
   /// current device pixel ratio using Go Tech's layout utilities.
   double get buttonHeight {

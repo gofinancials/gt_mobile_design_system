@@ -67,6 +67,7 @@ class GtNotificationCard extends GtStatelessWidget {
             width: 40,
             height: 40,
             alignment: .topLeft,
+            isDecorative: true,
           ),
           Expanded(
             child: Column(

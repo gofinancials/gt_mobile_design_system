@@ -38,6 +38,12 @@ class GtCountIndicator extends GtStatelessWidget {
   /// The semantic visual style of the indicator, determining its background color.
   final GtCountIndicatorType type;
 
+  /// An accessible name giving the count its meaning, already localised.
+  ///
+  /// The badge renders a bare number, so a screen reader announces "3" with no
+  /// indication of three of what. Supply something like "3 unread messages".
+  final String? semanticsLabel;
+
   /// Creates a new [GtCountIndicator].
   ///
   /// The [count] parameter is required. The [type] defaults to
@@ -46,6 +52,7 @@ class GtCountIndicator extends GtStatelessWidget {
     this.count, {
     this.size,
     super.key,
+    this.semanticsLabel,
     this.type = GtCountIndicatorType.error,
   });
 
@@ -68,17 +75,24 @@ class GtCountIndicator extends GtStatelessWidget {
     final textColor = palette.text.white;
 
     return RepaintBoundary(
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
-        constraints: BoxConstraints.tight(
-          Size.square(size ?? context.dp(20.px)),
-        ),
-        child: Center(
-          child: GtText(
-            "${count > 9 ? '9+' : count}",
-            textAlign: TextAlign.center,
-            style: context.textStyles.body2Xs(color: textColor),
+      child: GtSemantics(
+        label: semanticsLabel,
+        // The rendered digit is capped at "9+", which is a poor thing to hear.
+        // When a real label is supplied it replaces the glyph entirely.
+        excludeDescendants: semanticsLabel != null,
+        container: semanticsLabel != null,
+        child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
+          constraints: BoxConstraints.tight(
+            Size.square(size ?? context.dp(20.px)),
+          ),
+          child: Center(
+            child: GtText(
+              "${count > 9 ? '9+' : count}",
+              textAlign: TextAlign.center,
+              style: context.textStyles.body2Xs(color: textColor),
+            ),
           ),
         ),
       ),

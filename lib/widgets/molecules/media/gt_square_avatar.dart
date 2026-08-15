@@ -21,6 +21,11 @@ class GtSquareAvatar extends GtStatelessWidget {
   /// Callback invoked when the avatar is tapped to initiate an edit action.
   final OnPressed? onEdit;
 
+  /// An accessible name for the edit action, already localised.
+  ///
+  /// Only announced when [onEdit] makes the avatar interactive.
+  final String? semanticsLabel;
+
   /// Indicates if this represents the primary user avatar.
   ///
   /// If `true`, the widget is wrapped in a [Hero] widget with the tag "user-avatar"
@@ -45,6 +50,7 @@ class GtSquareAvatar extends GtStatelessWidget {
     this.borderRadius,
     this.showBorder = false,
     required this.onEdit,
+    this.semanticsLabel,
     this.isUserAvatar = false,
     this.size,
   });
@@ -110,12 +116,19 @@ class GtSquareAvatar extends GtStatelessWidget {
 
     Widget child = Align(
       alignment: alignment,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          HapticFeedback.lightImpact();
-          onEdit?.call();
-        },
+      child: GtInkWell(
+        // GestureDetector took no focus and reported no semantics, and it
+        // registered a tap handler even when onEdit was null, leaving a dead
+        // target that still swallowed touches.
+        role: onEdit == null ? .none : .button,
+        semanticsLabel: onEdit == null ? null : semanticsLabel,
+        excludeDescendantSemantics: true,
+        onTap: onEdit == null
+            ? null
+            : () {
+                HapticFeedback.lightImpact();
+                onEdit!.call();
+              },
         child: GtSquareConstrainedBox(
           computedSize,
           child: Container(

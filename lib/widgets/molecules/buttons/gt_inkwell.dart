@@ -1,16 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class GtInkWell extends InkWell {
   final HapticFeedbackType hapticFeedbackType;
   final String? semanticsLabel;
   final String? semanticHint;
+
+  /// The accessibility role announced for this surface.
+  ///
+  /// Defaults to [GtSemanticRole.button] to match the historical behaviour of
+  /// [isSemanticButton]. Set this explicitly whenever the surface is not a
+  /// button: a checkbox, radio, tab, or card announced as "button" tells the
+  /// user nothing about its state.
+  final GtSemanticRole? role;
+
+  /// Whether the control is checked, for [GtSemanticRole.checkbox] and
+  /// [GtSemanticRole.radio].
+  final bool? isChecked;
+
+  /// Whether the control is toggled on, for [GtSemanticRole.toggle].
+  final bool? isToggled;
+
+  /// Whether the control is selected, for [GtSemanticRole.tab].
+  final bool? isSelected;
+
+  /// Whether the control is expanded, for [GtSemanticRole.disclosure].
+  final bool? isExpanded;
+
+  /// Whether the control can currently be operated.
+  ///
+  /// Disabled controls stay in the semantics tree but are announced as
+  /// unavailable rather than silently ignoring activation.
+  final bool isEnabled;
+
+  /// Whether the semantics of descendants should be dropped.
+  ///
+  /// Set this when [semanticsLabel] already describes the whole surface and the
+  /// children would otherwise contribute duplicate or fragmented labels.
+  final bool excludeDescendantSemantics;
+
+  /// Whether this surface announces itself as a button.
+  ///
+  /// Prefer [role] instead, which can also express checkboxes, radios,
+  /// toggles, tabs, and links.
+  @Deprecated(
+    'Use role instead. isSemanticButton cannot express non-button roles. '
+    'This field will be removed in the next major release.',
+  )
   final bool isSemanticButton;
 
   const GtInkWell({
     this.hapticFeedbackType = .light,
     this.semanticsLabel,
     this.semanticHint,
+    this.role,
+    this.isChecked,
+    this.isToggled,
+    this.isSelected,
+    this.isExpanded,
+    this.isEnabled = true,
+    this.excludeDescendantSemantics = false,
+    @Deprecated(
+      'Use role instead. isSemanticButton cannot express non-button roles. '
+      'This field will be removed in the next major release.',
+    )
     this.isSemanticButton = true,
     super.onTap,
     super.key,
@@ -47,6 +101,14 @@ class GtInkWell extends InkWell {
     super.hoverDuration,
   });
 
+  /// The role this surface actually reports, resolving the deprecated
+  /// [isSemanticButton] flag when [role] has not been supplied.
+  GtSemanticRole get resolvedRole {
+    if (role != null) return role!;
+    // ignore: deprecated_member_use_from_same_package
+    return isSemanticButton ? .button : .none;
+  }
+
   @override
   Widget build(BuildContext context) {
     // Callbacks are forwarded with their nullability intact rather than wrapped
@@ -57,7 +119,7 @@ class GtInkWell extends InkWell {
     // win the gesture arena, adding a perceptible delay to every tappable
     // surface in the design system.
     Widget inkWell = InkWell(
-      onTap: onTap == null
+      onTap: onTap == null || !isEnabled
           ? null
           : () {
               onTap!.call();
@@ -96,15 +158,17 @@ class GtInkWell extends InkWell {
       child: child,
     );
 
-    if (semanticsLabel != null || semanticHint != null || isSemanticButton) {
-      inkWell = Semantics(
-        label: semanticsLabel,
-        hint: semanticHint,
-        button: isSemanticButton,
-        child: inkWell,
-      );
-    }
-
-    return inkWell;
+    return GtSemantics(
+      role: resolvedRole,
+      label: semanticsLabel,
+      hint: semanticHint,
+      isChecked: isChecked,
+      isToggled: isToggled,
+      isSelected: isSelected,
+      isExpanded: isExpanded,
+      enabled: isEnabled,
+      excludeDescendants: excludeDescendantSemantics,
+      child: inkWell,
+    );
   }
 }

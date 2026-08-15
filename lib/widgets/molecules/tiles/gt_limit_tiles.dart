@@ -119,6 +119,7 @@ class GtLimitEditListTile extends GtStatelessWidget {
                         if (onTapInfo != null)
                           WidgetSpan(
                             child: GtInkWell(
+                              role: .button,
                               onTap: onTapInfo,
                               child: GtIcon(
                                 GtIcons.info,

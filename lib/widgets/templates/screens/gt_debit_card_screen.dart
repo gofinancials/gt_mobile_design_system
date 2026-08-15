@@ -81,6 +81,7 @@ class GtDebitCardScreen extends GtStatelessWidget {
               height: max(context.fractionalLongest(.35), 280),
               alignment: .centerRight,
               fit: .contain,
+              isDecorative: true,
             ),
           ),
           Positioned.fill(

@@ -18,12 +18,19 @@ class GtDisabledOverlay extends GtStatelessWidget {
   Widget build(BuildContext context) {
     if (!disabled) return child;
 
-    return IgnorePointer(
-      ignoring: disabled,
-      child: AnimatedOpacity(
-        duration: 500.milliseconds,
-        opacity: disabledOpacity,
-        child: child,
+    // The scope is what makes the disabled state audible: IgnorePointer alone
+    // removes the tap action but leaves the control announced as if it were
+    // still available. See [GtDisabledScope] for why this is published downward
+    // rather than annotated here.
+    return GtDisabledScope(
+      disabled: disabled,
+      child: IgnorePointer(
+        ignoring: disabled,
+        child: AnimatedOpacity(
+          duration: context.motionDuration(500.milliseconds),
+          opacity: disabledOpacity,
+          child: child,
+        ),
       ),
     );
   }

@@ -38,6 +38,19 @@ class GtText extends GtStatelessWidget {
   /// An alternative semantics label for this text.
   final String? semanticsLabel;
 
+  /// Where this text sits in the screen's structure, from 1 to 6.
+  ///
+  /// Text renders a semantics node on its own, so this is not about being
+  /// *announced* — it already is. It is about being announced as a **heading**,
+  /// which is what lets a screen reader user jump between sections instead of
+  /// swiping through every element in order. Styling text with `h1()`–`h6()`
+  /// gives none of that by itself.
+  ///
+  /// Reserve it for structural headings: level 1 for the screen's title, 2 for
+  /// a section within it, and so on. Marking every large-looking label as a
+  /// heading is as unhelpful as marking none of them.
+  final int? headingLevel;
+
   /// Creates a new [GtText] widget.
   const GtText(
     this.data, {
@@ -50,14 +63,18 @@ class GtText extends GtStatelessWidget {
     this.strutStyle,
     this.textDirection,
     this.semanticsLabel,
+    this.headingLevel,
     super.key,
-  });
+  }) : assert(
+         headingLevel == null || (headingLevel >= 1 && headingLevel <= 6),
+         'headingLevel must be between 1 and 6',
+       );
 
   @override
   Widget build(BuildContext context) {
     final computedStyle = style != null ? style! : context.textStyles.bodyS();
 
-    return Text(
+    final text = Text(
       data ?? "",
       style: computedStyle,
       strutStyle: strutStyle,
@@ -70,5 +87,9 @@ class GtText extends GtStatelessWidget {
       textWidthBasis: TextWidthBasis.parent,
       semanticsLabel: semanticsLabel,
     );
+
+    if (headingLevel == null) return text;
+
+    return GtSemantics(role: .heading, headingLevel: headingLevel, child: text);
   }
 }

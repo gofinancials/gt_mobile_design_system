@@ -32,6 +32,11 @@ class GtCountdownPie extends GtStatefulWidget {
   /// Defaults to 52.0.
   final double size;
 
+  /// An accessible name describing what is counting down, already localised.
+  ///
+  /// The remaining seconds are exposed as the semantic value alongside it.
+  final String? semanticsLabel;
+
   /// Creates a new [GtCountdownPie].
   const GtCountdownPie({
     this.trackColor,
@@ -39,6 +44,7 @@ class GtCountdownPie extends GtStatefulWidget {
     this.strokeWidth = 4.0,
     this.size = 52,
     this.duration,
+    this.semanticsLabel,
     super.key,
   });
 
@@ -84,22 +90,30 @@ class _GtCountdownPieState extends State<GtCountdownPie>
           double fraction = 1 - (_ctrl.value / _seconds).clamp(0, 1);
           final count = (_seconds - _ctrl.value.round()).toStringAsFixed(0);
 
-          return GtSquareBox(
-            size: widget.size,
-            child: CustomPaint(
-              painter: GtDonutPainter(
-                value: fraction,
-                strokeWidth: widget.strokeWidth,
-                trackColor: trackColor,
-                clockWise: true,
-                valueColor: color,
-              ),
-              child: Center(
-                child: FittedBox(
-                  child: GtText(
-                    count,
-                    style: context.textStyles.h6(),
-                    textAlign: TextAlign.center,
+          return GtSemantics(
+            label: widget.semanticsLabel,
+            // Deliberately not a live region: the digit changes every second,
+            // and announcing each tick would talk over everything else.
+            value: widget.semanticsLabel == null ? null : count,
+            excludeDescendants: widget.semanticsLabel != null,
+            container: widget.semanticsLabel != null,
+            child: GtSquareBox(
+              size: widget.size,
+              child: CustomPaint(
+                painter: GtDonutPainter(
+                  value: fraction,
+                  strokeWidth: widget.strokeWidth,
+                  trackColor: trackColor,
+                  clockWise: true,
+                  valueColor: color,
+                ),
+                child: Center(
+                  child: FittedBox(
+                    child: GtText(
+                      count,
+                      style: context.textStyles.h6(),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),

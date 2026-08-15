@@ -86,6 +86,7 @@ class _GtSearchFieldState extends State<GtSearchField> {
       builder: (value) {
         if (value.text.isEmpty) return const Offstage();
         return GtInkWell(
+          role: .button,
           semanticsLabel: widget.clearSemanticLabel,
           customBorder: CircleBorder(),
           onTap: () {

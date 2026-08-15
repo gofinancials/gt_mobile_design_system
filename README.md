@@ -145,3 +145,31 @@ We selected **Widgetbook** specifically because it is built natively for Flutter
 - **Use Cases:** Every component in the `widgets/` directory MUST have a corresponding `.usecase.dart` file in the `gallery/` package.
 - **Knobs:** Engineers must implement "Knobs" (booleans, text inputs, sliders) in the Widgetbook definitions so PMs and Designers can dynamically alter component states (e.g., toggling an `isLoading` knob on an `AppButton`).
 - **Deployment:** The gallery will be compiled to a Flutter Web app and deployed for internal stakeholder review.
+## 6. Accessibility
+
+Interactive components declare an accessibility **role** rather than only a tap
+handler, controls smaller than the platform minimum stay 44dp to touch without
+changing layout, disabled controls announce themselves as disabled, and
+unlabelled imagery is kept out of the semantics tree instead of being announced
+as an anonymous "image".
+
+Three custom lint rules enforce this at authoring time:
+
+```sh
+dart run custom_lint
+```
+
+They live in `tools/gt_a11y_lints/`, are scoped to `lib/**`, and surface in the
+IDE through the analyzer plugin. `flutter analyze` does not run them.
+
+**Consumers must supply their own localised labels.** The package ships no
+default accessibility strings, because a missing translation key would be read
+aloud verbatim by a screen reader.
+
+**Known limitation:** text scaling is deliberately capped at 1.1x in
+`GtBaseWidget`, so a user at 200% system font size gets 110%. This is a
+retained decision rather than an oversight; lifting it requires reflow work
+across most organisms and templates.
+
+See **[doc/accessibility.md](doc/accessibility.md)** for the primitives, the
+per-widget obligations, the testing helpers, and the full list of limitations.

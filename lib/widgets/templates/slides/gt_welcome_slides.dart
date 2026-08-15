@@ -118,7 +118,9 @@ class _GtWelcomeSlidesState extends State<GtWelcomeSlides> {
     final inActiveColor = widget.inActiveDotColor ?? palette.staticColors.black;
     Widget leading = const Offstage();
 
-    if (widget.showLogo) leading = GtSvg(GtVectors.sterling);
+    if (widget.showLogo) {
+      leading = GtSvg(GtVectors.sterling, isDecorative: true);
+    }
 
     return Scaffold(
       extendBodyBehindAppBar: true,

@@ -75,6 +75,7 @@ class _GtSplashScreenState extends State<GtSplashScreen> {
             image: center,
             width: context.dp(80.px),
             height: context.dp(80.px),
+            isDecorative: true,
           ),
         ),
       ),

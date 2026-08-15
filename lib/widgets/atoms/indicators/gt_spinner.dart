@@ -71,6 +71,11 @@ class _GtSpinnerState extends State<GtSpinner> {
       alignment: widget.alignment,
       child: Semantics(
         label: widget.semanticsLabel,
+        // A spinner appearing is a state change the user cannot see. Marking
+        // it live means "Loading" is spoken when it enters the tree instead of
+        // leaving the screen silently busy. Only when it has something to say.
+        liveRegion: widget.semanticsLabel == null ? null : true,
+        container: widget.semanticsLabel == null ? false : true,
         child: RepaintBoundary(
           child: SizedBox(
             width: widget.size,

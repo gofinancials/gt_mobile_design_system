@@ -102,7 +102,8 @@ class GtWelcomeScreen extends GtStatelessWidget {
     if (showLogo) {
       appBar = GtActionAppBar(
         implyLeading: false,
-        leading: logo ?? GtSvg(GtVectors.sterling, width: 104),
+        leading:
+            logo ?? GtSvg(GtVectors.sterling, width: 104, isDecorative: true),
       );
     }
 

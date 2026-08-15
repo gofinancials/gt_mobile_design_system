@@ -28,6 +28,16 @@ class GtSwitch extends GtStatelessWidget {
   /// If null, defaults to the design system's success base color.
   final Color? activeColor;
 
+  /// The accessible name announced for this switch.
+  ///
+  /// [CupertinoSwitch] publishes the on/off state on its own, but nothing
+  /// names the control. Without a label the user hears "on" with no indication
+  /// of what is on.
+  final String? semanticsLabel;
+
+  /// A description of what toggling this switch does.
+  final String? semanticHint;
+
   /// Creates a [GtSwitch].
   const GtSwitch({
     required this.value,
@@ -35,6 +45,8 @@ class GtSwitch extends GtStatelessWidget {
     this.focusNode,
     this.disabled = false,
     this.activeColor,
+    this.semanticsLabel,
+    this.semanticHint,
     super.key,
   });
 
@@ -49,22 +61,38 @@ class GtSwitch extends GtStatelessWidget {
     return RepaintBoundary(
       child: GtDisabledOverlay(
         disabled,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: context.dp(28.px)),
-          child: CupertinoSwitch(
-            value: value,
-            onChanged: (value) {
-              if (disabled) return;
-              HapticFeedback.selectionClick();
-              onChanged(value);
-            },
-            focusNode: focusNode,
-            activeTrackColor: color,
-            inactiveTrackColor: inActiveColor,
-            inactiveThumbColor: thumbColor,
-            thumbColor: thumbColor,
-            trackOutlineColor: WidgetStatePropertyAll(computedColor),
-            trackOutlineWidth: const WidgetStatePropertyAll(0),
+        child: GtSemantics(
+          // CupertinoSwitch publishes its own toggled and enabled state, so
+          // this annotation contributes only the name it lacks. See
+          // [GtSemanticRole.delegated].
+          role: .delegated,
+          label: semanticsLabel,
+          hint: semanticHint,
+          // CupertinoSwitch is focusable, and a focusable node does not fold
+          // into an enclosing annotation on its own. Without merging, the name
+          // and the switch are two separate stops for the user.
+          mergeDescendants: true,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: context.dp(28.px)),
+            child: CupertinoSwitch(
+              value: value,
+              // A null callback is what makes CupertinoSwitch announce itself
+              // as disabled. Swallowing the callback instead left the control
+              // announced as available while doing nothing when activated.
+              onChanged: disabled
+                  ? null
+                  : (value) {
+                      HapticFeedback.selectionClick();
+                      onChanged(value);
+                    },
+              focusNode: focusNode,
+              activeTrackColor: color,
+              inactiveTrackColor: inActiveColor,
+              inactiveThumbColor: thumbColor,
+              thumbColor: thumbColor,
+              trackOutlineColor: WidgetStatePropertyAll(computedColor),
+              trackOutlineWidth: const WidgetStatePropertyAll(0),
+            ),
           ),
         ),
       ),

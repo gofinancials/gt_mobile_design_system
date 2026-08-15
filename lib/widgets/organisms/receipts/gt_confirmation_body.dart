@@ -131,6 +131,7 @@ class GtConfirmationBody extends GtStatelessWidget {
                 width: stampSize,
                 height: stampSize,
                 key: const Key('confirmation-stamp'),
+                isDecorative: true,
               ),
           ],
         ),

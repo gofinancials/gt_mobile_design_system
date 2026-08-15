@@ -162,7 +162,12 @@ class _ReceiptCategory extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final size = context.dp(36.px);
     final image = switch (data.image) {
-      AppImageData img => GtImage(image: img, width: size, height: size),
+      AppImageData img => GtImage(
+        image: img,
+        width: size,
+        height: size,
+        isDecorative: true,
+      ),
       _ => null,
     };
     final child = GtDoubleColumnListTile(
@@ -173,6 +178,7 @@ class _ReceiptCategory extends GtStatelessWidget {
 
     if (data.onTap != null) {
       return GtInkWell(
+        role: .button,
         onTap: data.onTap,
         borderRadius: context.borderRadiusSm,
         child: child,
@@ -217,7 +223,9 @@ class _ReceiptParticipant extends GtStatelessWidget {
     final defaultLabel = isFrom ? 'from'.ctr() : 'to'.ctr();
     final imageSize = context.dp(36.px);
 
-    final tag = data.tag != null ? GtImage(image: data.tag!) : null;
+    final tag = data.tag != null
+        ? GtImage(image: data.tag!, isDecorative: true)
+        : null;
 
     Widget child = GtTransactionParticipantListTile(
       data.title.upper,
@@ -228,6 +236,7 @@ class _ReceiptParticipant extends GtStatelessWidget {
           image: data.image,
           width: imageSize,
           height: imageSize,
+          isDecorative: true,
         ),
         _ => GtAvatar(
           avatar: data.image,
@@ -277,7 +286,7 @@ class _ReceiptTransactionItem extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tag = transaction.tag != null
-        ? GtImage(image: transaction.tag!)
+        ? GtImage(image: transaction.tag!, isDecorative: true)
         : null;
 
     return GtPaymentListTile(

@@ -19,6 +19,12 @@ class GtProgress extends GtStatelessWidget {
   /// The current progress value, from 0.0 to 1.0. If null, the indicator is indeterminate.
   final double? value;
 
+  /// An accessible name describing what is progressing.
+  ///
+  /// Without it the bar is announced as a bare percentage, which tells the user
+  /// how far along something is but not what.
+  final String? semanticsLabel;
+
   /// Creates a new [GtProgress].
   const GtProgress({
     this.color,
@@ -26,7 +32,23 @@ class GtProgress extends GtStatelessWidget {
     this.size,
     super.key,
     this.value,
+    this.semanticsLabel,
   });
+
+  /// The progress spoken to assistive technologies, as a percentage of 100.
+  ///
+  /// Null while indeterminate, so that screen readers announce the bar as busy
+  /// rather than claiming a position it does not have.
+  ///
+  /// Deliberately a bare number: the node carries a progress-bar role, and the
+  /// framework asserts that its value parses as a number against the 0-100
+  /// range. A "45%" string fails that check, and the platform adds the unit
+  /// itself when speaking.
+  String? get semanticsValue {
+    final value = this.value;
+    if (value == null) return null;
+    return '${(value.clamp(0, 1) * 100).round()}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +62,8 @@ class GtProgress extends GtStatelessWidget {
           valueColor: AlwaysStoppedAnimation(color ?? palette.primary.base),
           backgroundColor: inactiveColor ?? palette.bg.soft,
           value: value,
+          semanticsLabel: semanticsLabel,
+          semanticsValue: semanticsValue,
         ),
       ),
     );
@@ -59,8 +83,20 @@ class GtSlider extends GtStatelessWidget {
   /// Called when the user is selecting a new value for the slider.
   final OnChanged<double>? onChanged;
 
+  /// An accessible name describing what this slider adjusts.
+  ///
+  /// The adaptive slider announces its own value and exposes increment and
+  /// decrement actions, but nothing names the control.
+  final String? semanticsLabel;
+
   /// Creates a new [GtSlider].
-  const GtSlider({this.color, this.onChanged, super.key, this.value});
+  const GtSlider({
+    this.color,
+    this.onChanged,
+    super.key,
+    this.value,
+    this.semanticsLabel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,12 +105,20 @@ class GtSlider extends GtStatelessWidget {
     final inactiveColor = palette.bg.sub;
 
     return RepaintBoundary(
-      child: Slider.adaptive(
-        value: value ?? 0,
-        onChanged: onChanged,
-        activeColor: activeColor,
-        inactiveColor: inactiveColor,
-        thumbColor: activeColor,
+      child: GtSemantics(
+        // Slider owns its value and its enabled state; this only names it.
+        role: .delegated,
+        label: semanticsLabel,
+        // A focusable child does not fold into an enclosing annotation on its
+        // own, so the name and the slider would otherwise be two stops.
+        mergeDescendants: semanticsLabel != null,
+        child: Slider.adaptive(
+          value: value ?? 0,
+          onChanged: onChanged,
+          activeColor: activeColor,
+          inactiveColor: inactiveColor,
+          thumbColor: activeColor,
+        ),
       ),
     );
   }

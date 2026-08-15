@@ -126,6 +126,7 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                           width: data.imageSize,
                           height: data.imageSize,
                           image: data.media as AppImageData,
+                          isDecorative: true,
                         ),
                         .text => SingleChildScrollView(
                           padding: context.insets.symmetricDp(
@@ -189,6 +190,7 @@ class GtLessonSlideBackground extends GtStatelessWidget {
             width: data.width,
             height: data.height,
             useDefaultSize: false,
+            isDecorative: true,
           ),
         );
       },
