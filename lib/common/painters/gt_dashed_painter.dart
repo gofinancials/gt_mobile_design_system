@@ -2,6 +2,63 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+/// A custom painter that draws a single dashed horizontal rule.
+///
+/// [GtDashedPainter] strokes all four edges of its canvas, which makes it
+/// unsuitable for a one-sided rule: a zero-height canvas would still paint the
+/// left and right edges as dots. This painter walks a single line instead, so
+/// the dash rhythm stays even regardless of the width it is given.
+class GtDashedLinePainter extends CustomPainter {
+  /// The colour of the dashes.
+  final Color color;
+
+  /// The stroke width of the line.
+  final double thickness;
+
+  /// The length of each dash.
+  final double dash;
+
+  /// The empty space between two dashes.
+  final double gap;
+
+  /// Creates a [GtDashedLinePainter].
+  const GtDashedLinePainter({
+    required this.color,
+    required this.thickness,
+    required this.dash,
+    required this.gap,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Butt caps rather than square: a square cap extends each dash by half the
+    // stroke width at both ends, which at hairline sizes closes the gaps and
+    // leaves the rule reading as solid.
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = thickness
+      ..strokeCap = StrokeCap.butt;
+
+    // Centred vertically so the rule reads the same whether it is handed a
+    // hairline box or a taller one.
+    final y = size.height / 2;
+    final step = dash + gap;
+
+    for (double x = 0; x < size.width; x += step) {
+      final end = math.min(x + dash, size.width);
+      canvas.drawLine(Offset(x, y), Offset(end, y), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(GtDashedLinePainter oldDelegate) {
+    return oldDelegate.color != color ||
+        oldDelegate.thickness != thickness ||
+        oldDelegate.dash != dash ||
+        oldDelegate.gap != gap;
+  }
+}
+
 /// A custom painter that draws a dashed border around a given area.
 ///
 /// It supports rounded corners via the [radius] property and allows

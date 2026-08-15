@@ -88,9 +88,11 @@ void main() {
       await tester.pumpAndSettle();
 
       // Only the outer edges are rounded, so a lazy list still reads as the
-      // single card the design calls for.
+      // single card the design calls for. The separators between rows are
+      // GtCardListTiles too, so read the types from the keyed rows alone.
       final types = tester
           .widgetList<GtCardListTile>(find.byType(GtCardListTile))
+          .where((tile) => tile.key != null)
           .map((tile) => tile.type)
           .toList();
 

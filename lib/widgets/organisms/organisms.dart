@@ -13,6 +13,7 @@ export 'receipts/receipts.dart';
 export 'slides/slides.dart';
 export 'status/status.dart';
 export 'success_rates/success_rates.dart';
+export 'summaries/summaries.dart';
 export 'switchers/switchers.dart';
 export 'tab_bars/tab_bars.dart';
 export 'tiles/tiles.dart';

@@ -327,9 +327,8 @@ class _SuccessRateList extends GtStatelessWidget {
             length: entries.length,
           ),
           horizontalPadding: 12,
-          // The tile only pads the two outer edges, so the row carries its own
-          // vertical inset. 4 + 8 gives the card a 12dp top and bottom, and
-          // adjacent rows the 16dp gap they had as a single Column.
+          // Padding the tile only pads the card's two outer edges; the gap
+          // between adjacent rows comes from the separator above.
           verticalPadding: 12,
           child: _SuccessRateRow(entries[index], builder: builder),
         );

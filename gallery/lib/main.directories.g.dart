@@ -242,6 +242,8 @@ import 'package:gallery/organisms/slides/gt_slide_usecase.dart'
     as _gallery_organisms_slides_gt_slide_usecase;
 import 'package:gallery/organisms/status/gt_status_tracker_usecase.dart'
     as _gallery_organisms_status_gt_status_tracker_usecase;
+import 'package:gallery/organisms/summaries/gt_summary_cards_usecase.dart'
+    as _gallery_organisms_summaries_gt_summary_cards_usecase;
 import 'package:gallery/organisms/switchers/gt_animated_fade_usecase.dart'
     as _gallery_organisms_switchers_gt_animated_fade_usecase;
 import 'package:gallery/organisms/switchers/gt_animated_slider_usecase.dart'
@@ -304,6 +306,8 @@ import 'package:gallery/templates/scaffolds/gt_dashboard_scaffold.dart'
     as _gallery_templates_scaffolds_gt_dashboard_scaffold;
 import 'package:gallery/templates/scaffolds/gt_receipt_scaffold_usecase.dart'
     as _gallery_templates_scaffolds_gt_receipt_scaffold_usecase;
+import 'package:gallery/templates/scaffolds/gt_summary_scaffold_usecase.dart'
+    as _gallery_templates_scaffolds_gt_summary_scaffold_usecase;
 import 'package:gallery/templates/screens/gt_debit_card_screen.dart'
     as _gallery_templates_screens_gt_debit_card_screen;
 import 'package:gallery/templates/screens/gt_debit_card_selection_screen.dart'
@@ -2018,6 +2022,55 @@ final directories = <_widgetbook.WidgetbookNode>[
             ],
           ),
           _widgetbook.WidgetbookFolder(
+            name: 'summaries',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSummaryBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryBody',
+                    builder:
+                        _gallery_templates_scaffolds_gt_summary_scaffold_usecase
+                            .playgroundGtSummaryBodyUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSummaryPaymentsCard',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryPaymentsCard',
+                    builder:
+                        _gallery_organisms_summaries_gt_summary_cards_usecase
+                            .playgroundGtSummaryPaymentsCardUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSummaryRatesCard',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryRatesCard',
+                    builder:
+                        _gallery_organisms_summaries_gt_summary_cards_usecase
+                            .playgroundGtSummaryRatesCardUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSummaryTile',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryTile',
+                    builder:
+                        _gallery_organisms_summaries_gt_summary_cards_usecase
+                            .playgroundGtSummaryTileUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
             name: 'switchers',
             children: [
               _widgetbook.WidgetbookComponent(
@@ -2387,6 +2440,23 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _gallery_templates_scaffolds_gt_receipt_scaffold_usecase
                             .playgroundGtReceiptScaffoldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSummaryScaffold',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryScaffold',
+                    builder:
+                        _gallery_templates_scaffolds_gt_summary_scaffold_usecase
+                            .playgroundGtSummaryScaffoldUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryScaffold Gallery',
+                    builder:
+                        _gallery_templates_scaffolds_gt_summary_scaffold_usecase
+                            .playgroundGtSummaryScaffoldGalleryUseCase,
                   ),
                 ],
               ),
