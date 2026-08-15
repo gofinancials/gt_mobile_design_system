@@ -72,6 +72,7 @@ class GtCancelButton extends GtStatelessWidget {
     };
 
     Widget child = GtInkWell(
+      role: .button,
       onTap: () {
         if (subAction != null) subAction!();
         if (onTap != null) return onTap!();

@@ -51,6 +51,16 @@ class GtRadio<T> extends GtStatelessWidget {
   /// Defaults to [GtRadioStyle.standard].
   final GtRadioStyle style;
 
+  /// The accessible name announced for this radio button.
+  ///
+  /// Supply the label of the option this button selects. Without it the control
+  /// is announced only as "radio button, selected", which tells the user
+  /// nothing about what they are choosing.
+  final String? semanticsLabel;
+
+  /// A description of what selecting this option does.
+  final String? semanticHint;
+
   /// Creates a standard [GtRadio] that compares [value] against [groupValue].
   const GtRadio({
     super.key,
@@ -60,6 +70,8 @@ class GtRadio<T> extends GtStatelessWidget {
     this.disabled = false,
     this.activeColor,
     this.style = .standard,
+    this.semanticsLabel,
+    this.semanticHint,
   }) : condition = null;
 
   /// Creates a [GtRadio] whose active state is directly controlled by [condition].
@@ -71,6 +83,8 @@ class GtRadio<T> extends GtStatelessWidget {
     this.activeColor,
     this.disabled = false,
     this.style = .standard,
+    this.semanticsLabel,
+    this.semanticHint,
   }) : groupValue = null;
 
   /// Determines if the radio button is currently in the active state.
@@ -94,33 +108,46 @@ class GtRadio<T> extends GtStatelessWidget {
 
     final size = context.dp(20.px);
 
-    return RepaintBoundary(
-      child: GtDisabledOverlay(
-        disabled,
-        child: GtInkWell(
-          hapticFeedbackType: .selection,
-          customBorder: CircleBorder(),
-          onTap: () => onChanged(value),
-          child: AnimatedContainer(
-            duration: 500.milliseconds,
-            height: size,
-            width: size,
-            constraints: BoxConstraints.tightFor(height: size, width: size),
-            decoration: BoxDecoration(
-              border: Border.all(color: borderColor, width: borderWidth),
-              shape: BoxShape.circle,
-            ),
-            alignment: Alignment.center,
-            child: GtAnimatedSwitcher(
-              child: Builder(
-                builder: (context) {
-                  if (_isActive && !style.isDonut) {
-                    return _ActiveInnerContainer(color);
-                  }
-                  if (_isActive && style.isDonut) return const Offstage();
-                  return const _InActiveInnerContainer();
-                },
-                key: ValueKey<T>(value),
+    // GtTapTarget is deliberately the outermost widget. Hit slop only works
+    // for positions the parent also accepts, and the RepaintBoundary sizes
+    // itself to the 20dp box — nesting the slop inside it would let the
+    // boundary reject the touch before the slop was ever consulted.
+    return GtTapTarget(
+      child: RepaintBoundary(
+        child: GtDisabledOverlay(
+          disabled,
+          child: GtInkWell(
+            hapticFeedbackType: .selection,
+            customBorder: CircleBorder(),
+            role: .radio,
+            semanticsLabel: semanticsLabel,
+            semanticHint: semanticHint,
+            isChecked: _isActive,
+            // The inner circle is decoration; the checked state already
+            // conveys what it shows.
+            excludeDescendantSemantics: true,
+            onTap: () => onChanged(value),
+            child: AnimatedContainer(
+              duration: context.motionDuration(500.milliseconds),
+              height: size,
+              width: size,
+              constraints: BoxConstraints.tightFor(height: size, width: size),
+              decoration: BoxDecoration(
+                border: Border.all(color: borderColor, width: borderWidth),
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: GtAnimatedSwitcher(
+                child: Builder(
+                  builder: (context) {
+                    if (_isActive && !style.isDonut) {
+                      return _ActiveInnerContainer(color);
+                    }
+                    if (_isActive && style.isDonut) return const Offstage();
+                    return const _InActiveInnerContainer();
+                  },
+                  key: ValueKey<T>(value),
+                ),
               ),
             ),
           ),

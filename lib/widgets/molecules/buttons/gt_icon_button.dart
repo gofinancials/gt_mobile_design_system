@@ -297,6 +297,10 @@ class GtIconButton extends GtButton {
       );
     }
 
+    if (needsMinimumTapTarget) {
+      child = GtTapTarget(child: child);
+    }
+
     return child;
   }
 }

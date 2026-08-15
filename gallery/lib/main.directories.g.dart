@@ -242,6 +242,8 @@ import 'package:gallery/organisms/slides/gt_slide_usecase.dart'
     as _gallery_organisms_slides_gt_slide_usecase;
 import 'package:gallery/organisms/status/gt_status_tracker_usecase.dart'
     as _gallery_organisms_status_gt_status_tracker_usecase;
+import 'package:gallery/organisms/summaries/gt_summary_cards_usecase.dart'
+    as _gallery_organisms_summaries_gt_summary_cards_usecase;
 import 'package:gallery/organisms/switchers/gt_animated_fade_usecase.dart'
     as _gallery_organisms_switchers_gt_animated_fade_usecase;
 import 'package:gallery/organisms/switchers/gt_animated_slider_usecase.dart'
@@ -262,6 +264,8 @@ import 'package:gallery/organisms/view_state/gt_view_state.dart'
     as _gallery_organisms_view_state_gt_view_state;
 import 'package:gallery/templates/dialogs/gt_confirm_dialog.dart'
     as _gallery_templates_dialogs_gt_confirm_dialog;
+import 'package:gallery/templates/documents/gt_pdf_receipt_usecase.dart'
+    as _gallery_templates_documents_gt_pdf_receipt_usecase;
 import 'package:gallery/templates/forms/gt_form_doc.dart'
     as _gallery_templates_forms_gt_form_doc;
 import 'package:gallery/templates/forms/gt_otp_form_doc.dart'
@@ -284,6 +288,10 @@ import 'package:gallery/templates/modals/gt_bottom_modal.dart'
     as _gallery_templates_modals_gt_bottom_modal;
 import 'package:gallery/templates/modals/gt_bottom_sheet.dart'
     as _gallery_templates_modals_gt_bottom_sheet;
+import 'package:gallery/templates/modals/gt_success_rate_modal_usecase.dart'
+    as _gallery_templates_modals_gt_success_rate_modal_usecase;
+import 'package:gallery/templates/nav_aware/gt_activity_state_usecase.dart'
+    as _gallery_templates_nav_aware_gt_activity_state_usecase;
 import 'package:gallery/templates/nav_aware/gt_pop_scope_usecase.dart'
     as _gallery_templates_nav_aware_gt_pop_scope_usecase;
 import 'package:gallery/templates/overlays/gt_alert_overlay_usecase.dart'
@@ -294,10 +302,14 @@ import 'package:gallery/templates/overlays/gt_toast_overlay_usecase.dart'
     as _gallery_templates_overlays_gt_toast_overlay_usecase;
 import 'package:gallery/templates/overlays/gt_tooltip_usecase.dart'
     as _gallery_templates_overlays_gt_tooltip_usecase;
+import 'package:gallery/templates/scaffolds/gt_confirmation_scaffold_usecase.dart'
+    as _gallery_templates_scaffolds_gt_confirmation_scaffold_usecase;
 import 'package:gallery/templates/scaffolds/gt_dashboard_scaffold.dart'
     as _gallery_templates_scaffolds_gt_dashboard_scaffold;
 import 'package:gallery/templates/scaffolds/gt_receipt_scaffold_usecase.dart'
     as _gallery_templates_scaffolds_gt_receipt_scaffold_usecase;
+import 'package:gallery/templates/scaffolds/gt_summary_scaffold_usecase.dart'
+    as _gallery_templates_scaffolds_gt_summary_scaffold_usecase;
 import 'package:gallery/templates/screens/gt_debit_card_screen.dart'
     as _gallery_templates_screens_gt_debit_card_screen;
 import 'package:gallery/templates/screens/gt_debit_card_selection_screen.dart'
@@ -332,6 +344,36 @@ final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
     name: 'common',
     children: [
+      _widgetbook.WidgetbookFolder(
+        name: 'documents',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtPdfReceiptExporter',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtPdfReceiptExporter',
+                builder: _gallery_templates_documents_gt_pdf_receipt_usecase
+                    .playgroundGtPdfReceiptExporterUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'state',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtActivityState',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtActivityState',
+                builder: _gallery_templates_nav_aware_gt_activity_state_usecase
+                    .playgroundGtActivityStateUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
       _widgetbook.WidgetbookFolder(
         name: 'styling',
         children: [
@@ -1902,6 +1944,17 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'receipts',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtConfirmationBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtConfirmationBody',
+                    builder:
+                        _gallery_templates_scaffolds_gt_confirmation_scaffold_usecase
+                            .playgroundGtConfirmationBodyUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtReceiptBody',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -1964,6 +2017,71 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtStatusTracker',
                     builder: _gallery_organisms_status_gt_status_tracker_usecase
                         .playgroundGtStatusTrackerUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'success_rates',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSuccessRateBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSuccessRateBody',
+                    builder:
+                        _gallery_templates_modals_gt_success_rate_modal_usecase
+                            .playgroundGtSuccessRateBodyUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'summaries',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSummaryBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryBody',
+                    builder:
+                        _gallery_templates_scaffolds_gt_summary_scaffold_usecase
+                            .playgroundGtSummaryBodyUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSummaryPaymentsCard',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryPaymentsCard',
+                    builder:
+                        _gallery_organisms_summaries_gt_summary_cards_usecase
+                            .playgroundGtSummaryPaymentsCardUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSummaryRatesCard',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryRatesCard',
+                    builder:
+                        _gallery_organisms_summaries_gt_summary_cards_usecase
+                            .playgroundGtSummaryRatesCardUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSummaryTile',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryTile',
+                    builder:
+                        _gallery_organisms_summaries_gt_summary_cards_usecase
+                            .playgroundGtSummaryTileUseCase,
                   ),
                 ],
               ),
@@ -2226,6 +2344,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                   ),
                 ],
               ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSuccessRateModal',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSuccessRateModal',
+                    builder:
+                        _gallery_templates_modals_gt_success_rate_modal_usecase
+                            .playgroundGtSuccessRateModalUseCase,
+                  ),
+                ],
+              ),
             ],
           ),
           _widgetbook.WidgetbookFolder(
@@ -2295,6 +2424,17 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'scaffolds',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtConfirmationScaffold',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtConfirmationScaffold',
+                    builder:
+                        _gallery_templates_scaffolds_gt_confirmation_scaffold_usecase
+                            .playgroundGtConfirmationScaffoldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtDashboardScaffold',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -2317,6 +2457,23 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _gallery_templates_scaffolds_gt_receipt_scaffold_usecase
                             .playgroundGtReceiptScaffoldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSummaryScaffold',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryScaffold',
+                    builder:
+                        _gallery_templates_scaffolds_gt_summary_scaffold_usecase
+                            .playgroundGtSummaryScaffoldUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSummaryScaffold Gallery',
+                    builder:
+                        _gallery_templates_scaffolds_gt_summary_scaffold_usecase
+                            .playgroundGtSummaryScaffoldGalleryUseCase,
                   ),
                 ],
               ),

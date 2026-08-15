@@ -11,7 +11,8 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 Widget buildGtSplashScreenDoc(BuildContext context) {
   return GtWidgetDocPage(
     title: 'GtSplashScreen',
-    description: 'A template for display at application launch that executes asynchronous initialization tasks.',
+    description:
+        'A template for display at application launch that executes asynchronous initialization tasks.',
     code: '''
 GtSplashScreen(
   task: () async => initializeApp(),
@@ -19,7 +20,8 @@ GtSplashScreen(
   logo: AppImageData.asset(GtVectors.logo),
 )''',
     child: GtEmptyStateCard(
-      description: 'Select "GtSplashScreen Gallery" in the sidebar to view the interactive splash screen in full screen.',
+      description:
+          'Select "GtSplashScreen Gallery" in the sidebar to view the interactive splash screen in full screen.',
       icon: GtIcons.alarmClock,
     ),
   );
@@ -62,7 +64,8 @@ Widget buildGtSplashScreenUsecase(BuildContext context) {
 Widget buildGtWelcomeScreenDoc(BuildContext context) {
   return GtWidgetDocPage(
     title: 'GtWelcomeScreen',
-    description: 'An onboarding/welcome landing screen template supporting logos, customized background images, and entry CTA buttons.',
+    description:
+        'An onboarding/welcome landing screen template supporting logos, customized background images, and entry CTA buttons.',
     code: '''
 GtWelcomeScreen(
   title: "Your everyday money app",
@@ -77,7 +80,8 @@ GtWelcomeScreen(
   ),
 )''',
     child: GtEmptyStateCard(
-      description: 'Select "GtWelcomeScreen Gallery" in the sidebar to view the interactive welcome screen in full screen.',
+      description:
+          'Select "GtWelcomeScreen Gallery" in the sidebar to view the interactive welcome screen in full screen.',
       icon: GtIcons.alarmClock,
     ),
   );
@@ -158,7 +162,11 @@ Widget buildtGWelcomeScreenUsecase(BuildContext context) {
           options: [
             (
               "Outline Button",
-              GtOutlineButton(text: "Login", onPressed: () {}, variant: GtButtonVariant.white),
+              GtOutlineButton(
+                text: "Login",
+                onPressed: () {},
+                variant: GtButtonVariant.white,
+              ),
             ),
             (
               "Filled Button",
@@ -198,7 +206,11 @@ Widget buildGtWelcomeScreenTitleUsecase(BuildContext context) {
   return GtWelcomeScreen.withTitleWidget(
     title: context.knobs.object.dropdown<Widget>(
       label: "Title",
-      initialOption: GtText("OneBank", textAlign: TextAlign.center, style: titleStyle),
+      initialOption: GtText(
+        "OneBank",
+        textAlign: TextAlign.center,
+        style: titleStyle,
+      ),
       options: [
         GtText("OneBank", textAlign: TextAlign.center, style: titleStyle),
         GtNetworkImage(
@@ -213,7 +225,12 @@ Widget buildGtWelcomeScreenTitleUsecase(BuildContext context) {
     backgroundImage: bgImage.$2,
     titleAlignment: context.knobs.object.dropdown<Alignment>(
       label: "Title Alignment",
-      options: const [Alignment.topLeft, Alignment.topCenter, Alignment.bottomLeft, Alignment.bottomCenter],
+      options: const [
+        Alignment.topLeft,
+        Alignment.topCenter,
+        Alignment.bottomLeft,
+        Alignment.bottomCenter,
+      ],
       initialOption: Alignment.topCenter,
       labelBuilder: (value) => value.toString(),
     ),
@@ -232,7 +249,11 @@ Widget buildGtWelcomeScreenTitleUsecase(BuildContext context) {
           options: [
             (
               "Outline Button",
-              GtOutlineButton(text: "Login", onPressed: () {}, variant: GtButtonVariant.white),
+              GtOutlineButton(
+                text: "Login",
+                onPressed: () {},
+                variant: GtButtonVariant.white,
+              ),
             ),
             (
               "Filled Button",

@@ -6,7 +6,10 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtAnimatedSlider', type: GtAnimatedSlider)
 Widget playgroundGtAnimatedSliderUseCase(BuildContext context) {
-  final showChild = context.knobs.boolean(label: 'Show Child', initialValue: true);
+  final showChild = context.knobs.boolean(
+    label: 'Show Child',
+    initialValue: true,
+  );
   final axis = context.knobs.object.dropdown<Axis>(
     label: 'Transition Axis',
     options: Axis.values,
@@ -22,8 +25,10 @@ Widget playgroundGtAnimatedSliderUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtAnimatedSlider',
-    description: 'A switcher widget that animates the visibility of its child using a size transition along a vertical or horizontal axis.',
-    code: '''
+    description:
+        'A switcher widget that animates the visibility of its child using a size transition along a vertical or horizontal axis.',
+    code:
+        '''
 GtAnimatedSlider(
   duration: $duration,
   axis: Axis.${axis.name},
@@ -48,7 +53,9 @@ GtAnimatedSlider(
                       alignment: Alignment.center,
                       child: GtText(
                         "Sliding Content",
-                        style: context.textStyles.bodyM(color: context.palette.text.white),
+                        style: context.textStyles.bodyM(
+                          color: context.palette.text.white,
+                        ),
                       ),
                     )
                   : const SizedBox.shrink(key: ValueKey('empty')),

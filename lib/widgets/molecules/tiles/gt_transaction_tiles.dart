@@ -90,13 +90,19 @@ class GtTransactionListTile extends GtStatelessWidget {
 
     if (leading == null) {
       final svgAsset = isDebit ? GtVectors.outflow : GtVectors.inflow;
-      icon = GtSvg(svgAsset, width: leadingSize, height: leadingSize);
+      icon = GtSvg(
+        svgAsset,
+        width: leadingSize,
+        height: leadingSize,
+        isDecorative: true,
+      );
     }
 
     final valueStyle = style.subHeadS(color: amountColor);
     final subStyle = style.subHeadXs(color: palette.text.sub);
 
     return GtInkWell(
+      role: .button,
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
@@ -214,6 +220,7 @@ class GtPaymentListTile extends GtStatelessWidget {
     final subStyle = style.subHead3_5xs(color: palette.text.sub);
 
     return GtInkWell(
+      role: .button,
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(

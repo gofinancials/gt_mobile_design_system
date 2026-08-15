@@ -17,25 +17,25 @@ GtCountIndicator(
 )
 ''',
     child: Center(
-        child: GtCountIndicator(
-          context.knobs.int.slider(
-            label: 'Count',
-            initialValue: 3,
-            min: 0,
-            max: 20,
-          ),
-          type: context.knobs.object.dropdown<GtCountIndicatorType>(
-            label: 'Type',
-            options: GtCountIndicatorType.values,
-            initialOption: GtCountIndicatorType.error,
-          ),
-          size: context.knobs.double.slider(
-            label: 'Size',
-            initialValue: 20,
-            min: 10,
-            max: 50,
-          ),
+      child: GtCountIndicator(
+        context.knobs.int.slider(
+          label: 'Count',
+          initialValue: 3,
+          min: 0,
+          max: 20,
+        ),
+        type: context.knobs.object.dropdown<GtCountIndicatorType>(
+          label: 'Type',
+          options: GtCountIndicatorType.values,
+          initialOption: GtCountIndicatorType.error,
+        ),
+        size: context.knobs.double.slider(
+          label: 'Size',
+          initialValue: 20,
+          min: 10,
+          max: 50,
         ),
       ),
+    ),
   );
 }

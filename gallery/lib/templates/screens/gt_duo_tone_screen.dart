@@ -10,7 +10,8 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 Widget buildGtDuotoneScreenDoc(BuildContext context) {
   return GtWidgetDocPage(
     title: 'GtDuotoneScreen',
-    description: 'A screen layout utilizing a two-tone color contrast header layout with illustration badges and footer metadata.',
+    description:
+        'A screen layout utilizing a two-tone color contrast header layout with illustration badges and footer metadata.',
     code: '''
 GtDuotoneScreen(
   title: "saving smart",
@@ -21,7 +22,8 @@ GtDuotoneScreen(
   variant: GtCardVariant.featured,
 )''',
     child: GtEmptyStateCard(
-      description: 'Select "GtDuotoneScreen Gallery" in the sidebar to view the interactive duotone screen in full screen.',
+      description:
+          'Select "GtDuotoneScreen Gallery" in the sidebar to view the interactive duotone screen in full screen.',
       icon: GtIcons.alarmClock,
     ),
   );

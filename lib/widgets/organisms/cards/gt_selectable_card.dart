@@ -110,7 +110,12 @@ class GtAvatarSelectionCard extends GtStatelessWidget {
       borderRadius: cornerRadius,
       child: ClipRRect(
         borderRadius: cornerRadius,
-        child: GtImage(image: image, width: 80, height: 120),
+        child: GtImage(
+          image: image,
+          width: 80,
+          height: 120,
+          isDecorative: true,
+        ),
       ),
     );
   }

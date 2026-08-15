@@ -25,6 +25,21 @@ class GtAssetImage extends GtStatelessWidget {
   /// An optional color filter to apply to the image.
   final Color? color;
 
+  /// A description of what this image conveys, for screen readers.
+  ///
+  /// Supply this whenever the image carries information the surrounding text
+  /// does not. When both this and [isDecorative] are omitted the image is
+  /// excluded from the semantics tree, because an image node with no label is
+  /// a stop the user must swipe past only to learn nothing.
+  final String? semanticsLabel;
+
+  /// Whether this image is purely decorative.
+  ///
+  /// Decorative images are excluded from the semantics tree. Prefer setting
+  /// this explicitly over simply omitting [semanticsLabel], so the intent is
+  /// visible to readers and to the lint that flags unlabelled images.
+  final bool isDecorative;
+
   /// Creates a new [GtAssetImage].
   const GtAssetImage(
     this.imageUrl, {
@@ -34,6 +49,8 @@ class GtAssetImage extends GtStatelessWidget {
     this.width,
     this.height,
     this.color,
+    this.semanticsLabel,
+    this.isDecorative = false,
   });
 
   @override
@@ -46,6 +63,8 @@ class GtAssetImage extends GtStatelessWidget {
         width: width,
         height: height,
         color: color,
+        semanticsLabel: semanticsLabel,
+        isDecorative: isDecorative,
       );
     }
     return Image.asset(
@@ -55,6 +74,10 @@ class GtAssetImage extends GtStatelessWidget {
       width: width,
       height: height,
       color: color,
+      semanticLabel: semanticsLabel,
+      // Image defaults to contributing an "image" node even with no label.
+      // Excluding unlabelled images keeps them from becoming empty stops.
+      excludeFromSemantics: isDecorative || semanticsLabel == null,
     );
   }
 }

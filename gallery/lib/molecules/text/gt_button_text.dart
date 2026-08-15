@@ -6,8 +6,14 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'Button Text', type: GtButtonText)
 Widget playgroundGtButtonTextUseCase(BuildContext context) {
-  final text = context.knobs.string(label: 'Text', initialValue: 'SUBMIT TRANSACTION');
-  final disabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
+  final text = context.knobs.string(
+    label: 'Text',
+    initialValue: 'SUBMIT TRANSACTION',
+  );
+  final disabled = context.knobs.boolean(
+    label: 'Disabled',
+    initialValue: false,
+  );
   final size = context.knobs.object.dropdown(
     label: 'Button Size',
     options: GtButtonSize.values,
@@ -21,7 +27,8 @@ Widget playgroundGtButtonTextUseCase(BuildContext context) {
     labelBuilder: (c) => c.name,
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtButtonText(
   "$text",
   disabled: $disabled,
@@ -31,7 +38,8 @@ GtButtonText(
 
   return GtWidgetDocPage(
     title: 'GtButtonText',
-    description: 'A specialized text widget used inside buttons supporting cases, styles, and leading/trailing icons.',
+    description:
+        'A specialized text widget used inside buttons supporting cases, styles, and leading/trailing icons.',
     code: codeSnippet,
     child: Center(
       child: GtButtonText(

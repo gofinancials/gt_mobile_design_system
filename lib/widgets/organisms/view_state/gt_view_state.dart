@@ -155,6 +155,7 @@ class GtViewStateWidget extends GtStatelessWidget {
               height: iconSize ?? 124,
               fit: .contain,
               alignment: .center,
+              isDecorative: true,
             ),
             gapToTitle ?? const GtGap.yLg(),
           ],

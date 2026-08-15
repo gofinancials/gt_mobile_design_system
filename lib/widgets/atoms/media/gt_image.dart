@@ -38,6 +38,21 @@ class GtImage extends GtStatelessWidget {
   /// An optional color filter to apply to the image.
   final Color? color;
 
+  /// A description of what this image conveys, for screen readers.
+  ///
+  /// Supply this whenever the image carries information the surrounding text
+  /// does not. When both this and [isDecorative] are omitted the image is
+  /// excluded from the semantics tree, because an image node with no label is
+  /// a stop the user must swipe past only to learn nothing.
+  final String? semanticsLabel;
+
+  /// Whether this image is purely decorative.
+  ///
+  /// Decorative images are excluded from the semantics tree. Prefer setting
+  /// this explicitly over simply omitting [semanticsLabel], so the intent is
+  /// visible to readers and to the lint that flags unlabelled images.
+  final bool isDecorative;
+
   /// Creates a new [GtImage].
   ///
   /// The [alignment] defaults to [Alignment.center] and [useDefaultSize] defaults
@@ -52,6 +67,8 @@ class GtImage extends GtStatelessWidget {
     this.height,
     this.color,
     this.useDefaultSize = true,
+    this.semanticsLabel,
+    this.isDecorative = false,
   });
 
   @override
@@ -69,6 +86,8 @@ class GtImage extends GtStatelessWidget {
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
               color: color,
+              semanticsLabel: semanticsLabel,
+              isDecorative: isDecorative,
             );
           }
           if (image?.isString ?? false) {
@@ -79,6 +98,8 @@ class GtImage extends GtStatelessWidget {
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
               color: color,
+              semanticsLabel: semanticsLabel,
+              isDecorative: isDecorative,
             );
           }
           if (image?.isBytes ?? false) {
@@ -89,6 +110,8 @@ class GtImage extends GtStatelessWidget {
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
               color: color,
+              semanticsLabel: semanticsLabel,
+              isDecorative: isDecorative,
             );
           }
           if (image?.isIcon ?? false) {
@@ -97,6 +120,7 @@ class GtImage extends GtStatelessWidget {
               alignment: alignment,
               size: width ?? context.dp(24.px),
               color: color ?? context.palette.icon.strong,
+              semanticsLabel: isDecorative ? null : semanticsLabel,
             );
           }
           if (image?.isFile ?? false) {
@@ -107,6 +131,8 @@ class GtImage extends GtStatelessWidget {
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
               color: color,
+              semanticsLabel: semanticsLabel,
+              isDecorative: isDecorative,
             );
           }
           return Align(

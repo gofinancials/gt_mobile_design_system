@@ -75,7 +75,10 @@ class GtLessonCard extends GtStatelessWidget {
     final gradient = variant.getGradient(context);
 
     return GtCard(
-      key: ValueKey('gt-lesson-card-$title-$watchFraction-$progressDuration'),
+      // Identity only. Folding the watch progress in here rebuilt the card
+      // from scratch every time the lesson advanced, which restarted the
+      // progress fill; the bar animates to its new value on its own.
+      key: ValueKey(('gt-lesson-card', title)),
       onPressed: context.scrollIntoViewNow,
       constraints: BoxConstraints(maxWidth: context.fractionalShortest(.55)),
       color: context.palette.bg.white,
@@ -95,6 +98,7 @@ class GtLessonCard extends GtStatelessWidget {
                 image: illustration,
                 height: context.dp(150.px),
                 alignment: .center,
+                isDecorative: true,
               ),
             ),
           ),
@@ -181,7 +185,12 @@ class GtLessonInfoTile extends GtStatelessWidget {
       crossAxisAlignment: crossAlignment ?? .start,
       children: [
         GtSimpleInfoTile(
-          leading: GtSvg(GtVectors.coin, width: 16, height: 16),
+          leading: GtSvg(
+            GtVectors.coin,
+            width: 16,
+            height: 16,
+            isDecorative: true,
+          ),
           text: progress,
         ),
         GtSimpleInfoTile(
@@ -190,6 +199,7 @@ class GtLessonInfoTile extends GtStatelessWidget {
             width: 16,
             height: 16,
             color: context.palette.feature.dark,
+            isDecorative: true,
           ),
           text: progressDuration,
         ),

@@ -17,8 +17,10 @@ Widget playgroundGtDashboardScaffoldUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtDashboardScaffold',
-    description: 'A complete dashboard scaffold that coordinates pages, app bars, and bottom navigation states.',
-    code: '''
+    description:
+        'A complete dashboard scaffold that coordinates pages, app bars, and bottom navigation states.',
+    code:
+        '''
 GtDashboardScaffold(
   pageController: pageController,
   bottomNavigationStyle: GtBottomNavigationStyle.${style.name},
@@ -37,12 +39,16 @@ GtDashboardScaffold(
     child: GtEmptyStateCard(
       variant: GtCardVariant.normal,
       icon: GtIcons.alarmClock,
-      description: 'Please refer to the "GtDashboardScaffold Gallery" page in Widgetbook to preview the active dashboard scaffold layout in its full-screen interactive context.',
+      description:
+          'Please refer to the "GtDashboardScaffold Gallery" page in Widgetbook to preview the active dashboard scaffold layout in its full-screen interactive context.',
     ),
   );
 }
 
-@widgetbook.UseCase(name: 'GtDashboardScaffold Gallery', type: GtDashboardScaffold)
+@widgetbook.UseCase(
+  name: 'GtDashboardScaffold Gallery',
+  type: GtDashboardScaffold,
+)
 Widget buildGtDashboardScaffoldGallery(BuildContext context) {
   return const _DashboardScaffoldPreview();
 }
@@ -51,7 +57,8 @@ class _DashboardScaffoldPreview extends StatefulWidget {
   const _DashboardScaffoldPreview();
 
   @override
-  State<_DashboardScaffoldPreview> createState() => _DashboardScaffoldPreviewState();
+  State<_DashboardScaffoldPreview> createState() =>
+      _DashboardScaffoldPreviewState();
 }
 
 class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
@@ -70,12 +77,7 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
 
   List<GtDashboardPageData> get data => [
     GtDashboardPageData(
-      page: Center(
-        child: GtText(
-          'Home Page',
-          style: context.textStyles.h6(),
-        ),
-      ),
+      page: Center(child: GtText('Home Page', style: context.textStyles.h6())),
       appBar: GtHomeAppBar(
         userFullName: "Alex Lobaloba",
         onClickSearch: () {},
@@ -87,12 +89,7 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
     ),
     GtDashboardPageData(
       appBar: GtTitleAppBar(title: "Cards"),
-      page: Center(
-        child: GtText(
-          'Cards Page',
-          style: context.textStyles.h6(),
-        ),
-      ),
+      page: Center(child: GtText('Cards Page', style: context.textStyles.h6())),
       navItem: _items[1],
     ),
   ];
@@ -103,12 +100,13 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       onClickHelp: () {},
       data: data,
       pageController: pageController,
-      bottomNavigationStyle: context.knobs.object.dropdown<GtBottomNavigationStyle>(
-        label: "Bottom Navigation Style",
-        options: GtBottomNavigationStyle.values,
-        initialOption: GtBottomNavigationStyle.ios,
-        labelBuilder: (value) => value.name,
-      ),
+      bottomNavigationStyle: context.knobs.object
+          .dropdown<GtBottomNavigationStyle>(
+            label: "Bottom Navigation Style",
+            options: GtBottomNavigationStyle.values,
+            initialOption: GtBottomNavigationStyle.ios,
+            labelBuilder: (value) => value.name,
+          ),
     );
   }
 }

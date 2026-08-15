@@ -200,7 +200,7 @@ extension ThemeContextExtension on BuildContext {
   double get spacingSectionSm => dp(spacing.sectionSm.px);
 
   /// Medium section spacing dimension.
-  double get spacingsectionMd => dp(spacing.sectionMd.px);
+  double get spacingSectionMd => dp(spacing.sectionMd.px);
 
   /// Large section spacing dimension.
   double get spacingSectionLg => dp(spacing.sectionLg.px);

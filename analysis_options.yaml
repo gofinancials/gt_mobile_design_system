@@ -1,4 +1,18 @@
 include: package:flutter_lints/flutter.yaml
 
+# Accessibility rules are enforced at authoring time by the local
+# `gt_a11y_lints` plugin under tools/. Run them with `dart run custom_lint`.
+analyzer:
+  plugins:
+    - custom_lint
+  exclude:
+    - "**/*.g.dart"
+
+custom_lint:
+  rules:
+    - avoid_raw_gesture_detector
+    - require_image_semantics
+    - require_semantic_role
+
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

@@ -1,4 +1,5 @@
 export 'dialogs/dialogs.dart';
+export 'documents/documents.dart';
 export 'forms/forms.dart';
 export 'list_views/list_views.dart';
 export 'modals/modals.dart';

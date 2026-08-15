@@ -94,10 +94,15 @@ class _GtPasswordFieldState extends State<GtPasswordField> {
                 minLength: widget.minLength,
               ),
           suffix: GtInkWell(
-            semanticsLabel: passwordHidden ? widget.showPasswordSemanticLabel : widget.hidePasswordSemanticLabel,
+            role: .button,
+            semanticsLabel: passwordHidden
+                ? widget.showPasswordSemanticLabel
+                : widget.hidePasswordSemanticLabel,
             borderRadius: context.borderRadiusXl,
             child: RepaintBoundary(
-              child: GtAnimatedSwitcher(child: GtIcon(icon, key: ValueKey(icon))),
+              child: GtAnimatedSwitcher(
+                child: GtIcon(icon, key: ValueKey(icon)),
+              ),
             ),
             onTap: () {
               hidePass.value = !passwordHidden;

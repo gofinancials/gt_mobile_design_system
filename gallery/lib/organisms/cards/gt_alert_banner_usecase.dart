@@ -6,10 +6,14 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtAlertBanner', type: GtAlertBanner)
 Widget playgroundGtAlertBannerUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Nearly there');
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Nearly there',
+  );
   final subtitle = context.knobs.string(
     label: 'Subtitle',
-    initialValue: 'Your fixed savings plan matures in 7 days with ₦45,000 earned.',
+    initialValue:
+        'Your fixed savings plan matures in 7 days with ₦45,000 earned.',
   );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
@@ -20,8 +24,10 @@ Widget playgroundGtAlertBannerUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtAlertBanner',
-    description: 'A full-width banner alert with a dismiss/close button and variant styling.',
-    code: '''
+    description:
+        'A full-width banner alert with a dismiss/close button and variant styling.',
+    code:
+        '''
 GtAlertBanner(
   title: "$title",
   subtitle: "$subtitle",

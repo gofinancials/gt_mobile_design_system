@@ -16,11 +16,23 @@ class GtDots extends StatelessWidget {
   /// The index of the currently active dot.
   final int? activeIndex;
 
+  /// An accessible name describing the current position, already localised.
+  ///
+  /// The dots themselves carry no text, so without this the whole indicator is
+  /// invisible to a screen reader and the user has no way to tell how many
+  /// pages there are or which one they are on. Supply something like
+  /// "Page 2 of 5".
+  ///
+  /// No default is provided deliberately: the design system has no dictionary
+  /// of its own, and a missing translation key would be spoken aloud verbatim.
+  final String? semanticsLabel;
+
   /// Creates a new [GtDots] indicator.
   const GtDots(
     this.activeIndex, {
     this.length = 3,
     super.key,
+    this.semanticsLabel,
     this.activeColor,
     this.inActiveColor,
   }) : assert(activeIndex != null);
@@ -38,12 +50,18 @@ class GtDots extends StatelessWidget {
     final spacing = context.dp(context.spacing.base.px);
 
     return RepaintBoundary(
-      child: Wrap(
-        alignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: spacing,
-        runSpacing: spacing,
-        children: children,
+      child: GtSemantics(
+        label: semanticsLabel,
+        // The individual dots are decoration; the label carries the position.
+        excludeDescendants: semanticsLabel != null,
+        container: semanticsLabel != null,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: spacing,
+          runSpacing: spacing,
+          children: children,
+        ),
       ),
     );
   }
@@ -66,6 +84,11 @@ class GtScaledDots extends StatelessWidget {
   /// The maximum size of the active dot. Other dots will scale down proportionally from this size.
   final double maxSize;
 
+  /// An accessible name describing the current position, already localised.
+  ///
+  /// See [GtDots.semanticsLabel] for why no default is supplied.
+  final String? semanticsLabel;
+
   /// Creates a new [GtScaledDots] indicator.
   const GtScaledDots(
     this.activeIndex, {
@@ -73,6 +96,7 @@ class GtScaledDots extends StatelessWidget {
     this.activeColor,
     this.inActiveColor,
     this.maxSize = 8,
+    this.semanticsLabel,
     super.key,
   }) : assert(activeIndex != null);
 
@@ -89,20 +113,26 @@ class GtScaledDots extends StatelessWidget {
     final spacing = context.dp(context.spacing.base.px);
 
     return RepaintBoundary(
-      child: Wrap(
-        alignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: spacing,
-        runSpacing: spacing,
-        children: List.generate(length, (index) {
-          final isActive = activeIndex == index;
-          return _Dot(
-            isActive,
-            activeColor: activeColor,
-            inActiveColor: inActiveColor,
-            size: _calculateSize(index, context.dp(maxSize.px)),
-          );
-        }),
+      child: GtSemantics(
+        label: semanticsLabel,
+        // The individual dots are decoration; the label carries the position.
+        excludeDescendants: semanticsLabel != null,
+        container: semanticsLabel != null,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: spacing,
+          runSpacing: spacing,
+          children: List.generate(length, (index) {
+            final isActive = activeIndex == index;
+            return _Dot(
+              isActive,
+              activeColor: activeColor,
+              inActiveColor: inActiveColor,
+              size: _calculateSize(index, context.dp(maxSize.px)),
+            );
+          }),
+        ),
       ),
     );
   }

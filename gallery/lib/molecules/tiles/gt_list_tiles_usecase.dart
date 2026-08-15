@@ -6,12 +6,17 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtListTile', type: GtListTile)
 Widget playgroundGtListTileUseCase(BuildContext context) {
-  final text = context.knobs.string(label: 'Text', initialValue: 'General List Item');
+  final text = context.knobs.string(
+    label: 'Text',
+    initialValue: 'General List Item',
+  );
 
   return GtWidgetDocPage(
     title: "GtListTile",
-    description: "A general-purpose list tile that displays a primary text with optional leading/trailing widgets.",
-    code: '''
+    description:
+        "A general-purpose list tile that displays a primary text with optional leading/trailing widgets.",
+    code:
+        '''
 GtListTile(
   text: "$text",
   leading: GtIcon(GtIcons.user),
@@ -35,9 +40,18 @@ GtListTile(
 
 @widgetbook.UseCase(name: 'GtIconListTile', type: GtIconListTile)
 Widget playgroundGtIconListTileUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Account Settings');
-  final subtitle = context.knobs.string(label: 'Subtitle', initialValue: 'Manage password, 2FA and sessions.');
-  final isAlt = context.knobs.boolean(label: 'Use Alternate Style (Boxed Icon)', initialValue: false);
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Account Settings',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'Manage password, 2FA and sessions.',
+  );
+  final isAlt = context.knobs.boolean(
+    label: 'Use Alternate Style (Boxed Icon)',
+    initialValue: false,
+  );
 
   final code = isAlt
       ? '''
@@ -57,7 +71,8 @@ GtIconListTile(
 
   return GtWidgetDocPage(
     title: "GtIconListTile",
-    description: "A list tile that emphasizes a leading icon alongside a title and subtitle.",
+    description:
+        "A list tile that emphasizes a leading icon alongside a title and subtitle.",
     code: code,
     child: Center(
       child: GtCard(
@@ -81,15 +96,26 @@ GtIconListTile(
   );
 }
 
-@widgetbook.UseCase(name: 'GtSimpleActionListTile', type: GtSimpleActionListTile)
+@widgetbook.UseCase(
+  name: 'GtSimpleActionListTile',
+  type: GtSimpleActionListTile,
+)
 Widget playgroundGtSimpleActionListTileUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Personal Info');
-  final subtitle = context.knobs.string(label: 'Subtitle', initialValue: 'View profile details');
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Personal Info',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'View profile details',
+  );
 
   return GtWidgetDocPage(
     title: "GtSimpleActionListTile",
-    description: "A straightforward list tile used for simple navigation actions, featuring a title and a trailing chevron.",
-    code: '''
+    description:
+        "A straightforward list tile used for simple navigation actions, featuring a title and a trailing chevron.",
+    code:
+        '''
 GtSimpleActionListTile(
   "$title",
   subtitle: "$subtitle",
@@ -99,11 +125,7 @@ GtSimpleActionListTile(
       child: GtCard(
         padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 8.px),
         variant: GtCardVariant.normal,
-        child: GtSimpleActionListTile(
-          title,
-          subtitle: subtitle,
-          onTap: () {},
-        ),
+        child: GtSimpleActionListTile(title, subtitle: subtitle, onTap: () {}),
       ),
     ),
   );

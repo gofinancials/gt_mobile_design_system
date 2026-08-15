@@ -139,3 +139,52 @@ class GtDivider extends StatelessWidget {
     );
   }
 }
+
+/// A dashed horizontal rule.
+///
+/// Used where a divider should read as a soft separation rather than a hard
+/// break, such as between a card's content and the navigation row beneath it.
+/// Unlike [GtDivider] it carries no vertical spacing of its own, so it sits
+/// flush inside whichever column spacing surrounds it.
+class GtDashedDivider extends GtStatelessWidget {
+  /// The colour of the dashes.
+  ///
+  /// If null, defaults to the [ThemeData.dividerColor] of the current context.
+  final Color? color;
+
+  /// The length of each dash, in design pixels.
+  final double dash;
+
+  /// The empty space between two dashes, in design pixels.
+  final double gap;
+
+  /// The stroke width of the rule, in design pixels.
+  final double thickness;
+
+  /// Creates a [GtDashedDivider].
+  const GtDashedDivider({
+    super.key,
+    this.color,
+    this.dash = 1,
+    this.gap = 2,
+    this.thickness = 1,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final strokeWidth = context.dp(thickness.px);
+
+    return SizedBox(
+      height: strokeWidth,
+      width: double.infinity,
+      child: CustomPaint(
+        painter: GtDashedLinePainter(
+          color: color ?? Theme.of(context).dividerColor,
+          thickness: strokeWidth,
+          dash: context.dp(dash.px),
+          gap: context.dp(gap.px),
+        ),
+      ),
+    );
+  }
+}

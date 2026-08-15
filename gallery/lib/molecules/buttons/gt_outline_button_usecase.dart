@@ -6,7 +6,10 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtOutlineButton', type: GtOutlineButton)
 Widget playgroundGtOutlineButtonUseCase(BuildContext context) {
-  final text = context.knobs.string(label: 'Button Text', initialValue: 'SECONDARY');
+  final text = context.knobs.string(
+    label: 'Button Text',
+    initialValue: 'SECONDARY',
+  );
   final variant = context.knobs.object.dropdown(
     label: 'Variant',
     options: GtButtonVariant.values,
@@ -19,13 +22,20 @@ Widget playgroundGtOutlineButtonUseCase(BuildContext context) {
     initialOption: GtButtonSize.large,
     labelBuilder: (s) => s.name,
   );
-  final isDisabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
-  final isLoading = context.knobs.boolean(label: 'Loading', initialValue: false);
+  final isDisabled = context.knobs.boolean(
+    label: 'Disabled',
+    initialValue: false,
+  );
+  final isLoading = context.knobs.boolean(
+    label: 'Loading',
+    initialValue: false,
+  );
 
   final hasIcon = context.knobs.boolean(label: 'Has Icon', initialValue: false);
   final icon = hasIcon ? GtIcons.checkSolid : null;
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtOutlineButton(
   text: '$text',
   variant: GtButtonVariant.${variant.name},

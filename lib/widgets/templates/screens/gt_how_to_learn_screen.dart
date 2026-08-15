@@ -26,7 +26,7 @@ class GtHowToLearnTile extends GtStatelessWidget {
       mainAxisAlignment: .center,
       spacing: context.spacingBase,
       children: [
-        GtImage(image: leading, width: 24, height: 24),
+        GtImage(image: leading, width: 24, height: 24, isDecorative: true),
         GtText(
           instruction,
           style: context.textStyles.subHeadM(color: textColor ?? color),
@@ -110,6 +110,7 @@ class GtHowToLearnScreen extends GtStatelessWidget {
               Align(
                 alignment: .topCenter,
                 child: GtInkWell(
+                  role: .button,
                   borderRadius: context.borderRadius2Xl,
                   onTap: onContinue,
                   child: Padding(

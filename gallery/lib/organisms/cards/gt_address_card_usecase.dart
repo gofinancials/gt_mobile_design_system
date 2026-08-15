@@ -6,8 +6,14 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtAddressCard', type: GtAddressCard)
 Widget playgroundGtAddressCardUseCase(BuildContext context) {
-  final line1 = context.knobs.string(label: 'Address Line 1', initialValue: '210 Sanusi Street');
-  final line2 = context.knobs.string(label: 'Address Line 2', initialValue: 'Surulere, Lagos Nigeria 234768');
+  final line1 = context.knobs.string(
+    label: 'Address Line 1',
+    initialValue: '210 Sanusi Street',
+  );
+  final line2 = context.knobs.string(
+    label: 'Address Line 2',
+    initialValue: 'Surulere, Lagos Nigeria 234768',
+  );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
     options: GtCardVariant.values,
@@ -23,8 +29,10 @@ Widget playgroundGtAddressCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtAddressCard',
-    description: 'A structured card specifically styled for displaying addresses and verification borders.',
-    code: '''
+    description:
+        'A structured card specifically styled for displaying addresses and verification borders.',
+    code:
+        '''
 GtAddressCard(
   line1: "$line1",
   line2: "$line2",

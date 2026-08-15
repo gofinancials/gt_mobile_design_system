@@ -134,36 +134,49 @@ class _GtBottomModalState extends State<GtBottomModal>
   @override
   Widget build(BuildContext context) {
     if (widget._child != null || !widget.hasController) {
-      return Material(
-        type: .transparency,
-        child: GestureDetector(
-          behavior: .opaque,
-          onTap: context.pop,
-          child: Align(
-            alignment: widget.alignment,
-            child: Builder(
-              builder: (context) {
-                if (widget._child != null) {
-                  return _GtModalBodyWithChild(
-                    margin: widget.margin,
-                    child: widget._child!,
-                  );
-                }
+      return Semantics(
+        // A modal is a new context. scopesRoute plus namesRoute is what makes
+        // iOS and Android announce the change and move focus into it instead
+        // of leaving the user stranded on the page behind.
+        scopesRoute: true,
+        namesRoute: true,
+        explicitChildNodes: true,
+        label: widget._child != null ? null : widget.title,
+        child: Material(
+          type: .transparency,
+          child: GestureDetector(
+            behavior: .opaque,
+            onTap: context.pop,
+            // A dismiss scrim. Announcing the whole backdrop as a tappable
+            // element would put a meaningless stop in front of the modal's own
+            // content.
+            excludeFromSemantics: true,
+            child: Align(
+              alignment: widget.alignment,
+              child: Builder(
+                builder: (context) {
+                  if (widget._child != null) {
+                    return _GtModalBodyWithChild(
+                      margin: widget.margin,
+                      child: widget._child!,
+                    );
+                  }
 
-                return _GtModalBody(
-                  titleSlide: _titleSlide,
-                  titleFade: _titleFade,
-                  successSlide: _successSlide,
-                  successFade: _successFade,
-                  title: widget.title,
-                  icon: _GtBottomModalIconWidget(
-                    GtBottomModalPhase.idle,
-                    icon: widget.icon,
-                  ),
-                  description: widget.description,
-                  margin: widget.margin,
-                );
-              },
+                  return _GtModalBody(
+                    titleSlide: _titleSlide,
+                    titleFade: _titleFade,
+                    successSlide: _successSlide,
+                    successFade: _successFade,
+                    title: widget.title,
+                    icon: _GtBottomModalIconWidget(
+                      GtBottomModalPhase.idle,
+                      icon: widget.icon,
+                    ),
+                    description: widget.description,
+                    margin: widget.margin,
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -177,25 +190,36 @@ class _GtBottomModalState extends State<GtBottomModal>
       builder: (context, child) {
         final isLoading = controller.isLoading;
 
-        Widget child = Material(
-          type: .transparency,
-          child: Align(
-            alignment: widget.alignment,
-            child: _GtModalBody(
-              titleSlide: _titleSlide,
-              titleFade: _titleFade,
-              successSlide: _successSlide,
-              successFade: _successFade,
-              title: controller.title,
-              icon: _GtBottomModalIconWidget(
-                controller.phase,
-                icon: controller.icon,
+        Widget child = Semantics(
+          scopesRoute: true,
+          namesRoute: true,
+          explicitChildNodes: true,
+          label: controller.title,
+          child: GtLiveRegion(
+            // The modal animates between loading, success, and error without
+            // any navigation happening, so nothing else would tell a screen
+            // reader user that the task finished.
+            child: Material(
+              type: .transparency,
+              child: Align(
+                alignment: widget.alignment,
+                child: _GtModalBody(
+                  titleSlide: _titleSlide,
+                  titleFade: _titleFade,
+                  successSlide: _successSlide,
+                  successFade: _successFade,
+                  title: controller.title,
+                  icon: _GtBottomModalIconWidget(
+                    controller.phase,
+                    icon: controller.icon,
+                  ),
+                  description: controller.description,
+                  margin: widget.margin,
+                  progress: controller.progress != null
+                      ? "${controller.percentage}%"
+                      : null,
+                ),
               ),
-              description: controller.description,
-              margin: widget.margin,
-              progress: controller.progress != null
-                  ? "${controller.percentage}%"
-                  : null,
             ),
           ),
         );
@@ -401,7 +425,12 @@ class _GtBottomModalIconWidget extends StatelessWidget {
     final size = context.dp(36.px);
 
     if (icon != null) {
-      child = GtImage(image: icon, width: size, height: size);
+      child = GtImage(
+        image: icon,
+        width: size,
+        height: size,
+        isDecorative: true,
+      );
     }
 
     return switch (phase) {
@@ -410,8 +439,14 @@ class _GtBottomModalIconWidget extends StatelessWidget {
         GtVectorIllustrations.success,
         width: size,
         height: size,
+        isDecorative: true,
       ),
-      .error => GtSvg(GtVectorIllustrations.failed, width: size, height: size),
+      .error => GtSvg(
+        GtVectorIllustrations.failed,
+        width: size,
+        height: size,
+        isDecorative: true,
+      ),
       _ => child,
     };
   }

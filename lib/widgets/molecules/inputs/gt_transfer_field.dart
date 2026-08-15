@@ -88,7 +88,11 @@ class _GtTransferFieldState extends State<GtTransferField> {
   Widget build(BuildContext context) {
     final first = widget.firstParticipant;
     final second = widget.secondParticipant;
-    final separator = GtSvg(GtVectors.trendDown, width: context.dp(20.px));
+    final separator = GtSvg(
+      GtVectors.trendDown,
+      width: context.dp(20.px),
+      isDecorative: true,
+    );
 
     return FormField(
       initialValue: widget.amountController.controller,
@@ -309,7 +313,11 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
   Widget build(BuildContext context) {
     final first = widget.firstParticipant;
     final second = widget.secondParticipant;
-    final separator = GtSvg(GtVectors.trendDown, width: context.dp(20.px));
+    final separator = GtSvg(
+      GtVectors.trendDown,
+      width: context.dp(20.px),
+      isDecorative: true,
+    );
 
     return FormField(
       initialValue: widget.sourceAmountController.controller,
@@ -400,7 +408,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
                   ),
                   const GtGap.yBase(),
                   Row(
-                    spacing: context.spacingsectionMd,
+                    spacing: context.spacingSectionMd,
                     children: [
                       GtSizedBox(
                         height: 90,
@@ -505,9 +513,10 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
     final hasFooter = footerSuffix.hasValue && balance.hasValue;
     Widget? tag;
 
-    if (data.tag != null) tag = GtImage(image: data.tag!);
+    if (data.tag != null) tag = GtImage(image: data.tag!, isDecorative: true);
 
     return GtInkWell(
+      role: .button,
       onTap: data.onTap,
       child: GtTransactionParticipantListTile(
         (data.name ?? data.label).upper,
@@ -524,6 +533,7 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
             image: data.image,
             width: imageSize,
             height: imageSize,
+            isDecorative: true,
           ),
           _ => GtAvatar(
             avatar: data.image,
@@ -650,6 +660,7 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
               image: value.value.image,
               width: context.dp(32.px),
               height: context.dp(32.px),
+              isDecorative: true,
             ),
             onSelect: (val) {
               value2.selection = value;
@@ -672,6 +683,7 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     Widget child = GtDisabledOverlay(
       !widget.isEnabled,
       child: GtInkWell(
+        role: .button,
         borderRadius: context.borderRadiusXl,
         hapticFeedbackType: .medium,
         onTap: _showSheet,
@@ -692,7 +704,12 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
                 spacing: context.spacingBase,
                 mainAxisSize: .min,
                 children: [
-                  GtImage(image: category.image, width: size, height: size),
+                  GtImage(
+                    image: category.image,
+                    width: size,
+                    height: size,
+                    isDecorative: true,
+                  ),
                   GtIcon(GtIcons.chevronDown, size: context.dp(16.px)),
                 ],
               );

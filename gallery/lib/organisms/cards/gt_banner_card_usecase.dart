@@ -8,7 +8,8 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 Widget playgroundGtBannerCardUseCase(BuildContext context) {
   final title = context.knobs.string(
     label: 'Title',
-    initialValue: 'Make it easy to get paid. Invite your friends to send you money.',
+    initialValue:
+        'Make it easy to get paid. Invite your friends to send you money.',
   );
   final subtitle = context.knobs.string(
     label: 'Subtitle',
@@ -24,8 +25,10 @@ Widget playgroundGtBannerCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtBannerCard',
-    description: 'A customizable promotional or informational banner card with variant styles and dismiss action.',
-    code: '''
+    description:
+        'A customizable promotional or informational banner card with variant styles and dismiss action.',
+    code:
+        '''
 GtBannerCard(
   title: "$title",
   subtitle: "$subtitle",

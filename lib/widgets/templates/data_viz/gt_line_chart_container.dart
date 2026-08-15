@@ -166,9 +166,7 @@ class GtLineChartContainer extends GtStatelessWidget with GtBottomSheetMixin {
               gradient: gradient,
               max: maxValue,
               hideYAxisLabels: hideYAxisLabels,
-              key: ValueKey(
-                Object.hash(items, width, height, color, gradient, maxValue),
-              ),
+              key: ValueKey((items, width, height, color, gradient, maxValue)),
             ),
           ],
         ),

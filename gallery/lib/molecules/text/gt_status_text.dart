@@ -26,7 +26,8 @@ Widget playgroundGtStatusTextUseCase(BuildContext context) {
     initialValue: '',
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtStatusText(
   status: GtAccessStatus.${status.name},
   label: ${labelOverride.trim().isEmpty ? 'null' : '"$labelOverride"'},
@@ -34,7 +35,8 @@ GtStatusText(
 
   return GtWidgetDocPage(
     title: 'GtStatusText',
-    description: 'Displays access status representation using an icon and label side-by-side.',
+    description:
+        'Displays access status representation using an icon and label side-by-side.',
     code: codeSnippet,
     child: Center(
       child: GtStatusText(

@@ -4,11 +4,15 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'GtDebitCardSelectionScreen', type: GtDebitCardSelectionScreen)
+@widgetbook.UseCase(
+  name: 'GtDebitCardSelectionScreen',
+  type: GtDebitCardSelectionScreen,
+)
 Widget buildGtDebitCardSelectionScreenDoc(BuildContext context) {
   return GtWidgetDocPage(
     title: 'GtDebitCardSelectionScreen',
-    description: 'A layout template allowing users to select between physical and virtual debit card types.',
+    description:
+        'A layout template allowing users to select between physical and virtual debit card types.',
     code: '''
 GtDebitCardSelectionScreen(
   title: "Select card type",
@@ -19,13 +23,17 @@ GtDebitCardSelectionScreen(
   },
 )''',
     child: GtEmptyStateCard(
-      description: 'Select "GtDebitCardSelectionScreen Gallery" in the sidebar to view the interactive card selection screen in full screen.',
+      description:
+          'Select "GtDebitCardSelectionScreen Gallery" in the sidebar to view the interactive card selection screen in full screen.',
       icon: GtIcons.alarmClock,
     ),
   );
 }
 
-@widgetbook.UseCase(name: 'GtDebitCardSelectionScreen Gallery', type: GtDebitCardSelectionScreen)
+@widgetbook.UseCase(
+  name: 'GtDebitCardSelectionScreen Gallery',
+  type: GtDebitCardSelectionScreen,
+)
 Widget buildGtDebitCardSelectionScreenUsecase(BuildContext context) {
   final title = context.knobs.string(
     label: 'Title',

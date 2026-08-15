@@ -234,6 +234,12 @@ class GtCard extends GtStatelessWidget {
 
   final OnPressed? onPressed;
 
+  /// An accessible name for the card as a control, already localised.
+  ///
+  /// Only announced when [onPressed] makes the card interactive. Leave it null
+  /// to let the card's own contents describe it.
+  final String? semanticsLabel;
+
   /// Creates a [GtCard].
   const GtCard({
     this.color,
@@ -249,6 +255,7 @@ class GtCard extends GtStatelessWidget {
     this.variant = GtCardVariant.normal,
     super.key,
     this.onPressed,
+    this.semanticsLabel,
     required this.child,
   });
 
@@ -270,12 +277,19 @@ class GtCard extends GtStatelessWidget {
     };
     return ClipRRect(
       borderRadius: computedRadius,
-      child: GestureDetector(
-        onTap: () {
-          HapticFeedback.mediumImpact();
-          onPressed?.call();
-        },
-        behavior: .translucent,
+      child: GtInkWell(
+        // GestureDetector took no focus and reported no semantics, and it
+        // registered a tap handler even when onPressed was null, leaving a
+        // dead target that still swallowed touches.
+        role: onPressed == null ? .none : .button,
+        semanticsLabel: onPressed == null ? null : semanticsLabel,
+        borderRadius: computedRadius,
+        onTap: onPressed == null
+            ? null
+            : () {
+                HapticFeedback.mediumImpact();
+                onPressed!.call();
+              },
         child: AnimatedContainer(
           clipBehavior: .hardEdge,
           constraints: constraints,

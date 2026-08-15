@@ -60,7 +60,7 @@ class GtProgressCard extends GtStatelessWidget {
         spacing: context.spacingMd,
         children: [
           Row(
-            spacing: context.spacingsectionMd,
+            spacing: context.spacingSectionMd,
             crossAxisAlignment: .start,
             children: [
               Expanded(

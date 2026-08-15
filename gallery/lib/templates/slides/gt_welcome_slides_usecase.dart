@@ -29,7 +29,8 @@ List<GtSlideData> getPersonalAppSlides(BuildContext context) {
 Widget playgroundGtWelcomeSlidesDoc(BuildContext context) {
   return GtWidgetDocPage(
     title: 'GtWelcomeSlides',
-    description: 'An onboarding/welcome slides template with customizable logo, colors, and dot indicators.',
+    description:
+        'An onboarding/welcome slides template with customizable logo, colors, and dot indicators.',
     code: '''
 GtWelcomeSlides(
   slides: [
@@ -44,7 +45,8 @@ GtWelcomeSlides(
   showLogo: true,
 )''',
     child: GtEmptyStateCard(
-      description: 'Select "GtWelcomeSlides Gallery" in the sidebar to view the interactive welcome slides in full screen.',
+      description:
+          'Select "GtWelcomeSlides Gallery" in the sidebar to view the interactive welcome slides in full screen.',
       icon: GtIcons.alarmClock,
     ),
   );

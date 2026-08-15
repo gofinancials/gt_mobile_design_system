@@ -52,7 +52,12 @@ class GtTransferCategoryGrid extends GtStatelessWidget
                   value: category,
                   onSelect: controller.select,
                   variant: category.variant ?? .featured,
-                  child: GtImage(image: category.image, width: 48, height: 48),
+                  child: GtImage(
+                    image: category.image,
+                    width: 48,
+                    height: 48,
+                    isDecorative: true,
+                  ),
                 ),
               ),
             GtTransactionCategoryGridCell(
@@ -97,6 +102,7 @@ class GtTransactionCategoryGridCell extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
+      role: .button,
       borderRadius: context.borderRadiusSm,
       onTap: onTap,
       child: Column(

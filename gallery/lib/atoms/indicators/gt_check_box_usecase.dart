@@ -43,6 +43,12 @@ GtCheckBox<int>(
   shape: .${shape.name},
 )
 ''',
+    accessibilityNotes: const [
+      'Announces as a checkbox with its checked state, not as a button. Turn on the Semantics addon to see the node.',
+      "Pass semanticsLabel with an already-localised name; without it the control is announced as 'checked' with no indication of what is checked.",
+      'Paints at 20dp but responds to touch across 44dp. The slop only works where the surrounding layout has room, so keep it out of a box sized exactly to the control.',
+      'Setting disabled announces the control as unavailable rather than leaving it silently inert.',
+    ],
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [

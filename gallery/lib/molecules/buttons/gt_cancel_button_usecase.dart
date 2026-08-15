@@ -14,7 +14,8 @@ Widget playgroundGtCancelButtonUseCase(BuildContext context) {
   );
   final asHero = context.knobs.boolean(label: 'As Hero', initialValue: false);
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtCancelButton(
   size: GtCancelButtonSize.${size.name},
   asHero: $asHero,
@@ -27,10 +28,6 @@ GtCancelButton(
 <b>GtCancelButton</b> is a standardized cancel (cross) button designed for closing overlays or modals.
 It automatically triggers context pop navigation with haptic feedback by default.''',
     code: codeSnippet,
-    child: GtCancelButton(
-      size: size,
-      asHero: asHero,
-      onTap: () {},
-    ),
+    child: GtCancelButton(size: size, asHero: asHero, onTap: () {}),
   );
 }

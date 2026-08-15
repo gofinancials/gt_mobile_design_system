@@ -47,14 +47,25 @@ class GtLessonSlide extends GtStatefulWidget {
 }
 
 class _GtLessonSlideState extends State<GtLessonSlide> {
-  late final GtLessonSlideData data;
   late final FocusNode _focusNode;
+
+  /// Read live rather than cached in [initState].
+  ///
+  /// This state is keyed by slide index, so it survives a
+  /// [GtLessonslideController.updateSlides] that swaps the content behind the
+  /// current index. A value captured once would keep rendering the old slide.
+  GtLessonSlideData get data => widget.controller.currentSlide;
 
   @override
   void initState() {
     super.initState();
-    data = widget.controller.currentSlide;
     _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   void _handleKeyDown(KeyEvent event) {
@@ -112,20 +123,22 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                 const GtGap.ySectionLg(),
                 GtLessonSlideTitle(
                   data.header,
-                  key: ValueKey('title_${data.header.hashCode}'),
+                  key: ValueKey(('title', data.header)),
+                  color: data.contentColor,
                 ),
                 Expanded(
                   child: Builder(
                     builder: (context) {
                       return switch (data.slideType) {
                         .image => GtImage(
-                          key: ValueKey('img_${data.media.hashCode}'),
+                          key: ValueKey(('img', data.media)),
                           fit: .contain,
                           useDefaultSize: false,
                           alignment: data.imageAlignment ?? .center,
                           width: data.imageSize,
                           height: data.imageSize,
                           image: data.media as AppImageData,
+                          isDecorative: true,
                         ),
                         .text => SingleChildScrollView(
                           padding: context.insets.symmetricDp(
@@ -135,15 +148,17 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                           child: Center(
                             child: GtRichText(
                               data.text,
-                              key: ValueKey('txt_${data.text.hashCode}'),
+                              key: ValueKey(('txt', data.text)),
                               textAlign: .center,
-                              style: context.textStyles.bodyM(),
+                              style: context.textStyles.bodyM(
+                                color: data.contentColor,
+                              ),
                             ),
                           ),
                         ),
                         .audioVisual => GtLessonSlideMedia(
                           data.media as AppAvData,
-                          key: ValueKey('media_${data.media.hashCode}'),
+                          key: ValueKey(('media', data.media)),
                           controller: widget.controller,
                         ),
                       };
@@ -189,6 +204,7 @@ class GtLessonSlideBackground extends GtStatelessWidget {
             width: data.width,
             height: data.height,
             useDefaultSize: false,
+            isDecorative: true,
           ),
         );
       },
@@ -223,7 +239,17 @@ class _GtLessonSlideMediaState extends State<GtLessonSlideMedia>
   }
 
   @override
+  void dispose() {
+    // Without this the binding retains this state, and through it the slide
+    // controller and its media player, for the lifetime of the app.
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!mounted) return;
+
     switch (state) {
       case AppLifecycleState.resumed:
         widget.controller.play();
@@ -240,7 +266,11 @@ class _GtLessonSlideMediaState extends State<GtLessonSlideMedia>
 
     return Center(
       child: IgnorePointer(
-        key: ValueKey(source.hashCode),
+        // Keyed on the controller instance, not the source: `MediaSource` is
+        // value equatable, so reloading the same media yields an equal source
+        // carrying a brand new controller, and a value key would hand that
+        // controller to the subtree built around the disposed one.
+        key: ObjectKey(source.video ?? source.youtube ?? source),
         child: Builder(
           builder: (context) {
             if (source.isVideo) return GtVideoPlayer(source.video!);
@@ -263,14 +293,19 @@ class GtLessonSlideTitle extends GtStatelessWidget {
   /// The header configuration data for the slide.
   final GtLessonSlideHeader data;
 
+  /// An optional color overriding the palette default for both lines.
+  ///
+  /// See [GtLessonSlideData.contentColor].
+  final Color? color;
+
   /// Creates a [GtLessonSlideTitle].
-  const GtLessonSlideTitle(this.data, {super.key});
+  const GtLessonSlideTitle(this.data, {super.key, this.color});
 
   @override
   Widget build(BuildContext context) {
     final styles = context.textStyles;
-    final titleStyle = styles.h5();
-    final subStyle = styles.subHeadS();
+    final titleStyle = styles.h5(color: color);
+    final subStyle = styles.subHeadS(color: color);
 
     return Padding(
       padding: context.insets.defaultHorizontalInsets,

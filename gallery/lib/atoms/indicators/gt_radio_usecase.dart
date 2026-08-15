@@ -41,6 +41,11 @@ GtRadio<String>(
   disabled: $disabled,
 )
 ''',
+    accessibilityNotes: const [
+      'Announces as a radio in a mutually exclusive group, so a screen reader can say which option of the set is selected.',
+      "Pass semanticsLabel with the option's already-localised name.",
+      'Paints at 20dp but responds to touch across 44dp.',
+    ],
     child: Column(
       mainAxisSize: .min,
       children: [

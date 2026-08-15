@@ -25,7 +25,8 @@ Stream<double> _getProgressStream() async* {
   }
 }
 
-class _BottomModalPreviewState extends State<_BottomModalPreview> with GtBottomModalMixin {
+class _BottomModalPreviewState extends State<_BottomModalPreview>
+    with GtBottomModalMixin {
   final GtBottomModalController _controller = GtBottomModalController(
     data: GtBottomModalData(title: "PROCESSING"),
     onComplete: (value) {
@@ -62,12 +63,19 @@ class _BottomModalPreviewState extends State<_BottomModalPreview> with GtBottomM
 
   @override
   Widget build(BuildContext context) {
-    final modalTitle = context.knobs.string(label: 'Modal Title', initialValue: 'NOT FOUND');
-    final modalDesc = context.knobs.string(label: 'Modal Description', initialValue: 'The system couldn’t find what you asked for');
+    final modalTitle = context.knobs.string(
+      label: 'Modal Title',
+      initialValue: 'NOT FOUND',
+    );
+    final modalDesc = context.knobs.string(
+      label: 'Modal Description',
+      initialValue: 'The system couldn’t find what you asked for',
+    );
 
     return GtWidgetDocPage(
       title: 'GtBottomModal',
-      description: 'Modal overlays designed to block user interaction during processing, success, or failure flows. Access these helper methods by mixing GtBottomModalMixin into your State class.',
+      description:
+          'Modal overlays designed to block user interaction during processing, success, or failure flows. Access these helper methods by mixing GtBottomModalMixin into your State class.',
       code: '''
 // 1. Add GtBottomModalMixin to your State class
 class MyState extends State<MyWidget> with GtBottomModalMixin {

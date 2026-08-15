@@ -19,8 +19,10 @@ Widget playgroundGtEmptyStateCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtEmptyStateCard',
-    description: 'A static card displaying empty state placeholder messages and status icons.',
-    code: '''
+    description:
+        'A static card displaying empty state placeholder messages and status icons.',
+    code:
+        '''
 GtEmptyStateCard(
   icon: GtIcons.userSearch,
   description: "$description",
@@ -34,14 +36,23 @@ GtEmptyStateCard(
   );
 }
 
-@widgetbook.UseCase(name: 'GtActionableEmptyStateCard', type: GtActionableEmptyStateCard)
+@widgetbook.UseCase(
+  name: 'GtActionableEmptyStateCard',
+  type: GtActionableEmptyStateCard,
+)
 Widget playgroundGtActionableEmptyStateCardUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'No transfers yet');
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'No transfers yet',
+  );
   final description = context.knobs.string(
     label: 'Description',
     initialValue: 'Your bulk transfers will appear after you create one',
   );
-  final buttontext = context.knobs.string(label: 'Button Text', initialValue: 'NEW bulk transfer');
+  final buttontext = context.knobs.string(
+    label: 'Button Text',
+    initialValue: 'NEW bulk transfer',
+  );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
     options: GtCardVariant.values,
@@ -51,8 +62,10 @@ Widget playgroundGtActionableEmptyStateCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtActionableEmptyStateCard',
-    description: 'An empty state card featuring a main button action to prompt workflow initiation.',
-    code: '''
+    description:
+        'An empty state card featuring a main button action to prompt workflow initiation.',
+    code:
+        '''
 GtActionableEmptyStateCard(
   icon: GtIcons.fileContent,
   title: "$title",

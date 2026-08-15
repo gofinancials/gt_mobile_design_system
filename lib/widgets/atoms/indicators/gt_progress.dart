@@ -19,6 +19,12 @@ class GtProgress extends GtStatelessWidget {
   /// The current progress value, from 0.0 to 1.0. If null, the indicator is indeterminate.
   final double? value;
 
+  /// An accessible name describing what is progressing.
+  ///
+  /// Without it the bar is announced as a bare percentage, which tells the user
+  /// how far along something is but not what.
+  final String? semanticsLabel;
+
   /// Creates a new [GtProgress].
   const GtProgress({
     this.color,
@@ -26,7 +32,23 @@ class GtProgress extends GtStatelessWidget {
     this.size,
     super.key,
     this.value,
+    this.semanticsLabel,
   });
+
+  /// The progress spoken to assistive technologies, as a percentage of 100.
+  ///
+  /// Null while indeterminate, so that screen readers announce the bar as busy
+  /// rather than claiming a position it does not have.
+  ///
+  /// Deliberately a bare number: the node carries a progress-bar role, and the
+  /// framework asserts that its value parses as a number against the 0-100
+  /// range. A "45%" string fails that check, and the platform adds the unit
+  /// itself when speaking.
+  String? get semanticsValue {
+    final value = this.value;
+    if (value == null) return null;
+    return '${(value.clamp(0, 1) * 100).round()}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +62,8 @@ class GtProgress extends GtStatelessWidget {
           valueColor: AlwaysStoppedAnimation(color ?? palette.primary.base),
           backgroundColor: inactiveColor ?? palette.bg.soft,
           value: value,
+          semanticsLabel: semanticsLabel,
+          semanticsValue: semanticsValue,
         ),
       ),
     );
@@ -59,8 +83,20 @@ class GtSlider extends GtStatelessWidget {
   /// Called when the user is selecting a new value for the slider.
   final OnChanged<double>? onChanged;
 
+  /// An accessible name describing what this slider adjusts.
+  ///
+  /// The adaptive slider announces its own value and exposes increment and
+  /// decrement actions, but nothing names the control.
+  final String? semanticsLabel;
+
   /// Creates a new [GtSlider].
-  const GtSlider({this.color, this.onChanged, super.key, this.value});
+  const GtSlider({
+    this.color,
+    this.onChanged,
+    super.key,
+    this.value,
+    this.semanticsLabel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -69,21 +105,32 @@ class GtSlider extends GtStatelessWidget {
     final inactiveColor = palette.bg.sub;
 
     return RepaintBoundary(
-      child: Slider.adaptive(
-        value: value ?? 0,
-        onChanged: onChanged,
-        activeColor: activeColor,
-        inactiveColor: inactiveColor,
-        thumbColor: activeColor,
+      child: GtSemantics(
+        // Slider owns its value and its enabled state; this only names it.
+        role: .delegated,
+        label: semanticsLabel,
+        // A focusable child does not fold into an enclosing annotation on its
+        // own, so the name and the slider would otherwise be two stops.
+        mergeDescendants: semanticsLabel != null,
+        child: Slider.adaptive(
+          value: value ?? 0,
+          onChanged: onChanged,
+          activeColor: activeColor,
+          inactiveColor: inactiveColor,
+          thumbColor: activeColor,
+        ),
       ),
     );
   }
 }
 
-/// A progress indicator that smoothly animates its value upon initialization.
+/// A progress indicator that smoothly animates towards its value.
 ///
-/// This widget animates from 0 to the target [value]. It also supports an optional
-/// [isBuffering] state to display an underlying indeterminate animation.
+/// The bar fills from 0 to [value] on first build and animates on from wherever
+/// it currently sits whenever [value] changes, so callers update the value in
+/// place rather than re-keying the widget to force a fresh fill. It also
+/// supports an optional [isBuffering] state to display an underlying
+/// indeterminate animation.
 class GtAnimatedProgress extends StatefulWidget {
   /// The target progress value to animate towards, from 0.0 to 1.0.
   final double value;
@@ -130,21 +177,51 @@ class GtAnimatedProgress extends StatefulWidget {
 
 class _GtAnimatedProgressState extends State<GtAnimatedProgress>
     with SingleTickerProviderStateMixin {
-  late AnimationController _ctrl;
+  static const _defaultDuration = Duration(milliseconds: 300);
+
+  late final AnimationController _ctrl;
+
+  /// The fill currently painted, tweened from where the bar was to [_target].
+  late Animation<double> _progress;
+
+  double get _target => widget.value.clamp(0, 1);
+
   @override
   void initState() {
     super.initState();
     _ctrl = AnimationController(
-      duration: widget.duration ?? 300.milliseconds,
-      lowerBound: 0,
-      upperBound: widget.value > 0 ? widget.value : 0.000001,
+      duration: widget.duration ?? _defaultDuration,
       vsync: this,
-    )..forward();
+    );
+    _progress = _tween(from: 0);
     _ctrl.addListener(_progressListener);
+    _ctrl.forward();
+  }
+
+  @override
+  void didUpdateWidget(covariant GtAnimatedProgress oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.duration != oldWidget.duration) {
+      _ctrl.duration = widget.duration ?? _defaultDuration;
+    }
+
+    if (widget.value == oldWidget.value) return;
+
+    // Pick up from the painted fill rather than from zero: the value moves
+    // while the bar is on screen, and restarting the sweep would read as the
+    // progress dropping back before catching up.
+    _progress = _tween(from: _progress.value);
+    _ctrl.forward(from: 0);
+  }
+
+  /// A linear sweep from [from] to the current [_target].
+  Animation<double> _tween({required double from}) {
+    return _ctrl.drive(Tween<double>(begin: from, end: _target));
   }
 
   void _progressListener() {
-    if (_ctrl.value < 1) return;
+    if (_progress.value < 1) return;
     widget.onDone?.call();
   }
 
@@ -170,7 +247,7 @@ class _GtAnimatedProgressState extends State<GtAnimatedProgress>
           width: widget.width ?? double.infinity,
         ),
         child: AnimatedBuilder(
-          animation: _ctrl,
+          animation: _progress,
           builder: (_, child) {
             return ClipRRect(
               borderRadius: borderRadius,
@@ -189,7 +266,7 @@ class _GtAnimatedProgressState extends State<GtAnimatedProgress>
                       foregroundPainter: GtProgressPainter(
                         borderRadius: 999.radius,
                         color: valueColor,
-                        value: _ctrl.value,
+                        value: _progress.value,
                         height: height,
                       ),
                     ),

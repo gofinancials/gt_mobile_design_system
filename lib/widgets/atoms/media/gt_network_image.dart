@@ -38,6 +38,21 @@ class GtNetworkImage extends GtStatelessWidget {
   /// If null, an empty [SizedBox] is rendered.
   final Widget? errorWidget;
 
+  /// A description of what this image conveys, for screen readers.
+  ///
+  /// Supply this whenever the image carries information the surrounding text
+  /// does not. When both this and [isDecorative] are omitted the image is
+  /// excluded from the semantics tree, because an image node with no label is
+  /// a stop the user must swipe past only to learn nothing.
+  final String? semanticsLabel;
+
+  /// Whether this image is purely decorative.
+  ///
+  /// Decorative images are excluded from the semantics tree. Prefer setting
+  /// this explicitly over simply omitting [semanticsLabel], so the intent is
+  /// visible to readers and to the lint that flags unlabelled images.
+  final bool isDecorative;
+
   /// Creates a new [GtNetworkImage].
   const GtNetworkImage(
     this.imageUrl, {
@@ -49,6 +64,8 @@ class GtNetworkImage extends GtStatelessWidget {
     this.color,
     this.height,
     this.errorWidget,
+    this.semanticsLabel,
+    this.isDecorative = false,
   });
 
   @override
@@ -66,6 +83,8 @@ class GtNetworkImage extends GtStatelessWidget {
               width: width,
               alignment: alignment,
               fit: fit,
+              semanticsLabel: semanticsLabel,
+              isDecorative: isDecorative,
             );
           }
 
@@ -77,10 +96,12 @@ class GtNetworkImage extends GtStatelessWidget {
               alignment: alignment,
               fit: fit ?? BoxFit.contain,
               color: color,
+              semanticsLabel: semanticsLabel,
+              isDecorative: isDecorative,
             );
           }
 
-          return CachedNetworkImage(
+          final Widget image = CachedNetworkImage(
             imageUrl: imageUrl,
             height: height,
             width: width,
@@ -99,9 +120,22 @@ class GtNetworkImage extends GtStatelessWidget {
                 width: width,
                 height: height,
                 alignment: alignment,
+                // The placeholder stands in for the real image and must not
+                // announce itself alongside it.
+                isDecorative: true,
               );
             },
           );
+
+          // CachedNetworkImage exposes no semantics parameters of its own, so
+          // the annotation has to be applied from outside. An unlabelled image
+          // is decoration as far as the user is concerned; announcing it as an
+          // anonymous image only adds a stop with no payload.
+          if (isDecorative || semanticsLabel == null) {
+            return ExcludeSemantics(child: image);
+          }
+
+          return GtSemantics(role: .image, label: semanticsLabel, child: image);
         },
       ),
     );

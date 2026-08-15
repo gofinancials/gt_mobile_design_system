@@ -6,13 +6,21 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtTooltipWidget', type: GtTooltipWidget)
 Widget playgroundGtTooltipUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Tooltip Title', initialValue: 'View and add accounts');
-  final message = context.knobs.string(label: 'Tooltip Message', initialValue: 'You can view your other accounts and open a new one.');
+  final title = context.knobs.string(
+    label: 'Tooltip Title',
+    initialValue: 'View and add accounts',
+  );
+  final message = context.knobs.string(
+    label: 'Tooltip Message',
+    initialValue: 'You can view your other accounts and open a new one.',
+  );
 
   return GtWidgetDocPage(
     title: 'GtTooltipWidget',
-    description: 'A floating tooltip bubble that anchors to a target widget and provides contextual help.',
-    code: '''
+    description:
+        'A floating tooltip bubble that anchors to a target widget and provides contextual help.',
+    code:
+        '''
 GtTooltipWrapper(
   tooltipTitle: "$title",
   tooltipMessage: "$message",

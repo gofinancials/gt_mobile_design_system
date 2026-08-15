@@ -22,6 +22,15 @@ class GtBackdropFilters {
     return ImageFilter.blur(sigmaX: sigma, sigmaY: sigma);
   }
 
+  /// A heavy blur used behind full-bleed imagery on wide layouts.
+  ///
+  /// Softens the enlarged copy of a slide image so it reads as ambient
+  /// background fill rather than a second, competing image.
+  ImageFilter imageBackdrop() {
+    final sigma = context.dp(40.px);
+    return ImageFilter.blur(sigmaX: sigma, sigmaY: sigma);
+  }
+
   /// A subtle blur effect applied behind context menus.
   ///
   /// Uses a fixed 3px sigma to gently obscure the background without completely

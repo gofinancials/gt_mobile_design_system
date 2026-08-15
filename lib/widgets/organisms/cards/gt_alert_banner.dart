@@ -46,6 +46,7 @@ class GtAlertBanner extends GtStatelessWidget {
       showFirst: !hidden,
       child2: const Offstage(),
       child1: GtInkWell(
+        role: .button,
         borderRadius: context.borderRadius2Xl,
         onTap: onTap,
         child: GtCard(

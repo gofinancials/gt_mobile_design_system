@@ -172,6 +172,7 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
+      role: .button,
       semanticsLabel: widget.dropdownSemanticLabel,
       borderRadius: context.borderRadiusXl,
       hapticFeedbackType: .medium,

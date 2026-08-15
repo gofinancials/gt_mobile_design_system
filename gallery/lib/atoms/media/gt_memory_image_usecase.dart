@@ -25,7 +25,8 @@ Widget playgroundGtMemoryImageUseCase(BuildContext context) {
     max: 200.0,
   );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtMemoryImage(
   bytesData, // Uint8List
   width: $width,

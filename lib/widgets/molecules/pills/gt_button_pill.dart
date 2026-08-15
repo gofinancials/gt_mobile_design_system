@@ -67,6 +67,7 @@ class GtButtonPill extends StatelessWidget {
     };
 
     return GtInkWell(
+      role: .button,
       borderRadius: context.borderRadiusSm,
       onTap: onTap,
       child: GtPill(
@@ -123,6 +124,7 @@ class GtCopyPill extends GtStatelessWidget {
     );
 
     return GtInkWell(
+      role: .button,
       borderRadius: context.borderRadiusSm,
       onTap: () {
         context.copyTextToClipboard(value);

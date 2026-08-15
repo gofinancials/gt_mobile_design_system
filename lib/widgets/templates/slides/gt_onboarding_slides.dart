@@ -138,6 +138,7 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
         widget.inActiveDotColor ?? GtColors.whiteAlpha24.value;
     final defaultGradient = context.gradients.onboardingSlideGradient();
     final backgroundColor = widget.backgroundColor ?? palette.bg.strong;
+    final isWideLayout = !context.isMobile;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -151,7 +152,7 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
               onPageChanged: _updateSlide,
               itemBuilder: (_, index) {
                 final slide = widget.slides[index];
-                return DecoratedBox(
+                final image = DecoratedBox(
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: slide.image,
@@ -159,6 +160,29 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
                       alignment: .topCenter,
                     ),
                   ),
+                );
+
+                if (!isWideLayout) return image;
+
+                // On wide layouts the contained image leaves bare space on
+                // either side, so a blurred, full-bleed copy fills it in.
+                return Stack(
+                  fit: .expand,
+                  children: [
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: slide.image,
+                          fit: .cover,
+                          alignment: .topCenter,
+                        ),
+                      ),
+                    ),
+                    BackdropFilter(
+                      filter: context.backdropFilters.imageBackdrop(),
+                      child: image,
+                    ),
+                  ],
                 );
               },
             ),
@@ -205,6 +229,7 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
                           width: slide.contentImageWidth,
                           alignment: .center,
                           useDefaultSize: false,
+                          isDecorative: true,
                         ),
                         ?slide.contentImageSpacer,
                       ],

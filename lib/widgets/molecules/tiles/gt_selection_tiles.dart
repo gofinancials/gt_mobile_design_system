@@ -32,6 +32,9 @@ class GtMenuListTile<T> extends StatelessWidget {
     return GtInkWell(
       borderRadius: .zero,
       hapticFeedbackType: .selection,
+      // A menu row performs an action rather than selecting one of a set.
+      role: .button,
+      semanticsLabel: text,
       onTap: () => onSelect(value),
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 4.px),
@@ -114,6 +117,9 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
     return GtInkWell(
       borderRadius: .zero,
       hapticFeedbackType: .selection,
+      role: .radio,
+      isChecked: isSelected,
+      semanticsLabel: text,
       onTap: () => onSelect(value),
       child: Row(
         spacing: context.spacingMd,
@@ -210,6 +216,8 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
     return GtInkWell(
       borderRadius: .zero,
       hapticFeedbackType: .selection,
+      role: .radio,
+      isChecked: isSelected,
       onTap: () => onSelect(value),
       child: child,
     );
@@ -282,6 +290,8 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
     return GtInkWell(
       borderRadius: .zero,
       hapticFeedbackType: .selection,
+      role: .radio,
+      isChecked: isSelected,
       onTap: () => onSelect(value),
       child: child,
     );
@@ -321,6 +331,8 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
     return GtInkWell(
       borderRadius: .zero,
       hapticFeedbackType: .selection,
+      role: .radio,
+      isChecked: isSelected,
       onTap: () => onSelect(value),
       child: Row(
         spacing: context.spacingBase,
@@ -331,6 +343,7 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
               width: size,
               height: size,
               fit: .cover,
+              isDecorative: true,
             ),
           ),
           Expanded(

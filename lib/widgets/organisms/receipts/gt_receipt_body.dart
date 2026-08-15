@@ -36,7 +36,7 @@ class GtReceiptBody extends GtStatelessWidget {
       controller: controller,
       padding: context.insets.allDp(16.px),
       children: [
-        _ReceiptStatusPill(
+        GtReceiptStatusPill(
           status: status,
           key: const Key('receipt-status-pill'),
         ),
@@ -119,7 +119,7 @@ class GtReceiptBody extends GtStatelessWidget {
               crossAxisAlignment: .stretch,
               children: [
                 for (final (index, tile) in details.tiles.indexed)
-                  _ReceiptDetailTile(tile, key: Key('recipient-tile-$index')),
+                  GtReceiptDetailTile(tile, key: Key('recipient-tile-$index')),
               ],
             ),
           ),
@@ -129,37 +129,6 @@ class GtReceiptBody extends GtStatelessWidget {
         const GtGap.ySection4xl(),
       ],
     );
-  }
-}
-
-class _ReceiptDetailTile extends GtStatelessWidget {
-  final GtReceiptTileData tile;
-
-  const _ReceiptDetailTile(this.tile, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final imageSize = context.dp(20.px);
-    final suffix = tile.image != null
-        ? GtImage(image: tile.image!, width: imageSize, height: imageSize)
-        : null;
-
-    final child = GtDoubleColumnListTile(
-      tile.label,
-      value: tile.value,
-      valueSuffix: suffix,
-      highlightValue: false,
-    );
-
-    if (tile.onTap != null) {
-      return GtInkWell(
-        onTap: tile.onTap,
-        borderRadius: context.borderRadiusSm,
-        child: child,
-      );
-    }
-
-    return child;
   }
 }
 
@@ -193,7 +162,12 @@ class _ReceiptCategory extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final size = context.dp(36.px);
     final image = switch (data.image) {
-      AppImageData img => GtImage(image: img, width: size, height: size),
+      AppImageData img => GtImage(
+        image: img,
+        width: size,
+        height: size,
+        isDecorative: true,
+      ),
       _ => null,
     };
     final child = GtDoubleColumnListTile(
@@ -204,6 +178,7 @@ class _ReceiptCategory extends GtStatelessWidget {
 
     if (data.onTap != null) {
       return GtInkWell(
+        role: .button,
         onTap: data.onTap,
         borderRadius: context.borderRadiusSm,
         child: child,
@@ -237,58 +212,6 @@ class _ReceiptAction extends GtStatelessWidget {
   }
 }
 
-class _ReceiptStatusPill extends GtStatelessWidget {
-  final GtReceiptStatusData status;
-
-  const _ReceiptStatusPill({super.key, required this.status});
-
-  @override
-  Widget build(BuildContext context) {
-    final text = status.displayTitle;
-    final borderColor = status.borderColor(context.palette);
-    final padding = context.insets.symmetricDp(
-      vertical: 6.px,
-      horizontal: 8.px,
-    );
-
-    Color textColor = status.variant.getTextColor(context.palette);
-    final iconSize = context.dp(13.px);
-    Widget leading = GtIcon.withColor(
-      status.icon ?? GtIcons.alert,
-      color: textColor,
-      size: iconSize,
-    );
-
-    if (status.variant == GtPillVariant.away) {
-      leading = GtSquareConstrainedBox(
-        iconSize,
-        child: GtSpinner(
-          size: iconSize,
-          color: context.palette.away.base,
-          strokeWidth: context.dp(2.px),
-        ),
-      );
-      textColor = context.palette.away.base;
-    }
-
-    final pill = GtStatusPill.custom(
-      text: text.upper,
-      leading: leading,
-      variant: status.variant,
-      alignment: .centerLeft,
-      textColor: textColor,
-      borderColor: borderColor,
-      padding: padding,
-    );
-
-    if (status.onPressed != null) {
-      return GtInkWell(onTap: status.onPressed, child: pill);
-    }
-
-    return pill;
-  }
-}
-
 class _ReceiptParticipant extends GtStatelessWidget {
   final GtReceiptParticipant data;
   final bool isFrom;
@@ -300,7 +223,9 @@ class _ReceiptParticipant extends GtStatelessWidget {
     final defaultLabel = isFrom ? 'from'.ctr() : 'to'.ctr();
     final imageSize = context.dp(36.px);
 
-    final tag = data.tag != null ? GtImage(image: data.tag!) : null;
+    final tag = data.tag != null
+        ? GtImage(image: data.tag!, isDecorative: true)
+        : null;
 
     Widget child = GtTransactionParticipantListTile(
       data.title.upper,
@@ -311,6 +236,7 @@ class _ReceiptParticipant extends GtStatelessWidget {
           image: data.image,
           width: imageSize,
           height: imageSize,
+          isDecorative: true,
         ),
         _ => GtAvatar(
           avatar: data.image,
@@ -360,7 +286,7 @@ class _ReceiptTransactionItem extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tag = transaction.tag != null
-        ? GtImage(image: transaction.tag!)
+        ? GtImage(image: transaction.tag!, isDecorative: true)
         : null;
 
     return GtPaymentListTile(

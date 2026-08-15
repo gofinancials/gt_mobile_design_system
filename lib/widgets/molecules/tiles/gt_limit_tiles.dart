@@ -119,6 +119,7 @@ class GtLimitEditListTile extends GtStatelessWidget {
                         if (onTapInfo != null)
                           WidgetSpan(
                             child: GtInkWell(
+                              role: .button,
                               onTap: onTapInfo,
                               child: GtIcon(
                                 GtIcons.info,
@@ -156,7 +157,6 @@ class GtLimitEditListTile extends GtStatelessWidget {
         ),
         GtAnimatedProgress(
           value: _fraction,
-          key: ValueKey(_fraction),
           valueColor: context.palette.primary.base,
         ),
         Align(

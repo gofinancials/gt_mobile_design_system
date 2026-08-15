@@ -34,6 +34,7 @@ class GtExportListTile extends GtStatelessWidget {
     }
 
     return GtInkWell(
+      role: .button,
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(

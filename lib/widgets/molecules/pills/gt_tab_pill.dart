@@ -159,6 +159,10 @@ class GtTabPill<T> extends StatelessWidget {
     return GtInkWell(
       borderRadius: context.borderRadiusSm,
       hapticFeedbackType: .selection,
+      // A tab announced as a button loses its selected state, so the user has
+      // no way to hear which one they are currently on.
+      role: .tab,
+      isSelected: isSelected,
       onTap: () => onSelect(value),
       child: GtPill(
         text: text.upper,
@@ -235,6 +239,10 @@ class GtSelectionPill<T> extends GtTabPill<T> {
     return GtInkWell(
       borderRadius: context.borderRadiusMd,
       hapticFeedbackType: .selection,
+      // A tab announced as a button loses its selected state, so the user has
+      // no way to hear which one they are currently on.
+      role: .tab,
+      isSelected: isSelected,
       onTap: () => onSelect(value),
       child: GtPill(
         text: text.capitalise(),

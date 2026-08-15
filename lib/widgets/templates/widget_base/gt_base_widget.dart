@@ -11,7 +11,13 @@ class GtBaseWidget extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
-    config.windowSize = mediaQuery.size;
+    final windowSize = mediaQuery.size;
+
+    // Published as a side channel for host apps that read AppConfig.windowSize.
+    // Guarded because the locator may have no AppConfig registered (widget
+    // tests, embedded previews), and a missing optional config should not tear
+    // down the entire widget tree.
+    if (locator.isRegistered<AppConfig>()) config.windowSize = windowSize;
 
     mediaQuery = mediaQuery.copyWith(
       textScaler: mediaQuery.textScaler.clamp(
@@ -24,8 +30,11 @@ class GtBaseWidget extends GtStatelessWidget {
 
     return Material(
       type: MaterialType.transparency,
+      // Unkeyed on purpose: this wraps the whole app, and a key carrying the
+      // window size threw every descendant's state away on a rotation or a
+      // window resize. `MediaQuery` already republishes `data` to its
+      // dependents when the metrics change.
       child: MediaQuery(
-        key: ValueKey(config.windowSize),
         data: mediaQuery,
         child: Listener(
           behavior: .translucent,
@@ -36,6 +45,10 @@ class GtBaseWidget extends GtStatelessWidget {
           },
           child: GestureDetector(
             onTap: context.resetFocus,
+            // Dismisses the keyboard on a background tap. Screen reader users
+            // dismiss it their own way, and announcing the whole app as
+            // tappable would be actively harmful.
+            excludeFromSemantics: true,
             child: child ?? const Offstage(),
           ),
         ),

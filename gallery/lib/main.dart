@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 import 'main.directories.g.dart';
-import 'addons/gt_theme_addon.dart';
+import 'addons/addons.dart';
 
 class GalleryConfig extends AppConfig {
   @override
@@ -150,8 +150,18 @@ class WidgetbookApp extends StatelessWidget {
           addons: [
             ViewportAddon(Viewports.all),
             GtThemeAddon(themes: kAllThemes, themeNotifier: themeNotifier),
+            // Nested in list order, so anything after the theme addon sits
+            // closer to the use case and its MediaQuery wins. The theme addon
+            // pins textScaler to 1, which is what TextScaleAddon overrides.
+            GtAccessibilityAddon(),
             InspectorAddon(),
-            TextScaleAddon(max: 1.5),
+            // Renders the semantics tree over the use case, which is the only
+            // practical way to see what a component announces without running
+            // a screen reader. Marked experimental upstream; the worst case is
+            // that a future widgetbook drops it and this line comes out.
+            // ignore: experimental_member_use
+            SemanticsAddon(),
+            TextScaleAddon(max: 2),
             ZoomAddon(),
           ],
         ),

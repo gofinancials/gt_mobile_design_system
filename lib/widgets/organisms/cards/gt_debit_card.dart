@@ -86,6 +86,7 @@ class GtPaymentCardSelectionCard extends GtStatelessWidget {
                   height: context.dp(99.px),
                   fit: BoxFit.contain,
                   useDefaultSize: false,
+                  isDecorative: true,
                 ),
               ),
             ),
@@ -228,13 +229,14 @@ class GtDebitCard extends GtStatelessWidget {
                 children: [
                   FractionalTranslation(
                     translation: Offset(0, 1.4),
-                    child: GtSvg(GtVectors.chip),
+                    child: GtSvg(GtVectors.chip, isDecorative: true),
                   ),
                   GtImage(
                     image: bankLogo ?? defaultBankLogo,
                     useDefaultSize: false,
                     alignment: .centerRight,
                     height: 20,
+                    isDecorative: true,
                   ),
                 ],
               ),
@@ -260,6 +262,7 @@ class GtDebitCard extends GtStatelessWidget {
                     image: cardLogo ?? defaultCardLogo,
                     alignment: .centerRight,
                     useDefaultSize: false,
+                    isDecorative: true,
                   ),
                 ],
               ),

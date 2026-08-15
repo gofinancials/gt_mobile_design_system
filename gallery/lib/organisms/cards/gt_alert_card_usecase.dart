@@ -6,8 +6,14 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtAlertCard', type: GtAlertCard)
 Widget playgroundGtAlertCardUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Issue with address');
-  final subtitle = context.knobs.string(label: 'Subtitle', initialValue: 'Address not verified');
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Issue with address',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'Address not verified',
+  );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
     options: GtCardVariant.values,
@@ -17,8 +23,10 @@ Widget playgroundGtAlertCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtAlertCard',
-    description: 'An alert card designed to call attention to important state notices or failures.',
-    code: '''
+    description:
+        'An alert card designed to call attention to important state notices or failures.',
+    code:
+        '''
 GtAlertCard(
   title: "$title",
   subtitle: "$subtitle",

@@ -108,6 +108,7 @@ class _GtContextMenuState<T> extends State<GtContextMenu<T>> {
         ),
         padding: context.insets.allDp(6.px),
         child: GtInkWell(
+          role: .button,
           borderRadius: context.borderRadiusSm,
           onTap: _toggle,
           child: widget.anchor,
@@ -190,6 +191,7 @@ class GtContextMenuTile<T> extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
+      role: .button,
       hapticFeedbackType: .selection,
       borderRadius: .zero,
       onTap: () {
@@ -200,7 +202,7 @@ class GtContextMenuTile<T> extends GtStatelessWidget {
         padding: context.insets.symmetricDp(vertical: 8.px, horizontal: 12.px),
         constraints: BoxConstraints(minHeight: 40),
         child: Row(
-          spacing: context.spacingsectionMd,
+          spacing: context.spacingSectionMd,
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(

@@ -50,6 +50,12 @@ class GtBottomNavigationBar extends GtStatelessWidget {
   /// Optional icon for the trailing action button (**iOS only**).
   final IconData trailingIcon;
 
+  /// An accessible name for the trailing action, already localised.
+  ///
+  /// The action is icon-only, so without a name a screen reader announces it
+  /// as an unlabelled button.
+  final String? trailingSemanticsLabel;
+
   const GtBottomNavigationBar({
     super.key,
     required this.items,
@@ -58,6 +64,7 @@ class GtBottomNavigationBar extends GtStatelessWidget {
     this.style,
     this.onTrailingTap,
     this.trailingIcon = GtIcons.helpInfo,
+    this.trailingSemanticsLabel,
   }) : assert(
          items.length >= 2,
          'GtBottomNavigationBar needs at least 2 items',
@@ -73,6 +80,7 @@ class GtBottomNavigationBar extends GtStatelessWidget {
         onIndexChanged: onIndexChanged,
         onTrailingTap: onTrailingTap,
         trailingIcon: trailingIcon,
+        trailingSemanticsLabel: trailingSemanticsLabel,
       ),
       .android => GtAndroidBottomNavigationBar(
         items: items,
@@ -128,6 +136,12 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
                 children: [
                   for (final (i, item) in items.indexed)
                     GtInkWell(
+                      // Tabs announced as buttons lose their selected state,
+                      // so the user cannot hear which section they are in.
+                      role: .tab,
+                      isSelected: currentIndex == i,
+                      semanticsLabel: item.label,
+                      excludeDescendantSemantics: true,
                       onTap: () => onIndexChanged(i),
                       child: Padding(
                         padding: context.insets.allDp(11.px),
@@ -176,6 +190,7 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
   final ValueChanged<int> onIndexChanged;
   final OnPressed? onTrailingTap;
   final IconData trailingIcon;
+  final String? trailingSemanticsLabel;
 
   const _GtIosFloatingBottomNavigationBar({
     required this.items,
@@ -183,6 +198,7 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
     required this.onIndexChanged,
     required this.onTrailingTap,
     required this.trailingIcon,
+    required this.trailingSemanticsLabel,
   });
 
   @override
@@ -294,6 +310,7 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
                   _GtBottomNavigationTrailingAction(
                     onTap: onTrailingTap!,
                     icon: trailingIcon,
+                    semanticsLabel: trailingSemanticsLabel,
                   ),
                 ],
               ],
@@ -347,8 +364,13 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
+    return GtInkWell(
+      // GestureDetector takes no focus and reports no semantics, so this tab
+      // was unreachable by screen readers, keyboards, and switch control.
+      role: .tab,
+      isSelected: selected,
+      semanticsLabel: item.label,
+      excludeDescendantSemantics: true,
       onTap: () => onTap(),
       child: Center(
         child: Column(
@@ -379,10 +401,12 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
 class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
   final OnPressed onTap;
   final IconData icon;
+  final String? semanticsLabel;
 
   const _GtBottomNavigationTrailingAction({
     required this.onTap,
     required this.icon,
+    required this.semanticsLabel,
   });
 
   @override
@@ -408,8 +432,11 @@ class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
         borderRadius: radius,
         child: BackdropFilter(
           filter: context.backdropFilters.bottomNavFrost(),
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
+          child: GtInkWell(
+            // GestureDetector takes no focus and reports no semantics.
+            role: .button,
+            semanticsLabel: semanticsLabel,
+            excludeDescendantSemantics: true,
             onTap: () => onTap(),
             child: Container(
               alignment: .center,

@@ -117,7 +117,12 @@ class GtBaseListTileTemplate extends GtStatelessWidget {
     }
 
     if (onTap != null) {
-      return GtInkWell(borderRadius: .zero, onTap: onTap, child: child);
+      return GtInkWell(
+        role: .button,
+        borderRadius: .zero,
+        onTap: onTap,
+        child: child,
+      );
     }
 
     return child;

@@ -7,12 +7,17 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtMenuListTile', type: GtMenuListTile)
 Widget playgroundGtMenuListTileUseCase(BuildContext context) {
-  final text = context.knobs.string(label: 'Menu Title', initialValue: 'Settings');
+  final text = context.knobs.string(
+    label: 'Menu Title',
+    initialValue: 'Settings',
+  );
 
   return GtWidgetDocPage(
     title: 'GtMenuListTile',
-    description: 'A generic list tile used for rendering menu items or options.',
-    code: '''
+    description:
+        'A generic list tile used for rendering menu items or options.',
+    code:
+        '''
 GtMenuListTile<String>(
   "$text",
   value: "settings",
@@ -36,13 +41,21 @@ GtMenuListTile<String>(
 
 @widgetbook.UseCase(name: 'GtSelectionListTile', type: GtSelectionListTile)
 Widget playgroundGtSelectionListTileUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Selection Title', initialValue: 'Choose Account');
-  final isSelected = context.knobs.boolean(label: 'Is Selected', initialValue: true);
+  final title = context.knobs.string(
+    label: 'Selection Title',
+    initialValue: 'Choose Account',
+  );
+  final isSelected = context.knobs.boolean(
+    label: 'Is Selected',
+    initialValue: true,
+  );
 
   return GtWidgetDocPage(
     title: 'GtSelectionListTile',
-    description: 'A generic selection list tile displaying a prominent checkmark when active.',
-    code: '''
+    description:
+        'A generic selection list tile displaying a prominent checkmark when active.',
+    code:
+        '''
 GtSelectionListTile<String>(
   "savings",
   text: "$title",
@@ -64,16 +77,30 @@ GtSelectionListTile<String>(
   );
 }
 
-@widgetbook.UseCase(name: 'GtSelectionColumnListTile', type: GtSelectionColumnListTile)
+@widgetbook.UseCase(
+  name: 'GtSelectionColumnListTile',
+  type: GtSelectionColumnListTile,
+)
 Widget playgroundGtSelectionColumnListTileUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Column Title', initialValue: 'Select Branch');
-  final description = context.knobs.string(label: 'Column Description', initialValue: 'Head Office Branch');
-  final isSelected = context.knobs.boolean(label: 'Is Selected', initialValue: true);
+  final title = context.knobs.string(
+    label: 'Column Title',
+    initialValue: 'Select Branch',
+  );
+  final description = context.knobs.string(
+    label: 'Column Description',
+    initialValue: 'Head Office Branch',
+  );
+  final isSelected = context.knobs.boolean(
+    label: 'Is Selected',
+    initialValue: true,
+  );
 
   return GtWidgetDocPage(
     title: 'GtSelectionColumnListTile',
-    description: 'A selection tile displaying a checkbox alongside stacked title and description columns.',
-    code: '''
+    description:
+        'A selection tile displaying a checkbox alongside stacked title and description columns.',
+    code:
+        '''
 GtSelectionColumnListTile<String>(
   "$title",
   description: "$description",
@@ -97,16 +124,30 @@ GtSelectionColumnListTile<String>(
   );
 }
 
-@widgetbook.UseCase(name: 'GtRoleSelectionListTile', type: GtRoleSelectionListTile)
+@widgetbook.UseCase(
+  name: 'GtRoleSelectionListTile',
+  type: GtRoleSelectionListTile,
+)
 Widget playgroundGtRoleSelectionListTileUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Role Title', initialValue: 'Administrator');
-  final description = context.knobs.string(label: 'Role Description', initialValue: 'Full system access');
-  final isSelected = context.knobs.boolean(label: 'Is Selected', initialValue: true);
+  final title = context.knobs.string(
+    label: 'Role Title',
+    initialValue: 'Administrator',
+  );
+  final description = context.knobs.string(
+    label: 'Role Description',
+    initialValue: 'Full system access',
+  );
+  final isSelected = context.knobs.boolean(
+    label: 'Is Selected',
+    initialValue: true,
+  );
 
   return GtWidgetDocPage(
     title: 'GtRoleSelectionListTile',
-    description: 'A specialized role selection list tile highlighting features for authorized user roles.',
-    code: '''
+    description:
+        'A specialized role selection list tile highlighting features for authorized user roles.',
+    code:
+        '''
 GtRoleSelectionListTile<String>(
   "$title",
   description: "$description",
@@ -130,17 +171,32 @@ GtRoleSelectionListTile<String>(
   );
 }
 
-@widgetbook.UseCase(name: 'GtCountrySelectionListTile', type: GtCountrySelectionListTile)
+@widgetbook.UseCase(
+  name: 'GtCountrySelectionListTile',
+  type: GtCountrySelectionListTile,
+)
 Widget playgroundGtCountrySelectionListTileUseCase(BuildContext context) {
-  final showCountryCode = context.knobs.boolean(label: 'Show Country Code', initialValue: true);
-  final isSelected = context.knobs.boolean(label: 'Is Selected', initialValue: true);
+  final showCountryCode = context.knobs.boolean(
+    label: 'Show Country Code',
+    initialValue: true,
+  );
+  final isSelected = context.knobs.boolean(
+    label: 'Is Selected',
+    initialValue: true,
+  );
 
-  final country = Country(dial: "234", iSO31661Alpha2: "NG", countryName: "Nigeria");
+  final country = Country(
+    dial: "234",
+    iSO31661Alpha2: "NG",
+    countryName: "Nigeria",
+  );
 
   return GtWidgetDocPage(
     title: 'GtCountrySelectionListTile',
-    description: 'A specialized country selection list tile showing country flag, name, dial code, and checkmark.',
-    code: '''
+    description:
+        'A specialized country selection list tile showing country flag, name, dial code, and checkmark.',
+    code:
+        '''
 GtCountrySelectionListTile(
   Country(dial: "234", iSO31661Alpha2: "NG", countryName: "Nigeria"),
   showCountryCode: $showCountryCode,

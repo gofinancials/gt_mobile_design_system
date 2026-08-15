@@ -6,7 +6,10 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtProductCard', type: GtProductCard)
 Widget playgroundGtProductCardUseCase(BuildContext context) {
-  final name = context.knobs.string(label: 'Product Name', initialValue: 'Premium');
+  final name = context.knobs.string(
+    label: 'Product Name',
+    initialValue: 'Premium',
+  );
   final description = context.knobs.string(
     label: 'Description',
     initialValue: 'Try a premium account for more benefits',
@@ -20,8 +23,10 @@ Widget playgroundGtProductCardUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtProductCard',
-    description: 'A grid/list product option card detailing financial features.',
-    code: '''
+    description:
+        'A grid/list product option card detailing financial features.',
+    code:
+        '''
 GtProductCard(
   name: "$name",
   icon: GtIcons.gemSparkle,

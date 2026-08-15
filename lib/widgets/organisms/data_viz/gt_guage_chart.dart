@@ -34,10 +34,18 @@ class GtGuageChart extends GtStatelessWidget {
   /// The variant used to determine the default colors if [trackColor] or [valueColor] are omitted.
   final GtCardVariant variant;
 
+  /// A plain-language summary of what the gauge shows, already localised.
+  ///
+  /// The gauge is drawn by a [CustomPainter], so it is pure pixels to a screen
+  /// reader. Supply a sentence carrying the same information the picture does,
+  /// such as "Credit score 720 out of 850, good".
+  final String? semanticsLabel;
+
   /// Creates a new [GtGuageChart].
   ///
   /// The [value] must be between 0.0 and 1.0 inclusive.
   const GtGuageChart({
+    this.semanticsLabel,
     required this.value,
     this.height,
     this.width,
@@ -56,26 +64,33 @@ class GtGuageChart extends GtStatelessWidget {
     final chartValueColor = valueColor ?? variant.getIconColor(palette);
     final chartTrackColor = trackColor ?? variant.getBgColor(palette);
 
-    return SizedBox(
-      width: width,
-      height: height ?? context.dp(188.px),
-      child: RepaintBoundary(
-        child: TweenAnimationBuilder(
-          tween: Tween(begin: 0.0, end: value),
-          duration: 1.seconds,
-          curve: Curves.decelerate,
-          builder: (_, double animatedValue, _) {
-            return CustomPaint(
-              painter: GtArcPainter(
-                value: animatedValue,
-                trackColor: chartTrackColor,
-                valueColor: chartValueColor,
-                strokeCap: strokeCap,
-                strokeWidth: strokeWidth,
-              ),
-              child: center,
-            );
-          },
+    return GtSemantics(
+      label: semanticsLabel,
+      // The painted arc conveys nothing on its own, and the centre widget is
+      // a fragment rather than a description. The summary replaces both.
+      excludeDescendants: semanticsLabel != null,
+      container: semanticsLabel != null,
+      child: SizedBox(
+        width: width,
+        height: height ?? context.dp(188.px),
+        child: RepaintBoundary(
+          child: TweenAnimationBuilder(
+            tween: Tween(begin: 0.0, end: value),
+            duration: 1.seconds,
+            curve: Curves.decelerate,
+            builder: (_, double animatedValue, _) {
+              return CustomPaint(
+                painter: GtArcPainter(
+                  value: animatedValue,
+                  trackColor: chartTrackColor,
+                  valueColor: chartValueColor,
+                  strokeCap: strokeCap,
+                  strokeWidth: strokeWidth,
+                ),
+                child: center,
+              );
+            },
+          ),
         ),
       ),
     );

@@ -29,7 +29,11 @@ class GtWelcomeSlide extends GtStatelessWidget {
         children: [
           GtSquareConstrainedBox(
             240,
-            child: GtImage(image: slide.image, height: context.dp(165.px)),
+            child: GtImage(
+              image: slide.image,
+              height: context.dp(165.px),
+              isDecorative: true,
+            ),
           ),
           const GtGap.ySectionXl(),
           GtText(

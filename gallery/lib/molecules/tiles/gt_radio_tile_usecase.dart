@@ -6,10 +6,22 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtRadioTile', type: GtRadioTile)
 Widget playgroundGtRadioTileUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Personal Account');
-  final subtitle = context.knobs.string(label: 'Subtitle', initialValue: 'Standard individual account type.');
-  final disabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
-  final activeColor = context.knobs.colorOrNull(label: 'Active Color', initialValue: null);
+  final title = context.knobs.string(
+    label: 'Title',
+    initialValue: 'Personal Account',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: 'Standard individual account type.',
+  );
+  final disabled = context.knobs.boolean(
+    label: 'Disabled',
+    initialValue: false,
+  );
+  final activeColor = context.knobs.colorOrNull(
+    label: 'Active Color',
+    initialValue: null,
+  );
   final hasIcon = context.knobs.boolean(label: 'Has Icon', initialValue: true);
   final leading = hasIcon ? const GtIcon(GtIcons.user) : null;
   final style = context.knobs.object.dropdown<GtRadioStyle>(
@@ -21,8 +33,10 @@ Widget playgroundGtRadioTileUseCase(BuildContext context) {
 
   return GtWidgetDocPage(
     title: 'GtRadioTile',
-    description: 'A customizable list tile with built-in single choice selection using GtRadio.',
-    code: '''
+    description:
+        'A customizable list tile with built-in single choice selection using GtRadio.',
+    code:
+        '''
 GtRadioTile<String>(
   "Personal Account",
   value: "personal",

@@ -6,16 +6,23 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtStatusPill', type: GtStatusPill)
 Widget playgroundGtStatusPillUseCase(BuildContext context) {
-  final text = context.knobs.string(label: 'Pill Text', initialValue: 'COMPLETED');
+  final text = context.knobs.string(
+    label: 'Pill Text',
+    initialValue: 'COMPLETED',
+  );
   final variant = context.knobs.object.dropdown<GtPillVariant>(
     label: 'Variant',
     options: GtPillVariant.values,
     initialOption: GtPillVariant.success,
     labelBuilder: (v) => v.name,
   );
-  final isNormal = context.knobs.boolean(label: 'Size: Normal', initialValue: true);
+  final isNormal = context.knobs.boolean(
+    label: 'Size: Normal',
+    initialValue: true,
+  );
 
-  final codeSnippet = '''
+  final codeSnippet =
+      '''
 GtStatusPill(
   text: "$text",
   variant: GtPillVariant.${variant.name},
@@ -24,7 +31,8 @@ GtStatusPill(
 
   return GtWidgetDocPage(
     title: 'GtStatusPill',
-    description: 'A status indicator pill with preset color schemes based on the status variant.',
+    description:
+        'A status indicator pill with preset color schemes based on the status variant.',
     code: codeSnippet,
     child: Center(
       child: GtStatusPill(

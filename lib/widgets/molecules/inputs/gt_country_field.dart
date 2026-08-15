@@ -164,6 +164,7 @@ class _GtCountryFieldState extends State<GtCountryField>
               fit: .fill,
               width: widget.flagSize ?? 20,
               height: widget.flagSize ?? 20,
+              isDecorative: true,
             ),
           );
         }

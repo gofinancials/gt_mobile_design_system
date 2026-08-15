@@ -17,6 +17,11 @@ GtSwitch(
   onChanged: (val) {},
 )
 ''',
+    accessibilityNotes: const [
+      'CupertinoSwitch publishes its own toggled and enabled state, so this widget contributes only the name it lacks. Pass semanticsLabel.',
+      'The name and the switch are merged into one node; without merging the user would meet them as two separate swipe stops.',
+      'Setting disabled passes a null callback to CupertinoSwitch, which is what makes it announce as unavailable.',
+    ],
     child: GtSwitch(value: isOn, onChanged: (val) {}),
   );
 }

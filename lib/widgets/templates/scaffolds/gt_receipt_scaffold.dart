@@ -92,6 +92,7 @@ class GtReceiptScaffold extends GtStatelessWidget {
     }
 
     return GtPopScope(
+      canPop: false,
       child: Scaffold(
         backgroundColor: context.palette.staticColors.transparent,
         appBar: GtActionAppBar(

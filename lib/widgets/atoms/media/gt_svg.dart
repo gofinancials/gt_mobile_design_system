@@ -33,6 +33,13 @@ class GtSvg extends GtStatelessWidget {
   /// A semantic label for the graphic, used by screen readers and accessibility tools.
   final String? semanticsLabel;
 
+  /// Whether this graphic is purely decorative.
+  ///
+  /// Decorative graphics are excluded from the semantics tree. Prefer setting
+  /// this explicitly over simply omitting [semanticsLabel], so the intent is
+  /// visible to readers and to the lint that flags unlabelled graphics.
+  final bool isDecorative;
+
   /// An explicit color to apply to the graphic as a [BlendMode.dstIn] color filter.
   final Color? color;
 
@@ -56,6 +63,7 @@ class GtSvg extends GtStatelessWidget {
     this.placeholderBuilder,
     this.color,
     this.semanticsLabel,
+    this.isDecorative = false,
     this.package,
   }) : _renderAsIcon = false,
        variant = null;
@@ -74,6 +82,7 @@ class GtSvg extends GtStatelessWidget {
     this.variant,
     this.package,
     this.semanticsLabel,
+    this.isDecorative = false,
   }) : width = size,
        height = size,
        color = null,
@@ -92,7 +101,7 @@ class GtSvg extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return VectorGraphic(
+    final graphic = VectorGraphic(
       loader: path.vectorBytes(package),
       width: width,
       height: height,
@@ -103,5 +112,13 @@ class GtSvg extends GtStatelessWidget {
       clipBehavior: Clip.antiAlias,
       colorFilter: _getColor(context),
     );
+
+    // An unlabelled graphic is decoration as far as the user is concerned;
+    // announcing it as an anonymous image only adds a stop with no payload.
+    if (isDecorative || semanticsLabel == null) {
+      return ExcludeSemantics(child: graphic);
+    }
+
+    return graphic;
   }
 }
