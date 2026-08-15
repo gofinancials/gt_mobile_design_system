@@ -74,19 +74,63 @@ class _GtSlideIndicatorState extends State<GtSlideIndicator>
     with TickerProviderStateMixin {
   Future<void>? _setupFuture;
 
+  /// The progress animation for a timed (non audio-visual) slide.
+  ///
+  /// Owned here rather than by the controller: it is driven by this state's
+  /// ticker, so it has to die with this state. Leaving it on the controller let
+  /// it outlive the ticker and trip the active-ticker assertion whenever the
+  /// user routed away mid-animation.
+  AnimationController? _animation;
+
   @override
   void initState() {
     super.initState();
     if (widget.state != .active) return;
-    _setupFuture = widget.controller.initialiseProgress(this);
+    _startProgress();
   }
 
   @override
   void didUpdateWidget(covariant GtSlideIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.state == .active && oldWidget.state != .active) {
-      _setupFuture = widget.controller.initialiseProgress(this);
+      _startProgress();
     }
+  }
+
+  void _startProgress() {
+    final controller = widget.controller;
+    _disposeAnimation();
+
+    if (controller.currentSlide.slideType.isAudioVisual) {
+      // Audio-visual slides track the player's own stream instead of a timer.
+      _setupFuture = controller.initialiseProgress();
+      return;
+    }
+
+    final animation = AnimationController(
+      vsync: this,
+      duration: controller.currentSlide.duration,
+    );
+    _animation = animation;
+    // Attach before starting: a zero-duration slide completes synchronously
+    // inside `forward()`, and the controller has to hear that to advance.
+    controller.attachProgress(animation);
+    animation.forward();
+  }
+
+  void _disposeAnimation() {
+    final animation = _animation;
+    if (animation == null) return;
+
+    _animation = null;
+    widget.controller.detachProgress(animation);
+    animation.dispose();
+  }
+
+  @override
+  void dispose() {
+    _disposeAnimation();
+    super.dispose();
   }
 
   @override
@@ -116,7 +160,7 @@ class _GtSlideIndicatorState extends State<GtSlideIndicator>
       child: FutureBuilder(
         future: _setupFuture,
         builder: (context, task) {
-          final animationController = widget.controller.animationController;
+          final animationController = _animation;
           final streamController = widget.controller.streamController;
           final hasAnimationController = animationController != null;
           final hasStreamController = streamController != null;

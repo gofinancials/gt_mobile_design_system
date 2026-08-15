@@ -32,15 +32,8 @@ class GtLessonSlides extends GtStatefulWidget {
   State<GtLessonSlides> createState() => _GtLessonSlidesState();
 }
 
-class _GtLessonSlidesState extends State<GtLessonSlides> with RouteAware {
+class _GtLessonSlidesState extends State<GtLessonSlides> {
   late GtLessonslideController _controller;
-
-  @override
-  void didPush() {
-    _controller.pause();
-    _controller.reset(notify: false);
-    super.didPush();
-  }
 
   @override
   void initState() {
@@ -50,9 +43,39 @@ class _GtLessonSlidesState extends State<GtLessonSlides> with RouteAware {
   }
 
   @override
+  void didUpdateWidget(covariant GtLessonSlides oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (!identical(widget.controller, _controller)) {
+      _releaseController();
+      _controller = widget.controller;
+    }
+
+    _controller.onStoryCompleted = widget.onCompleted;
+  }
+
+  @override
+  void deactivate() {
+    // Stops playback the moment this leaves the tree, before any descendant is
+    // torn down, so nothing keeps ticking on the way out.
+    _controller.pause();
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
-    _controller.reset(notify: false);
+    _releaseController();
     super.dispose();
+  }
+
+  /// Hands the caller's controller back in a clean state.
+  ///
+  /// Clearing [GtLessonslideController.onStoryCompleted] matters because the
+  /// controller usually outlives this widget: leaving the callback in place
+  /// retains this state, and a later completion would fire into a dead screen.
+  void _releaseController() {
+    _controller.onStoryCompleted = null;
+    _controller.reset(notify: false);
   }
 
   void _cancel() {
@@ -86,12 +109,21 @@ class _GtLessonSlidesState extends State<GtLessonSlides> with RouteAware {
         final bgColor = data.color ?? context.palette.bg.soft;
 
         return Scaffold(
-          key: ValueKey(data.hashCode),
+          // Keyed on the index, not the slide: `GtLessonSlideData` is value
+          // equatable, so two slides with identical content hash the same and
+          // would not re-inflate, leaving the deck stuck on the first of them.
+          key: ValueKey(_controller.currentIndex),
           backgroundColor: bgColor,
           extendBody: true,
           appBar: GtAppBar(
-            trailing: GtCancelButton(onTap: _cancel),
+            trailing: GtCancelButton(
+              onTap: _cancel,
+              color: data.foregroundColor,
+            ),
             title: data.title,
+            // The app bar sits on `bgColor`, which the slide supplies, so its
+            // foreground has to come from the slide too.
+            titleColor: data.foregroundColor,
           ),
           body: DecoratedBox(
             decoration: BoxDecoration(
@@ -119,7 +151,7 @@ class _GtLessonSlidesState extends State<GtLessonSlides> with RouteAware {
                   ),
                   Expanded(
                     child: GtLessonSlide(
-                      key: ValueKey(_controller.currentSlide.hashCode),
+                      key: ValueKey(_controller.currentIndex),
                       controller: _controller,
                       onTapNext: _controller.next,
                       onTapPrev: _controller.prev,

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -203,6 +204,25 @@ class GtLessonSlideData extends AppEquatable {
   /// A gradient applied to the background of the slide.
   final Gradient? gradient;
 
+  /// The color of content drawn directly on the slide background, namely the
+  /// app bar [title] and the cancel button.
+  ///
+  /// Pair this with [color]: that background is caller-supplied while the
+  /// default foreground comes from the active palette, so the two are only
+  /// guaranteed to contrast when the caller states both. Leave it null to keep
+  /// the palette default.
+  final Color? foregroundColor;
+
+  /// The color of text drawn on the slide's content card, namely the [header]
+  /// and the body [text].
+  ///
+  /// Pair this with [gradient], which paints that card. Distinct from
+  /// [foregroundColor] because the card and the slide background are different
+  /// surfaces: the card falls back to a palette color, so a foreground chosen
+  /// for a dark [color] would be unreadable on it. Null keeps the palette
+  /// default.
+  final Color? contentColor;
+
   /// The media content (image, video, or audio) for the slide.
   final AppMediaData? media;
 
@@ -226,6 +246,8 @@ class GtLessonSlideData extends AppEquatable {
     this.imageAlignment,
     this.text,
     this.imageSize,
+    this.foregroundColor,
+    this.contentColor,
   });
 
   /// Creates a slide that primarily displays an image.
@@ -237,6 +259,8 @@ class GtLessonSlideData extends AppEquatable {
     required this.header,
     this.gradient,
     this.imageSize = 240,
+    this.foregroundColor,
+    this.contentColor,
   }) : slideType = .image,
        imageAlignment = alignment,
        media = data,
@@ -249,6 +273,8 @@ class GtLessonSlideData extends AppEquatable {
     required this.title,
     this.color,
     this.gradient,
+    this.foregroundColor,
+    this.contentColor,
   }) : slideType = .text,
        media = null,
        imageSize = null,
@@ -261,6 +287,8 @@ class GtLessonSlideData extends AppEquatable {
     required this.title,
     this.color,
     this.gradient,
+    this.foregroundColor,
+    this.contentColor,
   }) : slideType = .text,
        media = null,
        header = data,
@@ -275,6 +303,8 @@ class GtLessonSlideData extends AppEquatable {
     required this.header,
     this.color,
     this.gradient,
+    this.foregroundColor,
+    this.contentColor,
   }) : media = data,
        slideType = .audioVisual,
        imageAlignment = null,
@@ -342,6 +372,8 @@ class GtLessonSlideData extends AppEquatable {
     media,
     slideType,
     imageAlignment,
+    foregroundColor,
+    contentColor,
   ];
 }
 
@@ -374,6 +406,13 @@ final class GtLessonslideController extends ChangeNotifier {
 
   /// The list of slides to display.
   List<GtLessonSlideData> slides;
+
+  /// The progress animation for the active slide.
+  ///
+  /// This controller only *borrows* the animation: it is created, and must be
+  /// disposed, by the widget that supplies the [TickerProvider] (see
+  /// [attachProgress]). Owning it here would outlive that widget's ticker and
+  /// trip `TickerProviderStateMixin`'s active-ticker assertion on teardown.
   AnimationController? _animationController;
   StreamSubscription<MediaPlayStreamData>? _streamSubscription;
   StreamController<MediaPlayStreamData>? _streamController;
@@ -382,6 +421,7 @@ final class GtLessonslideController extends ChangeNotifier {
   VoidCallback? onStoryCompleted;
 
   int _generation = 0;
+  bool _disposed = false;
 
   /// Creates a new [GtLessonslideController] with an optional initial list of [slides].
   GtLessonslideController({this.slides = const [], this.onStoryCompleted});
@@ -425,7 +465,6 @@ final class GtLessonslideController extends ChangeNotifier {
       return;
     }
 
-    _generation++;
     reset(resetIndex: false, notify: false);
     _currentIndex = value.clamp(0, maxIndex);
     notifyListeners();
@@ -433,10 +472,15 @@ final class GtLessonslideController extends ChangeNotifier {
 
   @override
   void notifyListeners([bool defer = false]) {
+    if (_disposed) return;
+
     if (defer) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => super.notifyListeners(),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // The owner may have disposed us between scheduling this callback and
+        // the end of the frame, e.g. when the user routes away mid-animation.
+        if (_disposed) return;
+        super.notifyListeners();
+      });
       return;
     }
 
@@ -471,19 +515,60 @@ final class GtLessonslideController extends ChangeNotifier {
 
   void _statusListener(AnimationStatus status) {
     if (status != .completed) return;
+
+    // A zero-duration slide completes synchronously inside `forward()`, which
+    // runs during the indicator's `initState`. Advancing there would call
+    // `notifyListeners` mid-build, so defer until the frame is done.
+    final phase = SchedulerBinding.instance.schedulerPhase;
+    final isBuilding =
+        phase == SchedulerPhase.persistentCallbacks ||
+        phase == SchedulerPhase.midFrameMicrotasks;
+
+    if (isBuilding) {
+      final index = _currentIndex;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Skip if something else already advanced us, so a tap in the same
+        // frame does not compound with this into a two-slide jump.
+        if (_disposed || _currentIndex != index) return;
+        next();
+      });
+      return;
+    }
+
     next();
   }
 
-  /// Initializes the progress tracking for the current slide.
+  /// Binds a widget-owned progress [animation] to this controller.
   ///
-  /// For text/image slides, it initializes a timed [AnimationController].
-  /// For audio-visual slides, it delegates to internal initializers to load the media.
-  Future<void> initialiseProgress(TickerProvider tickerProvider) async {
+  /// The caller keeps ownership and must dispose the animation itself, calling
+  /// [detachProgress] first. This controller only drives it via [play] and
+  /// [pause] and listens for completion to advance to the next slide.
+  void attachProgress(AnimationController animation) {
+    if (identical(_animationController, animation)) return;
+
+    _animationController?.removeStatusListener(_statusListener);
+    _animationController = animation;
+    animation.addStatusListener(_statusListener);
+  }
+
+  /// Unbinds a previously [attachProgress]ed [animation].
+  ///
+  /// Ignored when [animation] is not the currently attached one, so a stale
+  /// indicator tearing down cannot detach the active slide's progress.
+  void detachProgress(AnimationController animation) {
+    if (!identical(_animationController, animation)) return;
+
+    animation.removeStatusListener(_statusListener);
+    _animationController = null;
+  }
+
+  /// Loads the media for the current slide when it is audio-visual.
+  ///
+  /// Non audio-visual slides track progress through [attachProgress] instead,
+  /// so this is a no-op for them.
+  Future<void> initialiseProgress() async {
     try {
-      if (currentSlide.slideType != .audioVisual) {
-        await _initialiseAnimation(tickerProvider);
-        return;
-      }
+      if (currentSlide.slideType != .audioVisual) return;
       await _initialisePlayer();
     } catch (e, t) {
       AppLogger.severe("$e", stackTrace: t, error: e);
@@ -491,39 +576,32 @@ final class GtLessonslideController extends ChangeNotifier {
     }
   }
 
-  Future<void> _initialiseAnimation(TickerProvider tickerProvider) async {
-    _animationController?.removeStatusListener(_statusListener);
-    _animationController?.dispose();
-    _animationController = AnimationController(
-      vsync: tickerProvider,
-      duration: currentSlide.duration,
-    )..forward();
-    _animationController?.addStatusListener(_statusListener);
-    notifyListeners(true);
-  }
-
   Future<void> _initialisePlayer() async {
     if (currentSlide.media is! AppAvData) return;
 
     final generation = _generation;
-    _mediaPlayer = AppMediaPlayer();
+    final player = AppMediaPlayer();
+    _mediaPlayer = player;
 
-    final source = await _mediaPlayer?.createSource(
-      currentSlide.media as AppAvData,
-    );
+    final source = await player.createSource(currentSlide.media as AppAvData);
 
-    if (generation != _generation) {
+    if (generation != _generation || _disposed) {
       // The user navigated away while we were loading. Abort.
-      await _mediaPlayer?.dispose();
+      await player.dispose();
       return;
     }
 
+    final streamController = StreamController<MediaPlayStreamData>.broadcast();
     _mediaSource = source;
-    _streamController = StreamController<MediaPlayStreamData>.broadcast();
+    _streamController = streamController;
     notifyListeners();
 
-    _streamSubscription = _mediaPlayer?.getSourceEvents().listen((data) {
-      _streamController?.add(data);
+    _streamSubscription = player.getSourceEvents().listen((data) {
+      // `next()` below tears this stream down, and the player can emit again
+      // before the cancellation lands, so re-check before touching either.
+      if (generation != _generation || _disposed) return;
+      if (!streamController.isClosed) streamController.add(data);
+
       final limit = (source?.isYoutube ?? false) ? .99 : 1;
       if ((data.progress ?? 0) >= limit) next();
     });
@@ -531,7 +609,7 @@ final class GtLessonslideController extends ChangeNotifier {
 
   /// Replaces the current [slides] with a new list and resets playback to the first slide.
   void updateSlides(List<GtLessonSlideData> slides) {
-    _currentIndex = 0;
+    reset(notify: false);
     this.slides = slides;
     notifyListeners();
   }
@@ -542,23 +620,60 @@ final class GtLessonslideController extends ChangeNotifier {
   /// If [notify] is true, it notifies listeners to rebuild the UI.
   void reset({bool notify = true, bool resetIndex = true}) {
     if (resetIndex) _currentIndex = 0;
-    _animationController?.removeStatusListener(_statusListener);
-    _animationController?.stop();
-    _animationController?.dispose();
-    _animationController = null;
-    if (_mediaSource != null) _mediaPlayer?.unloadSource(_mediaSource!);
+
+    // Invalidates any media load still in flight so it cannot attach itself to
+    // the state we are about to rebuild.
+    _generation++;
+
+    // Only stop and detach: the animation belongs to the widget that supplied
+    // the ticker, which disposes it in its own `dispose`. `isAnimating` is
+    // false once that has happened, which keeps this safe if the owner tears
+    // down before the controller does.
+    final animation = _animationController;
+    if (animation != null) {
+      if (animation.isAnimating) animation.stop();
+      detachProgress(animation);
+    }
+
+    // Clear the fields synchronously so the next slide starts from a clean
+    // slate, then tear the captured instances down off the critical path.
+    final player = _mediaPlayer;
+    final subscription = _streamSubscription;
+    final streamController = _streamController;
     _mediaSource = null;
     _mediaPlayer = null;
-    _streamSubscription?.cancel();
     _streamSubscription = null;
-    _streamController?.close();
     _streamController = null;
+
+    unawaited(_teardownMedia(player, subscription, streamController));
+
     if (notify) notifyListeners(true);
+  }
+
+  /// Releases a detached media player and its stream plumbing.
+  ///
+  /// [AppMediaPlayer.dispose] unloads the active source, so it covers what
+  /// `unloadSource` did and additionally drops the player's own reference.
+  Future<void> _teardownMedia(
+    AppMediaPlayer? player,
+    StreamSubscription<MediaPlayStreamData>? subscription,
+    StreamController<MediaPlayStreamData>? streamController,
+  ) async {
+    try {
+      await subscription?.cancel();
+      await player?.dispose();
+      if (streamController != null && !streamController.isClosed) {
+        await streamController.close();
+      }
+    } catch (e, t) {
+      AppLogger.severe("$e", stackTrace: t, error: e);
+    }
   }
 
   @override
   void dispose() {
     reset(notify: false);
+    _disposed = true;
 
     super.dispose();
   }

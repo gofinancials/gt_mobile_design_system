@@ -13,11 +13,15 @@ enum GtAppBarTitleSize {
   /// Large title text size.
   large;
 
-  TextStyle getStyle(BuildContext context) {
+  /// Resolves the style for this size, optionally overriding its [color].
+  ///
+  /// A null [color] falls through to the palette default, so callers that do
+  /// not care are unaffected.
+  TextStyle getStyle(BuildContext context, {Color? color}) {
     return switch (this) {
-      .small => context.textStyles.button(),
-      .medium => context.textStyles.h6(),
-      .large => context.textStyles.h5(),
+      .small => context.textStyles.button(color: color),
+      .medium => context.textStyles.h6(color: color),
+      .large => context.textStyles.h5(color: color),
     };
   }
 }
@@ -41,6 +45,12 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// The predefined size configuration for the [title].
   final GtAppBarTitleSize titleSize;
 
+  /// An optional color overriding the palette default for the [title].
+  ///
+  /// Needed when the app bar sits on a caller-supplied background, which the
+  /// palette-derived default knows nothing about and so cannot contrast with.
+  final Color? titleColor;
+
   /// The optional height of the app bar.
   final String? heroTag;
 
@@ -57,6 +67,7 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     this.titleSize = .small,
     this.backButtonSize = .large,
     this.heroTag,
+    this.titleColor,
   });
 
   bool get _hasLeading => leading != null;
@@ -93,7 +104,7 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
               ),
               GtText(
                 title?.upper,
-                style: titleSize.getStyle(context),
+                style: titleSize.getStyle(context, color: titleColor),
                 textAlign: .center,
                 maxLines: 2,
                 // The screen's own title, and the anchor a screen reader user

@@ -47,14 +47,25 @@ class GtLessonSlide extends GtStatefulWidget {
 }
 
 class _GtLessonSlideState extends State<GtLessonSlide> {
-  late final GtLessonSlideData data;
   late final FocusNode _focusNode;
+
+  /// Read live rather than cached in [initState].
+  ///
+  /// This state is keyed by slide index, so it survives a
+  /// [GtLessonslideController.updateSlides] that swaps the content behind the
+  /// current index. A value captured once would keep rendering the old slide.
+  GtLessonSlideData get data => widget.controller.currentSlide;
 
   @override
   void initState() {
     super.initState();
-    data = widget.controller.currentSlide;
     _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   void _handleKeyDown(KeyEvent event) {
@@ -113,6 +124,7 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                 GtLessonSlideTitle(
                   data.header,
                   key: ValueKey('title_${data.header.hashCode}'),
+                  color: data.contentColor,
                 ),
                 Expanded(
                   child: Builder(
@@ -138,7 +150,9 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                               data.text,
                               key: ValueKey('txt_${data.text.hashCode}'),
                               textAlign: .center,
-                              style: context.textStyles.bodyM(),
+                              style: context.textStyles.bodyM(
+                                color: data.contentColor,
+                              ),
                             ),
                           ),
                         ),
@@ -225,7 +239,17 @@ class _GtLessonSlideMediaState extends State<GtLessonSlideMedia>
   }
 
   @override
+  void dispose() {
+    // Without this the binding retains this state, and through it the slide
+    // controller and its media player, for the lifetime of the app.
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!mounted) return;
+
     switch (state) {
       case AppLifecycleState.resumed:
         widget.controller.play();
@@ -265,14 +289,19 @@ class GtLessonSlideTitle extends GtStatelessWidget {
   /// The header configuration data for the slide.
   final GtLessonSlideHeader data;
 
+  /// An optional color overriding the palette default for both lines.
+  ///
+  /// See [GtLessonSlideData.contentColor].
+  final Color? color;
+
   /// Creates a [GtLessonSlideTitle].
-  const GtLessonSlideTitle(this.data, {super.key});
+  const GtLessonSlideTitle(this.data, {super.key, this.color});
 
   @override
   Widget build(BuildContext context) {
     final styles = context.textStyles;
-    final titleStyle = styles.h5();
-    final subStyle = styles.subHeadS();
+    final titleStyle = styles.h5(color: color);
+    final subStyle = styles.subHeadS(color: color);
 
     return Padding(
       padding: context.insets.defaultHorizontalInsets,
