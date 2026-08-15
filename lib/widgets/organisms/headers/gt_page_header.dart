@@ -98,7 +98,6 @@ class GtPageHeader extends GtStatelessWidget {
         if (subtitle.hasValue && _rich)
           GtRichText(
             subtitle,
-            key: ValueKey((context.isInDarkMode, subtitle?.length)),
             style: _subtitleStyle(context),
             textAlign: textAlign,
             linkColor: linkColor ?? context.palette.primary.base,

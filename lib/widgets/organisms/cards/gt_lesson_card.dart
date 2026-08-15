@@ -75,7 +75,10 @@ class GtLessonCard extends GtStatelessWidget {
     final gradient = variant.getGradient(context);
 
     return GtCard(
-      key: ValueKey('gt-lesson-card-$title-$watchFraction-$progressDuration'),
+      // Identity only. Folding the watch progress in here rebuilt the card
+      // from scratch every time the lesson advanced, which restarted the
+      // progress fill; the bar animates to its new value on its own.
+      key: ValueKey(('gt-lesson-card', title)),
       onPressed: context.scrollIntoViewNow,
       constraints: BoxConstraints(maxWidth: context.fractionalShortest(.55)),
       color: context.palette.bg.white,

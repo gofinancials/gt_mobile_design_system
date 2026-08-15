@@ -214,8 +214,10 @@ void main() {
     });
 
     test('keeps headroom beneath the single-page budget', () async {
-      // Two more grid rows than the reference receipt still fit, so the
-      // layout is not scraping the page boundary.
+      // A full grid row past the reference receipt — two entries across the
+      // two columns — still fits, so the layout is not scraping the page
+      // boundary. That row is the whole of the margin: a third entry starts
+      // the next row and spills onto a second page.
       final padded = GtPdfReceiptData(
         title: reference.title,
         issuedOn: reference.issuedOn,
@@ -226,7 +228,7 @@ void main() {
             title: reference.sections.first.title,
             entries: [
               ...reference.sections.first.entries,
-              for (var extra = 0; extra < 4; extra++)
+              for (var extra = 0; extra < 2; extra++)
                 GtPdfReceiptEntry(label: 'Extra $extra', value: 'Value $extra'),
             ],
           ),

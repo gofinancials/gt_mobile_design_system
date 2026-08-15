@@ -166,7 +166,7 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
   @override
   Widget build(BuildContext context) {
     return Autocomplete<GtAutocompleteItem<T>>(
-      key: GlobalObjectKey(controller),
+      key: ObjectKey(controller),
       optionsViewOpenDirection: .mostSpace,
       optionsBuilder: (value) => _filterSuggestions(value.text),
       onSelected: (value) {

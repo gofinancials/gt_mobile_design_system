@@ -157,7 +157,6 @@ class GtLimitEditListTile extends GtStatelessWidget {
         ),
         GtAnimatedProgress(
           value: _fraction,
-          key: ValueKey(_fraction),
           valueColor: context.palette.primary.base,
         ),
         Align(

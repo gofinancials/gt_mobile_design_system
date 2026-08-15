@@ -13,7 +13,7 @@ import 'package:pdf/widgets.dart' as pw;
 ///
 /// Spacing is tuned so an ordinary transfer receipt — a details block plus a
 /// sender and a recipient, closed by a footer — lands on a single page, with
-/// roughly two more grid rows of headroom before it spills. Longer receipts
+/// one more grid row of headroom before it spills. Longer receipts
 /// still flow onto as many pages as they need: the document is laid out with
 /// `MultiPage`, so a section that will not fit breaks across the page boundary
 /// rather than being clipped.

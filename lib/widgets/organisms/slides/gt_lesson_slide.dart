@@ -123,7 +123,7 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                 const GtGap.ySectionLg(),
                 GtLessonSlideTitle(
                   data.header,
-                  key: ValueKey('title_${data.header.hashCode}'),
+                  key: ValueKey(('title', data.header)),
                   color: data.contentColor,
                 ),
                 Expanded(
@@ -131,7 +131,7 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                     builder: (context) {
                       return switch (data.slideType) {
                         .image => GtImage(
-                          key: ValueKey('img_${data.media.hashCode}'),
+                          key: ValueKey(('img', data.media)),
                           fit: .contain,
                           useDefaultSize: false,
                           alignment: data.imageAlignment ?? .center,
@@ -148,7 +148,7 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                           child: Center(
                             child: GtRichText(
                               data.text,
-                              key: ValueKey('txt_${data.text.hashCode}'),
+                              key: ValueKey(('txt', data.text)),
                               textAlign: .center,
                               style: context.textStyles.bodyM(
                                 color: data.contentColor,
@@ -158,7 +158,7 @@ class _GtLessonSlideState extends State<GtLessonSlide> {
                         ),
                         .audioVisual => GtLessonSlideMedia(
                           data.media as AppAvData,
-                          key: ValueKey('media_${data.media.hashCode}'),
+                          key: ValueKey(('media', data.media)),
                           controller: widget.controller,
                         ),
                       };
@@ -266,7 +266,11 @@ class _GtLessonSlideMediaState extends State<GtLessonSlideMedia>
 
     return Center(
       child: IgnorePointer(
-        key: ValueKey(source.hashCode),
+        // Keyed on the controller instance, not the source: `MediaSource` is
+        // value equatable, so reloading the same media yields an equal source
+        // carrying a brand new controller, and a value key would hand that
+        // controller to the subtree built around the disposed one.
+        key: ObjectKey(source.video ?? source.youtube ?? source),
         child: Builder(
           builder: (context) {
             if (source.isVideo) return GtVideoPlayer(source.video!);

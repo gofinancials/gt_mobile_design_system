@@ -30,8 +30,11 @@ class GtBaseWidget extends GtStatelessWidget {
 
     return Material(
       type: MaterialType.transparency,
+      // Unkeyed on purpose: this wraps the whole app, and a key carrying the
+      // window size threw every descendant's state away on a rotation or a
+      // window resize. `MediaQuery` already republishes `data` to its
+      // dependents when the metrics change.
       child: MediaQuery(
-        key: ValueKey(windowSize),
         data: mediaQuery,
         child: Listener(
           behavior: .translucent,

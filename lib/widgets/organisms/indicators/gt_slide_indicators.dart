@@ -37,7 +37,10 @@ class GtSlidesIndicator extends GtStatelessWidget {
               for (final (index, slide) in controller.slides.indexed)
                 Flexible(
                   child: GtSlideIndicator(
-                    key: ValueKey('slide_indicator_${index}_${slide.hashCode}'),
+                    // Position and content both: the position identifies the
+                    // indicator, and swapping the slide behind a position has
+                    // to restart its progress, which only a fresh state does.
+                    key: ValueKey((index, slide)),
                     slide: slide,
                     controller: controller,
                     indicatorColor: indicatorColor,

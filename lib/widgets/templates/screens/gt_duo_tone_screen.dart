@@ -76,7 +76,7 @@ class GtDuotoneScreen extends GtStatelessWidget {
           variant: buttonVariant,
         ),
       ),
-      key: ValueKey('gt-duotone-screen-$title-$buttonText'),
+      key: ValueKey(('gt-duotone-screen', title, buttonText)),
       body: Column(
         crossAxisAlignment: .stretch,
         children: [

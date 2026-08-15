@@ -181,8 +181,11 @@ class GtRichText extends GtStatelessWidget {
 
     if (tags != null) computedTags.addAll(tags!);
 
+    // Deliberately unkeyed: `computedTags` is a fresh map on every build, so a
+    // key derived from it changed every build and threw the parsed spans away
+    // each time. `StyledText` already re-parses whenever its tags, text or
+    // style differ, which covers a restyle from a theme or palette change.
     return StyledText(
-      key: ValueKey(Object.hash(computedTags, context.isInDarkMode)),
       text: content,
       textAlign: textAlign,
       style: style,

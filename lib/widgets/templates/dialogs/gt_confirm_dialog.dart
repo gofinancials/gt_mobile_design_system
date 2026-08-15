@@ -131,7 +131,7 @@ mixin GtConfirmDialogMixin {
       builder: (context) {
         GtRouter.openedModal();
         return GtConfirmDialog(
-          key: ValueKey(Object.hash(title, allowText, denyText, description)),
+          key: ValueKey((title, allowText, denyText, description)),
           title: title,
           description: description,
           onContinue: onContinue,

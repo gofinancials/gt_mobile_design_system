@@ -16,7 +16,7 @@ mixin GtBottomModalMixin {
     _showModal(
       context,
       modal: GtBottomModal(
-        key: ValueKey((title, "gt-bottom-modal", description.hashCode)),
+        key: ValueKey((title, "gt-bottom-modal", description)),
         data: GtBottomModalData(
           title: title,
           description: description,
@@ -34,7 +34,7 @@ mixin GtBottomModalMixin {
     _showModal(
       context,
       modal: GtBottomModal.child(
-        key: ValueKey(("gt-bottom-modal-child", child.hashCode)),
+        key: ValueKey(("gt-bottom-modal-child", child)),
         alignment: context.isMobile ? .bottomCenter : .center,
         child: child,
       ),
@@ -54,11 +54,7 @@ mixin GtBottomModalMixin {
     _showModal(
       context,
       modal: GtBottomModal.controller(
-        key: ValueKey((
-          title,
-          "gt-controlled-bottom-modal",
-          description.hashCode,
-        )),
+        key: ValueKey((title, "gt-controlled-bottom-modal", description)),
         controller: controller,
         alignment: context.isMobile ? .bottomCenter : .center,
       ),

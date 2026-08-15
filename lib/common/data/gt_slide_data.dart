@@ -313,34 +313,23 @@ class GtLessonSlideData extends AppEquatable {
 
   /// Calculates the display duration of the slide based on its content.
   ///
-  /// Text slides calculate reading time, audio-visual slides use the media duration,
-  /// and image slides default to 20 seconds.
+  /// Text slides calculate reading time, audio-visual slides report a nominal
+  /// [_avFallbackDuration], and image slides default to 10 seconds.
   Duration get duration {
     if (slideType.isText) return _getTextDuration;
-    if (slideType.isAudioVisual) return _getAvDuration;
+    if (slideType.isAudioVisual) return _avFallbackDuration;
     return 10.seconds;
   }
 
-  /// Extracts the duration from the underlying video or YouTube controller.
-  Duration get _getAvDuration {
-    try {
-      if (media is! AppAvData) return 0.seconds;
-      final data = media as AppAvData;
-      Duration? duration;
-
-      if (data.isYoutube) {
-        duration = data.youtubeController?.value.metaData.duration;
-      }
-      if (data.isVideo) {
-        duration = data.videoController?.value.duration;
-      }
-
-      return duration ?? 90.seconds;
-    } catch (e, t) {
-      AppLogger.severe("$e", error: e, stackTrace: t);
-      return 90.seconds;
-    }
-  }
+  /// The nominal length reported for an audio-visual slide.
+  ///
+  /// These slides advance off the player's own progress stream rather than a
+  /// timer (see [GtLessonslideController.initialiseProgress]), so nothing here
+  /// needs the true media length. Reading it would mean building a controller,
+  /// and `AppMediaPlayer` now owns every controller it creates: one built here
+  /// would be an orphan that is never initialised — so it reports a zero
+  /// duration regardless — and never disposed.
+  Duration get _avFallbackDuration => 90.seconds;
 
   /// Calculates the duration required to read the text content of the slide.
   ///
@@ -652,8 +641,13 @@ final class GtLessonslideController extends ChangeNotifier {
 
   /// Releases a detached media player and its stream plumbing.
   ///
-  /// [AppMediaPlayer.dispose] unloads the active source, so it covers what
-  /// `unloadSource` did and additionally drops the player's own reference.
+  /// [AppMediaPlayer.dispose] unloads the active source and disposes the
+  /// platform controller it created for it, which is why this waits for the
+  /// pending frame first: [_mediaSource] is already cleared, but the slide goes
+  /// on painting that controller until the rebuild this reset triggered lands,
+  /// and `VideoPlayer`/`YoutubePlayer` would be holding a dead controller. The
+  /// wait is guarded on a frame actually being due so a teardown after the tree
+  /// is gone still releases the player promptly.
   Future<void> _teardownMedia(
     AppMediaPlayer? player,
     StreamSubscription<MediaPlayStreamData>? subscription,
@@ -661,6 +655,13 @@ final class GtLessonslideController extends ChangeNotifier {
   ) async {
     try {
       await subscription?.cancel();
+
+      final binding = SchedulerBinding.instance;
+      final isFrameDue =
+          binding.hasScheduledFrame ||
+          binding.schedulerPhase != SchedulerPhase.idle;
+      if (isFrameDue) await binding.endOfFrame;
+
       await player?.dispose();
       if (streamController != null && !streamController.isClosed) {
         await streamController.close();

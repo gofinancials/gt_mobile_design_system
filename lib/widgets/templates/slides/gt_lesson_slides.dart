@@ -96,7 +96,7 @@ class _GtLessonSlidesState extends State<GtLessonSlides> {
     return ListenableBuilder(
       listenable: _controller,
       child: GtSlidesIndicator(
-        key: ValueKey(_controller.hashCode),
+        key: ObjectKey(_controller),
         controller: _controller,
         indicatorColor: widget.indicatorColor,
       ),

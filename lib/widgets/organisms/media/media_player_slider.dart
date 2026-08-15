@@ -37,25 +37,17 @@ class GtMediaPlayerSlider extends GtStatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _Slider(
-          position,
-          duration: duration,
-          state: state,
-          onSeek: onSeek,
-          key: ValueKey(("slider", position)),
-        ),
+        // Nothing here is keyed on the playback position: these sit in fixed
+        // slots, so a key that moves with the position would tear the slider
+        // and its labels down on every tick — taking the fill animation, and
+        // any in-flight scrub, with them.
+        _Slider(position, duration: duration, state: state, onSeek: onSeek),
         const GtGap.yBase(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _DurationText(
-              position?.inSeconds ?? 0,
-              key: ValueKey(("back", position)),
-            ),
-            _DurationText(
-              duration?.inSeconds ?? 0,
-              key: ValueKey(("fore", duration)),
-            ),
+            _DurationText(position?.inSeconds ?? 0),
+            _DurationText(duration?.inSeconds ?? 0),
           ],
         ),
       ],
@@ -69,7 +61,7 @@ class _DurationText extends GtStatelessWidget {
   final num value;
 
   /// Creates a [_DurationText] instance.
-  const _DurationText(this.value, {super.key});
+  const _DurationText(this.value);
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +89,6 @@ class _Slider extends GtStatelessWidget {
     required this.state,
     required this.onSeek,
     required this.duration,
-    super.key,
   });
 
   void _handleDrag(PositionedGestureDetails details, BuildContext context) {
