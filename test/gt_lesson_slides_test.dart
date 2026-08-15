@@ -103,10 +103,12 @@ void main() {
 
       final context = tester.element(find.byType(GtLessonSlideTitle));
       final rendered = tester.widget<GtText>(
-        find.descendant(
-          of: find.byType(GtLessonSlideTitle),
-          matching: find.byType(GtText),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(GtLessonSlideTitle),
+              matching: find.byType(GtText),
+            )
+            .first,
       );
       expect(rendered.style?.color, context.palette.text.strong);
     });
@@ -146,10 +148,12 @@ void main() {
       expect(slideTitle.color, content);
 
       final headerText = tester.widget<GtText>(
-        find.descendant(
-          of: find.byType(GtLessonSlideTitle),
-          matching: find.byType(GtText),
-        ).first,
+        find
+            .descendant(
+              of: find.byType(GtLessonSlideTitle),
+              matching: find.byType(GtText),
+            )
+            .first,
       );
       expect(headerText.style?.color, content);
 

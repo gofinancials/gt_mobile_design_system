@@ -55,8 +55,7 @@ class AvoidRawGestureDetector extends DartLintRule {
       final arguments = node.argumentList.arguments;
 
       final isActivating = arguments.whereType<NamedExpression>().any(
-        (argument) =>
-            _activatingCallbacks.contains(argument.name.label.name),
+        (argument) => _activatingCallbacks.contains(argument.name.label.name),
       );
       if (!isActivating) return;
 
