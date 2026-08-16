@@ -291,6 +291,7 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
     if (!widget.isEnabled) return;
     showDraggableSheet(
       context,
+      useRootNavigator: false,
       builder: (scrollController) => GtDropDownModal<Country>(
         autoFocus: true,
         scrollController,

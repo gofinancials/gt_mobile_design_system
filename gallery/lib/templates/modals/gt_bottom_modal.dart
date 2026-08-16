@@ -140,6 +140,7 @@ class MyState extends State<MyWidget> with GtBottomModalMixin {
                 title: modalTitle,
                 description: modalDesc,
                 icon: AppImageData.asset(GtVectors.caution),
+                useRootNavigator: false,
               );
             },
           ),
@@ -148,7 +149,11 @@ class MyState extends State<MyWidget> with GtBottomModalMixin {
             variant: GtButtonVariant.success,
             onPressed: () async {
               _controller.reset();
-              showTaskBottomModal(context, controller: _controller);
+              showTaskBottomModal(
+                context,
+                controller: _controller,
+                useRootNavigator: false,
+              );
               _controller.complete(await _getSuccessFuture());
             },
           ),
@@ -157,7 +162,11 @@ class MyState extends State<MyWidget> with GtBottomModalMixin {
             variant: GtButtonVariant.destructive,
             onPressed: () async {
               _controller.reset();
-              showTaskBottomModal(context, controller: _controller);
+              showTaskBottomModal(
+                context,
+                controller: _controller,
+                useRootNavigator: false,
+              );
               _controller.complete(await _getFailureFuture());
             },
           ),
@@ -166,7 +175,11 @@ class MyState extends State<MyWidget> with GtBottomModalMixin {
             variant: GtButtonVariant.secondary,
             onPressed: () async {
               _controller.reset();
-              showTaskBottomModal(context, controller: _controller);
+              showTaskBottomModal(
+                context,
+                controller: _controller,
+                useRootNavigator: false,
+              );
               _controller.complete(
                 await _getProgressFuture(
                   onProgress: (value) {

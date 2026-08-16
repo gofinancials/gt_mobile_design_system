@@ -306,6 +306,7 @@ class _ReceiptScaffoldPreviewState extends State<_ReceiptScaffoldPreview>
       initialChildSize: .9,
       maxChildSize: 1,
       minChildSize: .5,
+      useRootNavigator: false,
       builder: (controller) {
         return GtReceiptScaffold(
           onClose: () => GtRouter.popView(),

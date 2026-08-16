@@ -111,6 +111,7 @@ class MyState extends State<MyWidget> with GtBottomSheetMixin {
                 context,
                 maxHeightFraction: .5,
                 floating: floating,
+                useRootNavigator: false,
                 child: GtStatusState.success(
                   title: "successful !",
                   subtitle:
@@ -128,6 +129,7 @@ class MyState extends State<MyWidget> with GtBottomSheetMixin {
               showSheet(
                 context,
                 maxHeightFraction: .5,
+                useRootNavigator: false,
                 floating: true,
                 isScrollable: true,
                 child: Column(
@@ -184,6 +186,7 @@ class MyState extends State<MyWidget> with GtBottomSheetMixin {
                 initialChildSize: .3,
                 maxHeightFraction: .7,
                 floating: floating,
+                useRootNavigator: false,
                 builder: (value) {
                   return SingleChildScrollView(
                     controller: value,
@@ -214,6 +217,7 @@ class MyState extends State<MyWidget> with GtBottomSheetMixin {
                 maxChildSize: .5,
                 minChildSize: .2,
                 floating: true,
+                useRootNavigator: false,
                 builder: (value) {
                   return ListView(
                     controller: value,

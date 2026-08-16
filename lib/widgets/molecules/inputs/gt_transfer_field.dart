@@ -643,6 +643,7 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     );
     showDraggableSheet(
       context,
+      useRootNavigator: false,
       builder: (scrollController) => GtDropDownModal<GtTransactionCategory>(
         autoFocus: true,
         scrollController,

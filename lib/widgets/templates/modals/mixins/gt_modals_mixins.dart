@@ -12,6 +12,7 @@ mixin GtBottomModalMixin {
     required String title,
     String? description,
     AppImageData? icon,
+    bool useRootNavigator = true,
   }) {
     _showModal(
       context,
@@ -24,13 +25,18 @@ mixin GtBottomModalMixin {
         ),
         alignment: context.isMobile ? .bottomCenter : .center,
       ),
+      useRootNavigator: useRootNavigator,
     );
   }
 
   /// Displays a simple bottom modal with a [title], an optional [description], and an optional [icon].
   ///
   /// The modal adapts its alignment based on the platform (bottom center on mobile, center elsewhere).
-  void showBottomModalWithChild(BuildContext context, {required Widget child}) {
+  void showBottomModalWithChild(
+    BuildContext context, {
+    required Widget child,
+    bool useRootNavigator = true,
+  }) {
     _showModal(
       context,
       modal: GtBottomModal.child(
@@ -38,6 +44,7 @@ mixin GtBottomModalMixin {
         alignment: context.isMobile ? .bottomCenter : .center,
         child: child,
       ),
+      useRootNavigator: useRootNavigator,
     );
   }
 
@@ -47,12 +54,14 @@ mixin GtBottomModalMixin {
   void showTaskBottomModal(
     BuildContext context, {
     required GtBottomModalController controller,
+    bool useRootNavigator = true,
   }) {
     final title = controller.title;
     final description = controller.description;
 
     _showModal(
       context,
+      useRootNavigator: useRootNavigator,
       modal: GtBottomModal.controller(
         key: ValueKey((title, "gt-controlled-bottom-modal", description)),
         controller: controller,
@@ -65,13 +74,16 @@ mixin GtBottomModalMixin {
   ///
   /// On non-mobile platforms, it uses [showAdaptiveDialog]. On mobile platforms,
   /// it uses [showModalBottomSheet].
-  void _showModal(BuildContext context, {required Widget modal}) {
+  void _showModal(
+    BuildContext context, {
+    required Widget modal,
+    bool useRootNavigator = true,
+  }) {
     GtOverlay.closeCurrentOverlays();
-    GtRouter.openedModal();
 
     if (!context.isMobile) {
       showAdaptiveDialog(
-        useRootNavigator: false,
+        useRootNavigator: useRootNavigator,
         context: context,
         anchorPoint: Offset(context.width * .5, context.height * .5),
         barrierDismissible: false,
@@ -83,7 +95,7 @@ mixin GtBottomModalMixin {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      useRootNavigator: false,
+      useRootNavigator: useRootNavigator,
       isDismissible: false,
       enableDrag: false,
       backgroundColor: Colors.transparent,
@@ -108,7 +120,7 @@ mixin GtBottomSheetMixin {
     bool isScrollable = false,
     bool canPop = true,
     bool floating = false,
-    bool useRootNavigator = false,
+    bool useRootNavigator = true,
     double maxHeightFraction = .9,
   }) async {
     return GtBottomSheet<T>(
@@ -136,7 +148,7 @@ mixin GtBottomSheetMixin {
     double minChildSize = .3,
     double initialChildSize = .7,
     double maxChildSize = .9,
-    bool useRootNavigator = false,
+    bool useRootNavigator = true,
     bool floating = false,
     double maxHeightFraction = .9,
   }) async {

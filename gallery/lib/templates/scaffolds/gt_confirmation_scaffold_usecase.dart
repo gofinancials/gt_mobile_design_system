@@ -361,6 +361,7 @@ class _ConfirmationScaffoldPreviewState
       initialChildSize: .9,
       maxChildSize: 1,
       minChildSize: .5,
+      useRootNavigator: false,
       builder: (controller) {
         return GtConfirmationScaffold(
           title: knobs.title,

@@ -118,6 +118,7 @@ class GtLineChartContainer extends GtStatelessWidget with GtBottomSheetMixin {
   void _showCalendar(BuildContext context) {
     showDraggableSheet(
       context,
+      useRootNavigator: false,
       builder: (scrollController) => GtCalendarModal(
         scrollController,
         controller: controller,
