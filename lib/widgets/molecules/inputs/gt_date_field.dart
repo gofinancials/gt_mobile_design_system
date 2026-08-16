@@ -152,6 +152,7 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
     if (!widget.isEnabled) return;
     showDraggableSheet(
       context,
+      useRootNavigator: false,
       builder: (controller) => GtCalendarModal(
         controller,
         controller: _calendarController,

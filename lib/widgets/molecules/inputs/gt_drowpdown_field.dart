@@ -152,6 +152,7 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
     if (!widget.isEnabled) return;
     showDraggableSheet(
       context,
+      useRootNavigator: false,
       builder: (scrollController) => GtDropDownModal(
         autoFocus: widget.autoFocus,
         scrollController,

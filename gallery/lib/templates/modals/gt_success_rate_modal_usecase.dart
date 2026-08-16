@@ -185,6 +185,7 @@ class _SuccessRateModalPreviewState extends State<_SuccessRateModalPreview>
       initialChildSize: .9,
       maxChildSize: 1,
       minChildSize: .5,
+      useRootNavigator: false,
       builder: (controller) {
         return GenericListener<SuccessRateHolder>(
           valueListenable: ratesNotifier,

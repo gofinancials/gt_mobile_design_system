@@ -216,6 +216,7 @@ It seamlessly integrates inside floating bottom sheets or standalone card views.
         padding: context.insets.defaultAllInsets,
         child: GtStatusTracker(steps: steps),
       ),
+      useRootNavigator: false,
     );
   }
 }

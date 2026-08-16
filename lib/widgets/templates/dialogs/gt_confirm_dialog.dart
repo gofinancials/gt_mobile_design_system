@@ -129,7 +129,6 @@ mixin GtConfirmDialogMixin {
       barrierDismissible: isDismissable,
       useRootNavigator: true,
       builder: (context) {
-        GtRouter.openedModal();
         return GtConfirmDialog(
           key: ValueKey((title, allowText, denyText, description)),
           title: title,

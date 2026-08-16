@@ -73,6 +73,12 @@ class GtBottomSheet<T> {
   final bool canDragToClose;
 
   /// Whether the sheet should be pushed onto the root navigator instead of the nested one.
+  ///
+  /// Keep this `true` for [GtRouter.currentRoute] to see the sheet; a sheet
+  /// pushed onto a nested navigator is invisible to [GtRouter.observer].
+  ///
+  /// Ignored for non-draggable, non-floating sheets on iOS, which are presented
+  /// with [showCupertinoSheet] and always target the root navigator.
   final bool useRootNavigator;
 
   /// Internal flag tracking if the sheet is in draggable mode.
@@ -96,7 +102,6 @@ class GtBottomSheet<T> {
   /// [Future] that resolves to the value `T` passed when popping the sheet.
   Future<T?> present(BuildContext context) async {
     GtOverlay.closeCurrentOverlays();
-    GtRouter.openedModal();
     if (!context.isMobile) return _presentDesktopSheet(context);
     return _presentMobileSheet(context);
   }
@@ -139,10 +144,14 @@ class GtBottomSheet<T> {
     );
 
     if ((!_isDraggable && !floating) && context.isIos) {
+      // `useRootNavigator` has no equivalent here: `showCupertinoSheet` always
+      // pushes onto the root navigator. It must not be forwarded as
+      // `useNestedNavigation`, which is unrelated — that flag gives the sheet
+      // its own nested [Navigator], hiding any route pushed inside it from the
+      // root navigator's observers.
       return showCupertinoSheet<T>(
         context: context,
         builder: (context) => child,
-        useNestedNavigation: useRootNavigator,
         enableDrag: canDragToClose,
         showDragHandle: canDragToClose,
       );
