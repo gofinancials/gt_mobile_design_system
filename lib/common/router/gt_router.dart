@@ -48,8 +48,9 @@ class GtRouter {
   }
 
   /// Returns the name of the route at the top of the navigator, if any.
-  static String? get currentRoute =>
-      observer.navigator == null ? _legacyRouteStack.tryLast : observer.currentRoute;
+  static String? get currentRoute => observer.navigator == null
+      ? _legacyRouteStack.tryLast
+      : observer.currentRoute;
 
   /// Whether there is a route beneath the current one.
   static bool get hasPreviousRoute => observer.navigator == null
