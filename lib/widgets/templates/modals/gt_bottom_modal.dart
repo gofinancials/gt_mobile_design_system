@@ -280,7 +280,7 @@ class _GtModalBody extends GtStatelessWidget {
     final palette = context.palette;
     final resolvedMargin =
         margin ??
-        context.insets.onlyDp(left: 16.px, right: 16.px, bottom: 34.px);
+        context.insets.onlyDp(left: 16.px, right: 16.px, bottom: 4.px);
     final header = GtText(
       title.upper,
       style: context.textStyles.button(),
@@ -376,7 +376,7 @@ class _GtModalBodyWithChild extends GtStatelessWidget {
     final palette = context.palette;
     final resolvedMargin =
         margin ??
-        context.insets.onlyDp(left: 16.px, right: 16.px, bottom: 34.px);
+        context.insets.onlyDp(left: 16.px, right: 16.px, bottom: 4.px);
 
     return SafeArea(
       top: false,

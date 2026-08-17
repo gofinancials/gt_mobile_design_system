@@ -28,9 +28,7 @@ class _GtAnimatedFadeState extends State<GtAnimatedFade> {
         duration: widget.duration.milliseconds,
         alignment: Alignment.center,
         reverseDuration: widget.duration.milliseconds,
-        crossFadeState: widget.showFirst
-            ? CrossFadeState.showFirst
-            : CrossFadeState.showSecond,
+        crossFadeState: widget.showFirst ? .showFirst : .showSecond,
         firstCurve: Curves.decelerate,
         secondCurve: Curves.decelerate,
         firstChild: widget.child1,

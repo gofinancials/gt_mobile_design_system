@@ -122,10 +122,14 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
     _debouncer.run(() {
       if (!_controller.hasClients) return;
       final currentPage = _controller.page?.round() ?? _controller.initialPage;
+      if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) {
+        _controller.jumpToPage(currentPage + 1);
+        return;
+      }
       _controller.animateToPage(
         currentPage + 1,
-        duration: GtMotion.fluid,
-        curve: GtSpringCurves.gentle,
+        duration: GtMotion.slow,
+        curve: Curves.easeInOutCubic,
       );
     });
   }
@@ -206,19 +210,12 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
                       AnimatedSwitcher(
                         duration: GtMotion.adaptiveDuration(
                           context,
-                          GtMotion.fluid,
+                          GtMotion.fast,
                         ),
-                        switchInCurve: GtSpringCurves.gentle,
-                        transitionBuilder: (child, animation) => FadeTransition(
-                          opacity: animation,
-                          child: SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(0, .08),
-                              end: Offset.zero,
-                            ).animate(animation),
-                            child: child,
-                          ),
-                        ),
+                        switchInCurve: Curves.easeOut,
+                        switchOutCurve: Curves.easeIn,
+                        transitionBuilder: (child, animation) =>
+                            FadeTransition(opacity: animation, child: child),
                         child: Column(
                           key: ValueKey(activeIndex),
                           mainAxisSize: .min,

@@ -113,6 +113,14 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('FIRST'), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byType(NumberListener<int>),
+          matching: find.byType(SlideTransition),
+        ),
+        findsNothing,
+        reason: 'overlay content should fade without a competing slide motion',
+      );
       await tester.pumpWidget(const SizedBox());
     });
 

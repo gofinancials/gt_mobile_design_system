@@ -18,6 +18,16 @@ Widget playgroundGtButtonBottomNavBarUseCase(BuildContext context) {
     label: 'Button Loading',
     initialValue: false,
   );
+  final hidingBehavior = context.knobs.object
+      .dropdown<GtBottomNavBarButtonHidingBehavior>(
+        label: 'Keyboard hiding behavior',
+        options: GtBottomNavBarButtonHidingBehavior.values,
+        initialOption: GtBottomNavBarButtonHidingBehavior.footer,
+      );
+  final keyboardVisible = context.knobs.boolean(
+    label: 'Simulate keyboard visible',
+    initialValue: false,
+  );
 
   return GtWidgetDocPage(
     title: 'GtButtonBottomNavBar',
@@ -26,6 +36,7 @@ Widget playgroundGtButtonBottomNavBarUseCase(BuildContext context) {
         '''
 GtButtonBottomNavBar(
   spacing: context.spacingSm,
+  hidingBehavior: .${hidingBehavior.name},
   heading: GtRaisedButton(
     text: "$text",
     isDisabled: $isDisabled,
@@ -37,19 +48,33 @@ GtButtonBottomNavBar(
     variant: .destructive,
     onPressed: () {},
   ),
+  footer: const GtText('Supporting footer content'),
 )''',
-    child: GtButtonBottomNavBar(
-      spacing: context.spacingSm,
-      heading: GtRaisedButton(
-        text: text,
-        isDisabled: isDisabled,
-        isLoading: isLoading,
-        onPressed: () {},
+    child: MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        viewInsets: EdgeInsets.only(
+          bottom: keyboardVisible ? context.spacingsection4xl : 0,
+        ),
       ),
-      button: GtTextButton(
-        text: "Cancel",
-        variant: .destructive,
-        onPressed: () {},
+      child: GtButtonBottomNavBar(
+        spacing: context.spacingSm,
+        hidingBehavior: hidingBehavior,
+        heading: GtRaisedButton(
+          text: text,
+          isDisabled: isDisabled,
+          isLoading: isLoading,
+          onPressed: () {},
+        ),
+        button: GtTextButton(
+          text: "Cancel",
+          variant: .destructive,
+          onPressed: () {},
+        ),
+        footer: GtText(
+          'Supporting footer content',
+          style: context.textStyles.bodyXs(),
+          textAlign: .center,
+        ),
       ),
     ),
   );

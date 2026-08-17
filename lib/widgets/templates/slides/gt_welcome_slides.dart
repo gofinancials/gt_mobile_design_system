@@ -95,10 +95,14 @@ class _GtWelcomeSlidesState extends State<GtWelcomeSlides> {
     _debouncer.run(() {
       if (!_controller.hasClients) return;
       final currentPage = _controller.page?.round() ?? _controller.initialPage;
+      if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) {
+        _controller.jumpToPage(currentPage + 1);
+        return;
+      }
       _controller.animateToPage(
         currentPage + 1,
-        duration: GtMotion.fluid,
-        curve: GtSpringCurves.gentle,
+        duration: GtMotion.slow,
+        curve: Curves.easeInOutCubic,
       );
     });
   }
