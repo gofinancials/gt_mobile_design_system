@@ -5,7 +5,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A specialized pill widget used to indicate status, featuring predefined color variants and a compact layout.
 ///
 /// Automatically scales padding based on [size] and applies semantic colors using [variant].
-class GtStatusPill extends StatelessWidget {
+class GtStatusPill extends GtStatelessWidget {
   /// The text indicating the status to display.
   final String text;
 
@@ -42,6 +42,9 @@ class GtStatusPill extends StatelessWidget {
   /// The color of the text. Icons will inherit this color unless overridden.
   final Color? textColor;
 
+  /// An alternative accessibility label for the status.
+  final String? semanticsLabel;
+
   /// Creates a [GtStatusPill].
   const GtStatusPill({
     super.key,
@@ -52,6 +55,7 @@ class GtStatusPill extends StatelessWidget {
     this.alignment,
     this.size = .normal,
     this.padding,
+    this.semanticsLabel,
   }) : trailingWidget = null,
        leadingWidget = null,
        bgColor = null,
@@ -70,6 +74,7 @@ class GtStatusPill extends StatelessWidget {
     this.bgColor,
     this.borderColor,
     this.textColor,
+    this.semanticsLabel,
   }) : trailingWidget = trailing,
        leadingWidget = leading,
        icon = null,
@@ -108,6 +113,7 @@ class GtStatusPill extends StatelessWidget {
       padding: this.padding ?? context.insets.allDp(padding),
       alignment: alignment,
       variant: variant ?? .strong,
+      semanticsLabel: semanticsLabel,
     );
   }
 }

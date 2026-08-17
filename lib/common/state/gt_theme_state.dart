@@ -70,10 +70,12 @@ class GtThemeState extends StateModel {
   }
 
   Future<void> changeMode(ThemeMode mode) async {
+    _updateSetting(mode: mode);
     await _service.setItem(AppStorageKey.themeMode, mode.name);
   }
 
   Future<void> switchTheme(GtTheme theme) async {
+    _updateSetting(theme: theme);
     await _service.setItem(AppStorageKey.themeName, theme.name);
   }
 

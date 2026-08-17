@@ -60,6 +60,11 @@ class GtThemeAddon extends WidgetbookAddon<GtThemeSetting> {
             themeNotifier?.value = setting;
           });
           return MaterialApp(
+            themeAnimationDuration: GtMotion.adaptiveDuration(
+              context,
+              GtMotion.fluid,
+            ),
+            themeAnimationCurve: Curves.easeInOutCubic,
             scrollBehavior: const MaterialScrollBehavior().copyWith(
               dragDevices: {
                 PointerDeviceKind.mouse,

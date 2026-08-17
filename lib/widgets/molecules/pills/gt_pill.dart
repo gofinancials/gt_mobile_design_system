@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Defines the visual variants available for status, button, and other pills.
@@ -111,7 +110,7 @@ enum GtPillSize {
 /// A foundational pill widget that displays text and an optional icon within a rounded container.
 ///
 /// This serves as the base structure for other specialized pills (e.g., [GtStatusPill], [GtButtonPill]).
-class GtPill extends StatelessWidget {
+class GtPill extends GtStatelessWidget {
   /// The text to display inside the pill. In some implementations, this may be automatically converted to uppercase.
   final String text;
 
@@ -154,6 +153,15 @@ class GtPill extends StatelessWidget {
   /// Optional constraints to apply to the pill's container, such as fixed width or height.
   final BoxConstraints? constraints;
 
+  /// An alternative accessibility label for the pill text.
+  final String? semanticsLabel;
+
+  /// The duration used when the pill's visual styling changes.
+  final Duration animationDuration;
+
+  /// The curve used when the pill's visual styling changes.
+  final Curve animationCurve;
+
   /// Creates a [GtPill].
   const GtPill({
     super.key,
@@ -171,6 +179,9 @@ class GtPill extends StatelessWidget {
     this.textStyle,
     this.borderStyle = .solid,
     this.constraints,
+    this.semanticsLabel,
+    this.animationDuration = GtMotion.normal,
+    this.animationCurve = Curves.easeOutCubic,
   });
 
   @override
@@ -182,27 +193,17 @@ class GtPill extends StatelessWidget {
       shadow = context.shadows.pillShadow(shadowColor);
     }
 
-    Widget child = Text.rich(
-      TextSpan(
-        children: [
-          if (icon != null) ...[
-            WidgetSpan(child: icon!, alignment: .middle),
-            WidgetSpan(child: const GtGap.hSm()),
-          ],
-          TextSpan(text: text),
-          if (trailing != null) ...[
-            WidgetSpan(child: const GtGap.hSm()),
-            WidgetSpan(child: trailing!, alignment: .middle),
-          ],
-        ],
-      ),
-      maxLines: 1,
-      style: textStyle ?? context.textStyles.buttonXs(color: textColor),
-      overflow: .ellipsis,
+    Widget child = _GtPillContent(
+      text: text,
+      icon: icon,
+      trailing: trailing,
+      textStyle: textStyle ?? context.textStyles.buttonXs(color: textColor),
+      semanticsLabel: semanticsLabel,
     );
 
     child = AnimatedContainer(
-      duration: 500.milliseconds,
+      duration: GtMotion.adaptiveDuration(context, animationDuration),
+      curve: animationCurve,
       constraints: constraints,
       padding: padding ?? context.insets.allDp(4.px),
       decoration: BoxDecoration(
@@ -215,5 +216,41 @@ class GtPill extends StatelessWidget {
     );
 
     return Align(alignment: alignment ?? .center, child: child);
+  }
+}
+
+class _GtPillContent extends GtStatelessWidget {
+  final String text;
+  final Widget? icon;
+  final Widget? trailing;
+  final TextStyle textStyle;
+  final String? semanticsLabel;
+
+  const _GtPillContent({
+    required this.text,
+    required this.icon,
+    required this.trailing,
+    required this.textStyle,
+    required this.semanticsLabel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (icon != null) ...[icon!, const GtGap.hSm()],
+        Flexible(
+          child: GtText(
+            text,
+            maxLines: 1,
+            overflow: .ellipsis,
+            semanticsLabel: semanticsLabel,
+            style: textStyle,
+          ),
+        ),
+        if (trailing != null) ...[const GtGap.hSm(), trailing!],
+      ],
+    );
   }
 }
