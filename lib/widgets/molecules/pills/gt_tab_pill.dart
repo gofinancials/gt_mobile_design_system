@@ -38,7 +38,7 @@ class GtTabPillStyle {
 ///
 /// Automatically toggles styles between selected and unselected states by comparing
 /// the [value] against the [activeValue]. Triggers an automatic scroll into view when selected.
-class GtTabPill<T> extends StatelessWidget {
+class GtTabPill<T> extends GtStatelessWidget {
   /// The unique underlying value represented by this tab pill.
   final T value;
 
@@ -69,6 +69,12 @@ class GtTabPill<T> extends StatelessWidget {
   /// Whether to scroll the pill into view when selected.
   final bool autoScroll;
 
+  /// Whether this pill paints its own selected background.
+  ///
+  /// Tab bars with a shared sliding indicator disable this while preserving
+  /// the selected text and semantics treatment.
+  final bool showSelectedBackground;
+
   /// Creates a [GtTabPill].
   const GtTabPill({
     super.key,
@@ -82,6 +88,7 @@ class GtTabPill<T> extends StatelessWidget {
     this.alignment = .centerLeft,
     this.style,
     this.autoScroll = false,
+    this.showSelectedBackground = true,
   });
 
   /// Creates a specialized selection variant of the tab pill.
@@ -97,6 +104,7 @@ class GtTabPill<T> extends StatelessWidget {
     Alignment? alignment,
     GtTabPillStyle? style,
     bool autoScroll,
+    bool showSelectedBackground,
   }) = GtSelectionPill<T>;
 
   GtPillVariant get effectiveVariant => style?.variant ?? variant ?? .strong;
@@ -115,6 +123,9 @@ class GtTabPill<T> extends StatelessWidget {
 
   /// Gets the appropriate background color based on the tab's current selection state.
   Color getBgColor(GtPalette palette) {
+    if (isSelected && !showSelectedBackground) {
+      return GtColors.transparent.value;
+    }
     if (!isSelected) {
       return style?.bgColor ?? effectiveVariant.getBgColor(palette);
     }
@@ -198,6 +209,7 @@ class GtSelectionPill<T> extends GtTabPill<T> {
     super.alignment = .centerLeft,
     super.style,
     super.autoScroll,
+    super.showSelectedBackground,
   });
 
   @override
@@ -211,8 +223,11 @@ class GtSelectionPill<T> extends GtTabPill<T> {
 
   @override
   Color getBgColor(GtPalette palette) {
+    if (isSelected && !showSelectedBackground) {
+      return GtColors.transparent.value;
+    }
     if (!isSelected) {
-      return style?.bgColor ?? Colors.transparent;
+      return style?.bgColor ?? GtColors.transparent.value;
     }
     final activeColor = super.getBgColor(palette);
     return style?.activeBgColor ?? activeColor;

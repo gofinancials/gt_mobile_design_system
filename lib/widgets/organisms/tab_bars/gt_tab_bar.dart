@@ -28,6 +28,9 @@ class GtTabbar<T> extends GtStatefulWidget {
   /// Whether to scroll the tab into view when selected.
   final bool autoScroll;
 
+  /// Whether the shared active indicator glides between selected tabs.
+  final bool enableIndicatorAnimation;
+
   /// Creates a [GtTabbar].
   const GtTabbar({
     super.key,
@@ -38,6 +41,7 @@ class GtTabbar<T> extends GtStatefulWidget {
     this.style,
     this.padding,
     this.autoScroll = false,
+    this.enableIndicatorAnimation = true,
   }) : assert(tabs.length > 0);
 
   @override
@@ -55,6 +59,7 @@ class _GtTabbarState<T> extends State<GtTabbar<T>> {
       style: widget.style,
       padding: widget.padding,
       autoScroll: widget.autoScroll,
+      enableIndicatorAnimation: widget.enableIndicatorAnimation,
     );
   }
 }
