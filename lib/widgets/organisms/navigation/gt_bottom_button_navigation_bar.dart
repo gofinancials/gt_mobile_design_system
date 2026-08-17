@@ -35,7 +35,7 @@ class GtButtonBottomNavBar extends GtStatelessWidget {
     required this.button,
     this.heading,
     this.spacing,
-    this.hidingBehavior = .footer,
+    this.hidingBehavior = .headerAndFooter,
     this.footer,
   });
 
