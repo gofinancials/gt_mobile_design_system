@@ -103,19 +103,8 @@ class _GtButtonHidingBehaviorProvider extends GtStatelessWidget {
   Widget build(BuildContext context) {
     return GtAnimatedFade(
       showFirst: !canHide || !context.isKeyBoardUp,
-      child1: _GtExpandedFadeChild(child: child),
-      child2: const _GtExpandedFadeChild(child: SizedBox.shrink()),
+      child1: child,
+      child2: const SizedBox.shrink(),
     );
-  }
-}
-
-class _GtExpandedFadeChild extends GtStatelessWidget {
-  final Widget child;
-
-  const _GtExpandedFadeChild({required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [Expanded(child: child)]);
   }
 }

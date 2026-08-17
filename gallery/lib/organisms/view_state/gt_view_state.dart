@@ -23,6 +23,10 @@ Widget playgroundGtViewStateWidgetUseCase(BuildContext context) {
     label: 'Has Action',
     initialValue: true,
   );
+  final useCustomGraphic = context.knobs.boolean(
+    label: 'Use Custom Graphic',
+    initialValue: false,
+  );
 
   return GtWidgetDocPage(
     title: 'GtViewStateWidget',
@@ -33,7 +37,7 @@ Widget playgroundGtViewStateWidgetUseCase(BuildContext context) {
 GtViewStateWidget(
   title: "$title",
   description: "$description",
-  icon: AppImageData(GtVectorIllustrations.disconnected),
+  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData(GtVectorIllustrations.disconnected),'}
   ${hasAction ? 'actionText: "$actionText",' : ''}
   ${hasAction ? 'onActionPressed: () {},' : ''}
 )''',
@@ -45,6 +49,7 @@ GtViewStateWidget(
           title: title,
           description: description.isEmpty ? null : description,
           icon: AppImageData(GtVectorIllustrations.disconnected),
+          graphic: useCustomGraphic ? const GtSpinner(size: 64) : null,
           actionAlignment: .center,
           actionText: hasAction && actionText.isNotEmpty ? actionText : null,
           onActionPressed: hasAction ? () {} : null,

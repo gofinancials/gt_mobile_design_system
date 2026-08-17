@@ -25,6 +25,14 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
     label: 'Action Label',
     initialValue: 'Go Home',
   );
+  final useCustomGraphic = context.knobs.boolean(
+    label: 'Use Custom Graphic',
+    initialValue: false,
+  );
+  final graphic = useCustomGraphic ? const GtSpinner(size: 64) : null;
+  final graphicCode = useCustomGraphic
+      ? '  graphic: const GtSpinner(size: 64),\n'
+      : '';
 
   Widget statusWidget;
   String codeSnippet;
@@ -33,6 +41,7 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
     statusWidget = GtStatusState.success(
       title: title,
       subtitle: subtitle,
+      graphic: graphic,
       actionLabel: actionLabel,
       actionSize: .small,
       actionAlignment: .center,
@@ -42,7 +51,7 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
         '''GtStatusState.success(
   title: "$title",
   subtitle: "$subtitle",
-  actionLabel: "$actionLabel",
+$graphicCode  actionLabel: "$actionLabel",
   actionSize: .small,
   actionAlignment: .center,
   onActionPressed: () {},
@@ -51,6 +60,7 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
     statusWidget = GtStatusState.error(
       title: title,
       subtitle: subtitle,
+      graphic: graphic,
       actionLabel: actionLabel,
       actionSize: .small,
       actionAlignment: .center,
@@ -60,7 +70,7 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
         '''GtStatusState.error(
   title: "$title",
   subtitle: "$subtitle",
-  actionSize: .small,
+$graphicCode  actionSize: .small,
   actionAlignment: .center,
   actionLabel: "$actionLabel",
   onActionPressed: () {},
@@ -69,7 +79,10 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
     statusWidget = GtStatusState.custom(
       title: title,
       subtitle: subtitle,
-      icon: AppImageData(GtVectorIllustrations.maintenance),
+      icon: useCustomGraphic
+          ? null
+          : AppImageData(GtVectorIllustrations.maintenance),
+      graphic: graphic,
       actionSize: .small,
       actionAlignment: .center,
       actionLabel: actionLabel,
@@ -79,7 +92,7 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
         '''GtStatusState.custom(
   title: "$title",
   subtitle: "$subtitle",
-  icon: AppImageData(GtVectorIllustrations.maintenance),
+  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData(GtVectorIllustrations.maintenance),'}
   actionSize: .small,
   actionAlignment: .center,
   actionLabel: "$actionLabel",

@@ -13,6 +13,12 @@ class GtEmptyState extends GtStatelessWidget {
   /// [GtVectorIllustrations]).
   final AppImageData icon;
 
+  /// An optional custom graphic to display above the title.
+  ///
+  /// This can be any widget, including an animation. When provided, it takes
+  /// precedence over [icon]. The caller owns its sizing and semantics.
+  final Widget? graphic;
+
   /// Main heading text for the empty state.
   final String title;
 
@@ -42,6 +48,7 @@ class GtEmptyState extends GtStatelessWidget {
   const GtEmptyState({
     super.key,
     this.icon = const AppImageData(GtVectorIllustrations.empty),
+    this.graphic,
     required this.title,
     this.subtitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
@@ -60,6 +67,7 @@ class GtEmptyState extends GtStatelessWidget {
       title: title,
       description: subtitle,
       icon: icon,
+      graphic: graphic,
       alignment: alignment ?? .center,
       gapToDescription: gapToSubtitle,
       actionText: actionText,

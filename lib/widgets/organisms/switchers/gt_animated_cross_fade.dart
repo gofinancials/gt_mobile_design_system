@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-class GtAnimatedFade extends GtStatefulWidget {
+class GtAnimatedFade extends GtStatelessWidget {
   final Widget child1;
   final Widget child2;
   final bool showFirst;
@@ -17,23 +17,36 @@ class GtAnimatedFade extends GtStatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _GtAnimatedFadeState();
-}
-
-class _GtAnimatedFadeState extends State<GtAnimatedFade> {
-  @override
   Widget build(BuildContext context) {
+    final animationDuration = GtMotion.adaptiveDuration(
+      context,
+      duration.milliseconds,
+    );
+
     return RepaintBoundary(
       child: AnimatedCrossFade(
-        duration: widget.duration.milliseconds,
+        duration: animationDuration,
         alignment: Alignment.center,
-        reverseDuration: widget.duration.milliseconds,
-        crossFadeState: widget.showFirst ? .showFirst : .showSecond,
+        reverseDuration: animationDuration,
+        crossFadeState: showFirst ? .showFirst : .showSecond,
         firstCurve: Curves.decelerate,
         secondCurve: Curves.decelerate,
-        firstChild: widget.child1,
-        secondChild: widget.child2,
+        firstChild: _GtAnimatedFadeChild(child: child1),
+        secondChild: _GtAnimatedFadeChild(child: child2),
       ),
     );
+  }
+}
+
+/// Preserves the available width when [AnimatedCrossFade] places its top child
+/// under loose horizontal constraints.
+class _GtAnimatedFadeChild extends GtStatelessWidget {
+  final Widget child;
+
+  const _GtAnimatedFadeChild({required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return FractionallySizedBox(widthFactor: 1, child: child);
   }
 }

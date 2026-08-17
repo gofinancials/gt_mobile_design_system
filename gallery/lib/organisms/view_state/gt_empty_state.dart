@@ -28,6 +28,10 @@ Widget playgroundGtEmptyStateUseCase(BuildContext context) {
     label: 'Has Action Button',
     initialValue: true,
   );
+  final useCustomGraphic = context.knobs.boolean(
+    label: 'Use Custom Graphic',
+    initialValue: false,
+  );
   final actionText = context.knobs.string(
     label: 'Action Text',
     initialValue: 'Add Beneficiary',
@@ -46,7 +50,7 @@ Widget playgroundGtEmptyStateUseCase(BuildContext context) {
     code:
         '''
 GtEmptyState(
-  icon: AppImageData("$illustration"),
+  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData("$illustration"),'}
   title: "$title",
   subtitle: "$subtitle",
   ${hasAction ? 'actionText: "$actionText",' : ''}
@@ -58,6 +62,7 @@ GtEmptyState(
       variant: GtCardVariant.normal,
       child: GtEmptyState(
         icon: AppImageData(illustration),
+        graphic: useCustomGraphic ? const GtSpinner(size: 64) : null,
         title: title,
         subtitle: subtitle,
         actionText: hasAction ? actionText : null,

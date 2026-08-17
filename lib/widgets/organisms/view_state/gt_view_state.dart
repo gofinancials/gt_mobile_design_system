@@ -58,13 +58,19 @@ class GtViewStateWidget extends GtStatelessWidget {
   /// The icon to display above the title.
   final AppImageData? icon;
 
+  /// An optional custom graphic to display above the title.
+  ///
+  /// This can be any widget, including an animation. When provided, it takes
+  /// precedence over [icon]. The caller owns its sizing and semantics.
+  final Widget? graphic;
+
   /// The descriptive text displayed below the title.
   final String? description;
 
   /// The text to display on the call-to-action button.
   final String? actionText;
 
-  /// The spacing between the icon and the title.
+  /// The spacing between the graphic or icon and the title.
   ///
   /// Defaults to `GtGap.yMd()`. Can be customized with a [GtViewStateSpacer].
   final GtViewStateSpacer? gapToTitle;
@@ -122,6 +128,7 @@ class GtViewStateWidget extends GtStatelessWidget {
     required this.title,
     this.onActionPressed,
     this.icon,
+    this.graphic,
     this.iconSize,
     this.alignment = .center,
     this.descriptionStyle,
@@ -140,6 +147,7 @@ class GtViewStateWidget extends GtStatelessWidget {
     final subStyle = context.textStyles.bodyS(
       color: context.palette.text.darkerSub,
     );
+    final hasGraphic = graphic != null || icon != null;
 
     return Align(
       alignment: alignment,
@@ -148,15 +156,18 @@ class GtViewStateWidget extends GtStatelessWidget {
         crossAxisAlignment: .stretch,
         mainAxisAlignment: .center,
         children: [
-          if (icon != null) ...[
-            GtImage(
-              image: icon!,
-              width: iconSize ?? 124,
-              height: iconSize ?? 124,
-              fit: .contain,
-              alignment: .center,
-              isDecorative: true,
-            ),
+          if (hasGraphic) ...[
+            if (graphic != null)
+              graphic!
+            else
+              GtImage(
+                image: icon!,
+                width: iconSize ?? 124,
+                height: iconSize ?? 124,
+                fit: .contain,
+                alignment: .center,
+                isDecorative: true,
+              ),
             gapToTitle ?? const GtGap.yLg(),
           ],
           GtText(
