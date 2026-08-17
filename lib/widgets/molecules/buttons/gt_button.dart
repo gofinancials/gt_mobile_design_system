@@ -111,6 +111,9 @@ abstract class GtButton extends GtStatelessWidget {
   /// Scale applied while the button is pressed.
   final double pressedScale;
 
+  /// Whether changes to the button label use a short directional transition.
+  final bool enableLabelAnimation;
+
   /// An optional custom color to override the default background color of the button variant.
   final Color? color;
 
@@ -136,6 +139,7 @@ abstract class GtButton extends GtStatelessWidget {
     this.isLoading = false,
     this.enableScaleEffect = true,
     this.pressedScale = GtMotion.buttonPressScale,
+    this.enableLabelAnimation = true,
     this.textColor,
     this.alignment,
     this.semanticLabel,

@@ -44,17 +44,29 @@ void main() {
     expect(tester.getSize(find.byKey(const Key('second'))).width, 320);
   });
 
-  testWidgets('uses zero-duration transitions when animations are disabled', (
+  testWidgets('shows only the selected child when animations are disabled', (
     tester,
   ) async {
     await tester.pumpWidget(
       const _AnimatedFadeTestApp(disableAnimations: true, showFirst: false),
     );
 
-    final crossFade = tester.widget<AnimatedCrossFade>(
-      find.byType(AnimatedCrossFade),
+    expect(find.byType(AnimatedCrossFade), findsNothing);
+    expect(find.byKey(const Key('first')), findsNothing);
+    expect(find.byKey(const Key('second')), findsOneWidget);
+  });
+
+  testWidgets('can enable reduced motion while a cross-fade is mounted', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const _AnimatedFadeTestApp());
+    await tester.pumpWidget(
+      const _AnimatedFadeTestApp(disableAnimations: true, showFirst: false),
     );
-    expect(crossFade.duration, Duration.zero);
-    expect(crossFade.reverseDuration, Duration.zero);
+    await tester.pump();
+
+    expect(find.byType(AnimatedCrossFade), findsNothing);
+    expect(find.byKey(const Key('second')), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 }

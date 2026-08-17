@@ -23,6 +23,10 @@ class GtAnimatedFade extends GtStatelessWidget {
       duration.milliseconds,
     );
 
+    if (animationDuration == Duration.zero) {
+      return RepaintBoundary(child: showFirst ? child1 : child2);
+    }
+
     return RepaintBoundary(
       child: AnimatedCrossFade(
         duration: animationDuration,

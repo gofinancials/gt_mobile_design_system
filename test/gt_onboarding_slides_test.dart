@@ -113,14 +113,19 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('FIRST'), findsOneWidget);
-      expect(
-        find.descendant(
-          of: find.byType(NumberListener<int>),
-          matching: find.byType(SlideTransition),
-        ),
-        findsNothing,
-        reason: 'overlay content should fade without a competing slide motion',
+      final overlaySwitcher = tester.widget<AnimatedSwitcher>(
+        find
+            .ancestor(
+              of: find.text('FIRST'),
+              matching: find.byType(AnimatedSwitcher),
+            )
+            .first,
       );
+      final overlayTransition = overlaySwitcher.transitionBuilder(
+        const SizedBox.shrink(),
+        const AlwaysStoppedAnimation(.5),
+      );
+      expect(overlayTransition, isA<FadeTransition>());
       await tester.pumpWidget(const SizedBox());
     });
 

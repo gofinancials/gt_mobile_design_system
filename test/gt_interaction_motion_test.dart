@@ -103,6 +103,37 @@ class _KeypadTestApp extends GtStatelessWidget {
   }
 }
 
+class _ButtonLabelMotionTestApp extends GtStatelessWidget {
+  final String label;
+  final bool disableAnimations;
+  final bool enableLabelAnimation;
+
+  const _ButtonLabelMotionTestApp({
+    required this.label,
+    this.disableAnimations = false,
+    this.enableLabelAnimation = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GtThemeProvider(
+      theme: kPersonalTheme,
+      child: MaterialApp(
+        home: MediaQuery(
+          data: MediaQueryData(disableAnimations: disableAnimations),
+          child: Scaffold(
+            body: GtRaisedButton(
+              text: label,
+              enableLabelAnimation: enableLabelAnimation,
+              onPressed: () {},
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 void main() {
   testWidgets('shared switchers use zero duration for reduced motion', (
     tester,
@@ -128,6 +159,61 @@ void main() {
     expect(scaleSwitcher.reverseDuration, Duration.zero);
     expect(sizeSwitcher.duration, Duration.zero);
     expect(sizeSwitcher.reverseDuration, Duration.zero);
+  });
+
+  testWidgets('button labels transition when their action changes', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const _ButtonLabelMotionTestApp(label: 'Continue'));
+    await tester.pumpWidget(const _ButtonLabelMotionTestApp(label: 'Confirm'));
+    await tester.pump();
+
+    final labelSwitcher = tester.widget<AnimatedSwitcher>(
+      find.descendant(
+        of: find.byType(GtButtonText),
+        matching: find.byType(AnimatedSwitcher),
+      ),
+    );
+    expect(labelSwitcher.duration, GtMotion.fast);
+    expect(find.byType(SlideTransition), findsWidgets);
+
+    await tester.pumpAndSettle();
+    expect(find.text('CONFIRM'), findsOneWidget);
+    expect(find.text('CONTINUE'), findsNothing);
+  });
+
+  testWidgets('button label transitions honor opt-out and reduced motion', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const _ButtonLabelMotionTestApp(
+        label: 'Continue',
+        enableLabelAnimation: false,
+      ),
+    );
+    var switcher = tester.widget<AnimatedSwitcher>(
+      find.descendant(
+        of: find.byType(GtButtonText),
+        matching: find.byType(AnimatedSwitcher),
+      ),
+    );
+    expect(switcher.duration, Duration.zero);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+    await tester.pumpWidget(
+      const _ButtonLabelMotionTestApp(
+        label: 'Confirm',
+        disableAnimations: true,
+      ),
+    );
+    switcher = tester.widget<AnimatedSwitcher>(
+      find.descendant(
+        of: find.byType(GtButtonText),
+        matching: find.byType(AnimatedSwitcher),
+      ),
+    );
+    expect(switcher.duration, Duration.zero);
   });
 
   testWidgets('bottom navigation uses tokenized selection motion', (
