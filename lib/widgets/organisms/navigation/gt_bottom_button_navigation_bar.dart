@@ -103,7 +103,7 @@ class _GtButtonHidingBehaviorProvider extends GtStatelessWidget {
   Widget build(BuildContext context) {
     return GtAnimatedFade(
       showFirst: !canHide || !context.isKeyBoardUp,
-      child1: child,
+      child1: FractionallySizedBox(widthFactor: 1, child: child),
       child2: const SizedBox.shrink(),
     );
   }

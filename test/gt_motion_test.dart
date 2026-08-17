@@ -4,14 +4,20 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 class _MotionTestApp extends GtStatelessWidget {
   final Widget child;
+  final bool disableAnimations;
 
-  const _MotionTestApp({required this.child});
+  const _MotionTestApp({required this.child, this.disableAnimations = false});
 
   @override
   Widget build(BuildContext context) {
     return GtThemeProvider(
       theme: kPersonalTheme,
-      child: MaterialApp(home: Scaffold(body: child)),
+      child: MaterialApp(
+        home: MediaQuery(
+          data: MediaQueryData(disableAnimations: disableAnimations),
+          child: Scaffold(body: child),
+        ),
+      ),
     );
   }
 }
@@ -42,6 +48,68 @@ void main() {
 
     await tester.pumpAndSettle();
     expect(find.bySemanticsLabel('N34'), findsOneWidget);
+  });
+
+  testWidgets('GtBalanceText can animate visible amount changes', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const _MotionTestApp(
+        child: GtBalanceText(amount: 12, animateChanges: true),
+      ),
+    );
+
+    expect(find.byType(GtAnimatedCounter), findsOneWidget);
+    expect(find.bySemanticsLabel('12.00 Naira'), findsOneWidget);
+
+    await tester.pumpWidget(
+      const _MotionTestApp(
+        child: GtBalanceText(amount: 34, animateChanges: true),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byType(SlideTransition), findsWidgets);
+    expect(find.bySemanticsLabel('34.00 Naira'), findsOneWidget);
+  });
+
+  testWidgets('GtBalanceText keeps masked balances static', (tester) async {
+    await tester.pumpWidget(
+      const _MotionTestApp(
+        child: GtBalanceText(amount: 12, hidden: true, animateChanges: true),
+      ),
+    );
+
+    expect(find.byType(GtAnimatedCounter), findsNothing);
+    expect(find.bySemanticsLabel('Balance is hidden'), findsOneWidget);
+  });
+
+  testWidgets('GtBalanceText counter honors reduced motion', (tester) async {
+    await tester.pumpWidget(
+      const _MotionTestApp(
+        disableAnimations: true,
+        child: GtBalanceText(amount: 12, animateChanges: true),
+      ),
+    );
+
+    await tester.pumpWidget(
+      const _MotionTestApp(
+        disableAnimations: true,
+        child: GtBalanceText(amount: 34, animateChanges: true),
+      ),
+    );
+
+    final switchers = tester.widgetList<AnimatedSwitcher>(
+      find.descendant(
+        of: find.byType(GtAnimatedCounter),
+        matching: find.byType(AnimatedSwitcher),
+      ),
+    );
+    expect(switchers, isNotEmpty);
+    expect(
+      switchers.every((switcher) => switcher.duration == Duration.zero),
+      isTrue,
+    );
   });
 
   testWidgets('GtSpringShake moves after its controller is triggered', (
