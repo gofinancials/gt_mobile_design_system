@@ -44,6 +44,8 @@ GtAnimatedSlider(
             GtAnimatedSlider(
               duration: duration,
               axis: axis,
+              switchInCurve: GtSpringCurves.gentle,
+              switchOutCurve: Curves.easeOutCubic,
               child: showChild
                   ? Container(
                       key: const ValueKey('content'),

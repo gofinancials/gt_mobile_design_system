@@ -43,6 +43,10 @@ class _BottomNavPlaygroundState extends State<_BottomNavPlayground> {
       label: 'Item 3 Label',
       initialValue: 'Settings',
     );
+    final enableSelectionAnimation = context.knobs.boolean(
+      label: 'Enable Selection Animation',
+      initialValue: true,
+    );
 
     return GtWidgetDocPage(
       title: 'GtBottomNavigationBar',
@@ -53,6 +57,7 @@ class _BottomNavPlaygroundState extends State<_BottomNavPlayground> {
 GtBottomNavigationBar(
   currentIndex: $_currentIndex,
   style: .${style.name},
+  enableSelectionAnimation: $enableSelectionAnimation,
   onIndexChanged: (index) {
     // setState(() => currentIndex = index);
   },
@@ -77,6 +82,7 @@ GtBottomNavigationBar(
 )''',
       child: GtBottomNavigationBar(
         currentIndex: _currentIndex,
+        enableSelectionAnimation: enableSelectionAnimation,
         onIndexChanged: (index) {
           setState(() {
             _currentIndex = index;
