@@ -82,13 +82,45 @@ class GtTabbarView<T> extends GtStatefulWidget {
 }
 
 class _GtTabbarViewState<T> extends State<GtTabbarView<T>> {
+  int? _previousIndex;
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: widget.controller,
       builder: (context, _) {
         final activeTab = widget.controller.value;
-        return widget.tabViews[activeTab?.value] ?? const Offstage();
+        final keys = widget.tabViews.keys.toList(growable: false);
+        final activeIndex = activeTab == null
+            ? -1
+            : keys.indexOf(activeTab.value);
+        final previousIndex = _previousIndex ?? activeIndex;
+        final direction = activeIndex >= previousIndex ? 1.0 : -1.0;
+        _previousIndex = activeIndex;
+        final activeKey = activeTab?.value;
+        final activeView = widget.tabViews[activeKey] ?? const Offstage();
+        final duration = GtMotion.adaptiveDuration(context, GtMotion.normal);
+
+        return AnimatedSwitcher(
+          duration: duration,
+          switchInCurve: GtSpringCurves.gentle,
+          switchOutCurve: Curves.easeOutCubic,
+          transitionBuilder: (child, animation) {
+            final isIncoming = child.key == ValueKey(activeKey);
+            final offset = Offset(isIncoming ? direction : -direction, 0);
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: offset,
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              ),
+            );
+          },
+          child: KeyedSubtree(key: ValueKey(activeKey), child: activeView),
+        );
       },
     );
   }

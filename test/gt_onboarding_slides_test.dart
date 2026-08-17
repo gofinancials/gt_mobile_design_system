@@ -76,6 +76,46 @@ final Uint8List _transparentPng = Uint8List.fromList([
 
 void main() {
   group('GtOnboardingSlides', () {
+    testWidgets('uses virtual pages for a smooth last-to-first transition', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        GtThemeProvider(
+          theme: kPersonalTheme,
+          child: MaterialApp(
+            home: GtOnboardingSlides(
+              slides: [
+                GtOnboardingSlideData(
+                  title: 'First',
+                  image: MemoryImage(_transparentPng),
+                ),
+                GtOnboardingSlideData(
+                  title: 'Second',
+                  image: MemoryImage(_transparentPng),
+                ),
+              ],
+              footerText: 'Footer',
+              primaryButton: GtRaisedButton(onPressed: () {}, text: 'Primary'),
+              secondaryButton: GtOutlineButton(
+                onPressed: () {},
+                text: 'Secondary',
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final pageView = tester.widget<PageView>(find.byType(PageView));
+      expect(pageView.controller!.initialPage, greaterThan(0));
+      expect(pageView.childrenDelegate.estimatedChildCount, isNull);
+
+      pageView.controller!.jumpToPage(pageView.controller!.initialPage + 2);
+      await tester.pumpAndSettle();
+
+      expect(find.text('FIRST'), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+    });
+
     testWidgets('passes footerTextColor and footerLinkColor to GtRichText', (
       WidgetTester tester,
     ) async {

@@ -48,6 +48,8 @@ class GtTextButton extends GtButton {
     this.borderColor,
     super.isDisabled = false,
     super.isLoading = false,
+    super.enableScaleEffect = true,
+    super.pressedScale,
     this.textAlign = .center,
     this.contentPadding,
     this.leading,
@@ -169,6 +171,12 @@ class GtTextButton extends GtButton {
         child: child,
       );
     }
+
+    child = GtPressable(
+      enabled: enableScaleEffect && !isDisabled && !isLoading,
+      pressedScale: pressedScale,
+      child: child,
+    );
 
     if (needsMinimumTapTarget) {
       child = GtTapTarget(child: child);

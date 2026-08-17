@@ -105,6 +105,12 @@ abstract class GtButton extends GtStatelessWidget {
   /// Typically used to display a progress indicator instead of its label.
   final bool isLoading;
 
+  /// Whether tactile scale feedback is shown while the button is pressed.
+  final bool enableScaleEffect;
+
+  /// Scale applied while the button is pressed.
+  final double pressedScale;
+
   /// An optional custom color to override the default background color of the button variant.
   final Color? color;
 
@@ -128,12 +134,14 @@ abstract class GtButton extends GtStatelessWidget {
     this.color,
     this.isDisabled = false,
     this.isLoading = false,
+    this.enableScaleEffect = true,
+    this.pressedScale = GtMotion.buttonPressScale,
     this.textColor,
     this.alignment,
     this.semanticLabel,
     this.loadingSemanticLabel,
     super.key,
-  });
+  }) : assert(pressedScale > 0 && pressedScale <= 1);
 
   /// Computes the semantic label dynamically based on the loading state.
   String? get computedSemanticLabel {

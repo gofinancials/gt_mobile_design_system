@@ -4,6 +4,9 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 class GtInkWell extends InkWell {
   final HapticFeedbackType hapticFeedbackType;
+  final bool enableScaleEffect;
+  final double pressedScale;
+  final Duration scaleDuration;
   final String? semanticsLabel;
   final String? semanticHint;
 
@@ -52,6 +55,9 @@ class GtInkWell extends InkWell {
 
   const GtInkWell({
     this.hapticFeedbackType = .light,
+    this.enableScaleEffect = true,
+    this.pressedScale = GtMotion.buttonPressScale,
+    this.scaleDuration = GtMotion.fast,
     this.semanticsLabel,
     this.semanticHint,
     this.role,
@@ -122,8 +128,8 @@ class GtInkWell extends InkWell {
       onTap: onTap == null || !isEnabled
           ? null
           : () {
-              onTap!.call();
               triggerHaptic(hapticFeedbackType);
+              onTap!.call();
             },
       onDoubleTap: onDoubleTap,
       onLongPress: onLongPress,
@@ -158,6 +164,10 @@ class GtInkWell extends InkWell {
       child: child,
     );
 
+    final isInteractive =
+        isEnabled &&
+        (onTap != null || onDoubleTap != null || onLongPress != null);
+
     return GtSemantics(
       role: resolvedRole,
       label: semanticsLabel,
@@ -168,7 +178,12 @@ class GtInkWell extends InkWell {
       isExpanded: isExpanded,
       enabled: isEnabled,
       excludeDescendants: excludeDescendantSemantics,
-      child: inkWell,
+      child: GtPressable(
+        enabled: enableScaleEffect && isInteractive,
+        pressedScale: pressedScale,
+        duration: scaleDuration,
+        child: inkWell,
+      ),
     );
   }
 }

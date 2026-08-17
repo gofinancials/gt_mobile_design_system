@@ -45,6 +45,8 @@ import 'package:gallery/atoms/media/gt_network_image_usecase.dart'
     as _gallery_atoms_media_gt_network_image_usecase;
 import 'package:gallery/atoms/media/gt_svg_usecase.dart'
     as _gallery_atoms_media_gt_svg_usecase;
+import 'package:gallery/atoms/motion/gt_motion_usecase.dart'
+    as _gallery_atoms_motion_gt_motion_usecase;
 import 'package:gallery/atoms/pallette.dart' as _gallery_atoms_pallette;
 import 'package:gallery/atoms/shadows.dart' as _gallery_atoms_shadows;
 import 'package:gallery/atoms/spacers/gt_divider.dart'
@@ -595,6 +597,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtSvg',
                     builder: _gallery_atoms_media_gt_svg_usecase
                         .playgroundGtSvgUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'motion',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAnimatedCounter',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Motion primitives',
+                    builder: _gallery_atoms_motion_gt_motion_usecase
+                        .playgroundGtMotionUseCase,
                   ),
                 ],
               ),

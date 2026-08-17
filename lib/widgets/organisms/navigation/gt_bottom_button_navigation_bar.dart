@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+enum GtBottomNavBarButtonHidingBehavior {
+  footer(value: "footer"),
+  all(value: "all"),
+  headerOnly(value: "headerOnly"),
+  headerAndFooter(value: "headerAndFooter");
+
+  const GtBottomNavBarButtonHidingBehavior({required this.value});
+  final String value;
+}
+
 class GtButtonBottomNavBar extends GtStatelessWidget {
   final Widget button;
   final Widget? heading;

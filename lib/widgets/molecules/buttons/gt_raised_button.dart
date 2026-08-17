@@ -34,6 +34,8 @@ class GtRaisedButton extends GtButton {
     super.color,
     super.isDisabled = false,
     super.isLoading = false,
+    super.enableScaleEffect = true,
+    super.pressedScale,
     this.contentPadding,
     this.leading,
     this.trailing,
@@ -198,6 +200,12 @@ class GtRaisedButton extends GtButton {
         child: child,
       );
     }
+
+    child = GtPressable(
+      enabled: enableScaleEffect && !isDisabled && !isLoading,
+      pressedScale: pressedScale,
+      child: child,
+    );
 
     if (needsMinimumTapTarget) {
       child = GtTapTarget(child: child);

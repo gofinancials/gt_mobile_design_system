@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:flutter/material.dart';
@@ -234,6 +233,13 @@ class GtCard extends GtStatelessWidget {
 
   final OnPressed? onPressed;
 
+  /// Whether tactile scale feedback is shown while an interactive card is
+  /// pressed.
+  final bool enableScaleEffect;
+
+  /// Scale applied while an interactive card is pressed.
+  final double pressedScale;
+
   /// An accessible name for the card as a control, already localised.
   ///
   /// Only announced when [onPressed] makes the card interactive. Leave it null
@@ -256,8 +262,10 @@ class GtCard extends GtStatelessWidget {
     super.key,
     this.onPressed,
     this.semanticsLabel,
+    this.enableScaleEffect = true,
+    this.pressedScale = GtMotion.cardPressScale,
     required this.child,
-  });
+  }) : assert(pressedScale > 0 && pressedScale <= 1);
 
   @override
   Widget build(BuildContext context) {
@@ -284,12 +292,10 @@ class GtCard extends GtStatelessWidget {
         role: onPressed == null ? .none : .button,
         semanticsLabel: onPressed == null ? null : semanticsLabel,
         borderRadius: computedRadius,
-        onTap: onPressed == null
-            ? null
-            : () {
-                HapticFeedback.mediumImpact();
-                onPressed!.call();
-              },
+        enableScaleEffect: enableScaleEffect,
+        pressedScale: pressedScale,
+        hapticFeedbackType: .medium,
+        onTap: onPressed?.call,
         child: AnimatedContainer(
           clipBehavior: .hardEdge,
           constraints: constraints,

@@ -49,6 +49,12 @@ class GtCancelButton extends GtStatelessWidget {
   /// An optional custom color to override the default color of the cancel icon.
   final Color? color;
 
+  /// Whether tactile scale feedback is shown while the button is pressed.
+  final bool enableScaleEffect;
+
+  /// Scale applied while the button is pressed.
+  final double pressedScale;
+
   /// Creates a [GtCancelButton].
   const GtCancelButton({
     super.key,
@@ -58,7 +64,9 @@ class GtCancelButton extends GtStatelessWidget {
     this.size = .large,
     this.asHero = false,
     this.color,
-  });
+    this.enableScaleEffect = true,
+    this.pressedScale = GtMotion.iconPressScale,
+  }) : assert(pressedScale > 0 && pressedScale <= 1);
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +81,8 @@ class GtCancelButton extends GtStatelessWidget {
 
     Widget child = GtInkWell(
       role: .button,
+      enableScaleEffect: enableScaleEffect,
+      pressedScale: pressedScale,
       onTap: () {
         if (subAction != null) subAction!();
         if (onTap != null) return onTap!();

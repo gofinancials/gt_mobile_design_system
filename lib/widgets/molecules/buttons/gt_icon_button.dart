@@ -81,6 +81,12 @@ class GtIconButton extends GtButton {
     /// Whether the button is currently in a loading state.
     super.isLoading = false,
 
+    /// Whether tactile scale feedback is shown while pressed.
+    super.enableScaleEffect = true,
+
+    /// Scale applied while pressed.
+    super.pressedScale = GtMotion.iconPressScale,
+
     /// Custom padding to apply inside the button.
     this.contentPadding,
 
@@ -296,6 +302,12 @@ class GtIconButton extends GtButton {
         child: child,
       );
     }
+
+    child = GtPressable(
+      enabled: enableScaleEffect && !isDisabled && !isLoading,
+      pressedScale: pressedScale,
+      child: child,
+    );
 
     if (needsMinimumTapTarget) {
       child = GtTapTarget(child: child);

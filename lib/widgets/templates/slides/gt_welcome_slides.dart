@@ -37,7 +37,7 @@ class GtWelcomeSlides extends GtStatefulWidget {
     this.iconColor,
     this.activeDotColor,
     this.inActiveDotColor,
-  });
+  }) : assert(slides.length > 0);
 
   @override
   State<StatefulWidget> createState() => _GtWelcomeSlidesState();
@@ -48,6 +48,8 @@ class GtWelcomeSlides extends GtStatefulWidget {
 /// Manages the [PageController], the active slide index, and the automatic
 /// slide transitions.
 class _GtWelcomeSlidesState extends State<GtWelcomeSlides> {
+  static const int _virtualInitialPage = 10000;
+
   /// Notifier for the currently active slide index.
   late final ValueNotifier<int> _activeSlide;
 
@@ -60,10 +62,12 @@ class _GtWelcomeSlidesState extends State<GtWelcomeSlides> {
   @override
   void initState() {
     super.initState();
-    _controller = PageController();
+    final initialPage =
+        _virtualInitialPage - (_virtualInitialPage % widget.slides.length);
+    _controller = PageController(initialPage: initialPage);
     _activeSlide = ValueNotifier(0);
     _debouncer = AppDebouncer(2.seconds);
-    _goToNextSlide(_controller.initialPage);
+    _goToNextSlide();
   }
 
   @override
@@ -79,34 +83,22 @@ class _GtWelcomeSlidesState extends State<GtWelcomeSlides> {
   /// This also resets the debouncer for the automatic slide transition.
   void _updateSlide(int index) {
     if (_debouncer.isActive) _debouncer.abort();
-    _activeSlide.value = index;
-    _goToNextSlide(index);
+    _activeSlide.value = index % widget.slides.length;
+    _goToNextSlide();
   }
 
   /// Schedules an automatic transition to the next slide after a delay.
   ///
-  /// If the current slide is the last one, it loops back to the first slide.
-  /// The transition is animated, except when jumping from the last to the first
-  /// slide.
-  void _goToNextSlide(int index) {
-    int next = index + 1;
-    if (next == widget.slides.length) next = 0;
-
+  /// Virtual pages keep the last-to-first transition continuous.
+  void _goToNextSlide() {
+    if (widget.slides.length < 2) return;
     _debouncer.run(() {
-      if (!_controller.hasClients) {
-        _activeSlide.value = next;
-        return;
-      }
-
-      if (next == 0) {
-        _controller.jumpToPage(next);
-        return;
-      }
-
+      if (!_controller.hasClients) return;
+      final currentPage = _controller.page?.round() ?? _controller.initialPage;
       _controller.animateToPage(
-        next,
-        duration: 500.milliseconds,
-        curve: Curves.easeIn,
+        currentPage + 1,
+        duration: GtMotion.fluid,
+        curve: GtSpringCurves.gentle,
       );
     });
   }
@@ -136,11 +128,10 @@ class _GtWelcomeSlidesState extends State<GtWelcomeSlides> {
         children: [
           Positioned.fill(
             child: PageView.builder(
-              itemCount: widget.slides.length,
               controller: _controller,
               onPageChanged: _updateSlide,
               itemBuilder: (_, index) {
-                final slide = widget.slides[index];
+                final slide = widget.slides[index % widget.slides.length];
                 return GtWelcomeSlide(slide: slide);
               },
             ),
