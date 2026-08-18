@@ -70,12 +70,15 @@ class GtButtonBottomNavBar extends GtStatelessWidget {
       );
     }
 
+    final keyPadVisible = context.isKeyBoardUp;
+    final bottomPadding = keyPadVisible ? 0.0 : 24.px;
+
     return SafeArea(
       top: false,
       maintainBottomViewPadding: true,
       child: Padding(
         padding: insets.defaultHorizontalInsets.add(
-          insets.onlyDp(bottom: 24.px),
+          insets.onlyDp(bottom: bottomPadding),
         ),
         child: Column(
           mainAxisAlignment: .end,
