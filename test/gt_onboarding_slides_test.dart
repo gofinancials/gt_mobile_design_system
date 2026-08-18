@@ -113,19 +113,71 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('FIRST'), findsOneWidget);
-      final overlaySwitcher = tester.widget<AnimatedSwitcher>(
+      final overlayTransition = tester.widget<AnimatedCrossFade>(
         find
             .ancestor(
               of: find.text('FIRST'),
-              matching: find.byType(AnimatedSwitcher),
+              matching: find.byType(AnimatedCrossFade),
             )
             .first,
       );
-      final overlayTransition = overlaySwitcher.transitionBuilder(
-        const SizedBox.shrink(),
-        const AlwaysStoppedAnimation(.5),
+      expect(overlayTransition.duration, GtMotion.fluid);
+      expect(overlayTransition.sizeCurve, Curves.easeInOutCubic);
+      expect(overlayTransition.alignment, Alignment.bottomCenter);
+      expect(
+        find.ancestor(
+          of: find.text('FIRST'),
+          matching: find.byType(AnimatedSwitcher),
+        ),
+        findsNothing,
       );
-      expect(overlayTransition, isA<FadeTransition>());
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('blurs only the wide background copy', (
+      WidgetTester tester,
+    ) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(1200, 800);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(
+        GtThemeProvider(
+          theme: kPersonalTheme,
+          child: MaterialApp(
+            home: GtOnboardingSlides(
+              slides: [
+                GtOnboardingSlideData(
+                  title: 'Wide slide',
+                  image: MemoryImage(_transparentPng),
+                ),
+              ],
+              footerText: 'Footer',
+              primaryButton: GtRaisedButton(onPressed: () {}, text: 'Primary'),
+              secondaryButton: GtOutlineButton(
+                onPressed: () {},
+                text: 'Secondary',
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(BackdropFilter), findsNothing);
+      expect(find.byType(ImageFiltered), findsWidgets);
+
+      final containedImage = find.byWidgetPredicate((widget) {
+        if (widget case DecoratedBox(decoration: final BoxDecoration box)) {
+          return box.image?.fit == BoxFit.contain;
+        }
+        return false;
+      }).first;
+
+      expect(
+        find.ancestor(of: containedImage, matching: find.byType(ImageFiltered)),
+        findsNothing,
+      );
       await tester.pumpWidget(const SizedBox());
     });
 

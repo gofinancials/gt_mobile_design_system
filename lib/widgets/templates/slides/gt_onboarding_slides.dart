@@ -122,7 +122,7 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
     _debouncer.run(() {
       if (!_controller.hasClients) return;
       final currentPage = _controller.page?.round() ?? _controller.initialPage;
-      if (MediaQuery.maybeDisableAnimationsOf(context) ?? false) {
+      if (context.reduceMotion) {
         _controller.jumpToPage(currentPage + 1);
         return;
       }
@@ -152,42 +152,12 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
           Positioned.fill(
             child: PageView.builder(
               controller: _controller,
+              allowImplicitScrolling: true,
               onPageChanged: _updateSlide,
-              itemBuilder: (_, index) {
-                final slide = widget.slides[index % widget.slides.length];
-                final image = DecoratedBox(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: slide.image,
-                      fit: .contain,
-                      alignment: .topCenter,
-                    ),
-                  ),
-                );
-
-                if (!isWideLayout) return image;
-
-                // On wide layouts the contained image leaves bare space on
-                // either side, so a blurred, full-bleed copy fills it in.
-                return Stack(
-                  fit: .expand,
-                  children: [
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: slide.image,
-                          fit: .cover,
-                          alignment: .topCenter,
-                        ),
-                      ),
-                    ),
-                    BackdropFilter(
-                      filter: context.backdropFilters.imageBackdrop(),
-                      child: image,
-                    ),
-                  ],
-                );
-              },
+              itemBuilder: (_, index) => _GtOnboardingBackgroundSlide(
+                image: widget.slides[index % widget.slides.length].image,
+                showBlurredBackground: isWideLayout,
+              ),
             ),
           ),
           Positioned.fill(
@@ -207,15 +177,12 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
                     mainAxisAlignment: .end,
                     mainAxisSize: .min,
                     children: [
-                      AnimatedSwitcher(
+                      _GtOnboardingContentTransition(
                         duration: GtMotion.adaptiveDuration(
                           context,
-                          GtMotion.fast,
+                          GtMotion.fluid,
                         ),
-                        switchInCurve: Curves.easeOut,
-                        switchOutCurve: Curves.easeIn,
-                        transitionBuilder: (child, animation) =>
-                            FadeTransition(opacity: animation, child: child),
+                        curve: Curves.easeInOutCubic,
                         child: Column(
                           key: ValueKey(activeIndex),
                           mainAxisSize: .min,
@@ -284,6 +251,124 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _GtOnboardingBackgroundSlide extends GtStatelessWidget {
+  final ImageProvider image;
+  final bool showBlurredBackground;
+
+  const _GtOnboardingBackgroundSlide({
+    required this.image,
+    required this.showBlurredBackground,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final foreground = DecoratedBox(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: image,
+          fit: .contain,
+          alignment: .topCenter,
+        ),
+      ),
+    );
+
+    if (!showBlurredBackground) {
+      return RepaintBoundary(child: foreground);
+    }
+
+    // Blur only the full-bleed copy. A BackdropFilter also samples the
+    // foreground and adjacent PageView pages while they overlap, which makes
+    // the contained image flash out of focus during an index change.
+    return RepaintBoundary(
+      child: Stack(
+        fit: .expand,
+        children: [
+          ClipRect(
+            child: ImageFiltered(
+              imageFilter: context.backdropFilters.imageBackdrop(),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: image,
+                    fit: .cover,
+                    alignment: .topCenter,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          foreground,
+        ],
+      ),
+    );
+  }
+}
+
+class _GtOnboardingContentTransition extends GtStatefulWidget {
+  final Widget child;
+  final Duration duration;
+  final Curve curve;
+
+  const _GtOnboardingContentTransition({
+    required this.child,
+    required this.duration,
+    required this.curve,
+  });
+
+  @override
+  State<_GtOnboardingContentTransition> createState() =>
+      _GtOnboardingContentTransitionState();
+}
+
+class _GtOnboardingContentTransitionState
+    extends State<_GtOnboardingContentTransition> {
+  late Widget _firstChild;
+  Widget _secondChild = const SizedBox.shrink();
+  bool _showFirst = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _firstChild = widget.child;
+  }
+
+  @override
+  void didUpdateWidget(covariant _GtOnboardingContentTransition oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.child.key == widget.child.key) {
+      if (_showFirst) {
+        _firstChild = widget.child;
+      } else {
+        _secondChild = widget.child;
+      }
+      return;
+    }
+
+    if (_showFirst) {
+      _secondChild = widget.child;
+    } else {
+      _firstChild = widget.child;
+    }
+    _showFirst = !_showFirst;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedCrossFade(
+      duration: widget.duration,
+      reverseDuration: widget.duration,
+      firstCurve: widget.curve,
+      secondCurve: widget.curve,
+      sizeCurve: widget.curve,
+      alignment: Alignment.bottomCenter,
+      crossFadeState: _showFirst ? .showFirst : .showSecond,
+      firstChild: _firstChild,
+      secondChild: _secondChild,
     );
   }
 }
