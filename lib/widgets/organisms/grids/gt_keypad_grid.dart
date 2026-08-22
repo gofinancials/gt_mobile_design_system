@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 /// A grid-based virtual keypad widget for numeric input.
 ///
@@ -29,6 +29,18 @@ class GtKeyPadGrid extends GtStatefulWidget {
   /// Callback invoked when the input length reaches the specified [limit].
   final OnChanged<String>? onCompleted;
 
+  /// Whether keys scale down while pressed.
+  final bool enableScaleEffect;
+
+  /// Scale applied to a key while it is pressed.
+  final double pressedScale;
+
+  /// Haptic feedback used for numeric keys.
+  final HapticFeedbackType keyHapticFeedbackType;
+
+  /// Haptic feedback used for delete and biometric keys.
+  final HapticFeedbackType actionHapticFeedbackType;
+
   /// Creates a [GtKeyPadGrid].
   const GtKeyPadGrid({
     required this.controller,
@@ -38,7 +50,11 @@ class GtKeyPadGrid extends GtStatefulWidget {
     super.key,
     this.onChanged,
     this.onCompleted,
-  });
+    this.enableScaleEffect = true,
+    this.pressedScale = GtMotion.buttonPressScale,
+    this.keyHapticFeedbackType = .light,
+    this.actionHapticFeedbackType = .medium,
+  }) : assert(pressedScale > 0 && pressedScale <= 1);
 
   @override
   State<StatefulWidget> createState() => _GtKeyPadGridState();
@@ -91,6 +107,10 @@ class _GtKeyPadGridState extends State<GtKeyPadGrid> {
                     data: keyRow[index],
                     onSelected: _updateValue,
                     onBioAuth: onBioAuth,
+                    enableScaleEffect: widget.enableScaleEffect,
+                    pressedScale: widget.pressedScale,
+                    keyHapticFeedbackType: widget.keyHapticFeedbackType,
+                    actionHapticFeedbackType: widget.actionHapticFeedbackType,
                   ),
                 ),
               ),
@@ -117,13 +137,29 @@ class GtKeyCell extends GtStatelessWidget {
   /// Callback invoked when a biometric key is tapped.
   final OnPressed? onBioAuth;
 
+  /// Whether the key scales down while pressed.
+  final bool enableScaleEffect;
+
+  /// Scale applied while the key is pressed.
+  final double pressedScale;
+
+  /// Haptic feedback used for numeric keys.
+  final HapticFeedbackType keyHapticFeedbackType;
+
+  /// Haptic feedback used for delete and biometric keys.
+  final HapticFeedbackType actionHapticFeedbackType;
+
   /// Creates a [GtKeyCell].
   const GtKeyCell({
     required this.data,
     required this.onSelected,
     this.onBioAuth,
+    this.enableScaleEffect = true,
+    this.pressedScale = GtMotion.buttonPressScale,
+    this.keyHapticFeedbackType = .light,
+    this.actionHapticFeedbackType = .medium,
     super.key,
-  });
+  }) : assert(pressedScale > 0 && pressedScale <= 1);
 
   @override
   Widget build(BuildContext context) {
@@ -153,12 +189,19 @@ class GtKeyCell extends GtStatelessWidget {
     return TableRowInkWell(
       overlayColor: WidgetStatePropertyAll(context.palette.primary.alpha10),
       onTap: () {
-        HapticFeedback.heavyImpact();
+        final isAction = data.value == 'x' || data.value == 'bio';
+        triggerHaptic(
+          isAction ? actionHapticFeedbackType : keyHapticFeedbackType,
+        );
         if (data.value == "bio") return onBioAuth?.call();
 
         onSelected(data.value);
       },
-      child: Padding(padding: padding, child: child),
+      child: GtPressable(
+        enabled: enableScaleEffect,
+        pressedScale: pressedScale,
+        child: Padding(padding: padding, child: child),
+      ),
     );
   }
 }

@@ -282,6 +282,8 @@ extension ThemeContextExtension on BuildContext {
   /// Retrieves the [GtAlert] overlay instance for this context.
   GtTooltip get tooltip => GtTooltip.of(this);
 
+  bool get isKeyBoardUp => MediaQuery.viewInsetsOf(this).bottom > 0;
+
   /// Displays a toast notification with the given [message].
   void showToast(
     String message, {

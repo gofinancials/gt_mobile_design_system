@@ -6,18 +6,26 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtKeyPadGrid', type: GtKeyPadGrid)
 Widget gtKeypadGridUseCase(BuildContext context) {
+  final enableScaleEffect = context.knobs.boolean(
+    label: 'Enable Scale Effect',
+    initialValue: true,
+  );
+
   return GtWidgetDocPage(
     title: "Keypad Grid",
     description: "A numeric keypad grid for entering numbers securely.",
-    code: '''
+    code:
+        '''
 GtKeyPadGrid(
   controller: TextEditingController(),
   limit: 4,
+  enableScaleEffect: $enableScaleEffect,
   onBioAuth: () {},
 )
 ''',
     child: GtKeyPadGrid(
       controller: TextEditingController(),
+      enableScaleEffect: enableScaleEffect,
       limit: context.knobs.int.slider(
         label: 'Limit',
         initialValue: 4,

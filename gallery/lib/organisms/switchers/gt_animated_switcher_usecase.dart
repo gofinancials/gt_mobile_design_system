@@ -10,6 +10,12 @@ Widget playgroundGtAnimatedSwitcherUseCase(BuildContext context) {
     label: 'Toggle State',
     initialValue: false,
   );
+  final beginScale = context.knobs.double.slider(
+    label: 'Begin Scale',
+    initialValue: 0.9,
+    min: 0,
+    max: 1,
+  );
 
   return GtWidgetDocPage(
     title: 'GtAnimatedSwitcher',
@@ -17,6 +23,9 @@ Widget playgroundGtAnimatedSwitcherUseCase(BuildContext context) {
         'Animates between widget states. Toggle the knob above to see the transition.',
     child: GtAnimatedSwitcher(
       duration: 400,
+      beginScale: beginScale,
+      switchInCurve: GtSpringCurves.gentle,
+      switchOutCurve: Curves.easeOutCubic,
       child: showAlt
           ? GtCard(
               key: const ValueKey('alt'),

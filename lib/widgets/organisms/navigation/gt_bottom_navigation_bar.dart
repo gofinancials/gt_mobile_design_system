@@ -56,6 +56,9 @@ class GtBottomNavigationBar extends GtStatelessWidget {
   /// as an unlabelled button.
   final String? trailingSemanticsLabel;
 
+  /// Whether the selection highlight and icon change should animate.
+  final bool enableSelectionAnimation;
+
   const GtBottomNavigationBar({
     super.key,
     required this.items,
@@ -65,6 +68,7 @@ class GtBottomNavigationBar extends GtStatelessWidget {
     this.onTrailingTap,
     this.trailingIcon = GtIcons.helpInfo,
     this.trailingSemanticsLabel,
+    this.enableSelectionAnimation = true,
   }) : assert(
          items.length >= 2,
          'GtBottomNavigationBar needs at least 2 items',
@@ -81,11 +85,13 @@ class GtBottomNavigationBar extends GtStatelessWidget {
         onTrailingTap: onTrailingTap,
         trailingIcon: trailingIcon,
         trailingSemanticsLabel: trailingSemanticsLabel,
+        enableSelectionAnimation: enableSelectionAnimation,
       ),
       .android => GtAndroidBottomNavigationBar(
         items: items,
         currentIndex: currentIndex,
         onIndexChanged: onIndexChanged,
+        enableSelectionAnimation: enableSelectionAnimation,
       ),
     };
   }
@@ -101,12 +107,14 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
   final List<GtBottomNavigationItem> items;
   final int currentIndex;
   final ValueChanged<int> onIndexChanged;
+  final bool enableSelectionAnimation;
 
   const GtAndroidBottomNavigationBar({
     super.key,
     required this.items,
     required this.currentIndex,
     required this.onIndexChanged,
+    this.enableSelectionAnimation = true,
   }) : assert(
          items.length >= 2,
          'GtAndroidBottomNavigationBar needs at least 2 items',
@@ -157,6 +165,8 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
                               selected: currentIndex == i,
                               selectedColor: palette.primary.dark,
                               unselectedColor: palette.icon.soft,
+                              enableSelectionAnimation:
+                                  enableSelectionAnimation,
                             ),
                             GtText(
                               item.label.upper,
@@ -191,6 +201,7 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
   final OnPressed? onTrailingTap;
   final IconData trailingIcon;
   final String? trailingSemanticsLabel;
+  final bool enableSelectionAnimation;
 
   const _GtIosFloatingBottomNavigationBar({
     required this.items,
@@ -199,6 +210,7 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
     required this.onTrailingTap,
     required this.trailingIcon,
     required this.trailingSemanticsLabel,
+    required this.enableSelectionAnimation,
   });
 
   @override
@@ -267,10 +279,13 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
                                     clipBehavior: .hardEdge,
                                     children: [
                                       AnimatedPositioned(
-                                        duration: const Duration(
-                                          milliseconds: 350,
-                                        ),
-                                        curve: Curves.easeInOutCubic,
+                                        duration: enableSelectionAnimation
+                                            ? GtMotion.adaptiveDuration(
+                                                context,
+                                                GtMotion.fluid,
+                                              )
+                                            : Duration.zero,
+                                        curve: GtSpringCurves.snappy,
                                         left: (tabWidth * currentIndex) + inset,
                                         top: inset,
                                         width: tabWidth - (2 * inset),
@@ -290,6 +305,8 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
                                                 item: item,
                                                 selected: i == currentIndex,
                                                 onTap: () => onIndexChanged(i),
+                                                enableSelectionAnimation:
+                                                    enableSelectionAnimation,
                                               ),
                                             ),
                                         ],
@@ -327,25 +344,34 @@ class GtBottomNavIcon extends GtStatelessWidget {
   final bool selected;
   final Color unselectedColor;
   final Color selectedColor;
+  final bool enableSelectionAnimation;
 
   const GtBottomNavIcon(
     this.icon, {
     required this.selected,
     required this.unselectedColor,
     required this.selectedColor,
+    this.enableSelectionAnimation = true,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GtIcon.withColor(
-      icon,
-      size: context.dp(28.px),
-      color: switch (selected) {
-        true => selectedColor,
-        _ => unselectedColor,
-      },
-      alignment: .center,
+    return GtAnimatedSwitcher(
+      duration: enableSelectionAnimation ? GtMotion.normal.inMilliseconds : 0,
+      beginScale: GtMotion.iconPressScale,
+      switchInCurve: GtSpringCurves.bouncy,
+      switchOutCurve: Curves.easeOutCubic,
+      child: GtIcon.withColor(
+        icon,
+        key: ValueKey((icon, selected)),
+        size: context.dp(28.px),
+        color: switch (selected) {
+          true => selectedColor,
+          _ => unselectedColor,
+        },
+        alignment: .center,
+      ),
     );
   }
 }
@@ -354,11 +380,13 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
   final GtBottomNavigationItem item;
   final bool selected;
   final OnPressed onTap;
+  final bool enableSelectionAnimation;
 
   const _GtBottomNavigationTab({
     required this.item,
     required this.selected,
     required this.onTap,
+    required this.enableSelectionAnimation,
   });
 
   @override
@@ -383,6 +411,7 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
               selected: selected,
               selectedColor: palette.primary.dark,
               unselectedColor: palette.icon.sub,
+              enableSelectionAnimation: enableSelectionAnimation,
             ),
             GtText(
               item.label,

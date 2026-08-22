@@ -1,6 +1,7 @@
 export 'borders.dart';
 export 'indicators/indicators.dart';
 export 'media/media.dart';
+export 'motion/motion.dart';
 export 'pallette.dart';
 export 'shadows.dart';
 export 'spacers/spacers.dart';

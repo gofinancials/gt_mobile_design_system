@@ -76,6 +76,111 @@ final Uint8List _transparentPng = Uint8List.fromList([
 
 void main() {
   group('GtOnboardingSlides', () {
+    testWidgets('uses virtual pages for a smooth last-to-first transition', (
+      WidgetTester tester,
+    ) async {
+      await tester.pumpWidget(
+        GtThemeProvider(
+          theme: kPersonalTheme,
+          child: MaterialApp(
+            home: GtOnboardingSlides(
+              slides: [
+                GtOnboardingSlideData(
+                  title: 'First',
+                  image: MemoryImage(_transparentPng),
+                ),
+                GtOnboardingSlideData(
+                  title: 'Second',
+                  image: MemoryImage(_transparentPng),
+                ),
+              ],
+              footerText: 'Footer',
+              primaryButton: GtRaisedButton(onPressed: () {}, text: 'Primary'),
+              secondaryButton: GtOutlineButton(
+                onPressed: () {},
+                text: 'Secondary',
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final pageView = tester.widget<PageView>(find.byType(PageView));
+      expect(pageView.controller!.initialPage, greaterThan(0));
+      expect(pageView.childrenDelegate.estimatedChildCount, isNull);
+
+      pageView.controller!.jumpToPage(pageView.controller!.initialPage + 2);
+      await tester.pumpAndSettle();
+
+      expect(find.text('FIRST'), findsOneWidget);
+      final overlayTransition = tester.widget<AnimatedCrossFade>(
+        find
+            .ancestor(
+              of: find.text('FIRST'),
+              matching: find.byType(AnimatedCrossFade),
+            )
+            .first,
+      );
+      expect(overlayTransition.duration, GtMotion.fluid);
+      expect(overlayTransition.sizeCurve, Curves.easeInOutCubic);
+      expect(overlayTransition.alignment, Alignment.bottomCenter);
+      expect(
+        find.ancestor(
+          of: find.text('FIRST'),
+          matching: find.byType(AnimatedSwitcher),
+        ),
+        findsNothing,
+      );
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('blurs only the wide background copy', (
+      WidgetTester tester,
+    ) async {
+      tester.view.devicePixelRatio = 1;
+      tester.view.physicalSize = const Size(1200, 800);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(
+        GtThemeProvider(
+          theme: kPersonalTheme,
+          child: MaterialApp(
+            home: GtOnboardingSlides(
+              slides: [
+                GtOnboardingSlideData(
+                  title: 'Wide slide',
+                  image: MemoryImage(_transparentPng),
+                ),
+              ],
+              footerText: 'Footer',
+              primaryButton: GtRaisedButton(onPressed: () {}, text: 'Primary'),
+              secondaryButton: GtOutlineButton(
+                onPressed: () {},
+                text: 'Secondary',
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(BackdropFilter), findsNothing);
+      expect(find.byType(ImageFiltered), findsWidgets);
+
+      final containedImage = find.byWidgetPredicate((widget) {
+        if (widget case DecoratedBox(decoration: final BoxDecoration box)) {
+          return box.image?.fit == BoxFit.contain;
+        }
+        return false;
+      }).first;
+
+      expect(
+        find.ancestor(of: containedImage, matching: find.byType(ImageFiltered)),
+        findsNothing,
+      );
+      await tester.pumpWidget(const SizedBox());
+    });
+
     testWidgets('passes footerTextColor and footerLinkColor to GtRichText', (
       WidgetTester tester,
     ) async {

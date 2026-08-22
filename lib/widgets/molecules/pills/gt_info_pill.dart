@@ -5,7 +5,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Features a fully rounded, capsule-like shape and supports custom typography scaling.
 /// Use [useDisplayFont] to swap standard body typography for larger display styles.
-class GtInfoPill extends StatelessWidget {
+class GtInfoPill extends GtStatelessWidget {
   /// The informational text to display.
   final String text;
 
@@ -27,6 +27,9 @@ class GtInfoPill extends StatelessWidget {
   /// Whether to apply a display-level font style rather than standard body text styles.
   final bool useDisplayFont;
 
+  /// An alternative accessibility label for the informational content.
+  final String? semanticsLabel;
+
   /// Creates a [GtInfoPill].
   const GtInfoPill({
     super.key,
@@ -37,6 +40,7 @@ class GtInfoPill extends StatelessWidget {
     this.alignment,
     this.showShadow = false,
     this.useDisplayFont = false,
+    this.semanticsLabel,
   });
 
   @override
@@ -77,6 +81,7 @@ class GtInfoPill extends StatelessWidget {
       alignment: alignment,
       showShadow: showShadow,
       variant: variant ?? .strong,
+      semanticsLabel: semanticsLabel,
     );
   }
 }

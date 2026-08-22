@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+enum GtBottomNavBarButtonHidingBehavior {
+  footer,
+  all,
+  header,
+  headerAndFooter;
+
+  bool get canHideHeader => switch (this) {
+    .footer => false,
+    _ => true,
+  };
+
+  bool get canHideFooter => switch (this) {
+    .header => false,
+    _ => true,
+  };
+
+  bool get canHideButton => switch (this) {
+    .all => true,
+    _ => false,
+  };
+}
+
 class GtButtonBottomNavBar extends GtStatelessWidget {
   final Widget button;
   final Widget? heading;
   final Widget? footer;
+  final GtBottomNavBarButtonHidingBehavior hidingBehavior;
   final double? spacing;
 
   const GtButtonBottomNavBar({
@@ -12,27 +35,79 @@ class GtButtonBottomNavBar extends GtStatelessWidget {
     required this.button,
     this.heading,
     this.spacing,
+    this.hidingBehavior = .headerAndFooter,
     this.footer,
   });
 
   @override
   Widget build(BuildContext context) {
     final insets = context.insets;
+    Widget? head = heading;
+
+    if (head != null && hidingBehavior.canHideHeader) {
+      head = _GtButtonHidingBehaviorProvider(
+        key: const Key('gt-bnavbar-heading-hider'),
+        canHide: hidingBehavior.canHideHeader,
+        child: head,
+      );
+    }
+
+    Widget? foot = footer;
+    if (foot != null && hidingBehavior.canHideFooter) {
+      foot = _GtButtonHidingBehaviorProvider(
+        key: const Key('gt-bnavbar-footer-hider'),
+        canHide: hidingBehavior.canHideFooter,
+        child: foot,
+      );
+    }
+
+    Widget btn = button;
+    if (hidingBehavior.canHideButton) {
+      btn = _GtButtonHidingBehaviorProvider(
+        key: const Key('gt-bnavbar-button-hider'),
+        canHide: hidingBehavior.canHideButton,
+        child: btn,
+      );
+    }
+
+    final keyPadVisible = context.isKeyBoardUp;
+    final bottomPadding = keyPadVisible ? 0.0 : 24.px;
+
     return SafeArea(
       top: false,
       maintainBottomViewPadding: true,
       child: Padding(
         padding: insets.defaultHorizontalInsets.add(
-          insets.onlyDp(bottom: 24.px),
+          insets.onlyDp(bottom: bottomPadding),
         ),
         child: Column(
           mainAxisAlignment: .end,
           mainAxisSize: .min,
           crossAxisAlignment: .stretch,
           spacing: spacing ?? context.spacingLg,
-          children: [?heading, button, ?footer],
+          children: [?head, btn, ?foot],
         ),
       ),
+    );
+  }
+}
+
+class _GtButtonHidingBehaviorProvider extends GtStatelessWidget {
+  final Widget child;
+  final bool canHide;
+
+  const _GtButtonHidingBehaviorProvider({
+    super.key,
+    required this.canHide,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GtAnimatedFade(
+      showFirst: !canHide || !context.isKeyBoardUp,
+      child1: FractionallySizedBox(widthFactor: 1, child: child),
+      child2: const SizedBox.shrink(),
     );
   }
 }

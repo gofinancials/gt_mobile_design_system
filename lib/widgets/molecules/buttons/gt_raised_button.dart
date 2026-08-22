@@ -34,6 +34,9 @@ class GtRaisedButton extends GtButton {
     super.color,
     super.isDisabled = false,
     super.isLoading = false,
+    super.enableScaleEffect = true,
+    super.pressedScale,
+    super.enableLabelAnimation = true,
     this.contentPadding,
     this.leading,
     this.trailing,
@@ -180,6 +183,7 @@ class GtRaisedButton extends GtButton {
           icon: leadingIcon,
           trailingIcon: trailingIcon,
           textColor: textColor,
+          animateChanges: enableLabelAnimation,
         ),
         child2: GtSpinner(color: textColor),
         showFirst: !isLoading,
@@ -198,6 +202,12 @@ class GtRaisedButton extends GtButton {
         child: child,
       );
     }
+
+    child = GtPressable(
+      enabled: enableScaleEffect && !isDisabled && !isLoading,
+      pressedScale: pressedScale,
+      child: child,
+    );
 
     if (needsMinimumTapTarget) {
       child = GtTapTarget(child: child);

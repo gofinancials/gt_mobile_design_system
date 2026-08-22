@@ -47,6 +47,12 @@ class GtButtonText extends GtStatelessWidget {
   /// Defines the text capitalization behavior for the button text.
   final GtButtonTextCase textCase;
 
+  /// Whether changes to [text] use a short directional transition.
+  final bool animateChanges;
+
+  /// Duration of the label change transition.
+  final Duration animationDuration;
+
   /// Creates a [GtButtonText] widget.
   const GtButtonText(
     this.text, {
@@ -62,6 +68,8 @@ class GtButtonText extends GtStatelessWidget {
     this.disabledTextColor,
     this.textCase = .upper,
     this.style,
+    this.animateChanges = true,
+    this.animationDuration = GtMotion.fast,
   });
 
   @override
@@ -99,12 +107,16 @@ class GtButtonText extends GtStatelessWidget {
         trailingIcon: trailingIcon,
         size: size,
         textAlign: textAlign,
+        animateChanges: animateChanges,
+        animationDuration: animationDuration,
       );
     }
     return _ButtonText(
       text: casedText,
       style: style ?? btnStyle,
       textAlign: textAlign,
+      animateChanges: animateChanges,
+      animationDuration: animationDuration,
     );
   }
 }
@@ -132,6 +144,10 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
   /// Optional text alignment to override the default button text alignment.
   final TextAlign textAlign;
 
+  final bool animateChanges;
+
+  final Duration animationDuration;
+
   /// Creates a [_ButtonTextWithIcon].
   const _ButtonTextWithIcon({
     required this.text,
@@ -141,6 +157,8 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
     this.trailingIcon,
     required this.size,
     this.textAlign = .center,
+    required this.animateChanges,
+    required this.animationDuration,
   });
 
   @override
@@ -148,7 +166,13 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
     Widget? child;
 
     if (text.hasValue) {
-      child = _ButtonText(text: text!, style: style, textAlign: textAlign);
+      child = _ButtonText(
+        text: text!,
+        style: style,
+        textAlign: textAlign,
+        animateChanges: animateChanges,
+        animationDuration: animationDuration,
+      );
     }
 
     child = Row(
@@ -209,11 +233,72 @@ class _ButtonText extends GtStatelessWidget {
   /// Optional text alignment to override the default button text alignment.
   final TextAlign textAlign;
 
+  final bool animateChanges;
+
+  final Duration animationDuration;
+
   /// Creates a [_ButtonText].
-  const _ButtonText({required this.text, this.style, this.textAlign = .center});
+  const _ButtonText({
+    required this.text,
+    this.style,
+    this.textAlign = .center,
+    required this.animateChanges,
+    required this.animationDuration,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return GtText(text, textAlign: textAlign, style: style, maxLines: 1);
+    final duration = GtMotion.adaptiveDuration(
+      context,
+      animateChanges ? animationDuration : Duration.zero,
+    );
+
+    return ClipRect(
+      child: AnimatedSwitcher(
+        duration: duration,
+        switchInCurve: Curves.easeOutCubic,
+        switchOutCurve: Curves.easeInCubic,
+        transitionBuilder: (child, animation) => _GtButtonTextTransition(
+          animation: animation,
+          incoming: child.key == ValueKey(text),
+          child: child,
+        ),
+        child: GtText(
+          text,
+          key: ValueKey(text),
+          textAlign: textAlign,
+          style: style,
+          maxLines: 1,
+        ),
+      ),
+    );
+  }
+}
+
+class _GtButtonTextTransition extends GtStatelessWidget {
+  final Widget child;
+  final Animation<double> animation;
+  final bool incoming;
+
+  const _GtButtonTextTransition({
+    required this.child,
+    required this.animation,
+    required this.incoming,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final offset = incoming ? const Offset(0, .2) : const Offset(0, -.2);
+
+    return FadeTransition(
+      opacity: animation,
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: offset,
+          end: Offset.zero,
+        ).animate(animation),
+        child: child,
+      ),
+    );
   }
 }

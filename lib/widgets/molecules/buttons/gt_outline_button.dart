@@ -35,6 +35,9 @@ class GtOutlineButton extends GtButton {
     super.color,
     super.isDisabled = false,
     super.isLoading = false,
+    super.enableScaleEffect = true,
+    super.pressedScale,
+    super.enableLabelAnimation = true,
     this.contentPadding,
     this.leading,
     this.trailing,
@@ -142,6 +145,7 @@ class GtOutlineButton extends GtButton {
           icon: leadingIcon,
           trailingIcon: trailingIcon,
           textColor: textColor,
+          animateChanges: enableLabelAnimation,
         ),
         child2: GtSpinner(color: textColor),
         showFirst: !isLoading,
@@ -151,6 +155,12 @@ class GtOutlineButton extends GtButton {
     if (alignment != null) {
       child = Align(alignment: alignment!, child: child);
     }
+
+    child = GtPressable(
+      enabled: enableScaleEffect && !isDisabled && !isLoading,
+      pressedScale: pressedScale,
+      child: child,
+    );
 
     if (needsMinimumTapTarget) {
       child = GtTapTarget(child: child);

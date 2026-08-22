@@ -6,7 +6,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Features slightly larger padding and a larger icon size compared to [GtStatusPill].
 /// Supports tapping interactions by utilizing [onTap].
-class GtButtonPill extends StatelessWidget {
+class GtButtonPill extends GtStatelessWidget {
   /// The text to display on the button.
   final String text;
 
@@ -31,6 +31,12 @@ class GtButtonPill extends StatelessWidget {
   /// The overall size configuration of the button pill.
   final GtPillSize size;
 
+  /// An alternative accessibility label for the button.
+  final String? semanticsLabel;
+
+  /// Additional accessibility guidance for the button's action.
+  final String? semanticHint;
+
   /// Creates a [GtButtonPill].
   const GtButtonPill({
     super.key,
@@ -42,6 +48,8 @@ class GtButtonPill extends StatelessWidget {
     this.onTap,
     this.showShadow = false,
     this.size = .normal,
+    this.semanticsLabel,
+    this.semanticHint,
   });
 
   @override
@@ -66,21 +74,31 @@ class GtButtonPill extends StatelessWidget {
       _ => 6.px,
     };
 
-    return GtInkWell(
-      role: .button,
-      borderRadius: context.borderRadiusSm,
-      onTap: onTap,
-      child: GtPill(
-        text: text.upper,
-        bgColor: bgColor,
-        borderColor: bgColor,
-        icon: iconWidget,
-        textColor: textColor,
-        padding: context.insets.allDp(padding),
-        trailing: trailingWidget,
-        alignment: alignment,
-        showShadow: showShadow,
-        variant: variant ?? .strong,
+    final pill = GtPill(
+      text: text.upper,
+      bgColor: bgColor,
+      borderColor: bgColor,
+      icon: iconWidget,
+      textColor: textColor,
+      padding: context.insets.allDp(padding),
+      trailing: trailingWidget,
+      alignment: alignment,
+      showShadow: showShadow,
+      variant: variant ?? .strong,
+      semanticsLabel: onTap == null ? semanticsLabel : null,
+    );
+
+    if (onTap == null) return pill;
+
+    return GtTapTarget(
+      child: GtInkWell(
+        role: .button,
+        borderRadius: context.borderRadiusSm,
+        onTap: onTap,
+        semanticsLabel: semanticsLabel,
+        semanticHint: semanticHint,
+        excludeDescendantSemantics: semanticsLabel != null,
+        child: pill,
       ),
     );
   }
@@ -103,6 +121,12 @@ class GtCopyPill extends GtStatelessWidget {
   /// The visual variant determining the color scheme of the pill. Defaults to [GtPillVariant.strong].
   final GtPillVariant variant;
 
+  /// An alternative accessibility label for the copy action.
+  final String? semanticsLabel;
+
+  /// Additional accessibility guidance for the copy action.
+  final String? semanticHint;
+
   /// Creates a [GtCopyPill].
   const GtCopyPill(
     this.value, {
@@ -110,6 +134,8 @@ class GtCopyPill extends GtStatelessWidget {
     this.text,
     this.leading,
     this.variant = .strong,
+    this.semanticsLabel,
+    this.semanticHint,
   });
 
   @override
@@ -123,20 +149,27 @@ class GtCopyPill extends GtStatelessWidget {
       variant: .disabled,
     );
 
-    return GtInkWell(
-      role: .button,
-      borderRadius: context.borderRadiusSm,
-      onTap: () {
-        context.copyTextToClipboard(value);
-      },
-      child: GtPill(
-        icon: leading ?? defaultLeading,
-        text: text?.upper ?? "copy".utr(),
-        textStyle: context.textStyles.buttonXxs(color: textColor),
-        variant: variant,
-        textColor: textColor,
-        bgColor: bgColor,
-        padding: context.insets.allDp(4.px),
+    final label = text?.upper ?? "copy".utr();
+
+    return GtTapTarget(
+      child: GtInkWell(
+        role: .button,
+        borderRadius: context.borderRadiusSm,
+        semanticsLabel: semanticsLabel,
+        semanticHint: semanticHint,
+        excludeDescendantSemantics: semanticsLabel != null,
+        onTap: () {
+          context.copyTextToClipboard(value);
+        },
+        child: GtPill(
+          icon: leading ?? defaultLeading,
+          text: label,
+          textStyle: context.textStyles.buttonXxs(color: textColor),
+          variant: variant,
+          textColor: textColor,
+          bgColor: bgColor,
+          padding: context.insets.allDp(4.px),
+        ),
       ),
     );
   }

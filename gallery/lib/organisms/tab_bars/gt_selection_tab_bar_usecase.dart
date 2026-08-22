@@ -9,7 +9,7 @@ Widget playgroundGtSelectionTabbarUseCase(BuildContext context) {
   return const _SelectionTabbarPlayground();
 }
 
-class _SelectionTabbarPlayground extends StatefulWidget {
+class _SelectionTabbarPlayground extends GtStatefulWidget {
   const _SelectionTabbarPlayground();
 
   @override
@@ -48,6 +48,10 @@ class _SelectionTabbarPlaygroundState
       label: 'Auto Scroll',
       initialValue: false,
     );
+    final enableIndicatorAnimation = context.knobs.boolean(
+      label: 'Animate Indicator',
+      initialValue: true,
+    );
 
     return GtWidgetDocPage(
       title: 'GtSelectionTabbar',
@@ -59,6 +63,7 @@ GtSelectionTabbar<String>(
   controller: tabController,
   useAlternateStyle: $useAlternateStyle,
   autoScroll: $autoScroll,
+  enableIndicatorAnimation: $enableIndicatorAnimation,
   tabs: [
     GtTabData(label: "Tab 1", value: "tab1"),
     GtTabData(label: "Tab 2", value: "tab2"),
@@ -72,14 +77,12 @@ GtSelectionTabbar<String>(
             controller: _controller,
             useAlternateStyle: useAlternateStyle,
             autoScroll: autoScroll,
+            enableIndicatorAnimation: enableIndicatorAnimation,
+            onChangeTab: (_) => setState(() {}),
             tabs: _tabs,
           ),
           const GtGap.yMd(),
-          ListenableBuilder(
-            listenable: _controller,
-            builder: (context, _) =>
-                GtText("Active Selection: ${_controller.value?.value}"),
-          ),
+          GtText("Active Selection: ${_controller.value?.value}"),
         ],
       ),
     );

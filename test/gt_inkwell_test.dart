@@ -14,6 +14,58 @@ void main() {
   }
 
   group('GtInkWell', () {
+    testWidgets('scales down while pressed and springs back on release', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          GtInkWell(
+            onTap: () {},
+            child: const SizedBox(width: 100, height: 100),
+          ),
+        ),
+      );
+
+      final gesture = await tester.startGesture(
+        tester.getCenter(find.byType(GtInkWell)),
+      );
+      await tester.pump(GtMotion.fast);
+
+      expect(
+        tester.widget<AnimatedScale>(find.byType(AnimatedScale)).scale,
+        .97,
+      );
+
+      await gesture.up();
+      await tester.pumpAndSettle();
+
+      expect(tester.widget<AnimatedScale>(find.byType(AnimatedScale)).scale, 1);
+    });
+
+    testWidgets('does not scale when reduced motion is enabled', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MediaQuery(
+          data: const MediaQueryData(disableAnimations: true),
+          child: buildTestWidget(
+            GtInkWell(
+              onTap: () {},
+              child: const SizedBox(width: 100, height: 100),
+            ),
+          ),
+        ),
+      );
+
+      final gesture = await tester.startGesture(
+        tester.getCenter(find.byType(GtInkWell)),
+      );
+      await tester.pump();
+
+      expect(tester.widget<AnimatedScale>(find.byType(AnimatedScale)).scale, 1);
+      await gesture.up();
+    });
+
     testWidgets('fires onTap without waiting out the double-tap window', (
       tester,
     ) async {
@@ -113,6 +165,42 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(tester.takeException(), isNull);
+    });
+  });
+
+  group('navigation icon buttons', () {
+    testWidgets('GtCancelButton uses the icon press scale', (tester) async {
+      await tester.pumpWidget(buildTestWidget(GtCancelButton(onTap: () {})));
+
+      final gesture = await tester.startGesture(
+        tester.getCenter(find.byType(GtInkWell)),
+      );
+      await tester.pump(GtMotion.fast);
+
+      expect(
+        tester.widget<AnimatedScale>(find.byType(AnimatedScale)).scale,
+        GtMotion.iconPressScale,
+      );
+      await gesture.up();
+    });
+
+    testWidgets('GtBackButton uses the icon press scale', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          GtBackButton(action: () {}, routeStackSensitive: false),
+        ),
+      );
+
+      final gesture = await tester.startGesture(
+        tester.getCenter(find.byType(GtInkWell)),
+      );
+      await tester.pump(GtMotion.fast);
+
+      expect(
+        tester.widget<AnimatedScale>(find.byType(AnimatedScale)).scale,
+        GtMotion.iconPressScale,
+      );
+      await gesture.up();
     });
   });
 }

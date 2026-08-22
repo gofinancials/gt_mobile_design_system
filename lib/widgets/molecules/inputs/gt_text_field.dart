@@ -85,6 +85,12 @@ class GtTextField<T> extends GtStatefulWidget {
   /// A list of strings that helps the autofill service identify the type of this text input.
   final List<String>? autofillHints;
 
+  /// Optional controller for explicitly triggering validation shake feedback.
+  ///
+  /// This is intentionally caller-driven so routine validation while typing
+  /// does not produce distracting motion.
+  final GtSpringShakeController? shakeController;
+
   /// Creates a standard [GtTextField].
   const GtTextField({
     super.key,
@@ -110,6 +116,7 @@ class GtTextField<T> extends GtStatefulWidget {
     this.keyboardType,
     this.onFieldSubmitted,
     this.autofillHints,
+    this.shakeController,
     this.autovalidateMode = AutovalidateMode.disabled,
   }) : minLines = 1,
        maxLines = 1;
@@ -140,6 +147,7 @@ class GtTextField<T> extends GtStatefulWidget {
     this.validator,
     this.onFieldSubmitted,
     this.autofillHints,
+    this.shakeController,
     this.maxLines,
     this.autovalidateMode = AutovalidateMode.disabled,
   }) : keyboardType = TextInputType.multiline,
@@ -221,6 +229,30 @@ class _GtTextFieldState extends State<GtTextField>
                   ? decoration.errorMaxLines
                   : decoration.helperMaxLines;
 
+              Widget field = _GtTextFieldLayout(
+                hasError: hasError,
+                decoration: decoration,
+                activeDecoration: decor,
+                helperText: helpText,
+                helperStyle: style,
+                focused: _inputFocus.hasFocus || _ctrl.hasValue,
+                maxLines: maxLines,
+                multiline: widget.keyboardType == .multiline,
+                textAlign: widget.textAlign,
+                prefix: widget.prefix,
+                suffix: widget.suffix,
+                labelStyle: labelStyle,
+                labelText: widget.label,
+                child: child!,
+              );
+
+              if (widget.shakeController != null) {
+                field = GtSpringShake(
+                  controller: widget.shakeController!,
+                  child: field,
+                );
+              }
+
               return GestureDetector(
                 onTap: () => context.requestFocus(_inputFocus),
                 behavior: .translucent,
@@ -228,22 +260,7 @@ class _GtTextFieldState extends State<GtTextField>
                 // The field itself is the control, so this must not appear as
                 // a second tappable thing beside it.
                 excludeFromSemantics: true,
-                child: _GtTextFieldLayout(
-                  hasError: hasError,
-                  decoration: decoration,
-                  activeDecoration: decor,
-                  helperText: helpText,
-                  helperStyle: style,
-                  focused: _inputFocus.hasFocus || _ctrl.hasValue,
-                  maxLines: maxLines,
-                  multiline: widget.keyboardType == .multiline,
-                  textAlign: widget.textAlign,
-                  prefix: widget.prefix,
-                  suffix: widget.suffix,
-                  labelStyle: labelStyle,
-                  labelText: widget.label,
-                  child: child!,
-                ),
+                child: field,
               );
             },
           );
@@ -322,15 +339,17 @@ class _GtTextFieldLayout extends GtStatelessWidget {
     final constraints = multiline
         ? decoration.multilineConstraints
         : decoration.constraints;
+    final duration = GtMotion.adaptiveDuration(context, GtMotion.normal);
+
     return MergeSemantics(
       child: Column(
-        spacing: context.spacingBase,
         crossAxisAlignment: .stretch,
         mainAxisSize: .min,
         children: [
           RepaintBoundary(
             child: AnimatedContainer(
-              duration: 300.milliseconds,
+              duration: duration,
+              curve: Curves.easeInOutCubic,
               constraints: constraints,
               padding: decoration.padding,
               height: multiline ? null : decoration.size.height,
@@ -366,18 +385,65 @@ class _GtTextFieldLayout extends GtStatelessWidget {
               ),
             ),
           ),
-          if (helperText.hasValue)
-            Semantics(
-              liveRegion: hasError,
-              child: GtText(
-                helperText,
-                style: helperStyle,
+          AnimatedSize(
+            duration: duration,
+            curve: Curves.easeInOutCubic,
+            alignment: Alignment.topCenter,
+            child: AnimatedSwitcher(
+              duration: duration,
+              switchInCurve: Curves.easeOut,
+              switchOutCurve: Curves.easeIn,
+              child: _GtTextFieldSupportingText(
+                key: ValueKey((hasError, helperText)),
+                helperText: helperText,
+                helperStyle: helperStyle,
+                hasError: hasError,
                 textAlign: textAlign,
                 maxLines: maxLines,
               ),
             ),
+          ),
         ],
       ),
+    );
+  }
+}
+
+class _GtTextFieldSupportingText extends GtStatelessWidget {
+  final String? helperText;
+  final TextStyle helperStyle;
+  final bool hasError;
+  final TextAlign? textAlign;
+  final int maxLines;
+
+  const _GtTextFieldSupportingText({
+    super.key,
+    required this.helperText,
+    required this.helperStyle,
+    required this.hasError,
+    required this.textAlign,
+    required this.maxLines,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (!helperText.hasValue) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: .stretch,
+      mainAxisSize: .min,
+      children: [
+        const GtGap.yBase(),
+        Semantics(
+          liveRegion: hasError,
+          child: GtText(
+            helperText,
+            style: helperStyle,
+            textAlign: textAlign,
+            maxLines: maxLines,
+          ),
+        ),
+      ],
     );
   }
 }

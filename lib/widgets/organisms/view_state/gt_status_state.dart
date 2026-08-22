@@ -37,6 +37,13 @@ class GtStatusState extends GtStatelessWidget {
   /// When null, a default illustration is resolved from [variant].
   final AppImageData? statusIcon;
 
+  /// An optional custom graphic to display above the title.
+  ///
+  /// This can be any widget, including an animation. When provided, it takes
+  /// precedence over [statusIcon] and the default graphic for [variant]. The
+  /// caller owns its sizing and semantics.
+  final Widget? graphic;
+
   /// Label for the footer [GtRaisedButton] (e.g. "Done", "Try again").
   final String? actionLabel;
 
@@ -84,6 +91,7 @@ class GtStatusState extends GtStatelessWidget {
     required this.title,
     this.subtitle,
     this.statusIcon,
+    this.graphic,
     this.actionLabel,
     this.onActionPressed,
     this.actionVariant = .primary,
@@ -95,8 +103,9 @@ class GtStatusState extends GtStatelessWidget {
     this.titleStyle,
     this.subtitleStyle,
   }) : assert(
-         variant != .custom || (statusIcon != null),
-         'statusIcon is required when variant is GtStatusStateVariant.custom',
+         variant != .custom || statusIcon != null || graphic != null,
+         'statusIcon or graphic is required when variant is '
+         'GtStatusStateVariant.custom',
        ),
        assert(
          (onActionPressed == null) == (actionLabel == null),
@@ -108,6 +117,7 @@ class GtStatusState extends GtStatelessWidget {
     super.key,
     required this.title,
     this.subtitle,
+    this.graphic,
     this.actionLabel,
     this.onActionPressed,
     this.actionVariant = .primary,
@@ -130,6 +140,7 @@ class GtStatusState extends GtStatelessWidget {
     super.key,
     required this.title,
     this.subtitle,
+    this.graphic,
     this.actionLabel,
     this.onActionPressed,
     this.actionVariant = .primary,
@@ -149,12 +160,13 @@ class GtStatusState extends GtStatelessWidget {
 
   /// Convenience constructor for [GtStatusStateVariant.custom].
   ///
-  /// [statusIcon] is required for this variant.
+  /// Either [icon] or [graphic] is required for this variant.
   const GtStatusState.custom({
     super.key,
     required this.title,
     this.subtitle,
-    required AppImageData icon,
+    AppImageData? icon,
+    this.graphic,
     this.actionLabel,
     this.onActionPressed,
     this.actionVariant = .primary,
@@ -167,6 +179,10 @@ class GtStatusState extends GtStatelessWidget {
     this.subtitleStyle,
   }) : variant = .custom,
        statusIcon = icon,
+       assert(
+         icon != null || graphic != null,
+         'icon or graphic is required for GtStatusState.custom',
+       ),
        assert(
          (onActionPressed == null) == (actionLabel == null),
          'onActionPressed and actionText must be provided together',
@@ -190,6 +206,7 @@ class GtStatusState extends GtStatelessWidget {
       title: title,
       description: subtitle,
       icon: _statusIcon,
+      graphic: graphic,
       actionText: actionLabel,
       onActionPressed: onActionPressed,
       actionVariant: actionVariant,

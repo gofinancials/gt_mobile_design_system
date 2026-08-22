@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-class GtAnimatedFade extends GtStatefulWidget {
+class GtAnimatedFade extends GtStatelessWidget {
   final Widget child1;
   final Widget child2;
   final bool showFirst;
@@ -17,24 +17,26 @@ class GtAnimatedFade extends GtStatefulWidget {
   });
 
   @override
-  State<StatefulWidget> createState() => _GtAnimatedFadeState();
-}
-
-class _GtAnimatedFadeState extends State<GtAnimatedFade> {
-  @override
   Widget build(BuildContext context) {
+    final animationDuration = GtMotion.adaptiveDuration(
+      context,
+      duration.milliseconds,
+    );
+
+    if (animationDuration == Duration.zero) {
+      return RepaintBoundary(child: showFirst ? child1 : child2);
+    }
+
     return RepaintBoundary(
       child: AnimatedCrossFade(
-        duration: widget.duration.milliseconds,
+        duration: animationDuration,
         alignment: Alignment.center,
-        reverseDuration: widget.duration.milliseconds,
-        crossFadeState: widget.showFirst
-            ? CrossFadeState.showFirst
-            : CrossFadeState.showSecond,
+        reverseDuration: animationDuration,
+        crossFadeState: showFirst ? .showFirst : .showSecond,
         firstCurve: Curves.decelerate,
         secondCurve: Curves.decelerate,
-        firstChild: widget.child1,
-        secondChild: widget.child2,
+        firstChild: child1,
+        secondChild: child2,
       ),
     );
   }

@@ -42,6 +42,12 @@ class GtBackButton extends GtStatelessWidget {
   /// Optional color to override the default color of the back icon.
   final Color? color;
 
+  /// Whether tactile scale feedback is shown while the button is pressed.
+  final bool enableScaleEffect;
+
+  /// Scale applied while the button is pressed.
+  final double pressedScale;
+
   /// Creates a new [GtBackButton].
   const GtBackButton({
     super.key,
@@ -51,7 +57,9 @@ class GtBackButton extends GtStatelessWidget {
     this.alignment = Alignment.centerLeft,
     this.size = .large,
     this.color,
-  });
+    this.enableScaleEffect = true,
+    this.pressedScale = GtMotion.iconPressScale,
+  }) : assert(pressedScale > 0 && pressedScale <= 1);
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +83,8 @@ class GtBackButton extends GtStatelessWidget {
           child: GtInkWell(
             role: .button,
             hapticFeedbackType: .medium,
+            enableScaleEffect: enableScaleEffect,
+            pressedScale: pressedScale,
             onTap: () {
               if (action != null) return action!();
               if (!canPop && routeStackSensitive) return;
