@@ -173,7 +173,7 @@ void main() {
       unawaited(
         showCupertinoSheet<void>(
           context: GtRouter.observer.navigator!.context,
-          builder: (_) => const SizedBox(height: 100),
+          scrollableBuilder: (context, _) => const SizedBox(height: 100),
         ),
       );
       await tester.pumpAndSettle();
