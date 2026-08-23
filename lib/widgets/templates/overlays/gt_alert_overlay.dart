@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:provider/provider.dart';
 
 /// A utility class for managing and displaying alert overlays in the GT Mobile Design System.
 class GtAlert extends GtOverlay {
