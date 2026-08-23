@@ -58,6 +58,7 @@ class GtNotificationCard extends GtStatelessWidget {
     return GtCard(
       padding: context.insets.allDp(12.px),
       color: bgColor,
+      shadows: context.shadows.lg(),
       child: Row(
         crossAxisAlignment: .start,
         spacing: context.spacingBase,

@@ -29,31 +29,39 @@ class GtReceiptBody extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cardPadding = context.insets.allDp(12.px);
+    final sectionMargin = context.insets.symmetricDp(horizontal: 16.px);
     final cardRadius = context.borderRadiusXl;
 
     return ListView(
       physics: physics ?? const ClampingScrollPhysics(),
       controller: controller,
-      padding: context.insets.allDp(16.px),
+      padding: context.insets.symmetricDp(vertical: 16.px),
       children: [
-        GtReceiptStatusPill(
-          status: status,
-          key: const Key('receipt-status-pill'),
+        Padding(
+          padding: sectionMargin,
+          child: GtReceiptStatusPill(
+            status: status,
+            key: const Key('receipt-status-pill'),
+          ),
         ),
         const GtGap.yBase(),
-        FittedBox(
-          fit: .scaleDown,
-          alignment: .centerLeft,
-          child: GtText(
-            amount,
-            style: context.textStyles.h3(heightPx: 40),
-            key: const Key('receipt-amount'),
+        Padding(
+          padding: sectionMargin,
+          child: FittedBox(
+            fit: .scaleDown,
+            alignment: .centerLeft,
+            child: GtText(
+              amount,
+              style: context.textStyles.h3(heightPx: 40),
+              key: const Key('receipt-amount'),
+            ),
           ),
         ),
         if (actions.hasValue) ...[
           const GtGap.yLg(),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
+            padding: sectionMargin,
             child: Row(
               spacing: context.spacingBase,
               children: [
@@ -71,6 +79,7 @@ class GtReceiptBody extends GtStatelessWidget {
         GtCard(
           key: const Key('receipt-participants'),
           padding: cardPadding,
+          margin: sectionMargin,
           borderRadius: cardRadius,
           child: Column(
             spacing: context.spacingLg,
@@ -90,6 +99,7 @@ class GtReceiptBody extends GtStatelessWidget {
         if (details.message case GtReceiptMessageData message) ...[
           GtCard(
             padding: cardPadding,
+            margin: sectionMargin,
             borderRadius: cardRadius,
             child: _ReceiptMessage(
               message,
@@ -101,6 +111,7 @@ class GtReceiptBody extends GtStatelessWidget {
         if (details.category case GtReceiptTileData data) ...[
           GtCard(
             padding: cardPadding,
+            margin: sectionMargin,
             borderRadius: cardRadius,
             child: _ReceiptCategory(
               data,
@@ -112,6 +123,7 @@ class GtReceiptBody extends GtStatelessWidget {
         if (details.tiles.hasValue) ...[
           GtCard(
             padding: cardPadding,
+            margin: sectionMargin,
             borderRadius: cardRadius,
             child: Column(
               spacing: context.spacingLg,
@@ -202,10 +214,7 @@ class _ReceiptAction extends GtStatelessWidget {
       alignment: .center,
       size: .small,
       leading: action.icon,
-      contentPadding: context.insets.symmetricDp(
-        vertical: 8.px,
-        horizontal: 12.px,
-      ),
+      contentPadding: context.insets.symmetricDp(horizontal: 12.px),
       textColor: action.textColor(context.palette),
       color: action.color(context.palette),
     );

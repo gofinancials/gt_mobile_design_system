@@ -76,16 +76,27 @@ class GtToastOverlay extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: context.shadowColor,
+      type: .transparency,
+      color: Colors.transparent,
       child: SafeArea(
         minimum: context.insets.defaultAllInsets,
-        child: GtButtonPill(
-          text: message,
-          variant: type,
-          icon: icon,
-          showShadow: true,
-          size: .larger,
-          alignment: .topCenter,
+        child: RepaintBoundary(
+          child: TweenAnimationBuilder(
+            tween: Tween<FractionalOffset>(
+              begin: const FractionalOffset(.5, -0.1),
+              end: const FractionalOffset(.5, .02),
+            ),
+            duration: 500.milliseconds,
+            curve: GtSpringCurves.bouncy,
+            builder: (context, offset, child) {
+              return GtToastPill(
+                text: message,
+                variant: type,
+                icon: icon,
+                alignment: offset,
+              );
+            },
+          ),
         ),
       ),
     );
