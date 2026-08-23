@@ -20,7 +20,7 @@ class _GtRootPopScopeState extends State<GtRootPopScope>
         canPop: false,
         onPopInvokedWithResult: (_, value) {
           confirmAction(
-            GtRouter.observer.navigator?.context ?? context,
+            context,
             onContinue: GtRouter.closeApp,
             title: "closeApp".tr(),
             description: "closeAppQuestion".tr(),
