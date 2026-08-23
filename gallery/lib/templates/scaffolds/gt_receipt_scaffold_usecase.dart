@@ -309,7 +309,7 @@ class _ReceiptScaffoldPreviewState extends State<_ReceiptScaffoldPreview>
       useRootNavigator: false,
       builder: (controller) {
         return GtReceiptScaffold(
-          onClose: () => GtRouter.popView(),
+          onClose: () => GtRouter.forcePopView(),
           onReportProblem: () {
             GtToast.of(context).show("Report problem tapped");
           },
