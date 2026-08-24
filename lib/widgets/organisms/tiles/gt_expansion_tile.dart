@@ -77,42 +77,43 @@ class _GtExpansionTileState extends State<GtExpansionTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-      child: ExpansionTile(
-        trailing: BoolListener(
-          valueListenable: _expansionRef,
-          builder: (isExpanded) {
-            return GtAnimatedSwitcher(
-              child: Builder(
-                key: ValueKey("expansion_trailing_icon_$isExpanded"),
-                builder: (context) {
-                  return GtIcon.withColor(
-                    !isExpanded ? widget.expandIcon : widget.collapseIcon,
-                    color: widget.iconColor,
-                    size: widget.iconSize ?? context.dp(20.px),
-                  );
-                },
-              ),
-            );
-          },
-        ),
-        tilePadding: context.insets.zero,
-        childrenPadding: widget.childrenPadding ?? .zero,
-        onExpansionChanged: (expansionValue) {
-          _expansionRef.value = expansionValue;
-          widget.onExpandedChange?.call(expansionValue);
-          context.resetFocus();
-          if (!widget.autoScroll || !expansionValue) return;
-          context.scrollIntoView();
+    const shape = Border();
+
+    return ExpansionTile(
+      collapsedShape: shape,
+      shape: shape,
+      trailing: BoolListener(
+        valueListenable: _expansionRef,
+        builder: (isExpanded) {
+          return GtAnimatedSwitcher(
+            child: Builder(
+              key: ValueKey("expansion_trailing_icon_$isExpanded"),
+              builder: (context) {
+                return GtIcon.withColor(
+                  !isExpanded ? widget.expandIcon : widget.collapseIcon,
+                  color: widget.iconColor,
+                  size: widget.iconSize ?? context.dp(20.px),
+                );
+              },
+            ),
+          );
         },
-        title: widget.leading,
-        iconColor: widget.iconColor ?? context.palette.icon.strong,
-        backgroundColor: Colors.transparent,
-        initiallyExpanded: widget.isInitiallyExpanded,
-        expandedCrossAxisAlignment: .stretch,
-        children: widget.children,
       ),
+      tilePadding: context.insets.zero,
+      childrenPadding: widget.childrenPadding ?? .zero,
+      onExpansionChanged: (expansionValue) {
+        _expansionRef.value = expansionValue;
+        widget.onExpandedChange?.call(expansionValue);
+        context.resetFocus();
+        if (!widget.autoScroll || !expansionValue) return;
+        context.scrollIntoView();
+      },
+      title: widget.leading,
+      iconColor: widget.iconColor ?? context.palette.icon.strong,
+      backgroundColor: Colors.transparent,
+      initiallyExpanded: widget.isInitiallyExpanded,
+      expandedCrossAxisAlignment: .stretch,
+      children: widget.children,
     );
   }
 }

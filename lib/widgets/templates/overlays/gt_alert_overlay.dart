@@ -85,20 +85,34 @@ class GtAlertOverlay extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: context.shadowColor,
+      type: .transparency,
       child: SafeArea(
         minimum: context.insets.defaultAllInsets,
         bottom: false,
-        child: Column(
-          crossAxisAlignment: .stretch,
-          children: [
-            GtNotificationCard(
-              title: title,
-              subtitle: message,
-              onClose: onClose,
-              variant: type,
-            ),
-          ],
+        child: RepaintBoundary(
+          child: Column(
+            crossAxisAlignment: .stretch,
+            mainAxisSize: .min,
+            mainAxisAlignment: .start,
+            children: [
+              TweenAnimationBuilder(
+                tween: Tween<double>(begin: -context.width, end: 0),
+                duration: 1.seconds,
+                curve: GtSpringCurves.bouncy,
+                builder: (context, value, child) {
+                  return Transform.translate(
+                    offset: Offset(value, 0),
+                    child: GtNotificationCard(
+                      title: title,
+                      subtitle: message,
+                      onClose: onClose,
+                      variant: type,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

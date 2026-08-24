@@ -151,7 +151,7 @@ class GtBottomSheet<T> {
       // root navigator's observers.
       return showCupertinoSheet<T>(
         context: context,
-        builder: (context) => child,
+        scrollableBuilder: (context, _) => child,
         enableDrag: canDragToClose,
         showDragHandle: canDragToClose,
       );
