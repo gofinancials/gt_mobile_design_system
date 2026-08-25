@@ -49,6 +49,9 @@ class GtPhoneField extends GtStatefulWidget {
   /// An optional method that validates the input text.
   final OnValidate<String?>? validator;
 
+  /// Autofill hints for the input field.
+  final List<String>? autofillHints;
+
   /// Creates a new [GtPhoneField].
   const GtPhoneField({
     super.key,
@@ -65,6 +68,7 @@ class GtPhoneField extends GtStatefulWidget {
     this.errorWidget,
     this.showCountryCode = true,
     this.validator,
+    this.autofillHints = const [AutofillHints.telephoneNumberNational],
   });
   @override
   State<GtPhoneField> createState() => _GtPhoneFieldState();
@@ -146,7 +150,7 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
         autoCorrect: false,
         keyboardType: TextInputType.phone,
         onChanged: widget.onChange,
-        autofillHints: const [AutofillHints.telephoneNumberNational],
+        autofillHints: widget.autofillHints,
       ),
       builder: (context, child) {
         return FormField(

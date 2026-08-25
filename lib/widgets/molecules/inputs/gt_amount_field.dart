@@ -38,6 +38,18 @@ class GtAmountField extends GtStatefulWidget {
   /// The maximum allowable amount for validation.
   final num? max;
 
+  /// A widget to display before the input field.
+  final Widget? suffix;
+
+  /// A widget to display after the input field.
+  final Widget? prefix;
+
+  /// The list of autofill hints for the input field.
+  final List<String>? autofillHints;
+
+  /// The hint text to display for the input field.
+  final String? hintText;
+
   /// Creates a new [GtAmountField].
   const GtAmountField({
     super.key,
@@ -48,8 +60,12 @@ class GtAmountField extends GtStatefulWidget {
     this.isEnabled = true,
     this.max,
     this.min,
+    this.prefix,
+    this.suffix,
     this.decoration,
     this.textAlign = .start,
+    this.hintText,
+    this.autofillHints = const [AutofillHints.transactionAmount],
   });
   @override
   State<GtAmountField> createState() => _GtAmountFieldState();
@@ -63,7 +79,7 @@ class _GtAmountFieldState extends State<GtAmountField> {
       isEnabled: widget.isEnabled,
       label: widget.label,
       autoCorrect: false,
-      hintText: "0.00",
+      hintText: widget.hintText ?? "0.00",
       inputFormatters: [AppAmountFormatter()],
       controller: widget.controller,
       validator: (text) => AppValidators.amountValidator(
@@ -72,10 +88,12 @@ class _GtAmountFieldState extends State<GtAmountField> {
         maxAmount: widget.max,
         minAmount: widget.min,
       ),
+      prefix: widget.prefix,
+      suffix: widget.suffix,
       textAlign: widget.textAlign,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       onChanged: widget.onChange,
-      autofillHints: const [AutofillHints.transactionAmount],
+      autofillHints: widget.autofillHints,
     );
   }
 }

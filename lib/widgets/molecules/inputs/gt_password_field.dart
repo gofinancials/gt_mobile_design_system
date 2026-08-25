@@ -38,6 +38,8 @@ class GtPasswordField extends GtStatefulWidget {
   /// A semantic label for the hide password button.
   final String? hidePasswordSemanticLabel;
 
+  final List<String>? autofillHints;
+
   /// Creates a new [GtPasswordField].
   const GtPasswordField({
     required this.controller,
@@ -51,6 +53,7 @@ class GtPasswordField extends GtStatefulWidget {
     this.hidePasswordSemanticLabel,
     super.key,
     this.decoration,
+    this.autofillHints = const [AutofillHints.password],
   });
 
   @override
@@ -110,7 +113,7 @@ class _GtPasswordFieldState extends State<GtPasswordField> {
           ),
           keyboardType: TextInputType.visiblePassword,
           isEnabled: widget.isEnabled,
-          autofillHints: const [AutofillHints.password],
+          autofillHints: widget.autofillHints,
         );
       },
     );

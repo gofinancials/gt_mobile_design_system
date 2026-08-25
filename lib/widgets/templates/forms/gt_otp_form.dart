@@ -12,6 +12,7 @@ class GtOtpForm extends GtStatefulWidget {
   final OnChanged<String?>? onDone;
   final TextEditingController? controller;
   final GtCountdownController? countdownController;
+  final List<String>? autofillHints;
   final int pinLength;
 
   const GtOtpForm({
@@ -24,6 +25,7 @@ class GtOtpForm extends GtStatefulWidget {
     this.countdownController,
     this.pinLength = 6,
     super.key,
+    this.autofillHints = const [AutofillHints.oneTimeCode],
   });
 
   @override
@@ -53,6 +55,7 @@ class _GtOtpFormState extends State<GtOtpForm> with GtOtpFormMixin {
               length: widget.pinLength,
               controller: pinCtrl,
               onFieldSubmitted: widget.onDone,
+              autofillHints: widget.autofillHints,
             ),
             const GtGap.ySectionSm(),
             NumberListener(
