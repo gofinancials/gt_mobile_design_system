@@ -5,4 +5,5 @@ export 'gt_icon_button.dart';
 export 'gt_inkwell.dart';
 export 'gt_outline_button.dart';
 export 'gt_raised_button.dart';
+export 'gt_semantic_buttons.dart';
 export 'gt_text_button.dart';

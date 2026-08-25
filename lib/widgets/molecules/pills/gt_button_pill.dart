@@ -174,3 +174,110 @@ class GtCopyPill extends GtStatelessWidget {
     );
   }
 }
+
+// /// A specialized pill widget designed to copy a specific value to the clipboard when tapped.
+// ///
+// /// It visually resembles a standard [GtPill] but inherently handles the copy-to-clipboard
+// /// interaction and provides default text and icon styling.
+// class GtAccountCopyPill extends GtStatelessWidget {
+//   /// The underlying value that will be copied to the clipboard when the pill is tapped.
+//   final String value;
+
+//   /// The text to display on the pill. If not provided, defaults to a localized 'copy' string.
+//   final String? text;
+
+//   /// An optional custom leading widget (typically an icon). Defaults to a file copy icon.
+//   final Widget? icon;
+
+//   /// The visual variant determining the color scheme of the pill. Defaults to [GtPillVariant.strong].
+//   final GtPillVariant variant;
+
+//   /// An alternative accessibility label for the copy action.
+//   final String? semanticsLabel;
+
+//   /// Additional accessibility guidance for the copy action.
+//   final String? semanticHint;
+
+//   /// Creates a [GtCopyPill].
+//   const GtAccountCopyPill(
+//     this.value, {
+//     super.key,
+//     this.text,
+//     this.variant = .strong,
+//     this.semanticsLabel,
+//     this.semanticHint,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final palette = context.palette;
+//     final textColor = variant.getTextColor(palette);
+//     final bgColor = variant.getBgColor(palette);
+//     final defaultLeading = GtIcon(
+//       GtIcons.fileFilled,
+//       size: 13,
+//       variant: .disabled,
+//     );
+
+//     final label = text?.upper ?? "copy".utr();
+
+//     return GtTapTarget(
+//       child: GtInkWell(
+//         role: .button,
+//         borderRadius: context.borderRadiusSm,
+//         semanticsLabel: semanticsLabel,
+//         semanticHint: semanticHint,
+//         excludeDescendantSemantics: semanticsLabel != null,
+//         onTap: () {
+//           context.copyTextToClipboard(value);
+//         },
+//         child: Container(
+//           padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 6.px),
+//           decoration: BoxDecoration(
+//             color: context.palette.primary.alpha10,
+//             border: Border.all(
+//               width: 1,
+//               color: context.palette.primary.alpha10,
+//             ),
+//             borderRadius: context.borderRadiusMd,
+//             boxShadow: [
+//               BoxShadow(
+//                 color: Color(0x070E121B),
+//                 blurRadius: 4,
+//                 offset: Offset(0, 2),
+//                 spreadRadius: 0,
+//               ),
+//               BoxShadow(
+//                 color: Color(0x261FC16B),
+//                 blurRadius: 24,
+//                 offset: Offset(0, 6),
+//                 spreadRadius: 0,
+//               ),
+//             ],
+//           ),
+
+//           child: Row(
+//             mainAxisSize: .min,
+//             mainAxisAlignment: .start,
+//             crossAxisAlignment: .center,
+//             spacing: context.spacingSm,
+//             children: [
+//               GtText(
+//                 label,
+//                 textAlign: .center,
+//                 style: context.textStyles.button2s(
+//                   color: context.palette.primary.dark,
+//                 ),
+//               ),
+//               GtIcon.withColor(
+//                 GtIcons.copyFilled,
+//                 color: context.palette.primary.dark,
+//                 size: context.dp(14.px),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

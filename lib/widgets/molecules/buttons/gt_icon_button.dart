@@ -108,6 +108,9 @@ class GtIconButton extends GtButton {
     /// An optional color to override the default icon color.
     this.iconColor,
 
+    /// An optional color to override the default focus color of the button.
+    super.focusColor,
+
     /// Standard Flutter key.
     super.key,
   });
@@ -197,6 +200,7 @@ class GtIconButton extends GtButton {
   /// the button's [variant] and [isDisabled] state.
   Color _focusColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
+    if (focusColor != null) return focusColor!;
     final color = _bgColor(palette);
     return switch (variant) {
       .primary => palette.primary.dark,

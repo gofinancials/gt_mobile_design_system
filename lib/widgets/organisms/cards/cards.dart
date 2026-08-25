@@ -1,5 +1,6 @@
 export 'gt_action_card.dart';
 export 'gt_address_card.dart';
+export 'gt_advert_card.dart';
 export 'gt_alert_banner.dart';
 export 'gt_alert_card.dart';
 export 'gt_banner_card.dart';

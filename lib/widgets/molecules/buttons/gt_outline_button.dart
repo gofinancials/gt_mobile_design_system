@@ -25,6 +25,12 @@ class GtOutlineButton extends GtButton {
   /// Custom padding to apply inside the button, overriding the default size-based padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// Optional text style to override the default button text style.
+  final TextStyle? style;
+
+  /// Defines the text capitalization behavior for the button text.
+  final GtButtonTextCase textCase;
+
   /// Creates a [GtOutlineButton].
   const GtOutlineButton({
     this.text,
@@ -43,6 +49,10 @@ class GtOutlineButton extends GtButton {
     this.trailing,
     super.alignment,
     super.textColor,
+    super.focusColor,
+    super.cornerRadius,
+    this.textCase = .upper,
+    this.style,
     super.key,
   });
 
@@ -92,7 +102,7 @@ class GtOutlineButton extends GtButton {
     final textColor = _textColor(palette);
     final borderColor = _borderColor(palette);
     final bgColor = _bgColor(palette);
-    final style = baseStyle(context);
+    final btnStyle = baseStyle(context);
 
     Widget? leadingIcon;
     Widget? trailingIcon;
@@ -116,10 +126,10 @@ class GtOutlineButton extends GtButton {
     }
 
     Widget child = OutlinedButton(
-      style: style.copyWith(
+      style: btnStyle.copyWith(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (isActive(states)) {
-            return bgColor;
+            return focusColor ?? bgColor;
           }
           return GtColors.transparent.value;
         }),
@@ -146,6 +156,8 @@ class GtOutlineButton extends GtButton {
           trailingIcon: trailingIcon,
           textColor: textColor,
           animateChanges: enableLabelAnimation,
+          style: style,
+          textCase: textCase,
         ),
         child2: GtSpinner(color: textColor),
         showFirst: !isLoading,

@@ -9,14 +9,14 @@ class GtDonutPainter extends CustomPainter {
   final Color valueColor;
   final double strokeWidth;
   final StrokeCap strokeCap;
-  final bool clockWise;
+  final bool antiClockWise;
 
   GtDonutPainter({
     required this.value,
     required this.trackColor,
     required this.valueColor,
     this.strokeCap = StrokeCap.round,
-    this.clockWise = false,
+    this.antiClockWise = false,
     this.strokeWidth = 4.0, // Matches the default spinner width
   });
 
@@ -52,7 +52,7 @@ class GtDonutPainter extends CustomPainter {
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       -pi / 2, // Start at the top (12 o'clock)
-      clockWise ? -sweepAngle : sweepAngle,
+      antiClockWise ? -sweepAngle : sweepAngle,
       false, // MUST be false for a hollow ring
       valuePaint,
     );
@@ -105,7 +105,7 @@ class GtArcPainter extends CustomPainter {
 
     canvas.drawArc(
       rect,
-      -pi, // Start at bottom right if clockwise, bottom left otherwise
+      -pi, // Start at bottom right if antiClockWise, bottom left otherwise
       pi, // Sweep over the top
       false, // MUST be false for a hollow ring
       trackPaint,

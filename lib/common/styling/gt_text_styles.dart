@@ -553,6 +553,30 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Double Extra Small Body (Body 2XS) paragraph text style.
+  TextStyle body2_5Xs({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return _buildStyle(
+      family: fonts.body,
+      size: 10,
+      heightPx: heightPx ?? 10,
+      widthPct: 0.0,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   /// Generates the Triple Extra Small Body (Body 3XS) paragraph text style.
   TextStyle body3Xs({
     double? heightPx,
@@ -1306,7 +1330,7 @@ class GtTextStyles {
     return _buildStyle(
       family: fonts.title,
       size: 12,
-      heightPx: heightPx ?? 16,
+      heightPx: heightPx ?? 12,
       widthPct: 0,
       weight: .w700,
       color: color,

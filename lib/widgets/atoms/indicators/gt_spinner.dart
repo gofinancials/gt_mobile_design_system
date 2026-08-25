@@ -39,6 +39,14 @@ class GtSpinner extends GtStatefulWidget {
   /// A semantic label for the spinner, used by accessibility frameworks.
   final String? semanticsLabel;
 
+  /// The stroke cap of the spinner. Defaults to [StrokeCap.round].
+  /// Only applicable for [value] is not null.
+  final StrokeCap strokeCap;
+
+  /// The direction of the spinner. False for anti-clockwise, True for clockwise.
+  /// Only applicable for [value] is not null.
+  final bool clockwise;
+
   /// Creates a new [GtSpinner].
   const GtSpinner({
     this.value,
@@ -49,6 +57,8 @@ class GtSpinner extends GtStatefulWidget {
     this.semanticsLabel,
     super.key,
     this.alignment = .center,
+    this.strokeCap = StrokeCap.round,
+    this.clockwise = true,
   });
 
   @override
@@ -110,6 +120,8 @@ class _GtSpinnerState extends State<GtSpinner> {
                         strokeWidth: widget.strokeWidth,
                         trackColor: trackColor ?? color.setOpacity(0.1),
                         valueColor: color,
+                        strokeCap: widget.strokeCap,
+                        antiClockWise: !widget.clockwise,
                       ),
                     );
                   },

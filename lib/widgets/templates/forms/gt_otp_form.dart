@@ -4,17 +4,48 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A template widget that displays an OTP (One-Time Password) verification form.
+///
+/// This form features a [GtPageHeader] for the title and instructions, a
+/// [GtPinInput] for entering the OTP code, and a countdown timer that reveals
+/// a resend button once the countdown elapses.
 class GtOtpForm extends GtStatefulWidget {
+  /// The main heading text displayed at the top of the form.
   final String title;
+
+  /// The descriptive subtitle or instructions displayed below the [title].
   final String subtitle;
+
+  /// A global key that uniquely identifies the form and allows validation.
   final GlobalKey<FormState> formKey;
+
+  /// Callback invoked when the user taps the resend code button.
   final OnPressed onResendCode;
+
+  /// Callback invoked when the user finishes submitting the PIN input.
   final OnChanged<String?>? onDone;
+
+  /// An optional text editing controller for the PIN input.
+  ///
+  /// If omitted, a controller will be created and managed internally.
   final TextEditingController? controller;
+
+  /// An optional countdown controller for managing the resend timer.
+  ///
+  /// If omitted, a [GtCountdownController] will be created and managed internally.
   final GtCountdownController? countdownController;
+
+  /// A list of autofill hints for the PIN input field.
+  ///
+  /// Defaults to `[AutofillHints.oneTimeCode]`.
   final List<String>? autofillHints;
+
+  /// The length of the OTP PIN code.
+  ///
+  /// Defaults to 6.
   final int pinLength;
 
+  /// Creates a [GtOtpForm].
   const GtOtpForm({
     required this.formKey,
     required this.onResendCode,
@@ -102,10 +133,16 @@ class _GtOtpFormState extends State<GtOtpForm> with GtOtpFormMixin {
   }
 }
 
+/// A mixin that provides countdown timer and text editing controller management
+/// for [GtOtpForm] state implementations.
 mixin GtOtpFormMixin<T extends GtOtpForm> on State<T> {
+  /// The countdown controller managing the resend timer.
   late final GtCountdownController countdownController;
+
+  /// The text editing controller for the OTP pin input.
   late final TextEditingController pinCtrl;
 
+  /// A [ValueNotifier] that notifies listeners of remaining seconds on the countdown timer.
   ValueNotifier<int> get countDown => countdownController.countDown;
 
   @override
@@ -127,20 +164,31 @@ mixin GtOtpFormMixin<T extends GtOtpForm> on State<T> {
     super.dispose();
   }
 
+  /// Starts or restarts the countdown timer.
   void startCountDown() {
     countdownController.startCountDown();
   }
 }
 
+/// A controller that manages a countdown timer and notifies listeners
+/// of the remaining time in seconds.
 class GtCountdownController {
+  /// The duration in seconds to count down from.
   final int seconds;
+
+  /// A [ValueNotifier] that holds the current remaining seconds of the countdown.
   late final ValueNotifier<int> countDown;
+
   StreamSubscription<int>? _subscription;
 
+  /// Creates a [GtCountdownController] with the specified [seconds] duration.
+  ///
+  /// Defaults to 60 seconds.
   GtCountdownController({this.seconds = 60}) {
     countDown = ValueNotifier(seconds);
   }
 
+  /// Starts or restarts the countdown timer from [seconds].
   void startCountDown() {
     _subscription?.cancel();
     countDown.value = seconds;
@@ -155,6 +203,7 @@ class GtCountdownController {
     });
   }
 
+  /// Disposes the countdown controller and cancels any active subscriptions.
   void dispose() {
     _subscription?.cancel();
     countDown.dispose();
