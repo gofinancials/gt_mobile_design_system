@@ -60,6 +60,24 @@ class GtVectors {
   /// Path to the outflow SVG.
   static const dashedPlaceholder = "$_basePath/dashed_placeholder.svg";
 
+  /// Path to the mastercard premium SVG.
+  static const mastercardPremium = "$_basePath/mastercard_premium.svg";
+
+  /// Path to the visa virtual SVG.
+  static const visaCard = "$_basePath/visa.svg";
+
+  /// Path to the verve card SVG.
+  static const verveCard = "$_basePath/verve.svg";
+
+  /// Path to the afrigo card SVG.
+  static const afrigoCard = "$_basePath/afrigo.svg";
+
+  /// Path to the sim chip SVG.
+  static const simChip = "$_basePath/sim_chip.svg";
+
+  /// Path to the premium chip SVG.
+  static const premiumChip = "$_basePath/premium_chip.svg";
+
   /// A list containing all available core vector asset paths.
   static List<({String label, String value})> get all => [
     (label: 'logo', value: logo),
@@ -80,5 +98,11 @@ class GtVectors {
     (label: 'outflow', value: outflow),
     (label: 'moveMoney', value: moveMoney),
     (label: 'dashedPlaceholder', value: dashedPlaceholder),
+    (label: 'mastercardPremium', value: mastercardPremium),
+    (label: 'visaCard', value: visaCard),
+    (label: 'verveCard', value: verveCard),
+    (label: 'afrigoCard', value: afrigoCard),
+    (label: 'simChip', value: simChip),
+    (label: 'premiumChip', value: premiumChip),
   ];
 }

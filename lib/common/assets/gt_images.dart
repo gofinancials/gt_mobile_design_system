@@ -189,6 +189,9 @@ class GtNetworkImages {
   static const String personalSlide4Header =
       '$_baseUrl/personal_onboarding/personal_slide_4_header.webp';
 
+  /// Image URL for the virtual card background.
+  static const String virtualCardBg = '$_baseUrl/virtual_card_bg.webp';
+
   /// A collection containing all 3D avatar template URLs.
   static List<({String label, String value})> get threeDAvatars => [
     (label: 'avatar3d1', value: avatar3d1),
@@ -265,6 +268,7 @@ class GtNetworkImages {
     (label: 'debitCard', value: debitCard),
     (label: 'physicalCard', value: physicalCard),
     (label: 'virtualCard', value: virtualCard),
+    (label: 'virtualCardBg', value: virtualCardBg),
     ...allAvatars,
     ...personalOnboardingSlides,
   ];

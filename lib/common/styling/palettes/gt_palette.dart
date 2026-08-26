@@ -106,6 +106,89 @@ class GtPaletteStaticColors {
   int get hashCode => Object.hash(black, white, shadow, transparent);
 }
 
+/// Dedicated semantic colors and gradient stops for styling physical and virtual
+/// payment cards (e.g., Classic, Business, Prime, and World card tiers).
+class GtPaletteCardColors {
+  /// Base background color for Classic tier payment cards.
+  final Color classic;
+
+  /// Base background color for Business tier payment cards.
+  final Color business;
+
+  /// Base background color for Prime tier payment cards.
+  final Color prime;
+
+  /// First color stop for World/Premium tier gradient payment cards.
+  final Color worldStop1;
+
+  /// Second color stop for World/Premium tier gradient payment cards.
+  final Color worldStop2;
+
+  /// Third color stop for World/Premium tier gradient payment cards.
+  final Color worldStop3;
+
+  const GtPaletteCardColors({
+    required this.classic,
+    required this.business,
+    required this.prime,
+    required this.worldStop1,
+    required this.worldStop2,
+    required this.worldStop3,
+  });
+
+  /// Returns the color gradient used for the World/Premium card tier backgrounds,
+  /// blending the three distinct color stops from left to right.
+  LinearGradient get worldGradient => LinearGradient(
+    begin: .centerLeft,
+    end: .centerRight,
+    stops: [0, .48, 1],
+    colors: [worldStop1, worldStop2, worldStop3],
+  );
+
+  /// Returns a list of all primary colors and gradient stops used across all card tiers,
+  /// including Classic, Business, Prime, and the multi-stop World/Premium gradient.
+  List<Color> get all => [
+    classic,
+    business,
+    prime,
+    worldStop1,
+    worldStop2,
+    worldStop3,
+  ];
+
+  static GtPaletteCardColors lerp(
+    GtPaletteCardColors? a,
+    GtPaletteCardColors? b,
+    double t,
+  ) {
+    return GtPaletteCardColors(
+      classic: Color.lerp(a?.classic, b?.classic, t)!,
+      business: Color.lerp(a?.business, b?.business, t)!,
+      prime: Color.lerp(a?.prime, b?.prime, t)!,
+      worldStop1: Color.lerp(a?.worldStop1, b?.worldStop1, t)!,
+      worldStop2: Color.lerp(a?.worldStop2, b?.worldStop2, t)!,
+      worldStop3: Color.lerp(a?.worldStop3, b?.worldStop3, t)!,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! GtPaletteCardColors) return false;
+
+    return other.classic == classic &&
+        other.business == business &&
+        other.prime == prime &&
+        other.worldStop1 == worldStop1 &&
+        other.worldStop2 == worldStop2 &&
+        other.worldStop3 == worldStop3;
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(classic, business, prime, worldStop1, worldStop2, worldStop3);
+}
+
 /// Colors specifically tailored for large cover areas, marketing screens, or
 /// specialized background treatments, providing distinct light and dark variants.
 class GtPaletteCoverColors {
@@ -440,8 +523,11 @@ base class GtPalette extends ThemeExtension<GtPalette> {
   // Cover
   final GtPaletteCoverColors coverColors;
 
-  // Neutral
+  // Static
   final GtPaletteStaticColors staticColors;
+  final GtPaletteCardColors cardColors;
+
+  // Neutral
   final GtPaletteBgColors bg;
   final GtPaletteBgColors fill;
   final GtPaletteTextColors text;
@@ -465,6 +551,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
     required this.primary,
     required this.coverColors,
     required this.staticColors,
+    required this.cardColors,
     required this.bg,
     required this.fill,
     required this.text,
@@ -486,6 +573,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
   List<Color> get all => [
     ...primary.all,
     ...coverColors.all,
+    ...cardColors.all,
     ...staticColors.all,
     ...bg.all,
     ...text.all,
@@ -519,6 +607,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
         other.staticColors,
         t,
       ),
+      cardColors: GtPaletteCardColors.lerp(cardColors, other.cardColors, t),
       bg: GtPaletteBgColors.lerp(bg, other.bg, t),
       fill: GtPaletteBgColors.lerp(fill, other.fill, t),
       text: GtPaletteTextColors.lerp(text, other.text, t),
@@ -551,6 +640,7 @@ base class GtPalette extends ThemeExtension<GtPalette> {
     return other.primary == primary &&
         other.coverColors == coverColors &&
         other.staticColors == staticColors &&
+        other.cardColors == cardColors &&
         other.bg == bg &&
         other.fill == fill &&
         other.text == text &&
@@ -603,6 +693,7 @@ base class GtLightPalette extends GtPalette {
     required super.primary,
     required super.coverColors,
     GtPaletteStaticColors? staticColors,
+    GtPaletteCardColors? cardColors,
     GtPaletteBgColors? bg,
     GtPaletteBgColors? fill,
     GtPaletteTextColors? text,
@@ -627,6 +718,16 @@ base class GtLightPalette extends GtPalette {
                white: GtColors.neutral0.value,
                shadow: GtColors.neutralGray700.value,
                transparent: GtColors.transparent.value,
+             ),
+         cardColors:
+             cardColors ??
+             GtPaletteCardColors(
+               classic: GtColors.maroon700.value,
+               business: GtColors.green925.value,
+               prime: GtColors.cream.value,
+               worldStop1: GtColors.ash.value,
+               worldStop2: GtColors.neutral800.value,
+               worldStop3: GtColors.night.value,
              ),
          bg:
              bg ??
@@ -791,6 +892,7 @@ base class GtDarkPalette extends GtPalette {
     required super.primary,
     required super.coverColors,
     GtPaletteStaticColors? staticColors,
+    GtPaletteCardColors? cardColors,
     GtPaletteBgColors? bg,
     GtPaletteBgColors? fill,
     GtPaletteTextColors? text,
@@ -815,6 +917,16 @@ base class GtDarkPalette extends GtPalette {
                white: GtColors.neutral0.value,
                shadow: GtColors.neutralGray700.dark,
                transparent: GtColors.transparent.value,
+             ),
+         cardColors:
+             cardColors ??
+             GtPaletteCardColors(
+               classic: GtColors.maroon700.value,
+               business: GtColors.green925.value,
+               prime: GtColors.cream.value,
+               worldStop1: GtColors.ash.value,
+               worldStop2: GtColors.neutral800.value,
+               worldStop3: GtColors.night.value,
              ),
          bg:
              bg ??

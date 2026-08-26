@@ -7,31 +7,62 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtDebitCard', type: GtDebitCard)
 Widget playgroundGtDebitCardUseCase(BuildContext context) {
-  final holderName = context.knobs.string(
-    label: 'Holder Name',
+  final label = context.knobs.string(
+    label: 'Label',
     initialValue: 'Fola Lobaloba',
+  );
+  final type = context.knobs.object.dropdown(
+    label: 'Card Type',
+    options: GtDebitCardType.values,
+    initialOption: GtDebitCardType.classic,
+    labelBuilder: (v) => v.name.capitalise(),
+  );
+  final issuer = context.knobs.object.dropdown(
+    label: 'Card Issuer',
+    options: GtDebitCardIssuer.values,
+    initialOption: GtDebitCardIssuer.mastercard,
+    labelBuilder: (v) => v.name.capitalise(),
+  );
+  final dimension = context.knobs.object.dropdown(
+    label: 'Dimension',
+    options: GtDebitCardDimension.values,
+    initialOption: GtDebitCardDimension.regular,
+    labelBuilder: (v) => v.name.capitalise(),
+  );
+  final isFrozen = context.knobs.boolean(
+    label: 'Is Frozen',
+    initialValue: false,
   );
   final alignment = context.knobs.object.dropdown<Alignment>(
     label: 'Card Alignment',
     options: [Alignment.center, Alignment.centerLeft, Alignment.centerRight],
     initialOption: Alignment.center,
+    labelBuilder: (v) => v.toString().split('.').last,
   );
 
   return GtWidgetDocPage(
     title: 'GtDebitCard',
     description:
-        'Displays a virtual debit card with holder name and banking alignment configurations.',
+        'Displays physical and virtual debit cards with multi-tier styling (Classic, Business, Prime, World, Virtual, Kid), issuer branding, dimension presets (Regular vs Compact), and frozen overlay states.',
     code:
         '''
 GtDebitCard(
+  label: "$label",
+  type: GtDebitCardType.${type.name},
+  issuer: GtDebitCardIssuer.${issuer.name},
+  dimension: GtDebitCardDimension.${dimension.name},
+  isFrozen: $isFrozen,
   alignment: Alignment.${alignment.toString().split('.').last},
-  holderName: "$holderName",
   onPressed: () {},
 )''',
     child: Center(
       child: GtDebitCard(
+        label: label,
+        type: type,
+        issuer: issuer,
+        dimension: dimension,
+        isFrozen: isFrozen,
         alignment: alignment,
-        holderName: holderName,
         onPressed: () {},
       ),
     ),

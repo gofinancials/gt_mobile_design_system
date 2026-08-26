@@ -263,7 +263,23 @@ List<_PaletteCategory> _buildCategories(GtPalette p) => [
     colors: [
       _NamedColor(label: 'black', color: (p) => p.staticColors.black),
       _NamedColor(label: 'white', color: (p) => p.staticColors.white),
-      _NamedColor(label: 'shadow', color: (p) => p.staticColors.shadow),
+      _NamedColor(
+        label: 'transparent',
+        color: (p) => p.staticColors.transparent,
+      ),
+    ],
+  ),
+  _PaletteCategory(
+    name: 'Cards',
+    id: 'cards',
+    description: 'Payment card colors',
+    colors: [
+      _NamedColor(label: 'classic', color: (p) => p.cardColors.classic),
+      _NamedColor(label: 'business', color: (p) => p.cardColors.business),
+      _NamedColor(label: 'prime', color: (p) => p.cardColors.prime),
+      _NamedColor(label: 'worldStop1', color: (p) => p.cardColors.worldStop1),
+      _NamedColor(label: 'worldStop2', color: (p) => p.cardColors.worldStop2),
+      _NamedColor(label: 'worldStop3', color: (p) => p.cardColors.worldStop3),
     ],
   ),
 ];

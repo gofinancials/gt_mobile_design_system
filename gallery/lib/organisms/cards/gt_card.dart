@@ -521,7 +521,7 @@ Widget buildGtCardUseCase(BuildContext context) {
                   initialOption: Alignment.center,
                   labelBuilder: (value) => value.toString().split('.').last,
                 ),
-                holderName: "Fola Lobaloba",
+                label: "Fola Lobaloba",
                 onPressed: () {},
               ),
             ],

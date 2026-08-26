@@ -6,7 +6,10 @@ enum GtColors {
   // ---------------------------------------------------------------------------
   // PRIMITIVE ColorSets
   // ---------------------------------------------------------------------------
+  ash(ColorSet(0xFF4D4D4D)),
+  night(ColorSet(0xFF1A1A1A)),
   white(ColorSet(0xFFFFFFFF)),
+  cream(ColorSet(0xFFDCDDDE)),
   black(ColorSet(0xFF000000)),
   tertiaryText(ColorSet(0xFF7A7A7A)),
   transparent(ColorSet(0x00000000)),
@@ -94,6 +97,7 @@ enum GtColors {
   // VIBRANTS - GREEN
   // ---------------------------------------------------------------------------
   green950(ColorSet(0xFF0B4627)),
+  green925(ColorSet(0xFF155653)),
   green900(ColorSet(0xFF16643B)),
   green800(ColorSet(0xFF1A7544)),
   green700(ColorSet(0xFF178C4E)),
