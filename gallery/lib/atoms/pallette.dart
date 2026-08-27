@@ -293,6 +293,13 @@ class _PalettePage extends StatefulWidget {
 
 class _PalettePageState extends State<_PalettePage> {
   String _query = '';
+  final _searchCtrl = GtInputController();
+
+  @override
+  void dispose() {
+    _searchCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -375,8 +382,6 @@ class _PalettePageState extends State<_PalettePage> {
     );
   }
 }
-
-final _searchCtrl = GtInputController();
 
 class _ColorChip extends StatelessWidget {
   final _NamedColor color;

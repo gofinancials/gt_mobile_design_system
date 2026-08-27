@@ -143,7 +143,7 @@ void main() {
     );
   });
 
-  testWidgets('GtTabbarView animates when the selected tab changes', (
+  testWidgets('GtTabbarView follows controller selection changes', (
     tester,
   ) async {
     const first = GtTabData(value: 1, label: 'First');
@@ -155,17 +155,16 @@ void main() {
       _MotionTestApp(
         child: GtTabbarView<int>(
           controller: controller,
+          tabs: const [first, second],
           tabViews: const {1: GtText('FIRST'), 2: GtText('SECOND')},
         ),
       ),
     );
 
     controller.value = second;
-    await tester.pump();
-
-    expect(find.byType(SlideTransition), findsWidgets);
-    expect(find.text('SECOND'), findsOneWidget);
     await tester.pumpAndSettle();
-    expect(find.text('FIRST'), findsNothing);
+
+    expect(find.byType(PageView), findsOneWidget);
+    expect(find.text('SECOND'), findsOneWidget);
   });
 }

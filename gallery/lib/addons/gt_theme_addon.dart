@@ -56,9 +56,13 @@ class GtThemeAddon extends WidgetbookAddon<GtThemeSetting> {
       theme: setting.theme,
       child: Builder(
         builder: (context) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            themeNotifier?.value = setting;
-          });
+          if (themeNotifier?.value != setting) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (themeNotifier?.value != setting) {
+                themeNotifier?.value = setting;
+              }
+            });
+          }
           return MaterialApp(
             themeAnimationDuration: GtMotion.adaptiveDuration(
               context,

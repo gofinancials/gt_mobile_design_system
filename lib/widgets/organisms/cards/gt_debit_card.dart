@@ -217,6 +217,9 @@ enum GtDebitCardIssuer {
   /// Mastercard payment network.
   mastercard,
 
+  /// Mastercard payment network.
+  premiumMastercard,
+
   /// Visa payment network.
   visa,
 
@@ -229,6 +232,7 @@ enum GtDebitCardIssuer {
   /// Returns the branding logo asset for this issuer.
   AppImageData get logo => switch (this) {
     mastercard => AppImageData(GtVectors.masterCard),
+    premiumMastercard => AppImageData(GtVectors.mastercardPremium),
     visa => AppImageData(GtVectors.visaCard),
     verve => AppImageData(GtVectors.verveCard),
     afrigo => AppImageData(GtVectors.afrigoCard),

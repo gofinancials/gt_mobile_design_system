@@ -2203,6 +2203,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                   ),
                 ],
               ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTabbarView',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Eager',
+                    builder: _gallery_organisms_tab_bars_gt_tab_bar_usecase
+                        .playgroundEagerGtTabbarViewUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Lazy',
+                    builder: _gallery_organisms_tab_bars_gt_tab_bar_usecase
+                        .playgroundLazyGtTabbarViewUseCase,
+                  ),
+                ],
+              ),
             ],
           ),
           _widgetbook.WidgetbookFolder(

@@ -4,8 +4,6 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-final pageController = ValueNotifier(0);
-
 @widgetbook.UseCase(name: 'GtDashboardScaffold', type: GtDashboardScaffold)
 Widget playgroundGtDashboardScaffoldUseCase(BuildContext context) {
   final style = context.knobs.object.dropdown<GtBottomNavigationStyle>(
@@ -53,7 +51,7 @@ Widget buildGtDashboardScaffoldGallery(BuildContext context) {
   return const _DashboardScaffoldPreview();
 }
 
-class _DashboardScaffoldPreview extends StatefulWidget {
+class _DashboardScaffoldPreview extends GtStatefulWidget {
   const _DashboardScaffoldPreview();
 
   @override
@@ -62,6 +60,8 @@ class _DashboardScaffoldPreview extends StatefulWidget {
 }
 
 class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
+  final _pageController = ValueNotifier(0);
+
   final List<GtBottomNavigationItem> _items = const [
     GtBottomNavigationItem(
       selectedIcon: GtIcons.homeFilled,
@@ -95,11 +95,17 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
   ];
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GtDashboardScaffold(
       onClickHelp: () {},
       data: data,
-      pageController: pageController,
+      pageController: _pageController,
       bottomNavigationStyle: context.knobs.object
           .dropdown<GtBottomNavigationStyle>(
             label: "Bottom Navigation Style",

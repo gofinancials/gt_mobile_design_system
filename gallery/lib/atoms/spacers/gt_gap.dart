@@ -49,10 +49,11 @@ class _GapsPlaygroundState extends State<_GapsPlayground> {
               GtTabbar<String>(controller: _controller, tabs: _tabs),
               const GtGap.yMd(),
               Expanded(
-                child: GtTabbarView<String>(
+                child: GtTabbarView<String>.lazy(
                   controller: _controller,
-                  tabViews: {
-                    "vertical": GtWidgetDocPage(
+                  tabs: _tabs,
+                  tabBuilders: {
+                    "vertical": (_) => GtWidgetDocPage(
                       title: "Vertical Gaps (y)",
                       description:
                           "Use y-gaps inside columns to space out elements vertically.",
@@ -110,7 +111,7 @@ const GtGap.ySection4xl() // 96px''',
                         ],
                       ),
                     ),
-                    "horizontal": GtWidgetDocPage(
+                    "horizontal": (_) => GtWidgetDocPage(
                       title: "Horizontal Gaps (h)",
                       description:
                           "Use h-gaps inside rows to space out elements horizontally.",
@@ -169,7 +170,7 @@ const GtGap.hSection4xl() // 96px''',
                         ],
                       ),
                     ),
-                    "square": GtWidgetDocPage(
+                    "square": (_) => GtWidgetDocPage(
                       title: "Square / Symmetrical Gaps (s)",
                       description:
                           "Creates a square space block (both height and width constrained).",

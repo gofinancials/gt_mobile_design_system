@@ -21,9 +21,22 @@ final _tabs = [
   GtTabData(label: "GtSquareBox", value: "square_box"),
   GtTabData(label: "GtFractionalBox", value: "fractional_box"),
 ];
-final _controller = GtTabController<String>(initialValue: _tabs.first);
 
 class _BoxesPlaygroundState extends State<_BoxesPlayground> {
+  late final GtTabController<String> _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = GtTabController<String>(initialValue: _tabs.first);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // GtSizedBox Knobs
@@ -91,11 +104,12 @@ class _BoxesPlaygroundState extends State<_BoxesPlayground> {
               ),
               const GtGap.yMd(),
               Expanded(
-                child: GtTabbarView<String>(
+                child: GtTabbarView<String>.lazy(
                   key: const PageStorageKey("boxes_key"),
                   controller: _controller,
-                  tabViews: {
-                    "sized_box": GtWidgetDocPage(
+                  tabs: _tabs,
+                  tabBuilders: {
+                    "sized_box": (_) => GtWidgetDocPage(
                       title: "GtSizedBox",
                       description:
                           "A standardized box that automatically scales height and width to DP.",
@@ -126,7 +140,7 @@ GtSizedBox(
                         ),
                       ),
                     ),
-                    "square_box": GtWidgetDocPage(
+                    "square_box": (_) => GtWidgetDocPage(
                       title: "GtSquareBox",
                       description:
                           "Forces its child to have equal width and height, scaled to DP.",
@@ -158,7 +172,7 @@ GtSquareBox(
                         ),
                       ),
                     ),
-                    "fractional_box": GtWidgetDocPage(
+                    "fractional_box": (_) => GtWidgetDocPage(
                       title: "GtFractionalBox",
                       description:
                           "Sizes its child fractionally based on parent constraints.",
