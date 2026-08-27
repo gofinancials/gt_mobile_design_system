@@ -47,18 +47,13 @@ GtGuageChart(
     footerText: "$footerText",
   ),
 )''',
-    child: Center(
-      child: GtSizedBox(
-        height: 400,
-        child: GtGuageChart(
-          value: value,
-          variant: variant,
-          center: GtGuageChartCenter(
-            centerValue,
-            pillText: pillText,
-            footerText: footerText,
-          ),
-        ),
+    child: GtGuageChart(
+      value: value,
+      variant: variant,
+      center: GtGuageChartCenter(
+        centerValue,
+        pillText: pillText,
+        footerText: footerText,
       ),
     ),
   );

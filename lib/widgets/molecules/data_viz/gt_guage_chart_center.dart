@@ -32,43 +32,40 @@ class GtGuageChartCenter extends StatelessWidget {
     final styles = context.textStyles;
     final palette = context.palette;
 
-    final valueStyle = styles.h5(color: valueColor);
-    final footerStyle = styles.bodyXs(color: palette.text.soft);
-    final pillStyle = styles.buttonXs();
+    final valueStyle = styles.h4(color: valueColor, heightPx: 32);
+    final footerStyle = styles.body2Xs(color: palette.text.soft);
+    final pillStyle = styles.buttonXs(heightPx: 13.15);
 
-    return FractionalTranslation(
-      translation: Offset(0, -.15),
-      child: Column(
-        mainAxisAlignment: .center,
-        crossAxisAlignment: .center,
-        mainAxisSize: .min,
-        spacing: context.spacingBase,
-        children: [
-          if (pillText.hasValue)
-            GtPill(
-              text: pillText?.upper ?? "",
-              padding: context.insets.symmetricDp(
-                horizontal: 8.px,
-                vertical: 6.px,
-              ),
-              variant: .neutral,
-              bgColor: palette.bg.weak,
-              borderColor: palette.bg.soft,
-              textStyle: pillStyle,
-              textColor: palette.text.strong,
-              alignment: .center,
-              borderRadius: context.borderRadiusFull,
+    return Column(
+      mainAxisAlignment: .center,
+      crossAxisAlignment: .center,
+      mainAxisSize: .min,
+      spacing: context.spacingBase,
+      children: [
+        if (pillText.hasValue)
+          GtPill(
+            text: pillText?.upper ?? "",
+            padding: context.insets.symmetricDp(
+              horizontal: 8.px,
+              vertical: 6.px,
             ),
-          GtText(valueText, style: valueStyle, maxLines: 1, textAlign: .center),
-          if (footerText.hasValue)
-            GtText(
-              footerText!,
-              style: footerStyle,
-              textAlign: .center,
-              maxLines: 1,
-            ),
-        ],
-      ),
+            variant: .neutral,
+            bgColor: palette.bg.weak,
+            borderColor: palette.bg.soft,
+            textStyle: pillStyle,
+            textColor: palette.text.strong,
+            alignment: .center,
+            borderRadius: context.borderRadiusFull,
+          ),
+        GtText(valueText, style: valueStyle, maxLines: 1, textAlign: .center),
+        if (footerText.hasValue)
+          GtText(
+            footerText!,
+            style: footerStyle,
+            textAlign: .center,
+            maxLines: 1,
+          ),
+      ],
     );
   }
 }
