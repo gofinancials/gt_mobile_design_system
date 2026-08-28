@@ -12,6 +12,11 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+# Allow one concurrent deployment, skipping runs queued behind an in-progress run.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
