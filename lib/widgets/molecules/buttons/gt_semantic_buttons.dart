@@ -77,7 +77,7 @@ class GtAccountSwitchButton extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgColor = context.palette.primary.dark;
-    final txtColor = context.palette.text.white;
+    final txtColor = context.palette.staticColors.white;
 
     Widget child = GtInkWell(
       role: .button,
