@@ -206,57 +206,72 @@ enum GtColors {
   blueAlpha24(ColorSet(0x3D476CFF)),
   blueAlpha16(ColorSet(0x29476CFF)),
   blueAlpha10(ColorSet(0x1A476CFF)),
+  blueAlpha8(ColorSet(0x19476CFF)),
 
   orangeAlpha24(ColorSet(0x3DFA7319)),
   orangeAlpha16(ColorSet(0x29FA7319)),
   orangeAlpha10(ColorSet(0x1AFA7319)),
+  orangeAlpha8(ColorSet(0x19FA7319)),
 
   redAlpha24(ColorSet(0x3DFB3748)),
   redAlpha16(ColorSet(0x29FB3748)),
   redAlpha10(ColorSet(0x1AFB3748)),
+  redAlpha8(ColorSet(0x19FB3748)),
 
   greenAlpha24(ColorSet(0x3D1FC16B)),
   greenAlpha16(ColorSet(0x291FC16B)),
   greenAlpha10(ColorSet(0x1A1FC16B)),
+  greenAlpha8(ColorSet(0x191FC16B)),
 
   yellowAlpha24(ColorSet(0x3DFBC64B)),
   yellowAlpha16(ColorSet(0x29FBC64B)),
   yellowAlpha10(ColorSet(0x1AFBC64B)),
+  yellowAlpha8(ColorSet(0x19FBC64B)),
 
   skyAlpha24(ColorSet(0x3D47C2FF)),
   skyAlpha16(ColorSet(0x2947C2FF)),
   skyAlpha10(ColorSet(0x1A47C2FF)),
+  skyAlpha8(ColorSet(0x1947C2FF)),
 
   purpleAlpha24(ColorSet(0x3D7B4DEF)),
   purpleAlpha16(ColorSet(0x297B4DEF)),
   purpleAlpha10(ColorSet(0x1A7B4DEF)),
+  purpleAlpha8(ColorSet(0x197B4DEF)),
 
   pinkAlpha24(ColorSet(0x3DFB4BA3)),
   pinkAlpha16(ColorSet(0x29FB4BA3)),
   pinkAlpha10(ColorSet(0x1AFB4BA3)),
+  pinkAlpha8(ColorSet(0x19FB4BA3)),
 
   tealAlpha24(ColorSet(0x3D22D3BB)),
   tealAlpha16(ColorSet(0x2922D3BB)),
   tealAlpha10(ColorSet(0x1A22D3BB)),
+  tealAlpha8(ColorSet(0x1922D3BB)),
 
   tealBlueAlpha24(ColorSet(0x3D01A4BD)),
   tealBlueAlpha16(ColorSet(0x2901A4BD)),
   tealBlueAlpha10(ColorSet(0x1A01A4BD)),
+  tealBlueAlpha8(ColorSet(0x1901A4BD)),
 
   whiteAlpha24(ColorSet(0x3DFFFFFF)),
   whiteAlpha16(ColorSet(0x29FFFFFF)),
   whiteAlpha10(ColorSet(0x1AFFFFFF)),
+  whiteAlpha8(ColorSet(0x19FFFFFF)),
 
   neutralAlpha24(ColorSet(0x3DFFFFFF)),
   neutralAlpha16(ColorSet(0x29FFFFFF)),
+  neutralAlpha10(ColorSet(0x1AFFFFFF)),
+  neutralAlpha8(ColorSet(0x19FFFFFF)),
 
   blackAlpha24(ColorSet(0x3D171717)),
   blackAlpha16(ColorSet(0x29171717)),
   blackAlpha10(ColorSet(0x1A171717)),
+  blackAlpha8(ColorSet(0x19171717)),
 
   maroonAlpha24(ColorSet(0x3DCB0828)),
   maroonAlpha16(ColorSet(0x29CB0828)),
   maroonAlpha10(ColorSet(0x1ACB0828)),
+  maroonAlpha8(ColorSet(0x19CB0828)),
 
   skyAlpha5(ColorSet(0x1AB8CDD9)),
   darkGreen(ColorSet(0xFF004045)),

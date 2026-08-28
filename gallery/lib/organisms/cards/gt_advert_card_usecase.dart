@@ -53,37 +53,35 @@ Column(
     child: Column(
       spacing: context.spacingMd,
       crossAxisAlignment: .stretch,
+      mainAxisSize: .min,
       children: [
         GtSectionHeader('Do more with your money'),
-        SingleChildScrollView(
-          child: Row(
-            spacing: context.spacingBase,
-            children: [
-              GtAdvertCard(
-                color: palette.feature.base,
-                illustration: const AppImageData.asset(
-                  GtVectorIllustrations.emptyState,
-                ),
-                title: 'Send money',
-                subtitle: 'Pay someone, buy something, or sort your bills',
-                actionLabel: 'Pay someone',
-                onPressed: () => context.showToast('Pay someone selected'),
-                onDismiss: () => context.showToast('Send money dismissed'),
+        GtAdvertCardCarousel(
+          children: [
+            GtAdvertCard(
+              color: palette.feature.base,
+              illustration: const AppImageData.asset(
+                GtVectorIllustrations.emptyState,
               ),
-              GtAdvertCard(
-                color: palette.success.darker,
-                illustration: const AppImageData.asset(
-                  GtVectorIllustrations.date,
-                ),
-                title: 'And more...',
-                subtitle:
-                    'Buy, sell, save or schedule payment with peace of mind',
-                actionLabel: 'Schedule payment',
-                onPressed: () => context.showToast('Schedule payment selected'),
-                onDismiss: () => context.showToast('Schedule card dismissed'),
+              title: 'Send money',
+              subtitle: 'Pay someone, buy something, or sort your bills',
+              actionLabel: 'Pay someone',
+              onPressed: () => context.showToast('Pay someone selected'),
+              onDismiss: () => context.showToast('Send money dismissed'),
+            ),
+            GtAdvertCard(
+              color: palette.success.base,
+              illustration: const AppImageData.asset(
+                GtVectorIllustrations.date,
               ),
-            ],
-          ),
+              title: 'And more...',
+              subtitle:
+                  'Buy, sell, save or schedule payment with peace of mind',
+              actionLabel: 'Schedule payment',
+              onPressed: () => context.showToast('Schedule payment selected'),
+              onDismiss: () => context.showToast('Schedule card dismissed'),
+            ),
+          ],
         ),
       ],
     ),

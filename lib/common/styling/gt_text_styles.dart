@@ -26,7 +26,7 @@ class GtTextStyles {
   // Handles the conversion from Figma's % tracking and pixel line-heights
   // into Flutter's native coordinate system.
   // ---------------------------------------------------------------------------
-  TextStyle _buildStyle({
+  TextStyle buildStyle({
     required String family,
     required double size,
     required double heightPx,
@@ -70,7 +70,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 64,
       heightPx: heightPx ?? 72,
@@ -95,7 +95,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 56,
       heightPx: heightPx ?? 64,
@@ -120,7 +120,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 48,
       heightPx: heightPx ?? 50,
@@ -145,7 +145,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 32,
       heightPx: heightPx ?? 40,
@@ -174,7 +174,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 60,
       heightPx: heightPx ?? 52,
@@ -199,7 +199,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 56,
       heightPx: heightPx ?? 64,
@@ -224,7 +224,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 48,
       heightPx: heightPx ?? 56,
@@ -249,7 +249,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 40,
       heightPx: heightPx ?? 48,
@@ -274,7 +274,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 32,
       heightPx: heightPx ?? 40,
@@ -299,7 +299,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 24,
       heightPx: heightPx ?? 32,
@@ -324,7 +324,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 20,
       heightPx: heightPx ?? 28,
@@ -349,7 +349,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 16,
       heightPx: heightPx ?? 20,
@@ -371,10 +371,11 @@ class GtTextStyles {
     TextOverflow? overflow,
     required double size,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: size,
-      heightPx: size * 1.25,
+      heightPx: heightPx ?? size * 1.25,
+      overflow: overflow,
       widthPct: 0.0,
       weight: .w600,
       color: color,
@@ -395,7 +396,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 24,
       heightPx: heightPx ?? 32,
@@ -419,7 +420,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 18,
       heightPx: heightPx ?? 24,
@@ -443,7 +444,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 16,
       heightPx: heightPx ?? 24,
@@ -467,7 +468,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
@@ -491,7 +492,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 13,
       heightPx: heightPx ?? 16,
@@ -515,7 +516,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 12,
       heightPx: heightPx ?? 16,
@@ -539,7 +540,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 11,
       heightPx: heightPx ?? 12,
@@ -563,7 +564,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 10,
       heightPx: heightPx ?? 10,
@@ -587,7 +588,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 8,
       heightPx: heightPx ?? 12,
@@ -611,7 +612,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 17,
       heightPx: heightPx ?? 24,
@@ -626,7 +627,7 @@ class GtTextStyles {
   }
 
   // ---------------------------------------------------------------------------
-  // LABELS (label prefix) | Inter, Medium (500)
+  // LABELS (label prefix) | Inter, Medium (400)
   // ---------------------------------------------------------------------------
 
   /// Generates the Extra Large Label (Label XL) text style.
@@ -639,7 +640,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 24,
       heightPx: heightPx ?? 32,
@@ -663,7 +664,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 18,
       heightPx: heightPx ?? 24,
@@ -687,7 +688,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 16,
       heightPx: heightPx ?? 24,
@@ -711,7 +712,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
@@ -735,7 +736,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 12,
       heightPx: heightPx ?? 16,
@@ -762,7 +763,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 48,
       heightPx: heightPx ?? 96,
@@ -786,7 +787,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 16,
       heightPx: heightPx ?? 24,
@@ -811,7 +812,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
@@ -836,7 +837,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 12,
       heightPx: heightPx ?? 16,
@@ -861,7 +862,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 11,
       heightPx: heightPx ?? 12,
@@ -886,7 +887,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 10,
       heightPx: heightPx ?? 11,
@@ -911,7 +912,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 8,
       heightPx: heightPx ?? 9,
@@ -940,7 +941,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 24,
       heightPx: heightPx ?? 32,
@@ -966,7 +967,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 20,
       heightPx: heightPx ?? 24,
@@ -992,7 +993,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 16,
       heightPx: heightPx ?? 24,
@@ -1018,7 +1019,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 16,
       heightPx: heightPx ?? 24,
@@ -1044,7 +1045,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 15,
       heightPx: heightPx ?? 24,
@@ -1070,7 +1071,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
@@ -1096,7 +1097,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 13,
       heightPx: heightPx ?? 16,
@@ -1122,7 +1123,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 12,
       heightPx: heightPx ?? 16,
@@ -1148,7 +1149,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 12,
       heightPx: heightPx ?? 16,
@@ -1174,7 +1175,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 11,
       heightPx: heightPx ?? 12,
@@ -1200,7 +1201,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 10,
       heightPx: heightPx ?? 14,
@@ -1226,7 +1227,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 9,
       heightPx: heightPx ?? 12,
@@ -1252,7 +1253,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 8,
       heightPx: heightPx ?? 12,
@@ -1277,7 +1278,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 18,
       heightPx: heightPx ?? 32,
@@ -1302,7 +1303,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 14,
       heightPx: heightPx ?? 16,
@@ -1327,7 +1328,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 12,
       heightPx: heightPx ?? 12,
@@ -1352,7 +1353,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 10,
       heightPx: heightPx ?? 12,
@@ -1377,7 +1378,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 8,
       heightPx: heightPx ?? 8,
@@ -1411,7 +1412,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: isAndroid ? fonts.title : fonts.body,
       size: isAndroid ? 11 : 9,
       heightPx: heightPx ?? 12,
@@ -1436,7 +1437,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
@@ -1461,7 +1462,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 28,
       heightPx: heightPx ?? 32,
@@ -1486,7 +1487,7 @@ class GtTextStyles {
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
   }) {
-    return _buildStyle(
+    return buildStyle(
       family: fonts.title,
       size: 14,
       heightPx: heightPx ?? 20,
@@ -1507,6 +1508,7 @@ class GtTextStyles {
     ('Display 2 (context.textStyles.d2)', d2()),
     ('Display 3 (context.textStyles.d3)', d3()),
     ('Display 4 (context.textStyles.d4)', d4()),
+    ('Welcome (context.textStyles.welcome)', welcome()),
     ('Heading 1 (context.textStyles.h1)', h1()),
     ('Heading 2 (context.textStyles.h2)', h2()),
     ('Heading 3 (context.textStyles.h3)', h3()),
@@ -1514,6 +1516,7 @@ class GtTextStyles {
     ('Heading 5 (context.textStyles.h5)', h5()),
     ('Heading 6 (context.textStyles.h6)', h6()),
     ('Heading 7 (context.textStyles.h7)', h7()),
+    ('Avatar (context.textStyles.avatar)', avatar(size: 24)),
     ('Body XL (context.textStyles.bodyXl)', bodyXl()),
     ('Body L (context.textStyles.bodyL)', bodyL()),
     ('Body M (context.textStyles.bodyM)', bodyM()),
@@ -1521,6 +1524,7 @@ class GtTextStyles {
     ('Body 2S (context.textStyles.body2s)', body2s()),
     ('Body XS (context.textStyles.bodyXs)', bodyXs()),
     ('Body 2XS (context.textStyles.body2Xs)', body2Xs()),
+    ('Body 2.5XS (context.textStyles.body2_5Xs)', body2_5Xs()),
     ('Body 3XS (context.textStyles.body3Xs)', body3Xs()),
     ('Input (context.textStyles.input)', input()),
     ('Label XL (context.textStyles.labelXl)', labelXl()),
@@ -1528,18 +1532,26 @@ class GtTextStyles {
     ('Label M (context.textStyles.labelM)', labelM()),
     ('Label S (context.textStyles.labelS)', labelS()),
     ('Label XS (context.textStyles.labelXs)', labelXs()),
+    ('Title (context.textStyles.title)', title()),
     ('Title M (context.textStyles.titleM)', titleM()),
     ('Title S (context.textStyles.titleS)', titleS()),
     ('Title XS (context.textStyles.titleXs)', titleXs()),
     ('Title 2XS (context.textStyles.title2xs)', title2xs()),
+    ('Title 3XS (context.textStyles.title3xs)', title3xs()),
+    ('Title 4XS (context.textStyles.title4xs)', title4xs()),
     ('Subhead XL (context.textStyles.subHeadXl)', subHeadXl()),
     ('Subhead L (context.textStyles.subHeadL)', subHeadL()),
     ('Subhead M (context.textStyles.subHeadM)', subHeadM()),
+    ('Subhead 2M (context.textStyles.subHead2M)', subHead2M()),
+    ('Subhead 3M (context.textStyles.subHead3M)', subHead3M()),
     ('Subhead S (context.textStyles.subHeadS)', subHeadS()),
     ('Subhead 2S (context.textStyles.subHead2s)', subHead2s()),
     ('Subhead XS (context.textStyles.subHeadXs)', subHeadXs()),
+    ('Chart Y Tick (context.textStyles.chartYtick)', chartYtick()),
     ('Subhead 2XS (context.textStyles.subHead2xs)', subHead2xs()),
     ('Subhead 3XS (context.textStyles.subHead3xs)', subHead3xs()),
+    ('Subhead 3.5XS (context.textStyles.subHead3_5xs)', subHead3_5xs()),
+    ('Subhead 4XS (context.textStyles.subHead4xs)', subHead4xs()),
     ('Button (context.textStyles.button)', button()),
     ('Button S (context.textStyles.buttonS)', buttonS()),
     ('Button 2S (context.textStyles.button2s)', button2s()),
@@ -1548,5 +1560,6 @@ class GtTextStyles {
     ('Nav Bar Label (context.textStyles.navBarLabel)', navBarLabel()),
     ('Calendar (context.textStyles.calendar)', calendar()),
     ('FX Input (context.textStyles.fxInput)', fxInput()),
+    ('Rate Pill (context.textStyles.ratePill)', ratePill()),
   ];
 }

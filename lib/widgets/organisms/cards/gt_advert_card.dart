@@ -75,17 +75,15 @@ class GtAdvertCard extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final iconColor = context.palette.staticColors.white;
     final txtColor = textColor ?? iconColor;
+    final maxWidth = context.fractionalShortest(.5);
+    final maxHeight = maxWidth * 1.5;
 
     return GtCard(
-      constraints: .tightFor(
-        width: context.dp(180.px),
-        height: context.dp(270.px),
-      ),
       color: color,
       padding: context.insets.fromLTRBDp(12.px, 16.px, 12.px, 24.px),
+      constraints: .loose(Size(maxWidth, maxHeight)),
       child: Column(
         crossAxisAlignment: .stretch,
-        mainAxisSize: .min,
         spacing: context.spacingMd,
         children: [
           Align(
@@ -93,18 +91,21 @@ class GtAdvertCard extends GtStatelessWidget {
             child: GtInkWell(
               role: .button,
               onTap: onDismiss,
-              child: GtIcon.withColor(
-                GtIcons.xmark,
-                color: dismissIconColor ?? iconColor,
-                size: context.dp(16.px),
+              child: Transform.scale(
+                alignment: .centerRight,
+                scale: 1.2,
+                child: GtIcon.withColor(
+                  GtIcons.xmark,
+                  color: dismissIconColor ?? iconColor,
+                  size: context.dp(16.px),
+                ),
               ),
             ),
           ),
-          Flexible(
+          Expanded(
             child: Padding(
               padding: context.insets.symmetricDp(horizontal: 9.01.px),
               child: Column(
-                mainAxisSize: .min,
                 mainAxisAlignment: .center,
                 crossAxisAlignment: .center,
                 children: [
@@ -112,7 +113,7 @@ class GtAdvertCard extends GtStatelessWidget {
                     isDecorative: true,
                     image: illustration,
                     fit: .contain,
-                    alignment: .topCenter,
+                    alignment: .center,
                     useDefaultSize: false,
                     width: context.dp(92.px),
                     height: context.dp(92.px),
@@ -154,6 +155,29 @@ class GtAdvertCard extends GtStatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// A horizontally scrollable list of [GtAdvertCard] widgets.
+///
+/// Use [GtAdvertCardCarousel] to display multiple promotional cards in a
+/// horizontally scrolling list. The carousel automatically adapts to the
+/// screen width, ensuring that the cards are always visible.
+///
+/// By default, the cards are separated by [context.spacingBase] (8px).
+/// This spacing can be customized using the [spacing] parameter.
+class GtAdvertCardCarousel extends GtStatelessWidget {
+  const GtAdvertCardCarousel({super.key, required this.children, this.spacing});
+
+  final List<GtAdvertCard> children;
+  final double? spacing;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: .horizontal,
+      child: Row(spacing: spacing ?? context.spacingBase, children: children),
     );
   }
 }
