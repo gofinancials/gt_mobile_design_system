@@ -29,6 +29,7 @@ class GtAdvertCard extends GtStatelessWidget {
     this.dismissIconColor,
     this.textColor,
     this.actionVariant = .white,
+    this.actionTextColor,
   });
 
   /// The card's background color.
@@ -57,13 +58,14 @@ class GtAdvertCard extends GtStatelessWidget {
   /// The rendered value is limited to three lines.
   final String subtitle;
 
+  /// The visual variant used by the action button.
+  final GtButtonVariant actionVariant;
+
   /// The label displayed by the action button.
   final String actionLabel;
 
-  /// The visual variant used by the action button.
-  ///
-  /// Defaults to [GtButtonVariant.white].
-  final GtButtonVariant actionVariant;
+  /// The color of the action button text.
+  final Color? actionTextColor;
 
   /// Called when the action button is pressed.
   final OnPressed onPressed;
@@ -150,7 +152,9 @@ class GtAdvertCard extends GtStatelessWidget {
               size: .pill,
               alignment: .center,
               cornerRadius: context.borderRadiusMd,
-              style: context.textStyles.buttonXs(),
+              style: context.textStyles.buttonXs(
+                color: actionTextColor ?? context.palette.staticColors.black,
+              ),
             ),
           ),
         ],
