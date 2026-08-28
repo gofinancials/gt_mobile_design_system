@@ -11,7 +11,7 @@ class GtText extends GtStatelessWidget {
 
   /// The style to use for the text.
   ///
-  /// If null, defaults to the `bodyM` text style from the current context.
+  /// If null, defaults to the `bodyS` text style from the current context.
   final TextStyle? style;
 
   /// How the text should be aligned horizontally. Defaults to [TextAlign.start].

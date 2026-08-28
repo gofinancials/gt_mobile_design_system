@@ -120,6 +120,9 @@ abstract class GtButton extends GtStatelessWidget {
   /// An optional custom text color to override the default text color of the button.
   final Color? textColor;
 
+  /// An optional custom focus color to override the default focus color of the button.
+  final Color? focusColor;
+
   /// The alignment of the button's content (e.g., text and icons) within the button's bounds.
   final AlignmentGeometry? alignment;
 
@@ -128,6 +131,9 @@ abstract class GtButton extends GtStatelessWidget {
 
   /// An optional semantic label for the button when in a loading state.
   final String? loadingSemanticLabel;
+
+  /// Optional custom border radius for the button.
+  final BorderRadius? cornerRadius;
 
   /// Creates a [GtButton].
   const GtButton({
@@ -144,6 +150,8 @@ abstract class GtButton extends GtStatelessWidget {
     this.alignment,
     this.semanticLabel,
     this.loadingSemanticLabel,
+    this.cornerRadius,
+    this.focusColor,
     super.key,
   }) : assert(pressedScale > 0 && pressedScale <= 1);
 
@@ -231,6 +239,8 @@ abstract class GtButton extends GtStatelessWidget {
 
   /// Calculates the internal padding for the button based on its [size].
   BorderRadius borderRadius(BuildContext context) {
+    if (cornerRadius case BorderRadius radius) return radius;
+
     final radius = switch (size) {
       .large || .xlarge || .medium => 10,
       _ => 6,

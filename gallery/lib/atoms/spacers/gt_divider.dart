@@ -48,10 +48,11 @@ class _DividersPlaygroundState extends State<_DividersPlayground> {
               GtTabbar<String>(controller: _controller, tabs: _tabs),
               const GtGap.yMd(),
               Expanded(
-                child: GtTabbarView<String>(
+                child: GtTabbarView<String>.lazy(
                   controller: _controller,
-                  tabViews: {
-                    "in_component": GtWidgetDocPage(
+                  tabs: _tabs,
+                  tabBuilders: {
+                    "in_component": (_) => GtWidgetDocPage(
                       title: "In-Component Dividers",
                       description:
                           "Dividers used to separate content inside widgets.",
@@ -92,7 +93,7 @@ GtDivider.xl()    // Extra Large (16px)''',
                         ],
                       ),
                     ),
-                    "section": GtWidgetDocPage(
+                    "section": (_) => GtWidgetDocPage(
                       title: "Section Dividers",
                       description:
                           "Dividers used to separate distinct content sections of a page.",

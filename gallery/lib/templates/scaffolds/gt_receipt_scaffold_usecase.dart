@@ -77,7 +77,7 @@ List<GtReceiptTileData> _getDetailTiles(String config, BuildContext context) {
         label: "Reference",
         value: "TRX24072983910527NGN",
         onTap: () {
-          context.copyTextToClipboard("TRX24072983910527NGN");
+          context.copyText("TRX24072983910527NGN");
           GtToast.of(context).show("Reference copied to clipboard");
         },
       ),
@@ -85,7 +85,7 @@ List<GtReceiptTileData> _getDetailTiles(String config, BuildContext context) {
         label: "Session ID",
         value: "999001240813123456789012345678",
         onTap: () {
-          context.copyTextToClipboard("999001240813123456789012345678");
+          context.copyText("999001240813123456789012345678");
           GtToast.of(context).show("Session ID copied to clipboard");
         },
       ),
@@ -102,7 +102,7 @@ List<GtReceiptTileData> _getDetailTiles(String config, BuildContext context) {
         label: "Reference",
         value: "TRX24072983910527NGN",
         onTap: () {
-          context.copyTextToClipboard("TRX24072983910527NGN");
+          context.copyText("TRX24072983910527NGN");
           GtToast.of(context).show("Reference copied to clipboard");
         },
       ),

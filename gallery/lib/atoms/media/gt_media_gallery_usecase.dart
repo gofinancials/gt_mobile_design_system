@@ -69,24 +69,25 @@ class _MediaGalleryPageState extends State<_MediaGalleryPage> {
               GtTabbar<String>(controller: _controller, tabs: _tabs),
               const GtGap.yMd(),
               Expanded(
-                child: GtTabbarView<String>(
+                child: GtTabbarView<String>.lazy(
                   controller: _controller,
-                  tabViews: {
-                    "icons": _MediaGrid(
+                  tabs: _tabs,
+                  tabBuilders: {
+                    "icons": (_) => _MediaGrid(
                       items: iconFonts,
                       builder: (item) => GtIcon(item.value, size: 32),
                     ),
-                    "vectors": _MediaGrid(
+                    "vectors": (_) => _MediaGrid(
                       items: vectors,
                       builder: (item) =>
                           GtSvg(item.value, width: 32, height: 32),
                     ),
-                    "illustrations": _MediaGrid(
+                    "illustrations": (_) => _MediaGrid(
                       items: illustrations,
                       builder: (item) =>
                           GtSvg(item.value, width: 64, height: 64),
                     ),
-                    "network": _MediaGrid(
+                    "network": (_) => _MediaGrid(
                       items: networkImages,
                       builder: (item) => GtNetworkImage(
                         item.value,
@@ -95,7 +96,7 @@ class _MediaGalleryPageState extends State<_MediaGalleryPage> {
                         fit: BoxFit.contain,
                       ),
                     ),
-                    "asset": _MediaGrid(
+                    "asset": (_) => _MediaGrid(
                       items: assetImages,
                       builder: (item) => GtAssetImage(
                         item.value,

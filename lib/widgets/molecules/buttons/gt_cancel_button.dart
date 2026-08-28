@@ -88,7 +88,7 @@ class GtCancelButton extends GtStatelessWidget {
         if (onTap != null) return onTap!();
         if (!context.canPop) return;
 
-        context.maybePop();
+        context.pop();
       },
       child: GtSquareConstrainedBox(
         cubeSize,

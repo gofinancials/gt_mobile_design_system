@@ -9,7 +9,6 @@ final _tabs = [
   GtTabData(label: "GtAvatar", value: "avatar"),
   GtTabData(label: "GtSquareAvatar", value: "square_avatar"),
 ];
-final _controller = GtTabController<String>(initialValue: _tabs.first);
 
 @widgetbook.UseCase(name: 'GtAvatar', type: GtAvatar)
 Widget buildGtAvatarUseCase(BuildContext context) {
@@ -24,6 +23,20 @@ class _AvatarPlayground extends GtStatefulWidget {
 }
 
 class _AvatarPlaygroundState extends State<_AvatarPlayground> {
+  late final GtTabController<String> _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = GtTabController<String>(initialValue: _tabs.first);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // GtAvatar Knobs
@@ -83,10 +96,11 @@ class _AvatarPlaygroundState extends State<_AvatarPlayground> {
               GtTabbar<String>(controller: _controller, tabs: _tabs),
               const GtGap.yMd(),
               Expanded(
-                child: GtTabbarView<String>(
+                child: GtTabbarView<String>.lazy(
                   controller: _controller,
-                  tabViews: {
-                    "avatar": GtWidgetDocPage(
+                  tabs: _tabs,
+                  tabBuilders: {
+                    "avatar": (_) => GtWidgetDocPage(
                       title: "GtAvatar",
                       description:
                           "A circular avatar component displaying user profile picture or fallback initials.",
@@ -109,7 +123,7 @@ GtAvatar(
                         ),
                       ),
                     ),
-                    "square_avatar": GtWidgetDocPage(
+                    "square_avatar": (_) => GtWidgetDocPage(
                       title: "GtSquareAvatar",
                       description:
                           "A square, rounded avatar commonly used for business profile headers or list representations.",

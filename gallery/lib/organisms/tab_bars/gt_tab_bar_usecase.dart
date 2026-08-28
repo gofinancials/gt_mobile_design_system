@@ -9,7 +9,17 @@ Widget playgroundGtTabbarUseCase(BuildContext context) {
   return const _TabbarPlayground();
 }
 
-class _TabbarPlayground extends StatefulWidget {
+@widgetbook.UseCase(name: 'Eager', type: GtTabbarView)
+Widget playgroundEagerGtTabbarViewUseCase(BuildContext context) {
+  return const _TabbarViewPlayground();
+}
+
+@widgetbook.UseCase(name: 'Lazy', type: GtTabbarView)
+Widget playgroundLazyGtTabbarViewUseCase(BuildContext context) {
+  return const _TabbarViewPlayground(lazy: true);
+}
+
+class _TabbarPlayground extends GtStatefulWidget {
   const _TabbarPlayground();
 
   @override
@@ -83,3 +93,117 @@ GtTabbar<String>(
     );
   }
 }
+
+class _TabbarViewPlayground extends GtStatefulWidget {
+  final bool lazy;
+
+  const _TabbarViewPlayground({this.lazy = false});
+
+  @override
+  State<_TabbarViewPlayground> createState() => _TabbarViewPlaygroundState();
+}
+
+class _TabbarViewPlaygroundState extends State<_TabbarViewPlayground> {
+  static const _tabs = [
+    GtTabData(label: 'Overview', value: 'overview'),
+    GtTabData(label: 'Activity', value: 'activity'),
+    GtTabData(label: 'Settings', value: 'settings'),
+  ];
+
+  late final GtTabController<String> _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = GtTabController<String>(initialValue: _tabs.first);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final title = widget.lazy ? 'GtTabbarView.lazy' : 'GtTabbarView';
+    final tabView = widget.lazy
+        ? GtTabbarView<String>.lazy(
+            controller: _controller,
+            tabs: _tabs,
+            tabBuilders: {
+              for (final tab in _tabs)
+                tab.value: (_) => _TabViewContent(label: tab.label),
+            },
+          )
+        : GtTabbarView<String>(
+            controller: _controller,
+            tabs: _tabs,
+            tabViews: const {
+              'overview': _TabViewContent(label: 'Overview'),
+              'activity': _TabViewContent(label: 'Activity'),
+              'settings': _TabViewContent(label: 'Settings'),
+            },
+          );
+
+    return GtWidgetDocPage(
+      title: title,
+      description: widget.lazy
+          ? 'Builder-backed pages are constructed on demand. Select a tab or swipe horizontally to switch pages.'
+          : 'Preconstructed pages support tab selection and horizontal swipe navigation.',
+      code: widget.lazy ? _lazyCode : _eagerCode,
+      child: AspectRatio(
+        aspectRatio: 3 / 2,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            GtTabbar<String>(controller: _controller, tabs: _tabs),
+            const GtGap.yMd(),
+            Expanded(child: tabView),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TabViewContent extends GtStatelessWidget {
+  final String label;
+
+  const _TabViewContent({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: context.palette.bg.sub,
+        borderRadius: context.borderRadiusLg,
+      ),
+      child: Center(
+        child: GtText('$label page', style: context.textStyles.subHeadS()),
+      ),
+    );
+  }
+}
+
+const _eagerCode = '''
+GtTabbarView<String>(
+  controller: tabController,
+  tabs: tabs,
+  tabViews: const {
+    'overview': OverviewPage(),
+    'activity': ActivityPage(),
+    'settings': SettingsPage(),
+  },
+)''';
+
+const _lazyCode = '''
+GtTabbarView<String>.lazy(
+  controller: tabController,
+  tabs: tabs,
+  tabBuilders: {
+    'overview': (_) => const OverviewPage(),
+    'activity': (_) => const ActivityPage(),
+    'settings': (_) => const SettingsPage(),
+  },
+)''';

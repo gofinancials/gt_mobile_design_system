@@ -119,18 +119,35 @@ final ValueNotifier<GtThemeSetting> themeNotifier = ValueNotifier(
 );
 
 @widgetbook.App()
-class WidgetbookApp extends StatelessWidget {
+class WidgetbookApp extends GtStatefulWidget {
   const WidgetbookApp({super.key});
+
+  @override
+  State<WidgetbookApp> createState() => _WidgetbookAppState();
+}
+
+class _WidgetbookAppState extends State<WidgetbookApp> {
+  @override
+  void initState() {
+    super.initState();
+    themeNotifier.addListener(_syncTheme);
+  }
+
+  @override
+  void dispose() {
+    themeNotifier.removeListener(_syncTheme);
+    super.dispose();
+  }
+
+  void _syncTheme() {
+    locator<GtThemeState>().switchTheme(themeNotifier.value.theme);
+  }
 
   @override
   Widget build(BuildContext context) {
     final state = GtThemeSetting(theme: kPersonalTheme, mode: .system);
     final activeTheme = state.theme;
     final activeMode = state.mode;
-
-    themeNotifier.addListener(() {
-      locator<GtThemeState>().switchTheme(themeNotifier.value.theme);
-    });
 
     return GtStateWrapper(
       providers: [

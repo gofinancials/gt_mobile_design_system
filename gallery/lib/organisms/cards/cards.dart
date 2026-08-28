@@ -1,5 +1,6 @@
 export 'gt_action_card_usecase.dart';
 export 'gt_address_card_usecase.dart';
+export 'gt_advert_card_usecase.dart';
 export 'gt_alert_banner_usecase.dart';
 export 'gt_alert_card_usecase.dart';
 export 'gt_banner_card_usecase.dart';

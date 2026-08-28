@@ -64,10 +64,14 @@ import 'package:gallery/atoms/typography/gt_typography_usecase.dart'
 import 'package:gallery/gallery_cover.dart' as _gallery_gallery_cover;
 import 'package:gallery/molecules/boxes/gt_boxes_usecase.dart'
     as _gallery_molecules_boxes_gt_boxes_usecase;
+import 'package:gallery/molecules/buttons/gt_account_switch_button_usecase.dart'
+    as _gallery_molecules_buttons_gt_account_switch_button_usecase;
 import 'package:gallery/molecules/buttons/gt_back_button_usecase.dart'
     as _gallery_molecules_buttons_gt_back_button_usecase;
 import 'package:gallery/molecules/buttons/gt_cancel_button_usecase.dart'
     as _gallery_molecules_buttons_gt_cancel_button_usecase;
+import 'package:gallery/molecules/buttons/gt_help_button_usecase.dart'
+    as _gallery_molecules_buttons_gt_help_button_usecase;
 import 'package:gallery/molecules/buttons/gt_icon_button_usecase.dart'
     as _gallery_molecules_buttons_gt_icon_button_usecase;
 import 'package:gallery/molecules/buttons/gt_outline_button_usecase.dart'
@@ -116,6 +120,8 @@ import 'package:gallery/molecules/inputs/gt_url_field_usecase.dart'
     as _gallery_molecules_inputs_gt_url_field_usecase;
 import 'package:gallery/molecules/media/gt_avatar.dart'
     as _gallery_molecules_media_gt_avatar;
+import 'package:gallery/molecules/pills/gt_account_copy_pill_usecase.dart'
+    as _gallery_molecules_pills_gt_account_copy_pill_usecase;
 import 'package:gallery/molecules/pills/gt_button_pill_usecase.dart'
     as _gallery_molecules_pills_gt_button_pill_usecase;
 import 'package:gallery/molecules/pills/gt_copy_pill_usecase.dart'
@@ -176,6 +182,8 @@ import 'package:gallery/organisms/cards/gt_action_card_usecase.dart'
     as _gallery_organisms_cards_gt_action_card_usecase;
 import 'package:gallery/organisms/cards/gt_address_card_usecase.dart'
     as _gallery_organisms_cards_gt_address_card_usecase;
+import 'package:gallery/organisms/cards/gt_advert_card_usecase.dart'
+    as _gallery_organisms_cards_gt_advert_card_usecase;
 import 'package:gallery/organisms/cards/gt_alert_banner_usecase.dart'
     as _gallery_organisms_cards_gt_alert_banner_usecase;
 import 'package:gallery/organisms/cards/gt_alert_card_usecase.dart'
@@ -700,6 +708,17 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'buttons',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtAccountSwitchButton',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAccountSwitchButton',
+                    builder:
+                        _gallery_molecules_buttons_gt_account_switch_button_usecase
+                            .playgroundGtAccountSwitchButtonUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtBackButton',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -716,6 +735,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtCancelButton',
                     builder: _gallery_molecules_buttons_gt_cancel_button_usecase
                         .playgroundGtCancelButtonUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtHelpButton',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtHelpButton',
+                    builder: _gallery_molecules_buttons_gt_help_button_usecase
+                        .playgroundGtHelpButtonUseCase,
                   ),
                 ],
               ),
@@ -983,6 +1012,17 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'pills',
             children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAccountCopyPill',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAccountCopyPill',
+                    builder:
+                        _gallery_molecules_pills_gt_account_copy_pill_usecase
+                            .playgroundGtAccountCopyPillUseCase,
+                  ),
+                ],
+              ),
               _widgetbook.WidgetbookComponent(
                 name: 'GtButtonPill',
                 useCases: [
@@ -1576,6 +1616,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               ),
               _widgetbook.WidgetbookComponent(
+                name: 'GtAdvertCard',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Carousel',
+                    builder: _gallery_organisms_cards_gt_advert_card_usecase
+                        .playgroundGtAdvertCardUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtAlertBanner',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -2163,6 +2213,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtTabbar',
                     builder: _gallery_organisms_tab_bars_gt_tab_bar_usecase
                         .playgroundGtTabbarUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTabbarView',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Eager',
+                    builder: _gallery_organisms_tab_bars_gt_tab_bar_usecase
+                        .playgroundEagerGtTabbarViewUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Lazy',
+                    builder: _gallery_organisms_tab_bars_gt_tab_bar_usecase
+                        .playgroundLazyGtTabbarViewUseCase,
                   ),
                 ],
               ),

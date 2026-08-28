@@ -57,10 +57,11 @@ class _ImagesPlaygroundState extends State<_ImagesPlayground> {
               GtTabbar<String>(controller: _controller, tabs: _tabs),
               const GtGap.yMd(),
               Expanded(
-                child: GtTabbarView<String>(
+                child: GtTabbarView<String>.lazy(
                   controller: _controller,
-                  tabViews: {
-                    "gt_image": GtWidgetDocPage(
+                  tabs: _tabs,
+                  tabBuilders: {
+                    "gt_image": (_) => GtWidgetDocPage(
                       title: "GtImage (Unified)",
                       description:
                           "A unified image widget that dynamically delegates rendering based on AppImageData.",
@@ -77,7 +78,7 @@ GtImage(
                         height: 80,
                       ),
                     ),
-                    "network": GtWidgetDocPage(
+                    "network": (_) => GtWidgetDocPage(
                       title: "Network Image",
                       description:
                           "Loads a remote image URL using GtNetworkImage.",
@@ -96,7 +97,7 @@ GtImage(
                         height: 80,
                       ),
                     ),
-                    "asset": GtWidgetDocPage(
+                    "asset": (_) => GtWidgetDocPage(
                       title: "Asset Image",
                       description:
                           "Loads a bundled asset image using GtAssetImage.",
@@ -113,7 +114,7 @@ GtImage(
                         height: 80,
                       ),
                     ),
-                    "memory": GtWidgetDocPage(
+                    "memory": (_) => GtWidgetDocPage(
                       title: "Memory Image",
                       description:
                           "Loads raw image bytes directly from memory using GtMemoryImage.",
@@ -133,7 +134,7 @@ GtImage(
                         ),
                       ),
                     ),
-                    "file": GtWidgetDocPage(
+                    "file": (_) => GtWidgetDocPage(
                       title: "File Image",
                       description:
                           "Loads an image from local storage. Fallback is shown when null.",

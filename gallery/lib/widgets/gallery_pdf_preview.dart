@@ -13,9 +13,8 @@ import 'package:printing/printing.dart';
 /// iterated on without leaving Widgetbook. Nothing in this file is part of the
 /// published suite.
 ///
-/// The document is re-rendered on every rebuild, which is what makes the
-/// preview track the knobs above it. Rendering is cheap enough for a receipt;
-/// heavier documents should be previewed behind an explicit refresh instead.
+/// The document is re-rendered only when [cacheKey] changes, so unrelated
+/// Widgetbook rebuilds do not repeat PDF generation and rasterisation.
 ///
 /// The action bar is off by default. A use case that already exposes the
 /// suite's own share and download buttons should keep it that way — printing's
@@ -26,12 +25,18 @@ import 'package:printing/printing.dart';
 /// ```dart
 /// GalleryPdfPreview(
 ///   render: () => exporter.render(data),
+///   cacheKey: data,
 ///   fileName: data.resolvedFileName,
 /// )
 /// ```
-class GalleryPdfPreview extends StatelessWidget {
+class GalleryPdfPreview extends GtStatefulWidget {
   /// Produces the bytes to display.
   final Future<Uint8List> Function() render;
+
+  /// Identifies the inputs that affect the rendered document.
+  ///
+  /// Rebuilds with an equal key reuse the existing rasterised document.
+  final Object cacheKey;
 
   /// The name printing's own share and print actions give the file.
   final String? fileName;
@@ -48,6 +53,7 @@ class GalleryPdfPreview extends StatelessWidget {
   /// Creates a [GalleryPdfPreview].
   const GalleryPdfPreview({
     required this.render,
+    required this.cacheKey,
     this.fileName,
     this.height = 520,
     this.allowPrinting = false,
@@ -56,24 +62,48 @@ class GalleryPdfPreview extends StatelessWidget {
   });
 
   @override
+  State<GalleryPdfPreview> createState() => _GalleryPdfPreviewState();
+}
+
+class _GalleryPdfPreviewState extends State<GalleryPdfPreview> {
+  late Future<Uint8List> _document;
+  late final LayoutCallback _buildDocument;
+
+  @override
+  void initState() {
+    super.initState();
+    _document = widget.render();
+    _buildDocument = (_) => _document;
+  }
+
+  @override
+  void didUpdateWidget(covariant GalleryPdfPreview oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.cacheKey != widget.cacheKey) {
+      _document = widget.render();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final palette = context.palette;
 
     return SizedBox(
-      height: height,
+      height: widget.height,
       child: PdfPreview(
-        build: (_) => render(),
+        key: ValueKey(widget.cacheKey),
+        build: _buildDocument,
         // The page geometry belongs to GtPdfReceiptTheme, so the reader gets
         // no say over it — a preview that could be switched to Letter would
         // be previewing a document the app never produces.
         canChangePageFormat: false,
         canChangeOrientation: false,
         canDebug: false,
-        allowPrinting: allowPrinting,
-        allowSharing: allowSharing,
-        useActions: allowPrinting || allowSharing,
-        pdfFileName: fileName,
-        shouldRepaint: true,
+        allowPrinting: widget.allowPrinting,
+        allowSharing: widget.allowSharing,
+        useActions: widget.allowPrinting || widget.allowSharing,
+        pdfFileName: widget.fileName,
+        shouldRepaint: false,
         padding: EdgeInsets.zero,
         previewPageMargin: EdgeInsets.all(context.spacingBase),
         scrollViewDecoration: BoxDecoration(color: palette.bg.soft),

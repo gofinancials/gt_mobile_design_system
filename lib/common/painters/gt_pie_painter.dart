@@ -9,14 +9,14 @@ class GtDonutPainter extends CustomPainter {
   final Color valueColor;
   final double strokeWidth;
   final StrokeCap strokeCap;
-  final bool clockWise;
+  final bool antiClockWise;
 
   GtDonutPainter({
     required this.value,
     required this.trackColor,
     required this.valueColor,
     this.strokeCap = StrokeCap.round,
-    this.clockWise = false,
+    this.antiClockWise = false,
     this.strokeWidth = 4.0, // Matches the default spinner width
   });
 
@@ -52,7 +52,7 @@ class GtDonutPainter extends CustomPainter {
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       -pi / 2, // Start at the top (12 o'clock)
-      clockWise ? -sweepAngle : sweepAngle,
+      antiClockWise ? -sweepAngle : sweepAngle,
       false, // MUST be false for a hollow ring
       valuePaint,
     );
@@ -86,13 +86,25 @@ class GtArcPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Create a bounding rectangle where the center is near the bottom of the canvas.
-    // The height of the rect is twice the available height to ensure the top half
-    // of the arc perfectly fits the canvas while the endpoints rest at the bottom.
-    // strokeWidth is subtracted to prevent clipping.
+    // The arc is a half circle whose centre sits on the bottom edge of the
+    // canvas, so the sweep covers the full height and both endpoints rest at
+    // the bottom instead of half way up.
+    //
+    // The radius is bounded by both axes so the stroke never spills out:
+    // vertically the top of the stroke must clear the canvas top, and
+    // horizontally the endpoints (plus their caps) must stay inside the width.
+    final radius = min(
+      (size.width - strokeWidth) / 2,
+      size.height - strokeWidth,
+    );
+
+    if (radius <= 0) return;
+
+    // Half a stroke of padding keeps the round caps, which extend downwards at
+    // the endpoints, within the canvas.
     final rect = Rect.fromCircle(
-      center: Offset(size.width * .5, size.height * .5),
-      radius: (size.height - strokeWidth) / 2,
+      center: Offset(size.width * .5, size.height - strokeWidth / 2),
+      radius: radius,
     );
 
     // 1. Draw the background track
@@ -105,7 +117,7 @@ class GtArcPainter extends CustomPainter {
 
     canvas.drawArc(
       rect,
-      -pi, // Start at bottom right if clockwise, bottom left otherwise
+      -pi, // Start at bottom right if antiClockWise, bottom left otherwise
       pi, // Sweep over the top
       false, // MUST be false for a hollow ring
       trackPaint,

@@ -60,6 +60,8 @@ class GtTextButton extends GtButton {
     super.loadingSemanticLabel,
     this.textCase = .upper,
     this.style,
+    super.focusColor,
+    super.cornerRadius,
     super.key,
   });
 
@@ -94,6 +96,7 @@ class GtTextButton extends GtButton {
 
   Color _focusColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
+    if (focusColor != null) return focusColor!;
     final color = _textColor(palette);
     return color.setOpacity(.01);
   }

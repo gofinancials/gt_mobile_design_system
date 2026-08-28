@@ -136,6 +136,16 @@ class _PdfReceiptKnobs {
     if (!themeFromPalette) return const GtPdfReceiptExporter();
     return GtPdfReceiptExporter.fromPalette(context.palette);
   }
+
+  Object get previewKey => (
+    title,
+    issuedOn,
+    fileName,
+    showBrandMark,
+    showFooter,
+    showQr,
+    themeFromPalette,
+  );
 }
 
 /// A playground for building a PDF receipt and handing it to the device.
@@ -258,6 +268,10 @@ final bytes = await exporter.render(data);''',
           if (knobs.showPreview) ...[
             GalleryPdfPreview(
               render: () => exporter.render(data),
+              cacheKey: (
+                knobs.previewKey,
+                knobs.themeFromPalette ? context.palette : null,
+              ),
               height: 800,
               fileName: data.resolvedFileName,
             ),

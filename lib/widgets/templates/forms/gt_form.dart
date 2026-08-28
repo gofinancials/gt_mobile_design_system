@@ -25,6 +25,9 @@ class GtForm extends GtStatefulWidget {
   /// A global key that uniquely identifies the form and allows validation of its fields.
   final GlobalKey<FormState> formKey;
 
+  /// The action to perform when the form is disposed.
+  final AutofillContextAction autofillOnDisposeAction;
+
   /// Creates a [GtForm].
   const GtForm({
     super.key,
@@ -33,6 +36,7 @@ class GtForm extends GtStatefulWidget {
     required this.formKey,
     this.onChanged,
     this.canPop,
+    this.autofillOnDisposeAction = .commit,
   });
 
   @override
@@ -49,6 +53,7 @@ class _GtFormState extends State<GtForm> {
       autovalidateMode: widget.autovalidateMode,
       child: AutofillGroup(
         key: Key("AutofillGroup-${widget.formKey}"),
+        onDisposeAction: widget.autofillOnDisposeAction,
         child: widget.child,
       ),
     );

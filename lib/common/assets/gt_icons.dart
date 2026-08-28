@@ -650,6 +650,7 @@ class GtIcons {
   static const waterBill = IconData(0xf16b, fontFamily: _f, fontPackage: _p);
   static const wasteBill = IconData(0xf16c, fontFamily: _f, fontPackage: _p);
   static const walletAlt = IconData(0xf16d, fontFamily: _f, fontPackage: _p);
+  static const walletFilled = IconData(0xf173, fontFamily: _f, fontPackage: _p);
   static const refreshAlt = IconData(0xf16f, fontFamily: _f, fontPackage: _p);
   static const locationPin = IconData(0xf170, fontFamily: _f, fontPackage: _p);
   static const landBill = IconData(0xf171, fontFamily: _f, fontPackage: _p);
@@ -1002,6 +1003,7 @@ class GtIcons {
     (label: 'volumeUp', value: volumeUp),
     (label: 'wallet', value: wallet),
     (label: 'walletAlt', value: walletAlt),
+    (label: 'walletFilled', value: walletFilled),
     (label: 'wandSparkle', value: wandSparkle),
     (label: 'wasteBill', value: wasteBill),
     (label: 'waterBill', value: waterBill),

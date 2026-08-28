@@ -47,34 +47,17 @@ GtGuageChart(
     footerText: "$footerText",
   ),
 )''',
-    child: Center(
-      child: GtSizedBox(
-        height: 400,
-        child: GtGuageChart(
-          value: value,
-          variant: variant,
-          center: GtGuageChartCenter(
-            centerValue,
-            pillText: pillText,
-            footerText: footerText,
-          ),
-        ),
+    child: GtGuageChart(
+      value: value,
+      variant: variant,
+      center: GtGuageChartCenter(
+        centerValue,
+        pillText: pillText,
+        footerText: footerText,
       ),
     ),
   );
 }
-
-final _range = DateTimeRange<DateTime>(
-  start: DateTime.now().subtract(const Duration(days: 30)),
-  end: DateTime.now(),
-);
-final _calendarCtrl = GtCalendarController(
-  GtCalendarValue(range: _range),
-  dateRange: DateTimeRange(
-    start: DateTime.now().subtract(const Duration(days: 365)),
-    end: DateTime.now(),
-  ),
-);
 
 List<GtLineChartItem> _lineChartItems(DateTimeRange range) {
   return List.generate(range.duration.inDays, (index) {
@@ -85,33 +68,72 @@ List<GtLineChartItem> _lineChartItems(DateTimeRange range) {
   });
 }
 
-final data = ValueNotifier(_lineChartItems(_range));
-
 @widgetbook.UseCase(name: 'GtLineChartContainer', type: GtLineChartContainer)
 Widget buildGtLineChartUsecase(BuildContext context) {
-  final hideYAxisLabels = context.knobs.boolean(
-    label: 'Hide Y Axis Labels',
-    initialValue: false,
-  );
-  final calendarTitle = context.knobs.string(
-    label: 'Calendar Title',
-    initialValue: 'Select Range',
-  );
-  final title = context.knobs.string(
-    label: 'Chart Title',
-    initialValue: 'Total Balance',
-  );
-  final maxValue = context.knobs.double.input(
-    label: 'Max Y Value',
-    initialValue: 100000000.0,
-  );
+  return const _LineChartPreview();
+}
 
-  return GtWidgetDocPage(
-    title: 'GtLineChartContainer',
-    description:
-        'A container combining a header, date range filter, and an interactive line chart.',
-    code:
-        '''
+class _LineChartPreview extends GtStatefulWidget {
+  const _LineChartPreview();
+
+  @override
+  State<_LineChartPreview> createState() => _LineChartPreviewState();
+}
+
+class _LineChartPreviewState extends State<_LineChartPreview> {
+  late final DateTimeRange<DateTime> _range;
+  late final GtCalendarController _calendarCtrl;
+  late final ValueNotifier<List<GtLineChartItem>> _data;
+
+  @override
+  void initState() {
+    super.initState();
+    _range = DateTimeRange<DateTime>(
+      start: DateTime.now().subtract(const Duration(days: 30)),
+      end: DateTime.now(),
+    );
+    _calendarCtrl = GtCalendarController(
+      GtCalendarValue(range: _range),
+      dateRange: DateTimeRange(
+        start: DateTime.now().subtract(const Duration(days: 365)),
+        end: DateTime.now(),
+      ),
+    );
+    _data = ValueNotifier(_lineChartItems(_range));
+  }
+
+  @override
+  void dispose() {
+    _calendarCtrl.dispose();
+    _data.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final hideYAxisLabels = context.knobs.boolean(
+      label: 'Hide Y Axis Labels',
+      initialValue: false,
+    );
+    final calendarTitle = context.knobs.string(
+      label: 'Calendar Title',
+      initialValue: 'Select Range',
+    );
+    final title = context.knobs.string(
+      label: 'Chart Title',
+      initialValue: 'Total Balance',
+    );
+    final maxValue = context.knobs.double.input(
+      label: 'Max Y Value',
+      initialValue: 100000000.0,
+    );
+
+    return GtWidgetDocPage(
+      title: 'GtLineChartContainer',
+      description:
+          'A container combining a header, date range filter, and an interactive line chart.',
+      code:
+          '''
 GtLineChartContainer(
   items: [],
   calendarTitle: "$calendarTitle",
@@ -121,22 +143,23 @@ GtLineChartContainer(
   controller: calendarController,
   onRangeUpdate: (range) {},
 )''',
-    child: Center(
-      child: ValueListenableBuilder(
-        valueListenable: data,
-        builder: (context, items, _) => GtLineChartContainer(
-          items: items,
-          calendarTitle: calendarTitle,
-          title: title,
-          maxValue: maxValue,
-          color: context.palette.bg.strong,
-          hideYAxisLabels: hideYAxisLabels,
-          controller: _calendarCtrl,
-          onRangeUpdate: (range) {
-            data.value = _lineChartItems(range);
-          },
+      child: Center(
+        child: ListListener<GtLineChartItem>(
+          valueListenable: _data,
+          builder: (items) => GtLineChartContainer(
+            items: items,
+            calendarTitle: calendarTitle,
+            title: title,
+            maxValue: maxValue,
+            color: context.palette.bg.strong,
+            hideYAxisLabels: hideYAxisLabels,
+            controller: _calendarCtrl,
+            onRangeUpdate: (range) {
+              _data.value = _lineChartItems(range);
+            },
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

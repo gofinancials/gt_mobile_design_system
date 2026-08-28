@@ -63,6 +63,8 @@ class GtGuageChart extends GtStatelessWidget {
     final palette = context.palette;
     final chartValueColor = valueColor ?? variant.getIconColor(palette);
     final chartTrackColor = trackColor ?? variant.getBgColor(palette);
+    final w = width ?? double.infinity;
+    final h = height ?? context.dp(188.px);
 
     return GtSemantics(
       label: semanticsLabel,
@@ -70,14 +72,15 @@ class GtGuageChart extends GtStatelessWidget {
       // a fragment rather than a description. The summary replaces both.
       excludeDescendants: semanticsLabel != null,
       container: semanticsLabel != null,
-      child: SizedBox(
-        width: width,
-        height: height ?? context.dp(188.px),
+      child: Container(
+        constraints: BoxConstraints.expand(width: w, height: h),
+        height: h,
+        width: w,
         child: RepaintBoundary(
           child: TweenAnimationBuilder(
             tween: Tween(begin: 0.0, end: value),
             duration: 1.seconds,
-            curve: Curves.decelerate,
+            curve: GtSpringCurves.snappy,
             builder: (_, double animatedValue, _) {
               return CustomPaint(
                 painter: GtArcPainter(
@@ -87,7 +90,10 @@ class GtGuageChart extends GtStatelessWidget {
                   strokeCap: strokeCap,
                   strokeWidth: strokeWidth,
                 ),
-                child: center,
+                child: Padding(
+                  padding: context.insets.onlyDp(top: 40.px),
+                  child: FittedBox(fit: .scaleDown, child: center),
+                ),
               );
             },
           ),

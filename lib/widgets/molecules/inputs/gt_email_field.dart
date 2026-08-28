@@ -32,6 +32,12 @@ class GtEmailField extends GtStatefulWidget {
   /// Callback invoked when the user submits the field (e.g., presses the keyboard action button).
   final OnChanged<String?>? onFieldSubmitted;
 
+  /// Autofill hints for the input field.
+  final List<String>? autofillHints;
+
+  /// The validator to use for the input field.
+  final OnValidate<String?>? validator;
+
   /// Creates a new [GtEmailField].
   const GtEmailField({
     super.key,
@@ -41,8 +47,10 @@ class GtEmailField extends GtStatefulWidget {
     this.isRequired = true,
     this.autoFocus = false,
     this.action = TextInputAction.next,
+    this.validator,
     this.onFieldSubmitted,
     this.decoration,
+    this.autofillHints = const [AutofillHints.email],
   });
 
   @override
@@ -62,8 +70,13 @@ class _GtEmailFieldState extends State<GtEmailField> {
       keyboardType: TextInputType.emailAddress,
       textInputAction: widget.action,
       onFieldSubmitted: widget.onFieldSubmitted,
-      validator: (text) =>
-          AppValidators.emailValidator(text, isRequired: widget.isRequired),
+      validator: (text) {
+        if (widget.validator != null) return widget.validator?.call(text);
+        return AppValidators.emailValidator(
+          text,
+          isRequired: widget.isRequired,
+        );
+      },
       suffix: ValueListenableBuilder(
         valueListenable: widget.controller.controller,
         builder: (context, TextEditingValue val, _) {
@@ -83,7 +96,7 @@ class _GtEmailFieldState extends State<GtEmailField> {
           );
         },
       ),
-      autofillHints: const [AutofillHints.email],
+      autofillHints: widget.autofillHints,
     );
   }
 }

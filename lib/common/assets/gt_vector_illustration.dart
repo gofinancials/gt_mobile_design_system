@@ -65,6 +65,9 @@ class GtVectorIllustrations {
   /// Path to the empty SVG.
   static const empty = "$_basePath/empty.svg";
 
+  /// Path to the emptyCabinet SVG.
+  static const emptyCabinet = "$_basePath/empty_cabinet.svg";
+
   /// Path to the emptyState SVG.
   static const emptyState = "$_basePath/empty_state.svg";
 

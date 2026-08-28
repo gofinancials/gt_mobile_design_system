@@ -104,7 +104,7 @@ class _GtCountdownPieState extends State<GtCountdownPie>
                   value: fraction,
                   strokeWidth: widget.strokeWidth,
                   trackColor: trackColor,
-                  clockWise: true,
+                  antiClockWise: true,
                   valueColor: color,
                 ),
                 child: Center(

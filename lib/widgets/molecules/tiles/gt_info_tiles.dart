@@ -317,7 +317,7 @@ class GtCopyTile extends GtStatelessWidget {
       role: .button,
       borderRadius: .zero,
       onTap: () {
-        context.copyTextToClipboard(value);
+        context.copyText(value);
       },
       child: Row(
         spacing: context.spacingBase,

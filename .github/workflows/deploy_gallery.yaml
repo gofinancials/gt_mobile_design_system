@@ -9,6 +9,11 @@ on:
       - main
     types: [closed]
 
+# Allow one concurrent deployment, skipping runs queued behind an in-progress run.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -18,7 +23,12 @@ jobs:
       github.event.pull_request.merged == true) ||
       (github.event_name == 'push' && github.ref_type == 'tag')
     permissions:
-      contents: write # Required for publishing to gh-pages
+      contents: read
+      pages: write # Required to deploy to the Pages service
+      id-token: write # Required for the Pages deployment OIDC token
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,28 +38,22 @@ jobs:
         with:
           channel: "stable"
           cache: true
-          flutter-version: "3.41.6"
+          flutter-version: "3.47.0"
 
       - name: Install Dependencies
         run: flutter pub get
 
       - name: Build Widgetbook
-        run: cd gallery && dart run build_runner build -d && flutter build web --target lib/main.dart --base-href "/${{ github.event.repository.name }}/"
+        run: cd gallery && dart run build_runner build -d && flutter build web --wasm --target lib/main.dart --base-href "/${{ github.event.repository.name }}/"
 
       - name: Build Docs
         run: pwd && dart doc --output=gallery/build/web/api
 
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
+          path: gallery/build/web
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: gallery/build/web # The folder where flutter builds the web files
-          branch: gh-pages # The branch the action should deploy to
-          clean: true
+        id: deployment
+        uses: actions/deploy-pages@v4

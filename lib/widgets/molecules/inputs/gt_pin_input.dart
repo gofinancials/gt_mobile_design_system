@@ -66,6 +66,9 @@ class GtPinInput extends GtStatefulWidget {
   /// Optional haptic feedback emitted when all digits have been entered.
   final HapticFeedbackType? completionHapticFeedbackType;
 
+  /// Autofill hints for the input field.
+  final List<String>? autofillHints;
+
   /// Creates a [GtPinInput].
   const GtPinInput({
     super.key,
@@ -88,6 +91,7 @@ class GtPinInput extends GtStatefulWidget {
     this.enableHapticFeedback = true,
     this.hapticFeedbackType = .light,
     this.completionHapticFeedbackType,
+    this.autofillHints,
   });
 
   @override
@@ -137,7 +141,7 @@ class _GtPinInputState extends State<GtPinInput> {
       obscureText: widget.obscureText,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       scrollPadding: .zero,
-      autofillHints: [AutofillHints.oneTimeCode],
+      autofillHints: widget.autofillHints,
       autoFocus: widget.autoFocus,
       textInputAction: TextInputAction.done,
       enableHapticFeedback: widget.enableHapticFeedback,

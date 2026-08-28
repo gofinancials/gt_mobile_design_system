@@ -24,6 +24,12 @@ class GtRaisedButton extends GtButton {
   /// Custom padding to apply inside the button, overriding the default size-based padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// Optional text style to override the default button text style.
+  final TextStyle? style;
+
+  /// Defines the text capitalization behavior for the button text.
+  final GtButtonTextCase textCase;
+
   /// Creates a [GtRaisedButton].
   const GtRaisedButton({
     this.text,
@@ -44,6 +50,10 @@ class GtRaisedButton extends GtButton {
     super.semanticLabel,
     super.loadingSemanticLabel,
     super.textColor,
+    super.cornerRadius,
+    super.focusColor,
+    this.textCase = .upper,
+    this.style,
     super.key,
   });
 
@@ -98,6 +108,7 @@ class GtRaisedButton extends GtButton {
 
   Color _focusColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
+    if (focusColor != null) return focusColor!;
     final color = _bgColor(palette);
     return switch (variant) {
       .primary => palette.primary.dark,
@@ -126,7 +137,7 @@ class GtRaisedButton extends GtButton {
     final iconColor = _iconColor(palette);
     final bgColor = _bgColor(palette);
     final focusColor = _focusColor(palette);
-    final style = baseStyle(context);
+    final btnStyle = baseStyle(context);
 
     Widget? leadingIcon;
     Widget? trailingIcon;
@@ -156,7 +167,7 @@ class GtRaisedButton extends GtButton {
     }
 
     Widget child = ElevatedButton(
-      style: style.copyWith(
+      style: btnStyle.copyWith(
         backgroundColor: WidgetStateProperty.resolveWith((states) {
           if (isActive(states)) {
             return focusColor;
@@ -184,6 +195,8 @@ class GtRaisedButton extends GtButton {
           trailingIcon: trailingIcon,
           textColor: textColor,
           animateChanges: enableLabelAnimation,
+          style: style,
+          textCase: textCase,
         ),
         child2: GtSpinner(color: textColor),
         showFirst: !isLoading,
