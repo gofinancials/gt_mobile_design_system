@@ -120,6 +120,8 @@ import 'package:gallery/molecules/inputs/gt_url_field_usecase.dart'
     as _gallery_molecules_inputs_gt_url_field_usecase;
 import 'package:gallery/molecules/media/gt_avatar.dart'
     as _gallery_molecules_media_gt_avatar;
+import 'package:gallery/molecules/pills/gt_account_copy_pill_usecase.dart'
+    as _gallery_molecules_pills_gt_account_copy_pill_usecase;
 import 'package:gallery/molecules/pills/gt_button_pill_usecase.dart'
     as _gallery_molecules_pills_gt_button_pill_usecase;
 import 'package:gallery/molecules/pills/gt_copy_pill_usecase.dart'
@@ -1010,6 +1012,17 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'pills',
             children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAccountCopyPill',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAccountCopyPill',
+                    builder:
+                        _gallery_molecules_pills_gt_account_copy_pill_usecase
+                            .playgroundGtAccountCopyPillUseCase,
+                  ),
+                ],
+              ),
               _widgetbook.WidgetbookComponent(
                 name: 'GtButtonPill',
                 useCases: [

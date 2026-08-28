@@ -187,7 +187,7 @@ Simplify context lookups and widget states[cite: 2].
 - **`BuildContextExtension`:**
   - `.currentLocale`, `.currentLocaleString`, `.updateLocale()`: Manage app language natively[cite: 2].
   - `.isAndroid`, `.isIos`, `.isWindows`, `.isMacos`: OS detection flags[cite: 2].
-  - `.copyTextToClipboard()`, `.getClipboardText()`: System clipboard access[cite: 2].
+  - `.copyText()`, `.getClipboardText()`: System clipboard access[cite: 2].
   - `.launchUrl()`: Safely triggers the `AppUrlHandler`[cite: 2].
   - `.showSnackBar()`: Displays a snackbar notification[cite: 2].
   - `.requestFocus()`, `.resetFocus()`, `.makeVisible()`: Focus node and scroll manipulation[cite: 2].
@@ -224,7 +224,7 @@ Standardize application logging and throttling[cite: 2].
 - [ ] 13. Format numeric values exclusively via `.formattedCurrency` and `.formattedNumber`.
 - [ ] 14. Replace `.map().toList()` on Iterables with the safety extension `.mapList()`.
 - [ ] 15. Utilize `.tryFirstWhere()` over `.firstWhere()` to prevent runtime bounds exceptions.
-- [ ] 16. Replace custom `Clipboard` platform calls with `context.copyTextToClipboard()`.
+- [ ] 16. Replace custom `Clipboard` platform calls with `context.copyText()`.
 - [ ] 17. Strip out native `print()` statements in favor of `AppLogger().debug()`.[cite: 2].
 
 ## Examples
@@ -327,7 +327,7 @@ void processAccounts(BuildContext context, List<AccountResponse>? accounts) {
 
   if (primaryAccount != null) {
      // 5. System extensions
-     context.copyTextToClipboard(primaryAccount.accountNumber);
+     context.copyText(primaryAccount.accountNumber);
   }
 }
 ```

@@ -159,7 +159,7 @@ class GtCopyPill extends GtStatelessWidget {
         semanticHint: semanticHint,
         excludeDescendantSemantics: semanticsLabel != null,
         onTap: () {
-          context.copyTextToClipboard(value);
+          context.copyText(value);
         },
         child: GtPill(
           icon: leading ?? defaultLeading,
@@ -175,109 +175,196 @@ class GtCopyPill extends GtStatelessWidget {
   }
 }
 
-// /// A specialized pill widget designed to copy a specific value to the clipboard when tapped.
-// ///
-// /// It visually resembles a standard [GtPill] but inherently handles the copy-to-clipboard
-// /// interaction and provides default text and icon styling.
-// class GtAccountCopyPill extends GtStatelessWidget {
-//   /// The underlying value that will be copied to the clipboard when the pill is tapped.
-//   final String value;
+/// Defines the product styling and copy-icon position for a
+/// [GtAccountCopyPill].
+///
+/// Variants without the `Trailing` suffix place the copy icon before the
+/// account number. Their `Trailing` counterparts place it after the number.
+enum GtAccountCopyPillVariant {
+  /// Personal-account colors with a trailing copy icon.
+  personalTrailing,
 
-//   /// The text to display on the pill. If not provided, defaults to a localized 'copy' string.
-//   final String? text;
+  /// Personal-account colors with a leading copy icon.
+  personal,
 
-//   /// An optional custom leading widget (typically an icon). Defaults to a file copy icon.
-//   final Widget? icon;
+  /// Flex-account colors with a trailing copy icon.
+  flexTrailing,
 
-//   /// The visual variant determining the color scheme of the pill. Defaults to [GtPillVariant.strong].
-//   final GtPillVariant variant;
+  /// Flex-account colors with a leading copy icon.
+  flex,
 
-//   /// An alternative accessibility label for the copy action.
-//   final String? semanticsLabel;
+  /// Kids-account colors with a trailing copy icon.
+  kidsTrailing,
 
-//   /// Additional accessibility guidance for the copy action.
-//   final String? semanticHint;
+  /// Kids-account colors with a leading copy icon.
+  kids,
 
-//   /// Creates a [GtCopyPill].
-//   const GtAccountCopyPill(
-//     this.value, {
-//     super.key,
-//     this.text,
-//     this.variant = .strong,
-//     this.semanticsLabel,
-//     this.semanticHint,
-//   });
+  /// Pro-account colors with a trailing copy icon.
+  proTrailing,
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final palette = context.palette;
-//     final textColor = variant.getTextColor(palette);
-//     final bgColor = variant.getBgColor(palette);
-//     final defaultLeading = GtIcon(
-//       GtIcons.fileFilled,
-//       size: 13,
-//       variant: .disabled,
-//     );
+  /// Pro-account colors with a leading copy icon.
+  pro,
 
-//     final label = text?.upper ?? "copy".utr();
+  /// Go-account colors with a trailing copy icon.
+  goTrailing,
 
-//     return GtTapTarget(
-//       child: GtInkWell(
-//         role: .button,
-//         borderRadius: context.borderRadiusSm,
-//         semanticsLabel: semanticsLabel,
-//         semanticHint: semanticHint,
-//         excludeDescendantSemantics: semanticsLabel != null,
-//         onTap: () {
-//           context.copyTextToClipboard(value);
-//         },
-//         child: Container(
-//           padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 6.px),
-//           decoration: BoxDecoration(
-//             color: context.palette.primary.alpha10,
-//             border: Border.all(
-//               width: 1,
-//               color: context.palette.primary.alpha10,
-//             ),
-//             borderRadius: context.borderRadiusMd,
-//             boxShadow: [
-//               BoxShadow(
-//                 color: Color(0x070E121B),
-//                 blurRadius: 4,
-//                 offset: Offset(0, 2),
-//                 spreadRadius: 0,
-//               ),
-//               BoxShadow(
-//                 color: Color(0x261FC16B),
-//                 blurRadius: 24,
-//                 offset: Offset(0, 6),
-//                 spreadRadius: 0,
-//               ),
-//             ],
-//           ),
+  /// Go-account colors with a leading copy icon.
+  go;
 
-//           child: Row(
-//             mainAxisSize: .min,
-//             mainAxisAlignment: .start,
-//             crossAxisAlignment: .center,
-//             spacing: context.spacingSm,
-//             children: [
-//               GtText(
-//                 label,
-//                 textAlign: .center,
-//                 style: context.textStyles.button2s(
-//                   color: context.palette.primary.dark,
-//                 ),
-//               ),
-//               GtIcon.withColor(
-//                 GtIcons.copyFilled,
-//                 color: context.palette.primary.dark,
-//                 size: context.dp(14.px),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  /// Resolves the account-number and copy-icon color from [colors].
+  Color textColor(GtPaletteRawColors colors) => switch (this) {
+    .personalTrailing => colors.tealBlue700,
+    .personal => colors.tealBlue800,
+    .flexTrailing => colors.green700,
+    .flex => colors.green800,
+    .kidsTrailing => colors.purple700,
+    .kids => colors.purple800,
+    .proTrailing => colors.maroon700,
+    .pro => colors.maroon800,
+    .goTrailing => colors.teal700,
+    .go => colors.teal800,
+  };
+
+  /// Resolves the product-tinted background color from [colors].
+  Color bgColor(GtPaletteRawColors colors) {
+    if (isGo) return colors.tealAlpha8;
+    if (isPro) return colors.maroonAlpha8;
+    if (isKids) return colors.purpleAlpha8;
+    if (isFlex) return colors.greenAlpha8;
+    return colors.tealBlueAlpha8;
+  }
+
+  List<Color> _colorsList(GtPaletteRawColors colors) => switch (this) {
+    .personalTrailing || .personal => [colors.navyAlpha3, colors.greenAlpha15],
+    .flexTrailing || .flex => [colors.greenAlpha3, colors.greenAlpha15],
+    .kidsTrailing || .kids => [colors.purpleAlpha3, colors.purpleAlpha15],
+    .proTrailing || .pro => [colors.maroonAlpha3, colors.maroonAlpha15],
+    .goTrailing || .go => [colors.tealAlpha3, colors.tealAlpha15],
+  };
+
+  /// Resolves the two-layer product-tinted elevation shadow from [colors].
+  List<BoxShadow> shadows(GtPaletteRawColors colors) {
+    final colorsList = _colorsList(colors);
+    return [
+      BoxShadow(
+        color: colorsList[0],
+        blurRadius: 4,
+        offset: Offset(0, 2),
+        spreadRadius: 0,
+      ),
+      BoxShadow(
+        color: colorsList[1],
+        blurRadius: 24,
+        offset: Offset(0, 6),
+        spreadRadius: 0,
+      ),
+    ];
+  }
+
+  /// Whether the copy icon appears after the account number.
+  bool get isTrailing => name.endsWith("Trailing");
+
+  /// Whether this variant uses the Personal account palette.
+  bool get isPersonal => this == .personal || this == .personalTrailing;
+
+  /// Whether this variant uses the Flex account palette.
+  bool get isFlex => this == .flex || this == .flexTrailing;
+
+  /// Whether this variant uses the Kids account palette.
+  bool get isKids => this == .kids || this == .kidsTrailing;
+
+  /// Whether this variant uses the Pro account palette.
+  bool get isPro => this == .pro || this == .proTrailing;
+
+  /// Whether this variant uses the Go account palette.
+  bool get isGo => this == .go || this == .goTrailing;
+}
+
+/// Displays an account number in a product-themed pill and copies it when
+/// tapped.
+///
+/// The selected [variant] controls the colors, shadow, and whether the copy icon
+/// appears before or after the account number. The whole pill is exposed as a
+/// button-sized tap target and writes [accountNumber] to the clipboard.
+///
+/// Provide [semanticsLabel] when the visible account number alone does not make
+/// the copy action clear to assistive technologies. Use [semanticHint] for
+/// optional supporting guidance.
+class GtAccountCopyPill extends GtStatelessWidget {
+  /// The displayed account number and the exact value copied on tap.
+  final String accountNumber;
+
+  /// An alternative accessibility label for the copy action.
+  final String? semanticsLabel;
+
+  /// Additional accessibility guidance for the copy action.
+  final String? semanticHint;
+
+  /// The product color scheme and copy-icon position.
+  final GtAccountCopyPillVariant variant;
+
+  /// Creates an account-number copy pill.
+  const GtAccountCopyPill(
+    this.accountNumber, {
+    super.key,
+    required this.variant,
+    this.semanticsLabel,
+    this.semanticHint,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? leading, trailing;
+
+    final palette = context.palette;
+    final textColor = variant.textColor(palette.raw);
+    final bgColor = variant.bgColor(palette.raw);
+    final shadows = variant.shadows(palette.raw);
+
+    final icon = GtIcon.withColor(
+      GtIcons.copyFilled,
+      size: context.dp(14.px),
+      color: textColor,
+    );
+
+    if (variant.isTrailing) trailing = icon;
+    if (!variant.isTrailing) leading = icon;
+
+    return GtTapTarget(
+      child: GtInkWell(
+        role: .button,
+        borderRadius: context.borderRadiusSm,
+        semanticsLabel: semanticsLabel,
+        semanticHint: semanticHint,
+        excludeDescendantSemantics: semanticsLabel != null,
+        onTap: () {
+          context.copyText(accountNumber);
+        },
+        child: Container(
+          padding: context.insets.allDp(6.px),
+          decoration: BoxDecoration(
+            color: bgColor,
+            border: Border.all(color: bgColor),
+            borderRadius: context.borderRadiusMd,
+            boxShadow: shadows,
+          ),
+          child: Row(
+            mainAxisSize: .min,
+            mainAxisAlignment: .start,
+            crossAxisAlignment: .center,
+            spacing: context.spacingSm,
+            children: [
+              ?leading,
+              GtText(
+                accountNumber.upper,
+                textAlign: .center,
+                style: context.textStyles.button2s(color: textColor),
+              ),
+              ?trailing,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

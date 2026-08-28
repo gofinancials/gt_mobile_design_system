@@ -31,7 +31,7 @@ List<GtConfirmationSection> _getSections(String preset, BuildContext context) {
     label: "Reference",
     value: "TRX24072983910527NGN",
     onTap: () {
-      context.copyTextToClipboard("TRX24072983910527NGN");
+      context.copyText("TRX24072983910527NGN");
       GtToast.of(context).show("Reference copied to clipboard");
     },
   );

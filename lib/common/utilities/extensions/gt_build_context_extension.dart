@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/extensions/extensions.dart';
 import 'package:gt_mobile_foundation/utilities/app_logger.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:provider/provider.dart';
 
-/// An extension on [BuildContext] providing convenient access to the design system's
-/// theming, typography, sizing utilities, and responsive breakpoints.
+/// Provides convenient access to the current design-system theme, responsive
+/// sizing values, and common UI helpers.
 extension ThemeContextExtension on BuildContext {
   GtScaleUtil get _scaler => GtScaleUtil.of(this);
 
@@ -109,37 +110,37 @@ extension ThemeContextExtension on BuildContext {
   /// Retrieves the corner radii configurations for the current context.
   GtRadii get radii => themeData.radii;
 
-  /// Extra-extra-small radius.
+  /// Extra-extra-small radius. Default: `2 px`.
   Radius get radiusXxs => dp(radii.xxs.px).radius;
 
-  /// Extra-small radius.
+  /// Extra-small radius. Default: `4 px`.
   Radius get radiusXs => dp(radii.xs.px).radius;
 
-  /// Small radius.
+  /// Small radius. Default: `6 px`.
   Radius get radiusSm => dp(radii.sm.px).radius;
 
-  /// Medium radius.
+  /// Medium radius. Default: `8 px`.
   Radius get radiusMd => dp(radii.md.px).radius;
 
-  /// Large radius.
+  /// Large radius. Default: `10 px`.
   Radius get radiusLg => dp(radii.lg.px).radius;
 
-  /// Extra-large radius.
+  /// Extra-large radius. Default: `12 px`.
   Radius get radiusXl => dp(radii.xl.px).radius;
 
-  /// 2x extra-large radius.
+  /// 2x extra-large radius. Default: `16 px`.
   Radius get radius2Xl => dp(radii.xxl.px).radius;
 
-  /// 3x extra-large radius.
+  /// 3x extra-large radius. Default: `20 px`.
   Radius get radius3Xl => dp(radii.xxxl.px).radius;
 
-  /// 4x extra-large radius.
+  /// 4x extra-large radius. Default: `24 px`.
   Radius get radius4Xl => dp(radii.xxxxl.px).radius;
 
-  /// 5x extra-large radius.
+  /// 5x extra-large radius. Default: `28 px`.
   Radius get radius5Xl => dp(radii.xxxxxl.px).radius;
 
-  /// Full (circular) radius.
+  /// Full pill/circular radius. Default: `999 px`.
   Radius get radiusFull => dp(radii.full.px).radius;
 
   /// Border radius with extra-extra-small dimension applied to all corners.
@@ -178,43 +179,43 @@ extension ThemeContextExtension on BuildContext {
   /// Retrieves the spacing guidelines and dimensions for the current context.
   GtSpacing get spacing => themeData.spacing;
 
-  /// Extra-small spacing dimension.
+  /// Fine-detail component spacing. Default: `2 px`.
   double get spacingXs => dp(spacing.xs.px);
 
-  /// Small spacing dimension.
+  /// Tight component spacing. Default: `4 px`.
   double get spacingSm => dp(spacing.sm.px);
 
-  /// Base spacing dimension.
+  /// Standard component spacing. Default: `8 px`.
   double get spacingBase => dp(spacing.base.px);
 
-  /// Medium spacing dimension.
+  /// Relaxed component spacing. Default: `12 px`.
   double get spacingMd => dp(spacing.md.px);
 
-  /// Large spacing dimension.
+  /// Loose component spacing. Default: `16 px`.
   double get spacingLg => dp(spacing.lg.px);
 
-  /// Extra-large spacing dimension.
+  /// Maximum internal component spacing. Default: `20 px`.
   double get spacingXl => dp(spacing.xl.px);
 
-  /// Small section spacing dimension.
+  /// Small inter-section spacing. Default: `24 px`.
   double get spacingSectionSm => dp(spacing.sectionSm.px);
 
-  /// Medium section spacing dimension.
+  /// Medium inter-section spacing. Default: `32 px`.
   double get spacingSectionMd => dp(spacing.sectionMd.px);
 
-  /// Large section spacing dimension.
+  /// Large inter-section spacing. Default: `40 px`.
   double get spacingSectionLg => dp(spacing.sectionLg.px);
 
-  /// Extra-large section spacing dimension.
+  /// Extra-large inter-section spacing. Default: `48 px`.
   double get spacingsectionXl => dp(spacing.sectionXl.px);
 
-  /// 2x extra-large section spacing dimension.
+  /// 2x extra-large inter-section spacing. Default: `56 px`.
   double get spacingsection2xl => dp(spacing.section2xl.px);
 
-  /// 3x extra-large section spacing dimension.
+  /// 3x extra-large inter-section spacing. Default: `64 px`.
   double get spacingsection3xl => dp(spacing.section3xl.px);
 
-  /// 4x extra-large section spacing dimension.
+  /// 4x extra-large inter-section spacing. Default: `80 px`.
   double get spacingsection4xl => dp(spacing.section4xl.px);
 
   /// Retrieves the box shadow configurations for the current context.
@@ -349,9 +350,12 @@ extension NavigatorExtension on BuildContext {
 }
 
 extension BuildContextCopyExtension on BuildContext {
-  // void copyToClipboard(String text) {
-  //   .
-  // }
+  /// Copies the provided [value] to the system clipboard.
+  void copyText(String? value) {
+    if (!value.hasValue) return;
+    Clipboard.setData(ClipboardData(text: value!));
+    showToast("copiedToClipboard".tr({"value": value}), type: .info);
+  }
 }
 
 /// Extension to convert a CSS hex string to a [Color].
