@@ -89,23 +89,25 @@ class GtAccountSwitchButton extends GtStatelessWidget {
             color: backgroundColor ?? bgColor,
             borderRadius: context.borderRadiusSm,
           ),
-          child: Text.rich(
-            TextSpan(
-              text: text.upper,
-              children: [
-                const WidgetSpan(child: GtGap.hBase()),
-                WidgetSpan(
-                  alignment: .middle,
-                  child: GtIcon.withColor(
-                    GtIcons.chevronDown,
-                    size: context.dp(10.px),
-                    color: textColor ?? txtColor,
-                  ),
+          child: Row(
+            crossAxisAlignment: .center,
+            mainAxisAlignment: .center,
+            mainAxisSize: .min,
+            spacing: context.spacingBase,
+            children: [
+              GtText(
+                text.upper,
+                style: context.textStyles.button2s(
+                  color: textColor ?? txtColor,
                 ),
-              ],
-            ),
-            style: context.textStyles.button2s(color: textColor ?? txtColor),
-            textAlign: .center,
+                textAlign: .center,
+              ),
+              GtIcon.withColor(
+                GtIcons.chevronDownOutline,
+                size: context.dp(16.px),
+                color: textColor ?? txtColor,
+              ),
+            ],
           ),
         ),
       ),
