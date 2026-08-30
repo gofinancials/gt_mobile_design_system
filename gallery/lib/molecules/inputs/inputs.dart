@@ -11,6 +11,7 @@ export 'gt_password_field_usecase.dart';
 export 'gt_phone_field_usecase.dart';
 export 'gt_pin_input_usecase.dart';
 export 'gt_search_field_usecase.dart';
+export 'gt_signature_pad_usecase.dart';
 export 'gt_text_field_usecase.dart';
 export 'gt_transfer_field_usecase.dart';
 export 'gt_url_field_usecase.dart';

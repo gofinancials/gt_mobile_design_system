@@ -114,6 +114,8 @@ import 'package:gallery/molecules/inputs/gt_pin_input_usecase.dart'
     as _gallery_molecules_inputs_gt_pin_input_usecase;
 import 'package:gallery/molecules/inputs/gt_search_field_usecase.dart'
     as _gallery_molecules_inputs_gt_search_field_usecase;
+import 'package:gallery/molecules/inputs/gt_signature_pad_usecase.dart'
+    as _gallery_molecules_inputs_gt_signature_pad_usecase;
 import 'package:gallery/molecules/inputs/gt_text_field_usecase.dart'
     as _gallery_molecules_inputs_gt_text_field_usecase;
 import 'package:gallery/molecules/inputs/gt_transfer_field_usecase.dart'
@@ -972,6 +974,18 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtSearchField',
                     builder: _gallery_molecules_inputs_gt_search_field_usecase
                         .playgroundGtSearchFieldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSignaturePad',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSignaturePad',
+                    builder: _gallery_molecules_inputs_gt_signature_pad_usecase
+                        .playgroundGtSignaturePadUseCase,
+                    designLink:
+                        'https://www.figma.com/design/EE0KNJdpCKsQGoLFyLrC2v/Personal?node-id=5838-32397&m=dev',
                   ),
                 ],
               ),
