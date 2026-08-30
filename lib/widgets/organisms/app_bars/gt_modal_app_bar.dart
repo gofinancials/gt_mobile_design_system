@@ -64,13 +64,16 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                   spacing: context.spacingSm,
                   children: [
                     ?_titleLeading,
-                    GtText(
-                      _title?.upper,
-                      style: context.textStyles.h6(),
-                      textAlign: .center,
-                      maxLines: 1,
-                      // Level 1 within the modal's own route scope.
-                      headingLevel: 1,
+                    Flexible(
+                      child: GtText(
+                        _title?.upper,
+                        style: context.textStyles.h6(),
+                        textAlign: .center,
+                        maxLines: 1,
+                        // Level 1 within the modal's own route scope.
+                        headingLevel: 1,
+                        overflow: .ellipsis,
+                      ),
                     ),
                   ],
                 ),
@@ -102,23 +105,27 @@ class _GtExtendedModalAppBar extends GtModalAppBar {
       type: .transparency,
       child: Padding(
         padding: context.insets.fromLTRBDp(16.px, 24.px, 16.px, 0),
-        child: Row(
+        child: Table(
+          defaultVerticalAlignment: .middle,
+          columnWidths: const {
+            0: FlexColumnWidth(2),
+            1: FlexColumnWidth(10),
+            2: FlexColumnWidth(2),
+          },
           children: [
-            GtBackButton(size: .small),
-            Expanded(
-              child: FractionalTranslation(
-                // Slight horizontal offset to balance the visual center of the title
-                // against the leading back button.
-                translation: Offset(.08, 0),
-                child: GtText(
+            TableRow(
+              children: [
+                GtBackButton(size: .small),
+                GtText(
                   title,
                   textAlign: .center,
                   maxLines: 1,
                   style: context.textStyles.button(),
+                  overflow: .ellipsis,
                 ),
-              ),
+                Align(alignment: .centerRight, child: action),
+              ],
             ),
-            ?action,
           ],
         ),
       ),
