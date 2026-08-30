@@ -68,9 +68,12 @@ class GtSearchField extends GtStatefulWidget {
     this.suffix,
     this.clearSemanticLabel,
     this.autoFocus = true,
-  }) : _readonly = false,
-       _onTap = null,
-       _heroTag = null;
+    OnPressed? onTap,
+    bool readonly = false,
+    String? heroTag,
+  }) : _readonly = readonly,
+       _onTap = onTap,
+       _heroTag = heroTag;
 
   /// Creates a read-only [GtSearchField] that acts as an interactive button to trigger an action (e.g. opening a search page or modal).
   ///
