@@ -11,6 +11,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
   /// The main heading text displayed at the top of the form.
   final String title;
 
+  /// The subtitle text displayed below the title in the default layout.
   final String? _subtitle;
 
   /// Optional helper text displayed below the input dots.
@@ -19,6 +20,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
   /// Optional error text displayed below the input dots. Overrides helper text.
   final String? errorText;
 
+  /// Optional callback invoked when the biometric authentication button is tapped.
   final OnPressed? _onBioAuth;
 
   /// Controls the text being edited by the virtual keypad.
@@ -27,7 +29,11 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
   /// An optional method that validates the input.
   final OnValidate<String?>? validator;
 
+  /// The avatar image displayed above the user's name in [GtVirtualKeypadForm.withAvatar].
   final AppImageData? _avatar;
+
+  /// An optional question-and-action button displayed below the header/avatar section and above the input dots.
+  final GtQuestionTextButton? headerQuestionButton;
 
   /// The maximum number of characters allowed in the input.
   final int maxLength;
@@ -80,12 +86,14 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     OnPressed? onBioAuth,
   }) : _subtitle = subtitle,
        _onBioAuth = onBioAuth,
+       headerQuestionButton = null,
        _avatar = null;
 
   /// Creates a virtual keypad form customized for user authentication.
   ///
-  /// Displays an [avatar] and uses [name] as the title. It also supports an
-  /// optional [onBioAuth] callback to enable biometric authentication from the keypad.
+  /// Displays an [avatar], uses [name] as the user heading, and supports an optional
+  /// [headerQuestionButton] (e.g. "Not you? Switch account") as well as an optional
+  /// [onBioAuth] callback to enable biometric authentication from the keypad.
   GtVirtualKeypadForm.withAvatar({
     super.key,
     required String name,
@@ -104,6 +112,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.action,
     this.color,
     this.inactiveColor,
+    this.headerQuestionButton,
   }) : _subtitle = null,
        _onBioAuth = onBioAuth,
        title = name,
@@ -151,24 +160,29 @@ class _GtVirtualKeypadFormState extends State<GtVirtualKeypadForm> {
                   subtitle: widget.subtitle,
                   spacingPx: context.spacing.md,
                 ),
-                GtGap.ySection3xl(),
-                GtGap.yBase(),
+                const GtGap.ySection3xl(),
+                const GtGap.yBase(),
               ] else ...[
-                GtGap.ySectionSm(),
+                const GtGap.ySectionSm(),
                 GtAvatar(
                   avatar: widget.avatar,
                   size: context.dp(64.px),
                   isUserAvatar: true,
                 ),
-                GtGap.ySectionSm(),
+                const GtGap.ySectionSm(),
                 GtText(
                   widget.title.upper,
-                  style: context.textStyles.h5(),
+                  style: context.textStyles.h5(heightPx: 24),
                   maxLines: 1,
                   textAlign: .center,
                 ),
-                GtGap.ySection3xl(),
               ],
+              if (widget.headerQuestionButton case Widget qb) ...[
+                const GtGap.yMd(),
+                qb,
+                const GtGap.ySectionXl(),
+              ] else
+                const GtGap.ySection3xl(),
               GtDotFormField(
                 controller: widget.controller,
                 length: widget.maxLength,

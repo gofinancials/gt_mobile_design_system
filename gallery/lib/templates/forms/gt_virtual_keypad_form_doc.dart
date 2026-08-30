@@ -12,6 +12,16 @@ GtVirtualKeypadForm(
   title: 'Enter PIN',
   subtitle: 'Please enter your secure 4-digit transaction PIN.',
   maxLength: 4,
+  fillInactiveDots: false,
+  onBioAuth: () {
+    // Biometric Auth callback
+  },
+  action: GtHelpButton(onPressed: () {}),
+  footer: GtQuestionTextButton(
+    "Forgot PIN?",
+    action: "Reset now",
+    onPressed: () {},
+  ),
 )''';
 
   return GtWidgetDocPage(

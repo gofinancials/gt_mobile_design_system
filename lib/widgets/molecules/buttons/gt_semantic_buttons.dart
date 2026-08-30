@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -118,5 +119,65 @@ class GtAccountSwitchButton extends GtStatelessWidget {
     }
 
     return child;
+  }
+}
+
+/// An interactive text button combining a question or prompt with a clickable action.
+///
+/// Commonly used for navigation and authentication prompts (e.g., "Don't have an account? Sign up"),
+/// rendering the prompt with a subtle text style and the action with prominent styling.
+class GtQuestionTextButton extends GtStatelessWidget {
+  /// Creates a [GtQuestionTextButton].
+  const GtQuestionTextButton(
+    this.question, {
+    super.key,
+    required this.action,
+    required this.onPressed,
+    this.questionStyle,
+    this.actionStyle,
+    this.textAlign,
+  });
+
+  /// The question or prompt text displayed before the action.
+  final String question;
+
+  /// The action text displayed after the question.
+  final String action;
+
+  /// Callback invoked when the button or action text is tapped.
+  final OnPressed onPressed;
+
+  /// An optional text style to override the default question style.
+  final TextStyle? questionStyle;
+
+  /// An optional text style to override the default action style.
+  final TextStyle? actionStyle;
+
+  /// An optional alignment for the button's content.
+  final TextAlign? textAlign;
+
+  @override
+  Widget build(BuildContext context) {
+    final questionColor = context.palette.text.darkerSub;
+    final defaultStyle = context.textStyles.subHeadS();
+    final defaultQuesStyle = defaultStyle.copyWith(color: questionColor);
+
+    return GtInkWell(
+      role: .button,
+      onTap: onPressed,
+      child: GtTapTarget(
+        child: Text.rich(
+          TextSpan(
+            text: question,
+            children: [
+              TextSpan(text: " $action", style: actionStyle ?? defaultStyle),
+            ],
+            recognizer: TapGestureRecognizer()..onTap = onPressed,
+            style: questionStyle ?? defaultQuesStyle,
+          ),
+          textAlign: textAlign ?? .center,
+        ),
+      ),
+    );
   }
 }

@@ -15,10 +15,17 @@ Scaffold(
     controller: pinController,
     name: 'Alex Lobaloba',
     avatar: AppImageData.asset(GtAssetImages.avatar),
+    headerQuestionButton: GtQuestionTextButton(
+      "Not you?",
+      action: "Switch account",
+      onPressed: () {},
+    ),
     maxLength: 4,
+    fillInactiveDots: false,
     onBioAuth: () {
       // Biometric Auth callback
     },
+    action: GtHelpButton(onPressed: () {}),
   ),
 )''';
 

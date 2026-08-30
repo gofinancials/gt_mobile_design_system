@@ -76,6 +76,8 @@ import 'package:gallery/molecules/buttons/gt_icon_button_usecase.dart'
     as _gallery_molecules_buttons_gt_icon_button_usecase;
 import 'package:gallery/molecules/buttons/gt_outline_button_usecase.dart'
     as _gallery_molecules_buttons_gt_outline_button_usecase;
+import 'package:gallery/molecules/buttons/gt_question_text_button_usecase.dart'
+    as _gallery_molecules_buttons_gt_question_text_button_usecase;
 import 'package:gallery/molecules/buttons/gt_raised_button_usecase.dart'
     as _gallery_molecules_buttons_gt_raised_button_usecase;
 import 'package:gallery/molecules/buttons/gt_text_button_usecase.dart'
@@ -766,6 +768,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _gallery_molecules_buttons_gt_outline_button_usecase
                             .playgroundGtOutlineButtonUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtQuestionTextButton',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtQuestionTextButton',
+                    builder:
+                        _gallery_molecules_buttons_gt_question_text_button_usecase
+                            .playgroundGtQuestionTextButtonUseCase,
                   ),
                 ],
               ),
