@@ -203,6 +203,9 @@ class GtSimpleActionListTile extends GtStatelessWidget {
   /// The style of the title text.
   final TextStyle? titleStyle;
 
+  /// The style of the trailing icon.
+  final GtIconVariant? trailingIconVariant;
+
   /// Creates a [GtSimpleActionListTile].
   const GtSimpleActionListTile(
     this.title, {
@@ -212,6 +215,7 @@ class GtSimpleActionListTile extends GtStatelessWidget {
     this.padding,
     this.trailingIconSize,
     this.titleStyle,
+    this.trailingIconVariant,
   });
 
   @override
@@ -234,7 +238,7 @@ class GtSimpleActionListTile extends GtStatelessWidget {
             GtIcon(
               trailing,
               size: trailingIconSize ?? context.dp(20.px),
-              variant: .soft,
+              variant: trailingIconVariant ?? .soft,
               alignment: Alignment.centerRight,
             ),
           ],
