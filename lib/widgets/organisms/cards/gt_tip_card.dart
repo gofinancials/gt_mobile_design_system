@@ -19,6 +19,12 @@ class GtTipCard extends GtStatelessWidget {
   /// A callback function that is invoked when the close button is tapped.
   final OnPressed onClose;
 
+  /// An optional custom text style for the [title].
+  final TextStyle? titleStyle;
+
+  /// An optional custom text style for the [subtitle].
+  final TextStyle? subtitleStyle;
+
   /// Creates a [GtTipCard].
   const GtTipCard({
     super.key,
@@ -27,6 +33,8 @@ class GtTipCard extends GtStatelessWidget {
     this.hidden = false,
     this.variant = .away,
     required this.onClose,
+    this.titleStyle,
+    this.subtitleStyle,
   });
 
   @override
@@ -34,6 +42,7 @@ class GtTipCard extends GtStatelessWidget {
     final palette = context.palette;
     final iconColor = variant.getIconColor(palette);
     final borderColor = variant.getBorderColor(palette);
+    final subStyle = context.textStyles.bodyXs(color: palette.text.darkerSub);
 
     return GtAnimatedFade(
       showFirst: !hidden,
@@ -62,7 +71,7 @@ class GtTipCard extends GtStatelessWidget {
                     spacing: context.spacingBase,
                     crossAxisAlignment: .start,
                     children: [
-                      Expanded(child: GtText(title)),
+                      Expanded(child: GtText(title, style: titleStyle)),
                       GtCancelButton(
                         onTap: onClose,
                         size: .xSmall,
@@ -70,12 +79,7 @@ class GtTipCard extends GtStatelessWidget {
                       ),
                     ],
                   ),
-                  GtRichText(
-                    subtitle,
-                    style: context.textStyles.bodyXs(
-                      color: palette.text.darkerSub,
-                    ),
-                  ),
+                  GtRichText(subtitle, style: subtitleStyle ?? subStyle),
                 ],
               ),
             ),

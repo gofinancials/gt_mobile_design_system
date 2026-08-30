@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
+import 'package:gt_mobile_foundation/data/models/media_data.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
@@ -66,7 +67,7 @@ Widget playgroundGtIllustratedStepTileUseCase(BuildContext context) {
 GtIllustratedStepTile(
   title: '$title',
   subtitle: '$subtitle',
-  illustrationPath: GtVectorIllustrations.security,
+  illustration: AppImageData(GtVectorIllustrations.security),
   isDone: $isDone,
 )''',
     child: Center(
@@ -76,7 +77,7 @@ GtIllustratedStepTile(
         child: GtIllustratedStepTile(
           title: title,
           subtitle: subtitle,
-          illustrationPath: GtVectorIllustrations.security,
+          illustration: AppImageData(GtVectorIllustrations.security),
           isDone: isDone,
         ),
       ),
