@@ -105,10 +105,6 @@ Widget playgroundGtSimpleActionListTileUseCase(BuildContext context) {
     label: 'Title',
     initialValue: 'Personal Info',
   );
-  final subtitle = context.knobs.string(
-    label: 'Subtitle',
-    initialValue: 'View profile details',
-  );
 
   return GtWidgetDocPage(
     title: "GtSimpleActionListTile",
@@ -118,14 +114,13 @@ Widget playgroundGtSimpleActionListTileUseCase(BuildContext context) {
         '''
 GtSimpleActionListTile(
   "$title",
-  subtitle: "$subtitle",
   onTap: () {},
 )''',
     child: Center(
       child: GtCard(
         padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 8.px),
         variant: GtCardVariant.normal,
-        child: GtSimpleActionListTile(title, subtitle: subtitle, onTap: () {}),
+        child: GtSimpleActionListTile(title, onTap: () {}),
       ),
     ),
   );

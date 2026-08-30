@@ -188,22 +188,30 @@ class GtSimpleActionListTile extends GtStatelessWidget {
   /// The primary title text.
   final String title;
 
-  /// The secondary text for the action tile.
-  final String subtitle;
-
   /// The icon to display at the end of the tile. Defaults to `GtIcons.chevronRight`.
   final IconData trailing;
 
   /// The callback triggered when the tile is tapped.
   final OnPressed? onTap;
 
+  /// The padding to apply to the tile.
+  final EdgeInsetsGeometry? padding;
+
+  /// The size of the trailing icon.
+  final double? trailingIconSize;
+
+  /// The style of the title text.
+  final TextStyle? titleStyle;
+
   /// Creates a [GtSimpleActionListTile].
   const GtSimpleActionListTile(
     this.title, {
     super.key,
-    required this.subtitle,
     this.trailing = GtIcons.chevronRight,
     this.onTap,
+    this.padding,
+    this.trailingIconSize,
+    this.titleStyle,
   });
 
   @override
@@ -213,14 +221,19 @@ class GtSimpleActionListTile extends GtStatelessWidget {
       borderRadius: context.borderRadius2Xl,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 12.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 12.px),
         child: Row(
           spacing: context.spacingMd,
           children: [
-            Expanded(child: GtText(title, style: context.textStyles.h6())),
+            Expanded(
+              child: GtText(
+                title,
+                style: titleStyle ?? context.textStyles.h6(),
+              ),
+            ),
             GtIcon(
               trailing,
-              size: context.dp(20.px),
+              size: trailingIconSize ?? context.dp(20.px),
               variant: .soft,
               alignment: Alignment.centerRight,
             ),
