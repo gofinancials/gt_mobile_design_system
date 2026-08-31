@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
 
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
