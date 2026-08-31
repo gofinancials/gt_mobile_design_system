@@ -43,4 +43,4 @@ temp_interactive_push.bat
 .claude/
 .idea/macos/Flutter/
 macos/Flutter/
-/doc/
+/doc/.gitignore
