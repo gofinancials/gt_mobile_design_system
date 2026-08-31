@@ -53,6 +53,9 @@ class GtSearchField extends GtStatefulWidget {
   /// An optional Hero animation tag used to animate transitions between screens.
   final String? _heroTag;
 
+  /// An optional semantic label for the search field.
+  final String? _actionSemanticsLabel;
+
   /// Creates a standard editable [GtSearchField].
   const GtSearchField({
     super.key,
@@ -73,6 +76,7 @@ class GtSearchField extends GtStatefulWidget {
     String? heroTag,
   }) : _readonly = readonly,
        _onTap = onTap,
+       _actionSemanticsLabel = null,
        _heroTag = heroTag;
 
   /// Creates a read-only [GtSearchField] that acts as an interactive button to trigger an action (e.g. opening a search page or modal).
@@ -93,10 +97,12 @@ class GtSearchField extends GtStatefulWidget {
     this.suffix,
     this.clearSemanticLabel,
     required OnPressed onTap,
+    String? actionSemanticsLabel,
     String? heroTag,
   }) : _readonly = true,
        autoFocus = false,
        _onTap = onTap,
+       _actionSemanticsLabel = actionSemanticsLabel,
        _heroTag = heroTag;
 
   @override
@@ -162,6 +168,7 @@ class _GtSearchFieldState extends State<GtSearchField> {
       child = GtInkWell(
         onTap: widget._onTap,
         role: .button,
+        semanticsLabel: widget._actionSemanticsLabel,
         excludeDescendantSemantics: true,
         child: IgnorePointer(child: child),
       );
