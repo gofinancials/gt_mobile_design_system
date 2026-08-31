@@ -51,6 +51,9 @@ class GtTransactionListTile extends GtStatelessWidget {
   /// Optional custom style override for the [amount] text.
   final TextStyle? amountStyle;
 
+  /// Determines the maximum number of lines for the name and amount.
+  final int? maxLines;
+
   /// Creates a [GtTransactionListTile].
   const GtTransactionListTile(
     this.name, {
@@ -66,6 +69,7 @@ class GtTransactionListTile extends GtStatelessWidget {
     this.nameStyle,
     this.subtitleStyle,
     this.amountStyle,
+    this.maxLines = 1,
   });
 
   String get _formattedAmount {
@@ -117,22 +121,24 @@ class GtTransactionListTile extends GtStatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    spacing: context.spacingSm,
+                    spacing: context.spacingMd,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: GtText(
                           name,
-                          style: nameStyle ?? style.subHeadS(),
+                          style: nameStyle ?? style.subHeadS(weight: .w600),
                           textAlign: TextAlign.start,
-                          maxLines: 2,
+                          overflow: .ellipsis,
+                          maxLines: maxLines,
                         ),
                       ),
                       GtText(
                         _formattedAmount,
                         style: amountStyle ?? valueStyle,
                         textAlign: .end,
-                        maxLines: 2,
+                        overflow: .ellipsis,
+                        maxLines: maxLines,
                       ),
                     ],
                   ),

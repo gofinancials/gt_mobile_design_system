@@ -44,6 +44,15 @@ class GtEmptyState extends GtStatelessWidget {
   /// Defaults to `.center`.
   final AlignmentGeometry? alignment;
 
+  /// The text style for the title.
+  final TextStyle? titleStyle;
+
+  /// The text style for the subtitle.
+  final TextStyle? subtitleStyle;
+
+  /// Defines the text capitalization behavior for the title.
+  final GtTextCase titleCase;
+
   /// Creates a [GtEmptyState] with required icon/title/subtitle content.
   const GtEmptyState({
     super.key,
@@ -56,6 +65,9 @@ class GtEmptyState extends GtStatelessWidget {
     this.onActionPressed,
     this.buttonVariant,
     this.alignment,
+    this.titleCase = .upper,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : assert(
          (onActionPressed == null) == (actionText == null),
          'onActionPressed and actionText must be provided together',
@@ -75,6 +87,9 @@ class GtEmptyState extends GtStatelessWidget {
       actionVariant: buttonVariant,
       actionSize: .xsmall,
       actionAlignment: .center,
+      titleCase: titleCase,
+      titleStyle: titleStyle,
+      descriptionStyle: subtitleStyle,
     );
   }
 }

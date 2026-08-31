@@ -35,7 +35,7 @@ class GtTextButton extends GtButton {
   final TextAlign textAlign;
 
   /// Defines the text capitalization behavior for the button text.
-  final GtButtonTextCase textCase;
+  final GtTextCase textCase;
 
   /// Creates a [GtTextButton].
   const GtTextButton({

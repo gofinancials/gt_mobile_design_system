@@ -105,6 +105,9 @@ class GtViewStateWidget extends GtStatelessWidget {
   /// Defaults to `context.textStyles.bodyS()` with a secondary color.
   final TextStyle? descriptionStyle;
 
+  /// Defines the text capitalization behavior for the title.
+  final GtTextCase titleCase;
+
   /// The visual variant of the call-to-action button.
   ///
   /// Defaults to `GtButtonVariant.primary`.
@@ -137,6 +140,7 @@ class GtViewStateWidget extends GtStatelessWidget {
     this.actionSize,
     this.actionVariant,
     this.actionText,
+    this.titleCase = .upper,
   }) : assert(
          (onActionPressed == null) == (actionText == null),
          'onActionPressed and actionText must be provided together',
@@ -148,6 +152,14 @@ class GtViewStateWidget extends GtStatelessWidget {
       color: context.palette.text.darkerSub,
     );
     final hasGraphic = graphic != null || icon != null;
+
+    final casedTitle = switch (titleCase) {
+      .upper => title.upper,
+      .lower => title.lower,
+      .sentence => title.capitalise(true),
+      .title => title.capitalise(),
+      .none => title,
+    };
 
     return Align(
       alignment: alignment,
@@ -171,7 +183,7 @@ class GtViewStateWidget extends GtStatelessWidget {
             gapToTitle ?? const GtGap.yLg(),
           ],
           GtText(
-            title.upper,
+            casedTitle,
             style: titleStyle ?? context.textStyles.h6(),
             textAlign: .center,
             maxLines: 2,

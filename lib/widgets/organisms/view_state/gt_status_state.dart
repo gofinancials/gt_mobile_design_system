@@ -84,6 +84,9 @@ class GtStatusState extends GtStatelessWidget {
   /// The text style for the subtitle.
   final TextStyle? subtitleStyle;
 
+  /// Defines the text capitalization behavior for the title.
+  final GtTextCase titleCase;
+
   /// The spacing between the title and the subtitle.
   ///
   /// Defaults to `GtGap.yMd()`. Can be customized with a [GtViewStateSpacer].
@@ -108,6 +111,7 @@ class GtStatusState extends GtStatelessWidget {
     this.actionAlignment,
     this.titleStyle,
     this.subtitleStyle,
+    this.titleCase = .upper,
   }) : assert(
          variant != .custom || statusIcon != null || graphic != null,
          'statusIcon or graphic is required when variant is '
@@ -135,6 +139,7 @@ class GtStatusState extends GtStatelessWidget {
     this.actionAlignment,
     this.titleStyle,
     this.subtitleStyle,
+    this.titleCase = .upper,
   }) : variant = .success,
        statusIcon = null,
        assert(
@@ -159,6 +164,7 @@ class GtStatusState extends GtStatelessWidget {
     this.actionAlignment,
     this.titleStyle,
     this.subtitleStyle,
+    this.titleCase = .upper,
   }) : variant = .error,
        statusIcon = null,
        assert(
@@ -186,6 +192,7 @@ class GtStatusState extends GtStatelessWidget {
     this.actionAlignment,
     this.titleStyle,
     this.subtitleStyle,
+    this.titleCase = .upper,
   }) : variant = .custom,
        statusIcon = icon,
        assert(
@@ -227,6 +234,7 @@ class GtStatusState extends GtStatelessWidget {
       gapToAction: gapToAction,
       titleStyle: titleStyle,
       descriptionStyle: subtitleStyle,
+      titleCase: titleCase,
     );
   }
 }
