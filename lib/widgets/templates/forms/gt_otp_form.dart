@@ -74,13 +74,13 @@ class _GtOtpFormState extends State<GtOtpForm> with GtOtpFormMixin {
         child: Column(
           crossAxisAlignment: .stretch,
           mainAxisSize: .max,
-          spacing: context.spacing.sectionSm,
           children: [
             GtPageHeader(
               key: const Key("gt-otp-form-page-header"),
               title: widget.title,
               subtitle: widget.subtitle,
             ),
+            const GtGap.ySectionSm(),
             GtPinInput(
               key: const Key("gt-otp-form-pin-input"),
               length: widget.pinLength,
@@ -88,7 +88,7 @@ class _GtOtpFormState extends State<GtOtpForm> with GtOtpFormMixin {
               onFieldSubmitted: widget.onDone,
               autofillHints: widget.autofillHints,
             ),
-            const GtGap.ySectionSm(),
+            const GtGap.ySectionXl(),
             NumberListener(
               key: const Key("gt-otp-code-timer-listener"),
               valueListenable: countDown,
