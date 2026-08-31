@@ -191,10 +191,39 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
 }
 
 /// iOS-style bottom navigation bar with:
-/// - blurred floating container
-/// - animated selected-tab highlight
+/// - blurred floating glass container
+/// - animated selected-tab highlight pill
 /// - optional trailing circular action button
+///
+/// Geometry is transcribed 1:1 from the Figma spec (`Floating Nav Bar`,
+/// node `26743:67467`) and expressed in design pixels via [num.px] so
+/// [BuildContext.dp] can scale it down on narrower devices.
 class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
+  /// Height of the glass pill and of the trailing circular action.
+  static const _barHeight = 58.0;
+
+  /// Gap between the glass edge and the tab row, i.e. the vertical breathing
+  /// room around the selection pill.
+  static const _glassInsetY = 4.0;
+
+  /// Gap between the glass edge and the first/last tab.
+  static const _glassInsetX = 6.0;
+
+  /// Visible gap between the tab pill and the trailing action.
+  static const _actionGap = 10.0;
+
+  /// Screen edge padding either side of the bar.
+  static const _screenInsetX = 16.0;
+
+  /// Padding between the bar and the home indicator / screen bottom.
+  static const _screenInsetY = 12.0;
+
+  /// Tab icon and trailing action icon size.
+  static const _iconSize = 24.0;
+
+  /// Horizontal padding inside a tab, which is what truncates long labels.
+  static const _tabInsetX = 8.0;
+
   final List<GtBottomNavigationItem> items;
   final int currentIndex;
   final ValueChanged<int> onIndexChanged;
@@ -215,126 +244,181 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
-    final radius = context.borderRadiusFull;
-
-    final boxDecoration = BoxDecoration(
-      color: palette.bg.strong.setOpacity(.01),
-      borderRadius: radius,
-      border: Border.all(color: palette.bg.white.setOpacity(.65)),
-      boxShadow: context.shadows.bottomNavInnerGlass(),
-    );
-
-    return Stack(
-      alignment: .bottomCenter,
-      children: [
-        SafeArea(
-          top: false,
-          bottom: context.isAndroid,
-          maintainBottomViewPadding: true,
-          minimum: context.insets.onlyDp(bottom: context.isAndroid ? 8.px : 0),
-          child: Container(
-            constraints: BoxConstraints(maxHeight: context.dp(95.px)),
-            padding: context.insets.fromLTRBDp(16.px, 0, 16.px, 21.px),
-            child: Row(
-              crossAxisAlignment: .center,
-              mainAxisSize: .min,
-              children: [
-                Expanded(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      boxShadow: context.isInDarkMode
-                          ? context.shadows.md(context.palette.bg.weak)
-                          : context.shadows.bottomNavShadow(),
-                      borderRadius: radius,
+    return SafeArea(
+      top: false,
+      // The bar floats above the home indicator rather than under it, so the
+      // last tab stays reachable and the glass edge is not clipped by the
+      // system gesture area.
+      maintainBottomViewPadding: true,
+      child: Padding(
+        padding: context.insets.fromLTRBDp(
+          _screenInsetX.px,
+          0,
+          _screenInsetX.px,
+          _screenInsetY.px,
+        ),
+        child: SizedBox(
+          height: context.dp(_barHeight.px),
+          child: Row(
+            crossAxisAlignment: .stretch,
+            children: [
+              Expanded(
+                child: _GtBottomNavigationGlass(
+                  child: Padding(
+                    padding: context.insets.symmetricDp(
+                      horizontal: _glassInsetX.px,
+                      vertical: _glassInsetY.px,
                     ),
-                    child: ClipRRect(
-                      borderRadius: radius,
-                      child: BackdropFilter(
-                        filter: context.backdropFilters.bottomNavFrost(),
-                        child: Container(
-                          clipBehavior: .hardEdge,
-                          height: context.dp(68.px),
-                          decoration: boxDecoration,
-                          child: Stack(
-                            children: [
-                              Positioned.fill(
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    color: palette.bg.strong.withValues(
-                                      alpha: 0.01,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              LayoutBuilder(
-                                builder: (context, constraints) {
-                                  final tabWidth =
-                                      constraints.maxWidth / items.length;
-                                  final inset = context.dp(4.px);
-                                  final highlightHeight =
-                                      constraints.maxHeight - (2 * inset);
-
-                                  return Stack(
-                                    clipBehavior: .hardEdge,
-                                    children: [
-                                      AnimatedPositioned(
-                                        duration: enableSelectionAnimation
-                                            ? GtMotion.adaptiveDuration(
-                                                context,
-                                                GtMotion.fluid,
-                                              )
-                                            : Duration.zero,
-                                        curve: GtSpringCurves.snappy,
-                                        left: (tabWidth * currentIndex) + inset,
-                                        top: inset,
-                                        width: tabWidth - (2 * inset),
-                                        height: highlightHeight,
-                                        child: DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            color: palette.fill.sub,
-                                            borderRadius: radius,
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          for (final (i, item) in items.indexed)
-                                            Expanded(
-                                              child: _GtBottomNavigationTab(
-                                                item: item,
-                                                selected: i == currentIndex,
-                                                onTap: () => onIndexChanged(i),
-                                                enableSelectionAnimation:
-                                                    enableSelectionAnimation,
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    child: _GtBottomNavigationTabs(
+                      items: items,
+                      currentIndex: currentIndex,
+                      onIndexChanged: onIndexChanged,
+                      iconSize: _iconSize,
+                      tabInsetX: _tabInsetX,
+                      enableSelectionAnimation: enableSelectionAnimation,
                     ),
                   ),
                 ),
-                if (onTrailingTap != null) ...[
-                  SizedBox(width: context.dp(12.px)),
-                  _GtBottomNavigationTrailingAction(
-                    onTap: onTrailingTap!,
-                    icon: trailingIcon,
-                    semanticsLabel: trailingSemanticsLabel,
-                  ),
-                ],
+              ),
+              if (onTrailingTap != null) ...[
+                SizedBox(width: context.dp(_actionGap.px)),
+                _GtBottomNavigationTrailingAction(
+                  onTap: onTrailingTap!,
+                  icon: trailingIcon,
+                  iconSize: _iconSize,
+                  size: _barHeight,
+                  semanticsLabel: trailingSemanticsLabel,
+                ),
               ],
-            ),
+            ],
           ),
         ),
-      ],
+      ),
+    );
+  }
+}
+
+/// The frosted glass surface shared by the tab pill and the trailing action.
+///
+/// Reproduces the Figma `Fill + Shadow` layer: a 65% [GtPaletteBgColors.white]
+/// fill over a blurred backdrop, an inner highlight along the edge, and a soft
+/// drop shadow. Every layer resolves through the palette, so the surface
+/// inverts with the theme instead of staying light in dark mode.
+class _GtBottomNavigationGlass extends GtStatelessWidget {
+  final Widget child;
+  final BoxShape shape;
+
+  const _GtBottomNavigationGlass({
+    required this.child,
+    this.shape = BoxShape.rectangle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final radius = context.borderRadiusFull;
+    final isCircle = shape == BoxShape.circle;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        shape: shape,
+        borderRadius: isCircle ? null : radius,
+        boxShadow: context.isInDarkMode
+            ? context.shadows.md(palette.bg.weak)
+            : context.shadows.bottomNavShadow(),
+      ),
+      child: ClipRRect(
+        borderRadius: radius,
+        child: BackdropFilter(
+          filter: context.backdropFilters.bottomNavFrost(),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: palette.bg.white.setOpacity(.65),
+              borderRadius: radius,
+              boxShadow: context.shadows.bottomNavInnerGlass(),
+            ),
+            child: child,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The tab row plus the selection pill that slides behind the active tab.
+class _GtBottomNavigationTabs extends GtStatelessWidget {
+  final List<GtBottomNavigationItem> items;
+  final int currentIndex;
+  final ValueChanged<int> onIndexChanged;
+  final double iconSize;
+  final double tabInsetX;
+  final bool enableSelectionAnimation;
+
+  const _GtBottomNavigationTabs({
+    required this.items,
+    required this.currentIndex,
+    required this.onIndexChanged,
+    required this.iconSize,
+    required this.tabInsetX,
+    required this.enableSelectionAnimation,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final radius = context.borderRadiusFull;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final tabWidth = constraints.maxWidth / items.length;
+
+        return Stack(
+          clipBehavior: .hardEdge,
+          // Passthrough hands the incoming tight height down to the tab row.
+          // Under the default loose fit the row shrink-wraps its icon+label and
+          // Stack pins it to topStart, so the content rides the top of the pill
+          // instead of sitting in the middle of it.
+          fit: .passthrough,
+          children: [
+            // The pill spans the full height and width of a tab slot, so the
+            // icon and label sit centred inside it rather than floating above
+            // a smaller chip.
+            AnimatedPositioned(
+              duration: enableSelectionAnimation
+                  ? GtMotion.adaptiveDuration(context, GtMotion.fluid)
+                  : Duration.zero,
+              curve: GtSpringCurves.snappy,
+              left: tabWidth * currentIndex,
+              top: 0,
+              bottom: 0,
+              width: tabWidth,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: context.palette.fill.weak,
+                  borderRadius: radius,
+                ),
+              ),
+            ),
+            Row(
+              // Each tab fills the pill height so the whole pill is tappable,
+              // not just the icon and label.
+              crossAxisAlignment: .stretch,
+              children: [
+                for (final (i, item) in items.indexed)
+                  Expanded(
+                    child: _GtBottomNavigationTab(
+                      item: item,
+                      selected: i == currentIndex,
+                      iconSize: iconSize,
+                      insetX: tabInsetX,
+                      onTap: () => onIndexChanged(i),
+                      enableSelectionAnimation: enableSelectionAnimation,
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -346,11 +430,18 @@ class GtBottomNavIcon extends GtStatelessWidget {
   final Color selectedColor;
   final bool enableSelectionAnimation;
 
+  /// Icon size in design pixels; scaled through [BuildContext.dp].
+  ///
+  /// Defaults to the Android bar's 28, the iOS bar passes the 24 its Figma
+  /// spec calls for.
+  final double size;
+
   const GtBottomNavIcon(
     this.icon, {
     required this.selected,
     required this.unselectedColor,
     required this.selectedColor,
+    this.size = 28,
     this.enableSelectionAnimation = true,
     super.key,
   });
@@ -365,7 +456,7 @@ class GtBottomNavIcon extends GtStatelessWidget {
       child: GtIcon.withColor(
         icon,
         key: ValueKey((icon, selected)),
-        size: context.dp(28.px),
+        size: context.dp(size.px),
         color: switch (selected) {
           true => selectedColor,
           _ => unselectedColor,
@@ -379,12 +470,16 @@ class GtBottomNavIcon extends GtStatelessWidget {
 class _GtBottomNavigationTab extends GtStatelessWidget {
   final GtBottomNavigationItem item;
   final bool selected;
+  final double iconSize;
+  final double insetX;
   final OnPressed onTap;
   final bool enableSelectionAnimation;
 
   const _GtBottomNavigationTab({
     required this.item,
     required this.selected,
+    required this.iconSize,
+    required this.insetX,
     required this.onTap,
     required this.enableSelectionAnimation,
   });
@@ -392,6 +487,19 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+
+    // The design's selected tones (`primary.dark` / `primary.darker`) are fixed
+    // teals tuned against the light pill. On the dark pill they sink into the
+    // background — `primary.darker` lands near 1.2:1 — so dark mode steps up to
+    // the light brand tone instead of inheriting an unreadable label.
+    final isDark = context.isInDarkMode;
+    final selectedIconColor = isDark
+        ? palette.primary.base
+        : palette.primary.dark;
+    final selectedLabelColor = isDark
+        ? palette.primary.base
+        : palette.primary.darker;
+
     return GtInkWell(
       // GestureDetector takes no focus and reports no semantics, so this tab
       // was unreachable by screen readers, keyboards, and switch control.
@@ -400,24 +508,29 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
       semanticsLabel: item.label,
       excludeDescendantSemantics: true,
       onTap: () => onTap(),
-      child: Center(
+      child: Padding(
+        padding: context.insets.symmetricDp(horizontal: insetX.px),
         child: Column(
-          mainAxisSize: .min,
           mainAxisAlignment: .center,
           crossAxisAlignment: .center,
           children: [
             GtBottomNavIcon(
               selected ? item.selectedIcon : item.unselectedIcon,
               selected: selected,
-              selectedColor: palette.primary.dark,
+              size: iconSize,
+              selectedColor: selectedIconColor,
               unselectedColor: palette.icon.sub,
               enableSelectionAnimation: enableSelectionAnimation,
             ),
             GtText(
               item.label,
+              // The bar has a fixed height, so a wrapped label would overflow
+              // the glass rather than push it taller.
+              maxLines: 1,
+              overflow: .ellipsis,
               textAlign: TextAlign.center,
               style: context.textStyles.navBarLabel(
-                color: selected ? palette.primary.darker : palette.text.soft,
+                color: selected ? selectedLabelColor : palette.text.darkerSub,
               ),
             ),
           ],
@@ -430,51 +543,31 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
 class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
   final OnPressed onTap;
   final IconData icon;
+  final double iconSize;
+  final double size;
   final String? semanticsLabel;
 
   const _GtBottomNavigationTrailingAction({
     required this.onTap,
     required this.icon,
+    required this.iconSize,
+    required this.size,
     required this.semanticsLabel,
   });
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.palette;
-    final radius = context.borderRadiusFull;
-
-    final boxDecoration = BoxDecoration(
-      color: palette.bg.strong.setOpacity(.02),
-      borderRadius: radius,
-      border: Border.all(color: palette.bg.white.setOpacity(.65)),
-      boxShadow: context.shadows.bottomNavInnerGlass(),
-    );
-
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        boxShadow: context.isInDarkMode
-            ? context.shadows.md(context.palette.bg.weak)
-            : context.shadows.bottomNavShadow(),
-        shape: .circle,
-      ),
-      child: ClipRRect(
-        borderRadius: radius,
-        child: BackdropFilter(
-          filter: context.backdropFilters.bottomNavFrost(),
-          child: GtInkWell(
-            // GestureDetector takes no focus and reports no semantics.
-            role: .button,
-            semanticsLabel: semanticsLabel,
-            excludeDescendantSemantics: true,
-            onTap: () => onTap(),
-            child: Container(
-              alignment: .center,
-              height: context.dp(68.px),
-              width: context.dp(68.px),
-              decoration: boxDecoration,
-              child: Center(child: GtIcon(icon, size: context.dp(28.px))),
-            ),
-          ),
+    return _GtBottomNavigationGlass(
+      shape: .circle,
+      child: GtInkWell(
+        // GestureDetector takes no focus and reports no semantics.
+        role: .button,
+        semanticsLabel: semanticsLabel,
+        excludeDescendantSemantics: true,
+        onTap: () => onTap(),
+        child: SizedBox.square(
+          dimension: context.dp(size.px),
+          child: Center(child: GtIcon(icon, size: context.dp(iconSize.px))),
         ),
       ),
     );

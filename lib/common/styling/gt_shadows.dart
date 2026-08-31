@@ -277,7 +277,9 @@ class GtShadows {
     ];
   }
 
-  /// Inner glass shadow used by bottom navigation containers and buttons.
+  /// Drop shadow cast by the floating bottom navigation glass surfaces.
+  ///
+  /// Matches the Figma `Fill + Shadow` layer: `0 8px 40px rgba(0,0,0,0.12)`.
   ///
   /// Accepts an optional [color] to override the default theme shadow color.
   List<BoxShadow> bottomNavShadow([Color? color]) {
@@ -286,7 +288,7 @@ class GtShadows {
         spreadRadius: 0,
         offset: Offset(0, 8),
         blurRadius: 40,
-        color: (color ?? context.palette.bg.strong).setOpacity(.24),
+        color: (color ?? context.palette.bg.strong).setOpacity(.12),
       ),
     ];
   }
