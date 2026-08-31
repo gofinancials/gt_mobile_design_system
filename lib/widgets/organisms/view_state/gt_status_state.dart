@@ -85,7 +85,7 @@ class GtStatusState extends GtStatelessWidget {
   final TextStyle? subtitleStyle;
 
   /// Defines the text capitalization behavior for the title.
-  final GtButtonTextCase titleCase;
+  final GtTextCase titleCase;
 
   /// The spacing between the title and the subtitle.
   ///

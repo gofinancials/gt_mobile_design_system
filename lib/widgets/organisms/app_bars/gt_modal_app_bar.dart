@@ -43,6 +43,8 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   const factory GtModalAppBar.title({
     required String title,
     required Widget? action,
+    TextStyle? style,
+    GtTextCase? titleCase,
     Key? key,
   }) = _GtTitleModalAppBar;
 
@@ -143,12 +145,30 @@ class _GtExtendedModalAppBar extends GtModalAppBar {
 /// Internal implementation for the extended modal app bar.
 class _GtTitleModalAppBar extends GtModalAppBar {
   final String title;
+  final TextStyle? style;
+  final GtTextCase? titleCase;
   final Widget? action;
 
-  const _GtTitleModalAppBar({super.key, required this.title, this.action});
+  const _GtTitleModalAppBar({
+    super.key,
+    required this.title,
+    this.action,
+    this.style,
+    this.titleCase,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final casing = titleCase ?? GtTextCase.upper;
+
+    final casedTitle = switch (casing) {
+      .lower => title.lower,
+      .upper => title.upper,
+      .sentence => title.capitalise(true),
+      .title => title.capitalise(),
+      .none => title,
+    };
+
     return Material(
       type: .transparency,
       child: Padding(
@@ -158,9 +178,9 @@ class _GtTitleModalAppBar extends GtModalAppBar {
           children: [
             Expanded(
               child: GtText(
-                title.upper,
+                casedTitle,
                 maxLines: 1,
-                style: context.textStyles.button(),
+                style: style ?? context.textStyles.button(),
                 overflow: .ellipsis,
               ),
             ),

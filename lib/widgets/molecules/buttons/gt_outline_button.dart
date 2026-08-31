@@ -29,7 +29,7 @@ class GtOutlineButton extends GtButton {
   final TextStyle? style;
 
   /// Defines the text capitalization behavior for the button text.
-  final GtButtonTextCase textCase;
+  final GtTextCase textCase;
 
   /// Creates a [GtOutlineButton].
   const GtOutlineButton({

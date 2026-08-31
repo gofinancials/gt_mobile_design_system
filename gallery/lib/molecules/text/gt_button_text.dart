@@ -22,8 +22,8 @@ Widget playgroundGtButtonTextUseCase(BuildContext context) {
   );
   final textCase = context.knobs.object.dropdown(
     label: 'Text Case',
-    options: GtButtonTextCase.values,
-    initialOption: GtButtonTextCase.upper,
+    options: GtTextCase.values,
+    initialOption: GtTextCase.upper,
     labelBuilder: (c) => c.name,
   );
 
@@ -33,7 +33,7 @@ GtButtonText(
   "$text",
   disabled: $disabled,
   size: GtButtonSize.${size.name},
-  textCase: GtButtonTextCase.${textCase.name},
+  textCase: GtTextCase.${textCase.name},
 )''';
 
   return GtWidgetDocPage(

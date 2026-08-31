@@ -3,7 +3,7 @@ import 'package:gt_mobile_foundation/extensions/string_extensions.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Defines the text capitalization behavior for [GtButtonText].
-enum GtButtonTextCase { upper, lower, sentence, title, none }
+enum GtTextCase { upper, lower, sentence, title, none }
 
 /// A specialized text widget for use within Go Tech buttons.
 ///
@@ -45,7 +45,7 @@ class GtButtonText extends GtStatelessWidget {
   final TextAlign textAlign;
 
   /// Defines the text capitalization behavior for the button text.
-  final GtButtonTextCase textCase;
+  final GtTextCase textCase;
 
   /// Whether changes to [text] use a short directional transition.
   final bool animateChanges;

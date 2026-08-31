@@ -51,7 +51,7 @@ class GtEmptyState extends GtStatelessWidget {
   final TextStyle? subtitleStyle;
 
   /// Defines the text capitalization behavior for the title.
-  final GtButtonTextCase titleCase;
+  final GtTextCase titleCase;
 
   /// Creates a [GtEmptyState] with required icon/title/subtitle content.
   const GtEmptyState({

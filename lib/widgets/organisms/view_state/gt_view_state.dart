@@ -106,7 +106,7 @@ class GtViewStateWidget extends GtStatelessWidget {
   final TextStyle? descriptionStyle;
 
   /// Defines the text capitalization behavior for the title.
-  final GtButtonTextCase titleCase;
+  final GtTextCase titleCase;
 
   /// The visual variant of the call-to-action button.
   ///
