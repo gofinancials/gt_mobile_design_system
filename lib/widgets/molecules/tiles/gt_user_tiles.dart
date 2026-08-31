@@ -9,7 +9,7 @@ class GtAccountListTile extends GtStatelessWidget {
   final String title;
 
   /// Secondary information, typically the account type or currency.
-  final String subtitle;
+  final String? subtitle;
 
   /// An icon or avatar displayed at the start of the tile.
   final Widget leading;
@@ -29,17 +29,21 @@ class GtAccountListTile extends GtStatelessWidget {
   /// Optional style override for the [subtitle].
   final TextStyle? subtitleStyle;
 
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
   /// Creates a [GtAccountListTile].
   const GtAccountListTile(
     this.title, {
     super.key,
-    required this.subtitle,
+    this.subtitle,
     required this.leading,
     this.trailing,
     this.onTap,
     this.hasBoldSubtitle = true,
     this.titleStyle,
     this.subtitleStyle,
+    this.horizontalSpacing,
   });
 
   @override
@@ -57,21 +61,19 @@ class GtAccountListTile extends GtStatelessWidget {
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),
         child: Row(
-          spacing: context.spacingMd,
+          spacing: horizontalSpacing ?? context.spacingMd,
           children: [
-            ConstrainedBox(
-              constraints: BoxConstraints.tight(Size.square(36)),
-              child: leading,
-            ),
+            leading,
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: .start,
                 children: [
                   GtText(
                     title,
                     style: titleStyle ?? context.textStyles.subHeadS(),
                   ),
-                  GtText(subtitle, style: subtitleStyle ?? defaultSubStyle),
+                  if (subtitle.hasValue)
+                    GtText(subtitle, style: subtitleStyle ?? defaultSubStyle),
                 ],
               ),
             ),
@@ -90,16 +92,22 @@ class GtContactListTile extends GtStatelessWidget {
   final String title;
 
   /// Secondary information, typically a username, email, or phone number.
-  final String subtitle;
+  final String? subtitle;
 
   /// An avatar or icon representing the contact.
   final Widget leading;
+
+  /// An optional widget displayed at the end of the tile (e.g., balance, chevron, or switch).
+  final Widget? trailing;
 
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnPressed onTap;
 
   /// An optional spacing between the title amd subtitle.
   final double? spacing;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
 
   /// Creates a [GtContactListTile].
   const GtContactListTile(
@@ -108,13 +116,21 @@ class GtContactListTile extends GtStatelessWidget {
     required this.subtitle,
     required this.leading,
     required this.onTap,
+    this.trailing,
     this.spacing,
+    this.horizontalSpacing,
   });
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
     final subStyle = context.textStyles.subHead2xs(color: palette.text.sub);
+    final traillingWidget = GtIcon(
+      GtIcons.chevronRight,
+      size: 14,
+      alignment: Alignment.centerRight,
+      variant: .soft,
+    );
 
     return GtInkWell(
       role: .button,
@@ -123,28 +139,20 @@ class GtContactListTile extends GtStatelessWidget {
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),
         child: Row(
-          spacing: context.spacingBase,
+          spacing: horizontalSpacing ?? context.spacingBase,
           children: [
-            ConstrainedBox(
-              constraints: BoxConstraints.tight(Size.square(36)),
-              child: leading,
-            ),
+            leading,
             Expanded(
               child: Column(
                 crossAxisAlignment: .start,
                 spacing: spacing ?? 0,
                 children: [
                   GtText(title, style: context.textStyles.subHeadS()),
-                  GtText(subtitle, style: subStyle),
+                  if (subtitle.hasValue) GtText(subtitle, style: subStyle),
                 ],
               ),
             ),
-            GtIcon(
-              GtIcons.chevronRight,
-              size: 14,
-              alignment: Alignment.centerRight,
-              variant: .soft,
-            ),
+            trailing ?? traillingWidget,
           ],
         ),
       ),
@@ -186,8 +194,8 @@ class GtStakeHolderListTile extends GtStatelessWidget {
       crossAxisAlignment: .start,
       spacing: context.spacingBase,
       children: [
-        ConstrainedBox(
-          constraints: BoxConstraints.tight(Size.square(36)),
+        GtSquareConstrainedBox(
+          context.dp(36.px),
           child: DecoratedBox(
             decoration: BoxDecoration(
               shape: .circle,

@@ -82,11 +82,11 @@ class GtBaseListTileTemplate extends GtStatelessWidget {
       children: [
         title,
         if (subtitle != null) ...[
-          GtSizedBox(height: spacingToSubTitle ?? context.spacingXs),
+          SizedBox(height: spacingToSubTitle ?? context.spacingXs),
           subtitle!,
         ],
         if (footer != null) ...[
-          GtSizedBox(height: spacingToFooter ?? context.spacingSm),
+          SizedBox(height: spacingToFooter ?? context.spacingSm),
           footer!,
         ],
       ],

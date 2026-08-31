@@ -76,6 +76,8 @@ import 'package:gallery/molecules/buttons/gt_icon_button_usecase.dart'
     as _gallery_molecules_buttons_gt_icon_button_usecase;
 import 'package:gallery/molecules/buttons/gt_outline_button_usecase.dart'
     as _gallery_molecules_buttons_gt_outline_button_usecase;
+import 'package:gallery/molecules/buttons/gt_question_text_button_usecase.dart'
+    as _gallery_molecules_buttons_gt_question_text_button_usecase;
 import 'package:gallery/molecules/buttons/gt_raised_button_usecase.dart'
     as _gallery_molecules_buttons_gt_raised_button_usecase;
 import 'package:gallery/molecules/buttons/gt_text_button_usecase.dart'
@@ -112,6 +114,8 @@ import 'package:gallery/molecules/inputs/gt_pin_input_usecase.dart'
     as _gallery_molecules_inputs_gt_pin_input_usecase;
 import 'package:gallery/molecules/inputs/gt_search_field_usecase.dart'
     as _gallery_molecules_inputs_gt_search_field_usecase;
+import 'package:gallery/molecules/inputs/gt_signature_pad_usecase.dart'
+    as _gallery_molecules_inputs_gt_signature_pad_usecase;
 import 'package:gallery/molecules/inputs/gt_text_field_usecase.dart'
     as _gallery_molecules_inputs_gt_text_field_usecase;
 import 'package:gallery/molecules/inputs/gt_transfer_field_usecase.dart'
@@ -770,6 +774,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               ),
               _widgetbook.WidgetbookComponent(
+                name: 'GtQuestionTextButton',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtQuestionTextButton',
+                    builder:
+                        _gallery_molecules_buttons_gt_question_text_button_usecase
+                            .playgroundGtQuestionTextButtonUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtRaisedButton',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -959,6 +974,18 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtSearchField',
                     builder: _gallery_molecules_inputs_gt_search_field_usecase
                         .playgroundGtSearchFieldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSignaturePad',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSignaturePad',
+                    builder: _gallery_molecules_inputs_gt_signature_pad_usecase
+                        .playgroundGtSignaturePadUseCase,
+                    designLink:
+                        'https://www.figma.com/design/EE0KNJdpCKsQGoLFyLrC2v/Personal?node-id=5838-32397&m=dev',
                   ),
                 ],
               ),

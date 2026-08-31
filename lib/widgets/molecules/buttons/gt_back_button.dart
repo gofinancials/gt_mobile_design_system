@@ -91,13 +91,15 @@ class GtBackButton extends GtStatelessWidget {
 
               Navigator.of(context).maybePop();
             },
-            child: GtSquareConstrainedBox(
-              cubeSize,
-              child: GtIcon.withColor(
-                GtIcons.chevronLeft,
-                size: iconSize,
-                alignment: .center,
-                color: color ?? context.palette.icon.strong,
+            child: GtTapTarget(
+              child: GtSquareConstrainedBox(
+                cubeSize,
+                child: GtIcon.withColor(
+                  GtIcons.chevronLeft,
+                  size: iconSize,
+                  alignment: .center,
+                  color: color ?? context.palette.icon.strong,
+                ),
               ),
             ),
           ),

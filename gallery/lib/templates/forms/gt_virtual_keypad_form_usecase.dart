@@ -16,6 +16,30 @@ Widget playgroundGtVirtualKeypadFormUseCase(BuildContext context) {
     min: 4,
     max: 6,
   );
+  final fillInactiveDots = context.knobs.boolean(
+    label: 'Fill Inactive Dots',
+    initialValue: false,
+  );
+  final hasHelperText = context.knobs.boolean(
+    label: 'Show Helper Text',
+    initialValue: false,
+  );
+  final hasErrorText = context.knobs.boolean(
+    label: 'Show Error Text',
+    initialValue: false,
+  );
+  final enableBioAuth = context.knobs.boolean(
+    label: 'Enable Biometric Auth',
+    initialValue: true,
+  );
+  final showAction = context.knobs.boolean(
+    label: 'Show App Bar Action (Help)',
+    initialValue: true,
+  );
+  final showFooter = context.knobs.boolean(
+    label: 'Show Footer',
+    initialValue: false,
+  );
 
   return Scaffold(
     body: GtVirtualKeypadForm(
@@ -24,6 +48,19 @@ Widget playgroundGtVirtualKeypadFormUseCase(BuildContext context) {
       title: title,
       subtitle: subtitle,
       maxLength: maxLength,
+      fillInactiveDots: fillInactiveDots,
+      helperText:
+          hasHelperText ? 'Please do not share your PIN with anyone.' : null,
+      errorText: hasErrorText ? 'Incorrect PIN. 2 attempts remaining.' : null,
+      onBioAuth: enableBioAuth ? () {} : null,
+      action: showAction ? GtHelpButton(onPressed: () {}) : null,
+      footer: showFooter
+          ? GtQuestionTextButton(
+              "Forgot PIN?",
+              action: "Reset now",
+              onPressed: () {},
+            )
+          : null,
     ),
   );
 }

@@ -44,7 +44,19 @@ class GtSearchField extends GtStatefulWidget {
   /// An optional semantic label for the clear button.
   final String? clearSemanticLabel;
 
-  /// Creates a new [GtSearchField].
+  /// Whether the field is in read-only action mode, initialized via [GtSearchField.forAction].
+  final bool _readonly;
+
+  /// The callback invoked when the field is tapped in action mode.
+  final OnPressed? _onTap;
+
+  /// An optional Hero animation tag used to animate transitions between screens.
+  final String? _heroTag;
+
+  /// An optional semantic label for the search field.
+  final String? _actionSemanticsLabel;
+
+  /// Creates a standard editable [GtSearchField].
   const GtSearchField({
     super.key,
     this.controller,
@@ -59,7 +71,40 @@ class GtSearchField extends GtStatefulWidget {
     this.suffix,
     this.clearSemanticLabel,
     this.autoFocus = true,
-  });
+    OnPressed? onTap,
+    bool readonly = false,
+    String? heroTag,
+  }) : _readonly = readonly,
+       _onTap = onTap,
+       _actionSemanticsLabel = null,
+       _heroTag = heroTag;
+
+  /// Creates a read-only [GtSearchField] that acts as an interactive button to trigger an action (e.g. opening a search page or modal).
+  ///
+  /// Disables direct text editing, sets [autoFocus] to `false`, and triggers [onTap] when pressed.
+  /// An optional [heroTag] can be provided to participate in [Hero] route transitions.
+  const GtSearchField.forAction({
+    super.key,
+    this.controller,
+    this.validator,
+    this.hintText,
+    this.onChange,
+    this.isRequired = true,
+    this.decoration,
+    this.helperText,
+    this.isEnabled = true,
+    this.prefix,
+    this.suffix,
+    this.clearSemanticLabel,
+    required OnPressed onTap,
+    String? semanticsLabel,
+    String? heroTag,
+  }) : _readonly = true,
+       autoFocus = false,
+       _onTap = onTap,
+       _actionSemanticsLabel = semanticsLabel,
+       _heroTag = heroTag;
+
   @override
   State<GtSearchField> createState() => _GtSearchFieldState();
 }
@@ -102,7 +147,7 @@ class _GtSearchFieldState extends State<GtSearchField> {
         );
       },
     );
-    return GtTextField(
+    Widget child = GtTextField(
       isEnabled: widget.isEnabled,
       decoration: widget.decoration ?? context.inputStyles.searchDecoration,
       helperText: widget.helperText,
@@ -118,5 +163,24 @@ class _GtSearchFieldState extends State<GtSearchField> {
       textInputAction: .search,
       onChanged: widget.onChange,
     );
+
+    if (widget._readonly) {
+      child = GtInkWell(
+        onTap: widget._onTap,
+        role: .button,
+        semanticsLabel: widget._actionSemanticsLabel,
+        excludeDescendantSemantics: true,
+        child: IgnorePointer(child: child),
+      );
+    }
+
+    if (widget._heroTag.hasValue) {
+      child = Material(
+        type: .transparency,
+        child: Hero(tag: widget._heroTag!, child: child),
+      );
+    }
+
+    return child;
   }
 }

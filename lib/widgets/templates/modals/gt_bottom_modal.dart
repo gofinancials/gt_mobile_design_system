@@ -321,7 +321,7 @@ class _GtModalBody extends GtStatelessWidget {
                 mainAxisSize: .min,
                 crossAxisAlignment: .center,
                 children: [
-                  const _GtBottomModalHandle(),
+                  const GtBottomModalHandle(),
                   ?icon,
                   const GtGap.yBase(),
                   Flexible(
@@ -396,7 +396,7 @@ class _GtModalBodyWithChild extends GtStatelessWidget {
             mainAxisSize: .min,
             crossAxisAlignment: .center,
             children: [
-              const _GtBottomModalHandle(),
+              const GtBottomModalHandle(),
               Flexible(child: child),
             ],
           ),
@@ -451,8 +451,8 @@ class _GtBottomModalIconWidget extends StatelessWidget {
 }
 
 /// Renders the top drag handle pill for the modal.
-class _GtBottomModalHandle extends StatelessWidget {
-  const _GtBottomModalHandle();
+class GtBottomModalHandle extends StatelessWidget {
+  const GtBottomModalHandle({super.key});
 
   @override
   Widget build(BuildContext context) {

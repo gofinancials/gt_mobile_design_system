@@ -5,8 +5,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A list tile that displays an illustration alongside a title and subtitle,
 /// often used for onboarding or multi-step processes.
 class GtIllustratedStepTile extends GtStatelessWidget {
-  /// The path to the SVG illustration displayed at the start of the tile.
-  final String illustrationPath;
+  /// The illustration image data displayed at the start of the tile.
+  final AppImageData illustration;
 
   /// The primary title text of the step.
   final String title;
@@ -16,38 +16,57 @@ class GtIllustratedStepTile extends GtStatelessWidget {
 
   /// Whether this step has been completed. If true, displays a success checkmark and visually disables the tile.
   final bool isDone;
+
+  /// Whether the tile should be rendered inside a [GtCard].
   final bool _asCard;
+
+  /// An optional custom width and height for the leading [illustration].
+  final double? illustrationSize;
+
+  /// An optional custom text style for the [title].
+  final TextStyle? titleStyle;
+
+  /// An optional custom text style for the [subtitle].
+  final TextStyle? subtitleStyle;
 
   /// Creates a standard [GtIllustratedStepTile].
   const GtIllustratedStepTile({
     super.key,
-    required this.illustrationPath,
+    required this.illustration,
     required this.title,
     required this.subtitle,
     this.isDone = false,
+    this.illustrationSize,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : _asCard = false;
 
-  /// Creates a [GtIllustratedStepTile] wrapped in a stylized card.
+  /// Creates a [GtIllustratedStepTile] wrapped in a stylized [GtCard].
   const GtIllustratedStepTile.card({
     super.key,
-    required this.illustrationPath,
+    required this.illustration,
     required this.title,
     required this.subtitle,
     this.isDone = false,
+    this.illustrationSize,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : _asCard = true;
 
   @override
   Widget build(BuildContext context) {
     final textColors = context.palette.text;
+    final iconSize = illustrationSize ?? context.dp(36.px);
+    final style = context.textStyles;
 
     Widget child = Row(
       spacing: context.spacingMd,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GtSvg(
-          illustrationPath,
-          height: 36,
-          width: 36,
+        GtImage(
+          image: illustration,
+          width: iconSize,
+          height: iconSize,
           alignment: .topLeft,
           isDecorative: true,
         ),
@@ -55,10 +74,10 @@ class GtIllustratedStepTile extends GtStatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GtText(title, style: context.textStyles.subHeadM()),
+              GtText(title, style: titleStyle ?? style.subHeadM()),
               GtText(
                 subtitle,
-                style: context.textStyles.subHeadXs(color: textColors.sub),
+                style: subtitleStyle ?? style.subHeadXs(color: textColors.sub),
               ),
             ],
           ),

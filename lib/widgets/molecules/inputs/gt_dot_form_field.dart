@@ -105,7 +105,7 @@ class _GtDotFormFieldState extends State<GtDotFormField> {
                   if (helperText.hasValue)
                     GtText(
                       helperText,
-                      style: context.textStyles.bodyM(color: textColor),
+                      style: context.textStyles.bodyS(color: textColor),
                       textAlign: .center,
                       maxLines: 3,
                     ),

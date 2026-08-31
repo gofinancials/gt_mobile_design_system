@@ -14,31 +14,71 @@ class GtEmptyStateCard extends GtStatelessWidget {
   /// Defaults to [GtCardVariant.normal].
   final GtCardVariant variant;
 
+  /// A widget to display above the description. If null, no widget is shown.
+  final Widget? image;
+
+  /// A widget to display above the description. If null, no widget is shown.
+  final Widget? footer;
+
+  /// The space between the icon and the description. Defaults to [context.spacingBase].
+  final double? spacing;
+
+  /// The padding to apply to the card. Defaults to [context.insets.symmetricDp(vertical: 24.px, horizontal: 16.px)].
+  final EdgeInsetsGeometry? padding;
+
+  /// The text style to apply to the description. Defaults to [context.textStyles.subHeadXs(color: context.palette.text.sub)].
+  final TextStyle? style;
+
+  /// The size of the icon. Defaults to 24.
+  final double? iconSize;
+
   /// Creates a [GtEmptyStateCard].
   const GtEmptyStateCard({
     super.key,
     required this.icon,
     required this.description,
     this.variant = .normal,
-  });
+    this.spacing,
+    this.padding,
+    this.footer,
+    this.iconSize,
+    this.style,
+  }) : image = null;
+
+  const GtEmptyStateCard.image({
+    super.key,
+    required this.image,
+    required this.description,
+    this.spacing,
+    this.padding,
+    this.variant = .normal,
+    this.footer,
+    this.style,
+  }) : icon = null,
+       iconSize = null;
 
   @override
   Widget build(BuildContext context) {
+    final defaultPadding = context.insets.symmetricDp(
+      vertical: 24.px,
+      horizontal: 16.px,
+    );
+    final defaultStyle = context.textStyles.subHeadXs(
+      color: context.palette.text.sub,
+    );
+    final defaultIconSize = context.dp(24.px);
+
     return GtCard(
       variant: variant,
-      padding: context.insets.symmetricDp(vertical: 24.px, horizontal: 16.px),
+      padding: padding ?? defaultPadding,
       child: Column(
-        spacing: context.spacingBase,
+        spacing: spacing ?? context.spacingBase,
         mainAxisAlignment: .center,
         children: [
-          if (icon != null) GtIcon(icon!, size: 24),
-          GtText(
-            description,
-            style: context.textStyles.subHeadXs(
-              color: context.palette.text.sub,
-            ),
-            textAlign: .center,
-          ),
+          if (icon != null) GtIcon(icon!, size: iconSize ?? defaultIconSize),
+          ?image,
+          GtText(description, style: style ?? defaultStyle, textAlign: .center),
+          ?footer,
         ],
       ),
     );

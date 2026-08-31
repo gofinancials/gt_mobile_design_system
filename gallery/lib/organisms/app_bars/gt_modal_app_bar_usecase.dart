@@ -12,13 +12,28 @@ Widget playgroundGtModalAppBarUseCase(BuildContext context) {
   );
   final mode = context.knobs.object.dropdown<String>(
     label: 'Constructor Mode',
-    options: ['standard', 'withLeadingTitleimage', 'extended'],
+    options: ['standard', 'withLeadingTitleimage', 'extended', 'title'],
     initialOption: 'standard',
   );
 
   PreferredSizeWidget appBar;
   String modeCode;
-  if (mode == 'extended') {
+  if (mode == 'title') {
+    final showAction = context.knobs.boolean(
+      label: 'Show Action',
+      initialValue: true,
+    );
+    final action = showAction ? GtCancelButton() : null;
+    appBar = GtModalAppBar.title(
+      title: title,
+      action: action,
+    );
+    modeCode =
+        '''GtModalAppBar.title(
+  title: "$title",
+  action: ${showAction ? 'GtCancelButton()' : 'null'},
+)''';
+  } else if (mode == 'extended') {
     appBar = GtModalAppBar.extended(
       title: title,
       action: GtIconButton(icon: GtIcons.spark, onPressed: () {}),
@@ -57,7 +72,7 @@ Widget playgroundGtModalAppBarUseCase(BuildContext context) {
   return GtWidgetDocPage(
     title: 'GtModalAppBar',
     description:
-        'An app bar tailored for modal bottom sheets and overlays, featuring a centered title and close/action controls.',
+        'An app bar tailored for modal bottom sheets and overlays, featuring title headers and close/action controls.',
     code: modeCode,
     child: appBar,
   );
