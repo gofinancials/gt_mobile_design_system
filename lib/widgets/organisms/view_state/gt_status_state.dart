@@ -84,6 +84,11 @@ class GtStatusState extends GtStatelessWidget {
   /// The text style for the subtitle.
   final TextStyle? subtitleStyle;
 
+  /// The spacing between the title and the subtitle.
+  ///
+  /// Defaults to `GtGap.yMd()`. Can be customized with a [GtViewStateSpacer].
+  final GtViewStateSpacer? gapToTitle;
+
   /// Creates a [GtStatusState] configured for the given [variant] and copy.
   const GtStatusState({
     super.key,
@@ -95,6 +100,7 @@ class GtStatusState extends GtStatelessWidget {
     this.actionLabel,
     this.onActionPressed,
     this.actionVariant = .primary,
+    this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
     this.gapToAction = const GtViewStateGapSpacer(GtGap.yLg()),
     this.actionSize = .medium,
@@ -121,6 +127,7 @@ class GtStatusState extends GtStatelessWidget {
     this.actionLabel,
     this.onActionPressed,
     this.actionVariant = .primary,
+    this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
     this.gapToAction = const GtViewStateGapSpacer(GtGap.yLg()),
     this.actionSize = .medium,
@@ -144,6 +151,7 @@ class GtStatusState extends GtStatelessWidget {
     this.actionLabel,
     this.onActionPressed,
     this.actionVariant = .primary,
+    this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
     this.gapToAction = const GtViewStateGapSpacer(GtGap.yLg()),
     this.actionSize = .medium,
@@ -170,6 +178,7 @@ class GtStatusState extends GtStatelessWidget {
     this.actionLabel,
     this.onActionPressed,
     this.actionVariant = .primary,
+    this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
     this.gapToAction = const GtViewStateGapSpacer(GtGap.yLg()),
     this.actionSize = .medium,
@@ -213,6 +222,7 @@ class GtStatusState extends GtStatelessWidget {
       actionSize: actionSize,
       actionAlignment: actionAlignment,
       alignment: alignment ?? .center,
+      gapToTitle: gapToTitle,
       gapToDescription: gapToSubtitle,
       gapToAction: gapToAction,
       titleStyle: titleStyle,

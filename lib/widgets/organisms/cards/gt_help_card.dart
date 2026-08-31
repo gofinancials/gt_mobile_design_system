@@ -22,6 +22,9 @@ class GtHelpCard extends GtStatelessWidget {
   /// The size of the icon. Default is 24
   final double? iconSize;
 
+  /// The icon to display in the help card. Default is [Icons.messages]
+  final IconData icon;
+
   /// Creates a [GtHelpCard].
   const GtHelpCard({
     super.key,
@@ -31,6 +34,7 @@ class GtHelpCard extends GtStatelessWidget {
     this.onTap,
     this.padding,
     this.iconSize,
+    this.icon = GtIcons.messages,
   });
 
   @override
@@ -65,7 +69,7 @@ class GtHelpCard extends GtStatelessWidget {
           crossAxisAlignment: .center,
           title: GtText(title, style: context.textStyles.bodyM()),
           leading: GtIcon.withColor(
-            GtIcons.messages,
+            icon,
             size: iconSize ?? 24,
             color: iconColor,
           ),
