@@ -39,6 +39,13 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     Key? key,
   }) = _GtExtendedModalAppBar;
 
+  /// A [GtModalAppBar] that displays a title as a header, with an optional trailing action button. The title text is automatically expanded to fill available space and truncated with an ellipsis if necessary.
+  const factory GtModalAppBar.title({
+    required String title,
+    required Widget? action,
+    Key? key,
+  }) = _GtTitleModalAppBar;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -117,7 +124,7 @@ class _GtExtendedModalAppBar extends GtModalAppBar {
               children: [
                 GtBackButton(size: .small),
                 GtText(
-                  title,
+                  title.upper,
                   textAlign: .center,
                   maxLines: 1,
                   style: context.textStyles.button(),
@@ -126,6 +133,38 @@ class _GtExtendedModalAppBar extends GtModalAppBar {
                 Align(alignment: .centerRight, child: action),
               ],
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Internal implementation for the extended modal app bar.
+class _GtTitleModalAppBar extends GtModalAppBar {
+  final String title;
+  final Widget? action;
+
+  const _GtTitleModalAppBar({super.key, required this.title, this.action});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      type: .transparency,
+      child: Padding(
+        padding: context.insets.fromLTRBDp(16.px, 24.px, 16.px, 0),
+        child: Row(
+          spacing: context.spacingMd,
+          children: [
+            Expanded(
+              child: GtText(
+                title.upper,
+                maxLines: 1,
+                style: context.textStyles.button(),
+                overflow: .ellipsis,
+              ),
+            ),
+            ?action,
           ],
         ),
       ),

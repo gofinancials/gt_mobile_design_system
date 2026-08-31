@@ -209,6 +209,33 @@ Widget buildGtModalAppbarUsecase(BuildContext context) {
     );
   }
 
+  showTitleModal({required String title}) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Material(
+          type: .transparency,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: 50.topBorderRadius,
+              color: context.palette.bg.white,
+            ),
+            child: Column(
+              mainAxisAlignment: .start,
+              crossAxisAlignment: .stretch,
+              children: [
+                GtModalAppBar.title(
+                  title: title,
+                  action: GtCancelButton(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   final title = context.knobs.string(label: "Title", initialValue: "Schedule");
 
   return Scaffold(
@@ -233,6 +260,11 @@ Widget buildGtModalAppbarUsecase(BuildContext context) {
             onPressed: () => showModal(title: title, titleLeading: leading),
             text: "Show Prefixed Titled Modal AppBar",
             variant: .black,
+          ),
+          GtRaisedButton(
+            onPressed: () => showTitleModal(title: title),
+            text: "Show Title Header Modal AppBar",
+            variant: .primary,
           ),
         ],
       ),
