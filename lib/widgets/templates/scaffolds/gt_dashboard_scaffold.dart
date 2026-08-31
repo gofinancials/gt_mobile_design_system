@@ -69,6 +69,18 @@ class GtDashboardScaffold extends GtStatefulWidget {
   ///The style of the bottom navigation bar.
   final GtBottomNavigationStyle? bottomNavigationStyle;
 
+  /// An accessible name for the trailing action, already localised.
+  ///
+  /// The action is icon-only, so without a name a screen reader announces it
+  /// as an unlabelled button.
+  final String? trailingSemanticsLabel;
+
+  /// Whether the selection highlight and icon change should animate.
+  final bool enableSelectionAnimation;
+
+  /// Optional icon for the trailing action button (**iOS only**).
+  final IconData trailingIcon;
+
   /// Creates a [GtDashboardScaffold].
   const GtDashboardScaffold({
     super.key,
@@ -78,6 +90,9 @@ class GtDashboardScaffold extends GtStatefulWidget {
     required this.onClickHelp,
     this.pageController,
     this.bottomNavigationStyle,
+    this.trailingSemanticsLabel,
+    this.enableSelectionAnimation = true,
+    this.trailingIcon = GtIcons.helpInfo,
   }) : assert(data.length >= 2, "Data must be at least 2");
 
   @override
@@ -145,6 +160,9 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
               style: widget.bottomNavigationStyle,
               onTrailingTap: widget.onClickHelp,
               currentIndex: index,
+              trailingSemanticsLabel: widget.trailingSemanticsLabel,
+              enableSelectionAnimation: widget.enableSelectionAnimation,
+              trailingIcon: widget.trailingIcon,
               onIndexChanged: (index) {
                 if (navItems[index].onSelected != null) {
                   navItems[index].onSelected!(index);
