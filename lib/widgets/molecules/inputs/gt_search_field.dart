@@ -97,12 +97,12 @@ class GtSearchField extends GtStatefulWidget {
     this.suffix,
     this.clearSemanticLabel,
     required OnPressed onTap,
-    String? actionSemanticsLabel,
+    String? semanticsLabel,
     String? heroTag,
   }) : _readonly = true,
        autoFocus = false,
        _onTap = onTap,
-       _actionSemanticsLabel = actionSemanticsLabel,
+       _actionSemanticsLabel = semanticsLabel,
        _heroTag = heroTag;
 
   @override
