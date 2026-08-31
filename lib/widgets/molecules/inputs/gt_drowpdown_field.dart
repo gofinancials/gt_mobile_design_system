@@ -384,10 +384,22 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
                           widget.controller,
                         );
                       }
+
+                      Widget? leading = switch (value.leading) {
+                        AppImageData(:final imageData) => GtImage(
+                          image: imageData,
+                          isDecorative: true,
+                          width: value.leadingSize ?? context.dp(32.px),
+                          height: value.leadingSize ?? context.dp(32.px),
+                        ),
+                        _ => null,
+                      };
+
                       return GtSelectionListTile(
                         value.computedLabel,
                         value: value,
                         isSelected: isSelected,
+                        leading: leading,
                         onSelect: (value) {
                           widget.controller.selection = value;
                           context.maybePop();

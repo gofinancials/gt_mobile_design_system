@@ -29,8 +29,14 @@ class GtAccountListTile extends GtStatelessWidget {
   /// Optional style override for the [subtitle].
   final TextStyle? subtitleStyle;
 
+  /// Optional vertical spacing override.
+  final double? verticalSpacing;
+
   /// Optional horizontal spacing override.
   final double? horizontalSpacing;
+
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
 
   /// Creates a [GtAccountListTile].
   const GtAccountListTile(
@@ -44,6 +50,8 @@ class GtAccountListTile extends GtStatelessWidget {
     this.titleStyle,
     this.subtitleStyle,
     this.horizontalSpacing,
+    this.verticalSpacing,
+    this.padding,
   });
 
   @override
@@ -59,7 +67,7 @@ class GtAccountListTile extends GtStatelessWidget {
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 8.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
         child: Row(
           spacing: horizontalSpacing ?? context.spacingMd,
           children: [
@@ -67,6 +75,7 @@ class GtAccountListTile extends GtStatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: .start,
+                spacing: verticalSpacing ?? 0,
                 children: [
                   GtText(
                     title,
@@ -94,6 +103,12 @@ class GtContactListTile extends GtStatelessWidget {
   /// Secondary information, typically a username, email, or phone number.
   final String? subtitle;
 
+  /// Optional style override for the [title].
+  final TextStyle? titleStyle;
+
+  /// Optional style override for the [subtitle].
+  final TextStyle? subtitleStyle;
+
   /// An avatar or icon representing the contact.
   final Widget leading;
 
@@ -109,6 +124,9 @@ class GtContactListTile extends GtStatelessWidget {
   /// Optional horizontal spacing override.
   final double? horizontalSpacing;
 
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtContactListTile].
   const GtContactListTile(
     this.title, {
@@ -116,9 +134,12 @@ class GtContactListTile extends GtStatelessWidget {
     required this.subtitle,
     required this.leading,
     required this.onTap,
+    this.titleStyle,
+    this.subtitleStyle,
     this.trailing,
     this.spacing,
     this.horizontalSpacing,
+    this.padding,
   });
 
   @override
@@ -137,7 +158,7 @@ class GtContactListTile extends GtStatelessWidget {
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 8.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
         child: Row(
           spacing: horizontalSpacing ?? context.spacingBase,
           children: [
@@ -147,8 +168,12 @@ class GtContactListTile extends GtStatelessWidget {
                 crossAxisAlignment: .start,
                 spacing: spacing ?? 0,
                 children: [
-                  GtText(title, style: context.textStyles.subHeadS()),
-                  if (subtitle.hasValue) GtText(subtitle, style: subStyle),
+                  GtText(
+                    title,
+                    style: titleStyle ?? context.textStyles.subHeadS(),
+                  ),
+                  if (subtitle.hasValue)
+                    GtText(subtitle, style: subtitleStyle ?? subStyle),
                 ],
               ),
             ),
@@ -175,6 +200,15 @@ class GtStakeHolderListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnPressed onTap;
 
+  /// Optional horizontal spacing override.
+  final double? verticalSpacing;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtStakeHolderListTile].
   const GtStakeHolderListTile(
     this.name, {
@@ -182,6 +216,9 @@ class GtStakeHolderListTile extends GtStatelessWidget {
     required this.position,
     required this.footer,
     required this.onTap,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.padding,
   });
 
   String get initials => AppHelpers.getInitials(name) ?? "";
@@ -192,7 +229,7 @@ class GtStakeHolderListTile extends GtStatelessWidget {
 
     final leading = Row(
       crossAxisAlignment: .start,
-      spacing: context.spacingBase,
+      spacing: horizontalSpacing ?? context.spacingBase,
       children: [
         GtSquareConstrainedBox(
           context.dp(36.px),
@@ -211,7 +248,7 @@ class GtStakeHolderListTile extends GtStatelessWidget {
         ),
         Expanded(
           child: Column(
-            spacing: context.spacingSm,
+            spacing: verticalSpacing ?? context.spacingSm,
             mainAxisAlignment: .center,
             crossAxisAlignment: .stretch,
             children: [
@@ -235,9 +272,9 @@ class GtStakeHolderListTile extends GtStatelessWidget {
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 8.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
         child: Row(
-          spacing: context.spacingBase,
+          spacing: horizontalSpacing ?? context.spacingBase,
           children: [
             Expanded(child: leading),
             GtIcon(GtIcons.chevronRight, size: 14, variant: .soft),
@@ -263,6 +300,15 @@ class GtStakeHolderStatusListTile extends GtStatelessWidget {
   /// Whether the stakeholder's status is verified. If true, the tile is visually disabled.
   final bool isVerified;
 
+  /// Optional horizontal spacing override.
+  final double? verticalSpacing;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtStakeHolderStatusListTile].
   const GtStakeHolderStatusListTile(
     this.name, {
@@ -270,6 +316,9 @@ class GtStakeHolderStatusListTile extends GtStatelessWidget {
     required this.position,
     required this.trailing,
     this.isVerified = false,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.padding,
   });
 
   String get initials => AppHelpers.getInitials(name) ?? "";
@@ -280,9 +329,9 @@ class GtStakeHolderStatusListTile extends GtStatelessWidget {
     return GtDisabledOverlay(
       isVerified,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 8.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
         child: Row(
-          spacing: context.spacingBase,
+          spacing: horizontalSpacing ?? context.spacingBase,
           children: [
             ConstrainedBox(
               constraints: BoxConstraints.tight(Size.square(36)),
@@ -301,7 +350,7 @@ class GtStakeHolderStatusListTile extends GtStatelessWidget {
             ),
             Expanded(
               child: Column(
-                spacing: context.spacingSm,
+                spacing: verticalSpacing ?? context.spacingSm,
                 mainAxisAlignment: .center,
                 crossAxisAlignment: .stretch,
                 children: [
@@ -335,6 +384,15 @@ class GtAccountTypeListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnPressed onTap;
 
+  /// Optional horizontal spacing override.
+  final double? verticalSpacing;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtAccountTypeListTile].
   const GtAccountTypeListTile(
     this.title, {
@@ -342,6 +400,9 @@ class GtAccountTypeListTile extends GtStatelessWidget {
     required this.icon,
     required this.subtitle,
     required this.onTap,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.padding,
   });
 
   @override
@@ -350,7 +411,7 @@ class GtAccountTypeListTile extends GtStatelessWidget {
 
     final leading = Row(
       crossAxisAlignment: .start,
-      spacing: context.spacing.md,
+      spacing: horizontalSpacing ?? context.spacingMd,
       children: [
         Container(
           width: context.dp(36.px),
@@ -364,7 +425,7 @@ class GtAccountTypeListTile extends GtStatelessWidget {
         Expanded(
           child: Column(
             mainAxisSize: .min,
-            spacing: context.spacing.sm,
+            spacing: verticalSpacing ?? context.spacing.sm,
             crossAxisAlignment: .start,
             children: [
               GtText(

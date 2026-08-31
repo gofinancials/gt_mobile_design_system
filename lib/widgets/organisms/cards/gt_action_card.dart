@@ -11,6 +11,12 @@ class GtActionCard extends GtStatelessWidget {
   /// The secondary text or subtitle of the action card.
   final String subtitle;
 
+  /// Optional style override for the [title].
+  final TextStyle? titleStyle;
+
+  /// Optional style override for the [subtitle].
+  final TextStyle? subtitleStyle;
+
   /// The icon to display in the action card.
   final IconData? _icon;
 
@@ -45,6 +51,8 @@ class GtActionCard extends GtStatelessWidget {
     this.variant = .away,
     required this.onActionTap,
     required this.actionText,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : _icon = icon,
        _trailing = null,
        dismissText = null,
@@ -55,6 +63,8 @@ class GtActionCard extends GtStatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
+    this.titleStyle,
+    this.subtitleStyle,
     required IconData icon,
     this.hidden = false,
     this.variant = .away,
@@ -70,6 +80,8 @@ class GtActionCard extends GtStatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
+    this.titleStyle,
+    this.subtitleStyle,
     required Widget trailing,
     this.hidden = false,
     this.variant = .away,
@@ -83,6 +95,8 @@ class GtActionCard extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final mainStyle = context.textStyles.subHeadS();
+    final subStyle = context.textStyles.bodyS(color: palette.text.sub);
     final iconColor = switch (variant) {
       .away => palette.away.darker,
       _ => variant.getIconColor(palette),
@@ -94,51 +108,60 @@ class GtActionCard extends GtStatelessWidget {
       child1: GtCard(
         padding: context.insets.allDp(12.px),
         variant: variant,
-        child: Row(
-          spacing: context.spacingSectionMd,
-          crossAxisAlignment: .start,
+        child: Column(
           children: [
-            Expanded(
-              child: Column(
-                spacing: context.spacingSm,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  GtText(title, style: context.textStyles.subHeadS()),
-                  GtText(
-                    subtitle,
-                    style: context.textStyles.bodyS(color: palette.text.sub),
-                  ),
-                  const GtGap.yXl(),
-                  Row(
+            Row(
+              spacing: context.spacingSectionMd,
+              crossAxisAlignment: .start,
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Column(
                     spacing: context.spacingSm,
-                    mainAxisAlignment: .start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      GtRaisedButton(
-                        onPressed: onActionTap,
-                        variant: variant.buttonVariant,
-                        text: actionText,
-                        size: .xsmall,
-                      ),
-                      if (onDismiss != null)
-                        GtTextButton(
-                          onPressed: onDismiss!,
-                          variant: variant.buttonVariant,
-                          text: dismissText,
-                          size: .xsmall,
-                        ),
+                      GtText(title, style: titleStyle ?? mainStyle),
+                      GtText(subtitle, style: subtitleStyle ?? subStyle),
                     ],
                   ),
-                ],
-              ),
+                ),
+                if (_icon != null)
+                  GtIcon.withColor(
+                    _icon,
+                    color: iconColor,
+                    size: 32,
+                    alignment: .topLeft,
+                  ),
+                if (_trailing != null)
+                  Flexible(
+                    child: Align(alignment: .topRight, child: _trailing),
+                  ),
+              ],
             ),
-            if (_icon != null)
-              GtIcon.withColor(
-                _icon,
-                color: iconColor,
-                size: 32,
-                alignment: .topLeft,
-              ),
-            ?_trailing,
+            const GtGap.yXl(),
+            Row(
+              spacing: context.spacingSm,
+              mainAxisAlignment: .start,
+              children: [
+                Flexible(
+                  child: GtRaisedButton(
+                    onPressed: onActionTap,
+                    variant: variant.buttonVariant,
+                    text: actionText,
+                    size: .xsmall,
+                  ),
+                ),
+                if (onDismiss != null)
+                  Flexible(
+                    child: GtTextButton(
+                      onPressed: onDismiss!,
+                      variant: variant.buttonVariant,
+                      text: dismissText,
+                      size: .xsmall,
+                    ),
+                  ),
+              ],
+            ),
           ],
         ),
       ),

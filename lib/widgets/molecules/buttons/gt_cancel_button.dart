@@ -79,20 +79,23 @@ class GtCancelButton extends GtStatelessWidget {
       _ => context.dp(20.px),
     };
 
-    Widget child = GtInkWell(
-      role: .button,
-      enableScaleEffect: enableScaleEffect,
-      pressedScale: pressedScale,
-      onTap: () {
-        if (subAction != null) subAction!();
-        if (onTap != null) return onTap!();
-        if (!context.canPop) return;
+    Widget child = GtTapTarget(
+      child: GtInkWell(
+        role: .button,
+        hapticFeedbackType: .medium,
+        enableScaleEffect: enableScaleEffect,
+        pressedScale: pressedScale,
+        onTap: () {
+          if (subAction != null) subAction!();
+          if (onTap != null) return onTap!();
+          if (!context.canPop) return;
 
-        context.pop();
-      },
-      child: GtSquareConstrainedBox(
-        cubeSize,
-        child: GtIcon.withColor(GtIcons.cancel, size: iconSize, color: color),
+          context.pop();
+        },
+        child: GtSquareConstrainedBox(
+          cubeSize,
+          child: GtIcon.withColor(GtIcons.cancel, size: iconSize, color: color),
+        ),
       ),
     );
 

@@ -31,6 +31,12 @@ class GtGoalProgressListTile extends GtStatelessWidget {
   /// Defaults to [AppStrings.naira].
   final String currency;
 
+  /// Optional vertical spacing override.
+  final double? verticalSpacing;
+
+  /// Optional padding override. Used only when asCard is true
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtGoalProgressListTile].
   const GtGoalProgressListTile({
     super.key,
@@ -40,6 +46,8 @@ class GtGoalProgressListTile extends GtStatelessWidget {
     this.onEdit,
     this.asCard = true,
     this.currency = AppStrings.naira,
+    this.verticalSpacing,
+    this.padding,
   });
 
   /// Calculates the ratio of the utilized value to the maximum, capped at 1.0
@@ -61,7 +69,7 @@ class GtGoalProgressListTile extends GtStatelessWidget {
     final percentage = (100 * _fraction).toStringAsFixed(0);
 
     Widget child = Column(
-      spacing: context.spacingMd,
+      spacing: verticalSpacing ?? context.spacingMd,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text.rich(
@@ -98,7 +106,7 @@ class GtGoalProgressListTile extends GtStatelessWidget {
     if (asCard) {
       child = GtCard(
         borderRadius: context.borderRadiusXl,
-        padding: context.insets.allDp(16.px),
+        padding: padding ?? context.insets.allDp(16.px),
         child: child,
       );
     }

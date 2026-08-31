@@ -19,6 +19,12 @@ class GtListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped.
   final OnPressed? onTap;
 
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtListTile].
   const GtListTile({
     super.key,
@@ -26,6 +32,8 @@ class GtListTile extends GtStatelessWidget {
     this.leading,
     this.trailing,
     this.onTap,
+    this.horizontalSpacing,
+    this.padding,
   });
 
   @override
@@ -35,9 +43,9 @@ class GtListTile extends GtStatelessWidget {
       borderRadius: context.borderRadius2Xl,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 8.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
         child: Row(
-          spacing: context.spacingMd,
+          spacing: horizontalSpacing ?? context.spacingMd,
           children: [
             ?leading,
             Expanded(child: GtText(text, style: context.textStyles.subHeadS())),
@@ -69,6 +77,18 @@ class GtIconListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped.
   final OnPressed? onTap;
 
+  /// Optional horizontal spacing override.
+  final double? verticalSpacing;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
+
+  /// Optional trailing widget.
+  final Widget? trailing;
+
   /// Creates a [GtIconListTile].
   const GtIconListTile(
     this.title, {
@@ -78,6 +98,10 @@ class GtIconListTile extends GtStatelessWidget {
     this.crossAxisAlignment,
     this.iconColor,
     this.onTap,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.padding,
+    this.trailing,
   });
 
   /// Creates a [GtIconListTile].
@@ -88,6 +112,10 @@ class GtIconListTile extends GtStatelessWidget {
     required IconData icon,
     CrossAxisAlignment? crossAxisAlignment,
     OnPressed? onTap,
+    Widget? trailing,
+    double? verticalSpacing,
+    double? horizontalSpacing,
+    EdgeInsetsGeometry? padding,
   }) = _GtIconListTileAlt;
 
   @override
@@ -99,16 +127,16 @@ class GtIconListTile extends GtStatelessWidget {
       borderRadius: context.borderRadius2Xl,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 12.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 12.px),
         child: Row(
-          spacing: context.spacingMd,
-          crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
+          spacing: horizontalSpacing ?? context.spacingMd,
+          crossAxisAlignment: crossAxisAlignment ?? .start,
           children: [
             GtIcon.withColor(icon, size: context.dp(24.px), color: iconColor),
             Expanded(
               child: Column(
-                spacing: context.spacingSm,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: verticalSpacing ?? context.spacingSm,
+                crossAxisAlignment: .start,
                 children: [
                   GtText(title, style: context.textStyles.subHeadS()),
                   if (subtitle.hasValue)
@@ -119,6 +147,7 @@ class GtIconListTile extends GtStatelessWidget {
                 ],
               ),
             ),
+            ?trailing,
           ],
         ),
       ),
@@ -136,6 +165,10 @@ class _GtIconListTileAlt extends GtIconListTile {
     required super.icon,
     super.crossAxisAlignment,
     super.onTap,
+    super.trailing,
+    super.verticalSpacing,
+    super.horizontalSpacing,
+    super.padding,
   }) : super(iconColor: null);
 
   @override
@@ -147,10 +180,10 @@ class _GtIconListTileAlt extends GtIconListTile {
       borderRadius: context.borderRadius2Xl,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 12.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 12.px),
         child: Row(
-          spacing: context.spacingBase,
-          crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
+          spacing: horizontalSpacing ?? context.spacingMd,
+          crossAxisAlignment: crossAxisAlignment ?? .center,
           children: [
             Container(
               alignment: .center,
@@ -164,7 +197,8 @@ class _GtIconListTileAlt extends GtIconListTile {
             ),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: verticalSpacing ?? 0,
+                crossAxisAlignment: .start,
                 children: [
                   GtText(title, style: context.textStyles.bodyM()),
                   if (subtitle.hasValue)
@@ -175,6 +209,7 @@ class _GtIconListTileAlt extends GtIconListTile {
                 ],
               ),
             ),
+            ?trailing,
           ],
         ),
       ),
@@ -206,6 +241,9 @@ class GtSimpleActionListTile extends GtStatelessWidget {
   /// The style of the trailing icon.
   final GtIconVariant? trailingIconVariant;
 
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
   /// Creates a [GtSimpleActionListTile].
   const GtSimpleActionListTile(
     this.title, {
@@ -216,6 +254,7 @@ class GtSimpleActionListTile extends GtStatelessWidget {
     this.trailingIconSize,
     this.titleStyle,
     this.trailingIconVariant,
+    this.horizontalSpacing,
   });
 
   @override
@@ -227,7 +266,7 @@ class GtSimpleActionListTile extends GtStatelessWidget {
       child: Padding(
         padding: padding ?? context.insets.symmetricDp(vertical: 12.px),
         child: Row(
-          spacing: context.spacingMd,
+          spacing: horizontalSpacing ?? context.spacingMd,
           children: [
             Expanded(
               child: GtText(
