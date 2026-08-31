@@ -70,7 +70,7 @@ class GtHelpCard extends GtStatelessWidget {
           title: GtText(title, style: context.textStyles.bodyM()),
           leading: GtIcon.withColor(
             icon,
-            size: iconSize ?? 24,
+            size: iconSize ?? context.dp(24.px),
             color: iconColor,
           ),
         ),
