@@ -54,6 +54,15 @@ class GtTransactionListTile extends GtStatelessWidget {
   /// Determines the maximum number of lines for the name and amount.
   final int? maxLines;
 
+  /// Optional horizontal spacing override.
+  final double? verticalSpacing;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtTransactionListTile].
   const GtTransactionListTile(
     this.name, {
@@ -70,6 +79,9 @@ class GtTransactionListTile extends GtStatelessWidget {
     this.subtitleStyle,
     this.amountStyle,
     this.maxLines = 1,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.padding,
   });
 
   String get _formattedAmount {
@@ -110,18 +122,18 @@ class GtTransactionListTile extends GtStatelessWidget {
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 8.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
         child: Row(
-          spacing: context.spacingMd,
+          spacing: horizontalSpacing ?? context.spacingMd,
           children: [
             icon,
             Expanded(
               child: Column(
-                spacing: context.spacingXs,
+                spacing: verticalSpacing ?? context.spacingXs,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    spacing: context.spacingMd,
+                    spacing: horizontalSpacing ?? context.spacingMd,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
@@ -202,6 +214,15 @@ class GtPaymentListTile extends GtStatelessWidget {
   /// Optional custom style override for the [amount] text.
   final TextStyle? amountStyle;
 
+  /// Optional horizontal spacing override.
+  final double? verticalSpacing;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtPaymentListTile].
   const GtPaymentListTile(
     this.title, {
@@ -217,6 +238,9 @@ class GtPaymentListTile extends GtStatelessWidget {
     this.nameStyle,
     this.subtitleStyle,
     this.amountStyle,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.padding,
   });
 
   @override
@@ -230,15 +254,15 @@ class GtPaymentListTile extends GtStatelessWidget {
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 8.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
         child: Row(
-          spacing: context.spacingBase,
+          spacing: horizontalSpacing ?? context.spacingBase,
           crossAxisAlignment: .start,
           children: [
             ?leading,
             Expanded(
               child: Row(
-                spacing: context.spacingBase,
+                spacing: horizontalSpacing ?? context.spacingBase,
                 crossAxisAlignment: .start,
                 children: [
                   Expanded(
@@ -329,7 +353,11 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// The maximum number of lines to display for the [title], [subtitle], and [superscript].
   final int? maxLines;
 
+  /// Optional spacer widget to place between the subtitle and the trailing widget.
   final Widget? subSpacer;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
 
   /// Creates a [GtTransactionParticipantListTile].
   const GtTransactionParticipantListTile(
@@ -345,6 +373,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
     this.superscriptStyle,
     this.maxLines,
     this.subSpacer,
+    this.horizontalSpacing,
   });
 
   @override
@@ -356,7 +385,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
 
     return Row(
       crossAxisAlignment: crossAxisAlignment,
-      spacing: context.spacingMd,
+      spacing: horizontalSpacing ?? context.spacingMd,
       children: [
         ?leading,
         Expanded(

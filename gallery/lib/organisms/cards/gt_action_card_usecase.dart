@@ -65,8 +65,8 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
       subtitle: subtitle,
       trailing: GtSvg(
         GtVectorIllustrations.serviceStatus,
-        width: 80.px,
-        height: 80.px,
+        width: context.dp(80.px),
+        height: context.dp(80.px),
         alignment: Alignment.topRight,
       ),
       onActionTap: () {},

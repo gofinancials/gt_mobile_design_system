@@ -29,6 +29,15 @@ class GtIllustratedStepTile extends GtStatelessWidget {
   /// An optional custom text style for the [subtitle].
   final TextStyle? subtitleStyle;
 
+  /// Optional vertical spacing override.
+  final double? verticalSpacing;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a standard [GtIllustratedStepTile].
   const GtIllustratedStepTile({
     super.key,
@@ -39,6 +48,9 @@ class GtIllustratedStepTile extends GtStatelessWidget {
     this.illustrationSize,
     this.titleStyle,
     this.subtitleStyle,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.padding,
   }) : _asCard = false;
 
   /// Creates a [GtIllustratedStepTile] wrapped in a stylized [GtCard].
@@ -51,6 +63,9 @@ class GtIllustratedStepTile extends GtStatelessWidget {
     this.illustrationSize,
     this.titleStyle,
     this.subtitleStyle,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.padding,
   }) : _asCard = true;
 
   @override
@@ -60,7 +75,7 @@ class GtIllustratedStepTile extends GtStatelessWidget {
     final style = context.textStyles;
 
     Widget child = Row(
-      spacing: context.spacingMd,
+      spacing: horizontalSpacing ?? context.spacingMd,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GtImage(
@@ -73,6 +88,7 @@ class GtIllustratedStepTile extends GtStatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: verticalSpacing ?? 0,
             children: [
               GtText(title, style: titleStyle ?? style.subHeadM()),
               GtText(
@@ -86,7 +102,7 @@ class GtIllustratedStepTile extends GtStatelessWidget {
     );
 
     child = Row(
-      spacing: context.spacingMd,
+      spacing: horizontalSpacing ?? context.spacingMd,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(child: child),
@@ -108,7 +124,9 @@ class GtIllustratedStepTile extends GtStatelessWidget {
 
     if (_asCard) {
       child = GtCard(
-        padding: context.insets.symmetricDp(horizontal: 12.px, vertical: 16.px),
+        padding:
+            padding ??
+            context.insets.symmetricDp(horizontal: 12.px, vertical: 16.px),
         child: child,
       );
     }
@@ -137,6 +155,10 @@ class GtStatusListTile extends GtStatelessWidget {
 
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnPressed onPressed;
+
+  /// Optional padding override. Used only when asCard is true
+  final EdgeInsetsGeometry? padding;
+
   final bool _asCard;
 
   /// Creates a standard [GtStatusListTile].
@@ -148,6 +170,7 @@ class GtStatusListTile extends GtStatelessWidget {
     required this.onPressed,
     this.footer,
     this.isDone = false,
+    this.padding,
   }) : _asCard = false;
 
   /// Creates a [GtStatusListTile] wrapped in a stylized card.
@@ -159,6 +182,7 @@ class GtStatusListTile extends GtStatelessWidget {
     required this.onPressed,
     this.footer,
     this.isDone = false,
+    this.padding,
   }) : _asCard = true;
 
   @override
@@ -205,7 +229,10 @@ class GtStatusListTile extends GtStatelessWidget {
     );
 
     if (_asCard) {
-      child = GtCard(padding: context.insets.allDp(16.px), child: child);
+      child = GtCard(
+        padding: padding ?? context.insets.allDp(16.px),
+        child: child,
+      );
     }
 
     return GtDisabledOverlay(

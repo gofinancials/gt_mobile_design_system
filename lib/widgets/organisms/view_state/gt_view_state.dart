@@ -72,7 +72,7 @@ class GtViewStateWidget extends GtStatelessWidget {
 
   /// The spacing between the graphic or icon and the title.
   ///
-  /// Defaults to `GtGap.yMd()`. Can be customized with a [GtViewStateSpacer].
+  /// Defaults to `GtGap.yLg()`. Can be customized with a [GtViewStateSpacer].
   final GtViewStateSpacer? gapToTitle;
 
   /// The spacing between the title and the description.

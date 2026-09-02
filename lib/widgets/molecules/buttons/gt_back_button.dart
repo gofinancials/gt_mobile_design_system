@@ -80,18 +80,18 @@ class GtBackButton extends GtStatelessWidget {
         type: MaterialType.transparency,
         child: Hero(
           tag: "gt-back-button",
-          child: GtInkWell(
-            role: .button,
-            hapticFeedbackType: .medium,
-            enableScaleEffect: enableScaleEffect,
-            pressedScale: pressedScale,
-            onTap: () {
-              if (action != null) return action!();
-              if (!canPop && routeStackSensitive) return;
+          child: GtTapTarget(
+            child: GtInkWell(
+              role: .button,
+              hapticFeedbackType: .medium,
+              enableScaleEffect: enableScaleEffect,
+              pressedScale: pressedScale,
+              onTap: () {
+                if (action != null) return action!();
+                if (!canPop && routeStackSensitive) return;
 
-              Navigator.of(context).maybePop();
-            },
-            child: GtTapTarget(
+                Navigator.of(context).maybePop();
+              },
               child: GtSquareConstrainedBox(
                 cubeSize,
                 child: GtIcon.withColor(

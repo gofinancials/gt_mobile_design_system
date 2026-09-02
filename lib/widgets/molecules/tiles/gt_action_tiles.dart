@@ -14,12 +14,24 @@ class GtExportListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnPressed onTap;
 
+  /// Optional horizontal spacing override.
+  final double? verticalSpacing;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
+
+  /// Optional padding override.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtExportListTile].
   const GtExportListTile(
     this.title, {
     super.key,
     this.subtitle,
     required this.onTap,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.padding,
   });
 
   @override
@@ -38,14 +50,14 @@ class GtExportListTile extends GtStatelessWidget {
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 12.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 12.px),
         child: Row(
-          spacing: context.spacingBase,
+          spacing: horizontalSpacing ?? context.spacingBase,
           children: [
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: context.spacingXs,
+                spacing: verticalSpacing ?? context.spacingXs,
                 children: [
                   GtText(title, style: titleStyle),
                   if (subtitle.hasValue) GtText(subtitle, style: subStyle),
@@ -77,8 +89,15 @@ class GtDeviceListTile extends GtStatelessWidget {
 
   /// The icon representing the device type.
   final IconData icon;
+
+  /// Optional callback for removing the device.
   final OnPressed? _onRemove;
+
+  /// Optional text for the remove button.
   final String? _buttonText;
+
+  /// Optional horizontal spacing override.
+  final double? horizontalSpacing;
 
   /// Creates a standard [GtDeviceListTile] without a remove button.
   const GtDeviceListTile(
@@ -86,6 +105,7 @@ class GtDeviceListTile extends GtStatelessWidget {
     super.key,
     required this.subtitle,
     required this.icon,
+    this.horizontalSpacing,
   }) : _onRemove = null,
        _buttonText = null;
 
@@ -99,6 +119,7 @@ class GtDeviceListTile extends GtStatelessWidget {
     required this.icon,
     required OnPressed onRemove,
     required String buttonText,
+    this.horizontalSpacing,
   }) : _onRemove = onRemove,
        _buttonText = buttonText;
 
@@ -108,7 +129,7 @@ class GtDeviceListTile extends GtStatelessWidget {
 
     if (_onRemove != null) {
       child = Row(
-        spacing: context.spacingMd,
+        spacing: horizontalSpacing ?? context.spacingMd,
         children: [
           Expanded(child: child),
           GtRaisedButton(

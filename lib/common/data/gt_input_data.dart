@@ -12,6 +12,11 @@ class GtDropdownData<T> extends AppEquatable {
   /// The optional display text for the item.
   final String? label;
 
+  /// The optional leading widget for the item.
+  final AppImageData? leading;
+
+  final double? leadingSize;
+
   /// An optional builder to dynamically compute the label from the [value].
   final MapCallback<String, T>? labelBuilder;
 
@@ -22,6 +27,8 @@ class GtDropdownData<T> extends AppEquatable {
     required this.value,
     this.label,
     this.labelBuilder,
+    this.leading,
+    this.leadingSize,
     AppSearchDelegate<bool>? filterDelegate,
   }) : _filterDelegate = filterDelegate;
 

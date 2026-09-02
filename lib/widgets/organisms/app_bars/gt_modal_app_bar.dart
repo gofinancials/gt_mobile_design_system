@@ -46,6 +46,7 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     TextStyle? style,
     GtTextCase? titleCase,
     Key? key,
+    double? horizontalSpacing,
   }) = _GtTitleModalAppBar;
 
   @override
@@ -131,6 +132,7 @@ class _GtExtendedModalAppBar extends GtModalAppBar {
                   maxLines: 1,
                   style: context.textStyles.button(),
                   overflow: .ellipsis,
+                  headingLevel: 1,
                 ),
                 Align(alignment: .centerRight, child: action),
               ],
@@ -148,6 +150,7 @@ class _GtTitleModalAppBar extends GtModalAppBar {
   final TextStyle? style;
   final GtTextCase? titleCase;
   final Widget? action;
+  final double? horizontalSpacing;
 
   const _GtTitleModalAppBar({
     super.key,
@@ -155,6 +158,7 @@ class _GtTitleModalAppBar extends GtModalAppBar {
     this.action,
     this.style,
     this.titleCase,
+    this.horizontalSpacing,
   });
 
   @override
@@ -174,7 +178,7 @@ class _GtTitleModalAppBar extends GtModalAppBar {
       child: Padding(
         padding: context.insets.fromLTRBDp(16.px, 24.px, 16.px, 0),
         child: Row(
-          spacing: context.spacingMd,
+          spacing: horizontalSpacing ?? context.spacingMd,
           children: [
             Expanded(
               child: GtText(
@@ -182,6 +186,7 @@ class _GtTitleModalAppBar extends GtModalAppBar {
                 maxLines: 1,
                 style: style ?? context.textStyles.button(),
                 overflow: .ellipsis,
+                headingLevel: 1,
               ),
             ),
             ?action,
