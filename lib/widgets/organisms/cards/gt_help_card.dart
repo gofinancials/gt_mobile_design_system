@@ -22,7 +22,7 @@ class GtHelpCard extends GtStatelessWidget {
   /// The size of the icon. Default is 24
   final double? iconSize;
 
-  /// The icon to display in the help card. Default is [Icons.messages]
+  /// The icon to display in the help card. Default is [GtIcons.messages]
   final IconData icon;
 
   /// Creates a [GtHelpCard].
