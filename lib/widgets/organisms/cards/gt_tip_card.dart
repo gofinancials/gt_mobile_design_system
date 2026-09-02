@@ -25,6 +25,12 @@ class GtTipCard extends GtStatelessWidget {
   /// An optional custom text style for the [subtitle].
   final TextStyle? subtitleStyle;
 
+  /// The icon to display in the tip card. Default is [GtIcons.circleInfo]
+  final IconData icon;
+
+  /// The size of the icon. Default is 20
+  final double? iconSize;
+
   /// Creates a [GtTipCard].
   const GtTipCard({
     super.key,
@@ -35,6 +41,8 @@ class GtTipCard extends GtStatelessWidget {
     required this.onClose,
     this.titleStyle,
     this.subtitleStyle,
+    this.icon = GtIcons.circleInfo,
+    this.iconSize,
   });
 
   @override
@@ -57,9 +65,9 @@ class GtTipCard extends GtStatelessWidget {
           crossAxisAlignment: .start,
           children: [
             GtIcon.withColor(
-              GtIcons.circleInfo,
+              icon,
               color: iconColor,
-              size: 20,
+              size: iconSize ?? context.dp(20.px),
               alignment: .topLeft,
             ),
             Expanded(
