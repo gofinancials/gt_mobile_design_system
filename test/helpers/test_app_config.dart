@@ -96,6 +96,11 @@ class TestAppConfig extends AppConfig {
       minLength: "Minimum length not reached",
       maxLength: "Maximum length exceeded",
       insufficentFunds: "Insuffcient funds",
+      copiedToClipboard: "Copied to clipboard",
+      copiedFromClipboard: "Copied from clipboard",
+      requestTimedOut: "Request timed out",
+      secureConnectionFailed: "Secure connection failed",
+      requestCancelled: "Request cancelled",
     );
   }
 }
