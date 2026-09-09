@@ -45,18 +45,25 @@ class GtHelpButton extends GtStatelessWidget {
   }
 }
 
-/// A **stacked icon action button**: a square, tappable icon tile with an
-/// optional caption underneath.
+/// A **stacked action button**: a tappable circular tile with an optional
+/// caption underneath.
 ///
 /// Used for quick-action strips — the row of "Send", "Top up" or "Pay bills"
 /// affordances on a dashboard or account screen.
 ///
-/// The icon sits inside a square tile of [size] (defaulting to 44dp, the
-/// platform minimum interactive dimension), inset by [padding] and scaled down
-/// to fit whenever [iconSize] and [padding] together exceed that box. The whole
-/// button is wrapped in a [GtTapTarget], so the touch-responsive area never
-/// falls below [GtTapTarget.defaultMinSize] even on screens where the tile
-/// itself scales down.
+/// The tile is filled with [backgroundColor] and carries either:
+/// - a centered icon, tinted with [iconColor] and sized by [iconSize] — see
+///   [GtActionButton.new]; or
+/// - an image painted across the whole circle, such as a merchant logo or a
+///   beneficiary avatar — see [GtActionButton.image].
+///
+/// The tile is square-constrained to [size] (defaulting to 44dp, the platform
+/// minimum interactive dimension) and inset by [padding]; an icon larger than
+/// the space left over is scaled down rather than clipped. The whole button is
+/// wrapped in a [GtTapTarget], so the touch-responsive area never falls below
+/// [GtTapTarget.defaultMinSize] even on screens where the tile itself scales
+/// down. [label] is clipped to a single line with an ellipsis, so keep captions
+/// to one or two words.
 class GtActionButton extends GtStatelessWidget {
   /// The platform-recommended minimum interactive dimension, in logical pixels.
   ///
@@ -64,7 +71,8 @@ class GtActionButton extends GtStatelessWidget {
   /// enforced on [size].
   static const double minTapTargetSize = 44;
 
-  /// Creates a [GtActionButton].
+  /// Creates a [GtActionButton] that displays [icon] on a [backgroundColor]
+  /// circle.
   ///
   /// [size] must be at least [minTapTargetSize], and [iconSize] must not exceed
   /// the tile it is drawn in. Both are asserted in debug builds.
@@ -72,7 +80,7 @@ class GtActionButton extends GtStatelessWidget {
     super.key,
     required this.onPressed,
     required this.backgroundColor,
-    required this.icon,
+    required IconData icon,
     this.label,
     this.size,
     this.iconSize,
@@ -89,44 +97,94 @@ class GtActionButton extends GtStatelessWidget {
          'GtActionButton.iconSize must not exceed size (or '
          '$minTapTargetSize when size is null); the icon would otherwise be '
          'scaled down to fit its tile.',
-       );
+       ),
+       _icon = icon,
+       _image = null;
+
+  /// Creates a [GtActionButton] that paints [image] across the tile instead of
+  /// an icon — for a merchant logo, beneficiary avatar or similar artwork.
+  ///
+  /// [backgroundColor] shows through wherever the image does not cover the
+  /// circle, so it doubles as the placeholder while the image loads. Give the
+  /// [DecorationImage] a `fit` of [BoxFit.cover] to fill the tile.
+  ///
+  /// [iconColor] and [iconSize] have no effect on this variant, though
+  /// [iconSize] is still asserted against [size].
+  const GtActionButton.image({
+    super.key,
+    required this.onPressed,
+    required this.backgroundColor,
+    required DecorationImage image,
+    this.label,
+    this.size,
+    this.iconSize,
+    this.padding,
+    this.iconColor,
+    this.labelStyle,
+  }) : assert(
+         size == null || size >= minTapTargetSize,
+         'GtActionButton.size must be at least $minTapTargetSize logical '
+         'pixels to remain a valid tap target.',
+       ),
+       assert(
+         iconSize == null || iconSize <= (size ?? minTapTargetSize),
+         'GtActionButton.iconSize must not exceed size (or '
+         '$minTapTargetSize when size is null); the icon would otherwise be '
+         'scaled down to fit its tile.',
+       ),
+       _icon = null,
+       _image = image;
 
   /// Callback invoked when the button is tapped.
   final OnPressed onPressed;
 
-  /// The background color intended for the icon tile.
+  /// The fill color of the circular tile.
   ///
-  /// *Note: This property is declared but currently unused in the standard
-  /// build method — the tile paints no decoration, so the icon renders on a
-  /// transparent background.*
+  /// For [GtActionButton.image] this shows behind the artwork, standing in
+  /// while the image loads and filling any area it does not cover.
   final Color backgroundColor;
 
-  /// An optional caption rendered beneath the icon tile.
+  /// An optional caption rendered beneath the tile.
   ///
-  /// When `null`, the button is the icon tile alone.
+  /// Limited to a single line and ellipsized when it overflows, so prefer one
+  /// or two words. When `null`, the button is the tile alone and needs an
+  /// accessible name from its surroundings.
   final String? label;
 
-  /// The icon displayed inside the tile.
-  final IconData icon;
-
-  /// An optional color to override the default icon color.
+  /// The icon centered inside the tile, supplied by [GtActionButton.new].
   ///
-  /// Defaults to [GtPalette.staticColors.white].
+  /// `null` when the button was built with [GtActionButton.image].
+  final IconData? _icon;
+
+  /// The artwork painted across the tile, supplied by [GtActionButton.image].
+  ///
+  /// `null` when the button was built with the default constructor. The two
+  /// are mutually exclusive.
+  final DecorationImage? _image;
+
+  /// An optional color to override the default icon tint.
+  ///
+  /// Defaults to [GtPalette.staticColors.white]. Ignored by
+  /// [GtActionButton.image], which paints artwork rather than an icon.
   final Color? iconColor;
 
-  /// The rendered size of [icon] in logical pixels.
+  /// The rendered size of the icon, in logical pixels.
   ///
-  /// Defaults to 24dp. Must not be larger than [size]; see [minTapTargetSize].
+  /// Defaults to 24dp and must not exceed [size]; see [minTapTargetSize]. The
+  /// icon is scaled down further if [padding] leaves less room than this.
+  /// Ignored by [GtActionButton.image].
   final double? iconSize;
 
-  /// The width and height of the square icon tile, in logical pixels.
+  /// The diameter of the circular tile, in logical pixels.
   ///
   /// Defaults to 44dp and must not be smaller than [minTapTargetSize].
   final double? size;
 
-  /// The inset between the tile’s edge and [icon].
+  /// The inset between the tile’s edge and the icon it contains.
   ///
-  /// Defaults to 10dp on every side.
+  /// Defaults to 10dp on every side. Has no bearing on
+  /// [GtActionButton.image], whose artwork is painted as the tile’s
+  /// decoration and so ignores padding.
   final EdgeInsetsGeometry? padding;
 
   /// An optional text style to override the default [label] style.
@@ -136,6 +194,17 @@ class GtActionButton extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget? child;
+    if (_icon case IconData icon) {
+      child = FittedBox(
+        fit: .scaleDown,
+        child: GtIcon.withColor(
+          icon,
+          size: iconSize ?? context.dp(24.px),
+          color: iconColor ?? context.palette.staticColors.white,
+        ),
+      );
+    }
     return GtTapTarget(
       child: GtInkWell(
         role: .button,
@@ -151,24 +220,20 @@ class GtActionButton extends GtStatelessWidget {
               padding: padding ?? context.insets.allDp(10.px),
               decoration: BoxDecoration(
                 color: backgroundColor,
-                shape: .circle
+                shape: .circle,
+                image: _image,
               ),
               duration: GtMotion.adaptiveDuration(context, 500.milliseconds),
               curve: Curves.decelerate,
-              child: FittedBox(
-                fit: .scaleDown,
-                child: GtIcon.withColor(
-                  icon,
-                  size: iconSize ?? context.dp(24.px),
-                  color: iconColor ?? context.palette.staticColors.white,
-                ),
-              ),
+              child: child,
             ),
             if (label case String label)
               GtText(
                 label,
                 style: labelStyle ?? context.textStyles.subHeadXs(),
                 textAlign: .center,
+                maxLines: 1,
+                overflow: .ellipsis,
               ),
           ],
         ),

@@ -1,4 +1,5 @@
 export 'app_bars/app_bars.dart';
+export 'bars/bars.dart';
 export 'cards/cards.dart';
 export 'menus/menus.dart';
 export 'navigation/navigation.dart';

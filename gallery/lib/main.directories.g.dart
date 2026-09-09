@@ -184,6 +184,8 @@ import 'package:gallery/organisms/app_bars/gt_modal_app_bar_usecase.dart'
     as _gallery_organisms_app_bars_gt_modal_app_bar_usecase;
 import 'package:gallery/organisms/app_bars/gt_title_app_bar_usecase.dart'
     as _gallery_organisms_app_bars_gt_title_app_bar_usecase;
+import 'package:gallery/organisms/bars/gt_action_button_bar_usecase.dart'
+    as _gallery_organisms_bars_gt_action_button_bar_usecase;
 import 'package:gallery/organisms/cards/gt_action_card_usecase.dart'
     as _gallery_organisms_cards_gt_action_card_usecase;
 import 'package:gallery/organisms/cards/gt_address_card_usecase.dart'
@@ -733,6 +735,11 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtActionButton',
                     builder: _gallery_molecules_buttons_gt_action_button_usecase
                         .playgroundGtActionButtonUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtActionButton.image',
+                    builder: _gallery_molecules_buttons_gt_action_button_usecase
+                        .playgroundGtActionButtonImageUseCase,
                   ),
                 ],
               ),
@@ -1618,6 +1625,22 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtTitleAppbarGallery',
                     builder: _gallery_organisms_app_bars_gt_app_bar_gallery
                         .buildGtTitleAppbarUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'bars',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtActionButtonBar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtActionButtonBar',
+                    builder:
+                        _gallery_organisms_bars_gt_action_button_bar_usecase
+                            .playgroundGtActionButtonBarUseCase,
                   ),
                 ],
               ),

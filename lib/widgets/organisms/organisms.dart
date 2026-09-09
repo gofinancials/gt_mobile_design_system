@@ -1,4 +1,5 @@
 export 'app_bars/app_bars.dart';
+export 'bars/bars.dart';
 export 'cards/cards.dart';
 export 'data_viz/data_viz.dart';
 export 'grids/grids.dart';
