@@ -62,7 +62,16 @@ class GtBalanceText extends GtStatelessWidget {
   /// Optional text style for the amount.
   final TextStyle? amountStyle;
 
+  /// Callback for when the visibility icon is tapped.
   final OnPressed? onVisibilityIconTap;
+
+  final IconData hiddenIcon;
+
+  final IconData visibleIcon;
+
+  final double? iconSize;
+
+  final Color? iconColor;
 
   /// Creates a [GtBalanceText].
   const GtBalanceText({
@@ -80,6 +89,10 @@ class GtBalanceText extends GtStatelessWidget {
     this.currencyStyle,
     this.amountStyle,
     this.onVisibilityIconTap,
+    this.hiddenIcon = GtIcons.eyeOpen,
+    this.visibleIcon = GtIcons.eyeClosed,
+    this.iconSize,
+    this.iconColor,
   });
 
   String get amtDisplay {
@@ -95,10 +108,7 @@ class GtBalanceText extends GtStatelessWidget {
   }
 
   IconData get _viibilityIcon {
-    if (!hidden) {
-      return GtIcons.eyeClosed;
-    }
-    return GtIcons.eyeOpen;
+    return hidden ? hiddenIcon : visibleIcon;
   }
 
   @override
@@ -118,11 +128,11 @@ class GtBalanceText extends GtStatelessWidget {
     final trailing = WidgetSpan(
       alignment: .middle,
       child: GtAnimatedSwitcher(
-        child: GtIcon(
+        child: GtIcon.withColor(
           _viibilityIcon,
           key: ValueKey(hidden),
-          size: context.dp(16.px),
-          variant: .sub,
+          size: iconSize ?? context.dp(16.px),
+          color: iconColor ?? context.palette.icon.sub,
         ),
       ),
     );
