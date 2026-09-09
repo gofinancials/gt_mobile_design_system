@@ -158,11 +158,8 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
             bottomNavigationBar: GtBottomNavigationBar(
               items: navItems,
               style: widget.bottomNavigationStyle,
-              onTrailingTap: widget.onClickHelp,
               currentIndex: index,
-              trailingSemanticsLabel: widget.trailingSemanticsLabel,
               enableSelectionAnimation: widget.enableSelectionAnimation,
-              trailingIcon: widget.trailingIcon,
               onIndexChanged: (index) {
                 if (navItems[index].onSelected != null) {
                   navItems[index].onSelected!(index);

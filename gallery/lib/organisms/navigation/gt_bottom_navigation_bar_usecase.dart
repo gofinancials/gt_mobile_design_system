@@ -37,11 +37,15 @@ class _BottomNavPlaygroundState extends State<_BottomNavPlayground> {
     );
     final label2 = context.knobs.string(
       label: 'Item 2 Label',
-      initialValue: 'Cards',
+      initialValue: 'Payments',
     );
     final label3 = context.knobs.string(
       label: 'Item 3 Label',
-      initialValue: 'Settings',
+      initialValue: 'Products',
+    );
+    final label4 = context.knobs.string(
+      label: 'Item 4 Label',
+      initialValue: 'Cards',
     );
     final enableSelectionAnimation = context.knobs.boolean(
       label: 'Enable Selection Animation',
@@ -65,17 +69,22 @@ GtBottomNavigationBar(
     GtBottomNavigationItem(
       selectedIcon: GtIcons.homeFilled,
       unselectedIcon: GtIcons.home,
-      label: "$label1",
+      label: '$label1',
+    ),
+    GtBottomNavigationItem(
+      selectedIcon: GtIcons.walletAltFilled,
+      unselectedIcon: GtIcons.walletAlt,
+      label: '$label2',
+    ),
+    GtBottomNavigationItem(
+      selectedIcon: GtIcons.productFilled,
+      unselectedIcon: GtIcons.product,
+      label: '$label3',
     ),
     GtBottomNavigationItem(
       selectedIcon: GtIcons.cardFilled,
       unselectedIcon: GtIcons.card,
-      label: "$label2",
-    ),
-    GtBottomNavigationItem(
-      selectedIcon: GtIcons.gear,
-      unselectedIcon: GtIcons.gear,
-      label: "$label3",
+      label: '$label4',
     ),
   ],
   onTrailingTap: () {},
@@ -96,17 +105,21 @@ GtBottomNavigationBar(
             label: label1,
           ),
           GtBottomNavigationItem(
-            selectedIcon: GtIcons.cardFilled,
-            unselectedIcon: GtIcons.card,
+            selectedIcon: GtIcons.walletAltFilled,
+            unselectedIcon: GtIcons.walletAlt,
             label: label2,
           ),
           GtBottomNavigationItem(
-            selectedIcon: GtIcons.gear,
-            unselectedIcon: GtIcons.gear,
+            selectedIcon: GtIcons.productFilled,
+            unselectedIcon: GtIcons.product,
             label: label3,
           ),
+          GtBottomNavigationItem(
+            selectedIcon: GtIcons.cardFilled,
+            unselectedIcon: GtIcons.card,
+            label: label4,
+          ),
         ],
-        onTrailingTap: () {},
       ),
     );
   }
