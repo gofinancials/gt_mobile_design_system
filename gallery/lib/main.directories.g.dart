@@ -66,6 +66,8 @@ import 'package:gallery/molecules/boxes/gt_boxes_usecase.dart'
     as _gallery_molecules_boxes_gt_boxes_usecase;
 import 'package:gallery/molecules/buttons/gt_account_switch_button_usecase.dart'
     as _gallery_molecules_buttons_gt_account_switch_button_usecase;
+import 'package:gallery/molecules/buttons/gt_action_button_usecase.dart'
+    as _gallery_molecules_buttons_gt_action_button_usecase;
 import 'package:gallery/molecules/buttons/gt_back_button_usecase.dart'
     as _gallery_molecules_buttons_gt_back_button_usecase;
 import 'package:gallery/molecules/buttons/gt_cancel_button_usecase.dart'
@@ -721,6 +723,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _gallery_molecules_buttons_gt_account_switch_button_usecase
                             .playgroundGtAccountSwitchButtonUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtActionButton',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtActionButton',
+                    builder: _gallery_molecules_buttons_gt_action_button_usecase
+                        .playgroundGtActionButtonUseCase,
                   ),
                 ],
               ),
