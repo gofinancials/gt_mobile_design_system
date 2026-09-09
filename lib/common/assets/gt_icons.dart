@@ -655,6 +655,9 @@ class GtIcons {
   static const locationPin = IconData(0xf170, fontFamily: _f, fontPackage: _p);
   static const landBill = IconData(0xf171, fontFamily: _f, fontPackage: _p);
 
+  static const arrowNorthEastThin = IconData(0xf174, fontFamily: _f, fontPackage: _p);
+  static const walletAltFilled = IconData(0xf175, fontFamily: _f, fontPackage: _p);
+
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
   /// This is particularly useful for cataloging, testing, or building
@@ -681,6 +684,7 @@ class GtIcons {
     (label: 'arrowDoorIn', value: arrowDoorIn),
     (label: 'arrowDoorOut', value: arrowDoorOut),
     (label: 'arrowNorthEast', value: arrowNorthEast),
+    (label: 'arrowNorthEastThin', value: arrowNorthEastThin),
     (label: 'art', value: art),
     (label: 'aspectRatioSquare', value: aspectRatioSquare),
     (label: 'atSign', value: atSign),
@@ -1003,6 +1007,7 @@ class GtIcons {
     (label: 'volumeUp', value: volumeUp),
     (label: 'wallet', value: wallet),
     (label: 'walletAlt', value: walletAlt),
+    (label: 'walletAltFilled', value: walletAltFilled),
     (label: 'walletFilled', value: walletFilled),
     (label: 'wandSparkle', value: wandSparkle),
     (label: 'wasteBill', value: wasteBill),
