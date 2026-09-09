@@ -778,6 +778,30 @@ class GtTextStyles {
     );
   }
 
+  TextStyle title3({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return buildStyle(
+      family: fonts.body,
+      size: 20,
+      heightPx: heightPx ?? 40,
+      widthPct: 0,
+      weight: .w700,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   TextStyle titleM({
     double? heightPx,
     Color? color,

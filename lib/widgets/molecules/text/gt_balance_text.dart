@@ -56,20 +56,13 @@ class GtBalanceText extends GtStatelessWidget {
   /// Curve of the amount change animation.
   final Curve animationCurve;
 
-  /// Returns `true` if the [currencySymbol] represents Naira.
-  bool get isNaira {
-    bool isNaira = currencySymbol == AppStrings.naira;
-    bool isN = currencySymbol.equals("N");
-    return isNaira || isN;
-  }
+  /// Optional text style for the currency symbol.
+  final TextStyle? currencyStyle;
 
-  /// The normalized currency symbol to display.
-  ///
-  /// Forces "N" for Naira symbols to ensure consistent styling.
-  String get computedSymbol => switch (isNaira) {
-    true => "N",
-    false => currencySymbol,
-  };
+  /// Optional text style for the amount.
+  final TextStyle? amountStyle;
+
+  final OnPressed? onVisibilityIconTap;
 
   /// Creates a [GtBalanceText].
   const GtBalanceText({
@@ -83,21 +76,35 @@ class GtBalanceText extends GtStatelessWidget {
     this.semanticsLabel,
     this.animateChanges = false,
     this.animationDuration = GtMotion.normal,
-    this.animationCurve = GtSpringCurves.gentle,
+    this.animationCurve = GtSpringCurves.bouncy,
+    this.currencyStyle,
+    this.amountStyle,
+    this.onVisibilityIconTap,
   });
+
+  String get amtDisplay {
+    if (hidden) return "********";
+    return AppTextFormatter.formatCurrency(amount, symbol: '');
+  }
+
+  String get semanticLabel {
+    if (hidden) {
+      return hiddenSemanticsLabel ?? 'Balance is hidden';
+    }
+    return semanticsLabel ?? 'Balance is $amtDisplay $currencySymbol';
+  }
+
+  IconData get _viibilityIcon {
+    if (!hidden) {
+      return GtIcons.eyeClosed;
+    }
+    return GtIcons.eyeOpen;
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Double strikethrough on the currency glyph (e.g. "N").
-    final currencyStyle = context.textStyles.h4(
-      color: context.palette.text.strong,
-      decoration: isNaira ? TextDecoration.lineThrough : null,
-      decorationStyle: isNaira ? TextDecorationStyle.double : null,
-    );
-    final amtStyle = switch (context.isAndroid) {
-      true => context.textStyles.h2(),
-      _ => context.textStyles.h3(),
-    };
+    final symbolStyle = currencyStyle ?? context.textStyles.title3();
+    final amtStyle = amountStyle ?? context.textStyles.h3();
 
     if (amount == null) {
       return GtText(
@@ -108,43 +115,57 @@ class GtBalanceText extends GtStatelessWidget {
       );
     }
 
-    final String amtDisplay = hidden
-        ? AppTextFormatter.maskedCurrency(amount, symbol: '')
-        : AppTextFormatter.formatCurrency(amount, ignoreSymbol: true);
+    final trailing = WidgetSpan(
+      alignment: .middle,
+      child: GtAnimatedSwitcher(
+        child: GtIcon(
+          _viibilityIcon,
+          key: ValueKey(hidden),
+          size: context.dp(16.px),
+          variant: .sub,
+        ),
+      ),
+    );
 
-    final String semanticLabel = hidden
-        ? (hiddenSemanticsLabel ?? 'Balance is hidden')
-        : (semanticsLabel ??
-              '${AppTextFormatter.formatCurrency(amount, ignoreSymbol: true)} ${isNaira ? "Naira" : currencySymbol}');
+    Widget child = Text.rich(
+      TextSpan(
+        children: [
+          WidgetSpan(
+            alignment: .middle,
+            child: GtText('$currencySymbol ', style: symbolStyle),
+          ),
+          TextSpan(text: amtDisplay),
+          const WidgetSpan(child: GtGap.hSm()),
+          trailing,
+        ],
+      ),
+      textAlign: textAlign,
+      style: amtStyle,
+      maxLines: maxLines,
+    );
 
-    return Semantics(
-      label: semanticLabel,
-      excludeSemantics: true,
-      child: animateChanges && !hidden
-          ? _GtAnimatedBalanceText(
-              amount: amount!,
-              computedSymbol: computedSymbol,
-              currencyStyle: currencyStyle,
-              amountStyle: amtStyle,
-              textAlign: textAlign,
-              maxLines: maxLines,
-              duration: animationDuration,
-              curve: animationCurve,
-            )
-          : Text.rich(
-              TextSpan(
-                children: [
-                  WidgetSpan(
-                    child: GtText('$computedSymbol ', style: currencyStyle),
-                    alignment: .middle,
-                  ),
-                  TextSpan(text: amtDisplay),
-                ],
-              ),
-              textAlign: textAlign,
-              style: amtStyle,
-              maxLines: maxLines,
-            ),
+    if (animateChanges && !hidden) {
+      child = _GtAnimatedBalanceText(
+        amount: amount!,
+        computedSymbol: currencySymbol,
+        currencyStyle: symbolStyle,
+        amountStyle: amtStyle,
+        textAlign: textAlign,
+        maxLines: maxLines,
+        duration: animationDuration,
+        curve: animationCurve,
+        trailing: trailing,
+      );
+    }
+
+    return GtTapTarget(
+      child: GtInkWell(
+        onTap: onVisibilityIconTap,
+        child: FittedBox(
+          fit: .scaleDown,
+          child: Semantics(label: semanticLabel, child: child),
+        ),
+      ),
     );
   }
 }
@@ -158,6 +179,7 @@ class _GtAnimatedBalanceText extends GtStatelessWidget {
   final int? maxLines;
   final Duration duration;
   final Curve curve;
+  final InlineSpan trailing;
 
   const _GtAnimatedBalanceText({
     required this.amount,
@@ -168,6 +190,7 @@ class _GtAnimatedBalanceText extends GtStatelessWidget {
     required this.maxLines,
     required this.duration,
     required this.curve,
+    required this.trailing,
   });
 
   @override
@@ -191,6 +214,8 @@ class _GtAnimatedBalanceText extends GtStatelessWidget {
               curve: curve,
             ),
           ),
+          const WidgetSpan(child: GtGap.hSm()),
+          trailing,
         ],
       ),
       textAlign: textAlign,
