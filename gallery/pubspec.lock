@@ -285,10 +285,10 @@ packages:
     dependency: transitive
     description:
       name: dio
-      sha256: aff32c08f92787a557dd5c0145ac91536481831a01b4648136373cddb0e64f8c
+      sha256: "852ec3b48cc431ac04fff978413c541502b67ffc3e26921e74e3d994694192c1"
       url: "https://pub.dev"
     source: hosted
-    version: "5.9.2"
+    version: "5.11.1"
   dio_web_adapter:
     dependency: transitive
     description:
@@ -697,8 +697,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.0.44"
-      resolved-ref: "88385056512b717d558e8b56a2b4dd5777e67785"
+      ref: "v0.0.45"
+      resolved-ref: "0e8d3a2d6852d1927736188d28b6a2d7c2e0616d"
       url: "https://github.com/gofinancials/gt_mobile_foundation.git"
     source: git
     version: "0.0.1"

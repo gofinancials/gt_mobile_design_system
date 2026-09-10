@@ -269,7 +269,11 @@ class GtBalanceText extends GtStatelessWidget {
 
     if (showVisibilityIcon) {
       child = GtTapTarget(
-        child: GtInkWell(onTap: onVisibilityIconTap, child: child),
+        child: GtInkWell(
+          onTap: onVisibilityIconTap,
+          role: .button,
+          child: child,
+        ),
       );
     }
 

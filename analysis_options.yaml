@@ -3,6 +3,11 @@ include: package:flutter_lints/flutter.yaml
 # Accessibility rules are enforced at authoring time by the local
 # `gt_a11y_lints` plugin under tools/. Run them with `dart run custom_lint`.
 analyzer:
+  # custom_lint only loads as a legacy plugin, and only from this list.
+  plugins:
+    - custom_lint
+  errors:
+    analysis_options_deprecated_plugins: ignore
   exclude:
     - "**/*.g.dart"
     - build/**
@@ -12,9 +17,6 @@ analyzer:
     - windows/**
     - macos/**
     - linux/**
-
-plugins:
-  - custom_lint
 
 custom_lint:
   rules:
