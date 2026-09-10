@@ -208,12 +208,21 @@ class GtStatusTrackerCompactStep extends GtStatelessWidget {
   }
 }
 
+/// A private widget that draws a tracker node as a filled or outlined circle.
 class _StatusDot extends StatelessWidget {
+  /// The fill and outline colour.
   final Color color;
+
+  /// Whether the circle is filled with [color] or only outlined.
   final bool filled;
+
+  /// The diameter of the circle.
   final double size;
+
+  /// The width of the outline. Defaults to 2.25, as on the standard tracker.
   final double borderWidth;
 
+  /// Creates a [_StatusDot].
   const _StatusDot({
     required this.color,
     required this.filled,
@@ -235,10 +244,19 @@ class _StatusDot extends StatelessWidget {
   }
 }
 
+/// A private widget that draws the 16dp node of a [GtStatusTrackerStep].
+///
+/// The node follows the step's state, and a terminal success swaps its dot
+/// for a checkmark. An explicit [GtStatusStepData.icon] or
+/// [GtStatusStepData.iconColor] overrides the state.
 class _StatusNode extends StatelessWidget {
+  /// The step whose state and overrides select the node.
   final GtStatusStepData data;
+
+  /// Whether a successful step draws a checkmark rather than a dot.
   final bool showAsTerminalSuccess;
 
+  /// Creates a [_StatusNode].
   const _StatusNode(this.data, {required this.showAsTerminalSuccess});
 
   @override
@@ -269,10 +287,21 @@ class _StatusNode extends StatelessWidget {
   }
 }
 
+/// A private widget that draws the node of a [GtStatusTrackerCompactStep].
+///
+/// The node follows the step's state: a spinner while active, a filled dot on
+/// success, an outlined dot while pending, and an icon once failed or
+/// reversed. Success takes the base green rather than the darker shade the
+/// standard tracker uses, and an explicit [GtStatusStepData.icon] or
+/// [GtStatusStepData.iconColor] overrides the state.
 class _CompactStatusNode extends StatelessWidget {
+  /// The step whose state and overrides select the node.
   final GtStatusStepData data;
+
+  /// The diameter of the node.
   final double size;
 
+  /// Creates a [_CompactStatusNode].
   const _CompactStatusNode(this.data, {required this.size});
 
   @override
@@ -310,11 +339,20 @@ class _CompactStatusNode extends StatelessWidget {
   }
 }
 
+/// A private widget that draws a compact node's glyph at 14dp, centred in and
+/// overhanging the smaller node box, as the design's failed and reversed
+/// glyphs do.
 class _CompactStatusIcon extends StatelessWidget {
+  /// The glyph to draw.
   final IconData icon;
+
+  /// The colour of the glyph.
   final Color color;
+
+  /// The size of the node box the glyph is centred in.
   final double size;
 
+  /// Creates a [_CompactStatusIcon].
   const _CompactStatusIcon(
     this.icon, {
     required this.color,

@@ -41,9 +41,17 @@ class GtStatusTracker extends GtStatelessWidget {
   }
 }
 
+/// A private widget that renders [GtStatusTracker] in its
+/// [GtStatusTrackerVariant.standard] layout.
+///
+/// Stacks a [GtStatusTrackerStep] per step with a
+/// [GtStatusTrackerStepConnector] between each, and turns the connectors
+/// green once every step has succeeded.
 class _GtStandardStatusTracker extends GtStatelessWidget {
+  /// The ordered steps to render. [GtStatusTracker] never passes an empty list.
   final List<GtStatusStepData> steps;
 
+  /// Creates a [_GtStandardStatusTracker].
   const _GtStandardStatusTracker(this.steps);
 
   @override
@@ -74,9 +82,17 @@ class _GtStandardStatusTracker extends GtStatelessWidget {
   }
 }
 
+/// A private widget that renders [GtStatusTracker] in its
+/// [GtStatusTrackerVariant.compact] layout.
+///
+/// Stacks a [GtStatusTrackerCompactStep] per step, each carrying the connector
+/// to the next. The connectors turn green once every step before the last has
+/// succeeded and the last is no longer pending.
 class _GtCompactStatusTracker extends GtStatelessWidget {
+  /// The ordered steps to render. [GtStatusTracker] never passes an empty list.
   final List<GtStatusStepData> steps;
 
+  /// Creates a [_GtCompactStatusTracker].
   const _GtCompactStatusTracker(this.steps);
 
   @override

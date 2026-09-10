@@ -190,6 +190,7 @@ class GtBalanceText extends GtStatelessWidget {
     return semanticsLabel ?? 'Balance is $amtDisplay $currencySymbol';
   }
 
+  /// The trailing icon for the current [hidden] state.
   IconData get _viibilityIcon {
     return hidden ? hiddenIcon : visibleIcon;
   }
@@ -259,7 +260,11 @@ class GtBalanceText extends GtStatelessWidget {
 
     child = FittedBox(
       fit: .scaleDown,
-      child: Semantics(label: semanticLabel, child: child),
+      child: Semantics(
+        label: semanticLabel,
+        excludeSemantics: true,
+        child: child,
+      ),
     );
 
     if (showVisibilityIcon) {
@@ -272,17 +277,39 @@ class GtBalanceText extends GtStatelessWidget {
   }
 }
 
+/// A private widget that renders a [GtBalanceText] line with an
+/// odometer-style [GtAnimatedCounter] in place of the static amount, used
+/// while [GtBalanceText.animateChanges] is `true` and the balance is visible.
 class _GtAnimatedBalanceText extends GtStatelessWidget {
+  /// The raw balance the counter rolls to.
   final num amount;
+
+  /// The currency glyph drawn ahead of the counter.
   final String computedSymbol;
+
+  /// The resolved style of [computedSymbol].
   final TextStyle currencyStyle;
+
+  /// The resolved style of the counter.
   final TextStyle amountStyle;
+
+  /// Horizontal alignment of the whole line.
   final TextAlign textAlign;
+
+  /// Maximum lines for the whole line.
   final int? maxLines;
+
+  /// Duration of each roll.
   final Duration duration;
+
+  /// Curve of each roll.
   final Curve curve;
+
+  /// The visibility icon span, or `null` while
+  /// [GtBalanceText.showVisibilityIcon] is `false`.
   final WidgetSpan? trailing;
 
+  /// Creates a [_GtAnimatedBalanceText].
   const _GtAnimatedBalanceText({
     required this.amount,
     required this.computedSymbol,

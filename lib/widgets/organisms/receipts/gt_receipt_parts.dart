@@ -164,7 +164,12 @@ class GtReceiptActionButton extends GtStatelessWidget {
   /// The label, icon, style and tap handler for this button.
   final GtReceiptAction action;
 
-  /// The alignment of the button
+  /// How the button is positioned within the space it is given, forwarded to
+  /// [GtRaisedButton.alignment].
+  ///
+  /// Defaults to [Alignment.center], which wraps the button in an [Align] that
+  /// fills the available width. Pass `null` to size the button to its content,
+  /// as [GtTransferDetailBody] does inside its [Wrap].
   final AlignmentGeometry? alignment;
 
   /// Creates a [GtReceiptActionButton].

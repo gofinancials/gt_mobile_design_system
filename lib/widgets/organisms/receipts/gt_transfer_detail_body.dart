@@ -91,7 +91,8 @@ class GtTransferDetailBody extends GtStatelessWidget {
 
   /// Overrides the label announced for [amount].
   ///
-  /// Defaults to `'Transfer amount is <amount> <currency>'`.
+  /// Defaults to the `transferAmountIs` translation, passed the formatted
+  /// amount as `amount` and [currency] as `currency`.
   final String? amountSemanticsLabel;
 
   /// The actions rendered as a centred row beneath the amount.
@@ -208,13 +209,22 @@ class GtTransferDetailBody extends GtStatelessWidget {
   }
 }
 
-/// The recipient's avatar and name above the transfer amount.
+/// A private widget that renders the head of a [GtTransferDetailBody]: the
+/// recipient's avatar and name above the transfer amount.
 class _TransferDetailHeader extends GtStatelessWidget {
+  /// The recipient whose avatar and name are shown.
   final GtReceiptParticipant recipient;
+
+  /// The raw transfer amount, formatted by [GtBalanceText].
   final num amount;
+
+  /// The currency glyph drawn ahead of [amount].
   final String currency;
+
+  /// Overrides the label announced for [amount]. See [amountLabel].
   final String? amountSemanticsLabel;
 
+  /// Creates a [_TransferDetailHeader].
   const _TransferDetailHeader({
     required this.recipient,
     required this.amount,
@@ -222,9 +232,12 @@ class _TransferDetailHeader extends GtStatelessWidget {
     this.amountSemanticsLabel,
   });
 
+  /// The label announced for [amount]: [amountSemanticsLabel] when supplied,
+  /// otherwise the `transferAmountIs` translation.
   String get amountLabel {
     final display = AppTextFormatter.formatCurrency(amount, symbol: '');
-    return amountSemanticsLabel ?? 'Transfer amount is $display $currency';
+    return amountSemanticsLabel ??
+        'transferAmountIs'.tr({'amount': display, 'currency': currency});
   }
 
   @override

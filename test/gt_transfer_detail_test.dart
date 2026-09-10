@@ -107,13 +107,9 @@ void main() {
 
       await tester.pumpWidget(buildTestWidget(buildBody()));
 
-      // The header merges into a single node, so match within its label.
-      expect(
-        find.bySemanticsLabel(
-          RegExp('Transfer amount is 20,000.00 ${AppStrings.naira}'),
-        ),
-        findsOneWidget,
-      );
+      // Tests load no translations, so `tr` falls back to the key. The header
+      // also merges into a single node, so match within its label.
+      expect(find.bySemanticsLabel(RegExp('transferAmountIs')), findsOneWidget);
       expect(find.bySemanticsLabel(RegExp('Balance is')), findsNothing);
 
       await tester.pumpWidget(
@@ -359,10 +355,8 @@ void main() {
         ),
       );
 
-      expect(
-        find.bySemanticsLabel('More information about Fees (VAT Incl)'),
-        findsOneWidget,
-      );
+      // Tests load no translations, so `tr` falls back to the key.
+      expect(find.bySemanticsLabel('moreInfoAbout'), findsOneWidget);
 
       await tester.pumpWidget(
         buildTestWidget(

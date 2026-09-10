@@ -60,7 +60,7 @@ void main() {
     );
 
     expect(find.byType(GtAnimatedCounter), findsOneWidget);
-    expect(find.bySemanticsLabel('12.00 Naira'), findsOneWidget);
+    expect(find.bySemanticsLabel('Balance is 12.00 ₦'), findsOneWidget);
 
     await tester.pumpWidget(
       const _MotionTestApp(
@@ -70,7 +70,7 @@ void main() {
     await tester.pump();
 
     expect(find.byType(SlideTransition), findsWidgets);
-    expect(find.bySemanticsLabel('34.00 Naira'), findsOneWidget);
+    expect(find.bySemanticsLabel('Balance is 34.00 ₦'), findsOneWidget);
   });
 
   testWidgets('GtBalanceText keeps masked balances static', (tester) async {
