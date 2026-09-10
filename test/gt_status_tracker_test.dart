@@ -166,6 +166,22 @@ void main() {
       expect(find.byType(GtSpinner), findsOneWidget);
     });
 
+    testWidgets('drops the subHeadXs tracking from its text', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget([step(GtStatusStepState.success, subtitle: timestamp)]),
+      );
+
+      final textStyles = tester
+          .element(find.byType(GtStatusTracker))
+          .textStyles;
+      expect(textStyles.subHeadXs().letterSpacing, closeTo(0.48, 1e-9));
+
+      final label = tester.widget<Text>(find.text('success'));
+      final subtitle = tester.widget<Text>(find.text(timestamp));
+      expect(label.style?.letterSpacing, 0);
+      expect(subtitle.style?.letterSpacing, 0);
+    });
+
     testWidgets('keeps a filled dot rather than a terminal checkmark', (
       tester,
     ) async {
@@ -241,11 +257,11 @@ void main() {
         );
 
         final green = paletteOf(tester).success.base;
-        expect(connectorColors(tester), [
-          green,
-          green,
-          null,
-        ], reason: 'expected a green track ending in ${outcome.name}');
+        expect(
+          connectorColors(tester),
+          [green, green, null],
+          reason: 'expected a green track ending in ${outcome.name}',
+        );
       }
     });
   });

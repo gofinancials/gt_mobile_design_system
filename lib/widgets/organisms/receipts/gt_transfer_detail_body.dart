@@ -195,6 +195,7 @@ class GtTransferDetailBody extends GtStatelessWidget {
                     tile,
                     highlightValue: true,
                     imagePosition: .leading,
+                    valueSpacing: context.spacingXs,
                     key: Key('transfer-detail-section-$index-tile-$position'),
                   ),
               ],
@@ -260,6 +261,7 @@ class _TransferDetailHeader extends GtStatelessWidget {
         size: imageSize,
         initials: recipient.title.initials,
         tag: tag,
+        tagSize: context.dp(28.px),
         showBorder: true,
       ),
     };

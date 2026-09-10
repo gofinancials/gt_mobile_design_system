@@ -149,6 +149,18 @@ void main() {
       final avatar = tester.widget<GtAvatar>(find.byType(GtAvatar));
       expect(avatar.tag, isNotNull);
       expect(avatar.showBorder, isTrue);
+
+      final tagSize = tester.element(find.byType(GtAvatar)).dp(28.px);
+      expect(avatar.tagSize, tagSize);
+      expect(
+        tester.getSize(
+          find.descendant(
+            of: find.byType(GtAvatar),
+            matching: find.byType(GtSquareConstrainedBox),
+          ),
+        ),
+        Size.square(tagSize),
+      );
     });
 
     testWidgets('renders the steps in a compact status tracker', (
@@ -200,7 +212,7 @@ void main() {
       expect(find.text('TRX24072983910527NGN'), findsOneWidget);
     });
 
-    testWidgets('emphasises values and leads them with row images', (
+    testWidgets('emphasises values and leads them with closely spaced images', (
       tester,
     ) async {
       await tester.pumpWidget(buildTestWidget(buildBody()));
@@ -211,6 +223,21 @@ void main() {
       expect(category.highlightValue, isTrue);
       expect(category.valuePrefix, isNotNull);
       expect(category.valueSuffix, isNull);
+
+      final spacing = tester
+          .element(find.byType(GtTransferDetailBody))
+          .dp(2.px);
+      expect(category.valueSpacing, spacing);
+
+      final valueRow = tester
+          .widgetList<Row>(
+            find.descendant(
+              of: tileIn('transfer-detail-section-0-tile-0'),
+              matching: find.byType(Row),
+            ),
+          )
+          .firstWhere((row) => row.mainAxisAlignment == MainAxisAlignment.end);
+      expect(valueRow.spacing, spacing);
     });
 
     testWidgets('renders the actions and invokes them', (tester) async {
@@ -287,6 +314,7 @@ void main() {
       expect(tile.valueSuffix, isNotNull);
       expect(tile.valuePrefix, isNull);
       expect(tile.labelSuffix, isNull);
+      expect(tile.valueSpacing, isNull);
     });
 
     testWidgets('renders an info icon only when onInfoTap is supplied', (

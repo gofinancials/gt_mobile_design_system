@@ -29,12 +29,18 @@ class GtReceiptDetailTile extends GtStatelessWidget {
   /// Defaults to [GtReceiptTileImagePosition.trailing].
   final GtReceiptTileImagePosition imagePosition;
 
+  /// The gap between the value and the tile's image.
+  ///
+  /// Defaults to the spacing of [GtDoubleColumnListTile].
+  final double? valueSpacing;
+
   /// Creates a [GtReceiptDetailTile].
   const GtReceiptDetailTile(
     this.tile, {
     super.key,
     this.highlightValue = false,
     this.imagePosition = .trailing,
+    this.valueSpacing,
   });
 
   @override
@@ -75,6 +81,7 @@ class GtReceiptDetailTile extends GtStatelessWidget {
       valueSuffix: imagePosition == .trailing ? image : null,
       labelSuffix: info,
       highlightValue: highlightValue,
+      valueSpacing: valueSpacing,
     );
 
     if (tile.onTap != null) {

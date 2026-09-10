@@ -446,6 +446,11 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   /// rather than pushing the suffix out of view.
   final Widget? labelSuffix;
 
+  /// The gap between the [value] and its [valuePrefix] or [valueSuffix].
+  ///
+  /// Defaults to 8dp.
+  final double? valueSpacing;
+
   ///Maximum number of lines for the label.
   final int labelMaxLines;
 
@@ -471,6 +476,7 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     this.valuePrefix,
     this.valueSuffix,
     this.labelSuffix,
+    this.valueSpacing,
     this.labelMaxLines = 1,
     this.valueMaxLines = 2,
     this.highlightValue = true,
@@ -519,7 +525,7 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
           flex: 5,
           child: Row(
             mainAxisAlignment: .end,
-            spacing: context.spacingBase,
+            spacing: valueSpacing ?? context.spacingBase,
             children: [
               ?valuePrefix,
               Flexible(

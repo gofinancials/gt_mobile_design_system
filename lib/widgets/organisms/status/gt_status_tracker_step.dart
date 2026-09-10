@@ -184,6 +184,7 @@ class GtStatusTrackerCompactStep extends GtStatelessWidget {
                         weight: .w600,
                         color: palette.text.darkerSub,
                         heightPx: 12,
+                        widthPct: 0,
                       ),
                       maxLines: 1,
                       overflow: .ellipsis,
@@ -195,6 +196,7 @@ class GtStatusTrackerCompactStep extends GtStatelessWidget {
                       style: context.textStyles.subHeadXs(
                         color: subColor,
                         heightPx: 12,
+                        widthPct: 0,
                       ),
                       maxLines: 1,
                     ),

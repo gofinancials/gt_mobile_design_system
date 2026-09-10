@@ -47,6 +47,9 @@ class GtAvatar extends GtStatelessWidget {
   /// Commonly used for status badges (e.g., online/offline dots) or small action icons.
   final Widget? tag;
 
+  /// The size of the square [tag] overlay. Defaults to 40% of [size].
+  final double? tagSize;
+
   /// Whether to draw a white border around the outer edge of the avatar.
   final bool showBorder;
 
@@ -77,6 +80,7 @@ class GtAvatar extends GtStatelessWidget {
     this.initials,
     this.isUserAvatar = false,
     this.tag,
+    this.tagSize,
     this.showBorder = false,
     this.forceGradiant = true,
     this.gradient,
@@ -89,6 +93,7 @@ class GtAvatar extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final defaultSize = context.dp(36.px);
     final computedSize = size ?? defaultSize;
+    final computedTagSize = tagSize ?? computedSize * 0.4;
     final hasAvatar = avatar != null;
     final defaultGradient = forceGradiant
         ? context.gradients.avatarGradient
@@ -183,7 +188,7 @@ class GtAvatar extends GtStatelessWidget {
               if (tag != null)
                 FractionalTranslation(
                   translation: Offset(.9, .8),
-                  child: GtSquareConstrainedBox(computedSize * 0.4, child: tag),
+                  child: GtSquareConstrainedBox(computedTagSize, child: tag),
                 ),
             ],
           ),

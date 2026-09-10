@@ -14,6 +14,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 class GtTextStyles {
   /// The [BuildContext] used to access the current theme and scaling utilities.
   final BuildContext context;
+
+  /// The font families the styles are built from.
   final GtFonts fonts;
 
   /// Creates an instance of [GtTextStyles].
@@ -26,6 +28,11 @@ class GtTextStyles {
   // Handles the conversion from Figma's % tracking and pixel line-heights
   // into Flutter's native coordinate system.
   // ---------------------------------------------------------------------------
+
+  /// Builds a [TextStyle] from Figma's type tokens.
+  ///
+  /// [heightPx] is the line height in logical pixels and [widthPct] the
+  /// tracking as a percentage of [size].
   TextStyle buildStyle({
     required String family,
     required double size,
@@ -754,6 +761,7 @@ class GtTextStyles {
   // TITLES (title prefix) | Inter, Bold (700), High Tracking
   // ---------------------------------------------------------------------------
 
+  /// Generates the Title text style.
   TextStyle title({
     double? heightPx,
     Color? color,
@@ -778,6 +786,7 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Title 3 text style.
   TextStyle title3({
     double? heightPx,
     Color? color,
@@ -802,6 +811,7 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Medium Title (Title M) text style.
   TextStyle titleM({
     double? heightPx,
     Color? color,
@@ -955,6 +965,7 @@ class GtTextStyles {
   // SUBHEADINGS (subHead prefix) | Inter, Medium (500), High Tracking
   // ---------------------------------------------------------------------------
 
+  /// Generates the Extra Large Subheading (Subhead XL) text style.
   TextStyle subHeadXl({
     double? heightPx,
     Color? color,
@@ -1137,6 +1148,8 @@ class GtTextStyles {
   }
 
   /// Generates the Extra Small Subheading (Subhead XS) text style.
+  ///
+  /// Tracking defaults to 4%. Pass [widthPct] to override it.
   TextStyle subHeadXs({
     double? heightPx,
     Color? color,
@@ -1146,12 +1159,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
       family: fonts.body,
       size: 12,
       heightPx: heightPx ?? 16,
-      widthPct: 4.0,
+      widthPct: widthPct ?? 4.0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
