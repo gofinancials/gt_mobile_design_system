@@ -110,13 +110,17 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
     final padding = context.insets.symmetricDp(horizontal: 17.px);
     final activeColor = switch (context.isInDarkMode) {
       true => context.palette.primary.base,
+      _ => context.palette.primary.dark,
+    };
+    final textColor = switch (context.isInDarkMode) {
+      true => context.palette.primary.base,
       _ => context.palette.primary.darker,
     };
     final pillColor = switch (context.isInDarkMode) {
       true => context.palette.primary.alpha10,
       _ => null,
     };
-    final pillTextColor = accountPillTextColor ?? activeColor;
+    final pillTextColor = accountPillTextColor ?? textColor;
     final pillStyle = context.textStyles.subHeadXs(
       color: pillTextColor,
       heightPx: 12,

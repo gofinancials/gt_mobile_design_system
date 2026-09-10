@@ -190,7 +190,6 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       appBar: GtHomeAppBar(
         userFullName: "Alex Lobaloba",
         onClickHelp: () {},
-        onClickHide: _toggleHidden,
         onToggleAccounts: () {},
         toggleAccountText: "All Accounts",
       ),
