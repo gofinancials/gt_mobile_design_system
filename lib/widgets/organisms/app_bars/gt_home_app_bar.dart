@@ -132,7 +132,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 text: toggleAccountText,
                 trailing: GtIcons.chevronDownOutline,
                 onPressed: onToggleAccounts!,
-                cornerRadius: context.borderRadius3Xl,
+                cornerRadius: context.borderRadiusFull,
                 color: btnColor,
                 textColor: iconColor,
                 variant: .neutral,
