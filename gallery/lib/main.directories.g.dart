@@ -332,6 +332,8 @@ import 'package:gallery/templates/scaffolds/gt_receipt_scaffold_usecase.dart'
     as _gallery_templates_scaffolds_gt_receipt_scaffold_usecase;
 import 'package:gallery/templates/scaffolds/gt_summary_scaffold_usecase.dart'
     as _gallery_templates_scaffolds_gt_summary_scaffold_usecase;
+import 'package:gallery/templates/scaffolds/gt_transfer_detail_scaffold_usecase.dart'
+    as _gallery_templates_scaffolds_gt_transfer_detail_scaffold_usecase;
 import 'package:gallery/templates/screens/gt_debit_card_screen.dart'
     as _gallery_templates_screens_gt_debit_card_screen;
 import 'package:gallery/templates/screens/gt_debit_card_selection_screen.dart'
@@ -2115,6 +2117,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                   ),
                 ],
               ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTransferDetailBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTransferDetailBody',
+                    builder:
+                        _gallery_templates_scaffolds_gt_transfer_detail_scaffold_usecase
+                            .playgroundGtTransferDetailBodyUseCase,
+                  ),
+                ],
+              ),
             ],
           ),
           _widgetbook.WidgetbookFolder(
@@ -2650,6 +2663,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _gallery_templates_scaffolds_gt_summary_scaffold_usecase
                             .playgroundGtSummaryScaffoldGalleryUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTransferDetailScaffold',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTransferDetailScaffold',
+                    builder:
+                        _gallery_templates_scaffolds_gt_transfer_detail_scaffold_usecase
+                            .playgroundGtTransferDetailScaffoldUseCase,
                   ),
                 ],
               ),

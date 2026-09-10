@@ -175,21 +175,50 @@ class GtReceiptMessageData extends AppEquatable {
   List<Object?> get props => [message, title, style];
 }
 
+/// Where [GtReceiptDetailTile] places a [GtReceiptTileData.image] relative to
+/// the value.
+enum GtReceiptTileImagePosition {
+  /// Before the value, as on the category row of [GtTransferDetailBody].
+  leading,
+
+  /// After the value. The default.
+  trailing,
+}
+
 class GtReceiptTileData extends AppEquatable {
   final String label;
   final String value;
   final AppImageData? image;
   final OnPressed? onTap;
 
+  /// Invoked when the info icon drawn after [label] is tapped.
+  ///
+  /// When non-null, [GtReceiptDetailTile] renders a [GtIcons.info] glyph beside
+  /// the label, typically to explain a fee or levy. When null, no icon is
+  /// drawn.
+  final OnPressed? onInfoTap;
+
+  /// Overrides the label announced for the info icon.
+  ///
+  /// Defaults to "More information about [label]".
+  final String? infoSemanticsLabel;
+
   const GtReceiptTileData({
     required this.label,
     required this.value,
     this.image,
     this.onTap,
+    this.onInfoTap,
+    this.infoSemanticsLabel,
   });
 
+  /// The label announced for the info icon.
+  String get displayInfoSemanticsLabel {
+    return infoSemanticsLabel ?? 'More information about $label';
+  }
+
   @override
-  List<Object?> get props => [label, value, image];
+  List<Object?> get props => [label, value, image, infoSemanticsLabel];
 }
 
 class GtReceiptDetails extends AppEquatable {

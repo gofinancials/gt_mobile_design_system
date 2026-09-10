@@ -22,6 +22,13 @@ class _StatusTrackerGalleryViewState extends State<_StatusTrackerGalleryView>
     with GtBottomModalMixin {
   @override
   Widget build(BuildContext context) {
+    final variant = context.knobs.object.dropdown(
+      label: 'Variant',
+      options: GtStatusTrackerVariant.values,
+      initialOption: GtStatusTrackerVariant.standard,
+      labelBuilder: (v) => v.name,
+    );
+
     final step1State = context.knobs.object.dropdown(
       label: 'Step 1 State',
       options: GtStatusStepState.values,
@@ -88,6 +95,7 @@ class _StatusTrackerGalleryViewState extends State<_StatusTrackerGalleryView>
     final codeSnippet =
         '''
 GtStatusTracker(
+  variant: GtStatusTrackerVariant.${variant.name},
   steps: [
     GtStatusStepData(
       label: '$step1Label',
@@ -111,6 +119,8 @@ GtStatusTracker(
       description: '''
 <b>GtStatusTracker</b> renders a vertical multi-step status timeline with semantic state indicators, connecting lines, and automatic terminal checkmarks.
 
+The <b>compact</b> variant renders a denser timeline for detail cards: labels keep their casing, subtitles become trailing timestamps, and the track turns green once the final step is reached.
+
 It seamlessly integrates inside floating bottom sheets or standalone card views.''',
       code: codeSnippet,
       child: Column(
@@ -119,7 +129,7 @@ It seamlessly integrates inside floating bottom sheets or standalone card views.
         children: [
           GtCard(
             padding: context.insets.allDp(20.px),
-            child: GtStatusTracker(steps: currentSteps),
+            child: GtStatusTracker(steps: currentSteps, variant: variant),
           ),
           Wrap(
             spacing: context.spacingMd,
@@ -127,7 +137,7 @@ It seamlessly integrates inside floating bottom sheets or standalone card views.
             children: [
               _ScenarioChip(
                 label: 'Test Processing',
-                onTap: () => _openSheetWith(context, [
+                onTap: () => _openSheetWith(context, variant, [
                   const GtStatusStepData(
                     label: 'Processing',
                     state: GtStatusStepState.active,
@@ -145,7 +155,7 @@ It seamlessly integrates inside floating bottom sheets or standalone card views.
               ),
               _ScenarioChip(
                 label: 'Test Failed Sending',
-                onTap: () => _openSheetWith(context, [
+                onTap: () => _openSheetWith(context, variant, [
                   const GtStatusStepData(
                     label: 'Processed',
                     state: GtStatusStepState.success,
@@ -164,7 +174,7 @@ It seamlessly integrates inside floating bottom sheets or standalone card views.
               ),
               _ScenarioChip(
                 label: 'Test Reversed',
-                onTap: () => _openSheetWith(context, [
+                onTap: () => _openSheetWith(context, variant, [
                   const GtStatusStepData(
                     label: 'Processed',
                     state: GtStatusStepState.success,
@@ -184,7 +194,7 @@ It seamlessly integrates inside floating bottom sheets or standalone card views.
               ),
               _ScenarioChip(
                 label: 'Test Fully Delivered',
-                onTap: () => _openSheetWith(context, [
+                onTap: () => _openSheetWith(context, variant, [
                   const GtStatusStepData(
                     label: 'Processed',
                     state: GtStatusStepState.success,
@@ -209,12 +219,16 @@ It seamlessly integrates inside floating bottom sheets or standalone card views.
     );
   }
 
-  void _openSheetWith(BuildContext context, List<GtStatusStepData> steps) {
+  void _openSheetWith(
+    BuildContext context,
+    GtStatusTrackerVariant variant,
+    List<GtStatusStepData> steps,
+  ) {
     showBottomModalWithChild(
       context,
       child: Padding(
         padding: context.insets.defaultAllInsets,
-        child: GtStatusTracker(steps: steps),
+        child: GtStatusTracker(steps: steps, variant: variant),
       ),
       useRootNavigator: false,
     );

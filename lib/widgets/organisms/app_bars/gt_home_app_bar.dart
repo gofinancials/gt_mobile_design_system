@@ -61,7 +61,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     final toolbarHeight = MediaQuery.paddingOf(context).top;
     final btnColor = context.palette.primary.alpha16;
     final avatarColor = context.palette.primary.dark;
-    final iconColor = switch(context.isInDarkMode) {
+    final iconColor = switch (context.isInDarkMode) {
       true => context.palette.primary.base,
       _ => context.palette.primary.darker,
     };
@@ -140,8 +140,8 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 textCase: .title,
                 style: context.textStyles.subHeadS(
                   color: iconColor,
-                  weight: .w600
-                )
+                  weight: .w600,
+                ),
               ),
           ],
         ),

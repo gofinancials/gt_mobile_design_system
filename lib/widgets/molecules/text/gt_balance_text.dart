@@ -16,6 +16,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// fixed run of asterisks and any [animateChanges] motion is suppressed, so
 /// neither the width nor the movement of the line can leak the value.
 ///
+/// Set [showVisibilityIcon] to `false` for amounts that are not meant to be
+/// toggled, such as a transfer amount on a detail screen: the eye icon is
+/// dropped and the line becomes inert.
+///
 /// The line is wrapped in a [FittedBox] set to [BoxFit.scaleDown]: a balance
 /// too wide for its box shrinks rather than wrapping or ellipsizing, so give it
 /// a bounded width and expect large amounts to render smaller than the
@@ -109,8 +113,16 @@ class GtBalanceText extends GtStatelessWidget {
   /// comfortable at any type scale. Typically flips [hidden] in the caller.
   ///
   /// When `null` the line is inert — but the icon is still drawn, so pass a
-  /// callback wherever the eye is shown.
+  /// callback wherever the eye is shown, or set [showVisibilityIcon] to
+  /// `false`. Ignored while [showVisibilityIcon] is `false`.
   final OnPressed? onVisibilityIconTap;
+
+  /// Whether the trailing visibility icon is drawn.
+  ///
+  /// Defaults to `true`. When `false` the icon and its leading gap are
+  /// omitted, and the line is no longer a tap target, so
+  /// [onVisibilityIconTap] is ignored. [hidden] still masks the amount.
+  final bool showVisibilityIcon;
 
   /// The trailing icon shown while [hidden] is `true`.
   ///
@@ -151,6 +163,7 @@ class GtBalanceText extends GtStatelessWidget {
     this.currencyStyle,
     this.amountStyle,
     this.onVisibilityIconTap,
+    this.showVisibilityIcon = true,
     this.hiddenIcon = GtIcons.eyeOpen,
     this.visibleIcon = GtIcons.eyeClosed,
     this.iconSize,
@@ -195,17 +208,21 @@ class GtBalanceText extends GtStatelessWidget {
       );
     }
 
-    final trailing = WidgetSpan(
-      alignment: .middle,
-      child: GtAnimatedSwitcher(
-        child: GtIcon.withColor(
-          _viibilityIcon,
-          key: ValueKey(hidden),
-          size: iconSize ?? context.dp(16.px),
-          color: iconColor ?? context.palette.icon.sub,
+    WidgetSpan? trailing;
+
+    if (showVisibilityIcon) {
+      trailing = WidgetSpan(
+        alignment: .middle,
+        child: GtAnimatedSwitcher(
+          child: GtIcon.withColor(
+            _viibilityIcon,
+            key: ValueKey(hidden),
+            size: iconSize ?? context.dp(16.px),
+            color: iconColor ?? context.palette.icon.sub,
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     Widget child = Text.rich(
       TextSpan(
@@ -215,8 +232,10 @@ class GtBalanceText extends GtStatelessWidget {
             child: GtText('$currencySymbol ', style: symbolStyle),
           ),
           TextSpan(text: amtDisplay),
-          const WidgetSpan(child: GtGap.hSm()),
-          trailing,
+          if (trailing case WidgetSpan widget) ...[
+            const WidgetSpan(child: GtGap.hSm()),
+            widget,
+          ],
         ],
       ),
       textAlign: textAlign,
@@ -238,15 +257,18 @@ class GtBalanceText extends GtStatelessWidget {
       );
     }
 
-    return GtTapTarget(
-      child: GtInkWell(
-        onTap: onVisibilityIconTap,
-        child: FittedBox(
-          fit: .scaleDown,
-          child: Semantics(label: semanticLabel, child: child),
-        ),
-      ),
+    child = FittedBox(
+      fit: .scaleDown,
+      child: Semantics(label: semanticLabel, child: child),
     );
+
+    if (showVisibilityIcon) {
+      child = GtTapTarget(
+        child: GtInkWell(onTap: onVisibilityIconTap, child: child),
+      );
+    }
+
+    return child;
   }
 }
 
@@ -259,7 +281,7 @@ class _GtAnimatedBalanceText extends GtStatelessWidget {
   final int? maxLines;
   final Duration duration;
   final Curve curve;
-  final InlineSpan trailing;
+  final WidgetSpan? trailing;
 
   const _GtAnimatedBalanceText({
     required this.amount,
@@ -294,8 +316,10 @@ class _GtAnimatedBalanceText extends GtStatelessWidget {
               curve: curve,
             ),
           ),
-          const WidgetSpan(child: GtGap.hSm()),
-          trailing,
+          if (trailing case WidgetSpan widget) ...[
+            const WidgetSpan(child: GtGap.hSm()),
+            widget,
+          ],
         ],
       ),
       textAlign: textAlign,

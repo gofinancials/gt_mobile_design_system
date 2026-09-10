@@ -66,7 +66,7 @@ class GtReceiptBody extends GtStatelessWidget {
               spacing: context.spacingBase,
               children: [
                 for (final (index, action) in actions.indexed)
-                  _ReceiptAction(
+                  GtReceiptActionButton(
                     action: action,
                     key: Key('receipt-action-$index'),
                   ),
@@ -197,27 +197,6 @@ class _ReceiptCategory extends GtStatelessWidget {
       );
     }
     return child;
-  }
-}
-
-class _ReceiptAction extends GtStatelessWidget {
-  final GtReceiptAction action;
-
-  const _ReceiptAction({super.key, required this.action});
-
-  @override
-  Widget build(BuildContext context) {
-    return GtRaisedButton(
-      onPressed: action.onTap,
-      text: action.label,
-      variant: action.style.variant,
-      alignment: .center,
-      size: .small,
-      leading: action.icon,
-      contentPadding: context.insets.symmetricDp(horizontal: 12.px),
-      textColor: action.textColor(context.palette),
-      color: action.color(context.palette),
-    );
   }
 }
 

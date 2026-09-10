@@ -23,6 +23,10 @@ Widget playgroundGtBalanceTextUseCase(BuildContext context) {
     label: 'Animate changes',
     initialValue: true,
   );
+  final showVisibilityIcon = context.knobs.boolean(
+    label: 'Show visibility icon',
+    initialValue: true,
+  );
 
   final codeSnippet =
       '''
@@ -31,6 +35,7 @@ GtBalanceText(
   hidden: $hidden,
   currencySymbol: "$currencySymbol",
   animateChanges: $animateChanges,
+  showVisibilityIcon: $showVisibilityIcon,
 )''';
 
   return _GtBalanceTextPlayground(
@@ -38,6 +43,7 @@ GtBalanceText(
     hidden: hidden,
     currencySymbol: currencySymbol,
     animateChanges: animateChanges,
+    showVisibilityIcon: showVisibilityIcon,
     codeSnippet: codeSnippet,
   );
 }
@@ -47,6 +53,7 @@ class _GtBalanceTextPlayground extends GtStatelessWidget {
   final bool hidden;
   final String currencySymbol;
   final bool animateChanges;
+  final bool showVisibilityIcon;
   final String codeSnippet;
 
   const _GtBalanceTextPlayground({
@@ -54,6 +61,7 @@ class _GtBalanceTextPlayground extends GtStatelessWidget {
     required this.hidden,
     required this.currencySymbol,
     required this.animateChanges,
+    required this.showVisibilityIcon,
     required this.codeSnippet,
   });
 
@@ -62,7 +70,7 @@ class _GtBalanceTextPlayground extends GtStatelessWidget {
     return GtWidgetDocPage(
       title: "GtBalanceText",
       description:
-          "Displays a formatted balance with optional masking and animated value changes.",
+          "Displays a formatted balance with optional masking and animated value changes. Turn off the visibility icon for amounts that are not meant to be toggled.",
       code: codeSnippet,
       child: Center(
         child: GtBalanceText(
@@ -71,6 +79,7 @@ class _GtBalanceTextPlayground extends GtStatelessWidget {
           currencySymbol: currencySymbol,
           textAlign: TextAlign.center,
           animateChanges: animateChanges,
+          showVisibilityIcon: showVisibilityIcon,
         ),
       ),
     );

@@ -439,6 +439,13 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   /// An optional widget displayed immediately after the [value].
   final Widget? valueSuffix;
 
+  /// An optional widget displayed immediately after the [label], such as an
+  /// info icon.
+  ///
+  /// The label shrinks to make room for it, so a long label is ellipsised
+  /// rather than pushing the suffix out of view.
+  final Widget? labelSuffix;
+
   ///Maximum number of lines for the label.
   final int labelMaxLines;
 
@@ -463,6 +470,7 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     required this.value,
     this.valuePrefix,
     this.valueSuffix,
+    this.labelSuffix,
     this.labelMaxLines = 1,
     this.valueMaxLines = 2,
     this.highlightValue = true,
@@ -486,18 +494,27 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
       valueStyle = valueStyle.copyWith(color: palette.soft);
     }
 
+    Widget labelChild = GtText(
+      label,
+      style: labelStyle,
+      maxLines: labelMaxLines,
+      overflow: .ellipsis,
+    );
+
+    if (labelSuffix != null) {
+      labelChild = Row(
+        spacing: context.spacingSm,
+        children: [
+          Flexible(child: labelChild),
+          labelSuffix!,
+        ],
+      );
+    }
+
     return Row(
       spacing: context.spacingMd,
       children: [
-        Expanded(
-          flex: 4,
-          child: GtText(
-            label,
-            style: labelStyle,
-            maxLines: labelMaxLines,
-            overflow: .ellipsis,
-          ),
-        ),
+        Expanded(flex: 4, child: labelChild),
         Expanded(
           flex: 5,
           child: Row(

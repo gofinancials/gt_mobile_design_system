@@ -655,8 +655,16 @@ class GtIcons {
   static const locationPin = IconData(0xf170, fontFamily: _f, fontPackage: _p);
   static const landBill = IconData(0xf171, fontFamily: _f, fontPackage: _p);
 
-  static const arrowNorthEastThin = IconData(0xf174, fontFamily: _f, fontPackage: _p);
-  static const walletAltFilled = IconData(0xf175, fontFamily: _f, fontPackage: _p);
+  static const arrowNorthEastThin = IconData(
+    0xf174,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const walletAltFilled = IconData(
+    0xf175,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
 
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///

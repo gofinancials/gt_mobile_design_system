@@ -84,93 +84,101 @@ void main() {
       expect(sim, isNull);
     });
 
-    test('adjustPositionForNewDimensions triggers ballistic kick off on initial layout', () {
-      const physics = GtMarqueeScrollPhysics();
+    test(
+      'adjustPositionForNewDimensions triggers ballistic kick off on initial layout',
+      () {
+        const physics = GtMarqueeScrollPhysics();
 
-      final oldPosition = FixedScrollMetrics(
-        minScrollExtent: 0,
-        maxScrollExtent: 0,
-        pixels: 0,
-        viewportDimension: 100,
-        axisDirection: AxisDirection.right,
-        devicePixelRatio: 1,
-      );
+        final oldPosition = FixedScrollMetrics(
+          minScrollExtent: 0,
+          maxScrollExtent: 0,
+          pixels: 0,
+          viewportDimension: 100,
+          axisDirection: AxisDirection.right,
+          devicePixelRatio: 1,
+        );
 
-      final newPosition = FixedScrollMetrics(
-        minScrollExtent: 0,
-        maxScrollExtent: 50,
-        pixels: 0,
-        viewportDimension: 100,
-        axisDirection: AxisDirection.right,
-        devicePixelRatio: 1,
-      );
+        final newPosition = FixedScrollMetrics(
+          minScrollExtent: 0,
+          maxScrollExtent: 50,
+          pixels: 0,
+          viewportDimension: 100,
+          axisDirection: AxisDirection.right,
+          devicePixelRatio: 1,
+        );
 
-      final newPixels = physics.adjustPositionForNewDimensions(
-        oldPosition: oldPosition,
-        newPosition: newPosition,
-        isScrolling: false,
-        velocity: 0,
-      );
+        final newPixels = physics.adjustPositionForNewDimensions(
+          oldPosition: oldPosition,
+          newPosition: newPosition,
+          isScrolling: false,
+          velocity: 0,
+        );
 
-      expect(newPixels, isNot(equals(0.0)));
-    });
+        expect(newPixels, isNot(equals(0.0)));
+      },
+    );
 
-    testWidgets('SingleChildScrollView with GtMarqueeScrollPhysics scrolls back and forth', (tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: SizedBox(
-              width: 100,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                physics: const GtMarqueeScrollPhysics(
-                  marqueeVelocity: 50.0,
-                  pauseDuration: Duration(milliseconds: 500),
-                ),
-                child: const SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: Text('Long overflowing marquee text that scrolls continuously'),
+    testWidgets(
+      'SingleChildScrollView with GtMarqueeScrollPhysics scrolls back and forth',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: SizedBox(
+                width: 100,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: const GtMarqueeScrollPhysics(
+                    marqueeVelocity: 50.0,
+                    pauseDuration: Duration(milliseconds: 500),
+                  ),
+                  child: const SizedBox(
+                    width: 300,
+                    height: 50,
+                    child: Text(
+                      'Long overflowing marquee text that scrolls continuously',
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      );
+        );
 
-      final scrollable = find.byType(Scrollable);
-      expect(scrollable, findsOneWidget);
+        final scrollable = find.byType(Scrollable);
+        expect(scrollable, findsOneWidget);
 
-      // Initial render: at 0
-      ScrollableState state = tester.state(scrollable);
-      expect(state.position.pixels, closeTo(0, 0.01));
+        // Initial render: at 0
+        ScrollableState state = tester.state(scrollable);
+        expect(state.position.pixels, closeTo(0, 0.01));
 
-      // After 500ms pause: still around 0
-      await tester.pump(const Duration(milliseconds: 500));
-      state = tester.state(scrollable);
-      expect(state.position.pixels, closeTo(0, 0.01));
+        // After 500ms pause: still around 0
+        await tester.pump(const Duration(milliseconds: 500));
+        state = tester.state(scrollable);
+        expect(state.position.pixels, closeTo(0, 0.01));
 
-      // After 2000ms: maxScrollExtent is 200 (300 - 100).
-      // Time to scroll 200px at 50px/s is 4s (4000ms).
-      // At 500ms pause + 2000ms scroll: pixels should be around 100.
-      await tester.pump(const Duration(milliseconds: 2000));
-      state = tester.state(scrollable);
-      expect(state.position.pixels, closeTo(100, 1.0));
+        // After 2000ms: maxScrollExtent is 200 (300 - 100).
+        // Time to scroll 200px at 50px/s is 4s (4000ms).
+        // At 500ms pause + 2000ms scroll: pixels should be around 100.
+        await tester.pump(const Duration(milliseconds: 2000));
+        state = tester.state(scrollable);
+        expect(state.position.pixels, closeTo(100, 1.0));
 
-      // Complete forward scroll (total 500ms + 4000ms = 4500ms)
-      await tester.pump(const Duration(milliseconds: 2000));
-      state = tester.state(scrollable);
-      expect(state.position.pixels, closeTo(200, 1.0));
+        // Complete forward scroll (total 500ms + 4000ms = 4500ms)
+        await tester.pump(const Duration(milliseconds: 2000));
+        state = tester.state(scrollable);
+        expect(state.position.pixels, closeTo(200, 1.0));
 
-      // Reversal: after end pause (500ms) and 2000ms backward scroll -> should be around 100
-      await tester.pump(const Duration(milliseconds: 2500));
-      state = tester.state(scrollable);
-      expect(state.position.pixels, closeTo(100, 1.0));
+        // Reversal: after end pause (500ms) and 2000ms backward scroll -> should be around 100
+        await tester.pump(const Duration(milliseconds: 2500));
+        state = tester.state(scrollable);
+        expect(state.position.pixels, closeTo(100, 1.0));
 
-      // Complete backward scroll -> back at 0
-      await tester.pump(const Duration(milliseconds: 2000));
-      state = tester.state(scrollable);
-      expect(state.position.pixels, closeTo(0, 1.0));
-    });
+        // Complete backward scroll -> back at 0
+        await tester.pump(const Duration(milliseconds: 2000));
+        state = tester.state(scrollable);
+        expect(state.position.pixels, closeTo(0, 1.0));
+      },
+    );
   });
 }
