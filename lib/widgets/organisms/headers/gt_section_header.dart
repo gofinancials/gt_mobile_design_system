@@ -129,7 +129,9 @@ class GtTransactionGroupHeader extends GtStatelessWidget {
       crossAxisAlignment: .center,
       spacing: context.spacingMd,
       children: [
-        Expanded(child: GtText(title.capitalise(), style: style ?? defaultStyle)),
+        Expanded(
+          child: GtText(title.capitalise(), style: style ?? defaultStyle),
+        ),
         ?trailing,
       ],
     );

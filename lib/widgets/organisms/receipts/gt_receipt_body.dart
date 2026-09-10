@@ -2,17 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// The scrollable content of a transaction receipt.
+///
+/// Presents, from top to bottom: the [status] pill, the [amount], an optional
+/// horizontally scrolling row of [actions], a card with the [from] and [to]
+/// participants, the [details] cards, and an optional [footer]. It reserves
+/// trailing space for the floating bottom bar of [GtReceiptScaffold].
 class GtReceiptBody extends GtStatelessWidget {
+  /// An optional controller for the underlying scroll view, typically the one
+  /// handed to you by a draggable sheet builder.
   final ScrollController? controller;
+
+  /// Optional scroll physics. Defaults to [ClampingScrollPhysics].
   final ScrollPhysics? physics;
+
+  /// The actions rendered beneath the amount. When empty, no row is rendered.
   final List<GtReceiptAction> actions;
+
+  /// The party the money came from.
   final GtReceiptParticipant from;
+
+  /// The party the money went to.
   final GtReceiptParticipant to;
+
+  /// The status pill at the head of the receipt.
   final GtReceiptStatusData status;
+
+  /// The formatted amount, such as "250,000.00".
   final String amount;
+
+  /// The message, category and detail rows beneath the participants.
   final GtReceiptDetails details;
+
+  /// An optional widget rendered beneath the details.
   final Widget? footer;
 
+  /// Creates a [GtReceiptBody].
   const GtReceiptBody({
     super.key,
     this.controller,
@@ -66,7 +91,7 @@ class GtReceiptBody extends GtStatelessWidget {
               spacing: context.spacingBase,
               children: [
                 for (final (index, action) in actions.indexed)
-                  _ReceiptAction(
+                  GtReceiptActionButton(
                     action: action,
                     key: Key('receipt-action-$index'),
                   ),
@@ -144,9 +169,13 @@ class GtReceiptBody extends GtStatelessWidget {
   }
 }
 
+/// A private widget that renders a [GtReceiptMessageData] as a heading over
+/// the note.
 class _ReceiptMessage extends GtStatelessWidget {
+  /// The note and its heading.
   final GtReceiptMessageData message;
 
+  /// Creates a [_ReceiptMessage].
   const _ReceiptMessage(this.message, {super.key});
 
   @override
@@ -165,9 +194,13 @@ class _ReceiptMessage extends GtStatelessWidget {
   }
 }
 
+/// A private widget that renders the category row, with its image drawn at
+/// 36dp after the value.
 class _ReceiptCategory extends GtStatelessWidget {
+  /// The category's label, value, image and tap handler.
   final GtReceiptTileData data;
 
+  /// Creates a [_ReceiptCategory].
   const _ReceiptCategory(this.data, {super.key});
 
   @override
@@ -200,31 +233,17 @@ class _ReceiptCategory extends GtStatelessWidget {
   }
 }
 
-class _ReceiptAction extends GtStatelessWidget {
-  final GtReceiptAction action;
-
-  const _ReceiptAction({super.key, required this.action});
-
-  @override
-  Widget build(BuildContext context) {
-    return GtRaisedButton(
-      onPressed: action.onTap,
-      text: action.label,
-      variant: action.style.variant,
-      alignment: .center,
-      size: .small,
-      leading: action.icon,
-      contentPadding: context.insets.symmetricDp(horizontal: 12.px),
-      textColor: action.textColor(context.palette),
-      color: action.color(context.palette),
-    );
-  }
-}
-
+/// A private widget that renders a [GtReceiptParticipant], expanding into its
+/// transaction breakdown when it has one.
 class _ReceiptParticipant extends GtStatelessWidget {
+  /// The participant to render.
   final GtReceiptParticipant data;
+
+  /// Whether this is the sender, which selects the default "From" caption
+  /// over "To".
   final bool isFrom;
 
+  /// Creates a [_ReceiptParticipant].
   const _ReceiptParticipant(this.data, {super.key, this.isFrom = true});
 
   @override
@@ -287,9 +306,13 @@ class _ReceiptParticipant extends GtStatelessWidget {
   }
 }
 
+/// A private widget that renders one [GtReceiptTransaction] in a
+/// participant's breakdown.
 class _ReceiptTransactionItem extends GtStatelessWidget {
+  /// The transaction to render.
   final GtReceiptTransaction transaction;
 
+  /// Creates a [_ReceiptTransactionItem].
   const _ReceiptTransactionItem(this.transaction, {super.key});
 
   @override

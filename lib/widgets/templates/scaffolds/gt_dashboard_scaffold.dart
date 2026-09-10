@@ -127,7 +127,7 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
   Widget build(BuildContext context) {
     final pages = widget.data.pages;
     final navItems = widget.data.navItems;
-    final gradiantStart = switch(context.isInDarkMode) {
+    final gradiantStart = switch (context.isInDarkMode) {
       true => context.palette.primary.darker,
       _ => context.palette.primary.base,
     };

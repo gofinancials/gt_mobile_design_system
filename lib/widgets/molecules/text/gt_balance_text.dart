@@ -16,6 +16,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// fixed run of asterisks and any [animateChanges] motion is suppressed, so
 /// neither the width nor the movement of the line can leak the value.
 ///
+/// Set [showVisibilityIcon] to `false` for amounts that are not meant to be
+/// toggled, such as a transfer amount on a detail screen: the eye icon is
+/// dropped and the line becomes inert.
+///
 /// The line is wrapped in a [FittedBox] set to [BoxFit.scaleDown]: a balance
 /// too wide for its box shrinks rather than wrapping or ellipsizing, so give it
 /// a bounded width and expect large amounts to render smaller than the
@@ -109,8 +113,16 @@ class GtBalanceText extends GtStatelessWidget {
   /// comfortable at any type scale. Typically flips [hidden] in the caller.
   ///
   /// When `null` the line is inert — but the icon is still drawn, so pass a
-  /// callback wherever the eye is shown.
+  /// callback wherever the eye is shown, or set [showVisibilityIcon] to
+  /// `false`. Ignored while [showVisibilityIcon] is `false`.
   final OnPressed? onVisibilityIconTap;
+
+  /// Whether the trailing visibility icon is drawn.
+  ///
+  /// Defaults to `true`. When `false` the icon and its leading gap are
+  /// omitted, and the line is no longer a tap target, so
+  /// [onVisibilityIconTap] is ignored. [hidden] still masks the amount.
+  final bool showVisibilityIcon;
 
   /// The trailing icon shown while [hidden] is `true`.
   ///
@@ -151,6 +163,7 @@ class GtBalanceText extends GtStatelessWidget {
     this.currencyStyle,
     this.amountStyle,
     this.onVisibilityIconTap,
+    this.showVisibilityIcon = true,
     this.hiddenIcon = GtIcons.eyeOpen,
     this.visibleIcon = GtIcons.eyeClosed,
     this.iconSize,
@@ -177,6 +190,7 @@ class GtBalanceText extends GtStatelessWidget {
     return semanticsLabel ?? 'Balance is $amtDisplay $currencySymbol';
   }
 
+  /// The trailing icon for the current [hidden] state.
   IconData get _viibilityIcon {
     return hidden ? hiddenIcon : visibleIcon;
   }
@@ -195,17 +209,21 @@ class GtBalanceText extends GtStatelessWidget {
       );
     }
 
-    final trailing = WidgetSpan(
-      alignment: .middle,
-      child: GtAnimatedSwitcher(
-        child: GtIcon.withColor(
-          _viibilityIcon,
-          key: ValueKey(hidden),
-          size: iconSize ?? context.dp(16.px),
-          color: iconColor ?? context.palette.icon.sub,
+    WidgetSpan? trailing;
+
+    if (showVisibilityIcon) {
+      trailing = WidgetSpan(
+        alignment: .middle,
+        child: GtAnimatedSwitcher(
+          child: GtIcon.withColor(
+            _viibilityIcon,
+            key: ValueKey(hidden),
+            size: iconSize ?? context.dp(16.px),
+            color: iconColor ?? context.palette.icon.sub,
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     Widget child = Text.rich(
       TextSpan(
@@ -215,8 +233,10 @@ class GtBalanceText extends GtStatelessWidget {
             child: GtText('$currencySymbol ', style: symbolStyle),
           ),
           TextSpan(text: amtDisplay),
-          const WidgetSpan(child: GtGap.hSm()),
-          trailing,
+          if (trailing case WidgetSpan widget) ...[
+            const WidgetSpan(child: GtGap.hSm()),
+            widget,
+          ],
         ],
       ),
       textAlign: textAlign,
@@ -238,29 +258,58 @@ class GtBalanceText extends GtStatelessWidget {
       );
     }
 
-    return GtTapTarget(
-      child: GtInkWell(
-        onTap: onVisibilityIconTap,
-        child: FittedBox(
-          fit: .scaleDown,
-          child: Semantics(label: semanticLabel, child: child),
-        ),
+    child = FittedBox(
+      fit: .scaleDown,
+      child: Semantics(
+        label: semanticLabel,
+        excludeSemantics: true,
+        child: child,
       ),
     );
+
+    if (showVisibilityIcon) {
+      child = GtTapTarget(
+        child: GtInkWell(onTap: onVisibilityIconTap, child: child),
+      );
+    }
+
+    return child;
   }
 }
 
+/// A private widget that renders a [GtBalanceText] line with an
+/// odometer-style [GtAnimatedCounter] in place of the static amount, used
+/// while [GtBalanceText.animateChanges] is `true` and the balance is visible.
 class _GtAnimatedBalanceText extends GtStatelessWidget {
+  /// The raw balance the counter rolls to.
   final num amount;
-  final String computedSymbol;
-  final TextStyle currencyStyle;
-  final TextStyle amountStyle;
-  final TextAlign textAlign;
-  final int? maxLines;
-  final Duration duration;
-  final Curve curve;
-  final InlineSpan trailing;
 
+  /// The currency glyph drawn ahead of the counter.
+  final String computedSymbol;
+
+  /// The resolved style of [computedSymbol].
+  final TextStyle currencyStyle;
+
+  /// The resolved style of the counter.
+  final TextStyle amountStyle;
+
+  /// Horizontal alignment of the whole line.
+  final TextAlign textAlign;
+
+  /// Maximum lines for the whole line.
+  final int? maxLines;
+
+  /// Duration of each roll.
+  final Duration duration;
+
+  /// Curve of each roll.
+  final Curve curve;
+
+  /// The visibility icon span, or `null` while
+  /// [GtBalanceText.showVisibilityIcon] is `false`.
+  final WidgetSpan? trailing;
+
+  /// Creates a [_GtAnimatedBalanceText].
   const _GtAnimatedBalanceText({
     required this.amount,
     required this.computedSymbol,
@@ -294,8 +343,10 @@ class _GtAnimatedBalanceText extends GtStatelessWidget {
               curve: curve,
             ),
           ),
-          const WidgetSpan(child: GtGap.hSm()),
-          trailing,
+          if (trailing case WidgetSpan widget) ...[
+            const WidgetSpan(child: GtGap.hSm()),
+            widget,
+          ],
         ],
       ),
       textAlign: textAlign,

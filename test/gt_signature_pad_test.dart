@@ -294,10 +294,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        _SignaturePadTestApp(
-          controller: controller,
-          onSecondaryAction: () {},
-        ),
+        _SignaturePadTestApp(controller: controller, onSecondaryAction: () {}),
       );
 
       expect(find.text('Tap to draw your signature'), findsOneWidget);

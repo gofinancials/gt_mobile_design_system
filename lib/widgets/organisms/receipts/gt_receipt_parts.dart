@@ -2,26 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-/// A single label/value row within a receipt or confirmation card.
+/// A single label/value row within a receipt, confirmation or transfer detail
+/// card.
 ///
-/// Renders [GtReceiptTileData] as a [GtDoubleColumnListTile] with the label
-/// emphasised over the value. When the tile carries an `image`, it is rendered
-/// as a 20dp suffix after the value; when it carries an `onTap`, the row is
-/// wrapped in a [GtInkWell] (commonly used for tap-to-copy on references and
-/// session IDs).
+/// Renders [GtReceiptTileData] as a [GtDoubleColumnListTile]. When the tile
+/// carries an `image`, it is rendered as a 20dp image beside the value, placed
+/// by [imagePosition]; when it carries an `onTap`, the row is wrapped in a
+/// [GtInkWell] (commonly used for tap-to-copy on references and session IDs);
+/// and when it carries an `onInfoTap`, a tappable [GtIcons.info] glyph follows
+/// the label.
 ///
-/// Shared by [GtReceiptBody] and [GtConfirmationBody].
+/// Shared by [GtReceiptBody], [GtConfirmationBody] and [GtTransferDetailBody].
 class GtReceiptDetailTile extends GtStatelessWidget {
-  /// The label, value, optional image and optional tap handler for this row.
+  /// The label, value, optional image and optional tap handlers for this row.
   final GtReceiptTileData tile;
 
+  /// Whether the value is emphasised over the label.
+  ///
+  /// Defaults to `false`: a strong label over a soft value, as on
+  /// [GtReceiptBody] and [GtConfirmationBody]. [GtTransferDetailBody] passes
+  /// `true` for a soft label over a strong value.
+  final bool highlightValue;
+
+  /// Where the tile's image sits relative to the value.
+  ///
+  /// Defaults to [GtReceiptTileImagePosition.trailing].
+  final GtReceiptTileImagePosition imagePosition;
+
+  /// The gap between the value and the tile's image.
+  ///
+  /// Defaults to the spacing of [GtDoubleColumnListTile].
+  final double? valueSpacing;
+
   /// Creates a [GtReceiptDetailTile].
-  const GtReceiptDetailTile(this.tile, {super.key});
+  const GtReceiptDetailTile(
+    this.tile, {
+    super.key,
+    this.highlightValue = false,
+    this.imagePosition = .trailing,
+    this.valueSpacing,
+  });
 
   @override
   Widget build(BuildContext context) {
     final imageSize = context.dp(20.px);
-    final suffix = tile.image != null
+    final image = tile.image != null
         ? GtImage(
             image: tile.image!,
             width: imageSize,
@@ -30,11 +55,33 @@ class GtReceiptDetailTile extends GtStatelessWidget {
           )
         : null;
 
+    Widget? info;
+    if (tile.onInfoTap != null) {
+      info = GtTapTarget(
+        child: GtInkWell(
+          key: const Key('receipt-tile-info'),
+          role: .button,
+          onTap: tile.onInfoTap,
+          semanticsLabel: tile.displayInfoSemanticsLabel,
+          excludeDescendantSemantics: true,
+          borderRadius: context.borderRadiusSm,
+          child: GtIcon.withColor(
+            GtIcons.info,
+            color: context.palette.icon.soft,
+            size: context.dp(16.px),
+          ),
+        ),
+      );
+    }
+
     final child = GtDoubleColumnListTile(
       tile.label,
       value: tile.value,
-      valueSuffix: suffix,
-      highlightValue: false,
+      valuePrefix: imagePosition == .leading ? image : null,
+      valueSuffix: imagePosition == .trailing ? image : null,
+      labelSuffix: info,
+      highlightValue: highlightValue,
+      valueSpacing: valueSpacing,
     );
 
     if (tile.onTap != null) {
@@ -110,5 +157,47 @@ class GtReceiptStatusPill extends GtStatelessWidget {
     }
 
     return pill;
+  }
+}
+
+/// A compact action button displayed beneath the amount on a receipt or
+/// transfer detail screen.
+///
+/// Renders [GtReceiptAction] as a small [GtRaisedButton] with a leading icon,
+/// taking its variant and any custom colours from the action's style.
+///
+/// Shared by [GtReceiptBody] and [GtTransferDetailBody].
+class GtReceiptActionButton extends GtStatelessWidget {
+  /// The label, icon, style and tap handler for this button.
+  final GtReceiptAction action;
+
+  /// How the button is positioned within the space it is given, forwarded to
+  /// [GtRaisedButton.alignment].
+  ///
+  /// Defaults to [Alignment.center], which wraps the button in an [Align] that
+  /// fills the available width. Pass `null` to size the button to its content,
+  /// as [GtTransferDetailBody] does inside its [Wrap].
+  final AlignmentGeometry? alignment;
+
+  /// Creates a [GtReceiptActionButton].
+  const GtReceiptActionButton({
+    super.key,
+    required this.action,
+    this.alignment = .center,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GtRaisedButton(
+      onPressed: action.onTap,
+      text: action.label,
+      variant: action.style.variant,
+      alignment: alignment,
+      size: .small,
+      leading: action.icon,
+      contentPadding: context.insets.symmetricDp(horizontal: 12.px),
+      textColor: action.textColor(context.palette),
+      color: action.color(context.palette),
+    );
   }
 }

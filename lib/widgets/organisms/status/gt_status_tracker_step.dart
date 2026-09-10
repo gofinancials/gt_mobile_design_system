@@ -113,15 +113,123 @@ class GtStatusTrackerStepConnector extends GtStatelessWidget {
   }
 }
 
+/// Renders a single step row in a [GtStatusTracker] using
+/// [GtStatusTrackerVariant.compact].
+///
+/// Lays out a 12dp node — with an optional connector hanging beneath it — the
+/// label in its natural casing, and the subtitle as a trailing, right-aligned
+/// timestamp. A step without a subtitle, typically a pending one, renders no
+/// timestamp.
+class GtStatusTrackerCompactStep extends GtStatelessWidget {
+  /// The data specifying label, subtitle, state, and explicit color/icon overrides.
+  final GtStatusStepData data;
+
+  /// The colour of the connector drawn beneath the node, leading to the next
+  /// step.
+  ///
+  /// When null no connector is drawn, as for the final step.
+  final Color? connectorColor;
+
+  /// Creates a [GtStatusTrackerCompactStep].
+  const GtStatusTrackerCompactStep({
+    super.key,
+    required this.data,
+    this.connectorColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final nodeSize = context.dp(12.px);
+
+    Color subColor = palette.text.sub;
+    if (data.subtitleColor != null) {
+      subColor = data.subtitleColor!;
+    }
+
+    return MergeSemantics(
+      child: Row(
+        crossAxisAlignment: .start,
+        spacing: context.dp(9.px),
+        children: [
+          SizedBox(
+            width: nodeSize,
+            child: Column(
+              mainAxisSize: .min,
+              spacing: context.spacingSm,
+              children: [
+                _CompactStatusNode(data, size: nodeSize),
+                if (connectorColor case Color color)
+                  Container(
+                    width: context.dp(2.px),
+                    height: context.dp(8.px),
+                    decoration: BoxDecoration(
+                      color: color,
+                      borderRadius: context.borderRadiusXs,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: context.insets.symmetricDp(vertical: 1.px),
+              child: Row(
+                spacing: context.spacingBase,
+                children: [
+                  Expanded(
+                    child: GtText(
+                      data.label,
+                      style: context.textStyles.subHeadXs(
+                        weight: .w600,
+                        color: palette.text.darkerSub,
+                        heightPx: 12,
+                        widthPct: 0,
+                      ),
+                      maxLines: 1,
+                      overflow: .ellipsis,
+                    ),
+                  ),
+                  if (data.subtitle.hasValue)
+                    GtText(
+                      data.subtitle.value,
+                      style: context.textStyles.subHeadXs(
+                        color: subColor,
+                        heightPx: 12,
+                        widthPct: 0,
+                      ),
+                      maxLines: 1,
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// A private widget that draws a tracker node as a filled or outlined circle.
 class _StatusDot extends StatelessWidget {
+  /// The fill and outline colour.
   final Color color;
+
+  /// Whether the circle is filled with [color] or only outlined.
   final bool filled;
+
+  /// The diameter of the circle.
   final double size;
 
+  /// The width of the outline. Defaults to 2.25, as on the standard tracker.
+  final double borderWidth;
+
+  /// Creates a [_StatusDot].
   const _StatusDot({
     required this.color,
     required this.filled,
     required this.size,
+    this.borderWidth = 2.25,
   });
 
   @override
@@ -132,16 +240,25 @@ class _StatusDot extends StatelessWidget {
       decoration: BoxDecoration(
         color: filled ? color : Colors.transparent,
         shape: BoxShape.circle,
-        border: Border.all(color: color, width: 2.25),
+        border: Border.all(color: color, width: borderWidth),
       ),
     );
   }
 }
 
+/// A private widget that draws the 16dp node of a [GtStatusTrackerStep].
+///
+/// The node follows the step's state, and a terminal success swaps its dot
+/// for a checkmark. An explicit [GtStatusStepData.icon] or
+/// [GtStatusStepData.iconColor] overrides the state.
 class _StatusNode extends StatelessWidget {
+  /// The step whose state and overrides select the node.
   final GtStatusStepData data;
+
+  /// Whether a successful step draws a checkmark rather than a dot.
   final bool showAsTerminalSuccess;
 
+  /// Creates a [_StatusNode].
   const _StatusNode(this.data, {required this.showAsTerminalSuccess});
 
   @override
@@ -169,5 +286,92 @@ class _StatusNode extends StatelessWidget {
       .outlineDot => _StatusDot(color: nodeColor, filled: false, size: size),
       .icon => GtIcon.withColor(data.state.icon, color: nodeColor, size: size),
     };
+  }
+}
+
+/// A private widget that draws the node of a [GtStatusTrackerCompactStep].
+///
+/// The node follows the step's state: a spinner while active, a filled dot on
+/// success, an outlined dot while pending, and an icon once failed or
+/// reversed. Success takes the base green rather than the darker shade the
+/// standard tracker uses, and an explicit [GtStatusStepData.icon] or
+/// [GtStatusStepData.iconColor] overrides the state.
+class _CompactStatusNode extends StatelessWidget {
+  /// The step whose state and overrides select the node.
+  final GtStatusStepData data;
+
+  /// The diameter of the node.
+  final double size;
+
+  /// Creates a [_CompactStatusNode].
+  const _CompactStatusNode(this.data, {required this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+
+    Color stateColor = data.state.color(palette);
+    if (data.isSuccess) stateColor = palette.success.base;
+
+    final nodeColor = data.iconColor ?? stateColor;
+
+    if (data.icon != null) {
+      return _CompactStatusIcon(data.icon!, color: nodeColor, size: size);
+    }
+
+    return switch (data.state.nodeKind) {
+      .spinner => GtSpinner(
+        color: nodeColor,
+        size: size,
+        strokeWidth: context.dp(2.px),
+      ),
+      .filledDot => _StatusDot(color: nodeColor, filled: true, size: size),
+      .outlineDot => _StatusDot(
+        color: nodeColor,
+        filled: false,
+        size: size,
+        borderWidth: 1.5,
+      ),
+      .icon => _CompactStatusIcon(
+        data.state.icon,
+        color: nodeColor,
+        size: size,
+      ),
+    };
+  }
+}
+
+/// A private widget that draws a compact node's glyph at 14dp, centred in and
+/// overhanging the smaller node box, as the design's failed and reversed
+/// glyphs do.
+class _CompactStatusIcon extends StatelessWidget {
+  /// The glyph to draw.
+  final IconData icon;
+
+  /// The colour of the glyph.
+  final Color color;
+
+  /// The size of the node box the glyph is centred in.
+  final double size;
+
+  /// Creates a [_CompactStatusIcon].
+  const _CompactStatusIcon(
+    this.icon, {
+    required this.color,
+    required this.size,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final iconSize = context.dp(14.px);
+
+    return SizedBox.square(
+      dimension: size,
+      child: OverflowBox(
+        maxWidth: iconSize,
+        maxHeight: iconSize,
+        child: GtIcon.withColor(icon, color: color, size: iconSize),
+      ),
+    );
   }
 }
