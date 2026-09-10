@@ -69,6 +69,16 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       label: 'Home',
     ),
     GtBottomNavigationItem(
+      selectedIcon: GtIcons.walletAltFilled,
+      unselectedIcon: GtIcons.walletAlt,
+      label: 'Payments',
+    ),
+    GtBottomNavigationItem(
+      selectedIcon: GtIcons.productFilled,
+      unselectedIcon: GtIcons.product,
+      label: 'Producst',
+    ),
+    GtBottomNavigationItem(
       selectedIcon: GtIcons.cardFilled,
       unselectedIcon: GtIcons.card,
       label: 'Cards',
@@ -80,9 +90,9 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       page: Center(child: GtText('Home Page', style: context.textStyles.h6())),
       appBar: GtHomeAppBar(
         userFullName: "Alex Lobaloba",
-        onClickSearch: () {},
-        onClickNotification: () {},
-        onClickAvatar: () {},
+        onClickHelp: () {},
+        onToggleAccounts: () {},
+        toggleAccountText: "All Accounts",
       ),
       navItem: _items[0],
       showGradient: true,
@@ -91,6 +101,16 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       appBar: GtTitleAppBar(title: "Cards"),
       page: Center(child: GtText('Cards Page', style: context.textStyles.h6())),
       navItem: _items[1],
+    ),
+    GtDashboardPageData(
+      appBar: GtTitleAppBar(title: "Cards"),
+      page: Center(child: GtText('Cards Page', style: context.textStyles.h6())),
+      navItem: _items[2],
+    ),
+    GtDashboardPageData(
+      appBar: GtTitleAppBar(title: "Cards"),
+      page: Center(child: GtText('Cards Page', style: context.textStyles.h6())),
+      navItem: _items[3],
     ),
   ];
 

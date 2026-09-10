@@ -19,10 +19,25 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// Callback triggered when the notification icon is pressed.
   final OnPressed? onClickNotification;
 
+  /// Callback triggered when the messages icon is pressed.
+  final OnPressed? onClickHelp;
+
+  /// Callback triggered when the account toggle button is pressed.
+  final OnPressed? onToggleAccounts;
+
   /// Callback triggered when the avatar is pressed.
   final OnPressed? onClickAvatar;
 
+  /// The label shown on the account toggle button.
+  ///
+  /// Required whenever [onToggleAccounts] is supplied — the two together form
+  /// the account switcher, and the button would otherwise render unlabelled.
+  final String? toggleAccountText;
+
   /// Creates a [GtHomeAppBar].
+  ///
+  /// [toggleAccountText] must be supplied whenever [onToggleAccounts] is; this
+  /// is asserted in debug builds.
   const GtHomeAppBar({
     this.avatar,
     this.onClickSearch,
@@ -30,13 +45,26 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     this.onClickNotification,
     this.userFullName,
     this.onClickAvatar,
+    this.onClickHelp,
+    this.onToggleAccounts,
+    this.toggleAccountText,
     super.key,
-  });
+  }) : assert(
+         onToggleAccounts == null || toggleAccountText != null,
+         'GtHomeAppBar.toggleAccountText must be provided when '
+         'onToggleAccounts is set, otherwise the account toggle renders '
+         'without a label.',
+       );
 
   @override
   Widget build(BuildContext context) {
     final toolbarHeight = MediaQuery.paddingOf(context).top;
     final btnColor = context.palette.primary.alpha16;
+    final avatarColor = context.palette.primary.dark;
+    final iconColor = switch(context.isInDarkMode) {
+      true => context.palette.primary.base,
+      _ => context.palette.primary.darker,
+    };
 
     return Material(
       type: .transparency,
@@ -52,14 +80,27 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
               avatar: avatar,
               alignment: .centerLeft,
               initials: AppHelpers.getInitials(userFullName),
-              gradient: context.gradients.appbarAvatarGradient,
+              bgColor: avatarColor,
               initialsColor: context.palette.text.white,
+              forceGradiant: false,
               onPressed: onClickAvatar,
+              size: context.dp(42.px),
             ),
             const Spacer(),
+            if (onClickHelp != null)
+              GtIconButton(
+                icon: GtIcons.messages,
+                iconColor: iconColor,
+                onPressed: onClickHelp!,
+                shape: .round,
+                color: btnColor,
+                variant: .neutral,
+                size: .medium,
+              ),
             if (onClickSearch != null)
               GtIconButton(
                 icon: GtIcons.magnifier,
+                iconColor: iconColor,
                 onPressed: onClickSearch!,
                 shape: .round,
                 color: btnColor,
@@ -69,6 +110,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
             if (onClickHide != null)
               GtIconButton(
                 icon: GtIcons.hide,
+                iconColor: iconColor,
                 onPressed: onClickHide!,
                 shape: .round,
                 color: btnColor,
@@ -78,11 +120,28 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
             if (onClickNotification != null)
               GtIconButton(
                 icon: GtIcons.bell,
+                iconColor: iconColor,
                 onPressed: onClickNotification!,
                 shape: .round,
                 color: btnColor,
                 variant: .neutral,
                 size: .medium,
+              ),
+            if (onToggleAccounts != null)
+              GtRaisedButton(
+                text: toggleAccountText,
+                trailing: GtIcons.chevronDownOutline,
+                onPressed: onToggleAccounts!,
+                cornerRadius: context.borderRadius3Xl,
+                color: btnColor,
+                textColor: iconColor,
+                variant: .neutral,
+                size: .medium,
+                textCase: .title,
+                style: context.textStyles.subHeadS(
+                  color: iconColor,
+                  weight: .w600
+                )
               ),
           ],
         ),

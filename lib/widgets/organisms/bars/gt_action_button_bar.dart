@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A horizontal strip of [GtActionButton]s — the quick-action row of "Send",
