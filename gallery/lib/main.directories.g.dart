@@ -252,6 +252,8 @@ import 'package:gallery/organisms/navigation/gt_bottom_button_navigation_bar_use
     as _gallery_organisms_navigation_gt_bottom_button_navigation_bar_usecase;
 import 'package:gallery/organisms/navigation/gt_bottom_navigation_bar_usecase.dart'
     as _gallery_organisms_navigation_gt_bottom_navigation_bar_usecase;
+import 'package:gallery/organisms/slides/gt_account_detail_slides_usecase.dart'
+    as _gallery_organisms_slides_gt_account_detail_slides_usecase;
 import 'package:gallery/organisms/slides/gt_lesson_slide_usecase.dart'
     as _gallery_organisms_slides_gt_lesson_slide_usecase;
 import 'package:gallery/organisms/slides/gt_section_slide_usecase.dart'
@@ -2118,6 +2120,17 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'slides',
             children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAccountDetailSlides',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAccountDetailSlides',
+                    builder:
+                        _gallery_organisms_slides_gt_account_detail_slides_usecase
+                            .playgroundGtAccountDetailSlidesUseCase,
+                  ),
+                ],
+              ),
               _widgetbook.WidgetbookComponent(
                 name: 'GtLessonSlide',
                 useCases: [

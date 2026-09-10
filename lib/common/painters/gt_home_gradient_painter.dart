@@ -16,14 +16,10 @@ import 'package:flutter/material.dart';
 /// with the viewport rather than assuming the design's pixel height.
 class GtHomeGradientPainter extends CustomPainter {
   /// Height of the design frame the gradient was measured in.
-  static const double _designHeight = 1061.15;
+  static const double _designHeighFrac = 1.31;
 
   /// Where the gradient vector begins in that frame — above its top edge.
   static const double _designStartY = -395.254;
-
-  /// [Alignment.y] places the rect's top edge at `-1` and its bottom at `1`,
-  /// so a fraction `f` of the height maps to `2f - 1`.
-  static const double _beginY = 2 * (_designStartY / _designHeight) - 1;
 
   /// The colour at the head of the gradient.
   ///
@@ -45,9 +41,10 @@ class GtHomeGradientPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    double beginY = 2 * (_designStartY / (size.height * _designHeighFrac)) - 1;
     final rect = Offset.zero & size;
     final gradient = LinearGradient(
-      begin: const Alignment(0, _beginY),
+      begin: Alignment(0, beginY),
       end: Alignment.bottomCenter,
       colors: [color, endColor],
       stops: const [0.1, 0.5],

@@ -63,18 +63,29 @@ class GtActionButtonBar extends GtStatelessWidget {
         final actionWidth = (buttons.first.size ?? 44) + context.spacingMd;
         final shouldScroll = (actionWidth * buttons.length) > width;
 
-        final child = Row(
+        Widget child = Row(
           spacing: !shouldScroll ? 0 : context.spacingMd,
           mainAxisAlignment: shouldScroll ? .start : .spaceBetween,
           children: buttons,
         );
 
-        if (!shouldScroll) return Padding(padding: padding, child: child);
+        if (!shouldScroll) child = Padding(padding: padding, child: child);
 
-        return IntrinsicHeight(
-          child: SingleChildScrollView(
-            scrollDirection: .horizontal,
-            padding: padding,
+        if (shouldScroll) {
+          child = IntrinsicHeight(
+            child: SingleChildScrollView(
+              scrollDirection: .horizontal,
+              padding: padding,
+              child: child,
+            ),
+          );
+        }
+
+        if (width <= 450) return child;
+
+        return Center(
+          child: ConstrainedBox(
+            constraints: .tightFor(width: 450),
             child: child,
           ),
         );

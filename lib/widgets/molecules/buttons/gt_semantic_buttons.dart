@@ -200,7 +200,7 @@ class GtActionButton extends GtStatelessWidget {
         fit: .scaleDown,
         child: GtIcon.withColor(
           icon,
-          size: iconSize ?? context.dp(24.px),
+          size: iconSize ?? 24,
           color: iconColor ?? context.palette.staticColors.white,
         ),
       );
@@ -215,8 +215,12 @@ class GtActionButton extends GtStatelessWidget {
           spacing: context.spacingBase,
           children: [
             AnimatedContainer(
-              width: size ?? context.dp(44.px),
-              height: size ?? context.dp(44.px),
+              width: size ?? minTapTargetSize,
+              height: size ?? minTapTargetSize,
+              constraints: BoxConstraints(
+                minHeight: minTapTargetSize,
+                maxWidth: minTapTargetSize,
+              ),
               padding: padding ?? context.insets.allDp(10.px),
               decoration: BoxDecoration(
                 color: backgroundColor,

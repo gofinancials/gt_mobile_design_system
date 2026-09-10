@@ -283,33 +283,125 @@ enum GtAccountCopyPillVariant {
 /// Displays an account number in a product-themed pill and copies it when
 /// tapped.
 ///
-/// The selected [variant] controls the colors, shadow, and whether the copy icon
-/// appears before or after the account number. The whole pill is exposed as a
-/// button-sized tap target and writes [accountNumber] to the clipboard.
+/// The selected [variant] controls the colors, the shadow, and whether the copy
+/// icon sits before or after the text. The whole pill is a button-sized tap
+/// target that writes [accountNumber] to the clipboard.
 ///
-/// Provide [semanticsLabel] when the visible account number alone does not make
-/// the copy action clear to assistive technologies. Use [semanticHint] for
-/// optional supporting guidance.
+/// **What is shown and what is copied are separate.** [accountNumber] is always
+/// what lands on the clipboard; [label] only changes what is drawn. Surfaces
+/// that want a decorated caption — `"Savings • 0123456789"` — must pass the
+/// bare number as [accountNumber] and the decorated string as [label],
+/// otherwise the decoration is copied along with the number.
+///
+/// Every part of the [variant]'s styling can be overridden individually —
+/// [backgroundColor], [borderColor], [textColor], [style], [showIcon],
+/// [showShadow] and [borderStyle] — which is how the same pill serves both a
+/// standalone badge and a flat caption under a balance.
+///
+/// Provide [semanticsLabel] when the visible text alone does not make the copy
+/// action clear to assistive technologies. Use [semanticHint] for optional
+/// supporting guidance.
+///
+/// {@category molecules}
+/// {@category pills}
 class GtAccountCopyPill extends GtStatelessWidget {
-  /// The displayed account number and the exact value copied on tap.
+  /// The value written to the clipboard when the pill is tapped.
+  ///
+  /// Also the visible text — **uppercased** — while [label] is `null`. Once
+  /// [label] is supplied this is copy-only and never rendered, so keep it the
+  /// bare number rather than a decorated string.
   final String accountNumber;
 
+  /// Overrides the visible text without affecting what is copied.
+  ///
+  /// Rendered **verbatim**, unlike [accountNumber], which is uppercased on the
+  /// way in — supply the exact casing you want. It is also the fallback
+  /// accessibility label when [semanticsLabel] is `null`.
+  final String? label;
+
   /// An alternative accessibility label for the copy action.
+  ///
+  /// Falls back to [label], then to [accountNumber], so the pill is never
+  /// announced unlabelled. Supply this where the number alone does not say
+  /// which account it belongs to, or that tapping copies it.
   final String? semanticsLabel;
 
   /// Additional accessibility guidance for the copy action.
   final String? semanticHint;
 
   /// The product color scheme and copy-icon position.
+  ///
+  /// Resolves the text, background and shadow colors, and whether the icon is
+  /// leading or trailing — see [GtAccountCopyPillVariant]. Still required when
+  /// every color is overridden, because it also decides the icon side.
   final GtAccountCopyPillVariant variant;
+
+  /// Overrides the [variant]'s background color.
+  ///
+  /// Also becomes the default [borderColor], so setting this alone keeps the
+  /// border invisible against the fill.
+  final Color? backgroundColor;
+
+  /// Overrides the border color.
+  ///
+  /// Defaults to the resolved background color, which makes the border
+  /// invisible — set this together with [borderStyle] to draw an outline.
+  final Color? borderColor;
+
+  /// Overrides the [variant]'s text color.
+  ///
+  /// Ignored by the text once [style] carries a color of its own, since [style]
+  /// replaces the default text style wholesale.
+  ///
+  /// *Note: the copy icon is painted with this field directly rather than the
+  /// color resolved from [variant], so leaving it `null` gives the icon the
+  /// default strong icon color instead of the product color the text uses. Set
+  /// it explicitly, or [showIcon] to `false`, wherever that mismatch shows.*
+  final Color? textColor;
+
+  /// Replaces the text style outright.
+  ///
+  /// Defaults to [GtTextStyles.button2s] tinted with the resolved text color.
+  /// Because it is a replacement rather than a merge, a style without a `color`
+  /// leaves the text uncolored — carry [textColor] into it yourself.
+  final TextStyle? style;
+
+  /// Whether the copy icon is drawn.
+  ///
+  /// Defaults to `true`. [variant] decides which side it lands on; this only
+  /// decides whether it appears at all. Hiding it leaves the pill reading as a
+  /// plain caption, so make sure the copy affordance is discoverable some other
+  /// way.
+  final bool showIcon;
+
+  /// Whether the [variant]'s two-layer product-tinted elevation is drawn.
+  ///
+  /// Defaults to `true`. Turn it off where the pill sits on an already-elevated
+  /// surface, or is being used as flat inline text.
+  final bool showShadow;
+
+  /// The border's line style.
+  ///
+  /// Defaults to [BorderStyle.solid]. It only shows once [borderColor] differs
+  /// from the resolved background — the default border is solid but invisible.
+  /// [BorderStyle.none] removes the border entirely.
+  final BorderStyle borderStyle;
 
   /// Creates an account-number copy pill.
   const GtAccountCopyPill(
     this.accountNumber, {
     super.key,
+    this.label,
     required this.variant,
     this.semanticsLabel,
     this.semanticHint,
+    this.backgroundColor,
+    this.textColor,
+    this.borderColor,
+    this.style,
+    this.showIcon = true,
+    this.showShadow = true,
+    this.borderStyle = .solid,
   });
 
   @override
@@ -317,9 +409,9 @@ class GtAccountCopyPill extends GtStatelessWidget {
     Widget? leading, trailing;
 
     final palette = context.palette;
-    final textColor = variant.textColor(palette.raw);
-    final bgColor = variant.bgColor(palette.raw);
-    final shadows = variant.shadows(palette.raw);
+    final txtColor = textColor ?? variant.textColor(palette.raw);
+    final bgColor = backgroundColor ?? variant.bgColor(palette.raw);
+    final shadows = showShadow ? variant.shadows(palette.raw) : null;
 
     final icon = GtIcon.withColor(
       GtIcons.copyFilled,
@@ -327,16 +419,16 @@ class GtAccountCopyPill extends GtStatelessWidget {
       color: textColor,
     );
 
-    if (variant.isTrailing) trailing = icon;
-    if (!variant.isTrailing) leading = icon;
+    if (variant.isTrailing && showIcon) trailing = icon;
+    if (!variant.isTrailing && showIcon) leading = icon;
 
     return GtTapTarget(
       child: GtInkWell(
         role: .button,
         borderRadius: context.borderRadiusSm,
-        semanticsLabel: semanticsLabel,
+        semanticsLabel: semanticsLabel ?? label ?? accountNumber,
         semanticHint: semanticHint,
-        excludeDescendantSemantics: semanticsLabel != null,
+        excludeDescendantSemantics: semanticsLabel.hasValue,
         onTap: () {
           context.copyText(accountNumber);
         },
@@ -344,7 +436,10 @@ class GtAccountCopyPill extends GtStatelessWidget {
           padding: context.insets.allDp(6.px),
           decoration: BoxDecoration(
             color: bgColor,
-            border: Border.all(color: bgColor),
+            border: Border.all(
+              color: borderColor ?? bgColor,
+              style: borderStyle,
+            ),
             borderRadius: context.borderRadiusMd,
             boxShadow: shadows,
           ),
@@ -356,9 +451,9 @@ class GtAccountCopyPill extends GtStatelessWidget {
             children: [
               ?leading,
               GtText(
-                accountNumber.upper,
+                label ?? accountNumber.upper,
                 textAlign: .center,
-                style: context.textStyles.button2s(color: textColor),
+                style: style ?? context.textStyles.button2s(color: txtColor),
               ),
               ?trailing,
             ],
