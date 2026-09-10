@@ -120,7 +120,7 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
     GtBottomNavigationItem(
       selectedIcon: GtIcons.productFilled,
       unselectedIcon: GtIcons.product,
-      label: 'Producst',
+      label: 'Products',
     ),
     GtBottomNavigationItem(
       selectedIcon: GtIcons.cardFilled,
