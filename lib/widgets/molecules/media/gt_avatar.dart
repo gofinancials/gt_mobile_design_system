@@ -50,6 +50,9 @@ class GtAvatar extends GtStatelessWidget {
   /// Whether to draw a white border around the outer edge of the avatar.
   final bool showBorder;
 
+  /// Whether to force present a default gradient
+  final bool forceGradiant;
+
   /// Avatar container background gradient
   final Gradient? gradient;
 
@@ -75,6 +78,7 @@ class GtAvatar extends GtStatelessWidget {
     this.isUserAvatar = false,
     this.tag,
     this.showBorder = false,
+    this.forceGradiant = true,
     this.gradient,
     this.bgColor,
     this.initialsColor,
@@ -86,6 +90,9 @@ class GtAvatar extends GtStatelessWidget {
     final defaultSize = context.dp(36.px);
     final computedSize = size ?? defaultSize;
     final hasAvatar = avatar != null;
+    final defaultGradient = forceGradiant
+        ? context.gradients.avatarGradient
+        : null;
 
     Border? border;
     ImageProvider? image;
@@ -150,7 +157,7 @@ class GtAvatar extends GtStatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: gradient ?? context.gradients.avatarGradient,
+            gradient: gradient ?? defaultGradient,
             color: backgroundColor,
             image: decoration,
             border: border,
@@ -160,13 +167,16 @@ class GtAvatar extends GtStatelessWidget {
               if (!hasAvatar && initials.hasValue)
                 Positioned.fill(
                   child: Center(
-                    child: GtText(
-                      initials,
-                      style: context.textStyles.avatar(
-                        color: initialsColor ?? context.palette.primary.base,
-                        size: computedSize * 0.5,
+                    child: FittedBox(
+                      fit: .scaleDown,
+                      child: GtText(
+                        initials,
+                        style: context.textStyles.subHeadS(
+                          color: initialsColor ?? context.palette.primary.base,
+                          weight: .w700,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),

@@ -127,6 +127,10 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
   Widget build(BuildContext context) {
     final pages = widget.data.pages;
     final navItems = widget.data.navItems;
+    final gradiantStart = switch(context.isInDarkMode) {
+      true => context.palette.primary.darker,
+      _ => context.palette.primary.base,
+    };
 
     return GtRootPopScope(
       child: ListenableBuilder(
@@ -143,7 +147,8 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
           if (data.showGradient) {
             body = CustomPaint(
               painter: GtHomeGradientPainter(
-                color: context.palette.primary.alpha24,
+                color: gradiantStart,
+                endColor: context.palette.bg.warm,
               ),
               child: body,
             );
@@ -158,11 +163,8 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
             bottomNavigationBar: GtBottomNavigationBar(
               items: navItems,
               style: widget.bottomNavigationStyle,
-              onTrailingTap: widget.onClickHelp,
               currentIndex: index,
-              trailingSemanticsLabel: widget.trailingSemanticsLabel,
               enableSelectionAnimation: widget.enableSelectionAnimation,
-              trailingIcon: widget.trailingIcon,
               onIndexChanged: (index) {
                 if (navItems[index].onSelected != null) {
                   navItems[index].onSelected!(index);

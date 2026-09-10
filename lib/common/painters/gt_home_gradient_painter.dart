@@ -1,34 +1,60 @@
 import 'package:flutter/material.dart';
 
-/// A custom painter that draws a top-to-bottom linear gradient background.
+/// Paints the home dashboard's background wash: a vertical gradient running
+/// from teal-blue at the top into the warm off-white the rest of the screen
+/// sits on.
 ///
-/// The gradient starts with the provided [color] at the top and fades to
-/// transparent, spanning across the top 40% of the canvas height.
+/// The geometry is taken verbatim from the Figma export. In the source frame
+/// the gradient vector runs from `y = -395.254` to `y = 1061.15` — the frame's
+/// own height — with the teal stop at 10% and the off-white stop at 50% of that
+/// vector. Because the teal stop sits well above the top edge, the frame never
+/// shows the pure colour: it opens roughly 43% of the way into the blend and
+/// reaches solid off-white at about 31% of the screen height, holding it from
+/// there to the bottom.
+///
+/// The stops are expressed as fractions of the painted rect, so the wash scales
+/// with the viewport rather than assuming the design's pixel height.
 class GtHomeGradientPainter extends CustomPainter {
-  /// The starting color of the gradient at the top edge.
+  /// Height of the design frame the gradient was measured in.
+  static const double _designHeighFrac = 1.31;
+
+  /// Where the gradient vector begins in that frame — above its top edge.
+  static const double _designStartY = -395.254;
+
+  /// The colour at the head of the gradient.
+  ///
+  /// Defaults to [defaultColor]. Pass `context.palette.raw.tealBlue600` to
+  /// track the active theme.
   final Color color;
 
-  /// Creates a [GtHomeGradientPainter] with the specified starting [color].
-  GtHomeGradientPainter({required this.color});
+  /// The colour the gradient settles into and holds to the bottom edge.
+  ///
+  /// Defaults to [defaultEndColor]. Pass `context.palette.raw.yellow25` to
+  /// track the active theme — that token darkens in dark mode.
+  final Color endColor;
+
+  /// Creates a [GtHomeGradientPainter].
+  ///
+  /// Both colours default to the design values, so the painter can be used
+  /// without arguments where theme-awareness is not needed.
+  const GtHomeGradientPainter({required this.color, required this.endColor});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = Rect.fromLTRB(0, 0, size.width, size.height * .6);
-    // Create a linear gradient from the target color to transparent
+    double beginY = 2 * (_designStartY / (size.height * _designHeighFrac)) - 1;
+    final rect = Offset.zero & size;
     final gradient = LinearGradient(
-      colors: [color, Colors.transparent],
-      begin: Alignment.topCenter,
+      begin: Alignment(0, beginY),
       end: Alignment.bottomCenter,
+      colors: [color, endColor],
+      stops: const [0.1, 0.5],
     );
 
-    final paint = Paint()..shader = gradient.createShader(rect);
-
-    // Draw the rectangle; the gradient shader handles the fading effect
-    canvas.drawRect(rect, paint);
+    canvas.drawRect(rect, Paint()..shader = gradient.createShader(rect));
   }
 
   @override
   bool shouldRepaint(covariant GtHomeGradientPainter oldDelegate) {
-    return oldDelegate.color != color;
+    return oldDelegate.color != color || oldDelegate.endColor != endColor;
   }
 }

@@ -44,18 +44,6 @@ class GtBottomNavigationBar extends GtStatelessWidget {
   /// Defaults to [GtBottomNavigationStyle.ios].
   final GtBottomNavigationStyle? style;
 
-  /// Optional callback for the trailing circular action button (**iOS only**).
-  final OnPressed? onTrailingTap;
-
-  /// Optional icon for the trailing action button (**iOS only**).
-  final IconData trailingIcon;
-
-  /// An accessible name for the trailing action, already localised.
-  ///
-  /// The action is icon-only, so without a name a screen reader announces it
-  /// as an unlabelled button.
-  final String? trailingSemanticsLabel;
-
   /// Whether the selection highlight and icon change should animate.
   final bool enableSelectionAnimation;
 
@@ -65,9 +53,6 @@ class GtBottomNavigationBar extends GtStatelessWidget {
     required this.currentIndex,
     required this.onIndexChanged,
     this.style,
-    this.onTrailingTap,
-    this.trailingIcon = GtIcons.helpInfo,
-    this.trailingSemanticsLabel,
     this.enableSelectionAnimation = true,
   }) : assert(
          items.length >= 2,
@@ -82,9 +67,6 @@ class GtBottomNavigationBar extends GtStatelessWidget {
         items: items,
         currentIndex: currentIndex,
         onIndexChanged: onIndexChanged,
-        onTrailingTap: onTrailingTap,
-        trailingIcon: trailingIcon,
-        trailingSemanticsLabel: trailingSemanticsLabel,
         enableSelectionAnimation: enableSelectionAnimation,
       ),
       .android => GtAndroidBottomNavigationBar(
@@ -209,9 +191,6 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
   /// Gap between the glass edge and the first/last tab.
   static const _glassInsetX = 6.0;
 
-  /// Visible gap between the tab pill and the trailing action.
-  static const _actionGap = 10.0;
-
   /// Screen edge padding either side of the bar.
   static const _screenInsetX = 16.0;
 
@@ -227,18 +206,12 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
   final List<GtBottomNavigationItem> items;
   final int currentIndex;
   final ValueChanged<int> onIndexChanged;
-  final OnPressed? onTrailingTap;
-  final IconData trailingIcon;
-  final String? trailingSemanticsLabel;
   final bool enableSelectionAnimation;
 
   const _GtIosFloatingBottomNavigationBar({
     required this.items,
     required this.currentIndex,
     required this.onIndexChanged,
-    required this.onTrailingTap,
-    required this.trailingIcon,
-    required this.trailingSemanticsLabel,
     required this.enableSelectionAnimation,
   });
 
@@ -259,38 +232,21 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
         ),
         child: SizedBox(
           height: context.dp(_barHeight.px),
-          child: Row(
-            crossAxisAlignment: .stretch,
-            children: [
-              Expanded(
-                child: _GtBottomNavigationGlass(
-                  child: Padding(
-                    padding: context.insets.symmetricDp(
-                      horizontal: _glassInsetX.px,
-                      vertical: _glassInsetY.px,
-                    ),
-                    child: _GtBottomNavigationTabs(
-                      items: items,
-                      currentIndex: currentIndex,
-                      onIndexChanged: onIndexChanged,
-                      iconSize: _iconSize,
-                      tabInsetX: _tabInsetX,
-                      enableSelectionAnimation: enableSelectionAnimation,
-                    ),
-                  ),
-                ),
+          child: _GtBottomNavigationGlass(
+            child: Padding(
+              padding: context.insets.symmetricDp(
+                horizontal: _glassInsetX.px,
+                vertical: _glassInsetY.px,
               ),
-              if (onTrailingTap != null) ...[
-                SizedBox(width: context.dp(_actionGap.px)),
-                _GtBottomNavigationTrailingAction(
-                  onTap: onTrailingTap!,
-                  icon: trailingIcon,
-                  iconSize: _iconSize,
-                  size: _barHeight,
-                  semanticsLabel: trailingSemanticsLabel,
-                ),
-              ],
-            ],
+              child: _GtBottomNavigationTabs(
+                items: items,
+                currentIndex: currentIndex,
+                onIndexChanged: onIndexChanged,
+                iconSize: _iconSize,
+                tabInsetX: _tabInsetX,
+                enableSelectionAnimation: enableSelectionAnimation,
+              ),
+            ),
           ),
         ),
       ),
@@ -306,23 +262,17 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
 /// inverts with the theme instead of staying light in dark mode.
 class _GtBottomNavigationGlass extends GtStatelessWidget {
   final Widget child;
-  final BoxShape shape;
 
-  const _GtBottomNavigationGlass({
-    required this.child,
-    this.shape = BoxShape.rectangle,
-  });
+  const _GtBottomNavigationGlass({required this.child});
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
     final radius = context.borderRadiusFull;
-    final isCircle = shape == BoxShape.circle;
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        shape: shape,
-        borderRadius: isCircle ? null : radius,
+        borderRadius: radius,
         boxShadow: context.isInDarkMode
             ? context.shadows.md(palette.bg.weak)
             : context.shadows.bottomNavShadow(),
@@ -522,52 +472,20 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
               unselectedColor: palette.icon.sub,
               enableSelectionAnimation: enableSelectionAnimation,
             ),
-            GtText(
-              item.label,
-              // The bar has a fixed height, so a wrapped label would overflow
-              // the glass rather than push it taller.
-              maxLines: 1,
-              overflow: .ellipsis,
-              textAlign: TextAlign.center,
-              style: context.textStyles.navBarLabel(
-                color: selected ? selectedLabelColor : palette.text.darkerSub,
+            Flexible(
+              child: GtText(
+                item.label,
+                // The bar has a fixed height, so a wrapped label would overflow
+                // the glass rather than push it taller.
+                maxLines: 1,
+                overflow: .ellipsis,
+                textAlign: TextAlign.center,
+                style: context.textStyles.navBarLabel(
+                  color: selected ? selectedLabelColor : palette.text.darkerSub,
+                ),
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _GtBottomNavigationTrailingAction extends GtStatelessWidget {
-  final OnPressed onTap;
-  final IconData icon;
-  final double iconSize;
-  final double size;
-  final String? semanticsLabel;
-
-  const _GtBottomNavigationTrailingAction({
-    required this.onTap,
-    required this.icon,
-    required this.iconSize,
-    required this.size,
-    required this.semanticsLabel,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return _GtBottomNavigationGlass(
-      shape: .circle,
-      child: GtInkWell(
-        // GestureDetector takes no focus and reports no semantics.
-        role: .button,
-        semanticsLabel: semanticsLabel,
-        excludeDescendantSemantics: true,
-        onTap: () => onTap(),
-        child: SizedBox.square(
-          dimension: context.dp(size.px),
-          child: Center(child: GtIcon(icon, size: context.dp(iconSize.px))),
         ),
       ),
     );

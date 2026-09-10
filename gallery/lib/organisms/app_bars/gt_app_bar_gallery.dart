@@ -4,12 +4,24 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
+/// Wraps [child] in the home background wash when [enabled].
+///
+/// The gradient colours come from the palette so the wash follows the active
+/// theme; yellow25 darkens in dark mode.
+Widget _withGradient(BuildContext context, bool enabled, Widget child) {
+  if (!enabled) return child;
+  return CustomPaint(
+    painter: GtHomeGradientPainter(
+      color: context.palette.raw.tealBlue600,
+      endColor: context.palette.raw.yellow25,
+    ),
+    child: child,
+  );
+}
+
 @widgetbook.UseCase(name: 'GtHomeAppbarGallery', type: GtHomeAppBar)
 Widget buildGtHomeAppbarUsecase(BuildContext context) {
   final showGradient = context.knobs.boolean(label: "Show Gradient");
-  final color = showGradient
-      ? context.palette.primary.alpha24
-      : Colors.transparent;
   return Scaffold(
     appBar: GtHomeAppBar(
       onClickSearch: () {},
@@ -17,19 +29,13 @@ Widget buildGtHomeAppbarUsecase(BuildContext context) {
       onClickNotification: () {},
     ),
     extendBodyBehindAppBar: true,
-    body: CustomPaint(
-      painter: GtHomeGradientPainter(color: color),
-      child: Container(),
-    ),
+    body: _withGradient(context, showGradient, Container()),
   );
 }
 
 @widgetbook.UseCase(name: 'GtProAppbarGallery', type: GtProAppBar)
 Widget buildGtProAppbarUsecase(BuildContext context) {
   final showGradient = context.knobs.boolean(label: "Show Gradient");
-  final color = showGradient
-      ? context.palette.primary.alpha24
-      : Colors.transparent;
   return Scaffold(
     appBar: GtProAppBar(
       onClickStat: () {},
@@ -46,9 +52,10 @@ Widget buildGtProAppbarUsecase(BuildContext context) {
       ),
     ),
     extendBodyBehindAppBar: true,
-    body: CustomPaint(
-      painter: GtHomeGradientPainter(color: color),
-      child: Container(
+    body: _withGradient(
+      context,
+      showGradient,
+      Container(
         alignment: .center,
         child: GtText("This is a tentative implementation"),
       ),

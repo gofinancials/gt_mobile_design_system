@@ -114,7 +114,7 @@ class GtTransactionListTile extends GtStatelessWidget {
       );
     }
 
-    final valueStyle = style.subHeadS(color: amountColor);
+    final valueStyle = style.subHeadS(color: amountColor, weight: .w600);
     final subStyle = style.subHeadXs(color: palette.text.sub);
 
     return GtInkWell(
@@ -124,7 +124,7 @@ class GtTransactionListTile extends GtStatelessWidget {
       child: Padding(
         padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
         child: Row(
-          spacing: horizontalSpacing ?? context.spacingMd,
+          spacing: horizontalSpacing ?? context.spacingBase,
           children: [
             icon,
             Expanded(
@@ -133,14 +133,14 @@ class GtTransactionListTile extends GtStatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    spacing: horizontalSpacing ?? context.spacingMd,
+                    spacing: horizontalSpacing ?? context.spacingBase,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: GtText(
                           name,
-                          style: nameStyle ?? style.subHeadS(weight: .w600),
-                          textAlign: TextAlign.start,
+                          style: nameStyle ?? style.subHeadS(),
+                          textAlign: .start,
                           overflow: .ellipsis,
                           maxLines: maxLines,
                         ),
