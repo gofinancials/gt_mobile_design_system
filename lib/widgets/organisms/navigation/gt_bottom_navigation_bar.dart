@@ -472,15 +472,17 @@ class _GtBottomNavigationTab extends GtStatelessWidget {
               unselectedColor: palette.icon.sub,
               enableSelectionAnimation: enableSelectionAnimation,
             ),
-            GtText(
-              item.label,
-              // The bar has a fixed height, so a wrapped label would overflow
-              // the glass rather than push it taller.
-              maxLines: 1,
-              overflow: .ellipsis,
-              textAlign: TextAlign.center,
-              style: context.textStyles.navBarLabel(
-                color: selected ? selectedLabelColor : palette.text.darkerSub,
+            Flexible(
+              child: GtText(
+                item.label,
+                // The bar has a fixed height, so a wrapped label would overflow
+                // the glass rather than push it taller.
+                maxLines: 1,
+                overflow: .ellipsis,
+                textAlign: TextAlign.center,
+                style: context.textStyles.navBarLabel(
+                  color: selected ? selectedLabelColor : palette.text.darkerSub,
+                ),
               ),
             ),
           ],
