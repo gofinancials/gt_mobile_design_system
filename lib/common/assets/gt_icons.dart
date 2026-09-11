@@ -27,7 +27,7 @@ class GtIcons {
   static const refreshSolid = IconData(0xf117, fontFamily: _f, fontPackage: _p);
   static const repeat = IconData(0xf172, fontFamily: _f, fontPackage: _p);
   static const qr = IconData(0xf118, fontFamily: _f, fontPackage: _p);
-  static const qrMain = IconData(0xf119, fontFamily: _f, fontPackage: _p);
+  static const trashAlt = IconData(0xf119, fontFamily: _f, fontPackage: _p);
   static const notificationSolid = IconData(
     0xf11a,
     fontFamily: _f,
@@ -654,6 +654,8 @@ class GtIcons {
   static const refreshAlt = IconData(0xf16f, fontFamily: _f, fontPackage: _p);
   static const locationPin = IconData(0xf170, fontFamily: _f, fontPackage: _p);
   static const landBill = IconData(0xf171, fontFamily: _f, fontPackage: _p);
+  static const coinStack = IconData(0xf177, fontFamily: _f, fontPackage: _p);
+  static const overDraft = IconData(0xf176, fontFamily: _f, fontPackage: _p);
 
   static const arrowNorthEastThin = IconData(
     0xf174,
@@ -766,6 +768,7 @@ class GtIcons {
     (label: 'clipboardSlash', value: clipboardSlash),
     (label: 'clock', value: clock),
     (label: 'cloud', value: cloud),
+    (label: 'coinStack', value: coinStack),
     (label: 'computer', value: computer),
     (label: 'contact', value: contact),
     (label: 'cookie', value: cookie),
@@ -893,6 +896,7 @@ class GtIcons {
     (label: 'notificationUnread', value: notificationUnread),
     (label: 'office', value: office),
     (label: 'orderedList', value: orderedList),
+    (label: 'overDraft', value: overDraft),
     (label: 'paintbrush', value: paintbrush),
     (label: 'palmTree', value: palmTree),
     (label: 'paperclip', value: paperclip),
@@ -931,7 +935,7 @@ class GtIcons {
     (label: 'puzzlePiece', value: puzzlePiece),
     (label: 'qr', value: qr),
     (label: 'qrCode', value: qrCode),
-    (label: 'qrMain', value: qrMain),
+    (label: 'trashAlt', value: trashAlt),
     (label: 'question', value: question),
     (label: 'receipts', value: receipts),
     (label: 'refresh', value: refresh),

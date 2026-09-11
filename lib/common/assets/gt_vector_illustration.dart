@@ -268,9 +268,19 @@ class GtVectorIllustrations {
   /// Path to the fx SVG.
   static const fx = "$_basePath/fx.svg";
 
+  /// Path to the fx SVG.
+  static const announcement2 = "$_basePath/announcement_2.svg";
+
+  /// Path to the fx SVG.
+  static const overdraft = "$_basePath/overdraft.svg";
+
+  /// Path to the fx SVG.
+  static const savings = "$_basePath/savings.svg";
+
   /// A list containing all available vector illustration SVG paths.
   static List<({String label, String value})> get all => [
     (label: 'announcement', value: announcement),
+    (label: 'announcement alt', value: announcement2),
     (label: 'authentication', value: authentication),
     (label: 'bin', value: bin),
     (label: 'building', value: building),
@@ -282,6 +292,7 @@ class GtVectorIllustrations {
     (label: 'chat', value: chat),
     (label: 'coins', value: coins),
     (label: 'moneyPhone', value: moneyPhone),
+    (label: 'overdraft', value: overdraft),
     (label: 'dataAnalytics', value: dataAnalytics),
     (label: 'date', value: date),
     (label: 'debitCards', value: debitCards),
@@ -317,6 +328,7 @@ class GtVectorIllustrations {
     (label: 'profile4', value: profile4),
     (label: 'profileCheck', value: profileCheck),
     (label: 'referral', value: referral),
+    (label: 'savings', value: savings),
     (label: 'search', value: search),
     (label: 'security', value: security),
     (label: 'selfie', value: selfie),

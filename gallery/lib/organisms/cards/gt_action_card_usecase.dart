@@ -4,6 +4,21 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
+const _buttonStylePresets = ['Default', 'labelM', 'subHeadS', 'bodyS'];
+
+TextStyle? _getButtonStyle(String preset, BuildContext context, Color color) {
+  final styles = context.textStyles;
+  return switch (preset) {
+    'labelM' => styles.labelM(color: color),
+    'subHeadS' => styles.subHeadS(color: color),
+    'bodyS' => styles.bodyS(color: color),
+    _ => null,
+  };
+}
+
+String _colorSource(Color value) =>
+    'Color(0x${value.toARGB32().toRadixString(16)})';
+
 @widgetbook.UseCase(name: 'GtActionCard', type: GtActionCard)
 Widget playgroundGtActionCardUseCase(BuildContext context) {
   final mode = context.knobs.object.dropdown<String>(
@@ -33,6 +48,77 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
     initialOption: GtCardVariant.away,
     labelBuilder: (v) => v.name,
   );
+  final backgroundColor = context.knobs.colorOrNull(
+    label: 'Background Colour',
+    initialValue: null,
+  );
+  final buttonVariant = context.knobs.objectOrNull.dropdown<GtButtonVariant?>(
+    label: 'Button Variant',
+    options: [null, ...GtButtonVariant.values],
+    initialOption: null,
+    labelBuilder: (v) => v?.name ?? 'Default (from card variant)',
+  );
+  final actionButtonColor = context.knobs.colorOrNull(
+    label: 'Action Button Colour',
+    initialValue: null,
+  );
+  final actionButtonTextColor = context.knobs.colorOrNull(
+    label: 'Action Button Text Colour',
+    initialValue: null,
+  );
+  final actionStylePreset = context.knobs.object.dropdown<String>(
+    label: 'Action Button Style',
+    options: _buttonStylePresets,
+    initialOption: _buttonStylePresets.first,
+  );
+  final dismissButtonTextColor = context.knobs.colorOrNull(
+    label: 'Dismiss Button Text Colour',
+    initialValue: null,
+  );
+  final dismissStylePreset = context.knobs.object.dropdown<String>(
+    label: 'Dismiss Button Style',
+    options: _buttonStylePresets,
+    initialOption: _buttonStylePresets.first,
+  );
+
+  // A style replaces the button's label style wholesale, colour included, so
+  // the presets carry the text colour knob, falling back to a colour that
+  // reads on each button while it is unset.
+  final actionStyleColor =
+      actionButtonTextColor ?? context.palette.staticColors.white;
+  final dismissStyleColor =
+      dismissButtonTextColor ?? variant.getTextColor(context.palette);
+  final actionButtonStyle = _getButtonStyle(
+    actionStylePreset,
+    context,
+    actionStyleColor,
+  );
+  final dismissButtonStyle = _getButtonStyle(
+    dismissStylePreset,
+    context,
+    dismissStyleColor,
+  );
+
+  final stylingSource = [
+    if (backgroundColor != null)
+      '\n  backgroundColor: ${_colorSource(backgroundColor)},',
+    if (buttonVariant != null)
+      '\n  buttonVariant: GtButtonVariant.${buttonVariant.name},',
+    if (actionButtonColor != null)
+      '\n  actionButtonColor: ${_colorSource(actionButtonColor)},',
+    if (actionButtonTextColor != null)
+      '\n  actionButtonTextColor: ${_colorSource(actionButtonTextColor)},',
+    if (actionButtonStyle != null)
+      '\n  actionButtonStyle: context.textStyles.$actionStylePreset('
+          'color: ${_colorSource(actionStyleColor)}),',
+  ].join();
+  final dismissStylingSource = [
+    if (dismissButtonTextColor != null)
+      '\n  dismissButtonTextColor: ${_colorSource(dismissButtonTextColor)},',
+    if (dismissButtonStyle != null)
+      '\n  dismissButtonStyle: context.textStyles.$dismissStylePreset('
+          'color: ${_colorSource(dismissStyleColor)}),',
+  ].join();
 
   Widget cardWidget;
   String codeSnippet;
@@ -47,6 +133,13 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
       variant: variant,
       onDismiss: () {},
       dismissText: dismissText,
+      backgroundColor: backgroundColor,
+      buttonVariant: buttonVariant,
+      actionButtonColor: actionButtonColor,
+      actionButtonTextColor: actionButtonTextColor,
+      actionButtonStyle: actionButtonStyle,
+      dismissButtonTextColor: dismissButtonTextColor,
+      dismissButtonStyle: dismissButtonStyle,
     );
     codeSnippet =
         '''GtActionCard.dismissible(
@@ -57,7 +150,7 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
   actionText: "$actionText",
   variant: GtCardVariant.${variant.name},
   onDismiss: () {},
-  dismissText: "$dismissText",
+  dismissText: "$dismissText",$stylingSource$dismissStylingSource
 )''';
   } else if (mode == 'dismissibleTrailing') {
     cardWidget = GtActionCard.dismissibleTrailing(
@@ -74,6 +167,13 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
       variant: variant,
       onDismiss: () {},
       dismissText: dismissText,
+      backgroundColor: backgroundColor,
+      buttonVariant: buttonVariant,
+      actionButtonColor: actionButtonColor,
+      actionButtonTextColor: actionButtonTextColor,
+      actionButtonStyle: actionButtonStyle,
+      dismissButtonTextColor: dismissButtonTextColor,
+      dismissButtonStyle: dismissButtonStyle,
     );
     codeSnippet =
         '''GtActionCard.dismissibleTrailing(
@@ -84,7 +184,7 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
   actionText: "$actionText",
   variant: GtCardVariant.${variant.name},
   onDismiss: () {},
-  dismissText: "$dismissText",
+  dismissText: "$dismissText",$stylingSource$dismissStylingSource
 )''';
   } else {
     cardWidget = GtActionCard(
@@ -94,6 +194,11 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
       onActionTap: () {},
       actionText: actionText,
       variant: variant,
+      backgroundColor: backgroundColor,
+      buttonVariant: buttonVariant,
+      actionButtonColor: actionButtonColor,
+      actionButtonTextColor: actionButtonTextColor,
+      actionButtonStyle: actionButtonStyle,
     );
     codeSnippet =
         '''GtActionCard(
@@ -102,7 +207,7 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
   icon: GtIcons.gift,
   onActionTap: () {},
   actionText: "$actionText",
-  variant: GtCardVariant.${variant.name},
+  variant: GtCardVariant.${variant.name},$stylingSource
 )''';
   }
 
