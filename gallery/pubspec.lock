@@ -697,8 +697,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.0.45"
-      resolved-ref: "0e8d3a2d6852d1927736188d28b6a2d7c2e0616d"
+      ref: "v0.0.46"
+      resolved-ref: d97e98c879c816b203d815f41f56bc386c652a8c
       url: "https://github.com/gofinancials/gt_mobile_foundation.git"
     source: git
     version: "0.0.1"
@@ -881,10 +881,10 @@ packages:
     dependency: transitive
     description:
       name: just_audio
-      sha256: "9694e4734f515f2a052493d1d7e0d6de219ee0427c7c29492e246ff32a219908"
+      sha256: e60aa97b233ddea025e13dfac59195207f528fa5e9e4a4a49a8c0766701e5fe6
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.5"
+    version: "0.10.6"
   just_audio_platform_interface:
     dependency: transitive
     description:

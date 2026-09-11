@@ -217,9 +217,8 @@ class GtActionButton extends GtStatelessWidget {
             AnimatedContainer(
               width: size ?? minTapTargetSize,
               height: size ?? minTapTargetSize,
-              constraints: BoxConstraints(
-                minHeight: minTapTargetSize,
-                maxWidth: minTapTargetSize,
+              constraints: BoxConstraints.tight(
+                Size.square(minTapTargetSize),
               ),
               padding: padding ?? context.insets.allDp(10.px),
               decoration: BoxDecoration(
@@ -232,12 +231,14 @@ class GtActionButton extends GtStatelessWidget {
               child: child,
             ),
             if (label case String label)
-              GtText(
-                label,
-                style: labelStyle ?? context.textStyles.subHeadXs(),
-                textAlign: .center,
-                maxLines: 1,
-                overflow: .ellipsis,
+              Flexible(
+                child: GtText(
+                  label,
+                  style: labelStyle ?? context.textStyles.subHeadXs(),
+                  textAlign: .center,
+                  maxLines: 1,
+                  overflow: .ellipsis,
+                ),
               ),
           ],
         ),

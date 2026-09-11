@@ -44,6 +44,11 @@ class GtAccountData<T> extends AppEquatable {
   /// not a property of the account.
   final num balance;
 
+  /// An optional subtitle
+  /// 
+  /// Useful slot for additional balances (e.g Overdraft Balance: $2000)
+  final String? subTitle;
+
   /// The currency to display the [balance] in.
   ///
   /// When `null`, the rendering widget falls back to its own default, which is
@@ -69,6 +74,7 @@ class GtAccountData<T> extends AppEquatable {
     required this.accountNumber,
     required this.balance,
     required this.data,
+    this.subTitle,
     this.currency,
   });
 
