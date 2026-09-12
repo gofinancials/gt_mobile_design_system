@@ -46,6 +46,14 @@ class GtBalanceText extends GtStatelessWidget {
   /// semantics label.
   final String currencySymbol;
 
+  /// An optional sign, such as `+` for a credit, prefixed to [currencySymbol].
+  ///
+  /// The sign becomes part of the computed symbol, so it is drawn in
+  /// [currencyStyle] alongside the glyph, and it prefixes the amount in the
+  /// default semantics label. It is omitted while [hidden] is `true`, so a
+  /// masked line does not reveal which way money moved.
+  final String? sign;
+
   /// Whether the amount is masked.
   ///
   /// When `true` the digits are replaced by a fixed eight asterisks — the mask
@@ -152,6 +160,7 @@ class GtBalanceText extends GtStatelessWidget {
     super.key,
     required this.amount,
     this.currencySymbol = AppStrings.naira,
+    this.sign,
     this.hidden = false,
     this.textAlign = TextAlign.center,
     this.maxLines = 1,
@@ -187,7 +196,16 @@ class GtBalanceText extends GtStatelessWidget {
     if (hidden) {
       return hiddenSemanticsLabel ?? 'Balance is hidden';
     }
-    return semanticsLabel ?? 'Balance is $amtDisplay $currencySymbol';
+    return semanticsLabel ??
+        'Balance is ${sign ?? ''}$amtDisplay $currencySymbol';
+  }
+
+  /// The symbol as drawn: [sign] prefixed to [currencySymbol], or the bare
+  /// [currencySymbol] while [hidden] or when no [sign] is set.
+  String get _computedSymbol {
+    if (hidden) return currencySymbol;
+    if (sign case String value) return '$value$currencySymbol';
+    return currencySymbol;
   }
 
   /// The trailing icon for the current [hidden] state.
@@ -230,7 +248,7 @@ class GtBalanceText extends GtStatelessWidget {
         children: [
           WidgetSpan(
             alignment: .middle,
-            child: GtText('$currencySymbol ', style: symbolStyle),
+            child: GtText('$_computedSymbol ', style: symbolStyle),
           ),
           TextSpan(text: amtDisplay),
           if (trailing case WidgetSpan widget) ...[
@@ -247,7 +265,7 @@ class GtBalanceText extends GtStatelessWidget {
     if (animateChanges && !hidden) {
       child = _GtAnimatedBalanceText(
         amount: amount!,
-        computedSymbol: currencySymbol,
+        computedSymbol: _computedSymbol,
         currencyStyle: symbolStyle,
         amountStyle: amtStyle,
         textAlign: textAlign,
