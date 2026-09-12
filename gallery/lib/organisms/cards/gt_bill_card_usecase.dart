@@ -22,7 +22,7 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
   if (mode == 'tile') {
     cardWidget = GtBillCard.tile(
       name: name,
-      icon: GtSvg(GtVectorIllustrations.building),
+      icon: GtSvg(GtVectorIllustrations.building, width: 34,),
     );
     codeSnippet =
         '''GtBillCard.tile(
@@ -32,7 +32,7 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
   } else {
     cardWidget = GtBillCard(
       name: name,
-      icon: GtSvg(GtVectorIllustrations.building),
+      icon: GtSvg(GtVectorIllustrations.building, width: 34,),
     );
     codeSnippet =
         '''GtBillCard(
@@ -46,9 +46,10 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
     description:
         'A dedicated bill payment category card displayed as standard grid item or inline list tile.',
     code: codeSnippet,
-    child: Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 160, maxHeight: 120),
+    child: Align(
+      alignment: .centerRight,
+      child: AspectRatio(
+        aspectRatio: 16 / 9,
         child: cardWidget,
       ),
     ),
