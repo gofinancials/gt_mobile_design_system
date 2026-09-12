@@ -17,10 +17,12 @@ class GtReminderBanner extends GtStatelessWidget {
   final bool hidden;
 
   /// The text to display on the action button.
-  final String actionText;
+  ///
+  /// Must be non-null when [onActionTap] is provided.
+  final String? actionText;
 
   /// A callback function that is invoked when the action button is tapped.
-  final OnPressed onActionTap;
+  final OnPressed? onActionTap;
 
   /// The visual variant of the card, which determines its background color.
   final GtCardVariant variant;
@@ -41,9 +43,12 @@ class GtReminderBanner extends GtStatelessWidget {
     this.buttonVariant = .primary,
     required this.icon,
     required this.onClose,
-    required this.actionText,
-    required this.onActionTap,
-  });
+    this.actionText,
+    this.onActionTap,
+  }) : assert(
+         onActionTap == null || actionText != null,
+         'actionText must be provided when onActionTap is provided.',
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +73,15 @@ class GtReminderBanner extends GtStatelessWidget {
                   GtText(title.upper, style: context.textStyles.h7()),
                   const GtGap.ySm(),
                   GtText(subtitle, style: context.textStyles.subHeadS()),
-                  const GtGap.yBase(),
-                  GtRaisedButton(
-                    onPressed: onActionTap,
-                    text: actionText,
-                    variant: buttonVariant,
-                    size: .small,
-                  ),
+                  if (onActionTap != null) ...[
+                    const GtGap.yBase(),
+                    GtRaisedButton(
+                      onPressed: onActionTap!,
+                      text: actionText,
+                      variant: buttonVariant,
+                      size: .small,
+                    ),
+                  ],
                 ],
               ),
             ),
