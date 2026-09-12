@@ -10,6 +10,9 @@ class GtBillCard extends GtStatelessWidget {
   /// The icon representing the biller.
   final Widget icon;
 
+  /// The icon representing the actio prompt.
+  final Widget? trailing;
+
   /// An optional callback function that is invoked when the card is tapped.
   final OnPressed? onTap;
 
@@ -22,7 +25,9 @@ class GtBillCard extends GtStatelessWidget {
     required this.name,
     required this.icon,
     this.onTap,
-  }) : _asTile = false;
+    Widget? footer,
+  }) : _asTile = false,
+       trailing = footer;
 
   /// Creates a bill card with a horizontal list tile layout.
   const GtBillCard.tile({
@@ -30,12 +35,12 @@ class GtBillCard extends GtStatelessWidget {
     required this.name,
     required this.icon,
     this.onTap,
+    this.trailing,
   }) : _asTile = true;
 
   @override
   Widget build(BuildContext context) {
     final text = GtText(name, style: context.textStyles.subHeadS());
-    final iconWidget = GtSquareConstrainedBox(24, child: icon);
 
     Widget child = GtCard(
       padding: context.insets.allDp(12.px),
@@ -43,16 +48,17 @@ class GtBillCard extends GtStatelessWidget {
         crossAxisAlignment: .start,
         mainAxisAlignment: .spaceBetween,
         spacing: context.spacingSectionSm,
-        children: [iconWidget, text],
+        children: [icon, text, ?trailing],
       ),
     );
 
     if (_asTile) {
+      final trailer = GtIcon(GtIcons.chevronRight, variant: .soft, size: 14);
       child = GtBaseListTileTemplate(
         title: text,
-        leading: iconWidget,
+        leading: icon,
         spacing: context.spacingBase,
-        trailing: GtIcon(GtIcons.chevronRight, variant: .soft, size: 14),
+        trailing: trailing ?? trailer,
       );
     }
 
