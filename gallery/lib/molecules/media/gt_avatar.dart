@@ -60,18 +60,20 @@ class _AvatarPlaygroundState extends State<_AvatarPlayground> {
       label: "Initials",
       initialValue: "JD",
     );
-    final imageType = context.knobs.object.dropdown(
-      label: "Image Type",
-      options: const ["Network", "Asset", "None"],
-      initialOption: "Network",
+    final image = context.knobs.object.dropdown(
+      label: "Image",
+      options: [
+        ('Network Image', AppImageData(GtNetworkImages.sampleAvatar1)),
+        ('Asset Image', AppImageData(GtAssetImages.avatar)),
+        ('Texture', AppImageData(GtNetworkImages.avatarTexture1)),
+        ('None', null),
+      ],
+      initialOption: (
+        'Network Image',
+        AppImageData(GtNetworkImages.sampleAvatar1),
+      ),
+      labelBuilder: (value) => value.$1,
     );
-
-    AppImageData? avatarImage;
-    if (imageType == "Network") {
-      avatarImage = AppImageData.network(GtNetworkImages.sampleAvatar1);
-    } else if (imageType == "Asset") {
-      avatarImage = AppImageData.asset(GtAssetImages.avatar);
-    }
 
     // GtSquareAvatar Knobs
     final squareSize = context.knobs.double.slider(
@@ -84,6 +86,28 @@ class _AvatarPlaygroundState extends State<_AvatarPlayground> {
       label: "Square Show Border",
       initialValue: false,
     );
+    final squareShowGradient = context.knobs.boolean(
+      label: "Square Show Gradient",
+      initialValue: true,
+    );
+    final squareBgColor = context.knobs.colorOrNull(
+      label: "Square Background Color",
+      initialValue: null,
+    );
+    final squareEditPenSize = context.knobs.doubleOrNull.slider(
+      label: "Square Edit Pen Size",
+      min: 16,
+      max: 80,
+      initialValue: 32,
+      defaultToNull: true,
+    );
+    final squareUserIconSize = context.knobs.doubleOrNull.slider(
+      label: "Square User Icon Size",
+      min: 12,
+      max: 120,
+      initialValue: 48,
+      defaultToNull: true,
+    );
 
     return Scaffold(
       backgroundColor: context.palette.bg.white,
@@ -93,10 +117,15 @@ class _AvatarPlaygroundState extends State<_AvatarPlayground> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              GtTabbar<String>(controller: _controller, tabs: _tabs),
+              GtTabbar<String>(
+                controller: _controller,
+                tabs: _tabs,
+                key: PageStorageKey("gt-avatar-tabbar"),
+              ),
               const GtGap.yMd(),
               Expanded(
                 child: GtTabbarView<String>.lazy(
+                  key: PageStorageKey("gt-avatar-tabs"),
                   controller: _controller,
                   tabs: _tabs,
                   tabBuilders: {
@@ -107,7 +136,7 @@ class _AvatarPlaygroundState extends State<_AvatarPlayground> {
                       code:
                           '''
 GtAvatar(
-  avatar: AppImageData("${avatarImage?.imageData}"),
+  avatar: AppImageData("${image.$2?.imageData}"),
   initials: "$initials",
   size: $size,
   showBorder: $showBorder,
@@ -115,7 +144,7 @@ GtAvatar(
 )''',
                       child: Center(
                         child: GtAvatar(
-                          avatar: avatarImage,
+                          avatar: image.$2,
                           showBorder: showBorder,
                           initials: initials.isEmpty ? null : initials,
                           fit: fit,
@@ -130,19 +159,28 @@ GtAvatar(
                       code:
                           '''
 GtSquareAvatar(
-  avatar: AppImageData("${GtNetworkImages.avatarTexture1}"),
+  avatar: AppImageData("${image.$2?.imageData ?? ''}"),
   size: $squareSize,
   showBorder: $squareShowBorder,
+  showGradient: $squareShowGradient,${squareBgColor != null ? "\n  bgColor: Color(0x${squareBgColor.toARGB32().toRadixString(16)})," : ""}${squareEditPenSize != null ? "\n  editPenSize: $squareEditPenSize," : ""}${squareUserIconSize != null ? "\n  userIconSize: $squareUserIconSize," : ""}
   fit: BoxFit.${fit.name},
   onEdit: () {},
 )''',
                       child: Center(
                         child: GtSquareAvatar(
                           showBorder: squareShowBorder,
-                          avatar: AppImageData(GtNetworkImages.avatarTexture1),
+                          showGradient: squareShowGradient,
+                          bgColor: squareBgColor,
+                          editPenSize: squareEditPenSize,
+                          userIconSize: squareUserIconSize,
+                          avatar: image.$2,
                           fit: fit,
                           onEdit: () {},
                           size: squareSize,
+                          isUserAvatar: context.knobs.boolean(
+                            label: "Square User Avatar",
+                            initialValue: true,
+                          ),
                         ),
                       ),
                     ),
