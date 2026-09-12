@@ -9,6 +9,42 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// - Foreground row (title/subtitle + trailing chevron).
 /// - Decorative/preview image pinned to the bottom-right.
 class GtPaymentCardSelectionCard extends GtStatelessWidget {
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides fee label style. Null preserves the current default.
+  final TextStyle? feeLabelStyle;
+
+  /// Overrides fee label color. Null preserves the current default.
+  final Color? feeLabelColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides fee padding. Null preserves the current default.
+  final EdgeInsetsGeometry? feePadding;
+
+  /// Overrides fee background color. Null preserves the current default.
+  final Color? feeBackgroundColor;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides fee spacing in logical pixels. Null preserves the current default.
+  final double? feeSpacing;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
   /// Main card title.
   final String title;
 
@@ -38,6 +74,18 @@ class GtPaymentCardSelectionCard extends GtStatelessWidget {
     this.onPressed,
     this.backgroundColor,
     required this.feeLabel,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.feeLabelStyle,
+    this.feeLabelColor,
+    this.padding,
+    this.feePadding,
+    this.feeBackgroundColor,
+    this.verticalSpacing,
+    this.feeSpacing,
+    this.horizontalSpacing,
   });
 
   /// Button style token for the card title.
@@ -91,7 +139,7 @@ class GtPaymentCardSelectionCard extends GtStatelessWidget {
               ),
             ),
           Padding(
-            padding: context.insets.allDp(16.px),
+            padding: padding ?? context.insets.allDp(16.px),
             child: Column(
               children: [
                 Row(
@@ -102,33 +150,58 @@ class GtPaymentCardSelectionCard extends GtStatelessWidget {
                         mainAxisSize: .min,
                         crossAxisAlignment: .start,
                         children: [
-                          GtText(title.upper, style: _titleStyle(context)),
+                          GtText(
+                            title.upper,
+                            style: GtTextStyleOverrides.resolve(
+                              titleStyle,
+                              _titleStyle(context),
+                              titleColor,
+                            ),
+                          ),
                           if (subtitle.hasValue) ...[
-                            GtGap.yXs(),
+                            (verticalSpacing == null
+                                ? const GtGap.yXs()
+                                : SizedBox(height: verticalSpacing)),
                             GtText(
                               subtitle.value.capitalise(true),
-                              style: _subtitleStyle(context),
+                              style: GtTextStyleOverrides.resolve(
+                                subtitleStyle,
+                                _subtitleStyle(context),
+                                subtitleColor,
+                              ),
                             ),
                           ],
-                          GtGap.yMd(),
+                          (feeSpacing == null
+                              ? const GtGap.yMd()
+                              : SizedBox(height: feeSpacing)),
                           Container(
-                            padding: context.insets.symmetricDp(
-                              horizontal: 5.px,
-                              vertical: 3.px,
-                            ),
+                            padding:
+                                feePadding ??
+                                context.insets.symmetricDp(
+                                  horizontal: 5.px,
+                                  vertical: 3.px,
+                                ),
                             decoration: BoxDecoration(
-                              color: context.palette.bg.strong,
+                              color:
+                                  feeBackgroundColor ??
+                                  context.palette.bg.strong,
                               borderRadius: 5.circularBorderRadius,
                             ),
                             child: GtText(
                               feeLabel,
-                              style: _feeLabelStyle(context),
+                              style: GtTextStyleOverrides.resolve(
+                                feeLabelStyle,
+                                _feeLabelStyle(context),
+                                feeLabelColor,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    GtGap.hBase(),
+                    (horizontalSpacing == null
+                        ? const GtGap.hBase()
+                        : SizedBox(width: horizontalSpacing)),
                     GtIcon(
                       GtIcons.chevronRight,
                       variant: .soft,
@@ -293,6 +366,39 @@ enum GtDebitCardDimension {
 /// - Bottom row: Card label / holder's name and payment network logo.
 /// - Optional frozen state: Frosted overlay with snowflake icon and "FROZEN" indicator.
 class GtDebitCard extends GtStatelessWidget {
+  /// Overrides virtual chip text color. Null preserves the current default.
+  final Color? virtualChipTextColor;
+
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides label color. Null preserves the current default.
+  final Color? labelColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides gradient. Null preserves the current default.
+  final Gradient? gradient;
+
+  /// Overrides frozen overlay color. Null preserves the current default.
+  final Color? frozenOverlayColor;
+
+  /// Overrides frozen color. Null preserves the current default.
+  final Color? frozenColor;
+
+  /// Overrides frozen style. Null preserves the current default.
+  final TextStyle? frozenStyle;
+
+  /// Overrides virtual chip color. Null preserves the current default.
+  final Color? virtualChipColor;
+
+  /// Overrides virtual chip style. Null preserves the current default.
+  final TextStyle? virtualChipStyle;
+
+  /// Overrides virtual chip padding. Null preserves the current default.
+  final EdgeInsetsGeometry? virtualChipPadding;
+
   /// The label or cardholder name displayed on the bottom-left of the card.
   final String label;
 
@@ -334,6 +440,17 @@ class GtDebitCard extends GtStatelessWidget {
 
   /// Creates a [GtDebitCard].
   const GtDebitCard({
+    this.labelStyle,
+    this.labelColor,
+    this.padding,
+    this.gradient,
+    this.frozenOverlayColor,
+    this.frozenColor,
+    this.frozenStyle,
+    this.virtualChipColor,
+    this.virtualChipStyle,
+    this.virtualChipPadding,
+
     super.key,
     required this.label,
     this.cardLogo,
@@ -348,6 +465,7 @@ class GtDebitCard extends GtStatelessWidget {
     this.issuer = .mastercard,
     this.dimension = .regular,
     this.isFrozen = false,
+    this.virtualChipTextColor,
   });
 
   @override
@@ -394,11 +512,11 @@ class GtDebitCard extends GtStatelessWidget {
         border: .none,
         borderRadius: borderRadius,
         color: backgroundColor ?? defaultBgColor,
-        gradient: type.gradient(context.palette),
+        gradient: gradient ?? type.gradient(context.palette),
         child: Stack(
           children: [
             Padding(
-              padding: context.insets.allDp(dimension.padding),
+              padding: padding ?? context.insets.allDp(dimension.padding),
               child: Column(
                 mainAxisAlignment: .spaceBetween,
                 children: [
@@ -409,6 +527,10 @@ class GtDebitCard extends GtStatelessWidget {
                       if (type.isVirtual)
                         _VirtualCardChip(
                           dimension,
+                          backgroundColor: virtualChipColor,
+                          style: virtualChipStyle,
+                          textColor: virtualChipTextColor,
+                          padding: virtualChipPadding,
                           key: Key("virtual-debit-card-chip-$label"),
                         ),
                       const Spacer(),
@@ -436,7 +558,11 @@ class GtDebitCard extends GtStatelessWidget {
                         child: GtText(
                           label.upper,
                           maxLines: 1,
-                          style: labelTextStyle,
+                          style: GtTextStyleOverrides.resolve(
+                            labelStyle,
+                            labelTextStyle,
+                            labelColor,
+                          ),
                         ),
                       ),
                       GtImage(
@@ -455,7 +581,9 @@ class GtDebitCard extends GtStatelessWidget {
               Positioned.fill(
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: context.palette.staticColors.white.setOpacity(.7),
+                    color:
+                        frozenOverlayColor ??
+                        context.palette.staticColors.white.setOpacity(.7),
                   ),
                 ),
               ),
@@ -463,7 +591,11 @@ class GtDebitCard extends GtStatelessWidget {
               Positioned.fill(
                 child: _FrozenCardOverlay(
                   dimension,
-                  backgroundColor ?? type.overlayColor(context.palette),
+                  frozenColor ??
+                      backgroundColor ??
+                      type.overlayColor(context.palette),
+                  style: frozenStyle,
+                  textColor: frozenColor,
                   key: Key("frozent-card-overlay-$label"),
                 ),
               ),
@@ -476,9 +608,28 @@ class GtDebitCard extends GtStatelessWidget {
 }
 
 class _VirtualCardChip extends GtStatelessWidget {
+  /// Overrides style. Null preserves the current default.
+  final TextStyle? style;
+
+  /// Overrides text color. Null preserves the current default.
+  final Color? textColor;
+
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
   final GtDebitCardDimension dimension;
 
-  const _VirtualCardChip(this.dimension, {super.key});
+  const _VirtualCardChip(
+    this.dimension, {
+    this.style,
+    this.textColor,
+    this.backgroundColor,
+    this.padding,
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final insets = context.insets;
@@ -489,20 +640,29 @@ class _VirtualCardChip extends GtStatelessWidget {
     };
 
     return Container(
-      padding: switch (dimension) {
-        .compact => insets.symmetricDp(horizontal: 1.45.px, vertical: .96.px),
-        _ => insets.allDp(5.px),
-      },
+      padding:
+          padding ??
+          switch (dimension) {
+            .compact => insets.symmetricDp(
+              horizontal: 1.45.px,
+              vertical: .96.px,
+            ),
+            _ => insets.allDp(5.px),
+          },
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(context.dp(radius)),
-        color: context.palette.bg.weak,
+        color: backgroundColor ?? context.palette.bg.weak,
       ),
       child: FittedBox(
         fit: .scaleDown,
         child: GtText(
           "virtual".utr(),
           textAlign: .center,
-          style: context.textStyles.buttonXs(),
+          style: GtTextStyleOverrides.resolve(
+            style,
+            context.textStyles.buttonXs(),
+            textColor,
+          ),
         ),
       ),
     );
@@ -510,10 +670,22 @@ class _VirtualCardChip extends GtStatelessWidget {
 }
 
 class _FrozenCardOverlay extends GtStatelessWidget {
+  /// Overrides style. Null preserves the current default.
+  final TextStyle? style;
+
+  /// Overrides text color. Null preserves the current default.
+  final Color? textColor;
+
   final GtDebitCardDimension dimension;
   final Color color;
 
-  const _FrozenCardOverlay(this.dimension, this.color, {super.key});
+  const _FrozenCardOverlay(
+    this.dimension,
+    this.color, {
+    this.style,
+    this.textColor,
+    super.key,
+  });
   @override
   Widget build(BuildContext context) {
     final iconSize = switch (dimension) {
@@ -537,9 +709,10 @@ class _FrozenCardOverlay extends GtStatelessWidget {
         Flexible(
           child: GtText(
             "frozen".ctr(),
-            style: context.textStyles.subHeadXs(
-              color: color,
-              heightPx: lineHeight,
+            style: GtTextStyleOverrides.resolve(
+              style,
+              context.textStyles.subHeadXs(color: color, heightPx: lineHeight),
+              textColor,
             ),
             textAlign: .center,
           ),

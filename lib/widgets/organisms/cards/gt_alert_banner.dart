@@ -4,6 +4,30 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A banner for alerts, with a title, subtitle, icon, and close button.
 class GtAlertBanner extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
   /// The main title of the alert banner.
   final String title;
 
@@ -35,6 +59,14 @@ class GtAlertBanner extends GtStatelessWidget {
     required this.icon,
     required this.onClose,
     this.onTap,
+    this.backgroundColor,
+    this.padding,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.verticalSpacing,
+    this.horizontalSpacing,
   });
 
   @override
@@ -50,14 +82,14 @@ class GtAlertBanner extends GtStatelessWidget {
         borderRadius: context.borderRadius2Xl,
         onTap: onTap,
         child: GtCard(
-          padding: context.insets.allDp(12.px),
-          color: bgColor,
+          padding: padding ?? context.insets.allDp(12.px),
+          color: backgroundColor ?? bgColor,
           child: Column(
-            spacing: context.spacingSm,
+            spacing: verticalSpacing ?? context.spacingSm,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
-                spacing: context.spacingBase,
+                spacing: horizontalSpacing ?? context.spacingBase,
                 crossAxisAlignment: .start,
                 mainAxisAlignment: .spaceBetween,
                 children: [
@@ -65,8 +97,22 @@ class GtAlertBanner extends GtStatelessWidget {
                   GtCancelButton(onTap: onClose, alignment: .topRight),
                 ],
               ),
-              GtText(title.upper, style: context.textStyles.buttonS()),
-              GtText(subtitle, style: context.textStyles.subHeadS()),
+              GtText(
+                title.upper,
+                style: GtTextStyleOverrides.resolve(
+                  titleStyle,
+                  context.textStyles.buttonS(),
+                  titleColor,
+                ),
+              ),
+              GtText(
+                subtitle,
+                style: GtTextStyleOverrides.resolve(
+                  subtitleStyle,
+                  context.textStyles.subHeadS(),
+                  subtitleColor,
+                ),
+              ),
             ],
           ),
         ),

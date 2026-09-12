@@ -34,6 +34,37 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// the account switcher, and the button would otherwise render unlabelled.
   final String? toggleAccountText;
 
+  /// An accessible name for the help button, already localised.
+  ///
+  /// The button is icon-only, so without a name a screen reader announces it
+  /// as an unlabelled button.
+  final String? helpSemanticsLabel;
+
+  /// An accessible name for the search button, already localised.
+  ///
+  /// The button is icon-only, so without a name a screen reader announces it
+  /// as an unlabelled button.
+  final String? searchSemanticsLabel;
+
+  /// An accessible name for the hide/visibility button, already localised.
+  ///
+  /// The button is icon-only, so without a name a screen reader announces it
+  /// as an unlabelled button.
+  final String? hideSemanticsLabel;
+
+  /// An accessible name for the notification button, already localised.
+  ///
+  /// The button is icon-only, so without a name a screen reader announces it
+  /// as an unlabelled button.
+  final String? notificationSemanticsLabel;
+
+  /// An accessible name for the account toggle button, already localised.
+  ///
+  /// Replaces [toggleAccountText] for screen readers; when absent, the visible
+  /// text is announced instead. Supply it when the visible label alone doesn't
+  /// say what the button does (e.g. "Switch account").
+  final String? toggleAccountSemanticsLabel;
+
   /// Creates a [GtHomeAppBar].
   ///
   /// [toggleAccountText] must be supplied whenever [onToggleAccounts] is; this
@@ -48,6 +79,11 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     this.onClickHelp,
     this.onToggleAccounts,
     this.toggleAccountText,
+    this.helpSemanticsLabel,
+    this.searchSemanticsLabel,
+    this.hideSemanticsLabel,
+    this.notificationSemanticsLabel,
+    this.toggleAccountSemanticsLabel,
     super.key,
   }) : assert(
          onToggleAccounts == null || toggleAccountText != null,
@@ -92,6 +128,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 icon: GtIcons.messages,
                 iconColor: iconColor,
                 onPressed: onClickHelp!,
+                semanticLabel: helpSemanticsLabel,
                 shape: .round,
                 color: btnColor,
                 variant: .neutral,
@@ -102,6 +139,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 icon: GtIcons.magnifier,
                 iconColor: iconColor,
                 onPressed: onClickSearch!,
+                semanticLabel: searchSemanticsLabel,
                 shape: .round,
                 color: btnColor,
                 variant: .neutral,
@@ -112,6 +150,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 icon: GtIcons.hide,
                 iconColor: iconColor,
                 onPressed: onClickHide!,
+                semanticLabel: hideSemanticsLabel,
                 shape: .round,
                 color: btnColor,
                 variant: .neutral,
@@ -122,6 +161,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 icon: GtIcons.bell,
                 iconColor: iconColor,
                 onPressed: onClickNotification!,
+                semanticLabel: notificationSemanticsLabel,
                 shape: .round,
                 color: btnColor,
                 variant: .neutral,
@@ -132,6 +172,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 text: toggleAccountText,
                 trailing: GtIcons.chevronDownOutline,
                 onPressed: onToggleAccounts!,
+                semanticLabel: toggleAccountSemanticsLabel,
                 cornerRadius: context.borderRadiusFull,
                 color: btnColor,
                 textColor: iconColor,

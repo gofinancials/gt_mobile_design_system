@@ -26,6 +26,33 @@ enum GtNotificationVariant {
 /// A card for displaying alerts, typically with an icon, title, and subtitle,
 /// and a distinct border.
 class GtNotificationCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides close button spacing in logical pixels. Null preserves the current default.
+  final double? closeButtonSpacing;
+
   /// The main title of the alert.
   final String title;
 
@@ -44,6 +71,15 @@ class GtNotificationCard extends GtStatelessWidget {
     required this.subtitle,
     this.variant = .error,
     required this.onClose,
+    this.backgroundColor,
+    this.padding,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.horizontalSpacing,
+    this.verticalSpacing,
+    this.closeButtonSpacing,
   });
 
   @override
@@ -56,12 +92,12 @@ class GtNotificationCard extends GtStatelessWidget {
     };
 
     return GtCard(
-      padding: context.insets.allDp(12.px),
-      color: bgColor,
+      padding: padding ?? context.insets.allDp(12.px),
+      color: backgroundColor ?? bgColor,
       shadows: context.shadows.lg(),
       child: Row(
         crossAxisAlignment: .start,
-        spacing: context.spacingBase,
+        spacing: horizontalSpacing ?? context.spacingBase,
         children: [
           GtSvg(
             variant.illustration,
@@ -73,15 +109,31 @@ class GtNotificationCard extends GtStatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: .start,
-              spacing: context.spacingSm,
+              spacing: verticalSpacing ?? context.spacingSm,
               mainAxisSize: .min,
               children: [
-                GtText(title.upper, style: context.textStyles.buttonS()),
-                GtText(subtitle, style: context.textStyles.subHead2xs()),
+                GtText(
+                  title.upper,
+                  style: GtTextStyleOverrides.resolve(
+                    titleStyle,
+                    context.textStyles.buttonS(),
+                    titleColor,
+                  ),
+                ),
+                GtText(
+                  subtitle,
+                  style: GtTextStyleOverrides.resolve(
+                    subtitleStyle,
+                    context.textStyles.subHead2xs(),
+                    subtitleColor,
+                  ),
+                ),
               ],
             ),
           ),
-          const GtGap.hBase(),
+          (closeButtonSpacing == null
+              ? const GtGap.hBase()
+              : SizedBox(width: closeButtonSpacing)),
           GtCancelButton(size: .small, alignment: .topRight, onTap: onClose),
         ],
       ),

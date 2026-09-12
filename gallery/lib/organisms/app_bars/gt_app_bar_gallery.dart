@@ -25,8 +25,11 @@ Widget buildGtHomeAppbarUsecase(BuildContext context) {
   return Scaffold(
     appBar: GtHomeAppBar(
       onClickSearch: () {},
+      searchSemanticsLabel: 'Search',
       onClickHide: () {},
+      hideSemanticsLabel: 'Hide balances',
       onClickNotification: () {},
+      notificationSemanticsLabel: 'Notifications',
     ),
     extendBodyBehindAppBar: true,
     body: _withGradient(context, showGradient, Container()),

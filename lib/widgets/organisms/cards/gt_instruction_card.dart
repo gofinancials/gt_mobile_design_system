@@ -5,6 +5,33 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A card widget used to display instructions or prompts for the user to take a
 /// specific action, such as uploading a document or taking a photo.
 class GtInstructionCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides the outlined border colour. Ignored while [isFilled] is true.
+  final Color? borderColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides description style. Null preserves the current default.
+  final TextStyle? descriptionStyle;
+
+  /// Overrides description color. Null preserves the current default.
+  final Color? descriptionColor;
+
+  /// Overrides icon spacing in logical pixels. Null preserves the current default.
+  final double? iconSpacing;
+
   /// The primary widget, typically an icon, displayed at the top of the card.
   final Widget icon;
 
@@ -34,6 +61,15 @@ class GtInstructionCard extends GtStatelessWidget {
     required this.onPressed,
     this.variant = .normal,
     this.isFilled = false,
+    this.backgroundColor,
+    this.borderColor,
+    this.padding,
+    this.verticalSpacing,
+    this.titleStyle,
+    this.titleColor,
+    this.descriptionStyle,
+    this.descriptionColor,
+    this.iconSpacing,
   });
 
   @override
@@ -49,26 +85,36 @@ class GtInstructionCard extends GtStatelessWidget {
       borderRadius: context.borderRadiusXl,
       onTap: onPressed,
       child: GtCard(
-        color: isFilled ? bgColor : Colors.transparent,
+        color: backgroundColor ?? (isFilled ? bgColor : Colors.transparent),
         border: isFilled
             ? BorderSide.none
-            : BorderSide(color: borderColor, width: 1.5),
+            : BorderSide(color: this.borderColor ?? borderColor, width: 1.5),
         borderRadius: context.borderRadiusXl,
-        padding: context.insets.allDp(32.px),
+        padding: padding ?? context.insets.allDp(32.px),
         child: Column(
-          spacing: context.spacingBase,
+          spacing: verticalSpacing ?? context.spacingBase,
           mainAxisAlignment: .center,
           children: [
             icon,
-            const GtGap.yMd(),
+            (iconSpacing == null
+                ? const GtGap.yMd()
+                : SizedBox(height: iconSpacing)),
             GtText(
               title,
-              style: context.textStyles.subHeadS(color: textColor),
+              style: GtTextStyleOverrides.resolve(
+                titleStyle,
+                context.textStyles.subHeadS(color: textColor),
+                titleColor,
+              ),
               textAlign: .center,
             ),
             GtText(
               description,
-              style: context.textStyles.body2Xs(color: iconColor),
+              style: GtTextStyleOverrides.resolve(
+                descriptionStyle,
+                context.textStyles.body2Xs(color: iconColor),
+                descriptionColor,
+              ),
               textAlign: .center,
             ),
           ],

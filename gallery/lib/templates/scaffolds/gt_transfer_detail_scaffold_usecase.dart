@@ -254,6 +254,7 @@ GtTransferDetailBody _buildConfiguredTransferDetailBody({
   required BuildContext context,
   ScrollController? controller,
   required double amount,
+  required bool isCredit,
   required String recipientName,
   required bool recipientHasTag,
   required String scenario,
@@ -270,6 +271,7 @@ GtTransferDetailBody _buildConfiguredTransferDetailBody({
   return GtTransferDetailBody(
     controller: controller,
     amount: amount,
+    isCredit: isCredit,
     recipient: recipient,
     actions: _getActions(actionsPreset, context),
     steps: _getSteps(scenario),
@@ -291,6 +293,7 @@ class _TransferDetailScaffoldPreviewState
   void _openTransferDetailModal(
     BuildContext context, {
     required double amount,
+    required bool isCredit,
     required String recipientName,
     required bool recipientHasTag,
     required String scenario,
@@ -317,6 +320,7 @@ class _TransferDetailScaffoldPreviewState
             context: context,
             controller: controller,
             amount: amount,
+            isCredit: isCredit,
             recipientName: recipientName,
             recipientHasTag: recipientHasTag,
             scenario: scenario,
@@ -333,6 +337,10 @@ class _TransferDetailScaffoldPreviewState
     final amount = context.knobs.double.input(
       label: 'Amount',
       initialValue: 20000,
+    );
+    final isCredit = context.knobs.boolean(
+      label: 'Credit (money in)',
+      initialValue: false,
     );
 
     final recipientName = context.knobs.string(
@@ -390,6 +398,7 @@ showDraggableSheet(
       body: GtTransferDetailBody(
         controller: controller,
         amount: $amount,
+        isCredit: $isCredit,
         recipient: const GtReceiptParticipant(
           title: "$recipientName",
           image: AppImageData(GtNetworkImages.sampleAvatar1),
@@ -414,6 +423,7 @@ showDraggableSheet(
         onPressed: () => _openTransferDetailModal(
           context,
           amount: amount,
+          isCredit: isCredit,
           recipientName: recipientName,
           recipientHasTag: recipientHasTag,
           scenario: scenario,
@@ -434,6 +444,10 @@ class _TransferDetailBodyInlinePreview extends StatelessWidget {
     final amount = context.knobs.double.input(
       label: 'Amount',
       initialValue: 20000,
+    );
+    final isCredit = context.knobs.boolean(
+      label: 'Credit (money in)',
+      initialValue: false,
     );
 
     final recipientName = context.knobs.string(
@@ -474,6 +488,7 @@ class _TransferDetailBodyInlinePreview extends StatelessWidget {
     final transferDetailBody = _buildConfiguredTransferDetailBody(
       context: context,
       amount: amount,
+      isCredit: isCredit,
       recipientName: recipientName,
       recipientHasTag: recipientHasTag,
       scenario: scenario,
@@ -489,6 +504,7 @@ class _TransferDetailBodyInlinePreview extends StatelessWidget {
           '''
 GtTransferDetailBody(
   amount: $amount,
+  isCredit: $isCredit,
   recipient: const GtReceiptParticipant(
     title: "$recipientName",
     image: AppImageData(GtNetworkImages.sampleAvatar1),

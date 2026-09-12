@@ -84,6 +84,24 @@ class GtInfoListTile extends GtStatelessWidget {
 /// It can be rendered as a standalone tile or wrapped in a stylized card using
 /// the [GtStatListTile.asCard] constructor.
 class GtStatListTile extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides value color. Null preserves the current default.
+  final Color? valueColor;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
   /// The primary label or title for the information being displayed.
   final String title;
 
@@ -124,6 +142,12 @@ class GtStatListTile extends GtStatelessWidget {
     this.valueStyle,
     this.onTap,
     this.isPositive = true,
+    this.backgroundColor,
+    this.padding,
+    this.titleColor,
+    this.valueColor,
+    this.verticalSpacing,
+    this.horizontalSpacing,
   }) : _asCard = false;
 
   /// Creates a [GtStatListTile] that is automatically wrapped in a [GtCard].
@@ -136,6 +160,12 @@ class GtStatListTile extends GtStatelessWidget {
     this.valueStyle,
     this.isPositive = true,
     this.onTap,
+    this.backgroundColor,
+    this.padding,
+    this.titleColor,
+    this.valueColor,
+    this.verticalSpacing,
+    this.horizontalSpacing,
   }) : _asCard = true;
 
   @override
@@ -148,30 +178,42 @@ class GtStatListTile extends GtStatelessWidget {
     );
 
     Widget child = Column(
-      spacing: context.spacingBase,
+      spacing: verticalSpacing ?? context.spacingBase,
       crossAxisAlignment: .start,
       children: [
         Row(
-          spacing: context.spacingSm,
+          spacing: horizontalSpacing ?? context.spacingSm,
           children: [
             ?icon,
             Expanded(
               child: GtText(
                 title.upper,
-                style: titleStyle ?? defaultTitleStyle,
+                style: GtTextStyleOverrides.resolve(
+                  titleStyle,
+                  defaultTitleStyle,
+                  titleColor,
+                ),
               ),
             ),
           ],
         ),
-        GtText(value, style: style),
+        GtText(
+          value,
+          style: GtTextStyleOverrides.resolve(
+            valueStyle,
+            style,
+            this.valueColor,
+          ),
+        ),
       ],
     );
 
     if (_asCard) {
       child = GtCard(
+        color: backgroundColor,
         borderRadius: context.borderRadiusXl,
 
-        padding: context.insets.allDp(8.px),
+        padding: padding ?? context.insets.allDp(8.px),
         child: child,
       );
     }
@@ -193,6 +235,24 @@ class GtStatListTile extends GtStatelessWidget {
 /// It can be rendered as a standalone tile or wrapped in a stylized card using
 /// the [GtInputListTile.asCard] constructor.
 class GtInputListTile extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides label color. Null preserves the current default.
+  final Color? labelColor;
+
+  /// Overrides text color. Null preserves the current default.
+  final Color? textColor;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
   /// The primary label or title for the information being displayed.
   final String label;
 
@@ -229,6 +289,12 @@ class GtInputListTile extends GtStatelessWidget {
     this.labelStyle,
     this.textStyle,
     this.onTap,
+    this.backgroundColor,
+    this.padding,
+    this.labelColor,
+    this.textColor,
+    this.verticalSpacing,
+    this.horizontalSpacing,
   }) : _asCard = false;
 
   /// Creates a [GtInputListTile] that is automatically wrapped in a [GtCard].
@@ -240,6 +306,12 @@ class GtInputListTile extends GtStatelessWidget {
     this.textStyle,
     this.labelStyle,
     this.onTap,
+    this.backgroundColor,
+    this.padding,
+    this.labelColor,
+    this.textColor,
+    this.verticalSpacing,
+    this.horizontalSpacing,
   }) : _asCard = true;
 
   @override
@@ -250,17 +322,27 @@ class GtInputListTile extends GtStatelessWidget {
         context.textStyles.bodyXs(color: context.palette.text.sub));
 
     Widget child = Column(
-      spacing: context.spacingSm,
+      spacing: verticalSpacing ?? context.spacingSm,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GtText(label, style: hintStyle),
-        GtText(text, style: style),
+        GtText(
+          label,
+          style: GtTextStyleOverrides.resolve(
+            labelStyle,
+            hintStyle,
+            labelColor,
+          ),
+        ),
+        GtText(
+          text,
+          style: GtTextStyleOverrides.resolve(textStyle, style, textColor),
+        ),
       ],
     );
 
     if (leading != null) {
       child = Row(
-        spacing: context.spacingBase,
+        spacing: horizontalSpacing ?? context.spacingBase,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ConstrainedBox(
@@ -273,7 +355,12 @@ class GtInputListTile extends GtStatelessWidget {
     }
 
     if (_asCard) {
-      child = GtCard(borderRadius: context.borderRadiusXl, child: child);
+      child = GtCard(
+        color: backgroundColor,
+        padding: padding,
+        borderRadius: context.borderRadiusXl,
+        child: child,
+      );
     }
 
     return GtInkWell(
@@ -551,6 +638,15 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
 /// This is typically used for subtle inline information, such as help hints,
 /// status indicators, or small informational notes within a larger context.
 class GtSimpleInfoTile extends GtStatelessWidget {
+  /// Overrides style. Null preserves the current default.
+  final TextStyle? style;
+
+  /// Overrides text color. Null preserves the current default.
+  final Color? textColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
   /// The widget to display at the start, such as a small status icon.
   final Widget leading;
 
@@ -562,12 +658,15 @@ class GtSimpleInfoTile extends GtStatelessWidget {
     super.key,
     required this.leading,
     required this.text,
+    this.style,
+    this.textColor,
+    this.horizontalSpacing,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: context.spacingSm,
+      spacing: horizontalSpacing ?? context.spacingSm,
       mainAxisSize: .min,
       children: [
         GtSquareConstrainedBox(16, child: leading),
@@ -575,7 +674,11 @@ class GtSimpleInfoTile extends GtStatelessWidget {
           translation: Offset(0, .1),
           child: GtText(
             text,
-            style: context.textStyles.bodyXs(color: context.palette.text.sub),
+            style: GtTextStyleOverrides.resolve(
+              style,
+              context.textStyles.bodyXs(color: context.palette.text.sub),
+              textColor,
+            ),
           ),
         ),
       ],
@@ -591,6 +694,27 @@ class GtSimpleInfoTile extends GtStatelessWidget {
 /// {@category molecules}
 /// {@category tiles}
 class GtSuccessRateTile extends GtStatelessWidget {
+  /// Overrides text style. Null preserves the current default.
+  final TextStyle? textStyle;
+
+  /// Overrides text color. Null preserves the current default.
+  final Color? textColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides percentage padding. Null preserves the current default.
+  final EdgeInsetsGeometry? percentagePadding;
+
+  /// Overrides percentage style. Null preserves the current default.
+  final TextStyle? percentageStyle;
+
+  /// Overrides percentage color. Null preserves the current default.
+  final Color? percentageColor;
+
+  /// Overrides percentage background color. Null preserves the current default.
+  final Color? percentageBackgroundColor;
+
   /// The widget to display at the start, such as an institution logo or avatar.
   final Widget leading;
 
@@ -606,6 +730,13 @@ class GtSuccessRateTile extends GtStatelessWidget {
     required this.leading,
     required this.text,
     required this.successRate,
+    this.textStyle,
+    this.textColor,
+    this.horizontalSpacing,
+    this.percentagePadding,
+    this.percentageStyle,
+    this.percentageColor,
+    this.percentageBackgroundColor,
   });
 
   @override
@@ -628,13 +759,17 @@ class GtSuccessRateTile extends GtStatelessWidget {
     };
 
     return Row(
-      spacing: context.spacingBase,
+      spacing: horizontalSpacing ?? context.spacingBase,
       children: [
         leading,
         Expanded(
           child: GtText(
             text,
-            style: style.subHeadS(weight: .w600),
+            style: GtTextStyleOverrides.resolve(
+              textStyle,
+              style.subHeadS(weight: .w600),
+              this.textColor,
+            ),
             maxLines: 1,
             overflow: .ellipsis,
           ),
@@ -642,11 +777,18 @@ class GtSuccessRateTile extends GtStatelessWidget {
         GtPill(
           text: "$percentage%",
           variant: variant,
-          bgColor: variant.getBgColor(context.palette),
-          textColor: textColor,
-          textStyle: style.ratePill(color: textColor),
+          bgColor:
+              percentageBackgroundColor ?? variant.getBgColor(context.palette),
+          textColor: percentageColor ?? textColor,
+          textStyle: GtTextStyleOverrides.resolve(
+            percentageStyle,
+            style.ratePill(color: textColor),
+            percentageColor,
+          ),
           borderRadius: context.borderRadius4Xl,
-          padding: context.insets.symmetricDp(vertical: 4.px, horizontal: 8.px),
+          padding:
+              percentagePadding?.resolve(Directionality.of(context)) ??
+              context.insets.symmetricDp(vertical: 4.px, horizontal: 8.px),
           alignment: .centerRight,
         ),
       ],

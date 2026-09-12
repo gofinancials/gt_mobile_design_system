@@ -5,6 +5,15 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A list tile that displays an illustration alongside a title and subtitle,
 /// often used for onboarding or multi-step processes.
 class GtIllustratedStepTile extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
   /// The illustration image data displayed at the start of the tile.
   final AppImageData illustration;
 
@@ -51,6 +60,9 @@ class GtIllustratedStepTile extends GtStatelessWidget {
     this.verticalSpacing,
     this.horizontalSpacing,
     this.padding,
+    this.backgroundColor,
+    this.titleColor,
+    this.subtitleColor,
   }) : _asCard = false;
 
   /// Creates a [GtIllustratedStepTile] wrapped in a stylized [GtCard].
@@ -66,6 +78,9 @@ class GtIllustratedStepTile extends GtStatelessWidget {
     this.verticalSpacing,
     this.horizontalSpacing,
     this.padding,
+    this.backgroundColor,
+    this.titleColor,
+    this.subtitleColor,
   }) : _asCard = true;
 
   @override
@@ -90,10 +105,21 @@ class GtIllustratedStepTile extends GtStatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: verticalSpacing ?? 0,
             children: [
-              GtText(title, style: titleStyle ?? style.subHeadM()),
+              GtText(
+                title,
+                style: GtTextStyleOverrides.resolve(
+                  titleStyle,
+                  style.subHeadM(),
+                  titleColor,
+                ),
+              ),
               GtText(
                 subtitle,
-                style: subtitleStyle ?? style.subHeadXs(color: textColors.sub),
+                style: GtTextStyleOverrides.resolve(
+                  subtitleStyle,
+                  style.subHeadXs(color: textColors.sub),
+                  subtitleColor,
+                ),
               ),
             ],
           ),
@@ -124,6 +150,7 @@ class GtIllustratedStepTile extends GtStatelessWidget {
 
     if (_asCard) {
       child = GtCard(
+        color: backgroundColor,
         padding:
             padding ??
             context.insets.symmetricDp(horizontal: 12.px, vertical: 16.px),
@@ -138,6 +165,33 @@ class GtIllustratedStepTile extends GtStatelessWidget {
 /// A list tile that displays an item's status, optionally rendering a footer
 /// status pill and a completion checkmark.
 class GtStatusListTile extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides trailing spacing in logical pixels. Null preserves the current default.
+  final double? trailingSpacing;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides footer spacing in logical pixels. Null preserves the current default.
+  final double? footerSpacing;
+
   /// The icon to display at the start of the tile.
   final IconData icon;
 
@@ -171,6 +225,15 @@ class GtStatusListTile extends GtStatelessWidget {
     this.footer,
     this.isDone = false,
     this.padding,
+    this.backgroundColor,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.horizontalSpacing,
+    this.trailingSpacing,
+    this.verticalSpacing,
+    this.footerSpacing,
   }) : _asCard = false;
 
   /// Creates a [GtStatusListTile] wrapped in a stylized card.
@@ -183,22 +246,51 @@ class GtStatusListTile extends GtStatelessWidget {
     this.footer,
     this.isDone = false,
     this.padding,
+    this.backgroundColor,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.horizontalSpacing,
+    this.trailingSpacing,
+    this.verticalSpacing,
+    this.footerSpacing,
   }) : _asCard = true;
 
   @override
   Widget build(BuildContext context) {
     Widget child = Row(
-      spacing: context.spacingBase,
+      spacing: horizontalSpacing ?? context.spacingBase,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GtIcon(icon, size: 24),
         Expanded(
           child: Column(
+            spacing: verticalSpacing ?? 0,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GtText(title.upper, style: context.textStyles.h7()),
-              GtText(subtitle),
-              if (footer != null) ...[GtGap.yBase(), ?footer],
+              GtText(
+                title.upper,
+                style: GtTextStyleOverrides.resolve(
+                  titleStyle,
+                  context.textStyles.h7(),
+                  titleColor,
+                ),
+              ),
+              GtText(
+                subtitle,
+                style: GtTextStyleOverrides.resolve(
+                  subtitleStyle,
+                  context.textStyles.bodyS(),
+                  subtitleColor,
+                ),
+              ),
+              if (footer != null) ...[
+                (footerSpacing == null
+                    ? const GtGap.yBase()
+                    : SizedBox(height: footerSpacing)),
+                ?footer,
+              ],
             ],
           ),
         ),
@@ -206,7 +298,7 @@ class GtStatusListTile extends GtStatelessWidget {
     );
 
     child = Row(
-      spacing: context.spacingMd,
+      spacing: trailingSpacing ?? context.spacingMd,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(child: child),
@@ -230,6 +322,7 @@ class GtStatusListTile extends GtStatelessWidget {
 
     if (_asCard) {
       child = GtCard(
+        color: backgroundColor,
         padding: padding ?? context.insets.allDp(16.px),
         child: child,
       );
