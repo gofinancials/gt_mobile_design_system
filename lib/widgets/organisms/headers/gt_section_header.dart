@@ -7,6 +7,12 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// It displays a primary [title] on the left and an optional [trailing] widget
 /// (such as a "See All" button or an icon) on the right.
 class GtSectionHeader extends GtStatelessWidget {
+  /// Overrides style. Null preserves the current default.
+  final TextStyle? style;
+
+  /// Overrides text color. Null preserves the current default.
+  final Color? textColor;
+
   /// An optional widget displayed at the trailing edge of the header.
   ///
   /// Often used for actions related to the section, like a text button or an icon.
@@ -18,11 +24,24 @@ class GtSectionHeader extends GtStatelessWidget {
   final String title;
 
   /// Creates a [GtSectionHeader].
-  const GtSectionHeader(this.title, {this.trailing, super.key});
+  const GtSectionHeader(
+    this.title, {
+    this.style,
+    this.textColor,
+    this.trailing,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    Widget child = GtText(title.upper, style: context.textStyles.buttonS());
+    Widget child = GtText(
+      title.upper,
+      style: GtTextStyleOverrides.resolve(
+        style,
+        context.textStyles.buttonS(),
+        textColor,
+      ),
+    );
 
     if (trailing != null) {
       child = Row(

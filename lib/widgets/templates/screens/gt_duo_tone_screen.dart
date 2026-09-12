@@ -8,6 +8,30 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// It includes a large top section with a gradient and image, followed by a title,
 /// description, an optional footer, and a main action button.
 class GtDuotoneScreen extends GtStatelessWidget {
+  /// Overrides gradient. Null preserves the current default.
+  final Gradient? gradient;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides description style. Null preserves the current default.
+  final TextStyle? descriptionStyle;
+
+  /// Overrides description color. Null preserves the current default.
+  final Color? descriptionColor;
+
+  /// Overrides content padding. Null preserves the current default.
+  final EdgeInsetsGeometry? contentPadding;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides footer spacing in logical pixels. Null preserves the current default.
+  final double? footerSpacing;
+
   /// The primary illustration or image displayed in the upper gradient section of the screen.
   final AppImageData illustration;
 
@@ -55,11 +79,19 @@ class GtDuotoneScreen extends GtStatelessWidget {
     this.titleOverflow,
     this.illustrationSize,
     this.footer,
+    this.gradient,
+    this.titleStyle,
+    this.titleColor,
+    this.descriptionStyle,
+    this.descriptionColor,
+    this.contentPadding,
+    this.verticalSpacing,
+    this.footerSpacing,
   });
 
   @override
   Widget build(BuildContext context) {
-    final gradient = variant.getGradient(context);
+    final gradient = this.gradient ?? variant.getGradient(context);
     final bgColor = context.palette.bg.white;
 
     return Scaffold(
@@ -97,27 +129,42 @@ class GtDuotoneScreen extends GtStatelessWidget {
           Flexible(
             flex: 4,
             child: SingleChildScrollView(
-              padding: context.insets.fromLTRBDp(36.px, 40.px, 36.px, 10.px),
+              padding:
+                  contentPadding ??
+                  context.insets.fromLTRBDp(36.px, 40.px, 36.px, 10.px),
               child: Column(
-                spacing: context.spacingMd,
+                spacing: verticalSpacing ?? context.spacingMd,
                 mainAxisAlignment: .start,
                 crossAxisAlignment: .stretch,
                 children: [
                   GtText(
                     title.upper,
-                    style: context.textStyles.h4(),
+                    style: GtTextStyleOverrides.resolve(
+                      titleStyle,
+                      context.textStyles.h4(),
+                      titleColor,
+                    ),
                     overflow: titleOverflow,
                     maxLines: titleMaxLines,
                     textAlign: .center,
                   ),
                   GtText(
                     description,
-                    style: context.textStyles.subHeadS(
-                      color: context.palette.text.darkerSub,
+                    style: GtTextStyleOverrides.resolve(
+                      descriptionStyle,
+                      context.textStyles.subHeadS(
+                        color: context.palette.text.darkerSub,
+                      ),
+                      descriptionColor,
                     ),
                     textAlign: .center,
                   ),
-                  if (footer != null) ...[const GtGap.yBase(), ?footer],
+                  if (footer != null) ...[
+                    (footerSpacing == null
+                        ? const GtGap.yBase()
+                        : SizedBox(height: footerSpacing)),
+                    ?footer,
+                  ],
                 ],
               ),
             ),

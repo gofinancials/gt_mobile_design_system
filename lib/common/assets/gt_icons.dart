@@ -660,18 +660,42 @@ class GtIcons {
   static const archiveSolid = IconData(0xf184, fontFamily: _f, fontPackage: _p);
   static const tvSolid = IconData(0xf178, fontFamily: _f, fontPackage: _p);
   static const ticketSolid = IconData(0xf179, fontFamily: _f, fontPackage: _p);
-  static const suitcaseUserSolid = IconData(0xf17A, fontFamily: _f, fontPackage: _p);
-  static const keyholeShieldSolid = IconData(0xf17B, fontFamily: _f, fontPackage: _p);
+  static const suitcaseUserSolid = IconData(
+    0xf17A,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const keyholeShieldSolid = IconData(
+    0xf17B,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
   static const planeSolid = IconData(0xf17C, fontFamily: _f, fontPackage: _p);
   static const phoneSolid = IconData(0xf17D, fontFamily: _f, fontPackage: _p);
-  static const modernHouseSolid = IconData(0xf17E, fontFamily: _f, fontPackage: _p);
-  static const graduationCapSolid = IconData(0xf17F, fontFamily: _f, fontPackage: _p);
+  static const modernHouseSolid = IconData(
+    0xf17E,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
+  static const graduationCapSolid = IconData(
+    0xf17F,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
   static const gamepadSolid = IconData(0xf180, fontFamily: _f, fontPackage: _p);
-  static const fileContentSolid = IconData(0xf181, fontFamily: _f, fontPackage: _p);
+  static const fileContentSolid = IconData(
+    0xf181,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
   static const dropletSolid = IconData(0xf182, fontFamily: _f, fontPackage: _p);
   static const busSolid = IconData(0xf183, fontFamily: _f, fontPackage: _p);
   static const boltSolid = IconData(0xf185, fontFamily: _f, fontPackage: _p);
-  static const bankStatementSolid = IconData(0xf186, fontFamily: _f, fontPackage: _p);
+  static const bankStatementSolid = IconData(
+    0xf186,
+    fontFamily: _f,
+    fontPackage: _p,
+  );
 
   static const arrowNorthEastThin = IconData(
     0xf174,

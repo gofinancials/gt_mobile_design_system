@@ -4,6 +4,15 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card widget that displays an empty state message, typically used when there is no data to show.
 class GtEmptyStateCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides description color. Null preserves the current default.
+  final Color? descriptionColor;
+
+  /// Overrides icon color. Null preserves the current default.
+  final Color? iconColor;
+
   /// The icon to display above the description. If null, no icon is shown.
   final IconData? icon;
 
@@ -43,6 +52,9 @@ class GtEmptyStateCard extends GtStatelessWidget {
     this.footer,
     this.iconSize,
     this.style,
+    this.backgroundColor,
+    this.descriptionColor,
+    this.iconColor,
   }) : image = null;
 
   const GtEmptyStateCard.image({
@@ -54,6 +66,9 @@ class GtEmptyStateCard extends GtStatelessWidget {
     this.variant = .normal,
     this.footer,
     this.style,
+    this.backgroundColor,
+    this.descriptionColor,
+    this.iconColor,
   }) : icon = null,
        iconSize = null;
 
@@ -70,14 +85,30 @@ class GtEmptyStateCard extends GtStatelessWidget {
 
     return GtCard(
       variant: variant,
+      color: backgroundColor,
       padding: padding ?? defaultPadding,
       child: Column(
         spacing: spacing ?? context.spacingBase,
         mainAxisAlignment: .center,
         children: [
-          if (icon != null) GtIcon(icon!, size: iconSize ?? defaultIconSize),
+          if (icon != null)
+            iconColor == null
+                ? GtIcon(icon!, size: iconSize ?? defaultIconSize)
+                : GtIcon.withColor(
+                    icon!,
+                    color: iconColor!,
+                    size: iconSize ?? defaultIconSize,
+                  ),
           ?image,
-          GtText(description, style: style ?? defaultStyle, textAlign: .center),
+          GtText(
+            description,
+            style: GtTextStyleOverrides.resolve(
+              style,
+              defaultStyle,
+              descriptionColor,
+            ),
+            textAlign: .center,
+          ),
           ?footer,
         ],
       ),
@@ -88,6 +119,36 @@ class GtEmptyStateCard extends GtStatelessWidget {
 /// A card widget that displays an empty state message alongside a call-to-action button.
 /// Typically used when there is no data to show, but the user can take an action to resolve it.
 class GtActionableEmptyStateCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides description style. Null preserves the current default.
+  final TextStyle? descriptionStyle;
+
+  /// Overrides description color. Null preserves the current default.
+  final Color? descriptionColor;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides icon spacing in logical pixels. Null preserves the current default.
+  final double? iconSpacing;
+
+  /// Overrides action spacing in logical pixels. Null preserves the current default.
+  final double? actionSpacing;
+
+  /// Overrides icon color. Null preserves the current default.
+  final Color? iconColor;
+
   /// The icon displayed at the top of the card.
   final IconData icon;
 
@@ -121,33 +182,61 @@ class GtActionableEmptyStateCard extends GtStatelessWidget {
     required this.buttontext,
     this.variant = .normal,
     this.isFilled = false,
+    this.backgroundColor,
+    this.padding,
+    this.titleStyle,
+    this.titleColor,
+    this.descriptionStyle,
+    this.descriptionColor,
+    this.verticalSpacing,
+    this.iconSpacing,
+    this.actionSpacing,
+    this.iconColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return GtCard(
+      color: backgroundColor,
       variant: variant,
-      padding: context.insets.symmetricDp(vertical: 24.px, horizontal: 12.px),
+      padding:
+          padding ??
+          context.insets.symmetricDp(vertical: 24.px, horizontal: 12.px),
       child: Column(
         mainAxisAlignment: .center,
         crossAxisAlignment: .center,
         children: [
-          GtIcon(icon, size: 32),
-          const GtGap.yBase(),
+          iconColor == null
+              ? GtIcon(icon, size: 32)
+              : GtIcon.withColor(icon, color: iconColor!, size: 32),
+          (iconSpacing == null
+              ? const GtGap.yBase()
+              : SizedBox(height: iconSpacing)),
           GtText(
             title,
-            style: context.textStyles.subHeadS(),
-            textAlign: .center,
-          ),
-          const GtGap.ySm(),
-          GtText(
-            description,
-            style: context.textStyles.subHead2xs(
-              color: context.palette.text.sub,
+            style: GtTextStyleOverrides.resolve(
+              titleStyle,
+              context.textStyles.subHeadS(),
+              titleColor,
             ),
             textAlign: .center,
           ),
-          ...const GtGap.yBase() * 2,
+          (verticalSpacing == null
+              ? const GtGap.ySm()
+              : SizedBox(height: verticalSpacing)),
+          GtText(
+            description,
+            style: GtTextStyleOverrides.resolve(
+              descriptionStyle,
+              context.textStyles.subHead2xs(color: context.palette.text.sub),
+              descriptionColor,
+            ),
+            textAlign: .center,
+          ),
+          if (actionSpacing == null)
+            ...const GtGap.yBase() * 2
+          else
+            SizedBox(height: actionSpacing),
           GtRaisedButton(onPressed: onPressed, text: buttontext, size: .xsmall),
         ],
       ),

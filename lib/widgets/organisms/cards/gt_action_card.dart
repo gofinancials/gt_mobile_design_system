@@ -16,6 +16,30 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// buttons' palette, and the `actionButton*` and `dismissButton*` fields for a
 /// single button's colours and label style.
 class GtActionCard extends GtStatelessWidget {
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides icon color. Null preserves the current default.
+  final Color? iconColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides button spacing in logical pixels. Null preserves the current default.
+  final double? buttonSpacing;
+
+  /// Overrides action spacing in logical pixels. Null preserves the current default.
+  final double? actionSpacing;
+
   /// The main title of the action card.
   final String title;
 
@@ -137,6 +161,14 @@ class GtActionCard extends GtStatelessWidget {
     this.actionButtonColor,
     this.actionButtonTextColor,
     this.actionButtonStyle,
+    this.titleColor,
+    this.subtitleColor,
+    this.padding,
+    this.iconColor,
+    this.horizontalSpacing,
+    this.verticalSpacing,
+    this.buttonSpacing,
+    this.actionSpacing,
   }) : _icon = icon,
        _trailing = null,
        dismissText = null,
@@ -166,6 +198,14 @@ class GtActionCard extends GtStatelessWidget {
     this.actionButtonStyle,
     this.dismissButtonTextColor,
     this.dismissButtonStyle,
+    this.titleColor,
+    this.subtitleColor,
+    this.padding,
+    this.iconColor,
+    this.horizontalSpacing,
+    this.verticalSpacing,
+    this.buttonSpacing,
+    this.actionSpacing,
   }) : _icon = icon,
        _trailing = null;
 
@@ -191,6 +231,14 @@ class GtActionCard extends GtStatelessWidget {
     this.actionButtonStyle,
     this.dismissButtonTextColor,
     this.dismissButtonStyle,
+    this.titleColor,
+    this.subtitleColor,
+    this.padding,
+    this.iconColor,
+    this.horizontalSpacing,
+    this.verticalSpacing,
+    this.buttonSpacing,
+    this.actionSpacing,
   }) : _icon = null,
        _trailing = trailing;
 
@@ -209,30 +257,44 @@ class GtActionCard extends GtStatelessWidget {
       showFirst: !hidden,
       child2: const Offstage(),
       child1: GtCard(
-        padding: context.insets.allDp(12.px),
+        padding: padding ?? context.insets.allDp(12.px),
         variant: variant,
         color: backgroundColor,
         child: Column(
           children: [
             Row(
-              spacing: context.spacingSectionMd,
+              spacing: horizontalSpacing ?? context.spacingSectionMd,
               crossAxisAlignment: .start,
               children: [
                 Expanded(
                   flex: 3,
                   child: Column(
-                    spacing: context.spacingSm,
+                    spacing: verticalSpacing ?? context.spacingSm,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      GtText(title, style: titleStyle ?? mainStyle),
-                      GtText(subtitle, style: subtitleStyle ?? subStyle),
+                      GtText(
+                        title,
+                        style: GtTextStyleOverrides.resolve(
+                          titleStyle,
+                          mainStyle,
+                          titleColor,
+                        ),
+                      ),
+                      GtText(
+                        subtitle,
+                        style: GtTextStyleOverrides.resolve(
+                          subtitleStyle,
+                          subStyle,
+                          subtitleColor,
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 if (_icon != null)
                   GtIcon.withColor(
                     _icon,
-                    color: iconColor,
+                    color: this.iconColor ?? iconColor,
                     size: 32,
                     alignment: .topLeft,
                   ),
@@ -242,9 +304,11 @@ class GtActionCard extends GtStatelessWidget {
                   ),
               ],
             ),
-            const GtGap.yXl(),
+            (actionSpacing == null
+                ? const GtGap.yXl()
+                : SizedBox(height: actionSpacing)),
             Row(
-              spacing: context.spacingSm,
+              spacing: buttonSpacing ?? context.spacingSm,
               mainAxisAlignment: .start,
               children: [
                 Flexible(

@@ -13,6 +13,36 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// and dismiss icon use the theme's static white color, while [textColor] and
 /// [dismissIconColor] can override them independently.
 class GtAdvertCard extends GtStatelessWidget {
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides content padding. Null preserves the current default.
+  final EdgeInsetsGeometry? contentPadding;
+
+  /// Overrides action padding. Null preserves the current default.
+  final EdgeInsetsGeometry? actionPadding;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides text spacing in logical pixels. Null preserves the current default.
+  final double? textSpacing;
+
+  /// Overrides action style. Null preserves the current default.
+  final TextStyle? actionStyle;
+
   /// Creates an advert card.
   ///
   /// The [color], [illustration], [title], [subtitle], [actionLabel],
@@ -30,6 +60,16 @@ class GtAdvertCard extends GtStatelessWidget {
     this.textColor,
     this.actionVariant = .white,
     this.actionTextColor,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.padding,
+    this.contentPadding,
+    this.actionPadding,
+    this.verticalSpacing,
+    this.textSpacing,
+    this.actionStyle,
   });
 
   /// The card's background color.
@@ -82,11 +122,11 @@ class GtAdvertCard extends GtStatelessWidget {
 
     return GtCard(
       color: color,
-      padding: context.insets.fromLTRBDp(12.px, 16.px, 12.px, 24.px),
+      padding: padding ?? context.insets.fromLTRBDp(12.px, 16.px, 12.px, 24.px),
       constraints: .loose(Size(maxWidth, maxHeight)),
       child: Column(
         crossAxisAlignment: .stretch,
-        spacing: context.spacingMd,
+        spacing: verticalSpacing ?? context.spacingMd,
         children: [
           Align(
             alignment: .topRight,
@@ -106,7 +146,9 @@ class GtAdvertCard extends GtStatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: context.insets.symmetricDp(horizontal: 9.01.px),
+              padding:
+                  contentPadding ??
+                  context.insets.symmetricDp(horizontal: 9.01.px),
               child: Column(
                 mainAxisAlignment: .center,
                 crossAxisAlignment: .center,
@@ -125,26 +167,36 @@ class GtAdvertCard extends GtStatelessWidget {
                     textAlign: .center,
                     maxLines: 1,
                     overflow: .ellipsis,
-                    style: context.textStyles.subHeadS(
-                      color: txtColor,
-                      weight: .w600,
-                      heightPx: 16,
+                    style: GtTextStyleOverrides.resolve(
+                      titleStyle,
+                      context.textStyles.subHeadS(
+                        color: txtColor,
+                        weight: .w600,
+                        heightPx: 16,
+                      ),
+                      titleColor,
                     ),
                   ),
-                  const GtGap.ySm(),
+                  (textSpacing == null
+                      ? const GtGap.ySm()
+                      : SizedBox(height: textSpacing)),
                   GtText(
                     subtitle,
                     textAlign: .center,
                     maxLines: 3,
                     overflow: .ellipsis,
-                    style: context.textStyles.subHeadXs(color: txtColor),
+                    style: GtTextStyleOverrides.resolve(
+                      subtitleStyle,
+                      context.textStyles.subHeadXs(color: txtColor),
+                      subtitleColor,
+                    ),
                   ),
                 ],
               ),
             ),
           ),
           Padding(
-            padding: context.insets.onlyDp(top: 2.px),
+            padding: actionPadding ?? context.insets.onlyDp(top: 2.px),
             child: GtRaisedButton(
               onPressed: onPressed,
               text: actionLabel,
@@ -152,9 +204,12 @@ class GtAdvertCard extends GtStatelessWidget {
               size: .pill,
               alignment: .center,
               cornerRadius: context.borderRadiusMd,
-              style: context.textStyles.buttonXs(
-                color: actionTextColor ?? context.palette.staticColors.black,
-              ),
+              style:
+                  actionStyle ??
+                  context.textStyles.buttonXs(
+                    color:
+                        actionTextColor ?? context.palette.staticColors.black,
+                  ),
             ),
           ),
         ],

@@ -107,6 +107,15 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
     required String description,
     Widget? footer,
     bool? asCard,
+    Color? backgroundColor,
+    EdgeInsetsGeometry? padding,
+    TextStyle? titleStyle,
+    Color? titleColor,
+    TextStyle? descriptionStyle,
+    Color? descriptionColor,
+    double? horizontalSpacing,
+    double? verticalSpacing,
+    double? footerSpacing,
   }) = GtRoleSelectionListTile;
 
   @override
@@ -228,6 +237,33 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
 ///
 /// Incorporates a leading checkbox and an optional footer widget.
 class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides description style. Null preserves the current default.
+  final TextStyle? descriptionStyle;
+
+  /// Overrides description color. Null preserves the current default.
+  final Color? descriptionColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides footer spacing in logical pixels. Null preserves the current default.
+  final double? footerSpacing;
+
   /// An optional widget to display at the bottom of the tile.
   final Widget? footer;
 
@@ -245,6 +281,15 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
     required this.description,
     this.footer,
     bool? asCard,
+    this.backgroundColor,
+    this.padding,
+    this.titleStyle,
+    this.titleColor,
+    this.descriptionStyle,
+    this.descriptionColor,
+    this.horizontalSpacing,
+    this.verticalSpacing,
+    this.footerSpacing,
   }) : _asCard = asCard ?? false;
 
   @override
@@ -256,7 +301,7 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
     );
 
     Widget child = Row(
-      spacing: context.spacingMd,
+      spacing: horizontalSpacing ?? context.spacingMd,
       crossAxisAlignment: .start,
       children: [
         GtCheckBox(
@@ -268,11 +313,30 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
         Expanded(
           child: Column(
             crossAxisAlignment: .stretch,
-            spacing: context.spacingSm,
+            spacing: verticalSpacing ?? context.spacingSm,
             children: [
-              GtText(text, style: textStyle),
-              GtText(description, style: descriptionStyle),
-              if (footer != null) ...[const GtGap.yBase(), ?footer],
+              GtText(
+                text,
+                style: GtTextStyleOverrides.resolve(
+                  titleStyle,
+                  textStyle,
+                  titleColor,
+                ),
+              ),
+              GtText(
+                description,
+                style: GtTextStyleOverrides.resolve(
+                  this.descriptionStyle,
+                  descriptionStyle,
+                  descriptionColor,
+                ),
+              ),
+              if (footer != null) ...[
+                (footerSpacing == null
+                    ? const GtGap.yBase()
+                    : SizedBox(height: footerSpacing)),
+                ?footer,
+              ],
             ],
           ),
         ),
@@ -281,7 +345,8 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
 
     if (_asCard) {
       child = GtCard(
-        padding: context.insets.allDp(12.px),
+        color: backgroundColor,
+        padding: padding ?? context.insets.allDp(12.px),
         borderRadius: 8.circularBorderRadius,
         child: child,
       );

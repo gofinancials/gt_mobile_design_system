@@ -4,6 +4,42 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A card for displaying alerts, typically with an icon, title, and subtitle,
 /// and a distinct border.
 class GtAlertCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides border color. Null preserves the current default.
+  final Color? borderColor;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides icon color. Null preserves the current default.
+  final Color? iconColor;
+
+  /// Overrides icon background color. Null preserves the current default.
+  final Color? iconBackgroundColor;
+
+  /// Overrides indicator color. Null preserves the current default.
+  final Color? indicatorColor;
+
   /// The main title of the alert.
   final String title;
 
@@ -23,6 +59,18 @@ class GtAlertCard extends GtStatelessWidget {
     required this.subtitle,
     this.variant = .away,
     required this.icon,
+    this.backgroundColor,
+    this.padding,
+    this.borderColor,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.horizontalSpacing,
+    this.verticalSpacing,
+    this.iconColor,
+    this.iconBackgroundColor,
+    this.indicatorColor,
   });
 
   @override
@@ -31,25 +79,46 @@ class GtAlertCard extends GtStatelessWidget {
     final borderColor = variant.getBorderColor(palette);
 
     return GtCard(
-      padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 12.px),
+      color: backgroundColor,
+      padding:
+          padding ??
+          context.insets.symmetricDp(horizontal: 8.px, vertical: 12.px),
       variant: variant,
-      border: BorderSide(color: borderColor),
+      border: BorderSide(color: this.borderColor ?? borderColor),
       child: Row(
         crossAxisAlignment: .center,
-        spacing: context.spacingMd,
+        spacing: horizontalSpacing ?? context.spacingMd,
         children: [
           GtSquareConstrainedBox(
             36,
-            child: GtAlertIconCard(icon: icon, variant: variant),
+            child: GtAlertIconCard(
+              icon: icon,
+              variant: variant,
+              iconColor: iconColor,
+              backgroundColor: iconBackgroundColor,
+              indicatorColor: indicatorColor,
+            ),
           ),
           Expanded(
             child: Column(
+              spacing: verticalSpacing ?? 0,
               crossAxisAlignment: .start,
               children: [
-                GtText(title, style: context.textStyles.bodyM()),
+                GtText(
+                  title,
+                  style: GtTextStyleOverrides.resolve(
+                    titleStyle,
+                    context.textStyles.bodyM(),
+                    titleColor,
+                  ),
+                ),
                 GtText(
                   subtitle,
-                  style: context.textStyles.body2Xs(color: palette.text.soft),
+                  style: GtTextStyleOverrides.resolve(
+                    subtitleStyle,
+                    context.textStyles.body2Xs(color: palette.text.soft),
+                    subtitleColor,
+                  ),
                 ),
               ],
             ),
@@ -61,10 +130,26 @@ class GtAlertCard extends GtStatelessWidget {
 }
 
 class GtAlertIconCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides indicator color. Null preserves the current default.
+  final Color? indicatorColor;
+
+  /// Overrides icon color. Null preserves the current default.
+  final Color? iconColor;
+
   final IconData icon;
   final GtCardVariant variant;
 
-  const GtAlertIconCard({super.key, required this.icon, this.variant = .away});
+  const GtAlertIconCard({
+    this.backgroundColor,
+    this.indicatorColor,
+    this.iconColor,
+    super.key,
+    required this.icon,
+    this.variant = .away,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +160,7 @@ class GtAlertIconCard extends GtStatelessWidget {
       widthFactor: 1,
       child: GtCard(
         borderRadius: context.borderRadiusXl,
-        color: palette.bg.white,
+        color: backgroundColor ?? palette.bg.white,
         padding: .zero,
         child: Stack(
           children: [
@@ -87,7 +172,7 @@ class GtAlertIconCard extends GtStatelessWidget {
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     shape: .circle,
-                    color: palette.error.base,
+                    color: indicatorColor ?? palette.error.base,
                   ),
                 ),
               ),
@@ -96,7 +181,7 @@ class GtAlertIconCard extends GtStatelessWidget {
               child: GtIcon.withColor(
                 icon,
                 size: 24,
-                color: iconColor,
+                color: this.iconColor ?? iconColor,
                 alignment: .center,
               ),
             ),

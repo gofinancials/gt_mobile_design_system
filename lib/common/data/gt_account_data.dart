@@ -45,7 +45,7 @@ class GtAccountData<T> extends AppEquatable {
   final num balance;
 
   /// An optional subtitle
-  /// 
+  ///
   /// Useful slot for additional balances (e.g Overdraft Balance: $2000)
   final String? subTitle;
 

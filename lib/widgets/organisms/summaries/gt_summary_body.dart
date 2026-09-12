@@ -46,6 +46,45 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// )
 /// ```
 class GtSummaryBody extends GtStatelessWidget {
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides label color. Null preserves the current default.
+  final Color? labelColor;
+
+  /// Overrides value style. Null preserves the current default.
+  final TextStyle? valueStyle;
+
+  /// Overrides value color. Null preserves the current default.
+  final Color? valueColor;
+
+  /// Overrides section title style. Null preserves the current default.
+  final TextStyle? sectionTitleStyle;
+
+  /// Overrides section title color. Null preserves the current default.
+  final Color? sectionTitleColor;
+
+  /// Overrides amount text style. Null preserves the current default.
+  final TextStyle? amountTextStyle;
+
+  /// Overrides amount color. Null preserves the current default.
+  final Color? amountColor;
+
+  /// Overrides row spacing in logical pixels. Null preserves the current default.
+  final double? rowSpacing;
+
+  /// Overrides section header spacing in logical pixels. Null preserves the current default.
+  final double? sectionHeaderSpacing;
+
+  /// Overrides card background color. Null preserves the current default.
+  final Color? cardBackgroundColor;
+
+  /// Overrides card padding. Null preserves the current default.
+  final EdgeInsetsGeometry? cardPadding;
+
+  /// Overrides card spacing in logical pixels. Null preserves the current default.
+  final double? cardSpacing;
+
   /// An optional controller for the underlying scroll view.
   ///
   /// Supply one to observe or drive the scroll position, for example to return
@@ -92,6 +131,10 @@ class GtSummaryBody extends GtStatelessWidget {
   /// The [amount] and [sections] parameters are required, and [sections] must
   /// not be empty.
   const GtSummaryBody({
+    this.cardBackgroundColor,
+    this.cardPadding,
+    this.cardSpacing,
+
     super.key,
     required this.amount,
     required this.sections,
@@ -101,6 +144,16 @@ class GtSummaryBody extends GtStatelessWidget {
     this.amountCaption,
     this.title,
     this.description,
+    this.labelStyle,
+    this.labelColor,
+    this.valueStyle,
+    this.valueColor,
+    this.sectionTitleStyle,
+    this.sectionTitleColor,
+    this.amountTextStyle,
+    this.amountColor,
+    this.rowSpacing,
+    this.sectionHeaderSpacing,
   });
 
   /// Whether [amount] is rendered above the cards rather than inside the first.
@@ -138,10 +191,25 @@ class GtSummaryBody extends GtStatelessWidget {
           const GtGap.ySectionMd(),
         ],
         for (final (index, section) in sections.indexed) ...[
-          if (index > 0) const GtGap.yXl(),
+          if (index > 0)
+            (cardSpacing == null
+                ? const GtGap.yXl()
+                : SizedBox(height: cardSpacing)),
           switch (section) {
             GtSummarySection() => _SummarySectionCard(
               section,
+              labelStyle: labelStyle,
+              labelColor: labelColor,
+              valueStyle: valueStyle,
+              valueColor: valueColor,
+              sectionTitleStyle: sectionTitleStyle,
+              sectionTitleColor: sectionTitleColor,
+              amountTextStyle: amountTextStyle,
+              amountColor: amountColor,
+              rowSpacing: rowSpacing,
+              sectionHeaderSpacing: sectionHeaderSpacing,
+              backgroundColor: cardBackgroundColor,
+              padding: cardPadding,
               key: Key('summary-section-$index'),
               index: index,
               // Only the first card carries a leading amount; the rest are
@@ -150,10 +218,14 @@ class GtSummaryBody extends GtStatelessWidget {
             ),
             GtSummaryPaymentsSection() => GtSummaryPaymentsCard(
               section,
+              backgroundColor: cardBackgroundColor,
+              padding: cardPadding,
               key: Key('summary-section-$index'),
             ),
             GtSummaryRatesSection() => GtSummaryRatesCard(
               section,
+              backgroundColor: cardBackgroundColor,
+              padding: cardPadding,
               key: Key('summary-section-$index'),
             ),
           },
@@ -211,15 +283,64 @@ class _SummaryFeaturedAmount extends GtStatelessWidget {
 
 /// One card of label/value rows, optionally led by the amount.
 class _SummarySectionCard extends GtStatelessWidget {
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides label color. Null preserves the current default.
+  final Color? labelColor;
+
+  /// Overrides value style. Null preserves the current default.
+  final TextStyle? valueStyle;
+
+  /// Overrides value color. Null preserves the current default.
+  final Color? valueColor;
+
+  /// Overrides section title style. Null preserves the current default.
+  final TextStyle? sectionTitleStyle;
+
+  /// Overrides section title color. Null preserves the current default.
+  final Color? sectionTitleColor;
+
+  /// Overrides amount text style. Null preserves the current default.
+  final TextStyle? amountTextStyle;
+
+  /// Overrides amount color. Null preserves the current default.
+  final Color? amountColor;
+
+  /// Overrides row spacing in logical pixels. Null preserves the current default.
+  final double? rowSpacing;
+
+  /// Overrides section header spacing in logical pixels. Null preserves the current default.
+  final double? sectionHeaderSpacing;
+
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
   final GtSummarySection section;
   final String? amount;
   final int index;
 
   const _SummarySectionCard(
     this.section, {
+    this.backgroundColor,
+    this.padding,
+
     super.key,
     required this.index,
     this.amount,
+    this.labelStyle,
+    this.labelColor,
+    this.valueStyle,
+    this.valueColor,
+    this.sectionTitleStyle,
+    this.sectionTitleColor,
+    this.amountTextStyle,
+    this.amountColor,
+    this.rowSpacing,
+    this.sectionHeaderSpacing,
   });
 
   @override
@@ -232,6 +353,8 @@ class _SummarySectionCard extends GtStatelessWidget {
     };
 
     return GtSummaryCardShell(
+      backgroundColor: backgroundColor,
+      padding: padding,
       // Gaps are placed one by one rather than through the column's `spacing`,
       // because the amount and the heading hug what follows them (16dp) while
       // the rows sit further apart from each other.
@@ -246,19 +369,36 @@ class _SummarySectionCard extends GtStatelessWidget {
               child: GtText(
                 value,
                 key: const Key('summary-amount'),
-                style: context.textStyles.h4(),
+                style: GtTextStyleOverrides.resolve(
+                  amountTextStyle,
+                  context.textStyles.h4(),
+                  amountColor,
+                ),
               ),
             ),
-            const GtGap.yXl(),
+            (sectionHeaderSpacing == null
+                ? const GtGap.yXl()
+                : SizedBox(height: sectionHeaderSpacing)),
           ],
           if (section.title case String heading) ...[
-            GtSectionHeader(heading),
-            const GtGap.yXl(),
+            GtSectionHeader(
+              heading,
+              style: sectionTitleStyle,
+              textColor: sectionTitleColor,
+            ),
+            (sectionHeaderSpacing == null
+                ? const GtGap.yXl()
+                : SizedBox(height: sectionHeaderSpacing)),
           ],
           for (final (position, tile) in section.tiles.indexed) ...[
-            if (position > 0) rowGap,
+            if (position > 0)
+              (rowSpacing == null ? rowGap : SizedBox(height: rowSpacing)),
             GtSummaryTile(
               tile,
+              labelStyle: labelStyle,
+              labelColor: labelColor,
+              valueStyle: valueStyle,
+              valueColor: valueColor,
               layout: section.layout,
               key: Key('summary-section-$index-tile-$position'),
             ),

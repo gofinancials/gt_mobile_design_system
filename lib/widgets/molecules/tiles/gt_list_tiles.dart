@@ -7,6 +7,12 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Triggers the [onTap] callback with light haptic feedback when pressed.
 class GtListTile extends GtStatelessWidget {
+  /// Overrides style. Null preserves the current default.
+  final TextStyle? style;
+
+  /// Overrides text color. Null preserves the current default.
+  final Color? textColor;
+
   /// The primary text to display in the tile.
   final String text;
 
@@ -34,6 +40,8 @@ class GtListTile extends GtStatelessWidget {
     this.onTap,
     this.horizontalSpacing,
     this.padding,
+    this.style,
+    this.textColor,
   });
 
   @override
@@ -48,7 +56,16 @@ class GtListTile extends GtStatelessWidget {
           spacing: horizontalSpacing ?? context.spacingMd,
           children: [
             ?leading,
-            Expanded(child: GtText(text, style: context.textStyles.subHeadS())),
+            Expanded(
+              child: GtText(
+                text,
+                style: GtTextStyleOverrides.resolve(
+                  style,
+                  context.textStyles.subHeadS(),
+                  textColor,
+                ),
+              ),
+            ),
             ?trailing,
           ],
         ),

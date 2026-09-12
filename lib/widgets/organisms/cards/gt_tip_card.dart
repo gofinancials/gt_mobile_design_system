@@ -4,6 +4,33 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card for displaying tips or informational messages, often with a border and an icon.
 class GtTipCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides border color. Null preserves the current default.
+  final Color? borderColor;
+
+  /// Overrides icon color. Null preserves the current default.
+  final Color? iconColor;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides close button spacing in logical pixels. Null preserves the current default.
+  final double? closeButtonSpacing;
+
   /// The main title of the tip.
   final String title;
 
@@ -43,6 +70,15 @@ class GtTipCard extends GtStatelessWidget {
     this.subtitleStyle,
     this.icon = GtIcons.circleInfo,
     this.iconSize,
+    this.backgroundColor,
+    this.padding,
+    this.borderColor,
+    this.iconColor,
+    this.titleColor,
+    this.subtitleColor,
+    this.horizontalSpacing,
+    this.verticalSpacing,
+    this.closeButtonSpacing,
   });
 
   @override
@@ -56,30 +92,42 @@ class GtTipCard extends GtStatelessWidget {
       showFirst: !hidden,
       child2: const Offstage(),
       child1: GtCard(
+        color: backgroundColor,
         borderRadius: context.borderRadiusXl,
-        padding: context.insets.symmetricDp(horizontal: 12.px, vertical: 16.px),
-        border: BorderSide(color: borderColor),
+        padding:
+            padding ??
+            context.insets.symmetricDp(horizontal: 12.px, vertical: 16.px),
+        border: BorderSide(color: this.borderColor ?? borderColor),
         variant: variant,
         child: Row(
-          spacing: context.spacingBase,
+          spacing: horizontalSpacing ?? context.spacingBase,
           crossAxisAlignment: .start,
           children: [
             GtIcon.withColor(
               icon,
-              color: iconColor,
+              color: this.iconColor ?? iconColor,
               size: iconSize ?? context.dp(20.px),
               alignment: .topLeft,
             ),
             Expanded(
               child: Column(
-                spacing: context.spacingSm,
+                spacing: verticalSpacing ?? context.spacingSm,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Row(
-                    spacing: context.spacingBase,
+                    spacing: closeButtonSpacing ?? context.spacingBase,
                     crossAxisAlignment: .start,
                     children: [
-                      Expanded(child: GtText(title, style: titleStyle)),
+                      Expanded(
+                        child: GtText(
+                          title,
+                          style: GtTextStyleOverrides.resolve(
+                            titleStyle,
+                            context.textStyles.bodyS(),
+                            titleColor,
+                          ),
+                        ),
+                      ),
                       GtCancelButton(
                         onTap: onClose,
                         size: .xSmall,
@@ -87,7 +135,14 @@ class GtTipCard extends GtStatelessWidget {
                       ),
                     ],
                   ),
-                  GtRichText(subtitle, style: subtitleStyle ?? subStyle),
+                  GtRichText(
+                    subtitle,
+                    style: GtTextStyleOverrides.resolve(
+                      subtitleStyle,
+                      subStyle,
+                      subtitleColor,
+                    ),
+                  ),
                 ],
               ),
             ),

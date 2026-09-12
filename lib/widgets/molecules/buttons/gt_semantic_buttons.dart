@@ -217,9 +217,7 @@ class GtActionButton extends GtStatelessWidget {
             AnimatedContainer(
               width: size ?? minTapTargetSize,
               height: size ?? minTapTargetSize,
-              constraints: BoxConstraints.tight(
-                Size.square(minTapTargetSize),
-              ),
+              constraints: BoxConstraints.tight(Size.square(minTapTargetSize)),
               padding: padding ?? context.insets.allDp(10.px),
               decoration: BoxDecoration(
                 color: backgroundColor,

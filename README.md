@@ -173,3 +173,7 @@ across most organisms and templates.
 
 See **[doc/accessibility.md](doc/accessibility.md)** for the primitives, the
 per-widget obligations, the testing helpers, and the full list of limitations.
+
+## Optional card styling
+
+See [Optional card styling](CARD_STYLING.md) for the available overrides, precedence rules and unchanged defaults.

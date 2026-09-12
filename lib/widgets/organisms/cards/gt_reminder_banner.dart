@@ -4,6 +4,36 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A banner for reminders that includes a call-to-action button.
 class GtReminderBanner extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides action spacing in logical pixels. Null preserves the current default.
+  final double? actionSpacing;
+
+  /// Overrides close button spacing in logical pixels. Null preserves the current default.
+  final double? closeButtonSpacing;
+
   /// The main title of the reminder banner.
   final String title;
 
@@ -45,6 +75,16 @@ class GtReminderBanner extends GtStatelessWidget {
     required this.onClose,
     this.actionText,
     this.onActionTap,
+    this.backgroundColor,
+    this.padding,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.horizontalSpacing,
+    this.verticalSpacing,
+    this.actionSpacing,
+    this.closeButtonSpacing,
   }) : assert(
          onActionTap == null || actionText != null,
          'actionText must be provided when onActionTap is provided.',
@@ -59,22 +99,40 @@ class GtReminderBanner extends GtStatelessWidget {
       showFirst: !hidden,
       child2: const Offstage(),
       child1: GtCard(
-        padding: context.insets.allDp(12.px),
-        color: bgColor,
+        padding: padding ?? context.insets.allDp(12.px),
+        color: backgroundColor ?? bgColor,
         child: Row(
           crossAxisAlignment: .start,
-          spacing: context.spacingBase,
+          spacing: horizontalSpacing ?? context.spacingBase,
           children: [
             GtSquareConstrainedBox(48, child: icon),
             Expanded(
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
-                  GtText(title.upper, style: context.textStyles.h7()),
-                  const GtGap.ySm(),
-                  GtText(subtitle, style: context.textStyles.subHeadS()),
+                  GtText(
+                    title.upper,
+                    style: GtTextStyleOverrides.resolve(
+                      titleStyle,
+                      context.textStyles.h7(),
+                      titleColor,
+                    ),
+                  ),
+                  (verticalSpacing == null
+                      ? const GtGap.ySm()
+                      : SizedBox(height: verticalSpacing)),
+                  GtText(
+                    subtitle,
+                    style: GtTextStyleOverrides.resolve(
+                      subtitleStyle,
+                      context.textStyles.subHeadS(),
+                      subtitleColor,
+                    ),
+                  ),
                   if (onActionTap != null) ...[
-                    const GtGap.yBase(),
+                    (actionSpacing == null
+                        ? const GtGap.yBase()
+                        : SizedBox(height: actionSpacing)),
                     GtRaisedButton(
                       onPressed: onActionTap!,
                       text: actionText,
@@ -85,7 +143,9 @@ class GtReminderBanner extends GtStatelessWidget {
                 ],
               ),
             ),
-            const GtGap.hBase(),
+            (closeButtonSpacing == null
+                ? const GtGap.hBase()
+                : SizedBox(width: closeButtonSpacing)),
             GtCancelButton(onTap: onClose, size: .small, alignment: .topRight),
           ],
         ),

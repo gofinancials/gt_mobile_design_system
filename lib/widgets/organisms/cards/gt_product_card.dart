@@ -4,6 +4,33 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card used to represent a product or feature, usually in a grid.
 class GtProductCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides name style. Null preserves the current default.
+  final TextStyle? nameStyle;
+
+  /// Overrides name color. Null preserves the current default.
+  final Color? nameColor;
+
+  /// Overrides description style. Null preserves the current default.
+  final TextStyle? descriptionStyle;
+
+  /// Overrides description color. Null preserves the current default.
+  final Color? descriptionColor;
+
+  /// Overrides icon color. Null preserves the current default.
+  final Color? iconColor;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides icon spacing in logical pixels. Null preserves the current default.
+  final double? iconSpacing;
+
   /// The name of the product or feature.
   final String name;
 
@@ -27,6 +54,15 @@ class GtProductCard extends GtStatelessWidget {
     this.description,
     this.variant = .normal,
     this.onTap,
+    this.backgroundColor,
+    this.padding,
+    this.nameStyle,
+    this.nameColor,
+    this.descriptionStyle,
+    this.descriptionColor,
+    this.iconColor,
+    this.verticalSpacing,
+    this.iconSpacing,
   });
 
   @override
@@ -39,23 +75,41 @@ class GtProductCard extends GtStatelessWidget {
     if (description.hasValue) {
       footer = GtText(
         description,
-        style: context.textStyles.body3Xs(color: palette.text.sub),
+        style: GtTextStyleOverrides.resolve(
+          descriptionStyle,
+          context.textStyles.body3Xs(color: palette.text.sub),
+          descriptionColor,
+        ),
       );
     }
 
     return GtCard(
-      padding: context.insets.allDp(12.px),
+      color: backgroundColor,
+      padding: padding ?? context.insets.allDp(12.px),
       variant: variant,
       onPressed: onTap,
       child: Column(
         crossAxisAlignment: .start,
         mainAxisAlignment: .center,
-        spacing: context.spacingSm,
+        spacing: verticalSpacing ?? context.spacingSm,
         mainAxisSize: .min,
         children: [
-          GtIcon.withColor(icon, color: iconColor, size: 24),
-          if (footer == null) const Spacer() else const GtGap.ySm(),
-          GtText(name, style: context.textStyles.subHeadS(), maxLines: 1),
+          GtIcon.withColor(icon, color: this.iconColor ?? iconColor, size: 24),
+          if (footer == null)
+            const Spacer()
+          else
+            (iconSpacing == null
+                ? const GtGap.ySm()
+                : SizedBox(height: iconSpacing)),
+          GtText(
+            name,
+            style: GtTextStyleOverrides.resolve(
+              nameStyle,
+              context.textStyles.subHeadS(),
+              nameColor,
+            ),
+            maxLines: 1,
+          ),
           ?footer,
         ],
       ),
@@ -83,6 +137,12 @@ class GtProductCard extends GtStatelessWidget {
 ///
 /// @category Organisms
 class GtProductInfoCard extends GtStatelessWidget {
+  /// Overrides name color. Null preserves the current default.
+  final Color? nameColor;
+
+  /// Overrides description color. Null preserves the current default.
+  final Color? descriptionColor;
+
   /// The name of the product or feature.
   ///
   /// Capped at one line, so a long name is cut off rather than wrapped — put
@@ -188,6 +248,8 @@ class GtProductInfoCard extends GtStatelessWidget {
     this.verticalSpacing,
     this.variant = .normal,
     this.onTap,
+    this.nameColor,
+    this.descriptionColor,
   });
 
   @override
@@ -202,7 +264,14 @@ class GtProductInfoCard extends GtStatelessWidget {
     Widget? footer;
 
     if (description.hasValue) {
-      footer = GtText(description, style: descriptionStyle ?? descStyle);
+      footer = GtText(
+        description,
+        style: GtTextStyleOverrides.resolve(
+          descriptionStyle,
+          descStyle,
+          descriptionColor,
+        ),
+      );
     }
 
     return GtCard(
@@ -226,7 +295,11 @@ class GtProductInfoCard extends GtStatelessWidget {
               children: [
                 GtText(
                   name,
-                  style: nameStyle ?? context.textStyles.subHeadS(),
+                  style: GtTextStyleOverrides.resolve(
+                    nameStyle,
+                    context.textStyles.subHeadS(),
+                    nameColor,
+                  ),
                   maxLines: 1,
                 ),
                 ?footer,
