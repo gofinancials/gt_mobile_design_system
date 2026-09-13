@@ -80,19 +80,17 @@ void main() {
       }),
     );
 
-    testWidgets(
-      'a floating sheet on Android stays above the navigation bar',
-      (tester) async {
-        tester.view.padding = const FakeViewPadding(bottom: 48);
-        tester.view.viewPadding = const FakeViewPadding(bottom: 48);
+    testWidgets('a floating sheet on Android stays above the navigation bar', (
+      tester,
+    ) async {
+      tester.view.padding = const FakeViewPadding(bottom: 48);
+      tester.view.viewPadding = const FakeViewPadding(bottom: 48);
 
-        await openFloatingSheet(tester);
+      await openFloatingSheet(tester);
 
-        final card = sheetCard(tester);
-        expect(card, findsOneWidget);
-        expect(tester.getRect(card).bottom, closeTo(812 - 48 - 18, 1));
-      },
-      variant: TargetPlatformVariant.only(TargetPlatform.android),
-    );
+      final card = sheetCard(tester);
+      expect(card, findsOneWidget);
+      expect(tester.getRect(card).bottom, closeTo(812 - 48 - 18, 1));
+    }, variant: TargetPlatformVariant.only(TargetPlatform.android));
   });
 }

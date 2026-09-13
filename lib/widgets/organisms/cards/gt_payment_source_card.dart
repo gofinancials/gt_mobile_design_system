@@ -139,9 +139,7 @@ class GtPaymentSourceCard extends GtStatelessWidget {
               balanceColor,
             ),
             horizontalSpacing: horizontalSpacing,
-            subSpacer: subSpacing == null
-                ? null
-                : SizedBox(height: subSpacing),
+            subSpacer: subSpacing == null ? null : SizedBox(height: subSpacing),
             crossAxisAlignment: .center,
             leading: leading,
             trailing: trailing ?? GtIcon(GtIcons.chevronDown, size: 16),
