@@ -49,6 +49,12 @@ class GtRadioTile<T> extends GtStatelessWidget {
   /// Custom padding to apply to the tile.
   final EdgeInsetsGeometry? padding;
 
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
   /// Creates a standard [GtRadioTile] that compares [value] against [groupValue].
   const GtRadioTile(
     this.title, {
@@ -63,6 +69,8 @@ class GtRadioTile<T> extends GtStatelessWidget {
     this.leading,
     this.subtitle,
     this.padding,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : condition = null;
 
   /// Creates a [GtRadioTile] whose active state is directly controlled by [condition].
@@ -79,6 +87,8 @@ class GtRadioTile<T> extends GtStatelessWidget {
     this.subtitle,
     this.disabled = false,
     this.padding,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : groupValue = null;
 
   @override
@@ -93,6 +103,8 @@ class GtRadioTile<T> extends GtStatelessWidget {
       subtitle: subtitle,
       icon: leading,
       footer: footer,
+      titleStyle: titleStyle,
+      subtitleStyle: subtitleStyle,
       trailing: Builder(
         builder: (context) {
           if (condition != null) {

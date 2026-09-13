@@ -108,6 +108,12 @@ class GtDeviceListTile extends GtStatelessWidget {
   /// Optional horizontal spacing override.
   final double? horizontalSpacing;
 
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
   /// Creates a standard [GtDeviceListTile] without a remove button.
   const GtDeviceListTile(
     this.title, {
@@ -115,6 +121,8 @@ class GtDeviceListTile extends GtStatelessWidget {
     required this.subtitle,
     required this.icon,
     this.horizontalSpacing,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : _onRemove = null,
        _buttonText = null;
 
@@ -129,12 +137,20 @@ class GtDeviceListTile extends GtStatelessWidget {
     required OnPressed onRemove,
     required String buttonText,
     this.horizontalSpacing,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : _onRemove = onRemove,
        _buttonText = buttonText;
 
   @override
   Widget build(BuildContext context) {
-    Widget child = GtIconListTile(title, subtitle: subtitle, icon: icon);
+    Widget child = GtIconListTile(
+      title,
+      subtitle: subtitle,
+      icon: icon,
+      subtitleStyle: subtitleStyle,
+      titleStyle: titleStyle,
+    );
 
     if (_onRemove != null) {
       child = Row(
