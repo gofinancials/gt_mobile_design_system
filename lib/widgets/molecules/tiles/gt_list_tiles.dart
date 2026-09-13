@@ -94,7 +94,7 @@ class GtIconListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped.
   final OnPressed? onTap;
 
-  /// Optional horizontal spacing override.
+  /// Optional vertical spacing override.
   final double? verticalSpacing;
 
   /// Optional horizontal spacing override.
@@ -105,6 +105,12 @@ class GtIconListTile extends GtStatelessWidget {
 
   /// Optional trailing widget.
   final Widget? trailing;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
 
   /// Creates a [GtIconListTile].
   const GtIconListTile(
@@ -119,6 +125,8 @@ class GtIconListTile extends GtStatelessWidget {
     this.horizontalSpacing,
     this.padding,
     this.trailing,
+    this.titleStyle,
+    this.subtitleStyle,
   });
 
   /// Creates a [GtIconListTile].
@@ -133,6 +141,8 @@ class GtIconListTile extends GtStatelessWidget {
     double? verticalSpacing,
     double? horizontalSpacing,
     EdgeInsetsGeometry? padding,
+    TextStyle? titleStyle,
+    TextStyle? subtitleStyle,
   }) = _GtIconListTileAlt;
 
   @override
@@ -155,11 +165,16 @@ class GtIconListTile extends GtStatelessWidget {
                 spacing: verticalSpacing ?? context.spacingSm,
                 crossAxisAlignment: .start,
                 children: [
-                  GtText(title, style: context.textStyles.subHeadS()),
+                  GtText(
+                    title,
+                    style: titleStyle ?? context.textStyles.subHeadS(),
+                  ),
                   if (subtitle.hasValue)
                     GtText(
                       subtitle,
-                      style: context.textStyles.bodyXs(color: palette.text.sub),
+                      style:
+                          subtitleStyle ??
+                          context.textStyles.bodyXs(color: palette.text.sub),
                     ),
                 ],
               ),
@@ -174,7 +189,7 @@ class GtIconListTile extends GtStatelessWidget {
 
 /// A list tile that emphasizes a leading icon alongside a title and subtitle.
 class _GtIconListTileAlt extends GtIconListTile {
-  /// Creates a [GtIconListTile].
+  /// Creates a [_GtIconListTileAlt].
   const _GtIconListTileAlt(
     super.title, {
     super.key,
@@ -186,6 +201,8 @@ class _GtIconListTileAlt extends GtIconListTile {
     super.verticalSpacing,
     super.horizontalSpacing,
     super.padding,
+    super.titleStyle,
+    super.subtitleStyle,
   }) : super(iconColor: null);
 
   @override
@@ -217,11 +234,16 @@ class _GtIconListTileAlt extends GtIconListTile {
                 spacing: verticalSpacing ?? 0,
                 crossAxisAlignment: .start,
                 children: [
-                  GtText(title, style: context.textStyles.bodyM()),
+                  GtText(
+                    title,
+                    style: titleStyle ?? context.textStyles.bodyM(),
+                  ),
                   if (subtitle.hasValue)
                     GtText(
                       subtitle,
-                      style: context.textStyles.bodyXs(color: palette.text.sub),
+                      style:
+                          subtitleStyle ??
+                          context.textStyles.bodyXs(color: palette.text.sub),
                     ),
                 ],
               ),

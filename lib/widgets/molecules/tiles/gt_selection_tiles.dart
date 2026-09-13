@@ -18,6 +18,9 @@ class GtMenuListTile<T> extends StatelessWidget {
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnChanged<T> onSelect;
 
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
   /// Creates a [GtMenuListTile].
   const GtMenuListTile(
     this.text, {
@@ -25,6 +28,7 @@ class GtMenuListTile<T> extends StatelessWidget {
     required this.icon,
     required this.value,
     required this.onSelect,
+    this.titleStyle,
   });
 
   @override
@@ -42,7 +46,12 @@ class GtMenuListTile<T> extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(child: GtText(text, style: context.textStyles.subHeadS())),
+            Expanded(
+              child: GtText(
+                text,
+                style: titleStyle ?? context.textStyles.subHeadS(),
+              ),
+            ),
             GtIcon.withColor(
               icon,
               size: 20,
@@ -269,6 +278,8 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
 
   /// The secondary text explaining the role or permission in detail.
   final String description;
+
+  /// Internal flag to determine if the tile should be wrapped in a [GtCard].
   final bool _asCard;
 
   /// Creates a [GtRoleSelectionListTile].
@@ -370,7 +381,7 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
   /// The country data represented by this tile.
   final Country value;
 
-  /// Whether this country is currently selected.
+  /// Whether to display the country code before the country name.
   final bool showCountryCode;
 
   /// Whether this country is currently selected.

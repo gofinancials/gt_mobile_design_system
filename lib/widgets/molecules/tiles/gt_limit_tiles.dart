@@ -17,12 +17,20 @@ class GtLimitInfoListTile extends GtStatelessWidget {
   /// An optional icon to display at the start of the tile. Defaults to [GtIcons.gauge].
   final IconData? leading;
 
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides value style. Null preserves the current default.
+  final TextStyle? valueStyle;
+
   /// Creates a [GtLimitInfoListTile].
   const GtLimitInfoListTile(
     this.label, {
     super.key,
     this.leading,
     required this.value,
+    this.labelStyle,
+    this.valueStyle,
   });
 
   @override
@@ -38,11 +46,11 @@ class GtLimitInfoListTile extends GtStatelessWidget {
             children: [
               GtText(
                 label,
-                style: context.textStyles.bodyXs(
-                  color: context.palette.text.sub,
-                ),
+                style:
+                    labelStyle ??
+                    context.textStyles.bodyXs(color: context.palette.text.sub),
               ),
-              GtText(value, style: context.textStyles.subHeadM()),
+              GtText(value, style: valueStyle ?? context.textStyles.subHeadM()),
             ],
           ),
         ),
