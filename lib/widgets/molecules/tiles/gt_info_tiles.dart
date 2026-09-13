@@ -387,12 +387,20 @@ class GtCopyTile extends GtStatelessWidget {
   /// The actual text value that will be copied to the clipboard when tapped.
   final String value;
 
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides value style. Null preserves the current default.
+  final TextStyle? valueStyle;
+
   /// Creates a [GtCopyTile] for easy data copying.
   const GtCopyTile(
     this.label, {
     super.key,
     required this.value,
     required this.leading,
+    this.labelStyle,
+    this.valueStyle,
   });
 
   @override
@@ -414,14 +422,14 @@ class GtCopyTile extends GtStatelessWidget {
             child: GtText(
               label,
               textAlign: TextAlign.start,
-              style: styles.subHeadXs(color: textColors.sub),
+              style: labelStyle ?? styles.subHeadXs(color: textColors.sub),
             ),
           ),
           Expanded(
             child: GtText(
               value,
               textAlign: TextAlign.end,
-              style: styles.subHeadXs(),
+              style: valueStyle ?? styles.subHeadXs(),
             ),
           ),
           GtIcon(

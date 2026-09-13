@@ -200,7 +200,7 @@ class GtStakeHolderListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnPressed onTap;
 
-  /// Optional horizontal spacing override.
+  /// Optional vertical spacing override.
   final double? verticalSpacing;
 
   /// Optional horizontal spacing override.
@@ -208,6 +208,15 @@ class GtStakeHolderListTile extends GtStatelessWidget {
 
   /// Optional padding override.
   final EdgeInsetsGeometry? padding;
+
+  /// Overrides name style. Null preserves the current default.
+  final TextStyle? nameStyle;
+
+  /// Overrides position style. Null preserves the current default.
+  final TextStyle? positionStyle;
+
+  /// Overrides footer style. Null preserves the current default.
+  final TextStyle? footerStyle;
 
   /// Creates a [GtStakeHolderListTile].
   const GtStakeHolderListTile(
@@ -219,8 +228,13 @@ class GtStakeHolderListTile extends GtStatelessWidget {
     this.verticalSpacing,
     this.horizontalSpacing,
     this.padding,
+    this.nameStyle,
+    this.positionStyle,
+    this.footerStyle,
   });
 
+  /// The initials derived from [name] for the avatar, or an empty string if
+  /// none can be derived.
   String get initials => AppHelpers.getInitials(name) ?? "";
 
   @override
@@ -252,14 +266,18 @@ class GtStakeHolderListTile extends GtStatelessWidget {
             mainAxisAlignment: .center,
             crossAxisAlignment: .stretch,
             children: [
-              GtText(name.upper, style: context.textStyles.h7()),
+              GtText(name.upper, style: nameStyle ?? context.textStyles.h7()),
               GtText(
                 position,
-                style: context.textStyles.bodyS(color: palette.text.sub),
+                style:
+                    positionStyle ??
+                    context.textStyles.bodyS(color: palette.text.sub),
               ),
               GtText(
                 footer,
-                style: context.textStyles.bodyXs(color: palette.primary.dark),
+                style:
+                    footerStyle ??
+                    context.textStyles.bodyXs(color: palette.primary.dark),
               ),
             ],
           ),
@@ -300,7 +318,7 @@ class GtStakeHolderStatusListTile extends GtStatelessWidget {
   /// Whether the stakeholder's status is verified. If true, the tile is visually disabled.
   final bool isVerified;
 
-  /// Optional horizontal spacing override.
+  /// Optional vertical spacing override.
   final double? verticalSpacing;
 
   /// Optional horizontal spacing override.
@@ -308,6 +326,12 @@ class GtStakeHolderStatusListTile extends GtStatelessWidget {
 
   /// Optional padding override.
   final EdgeInsetsGeometry? padding;
+
+  /// Overrides name style. Null preserves the current default.
+  final TextStyle? nameStyle;
+
+  /// Overrides position style. Null preserves the current default.
+  final TextStyle? positionStyle;
 
   /// Creates a [GtStakeHolderStatusListTile].
   const GtStakeHolderStatusListTile(
@@ -319,8 +343,12 @@ class GtStakeHolderStatusListTile extends GtStatelessWidget {
     this.verticalSpacing,
     this.horizontalSpacing,
     this.padding,
+    this.nameStyle,
+    this.positionStyle,
   });
 
+  /// The initials derived from [name] for the avatar, or an empty string if
+  /// none can be derived.
   String get initials => AppHelpers.getInitials(name) ?? "";
 
   @override
@@ -354,10 +382,15 @@ class GtStakeHolderStatusListTile extends GtStatelessWidget {
                 mainAxisAlignment: .center,
                 crossAxisAlignment: .stretch,
                 children: [
-                  GtText(name.upper, style: context.textStyles.h7()),
+                  GtText(
+                    name.upper,
+                    style: nameStyle ?? context.textStyles.h7(),
+                  ),
                   GtText(
                     position,
-                    style: context.textStyles.bodyS(color: palette.text.sub),
+                    style:
+                        positionStyle ??
+                        context.textStyles.bodyS(color: palette.text.sub),
                   ),
                 ],
               ),
@@ -384,7 +417,7 @@ class GtAccountTypeListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnPressed onTap;
 
-  /// Optional horizontal spacing override.
+  /// Optional vertical spacing override.
   final double? verticalSpacing;
 
   /// Optional horizontal spacing override.
@@ -392,6 +425,12 @@ class GtAccountTypeListTile extends GtStatelessWidget {
 
   /// Optional padding override.
   final EdgeInsetsGeometry? padding;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
 
   /// Creates a [GtAccountTypeListTile].
   const GtAccountTypeListTile(
@@ -403,6 +442,8 @@ class GtAccountTypeListTile extends GtStatelessWidget {
     this.verticalSpacing,
     this.horizontalSpacing,
     this.padding,
+    this.titleStyle,
+    this.subtitleStyle,
   });
 
   @override
@@ -430,16 +471,20 @@ class GtAccountTypeListTile extends GtStatelessWidget {
             children: [
               GtText(
                 title,
-                style: context.textStyles.subHead2M(
-                  color: context.palette.text.strong,
-                ),
+                style:
+                    titleStyle ??
+                    context.textStyles.subHead2M(
+                      color: context.palette.text.strong,
+                    ),
               ),
               GtText(
                 subtitle,
-                style: context.textStyles.body2Xs(
-                  color: palette.text.darkerSub,
-                  heightPx: 16,
-                ),
+                style:
+                    subtitleStyle ??
+                    context.textStyles.body2Xs(
+                      color: palette.text.darkerSub,
+                      heightPx: 16,
+                    ),
               ),
             ],
           ),
@@ -452,7 +497,7 @@ class GtAccountTypeListTile extends GtStatelessWidget {
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
-        padding: context.insets.symmetricDp(vertical: 8.px),
+        padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
         child: Row(
           spacing: context.spacingBase,
           children: [

@@ -14,7 +14,7 @@ class GtExportListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped. Provides light haptic feedback.
   final OnPressed onTap;
 
-  /// Optional horizontal spacing override.
+  /// Optional vertical spacing override.
   final double? verticalSpacing;
 
   /// Optional horizontal spacing override.
@@ -22,6 +22,12 @@ class GtExportListTile extends GtStatelessWidget {
 
   /// Optional padding override.
   final EdgeInsetsGeometry? padding;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
 
   /// Creates a [GtExportListTile].
   const GtExportListTile(
@@ -32,17 +38,19 @@ class GtExportListTile extends GtStatelessWidget {
     this.verticalSpacing,
     this.horizontalSpacing,
     this.padding,
+    this.titleStyle,
+    this.subtitleStyle,
   });
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    TextStyle titleStyle = context.textStyles.subHeadM();
-    TextStyle? subStyle;
+    TextStyle defaultTitleStyle = context.textStyles.subHeadM();
+    TextStyle? defaultSubStyle;
 
     if (subtitle.hasValue) {
-      titleStyle = context.textStyles.subHeadS();
-      subStyle = context.textStyles.bodyXs(color: palette.text.soft);
+      defaultTitleStyle = context.textStyles.subHeadS();
+      defaultSubStyle = context.textStyles.bodyXs(color: palette.text.soft);
     }
 
     return GtInkWell(
@@ -59,8 +67,9 @@ class GtExportListTile extends GtStatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: verticalSpacing ?? context.spacingXs,
                 children: [
-                  GtText(title, style: titleStyle),
-                  if (subtitle.hasValue) GtText(subtitle, style: subStyle),
+                  GtText(title, style: titleStyle ?? defaultTitleStyle),
+                  if (subtitle.hasValue)
+                    GtText(subtitle, style: subtitleStyle ?? defaultSubStyle),
                 ],
               ),
             ),
@@ -99,6 +108,12 @@ class GtDeviceListTile extends GtStatelessWidget {
   /// Optional horizontal spacing override.
   final double? horizontalSpacing;
 
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
   /// Creates a standard [GtDeviceListTile] without a remove button.
   const GtDeviceListTile(
     this.title, {
@@ -106,6 +121,8 @@ class GtDeviceListTile extends GtStatelessWidget {
     required this.subtitle,
     required this.icon,
     this.horizontalSpacing,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : _onRemove = null,
        _buttonText = null;
 
@@ -120,12 +137,20 @@ class GtDeviceListTile extends GtStatelessWidget {
     required OnPressed onRemove,
     required String buttonText,
     this.horizontalSpacing,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : _onRemove = onRemove,
        _buttonText = buttonText;
 
   @override
   Widget build(BuildContext context) {
-    Widget child = GtIconListTile(title, subtitle: subtitle, icon: icon);
+    Widget child = GtIconListTile(
+      title,
+      subtitle: subtitle,
+      icon: icon,
+      subtitleStyle: subtitleStyle,
+      titleStyle: titleStyle,
+    );
 
     if (_onRemove != null) {
       child = Row(

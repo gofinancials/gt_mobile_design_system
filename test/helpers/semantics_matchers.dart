@@ -80,14 +80,17 @@ SemanticsNode? _ownedSemanticsOf(RenderObject node) {
 /// Asserts the semantics of the node enclosing [finder].
 ///
 /// Only the supplied expectations are checked, so a test can assert the one
-/// property it cares about without restating the whole node. [label] and
-/// [hint] accept either a [String] or a [Matcher].
+/// property it cares about without restating the whole node. [label], [hint],
+/// [value], [increasedValue] and [decreasedValue] accept either a [String] or
+/// a [Matcher].
 void expectSemantics(
   WidgetTester tester,
   Finder finder, {
   Object? label,
   Object? hint,
   Object? value,
+  Object? increasedValue,
+  Object? decreasedValue,
   bool? isButton,
   bool? isLink,
   bool? isChecked,
@@ -98,6 +101,8 @@ void expectSemantics(
   bool? isLiveRegion,
   bool? isTextField,
   bool? hasTapAction,
+  bool? hasIncreaseAction,
+  bool? hasDecreaseAction,
 }) {
   final data = semanticsDataOf(tester, finder);
 
@@ -109,6 +114,20 @@ void expectSemantics(
   }
   if (value != null) {
     expect(data.value, wrapMatcher(value), reason: 'semantic value');
+  }
+  if (increasedValue != null) {
+    expect(
+      data.increasedValue,
+      wrapMatcher(increasedValue),
+      reason: 'semantic increased value',
+    );
+  }
+  if (decreasedValue != null) {
+    expect(
+      data.decreasedValue,
+      wrapMatcher(decreasedValue),
+      reason: 'semantic decreased value',
+    );
   }
   if (isButton != null) {
     expect(
@@ -196,6 +215,22 @@ void expectSemantics(
       data.hasAction(SemanticsAction.tap),
       hasTapAction,
       reason: 'should ${hasTapAction ? '' : 'not '}expose a tap action',
+    );
+  }
+  if (hasIncreaseAction != null) {
+    expect(
+      data.hasAction(SemanticsAction.increase),
+      hasIncreaseAction,
+      reason:
+          'should ${hasIncreaseAction ? '' : 'not '}expose an increase action',
+    );
+  }
+  if (hasDecreaseAction != null) {
+    expect(
+      data.hasAction(SemanticsAction.decrease),
+      hasDecreaseAction,
+      reason:
+          'should ${hasDecreaseAction ? '' : 'not '}expose a decrease action',
     );
   }
 }

@@ -109,7 +109,9 @@ class GtSearchField extends GtStatefulWidget {
   State<GtSearchField> createState() => _GtSearchFieldState();
 }
 
+/// The state for [GtSearchField].
 class _GtSearchFieldState extends State<GtSearchField> {
+  /// The controller for the search text, created locally if none is given.
   late final GtInputController controller;
 
   @override
@@ -149,7 +151,7 @@ class _GtSearchFieldState extends State<GtSearchField> {
     );
     Widget child = GtTextField(
       isEnabled: widget.isEnabled,
-      decoration: widget.decoration ?? context.inputStyles.searchDecoration,
+      decoration: widget.decoration ?? context.inputStyles.searchDecoration(),
       helperText: widget.helperText,
       autoCorrect: false,
       autoFocus: widget.autoFocus,

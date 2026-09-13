@@ -35,7 +35,10 @@ class GtCalendar extends GtStatefulWidget {
   State<GtCalendar> createState() => _GtCalendarState();
 }
 
+/// The state for [GtCalendar].
 class _GtCalendarState extends State<GtCalendar> {
+  /// The controller in use, either [GtCalendar.controller] or one created
+  /// locally.
   late final GtCalendarController controller;
 
   @override
@@ -218,10 +221,17 @@ class GtCalendarCell extends GtStatelessWidget {
   }
 }
 
-class _GtCalendarHeader extends GtStatelessWidget {
+/// A private widget that shows the calendar's month and year, and opens a
+/// month and year [GtDateWheelScroll] in a bottom sheet to jump to another
+/// month.
+class _GtCalendarHeader extends GtStatelessWidget with GtBottomSheetMixin {
+  /// The formatted month and year shown in the header.
   final String day;
+
+  /// The controller whose day the date wheel updates.
   final GtCalendarController controller;
 
+  /// Creates a [_GtCalendarHeader].
   const _GtCalendarHeader(this.day, {required this.controller});
 
   @override
@@ -232,16 +242,18 @@ class _GtCalendarHeader extends GtStatelessWidget {
     return GtInkWell(
       role: .button,
       borderRadius: context.borderRadius2Xl,
-      onTap: () async {
-        final year = await showDatePicker(
-          context: context,
-          firstDate: controller.firstDay,
-          lastDate: controller.lastDay,
-          initialDate: controller.day ?? controller.today,
-          initialDatePickerMode: .year,
+      onTap: () {
+        showDraggableSheet(
+          context,
+          useRootNavigator: false,
+          builder: (scrollController) => GtWheelScrollModal(
+            scrollController,
+            child: GtDateWheelScroll(
+              controller: controller,
+              fields: const {.month, .year},
+            ),
+          ),
         );
-        if (year == null) return;
-        controller.day = year;
       },
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 12.px),
@@ -296,6 +308,7 @@ class GtCalendarModal extends GtStatefulWidget {
   State<GtCalendarModal> createState() => _GtCalendarModalState();
 }
 
+/// The state for [GtCalendarModal].
 class _GtCalendarModalState extends State<GtCalendarModal> {
   @override
   Widget build(BuildContext context) {

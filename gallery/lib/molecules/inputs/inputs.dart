@@ -15,3 +15,4 @@ export 'gt_signature_pad_usecase.dart';
 export 'gt_text_field_usecase.dart';
 export 'gt_transfer_field_usecase.dart';
 export 'gt_url_field_usecase.dart';
+export 'gt_wheel_scroll_usecase.dart';

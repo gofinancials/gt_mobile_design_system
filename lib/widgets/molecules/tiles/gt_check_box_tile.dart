@@ -43,6 +43,12 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
   /// Custom padding to apply to the tile.
   final EdgeInsetsGeometry? padding;
 
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
   /// Creates a [GtCheckBoxTile].
   const GtCheckBoxTile(
     this.title, {
@@ -57,6 +63,8 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
     this.subtitle,
     this.padding,
     super.key,
+    this.titleStyle,
+    this.subtitleStyle,
   });
 
   @override
@@ -71,6 +79,8 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
       subtitle: subtitle,
       icon: leading,
       footer: footer,
+      titleStyle: titleStyle,
+      subtitleStyle: subtitleStyle,
       trailing: GtCheckBox(
         value: value,
         onChanged: onChanged,

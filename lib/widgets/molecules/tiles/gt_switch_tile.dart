@@ -46,7 +46,7 @@ class GtSwitchTile extends GtStatelessWidget {
   final TextStyle? titleStyle;
 
   /// Custom text style to apply to the [subtitle].
-  final TextStyle? subTitleStyle;
+  final TextStyle? subtitleStyle;
 
   /// Creates a [GtSwitchTile].
   const GtSwitchTile(
@@ -62,7 +62,7 @@ class GtSwitchTile extends GtStatelessWidget {
     this.subtitle,
     this.padding,
     this.titleStyle,
-    this.subTitleStyle,
+    this.subtitleStyle,
   });
 
   @override
@@ -76,7 +76,7 @@ class GtSwitchTile extends GtStatelessWidget {
       title,
       titleStyle: titleStyle,
       subtitle: subtitle,
-      subTitleStyle: subTitleStyle,
+      subtitleStyle: subtitleStyle,
       icon: leading,
       footer: footer,
       trailing: GtSwitch(

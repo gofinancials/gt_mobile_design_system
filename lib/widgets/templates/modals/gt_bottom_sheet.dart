@@ -221,13 +221,26 @@ class GtBottomSheet<T> {
 
 /// Internal wrapper widget that styles the sheet container (background, corners, margins).
 class _GtSheetContainer extends GtStatelessWidget {
+  /// Overrides the corner radius resolved by [defaultBorderRadius].
   final BorderRadius? borderRadius;
+
+  /// The size constraints applied to the sheet surface.
   final BoxConstraints? constraints;
+
+  /// Where the sheet surface sits within the available space.
   final AlignmentGeometry alignment;
+
+  /// The sheet content.
   final Widget child;
+
+  /// The scroll controller provided by a draggable sheet, if any.
   final ScrollController? controller;
+
+  /// Whether the sheet floats above the bottom edge with margins and fully
+  /// rounded corners.
   final bool floating;
 
+  /// Creates a [_GtSheetContainer].
   const _GtSheetContainer({
     this.borderRadius,
     this.constraints,
@@ -237,6 +250,8 @@ class _GtSheetContainer extends GtStatelessWidget {
     required this.child,
   });
 
+  /// Resolves the space around the sheet surface: inset on every side when
+  /// [floating], padded on desktop, and flush with the screen edges otherwise.
   EdgeInsetsGeometry resolveMargin(BuildContext context) {
     if (floating) {
       return context.insets.symmetricDp(vertical: 18.px, horizontal: 16.px);
@@ -244,6 +259,8 @@ class _GtSheetContainer extends GtStatelessWidget {
     return !context.isMobile ? context.insets.defaultAllInsets : .zero;
   }
 
+  /// Resolves the corner radius: fully rounded when [floating], and rounded
+  /// only at the top when attached to the bottom edge.
   BorderRadius defaultBorderRadius(BuildContext context) {
     if (floating) return context.borderRadius4Xl;
 
@@ -267,7 +284,7 @@ class _GtSheetContainer extends GtStatelessWidget {
         top: false,
         bottom: true,
         maintainBottomViewPadding: true,
-        child: child,
+        child: body,
       );
     }
     return Material(

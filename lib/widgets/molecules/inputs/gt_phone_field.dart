@@ -74,7 +74,9 @@ class GtPhoneField extends GtStatefulWidget {
   State<GtPhoneField> createState() => _GtPhoneFieldState();
 }
 
+/// The state for [GtPhoneField].
 class _GtPhoneFieldState extends State<GtPhoneField> {
+  /// The number and country controller, created locally if none is given.
   late final GtInputController<Country> controller;
 
   @override
@@ -89,6 +91,8 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
     super.dispose();
   }
 
+  /// Validates [value], or the current text when null, using
+  /// [GtPhoneField.validator] or the default phone number check.
   String? _validator([String? value]) {
     if (widget.validator != null) {
       return widget.validator!(value ?? controller.text);
@@ -102,7 +106,8 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
 
   @override
   Widget build(BuildContext context) {
-    final decor = widget.decoration ?? context.inputStyles.phoneInputDecoration;
+    final decor =
+        widget.decoration ?? context.inputStyles.phoneInputDecoration();
     final prefix = GenericListener(
       valueListenable: controller.selectionNotifier,
       builder: (country) {
@@ -212,6 +217,7 @@ class GtCountryCodeField extends GtStatefulWidget {
   /// The controller used to read and manipulate the selected country.
   final GtInputController<Country> controller;
 
+  /// An optional widget to display when there are no options.
   final Widget? emptyWidget;
 
   /// An optional widget to display while loading options.
@@ -237,15 +243,22 @@ class GtCountryCodeField extends GtStatefulWidget {
   State<GtCountryCodeField> createState() => _GtCountryCodeFieldState();
 }
 
+/// The state for [GtCountryCodeField].
 class _GtCountryCodeFieldState extends State<GtCountryCodeField>
     with GtBottomSheetMixin {
+  /// The pending lookup of the country whose flag is shown.
   late Future<Country> _countryFuture;
+
+  /// The dropdown controller backing the country selection sheet.
   late final GtDropdownInputController<Country> controller;
 
+  /// The country shown when no other can be resolved, which is Nigeria.
   Country get _fallbackCountry {
     return Country(dial: "234", iSO31661Alpha2: "NG", countryName: "Nigeria");
   }
 
+  /// Resolves the selected country, otherwise looks up the configured
+  /// country code and stores the match on [GtCountryCodeField.controller].
   Future<Country> get _activeCountry async {
     if (controller.selection?.value != null) {
       return controller.selection!.value;
@@ -259,6 +272,7 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
     return country;
   }
 
+  /// Fetches every country as dropdown data, filterable by dial code or name.
   FutureOr<List<GtDropdownData<Country>>> get _allCountries async {
     final countries = await AppCountryUtility.fetchCountries();
     return countries.mapList(
@@ -291,6 +305,7 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
     );
   }
 
+  /// Opens a [GtDropDownModal] for picking a country, unless disabled.
   void _showSheet() {
     if (!widget.isEnabled) return;
     showDraggableSheet(
@@ -323,7 +338,7 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
 
   @override
   Widget build(BuildContext context) {
-    final decoration = context.inputStyles.phoneCodeDecoration;
+    final decoration = context.inputStyles.phoneCodeDecoration();
 
     return GtDisabledOverlay(
       !widget.isEnabled,

@@ -6,20 +6,29 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtPaymentSourceCard', type: GtPaymentSourceCard)
 Widget playgroundGtPaymentSourceCardUseCase(BuildContext context) {
-  final title = context.knobs.string(label: 'Title', initialValue: 'Pay from');
-  final accountDetail = context.knobs.string(
-    label: 'Account Details',
+  final label = context.knobs.string(label: 'Label', initialValue: 'Pay from');
+  final title = context.knobs.string(
+    label: 'Title',
     initialValue: 'SAVINGS • 1020293939',
   );
-  final balance = context.knobs.string(
-    label: 'Balance Text',
+  final subTitle = context.knobs.string(
+    label: 'Subtitle',
     initialValue: 'Balance ₦200,015.00',
+  );
+  final trailing = context.knobs.object.dropdown<String>(
+    label: 'Trailing',
+    options: const ['Chevron (default)', 'Check'],
+    initialOption: 'Chevron (default)',
   );
   final variant = context.knobs.object.dropdown<GtCardVariant>(
     label: 'Variant',
     options: GtCardVariant.values,
     initialOption: GtCardVariant.away,
     labelBuilder: (v) => v.name,
+  );
+  final custom = context.knobs.boolean(
+    label: 'Custom styling',
+    initialValue: false,
   );
 
   return GtWidgetDocPage(
@@ -29,18 +38,51 @@ Widget playgroundGtPaymentSourceCardUseCase(BuildContext context) {
     code:
         '''
 GtPaymentSourceCard(
+  // Set custom to false (or omit these inputs) for the original defaults.
+  backgroundColor: $custom ? context.palette.primary.alpha16 : null,
+  labelStyle: $custom ? context.textStyles.bodyS() : null,
+  titleColor: $custom ? context.palette.primary.dark : null,
+  titleStyle: $custom ? context.textStyles.subHeadM() : null,
+  subtitleStyle: $custom ? context.textStyles.bodyS() : null,
+  verticalSpacing: $custom ? 8 : null,
+  balanceSpacing: $custom ? 4 : null,
+  label: "$label",
   title: "$title",
-  accountDetail: "$accountDetail",
-  balance: "$balance",
+  subTitle: "$subTitle",
+  leading: GtNetworkImage(GtNetworkImages.savings),
+  trailing: ${_getTrailingCode(trailing)},
   variant: GtCardVariant.${variant.name},
-  icon: GtNetworkImage(GtNetworkImages.savings),
+  onTap: () {},
 )''',
     child: GtPaymentSourceCard(
+      backgroundColor: custom ? context.palette.primary.alpha16 : null,
+      labelStyle: custom ? context.textStyles.bodyS() : null,
+      titleColor: custom ? context.palette.primary.dark : null,
+      titleStyle: custom ? context.textStyles.subHeadM() : null,
+      subtitleStyle: custom ? context.textStyles.bodyS() : null,
+      verticalSpacing: custom ? 8 : null,
+      subSpacing: custom ? 4 : null,
+      label: label,
       title: title,
-      accountDetail: accountDetail,
-      balance: balance,
+      subTitle: subTitle,
+      leading: GtNetworkImage(GtNetworkImages.savings),
+      trailing: _getTrailing(trailing),
       variant: variant,
-      icon: GtNetworkImage(GtNetworkImages.savings),
+      onTap: () {},
     ),
   );
+}
+
+Widget? _getTrailing(String preset) {
+  return switch (preset) {
+    'Check' => GtIcon(GtIcons.checkSolid, size: 16),
+    _ => null,
+  };
+}
+
+String _getTrailingCode(String preset) {
+  return switch (preset) {
+    'Check' => 'GtIcon(GtIcons.checkSolid, size: 16)',
+    _ => 'null',
+  };
 }

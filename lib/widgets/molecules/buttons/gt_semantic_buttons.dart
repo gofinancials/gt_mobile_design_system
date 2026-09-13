@@ -195,6 +195,8 @@ class GtActionButton extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? child;
+    final xy = size ?? minTapTargetSize;
+
     if (_icon case IconData icon) {
       child = FittedBox(
         fit: .scaleDown,
@@ -215,9 +217,9 @@ class GtActionButton extends GtStatelessWidget {
           spacing: context.spacingBase,
           children: [
             AnimatedContainer(
-              width: size ?? minTapTargetSize,
-              height: size ?? minTapTargetSize,
-              constraints: BoxConstraints.tight(Size.square(minTapTargetSize)),
+              width: xy,
+              height: xy,
+              constraints: BoxConstraints.tight(Size.square(xy)),
               padding: padding ?? context.insets.allDp(10.px),
               decoration: BoxDecoration(
                 color: backgroundColor,
@@ -229,14 +231,12 @@ class GtActionButton extends GtStatelessWidget {
               child: child,
             ),
             if (label case String label)
-              Flexible(
-                child: GtText(
-                  label,
-                  style: labelStyle ?? context.textStyles.subHeadXs(),
-                  textAlign: .center,
-                  maxLines: 1,
-                  overflow: .ellipsis,
-                ),
+              GtText(
+                label,
+                style: labelStyle ?? context.textStyles.subHeadXs(),
+                textAlign: .center,
+                maxLines: 2,
+                overflow: .ellipsis,
               ),
           ],
         ),
