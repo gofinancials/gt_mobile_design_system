@@ -82,6 +82,15 @@ class GtLimitEditListTile extends GtStatelessWidget {
   /// An optional callback triggered when the edit button is tapped. If null, the button is hidden.
   final OnPressed? onEdit;
 
+  /// Overrides category style. Null preserves the current default.
+  final TextStyle? categoryStyle;
+
+  /// Overrides value style. Null preserves the current default.
+  final TextStyle? valueStyle;
+
+  /// Overrides remainder style. Null preserves the current default.
+  final TextStyle? remainderStyle;
+
   /// Creates a [GtLimitEditListTile].
   const GtLimitEditListTile(
     this.category, {
@@ -91,6 +100,9 @@ class GtLimitEditListTile extends GtStatelessWidget {
     this.editText,
     this.onTapInfo,
     this.onEdit,
+    this.categoryStyle,
+    this.valueStyle,
+    this.remainderStyle,
   });
 
   /// Calculates the ratio of the utilized value to the maximum, capped at 1.0
@@ -140,13 +152,15 @@ class GtLimitEditListTile extends GtStatelessWidget {
                       ],
                       recognizer: TapGestureRecognizer()..onTap = onTapInfo,
                     ),
-                    style: context.textStyles.subHeadM(),
+                    style: categoryStyle ?? context.textStyles.subHeadM(),
                   ),
                   GtText(
                     _formattedValue,
-                    style: context.textStyles.body2Xs(
-                      color: context.palette.text.darkerSub,
-                    ),
+                    style:
+                        valueStyle ??
+                        context.textStyles.body2Xs(
+                          color: context.palette.text.darkerSub,
+                        ),
                   ),
                 ],
               ),
@@ -171,7 +185,7 @@ class GtLimitEditListTile extends GtStatelessWidget {
           alignment: Alignment.centerRight,
           child: GtText(
             "$_formattedRemainder ${"remaining".tr()}",
-            style: context.textStyles.subHead2xs(),
+            style: remainderStyle ?? context.textStyles.subHead2xs(),
             textAlign: TextAlign.end,
           ),
         ),
