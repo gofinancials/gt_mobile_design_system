@@ -238,12 +238,11 @@ Widget buildGtCardUseCase(BuildContext context) {
             children: [
               const GalleryPageSectionHeader(title: "GtPaymentSourceCard"),
               GtPaymentSourceCard(
-                title: "Pay from",
-                accountDetail:
-                    "savings ${AppStrings.dotSeparator} 1020293939".upper,
-                balance: "Balance ₦200,015.00",
+                label: "Pay from",
+                title: "savings ${AppStrings.dotSeparator} 1020293939".upper,
+                subTitle: "Balance ₦200,015.00",
                 variant: alertVariant,
-                icon: GtNetworkImage(GtNetworkImages.savings),
+                leading: GtNetworkImage(GtNetworkImages.savings),
               ),
             ],
           ),

@@ -124,6 +124,8 @@ import 'package:gallery/molecules/inputs/gt_transfer_field_usecase.dart'
     as _gallery_molecules_inputs_gt_transfer_field_usecase;
 import 'package:gallery/molecules/inputs/gt_url_field_usecase.dart'
     as _gallery_molecules_inputs_gt_url_field_usecase;
+import 'package:gallery/molecules/inputs/gt_wheel_scroll_usecase.dart'
+    as _gallery_molecules_inputs_gt_wheel_scroll_usecase;
 import 'package:gallery/molecules/media/gt_avatar.dart'
     as _gallery_molecules_media_gt_avatar;
 import 'package:gallery/molecules/pills/gt_account_copy_pill_usecase.dart'
@@ -915,6 +917,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               ),
               _widgetbook.WidgetbookComponent(
+                name: 'GtDateWheelScroll',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtDateWheelScroll',
+                    builder: _gallery_molecules_inputs_gt_wheel_scroll_usecase
+                        .playgroundGtDateWheelScrollUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtDobField',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -1043,6 +1055,26 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtUrlField',
                     builder: _gallery_molecules_inputs_gt_url_field_usecase
                         .playgroundGtUrlFieldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtWheelScroll',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtWheelScroll',
+                    builder: _gallery_molecules_inputs_gt_wheel_scroll_usecase
+                        .playgroundGtWheelScrollUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtWheelScrollModal',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtWheelScrollModal',
+                    builder: _gallery_molecules_inputs_gt_wheel_scroll_usecase
+                        .playgroundGtWheelScrollModalUseCase,
                   ),
                 ],
               ),

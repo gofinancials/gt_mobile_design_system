@@ -1,7 +1,8 @@
 /// A generic data model representing a single selectable item within a wheel scroll picker.
 ///
 /// This class encapsulates the underlying data value, its display label, and its positional
-/// index, which is used by components like the `WheelScrollSheet` to render and track selections.
+/// index. [GtWheelScroll] renders the [label], matches its selection by [data], and orders
+/// items by their position in the list it is given.
 class GtWheelScrollData<T> {
   /// The actual underlying data value of type [T] that this item represents.
   final T data;

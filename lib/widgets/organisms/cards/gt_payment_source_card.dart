@@ -2,132 +2,151 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
-/// A card for displaying a payment method, like a bank account, with balance details.
+/// A tappable card that shows the account a payment is made from.
+///
+/// An optional [label] header, such as "Pay from", sits above a row holding
+/// the [leading] logo, the [title] and [subTitle] lines, and a [trailing]
+/// widget that defaults to a chevron hinting that another source can be
+/// chosen.
 class GtPaymentSourceCard extends GtStatelessWidget {
-  /// Overrides background color. Null preserves the current default.
+  /// Overrides the card background color. Null preserves the current default.
   final Color? backgroundColor;
 
-  /// Overrides padding. Null preserves the current default.
+  /// Overrides the card padding. Null preserves the current default of 16
+  /// logical pixels on every side.
   final EdgeInsetsGeometry? padding;
 
-  /// Overrides title style. Null preserves the current default.
-  final TextStyle? titleStyle;
+  /// Overrides the [label] style. Null preserves the current default.
+  final TextStyle? labelStyle;
 
-  /// Overrides title color. Null preserves the current default.
+  /// Overrides the [label] color, taking precedence over [labelStyle]. Null
+  /// preserves the current default.
   final Color? titleColor;
 
-  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  /// Overrides the space between the [label] and the row below it, in logical
+  /// pixels. Null preserves the current default.
   final double? verticalSpacing;
 
-  /// Overrides account detail style. Null preserves the current default.
-  final TextStyle? accountDetailStyle;
+  /// Overrides the [title] style. Null preserves the current default.
+  final TextStyle? titleStyle;
 
-  /// Overrides account detail color. Null preserves the current default.
+  /// Overrides the [title] color, taking precedence over [titleStyle]. Null
+  /// preserves the current default.
   final Color? accountDetailColor;
 
-  /// Overrides balance style. Null preserves the current default.
-  final TextStyle? balanceStyle;
+  /// Overrides the [subTitle] style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
 
-  /// Overrides balance color. Null preserves the current default.
+  /// Overrides the [subTitle] color, taking precedence over [subtitleStyle].
+  /// Null preserves the current default.
   final Color? balanceColor;
 
-  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  /// Overrides the space between [leading], the text and [trailing], in
+  /// logical pixels. Null preserves the current default.
   final double? horizontalSpacing;
 
-  /// Overrides balance spacing in logical pixels. Null preserves the current default.
-  final double? balanceSpacing;
+  /// Overrides the space between [title] and [subTitle], in logical pixels.
+  /// Null preserves the current default.
+  final double? subSpacing;
 
-  /// The title of the payment source (e.g., "Checking Account").
+  /// The main line of the row, such as the account type and number.
   final String title;
 
-  /// The current balance, formatted as a string.
-  final String balance;
+  /// The secondary line under [title], such as the formatted balance.
+  final String subTitle;
 
-  /// Details of the account (e.g., account number).
-  final String accountDetail;
+  /// An optional header shown above the row, such as "Pay from".
+  final String? label;
 
-  /// The icon representing the payment source (e.g., a bank logo).
-  final Widget icon;
+  /// The widget shown before the text, such as a bank logo.
+  final Widget leading;
 
-  /// An optional description.
+  /// The widget shown after the text. Defaults to a chevron.
+  final Widget? trailing;
+
+  /// An optional description. It is not currently displayed.
   final String? description;
 
-  /// The visual variant of the card.
+  /// The visual variant of the card. Defaults to [GtCardVariant.away].
   final GtCardVariant variant;
 
-  /// An optional callback function that is invoked when the card is tapped.
+  /// Called when the card is tapped, such as to choose another payment
+  /// source.
   final OnPressed? onTap;
+
+  /// The radius of the painted card
+  final BorderRadius? borderRadius;
 
   /// Creates a [GtPaymentSourceCard].
   const GtPaymentSourceCard({
     super.key,
     required this.title,
-    required this.icon,
+    required this.leading,
     this.description,
     this.variant = .away,
     this.onTap,
-    required this.balance,
-    required this.accountDetail,
+    required this.subTitle,
+    this.label,
+    this.trailing,
     this.backgroundColor,
     this.padding,
     this.titleStyle,
+    this.labelStyle,
+    this.subtitleStyle,
     this.titleColor,
     this.verticalSpacing,
-    this.accountDetailStyle,
     this.accountDetailColor,
-    this.balanceStyle,
     this.balanceColor,
     this.horizontalSpacing,
-    this.balanceSpacing,
+    this.subSpacing,
+    this.borderRadius,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GtInkWell(
-      role: .button,
-      borderRadius: context.borderRadius2Xl,
-      onTap: onTap,
-      child: GtCard(
-        color: backgroundColor,
-        padding: padding ?? context.insets.allDp(16.px),
-        variant: variant,
-        child: Column(
-          crossAxisAlignment: .start,
-          mainAxisAlignment: .center,
-          spacing: verticalSpacing ?? context.spacingLg,
-          mainAxisSize: .min,
-          children: [
+    return GtCard(
+      color: backgroundColor,
+      padding: padding ?? context.insets.allDp(16.px),
+      variant: variant,
+      borderRadius: borderRadius,
+      onPressed: onTap,
+      child: Column(
+        crossAxisAlignment: .start,
+        mainAxisAlignment: .center,
+        spacing: verticalSpacing ?? context.spacingLg,
+        mainAxisSize: .min,
+        children: [
+          if (label.hasValue)
             GtText(
-              title,
+              label.value,
               style: GtTextStyleOverrides.resolve(
-                titleStyle,
+                labelStyle,
                 context.textStyles.subHead2s(color: context.palette.text.sub),
                 titleColor,
               ),
             ),
-            GtTransactionParticipantListTile(
-              accountDetail,
-              subtitle: balance,
-              titleStyle: GtTextStyleOverrides.resolve(
-                accountDetailStyle,
-                context.textStyles.buttonS(),
-                accountDetailColor,
-              ),
-              subStyle: GtTextStyleOverrides.resolve(
-                balanceStyle,
-                context.textStyles.subHead2xs(color: context.palette.text.soft),
-                balanceColor,
-              ),
-              horizontalSpacing: horizontalSpacing,
-              subSpacer: balanceSpacing == null
-                  ? null
-                  : SizedBox(height: balanceSpacing),
-              crossAxisAlignment: .center,
-              leading: icon,
-              trailing: GtIcon(GtIcons.chevronDown, size: 16),
+          GtTransactionParticipantListTile(
+            title,
+            subtitle: subTitle,
+            titleStyle: GtTextStyleOverrides.resolve(
+              titleStyle,
+              context.textStyles.buttonS(),
+              accountDetailColor,
             ),
-          ],
-        ),
+            subStyle: GtTextStyleOverrides.resolve(
+              subtitleStyle,
+              context.textStyles.subHead2xs(color: context.palette.text.soft),
+              balanceColor,
+            ),
+            horizontalSpacing: horizontalSpacing,
+            subSpacer: subSpacing == null
+                ? null
+                : SizedBox(height: subSpacing),
+            crossAxisAlignment: .center,
+            leading: leading,
+            trailing: trailing ?? GtIcon(GtIcons.chevronDown, size: 16),
+          ),
+        ],
       ),
     );
   }

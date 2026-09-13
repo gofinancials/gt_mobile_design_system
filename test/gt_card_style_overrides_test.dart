@@ -312,14 +312,14 @@ void main() {
     await tester.pumpWidget(
       app(
         GtPaymentSourceCard(
-          title: 'Account',
-          accountDetail: '12345',
-          balance: '100',
-          icon: const Icon(Icons.add),
-          accountDetailStyle: customStyle,
+          label: 'Account',
+          title: '12345',
+          subTitle: '100',
+          leading: const Icon(Icons.add),
+          titleStyle: customStyle,
           balanceColor: custom,
           horizontalSpacing: 0,
-          balanceSpacing: 0,
+          subSpacing: 0,
         ),
       ),
     );
