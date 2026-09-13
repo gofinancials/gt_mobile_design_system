@@ -28,7 +28,7 @@ class GtIndicatorTile extends GtStatelessWidget {
   final TextStyle? titleStyle;
 
   /// Custom text style to apply to the [subtitle].
-  final TextStyle? subTitleStyle;
+  final TextStyle? subtitleStyle;
 
   /// Custom padding to apply to the tile.
   final EdgeInsetsGeometry? padding;
@@ -43,7 +43,7 @@ class GtIndicatorTile extends GtStatelessWidget {
     this.footer,
     this.onTap,
     this.titleStyle,
-    this.subTitleStyle,
+    this.subtitleStyle,
     this.padding,
   });
 
@@ -72,7 +72,7 @@ class GtIndicatorTile extends GtStatelessWidget {
           text,
           GtText(
             subtitle,
-            style: subTitleStyle ?? textStyles.bodyXs(color: palette.text.soft),
+            style: subtitleStyle ?? textStyles.bodyXs(color: palette.text.soft),
           ),
           if (footer != null) ...[GtGap.ySm(), ?footer],
         ],
