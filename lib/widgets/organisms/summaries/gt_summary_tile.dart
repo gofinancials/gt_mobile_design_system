@@ -18,6 +18,18 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// which is why [GtSummaryTileData.leading] and [GtSummaryTileData.trailing]
 /// document themselves as ignored there.
 class GtSummaryTile extends GtStatelessWidget {
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides label color. Null preserves the current default.
+  final Color? labelColor;
+
+  /// Overrides value style. Null preserves the current default.
+  final TextStyle? valueStyle;
+
+  /// Overrides value color. Null preserves the current default.
+  final Color? valueColor;
+
   /// The label, value, optional images and optional tap handler for this row.
   final GtSummaryTileData tile;
 
@@ -25,13 +37,33 @@ class GtSummaryTile extends GtStatelessWidget {
   final GtSummaryTileLayout layout;
 
   /// Creates a [GtSummaryTile].
-  const GtSummaryTile(this.tile, {super.key, this.layout = .columns});
+  const GtSummaryTile(
+    this.tile, {
+    this.labelStyle,
+    this.labelColor,
+    this.valueStyle,
+    this.valueColor,
+    super.key,
+    this.layout = .columns,
+  });
 
   @override
   Widget build(BuildContext context) {
     final Widget child = switch (layout) {
-      .columns => _GtSummaryColumnsTile(tile),
-      .stacked => _GtSummaryStackedTile(tile),
+      .columns => _GtSummaryColumnsTile(
+        tile,
+        labelStyle: labelStyle,
+        labelColor: labelColor,
+        valueStyle: valueStyle,
+        valueColor: valueColor,
+      ),
+      .stacked => _GtSummaryStackedTile(
+        tile,
+        labelStyle: labelStyle,
+        labelColor: labelColor,
+        valueStyle: valueStyle,
+        valueColor: valueColor,
+      ),
     };
 
     // The stacked layout is a GtInfoListTile, which wires up its own ink well.
@@ -50,10 +82,28 @@ class GtSummaryTile extends GtStatelessWidget {
 
 /// The side-by-side layout, with the value emphasised over the label.
 class _GtSummaryColumnsTile extends GtStatelessWidget {
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides label color. Null preserves the current default.
+  final Color? labelColor;
+
+  /// Overrides value style. Null preserves the current default.
+  final TextStyle? valueStyle;
+
+  /// Overrides value color. Null preserves the current default.
+  final Color? valueColor;
+
   /// The label, value and optional images for this row.
   final GtSummaryTileData tile;
 
-  const _GtSummaryColumnsTile(this.tile);
+  const _GtSummaryColumnsTile(
+    this.tile, {
+    this.labelStyle,
+    this.labelColor,
+    this.valueStyle,
+    this.valueColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +118,16 @@ class _GtSummaryColumnsTile extends GtStatelessWidget {
       // absence of a slot to decide its own spacing.
       valuePrefix: leading == null ? null : _GtSummaryTileImage(leading),
       valueSuffix: trailing == null ? null : _GtSummaryTileImage(trailing),
-      labelTextStyle: styles.subHeadXs(color: context.palette.text.sub),
-      valueTextStyle: styles.subHeadS(color: tile.valueColor),
+      labelTextStyle: GtTextStyleOverrides.resolve(
+        labelStyle,
+        styles.subHeadXs(color: context.palette.text.sub),
+        labelColor,
+      ),
+      valueTextStyle: GtTextStyleOverrides.resolve(
+        valueStyle,
+        styles.subHeadS(color: tile.valueColor),
+        valueColor,
+      ),
       valueMaxLines: 1,
     );
   }
@@ -98,10 +156,28 @@ class _GtSummaryTileImage extends GtStatelessWidget {
 
 /// The stacked layout, with the label above the value.
 class _GtSummaryStackedTile extends GtStatelessWidget {
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides label color. Null preserves the current default.
+  final Color? labelColor;
+
+  /// Overrides value style. Null preserves the current default.
+  final TextStyle? valueStyle;
+
+  /// Overrides value color. Null preserves the current default.
+  final Color? valueColor;
+
   /// The label, value and optional tap handler for this row.
   final GtSummaryTileData tile;
 
-  const _GtSummaryStackedTile(this.tile);
+  const _GtSummaryStackedTile(
+    this.tile, {
+    this.labelStyle,
+    this.labelColor,
+    this.valueStyle,
+    this.valueColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +185,16 @@ class _GtSummaryStackedTile extends GtStatelessWidget {
       tile.label,
       text: tile.value,
       onTap: tile.onTap,
-      textStyle: context.textStyles.subHeadM(color: tile.valueColor),
+      labelStyle: GtTextStyleOverrides.resolve(
+        labelStyle,
+        context.textStyles.bodyS(color: context.palette.text.sub),
+        labelColor,
+      ),
+      textStyle: GtTextStyleOverrides.resolve(
+        valueStyle,
+        context.textStyles.subHeadM(color: tile.valueColor),
+        valueColor,
+      ),
     );
   }
 }

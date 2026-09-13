@@ -24,6 +24,15 @@ enum GtCountIndicatorType {
 /// The indicator will automatically hide itself if the [count] is 0 or less.
 /// If the [count] exceeds 9, it will display '9+'.
 class GtCountIndicator extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides style. Null preserves the current default.
+  final TextStyle? style;
+
+  /// Overrides text color. Null preserves the current default.
+  final Color? textColor;
+
   /// The numeric value to display inside the indicator.
   ///
   /// Values less than or equal to 0 will cause the widget to be hidden.
@@ -54,6 +63,9 @@ class GtCountIndicator extends GtStatelessWidget {
     super.key,
     this.semanticsLabel,
     this.type = GtCountIndicatorType.error,
+    this.backgroundColor,
+    this.style,
+    this.textColor,
   });
 
   Color _getBgColor(GtPalette palette) {
@@ -71,7 +83,7 @@ class GtCountIndicator extends GtStatelessWidget {
     if (count <= 0) return const Offstage();
 
     final palette = context.palette;
-    final bgColor = _getBgColor(palette);
+    final bgColor = backgroundColor ?? _getBgColor(palette);
     final textColor = palette.text.white;
 
     return RepaintBoundary(
@@ -91,7 +103,11 @@ class GtCountIndicator extends GtStatelessWidget {
             child: GtText(
               "${count > 9 ? '9+' : count}",
               textAlign: TextAlign.center,
-              style: context.textStyles.body2Xs(color: textColor),
+              style: GtTextStyleOverrides.resolve(
+                style,
+                context.textStyles.body2Xs(color: textColor),
+                this.textColor,
+              ),
             ),
           ),
         ),

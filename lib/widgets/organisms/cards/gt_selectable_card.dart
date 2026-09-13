@@ -8,6 +8,15 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// derived from the specified [variant]. It automatically scrolls into view
 /// when tapped and triggers the [onSelect] callback with its assigned [value].
 class GtSelectableCard<T> extends GtStatelessWidget {
+  /// Overrides the selection border colour. It is painted only while [selected] is true.
+  final Color? borderColor;
+
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
   /// Whether this card is currently selected.
   final bool selected;
 
@@ -43,6 +52,9 @@ class GtSelectableCard<T> extends GtStatelessWidget {
     this.selectedMargin = 0,
     this.borderRadius,
     super.key,
+    this.borderColor,
+    this.backgroundColor,
+    this.padding,
   });
 
   @override
@@ -51,7 +63,9 @@ class GtSelectableCard<T> extends GtStatelessWidget {
     final selectedColor = variant.getIconColor(palette);
 
     BorderSide border = .none;
-    if (selected) border = BorderSide(color: selectedColor, width: 2);
+    if (selected) {
+      border = BorderSide(color: borderColor ?? selectedColor, width: 2);
+    }
 
     return GtCard(
       onPressed: () {
@@ -62,10 +76,10 @@ class GtSelectableCard<T> extends GtStatelessWidget {
       padding: .zero,
       margin: .zero,
       border: border,
-      color: Colors.transparent,
+      color: backgroundColor ?? Colors.transparent,
       child: FittedBox(
         fit: .cover,
-        child: Padding(padding: .all(selectedMargin), child: child),
+        child: Padding(padding: padding ?? .all(selectedMargin), child: child),
       ),
     );
   }
@@ -75,6 +89,15 @@ class GtSelectableCard<T> extends GtStatelessWidget {
 ///
 /// It wraps a [GtImage] and applies specific border radii and dimensions suitable for avatars.
 class GtAvatarSelectionCard extends GtStatelessWidget {
+  /// Overrides the selection border colour. It is painted only while [selected] is true.
+  final Color? borderColor;
+
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
   /// Whether this avatar is currently selected.
   final bool selected;
 
@@ -96,6 +119,9 @@ class GtAvatarSelectionCard extends GtStatelessWidget {
     required this.onSelect,
     this.borderRadius,
     super.key,
+    this.borderColor,
+    this.backgroundColor,
+    this.padding,
   });
 
   @override
@@ -103,6 +129,9 @@ class GtAvatarSelectionCard extends GtStatelessWidget {
     final cornerRadius = borderRadius ?? context.borderRadiusMd;
 
     return GtSelectableCard(
+      borderColor: borderColor,
+      backgroundColor: backgroundColor,
+      padding: padding,
       selectedMargin: 3,
       selected: selected,
       onSelect: onSelect,

@@ -24,6 +24,11 @@ Widget playgroundGtInboxCardUseCase(BuildContext context) {
     initialValue: 5,
   );
 
+  final custom = context.knobs.boolean(
+    label: 'Custom styling',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtInboxCard',
     description:
@@ -31,12 +36,28 @@ Widget playgroundGtInboxCardUseCase(BuildContext context) {
     code:
         '''
 GtInboxCard(
+  // Set custom to false (or omit these inputs) for the original defaults.
+  backgroundColor: $custom ? context.palette.primary.alpha16 : null,
+  titleStyle: $custom ? context.textStyles.subHeadM() : null,
+  titleColor: $custom ? context.palette.primary.dark : null,
+  padding: $custom ? context.insets.allDp(24.px) : null,
+  verticalSpacing: $custom ? 0 : null,
+  subtitleStyle: $custom ? context.textStyles.bodyS() : null,
+  horizontalSpacing: $custom ? context.spacingXl : null,
   title: "$title",
   subtitle: "$subtitle",
   ureadCount: $ureadCount,
   messageCount: $messageCount,
 )''',
     child: GtInboxCard(
+      backgroundColor: custom ? context.palette.primary.alpha16 : null,
+      titleStyle: custom ? context.textStyles.subHeadM() : null,
+      titleColor: custom ? context.palette.primary.dark : null,
+      padding: custom ? context.insets.allDp(24.px) : null,
+      verticalSpacing: custom ? 0 : null,
+      subtitleStyle: custom ? context.textStyles.bodyS() : null,
+      horizontalSpacing: custom ? context.spacingXl : null,
+
       title: title,
       subtitle: subtitle,
       ureadCount: ureadCount,

@@ -7,6 +7,9 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// It visually represents a [value] between 0.0 and 1.0 using a [GtArcPainter].
 /// Optional [center] content can be provided to display information inside the gauge.
 class GtGuageChart extends GtStatelessWidget {
+  /// Overrides center padding. Null preserves the current default.
+  final EdgeInsetsGeometry? centerPadding;
+
   /// The fill percentage of the gauge, bounded between 0.0 and 1.0.
   final double value;
 
@@ -56,6 +59,7 @@ class GtGuageChart extends GtStatelessWidget {
     this.strokeCap = StrokeCap.round,
     this.variant = .primary,
     super.key,
+    this.centerPadding,
   }) : assert(value >= 0 && value <= 1);
 
   @override
@@ -91,7 +95,7 @@ class GtGuageChart extends GtStatelessWidget {
                   strokeWidth: strokeWidth,
                 ),
                 child: Padding(
-                  padding: context.insets.onlyDp(top: 40.px),
+                  padding: centerPadding ?? context.insets.onlyDp(top: 40.px),
                   child: FittedBox(fit: .scaleDown, child: center),
                 ),
               );

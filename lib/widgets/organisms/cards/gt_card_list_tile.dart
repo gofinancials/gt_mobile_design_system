@@ -64,6 +64,12 @@ enum GtCardListTileType {
 /// It automatically adjusts its border radius and padding based on its [type],
 /// making it ideal for creating cohesive, grouped lists.
 class GtCardListTile extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
   /// The positional type of the tile within a list. Defaults to [GtCardListTileType.medial].
   final GtCardListTileType type;
 
@@ -90,16 +96,21 @@ class GtCardListTile extends GtStatelessWidget {
     this.horizontalPadding,
     this.verticalPadding,
     this.edgeRadius,
+    this.backgroundColor,
+    this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
     return GtCard(
-      padding: type.padding(
-        context.insets,
-        hPadding: horizontalPadding ?? 16,
-        vPadding: verticalPadding ?? 12,
-      ),
+      color: backgroundColor,
+      padding:
+          padding ??
+          type.padding(
+            context.insets,
+            hPadding: horizontalPadding ?? 16,
+            vPadding: verticalPadding ?? 12,
+          ),
       borderRadius: type.borderRadius(context, radius: edgeRadius),
       variant: variant,
       child: child,

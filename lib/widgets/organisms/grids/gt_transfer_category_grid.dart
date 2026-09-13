@@ -12,6 +12,27 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// to create new categories.
 class GtTransferCategoryGrid extends GtStatelessWidget
     with GtTransactionCategoryMixin {
+  /// Overrides spacing in logical pixels. Null preserves the current default.
+  final double? spacing;
+
+  /// Overrides run spacing in logical pixels. Null preserves the current default.
+  final double? runSpacing;
+
+  /// Overrides selected border color. Null preserves the current default.
+  final Color? selectedBorderColor;
+
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides label color. Null preserves the current default.
+  final Color? labelColor;
+
+  /// Overrides label spacing in logical pixels. Null preserves the current default.
+  final double? labelSpacing;
+
+  /// Overrides cell padding. Null preserves the current default.
+  final EdgeInsetsGeometry? cellPadding;
+
   /// The controller managing the currently selected category.
   final GtTransactionCategoryController controller;
 
@@ -27,6 +48,13 @@ class GtTransferCategoryGrid extends GtStatelessWidget
     required this.onAdd,
     this.categories = const [],
     super.key,
+    this.spacing,
+    this.runSpacing,
+    this.selectedBorderColor,
+    this.labelStyle,
+    this.labelColor,
+    this.labelSpacing,
+    this.cellPadding,
   });
 
   @override
@@ -40,14 +68,19 @@ class GtTransferCategoryGrid extends GtStatelessWidget
         return Wrap(
           alignment: isMobile ? .spaceEvenly : .start,
           crossAxisAlignment: .start,
-          spacing: !isMobile ? 0 : context.spacingXl,
-          runSpacing: context.spacingXl,
+          spacing: spacing ?? (!isMobile ? 0 : context.spacingXl),
+          runSpacing: runSpacing ?? context.spacingXl,
           children: [
             for (final category in allCategories)
               GtTransactionCategoryGridCell(
+                labelStyle: labelStyle,
+                labelColor: labelColor,
+                verticalSpacing: labelSpacing,
+                padding: cellPadding,
                 label: category.label,
                 onTap: () => controller.select(category),
                 child: GtSelectableCard(
+                  borderColor: selectedBorderColor,
                   selected: category == selectedCategory,
                   value: category,
                   onSelect: controller.select,
@@ -61,6 +94,10 @@ class GtTransferCategoryGrid extends GtStatelessWidget
                 ),
               ),
             GtTransactionCategoryGridCell(
+              labelStyle: labelStyle,
+              labelColor: labelColor,
+              verticalSpacing: labelSpacing,
+              padding: cellPadding,
               label: "custom".ctr(),
               onTap: onAdd,
               child: GtIconButton(
@@ -82,6 +119,18 @@ class GtTransferCategoryGrid extends GtStatelessWidget
 /// It displays a [child] widget (typically an icon or image inside a selectable card)
 /// centered above a text [label].
 class GtTransactionCategoryGridCell extends GtStatelessWidget {
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides label color. Null preserves the current default.
+  final Color? labelColor;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
   /// The main visual content of the cell, usually an icon or image.
   final Widget child;
 
@@ -97,6 +146,10 @@ class GtTransactionCategoryGridCell extends GtStatelessWidget {
     required this.label,
     required this.onTap,
     super.key,
+    this.labelStyle,
+    this.labelColor,
+    this.verticalSpacing,
+    this.padding,
   });
 
   @override
@@ -106,16 +159,20 @@ class GtTransactionCategoryGridCell extends GtStatelessWidget {
       borderRadius: context.borderRadiusSm,
       onTap: onTap,
       child: Column(
-        spacing: context.spacingBase,
+        spacing: verticalSpacing ?? context.spacingBase,
         mainAxisSize: .min,
         children: [
           Padding(
-            padding: context.insets.symmetricDp(horizontal: 12.px),
+            padding: padding ?? context.insets.symmetricDp(horizontal: 12.px),
             child: GtSquareConstrainedBox(48, child: child),
           ),
           GtText(
             label,
-            style: context.textStyles.body2Xs(color: context.palette.text.sub),
+            style: GtTextStyleOverrides.resolve(
+              labelStyle,
+              context.textStyles.body2Xs(color: context.palette.text.sub),
+              labelColor,
+            ),
             textAlign: .center,
           ),
         ],

@@ -118,7 +118,7 @@ class GtDpComputer {
   final double height;
 
   /// Creates a [GtDpComputer] using the standard reference design dimensions.
-  GtDpComputer({this.width = 428, this.height = 926});
+  GtDpComputer({this.width = 375, this.height = 812});
 
   double get _scale => (width + height) / 4.5;
 
@@ -148,8 +148,8 @@ class GtContextSensitiveDpComputer {
   /// Creates an instance using the provided [context] and optional design bounds.
   GtContextSensitiveDpComputer(
     this._context, {
-    this.designWidth = 428,
-    this.designHeight = 926,
+    this.designWidth = 375,
+    this.designHeight = 812,
   });
 
   double get _computedWidth {

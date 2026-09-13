@@ -15,6 +15,7 @@ export 'gt_lesson_card_usecase.dart';
 export 'gt_notification_card_usecase.dart';
 export 'gt_payment_source_card_usecase.dart';
 export 'gt_product_card_usecase.dart';
+export 'gt_product_info_card_usecase.dart';
 export 'gt_progress_card_usecase.dart';
 export 'gt_reminder_banner_usecase.dart';
 export 'gt_selectable_card_usecase.dart';

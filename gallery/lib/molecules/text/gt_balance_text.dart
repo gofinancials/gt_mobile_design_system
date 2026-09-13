@@ -19,6 +19,10 @@ Widget playgroundGtBalanceTextUseCase(BuildContext context) {
     label: 'Currency symbol',
     initialValue: AppStrings.naira,
   );
+  final sign = context.knobs.stringOrNull(
+    label: 'Sign (e.g. +)',
+    initialValue: null,
+  );
   final animateChanges = context.knobs.boolean(
     label: 'Animate changes',
     initialValue: true,
@@ -28,12 +32,14 @@ Widget playgroundGtBalanceTextUseCase(BuildContext context) {
     initialValue: true,
   );
 
+  final signLine = sign.hasValue ? '\n  sign: "$sign",' : '';
+
   final codeSnippet =
       '''
 GtBalanceText(
   amount: $amount,
   hidden: $hidden,
-  currencySymbol: "$currencySymbol",
+  currencySymbol: "$currencySymbol",$signLine
   animateChanges: $animateChanges,
   showVisibilityIcon: $showVisibilityIcon,
 )''';
@@ -42,6 +48,7 @@ GtBalanceText(
     amount: amount,
     hidden: hidden,
     currencySymbol: currencySymbol,
+    sign: sign.hasValue ? sign : null,
     animateChanges: animateChanges,
     showVisibilityIcon: showVisibilityIcon,
     codeSnippet: codeSnippet,
@@ -52,6 +59,7 @@ class _GtBalanceTextPlayground extends GtStatelessWidget {
   final double amount;
   final bool hidden;
   final String currencySymbol;
+  final String? sign;
   final bool animateChanges;
   final bool showVisibilityIcon;
   final String codeSnippet;
@@ -60,6 +68,7 @@ class _GtBalanceTextPlayground extends GtStatelessWidget {
     required this.amount,
     required this.hidden,
     required this.currencySymbol,
+    required this.sign,
     required this.animateChanges,
     required this.showVisibilityIcon,
     required this.codeSnippet,
@@ -77,6 +86,7 @@ class _GtBalanceTextPlayground extends GtStatelessWidget {
           amount: amount,
           hidden: hidden,
           currencySymbol: currencySymbol,
+          sign: sign,
           textAlign: TextAlign.center,
           animateChanges: animateChanges,
           showVisibilityIcon: showVisibilityIcon,

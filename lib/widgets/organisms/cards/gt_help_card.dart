@@ -4,6 +4,30 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card that links to a help or support section, often with a message icon.
 class GtHelpCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides icon color. Null preserves the current default.
+  final Color? iconColor;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
   /// The main title text of the help card.
   final String title;
 
@@ -35,6 +59,14 @@ class GtHelpCard extends GtStatelessWidget {
     this.padding,
     this.iconSize,
     this.icon = GtIcons.messages,
+    this.backgroundColor,
+    this.iconColor,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.horizontalSpacing,
+    this.verticalSpacing,
   });
 
   @override
@@ -49,7 +81,11 @@ class GtHelpCard extends GtStatelessWidget {
     if (subtitle.hasValue) {
       footer = GtText(
         subtitle,
-        style: context.textStyles.bodyXs(color: palette.text.soft),
+        style: GtTextStyleOverrides.resolve(
+          subtitleStyle,
+          context.textStyles.bodyXs(color: palette.text.soft),
+          subtitleColor,
+        ),
       );
     }
 
@@ -61,17 +97,25 @@ class GtHelpCard extends GtStatelessWidget {
         padding: padding ?? context.insets.allDp(12.px),
         borderRadius: context.borderRadiusXl,
         variant: variant,
+        color: backgroundColor,
         child: GtBaseListTileTemplate(
           padding: context.insets.zero,
-          spacing: context.spacingLg,
-          spacingToSubTitle: 0,
+          spacing: horizontalSpacing ?? context.spacingLg,
+          spacingToSubTitle: verticalSpacing ?? 0,
           subtitle: footer,
           crossAxisAlignment: .center,
-          title: GtText(title, style: context.textStyles.bodyM()),
+          title: GtText(
+            title,
+            style: GtTextStyleOverrides.resolve(
+              titleStyle,
+              context.textStyles.bodyM(),
+              titleColor,
+            ),
+          ),
           leading: GtIcon.withColor(
             icon,
             size: iconSize ?? context.dp(24.px),
-            color: iconColor,
+            color: this.iconColor ?? iconColor,
           ),
         ),
       ),

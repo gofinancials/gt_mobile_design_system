@@ -178,6 +178,21 @@ class GtTransactionListTile extends GtStatelessWidget {
 /// {@category molecules}
 /// {@category tiles}
 class GtPaymentListTile extends GtStatelessWidget {
+  /// Overrides name color. Null preserves the current default.
+  final Color? nameColor;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides amount color. Null preserves the current default.
+  final Color? amountColor;
+
+  /// Overrides fees style. Null preserves the current default.
+  final TextStyle? feesStyle;
+
+  /// Overrides fees color. Null preserves the current default.
+  final Color? feesColor;
+
   /// The widget to display at the start of the tile, typically an icon or avatar.
   final Widget? leading;
 
@@ -241,6 +256,11 @@ class GtPaymentListTile extends GtStatelessWidget {
     this.verticalSpacing,
     this.horizontalSpacing,
     this.padding,
+    this.nameColor,
+    this.subtitleColor,
+    this.amountColor,
+    this.feesStyle,
+    this.feesColor,
   });
 
   @override
@@ -267,18 +287,26 @@ class GtPaymentListTile extends GtStatelessWidget {
                 children: [
                   Expanded(
                     child: Column(
-                      spacing: context.spacingSm,
+                      spacing: verticalSpacing ?? context.spacingSm,
                       crossAxisAlignment: .start,
                       children: [
                         GtText(
                           title,
-                          style: nameStyle ?? style.subHeadS(),
+                          style: GtTextStyleOverrides.resolve(
+                            nameStyle,
+                            style.subHeadS(),
+                            nameColor,
+                          ),
                           maxLines: 1,
                           textAlign: TextAlign.start,
                         ),
                         GtText(
                           subtitle,
-                          style: subtitleStyle ?? subStyle,
+                          style: GtTextStyleOverrides.resolve(
+                            subtitleStyle,
+                            subStyle,
+                            subtitleColor,
+                          ),
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -290,14 +318,22 @@ class GtPaymentListTile extends GtStatelessWidget {
                       children: [
                         GtText(
                           amount,
-                          style: amountStyle ?? style.subHeadM(weight: .w600),
+                          style: GtTextStyleOverrides.resolve(
+                            amountStyle,
+                            style.subHeadM(weight: .w600),
+                            amountColor,
+                          ),
                           textAlign: .end,
                           maxLines: 1,
                         ),
                         if (fees.hasValue)
                           GtText(
                             fees,
-                            style: subtitleStyle ?? subStyle,
+                            style: GtTextStyleOverrides.resolve(
+                              feesStyle,
+                              subtitleStyle ?? subStyle,
+                              feesColor,
+                            ),
                             textAlign: .end,
                             maxLines: 1,
                             overflow: .ellipsis,

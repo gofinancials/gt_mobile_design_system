@@ -222,6 +222,8 @@ import 'package:gallery/organisms/cards/gt_payment_source_card_usecase.dart'
     as _gallery_organisms_cards_gt_payment_source_card_usecase;
 import 'package:gallery/organisms/cards/gt_product_card_usecase.dart'
     as _gallery_organisms_cards_gt_product_card_usecase;
+import 'package:gallery/organisms/cards/gt_product_info_card_usecase.dart'
+    as _gallery_organisms_cards_gt_product_info_card_usecase;
 import 'package:gallery/organisms/cards/gt_progress_card_usecase.dart'
     as _gallery_organisms_cards_gt_progress_card_usecase;
 import 'package:gallery/organisms/cards/gt_reminder_banner_usecase.dart'
@@ -1858,6 +1860,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtProductCard',
                     builder: _gallery_organisms_cards_gt_product_card_usecase
                         .playgroundGtProductCardUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtProductInfoCard',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtProductInfoCard',
+                    builder:
+                        _gallery_organisms_cards_gt_product_info_card_usecase
+                            .playgroundGtProductInfoCardUseCase,
                   ),
                 ],
               ),

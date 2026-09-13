@@ -5,13 +5,43 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-typedef _Account = ({String id, String type, String number, num balance});
+typedef _Account = ({
+  String id,
+  String type,
+  String number,
+  num balance,
+  String? subTitle,
+});
 
 const _catalogue = <_Account>[
-  (id: 'sav-01', type: 'Savings', number: '0123456789', balance: 1284350.75),
-  (id: 'cur-02', type: 'Current', number: '0987654321', balance: 96420.05),
-  (id: 'dom-03', type: 'Domiciliary', number: '0456123789', balance: 3120.4),
-  (id: 'fix-04', type: 'Fixed Deposit', number: '0741852963', balance: 500000),
+  (
+    id: 'sav-01',
+    type: 'Savings',
+    number: '0123456789',
+    balance: 1284350.75,
+    subTitle: 'Interest earned: ₦12,480.50',
+  ),
+  (
+    id: 'cur-02',
+    type: 'Current',
+    number: '0987654321',
+    balance: 96420.05,
+    subTitle: 'Overdraft balance: ₦250,000.00',
+  ),
+  (
+    id: 'dom-03',
+    type: 'Domiciliary',
+    number: '0456123789',
+    balance: 3120.4,
+    subTitle: null,
+  ),
+  (
+    id: 'fix-04',
+    type: 'Fixed Deposit',
+    number: '0741852963',
+    balance: 500000,
+    subTitle: 'Matures 14 Mar 2027',
+  ),
 ];
 
 /// The pill pass-throughs, bundled so the knobs can reach the preview without
@@ -58,6 +88,10 @@ Widget playgroundGtAccountDetailSlidesUseCase(BuildContext context) {
   );
   final showActions = context.knobs.boolean(
     label: 'Show action bar',
+    initialValue: true,
+  );
+  final showSubtitles = context.knobs.boolean(
+    label: 'Show subtitles',
     initialValue: true,
   );
 
@@ -153,12 +187,14 @@ Widget playgroundGtAccountDetailSlidesUseCase(BuildContext context) {
     title: 'GtAccountDetailSlides',
     description:
         'A swipeable balance carousel: one GtBalanceText per account, a page '
-        'indicator above it, an account pill beneath it, and an optional '
-        'GtActionButtonBar below. It is stateless — a GtAccountDataController '
-        'owns both the account list and the PageController, so a swipe and a '
-        'programmatic selection move the same state. The dots appear only from '
-        'two accounts up. Tap the balance to toggle masking, or the pill to '
-        'copy the account number.',
+        'indicator above it, a subtitle and an account pill for the selected '
+        'account beneath it, and an optional GtActionButtonBar below. It is '
+        'stateless — a GtAccountDataController owns both the account list and '
+        'the PageController, so a swipe and a programmatic selection move the '
+        'same state. The dots appear only from two accounts up, and the '
+        'subtitle only for accounts with a GtAccountData.subTitle — the '
+        'Domiciliary account has none. Tap the balance to toggle masking, or '
+        'the pill to copy the account number.',
     code: [
       'GtAccountDetailSlides<Account>(',
       '  controller: _controller,',
@@ -202,11 +238,12 @@ Widget playgroundGtAccountDetailSlidesUseCase(BuildContext context) {
     child: GtCard(
       padding: context.insets.allDp(16.px),
       variant: GtCardVariant.normal,
-      // Keyed on the knob so changing the count rebuilds the controller
-      // instead of leaving the old account list attached.
+      // Keyed on the knobs that shape the account list, so changing either
+      // rebuilds the controller instead of leaving the old list attached.
       child: _AccountSlidesPreview(
-        key: ValueKey(count),
+        key: ValueKey((count, showSubtitles)),
         count: count,
+        showSubtitles: showSubtitles,
         showActions: showActions,
         pill: pill,
       ),
@@ -216,11 +253,13 @@ Widget playgroundGtAccountDetailSlidesUseCase(BuildContext context) {
 
 class _AccountSlidesPreview extends GtStatefulWidget {
   final int count;
+  final bool showSubtitles;
   final bool showActions;
   final _PillKnobs pill;
 
   const _AccountSlidesPreview({
     required this.count,
+    required this.showSubtitles,
     required this.showActions,
     required this.pill,
     super.key,
@@ -245,6 +284,7 @@ class _AccountSlidesPreviewState extends State<_AccountSlidesPreview> {
             type: account.type,
             accountNumber: account.number,
             balance: account.balance,
+            subTitle: widget.showSubtitles ? account.subTitle : null,
             data: account,
           ),
       ],

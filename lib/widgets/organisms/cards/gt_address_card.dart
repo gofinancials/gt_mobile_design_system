@@ -4,6 +4,24 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A simple card for displaying a physical address.
 class GtAddressCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides the existing border colour without changing [borderStyle].
+  final Color? borderColor;
+
+  /// Overrides line1 color. Null preserves the current default.
+  final Color? line1Color;
+
+  /// Overrides line2 color. Null preserves the current default.
+  final Color? line2Color;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
   /// The first line of the address.
   final String line1;
 
@@ -43,6 +61,12 @@ class GtAddressCard extends GtStatelessWidget {
     this.line2Style,
     this.variant = .normal,
     this.borderStyle = .solid,
+    this.backgroundColor,
+    this.padding,
+    this.borderColor,
+    this.line1Color,
+    this.line2Color,
+    this.verticalSpacing,
   });
 
   @override
@@ -51,16 +75,34 @@ class GtAddressCard extends GtStatelessWidget {
     final borderColor = variant.getBorderColor(palette);
 
     return GtCard(
-      padding: context.insets.allDp(16.px),
+      color: backgroundColor,
+      padding: padding ?? context.insets.allDp(16.px),
       variant: variant,
       onPressed: onPressed,
-      border: BorderSide(color: borderColor, style: borderStyle),
+      border: BorderSide(
+        color: this.borderColor ?? borderColor,
+        style: borderStyle,
+      ),
       child: Column(
-        spacing: context.spacingSm,
+        spacing: verticalSpacing ?? context.spacingSm,
         crossAxisAlignment: .stretch,
         children: [
-          GtText(line1, style: line1Style ?? context.textStyles.bodyM()),
-          GtText(line2, style: line2Style),
+          GtText(
+            line1,
+            style: GtTextStyleOverrides.resolve(
+              line1Style,
+              context.textStyles.bodyM(),
+              line1Color,
+            ),
+          ),
+          GtText(
+            line2,
+            style: GtTextStyleOverrides.resolve(
+              line2Style,
+              context.textStyles.bodyS(),
+              line2Color,
+            ),
+          ),
         ],
       ),
     );

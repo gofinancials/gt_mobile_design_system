@@ -4,6 +4,30 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card for displaying prominent banners with a title, subtitle, and a close button.
 class GtBannerCard extends GtStatefulWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides close button spacing in logical pixels. Null preserves the current default.
+  final double? closeButtonSpacing;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
   /// The main title of the banner.
   final String title;
 
@@ -27,6 +51,14 @@ class GtBannerCard extends GtStatefulWidget {
     this.hidden = false,
     this.variant = .normal,
     required this.onClose,
+    this.backgroundColor,
+    this.padding,
+    this.verticalSpacing,
+    this.closeButtonSpacing,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
   });
 
   @override
@@ -43,20 +75,25 @@ class _GtBannerCardState extends State<GtBannerCard> {
       child2: const Offstage(),
       child1: GtCard(
         borderRadius: context.borderRadiusXl,
-        padding: context.insets.allDp(16.px),
+        padding: widget.padding ?? context.insets.allDp(16.px),
         variant: widget.variant,
+        color: widget.backgroundColor,
         child: Column(
-          spacing: context.spacingBase,
+          spacing: widget.verticalSpacing ?? context.spacingBase,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
-              spacing: context.spacingSectionLg,
+              spacing: widget.closeButtonSpacing ?? context.spacingSectionLg,
               crossAxisAlignment: .start,
               children: [
                 Expanded(
                   child: GtText(
                     widget.title,
-                    style: context.textStyles.h6(color: textColor),
+                    style: GtTextStyleOverrides.resolve(
+                      widget.titleStyle,
+                      context.textStyles.h6(color: textColor),
+                      widget.titleColor,
+                    ),
                   ),
                 ),
                 GtCancelButton(onTap: widget.onClose),
@@ -64,8 +101,12 @@ class _GtBannerCardState extends State<GtBannerCard> {
             ),
             GtText(
               widget.subtitle,
-              style: context.textStyles.bodyXs(
-                color: context.palette.text.darkerSub,
+              style: GtTextStyleOverrides.resolve(
+                widget.subtitleStyle,
+                context.textStyles.bodyXs(
+                  color: context.palette.text.darkerSub,
+                ),
+                widget.subtitleColor,
               ),
             ),
           ],

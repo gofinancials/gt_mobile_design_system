@@ -40,7 +40,7 @@ GtCardListTile(
       type: type,
       child: GtListTile(
         text: text,
-        trailing: GtText(subtitle),
+        trailing: GtIcon(GtIcons.alignBottom),
         leading: GtIcon(GtIcons.lock, size: 24),
         onTap: () {},
       ),

@@ -135,6 +135,24 @@ class GtBaseListTileTemplate extends GtStatelessWidget {
 /// inputs for [title] and [subtitle], utilizing [GtBaseListTileTemplate] under
 /// the hood.
 class GtStandardTextTileTemplate extends GtStatelessWidget {
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides footer spacing in logical pixels. Null preserves the current default.
+  final double? footerSpacing;
+
   final String title;
   final String? subtitle;
   final Widget? leading;
@@ -164,6 +182,12 @@ class GtStandardTextTileTemplate extends GtStatelessWidget {
     this.cardColor,
     this.cardBorderRadius,
     this.cardPadding,
+    this.titleColor,
+    this.subtitleColor,
+    this.padding,
+    this.horizontalSpacing,
+    this.verticalSpacing,
+    this.footerSpacing,
   });
 
   @override
@@ -174,9 +198,27 @@ class GtStandardTextTileTemplate extends GtStatelessWidget {
     );
 
     return GtBaseListTileTemplate(
-      title: GtText(title, style: titleStyle ?? defaultTitleStyle),
+      padding: padding,
+      spacing: horizontalSpacing,
+      spacingToSubTitle: verticalSpacing,
+      spacingToFooter: footerSpacing,
+      title: GtText(
+        title,
+        style: GtTextStyleOverrides.resolve(
+          titleStyle,
+          defaultTitleStyle,
+          titleColor,
+        ),
+      ),
       subtitle: subtitle.hasValue
-          ? GtText(subtitle, style: subtitleStyle ?? defaultSubStyle)
+          ? GtText(
+              subtitle,
+              style: GtTextStyleOverrides.resolve(
+                subtitleStyle,
+                defaultSubStyle,
+                subtitleColor,
+              ),
+            )
           : null,
       leading: leading,
       trailing: trailing,

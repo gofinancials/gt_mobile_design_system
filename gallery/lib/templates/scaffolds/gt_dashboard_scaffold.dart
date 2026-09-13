@@ -190,8 +190,10 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       appBar: GtHomeAppBar(
         userFullName: "Alex Lobaloba",
         onClickHelp: () {},
+        helpSemanticsLabel: "Help",
         onToggleAccounts: () {},
         toggleAccountText: "All Accounts",
+        toggleAccountSemanticsLabel: "Switch account, All Accounts",
       ),
       navItem: _items[0],
       showGradient: true,

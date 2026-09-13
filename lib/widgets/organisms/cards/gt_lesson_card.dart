@@ -7,6 +7,48 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Includes an illustration, title, description, and progress indicators
 /// such as completed lessons and watched duration.
 class GtLessonCard extends GtStatelessWidget {
+  /// Overrides gradient. Null preserves the current default.
+  final Gradient? gradient;
+
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides illustration padding. Null preserves the current default.
+  final EdgeInsetsGeometry? illustrationPadding;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides description style. Null preserves the current default.
+  final TextStyle? descriptionStyle;
+
+  /// Overrides description color. Null preserves the current default.
+  final Color? descriptionColor;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides section spacing in logical pixels. Null preserves the current default.
+  final double? sectionSpacing;
+
+  /// Overrides info style. Null preserves the current default.
+  final TextStyle? infoStyle;
+
+  /// Overrides info color. Null preserves the current default.
+  final Color? infoColor;
+
+  /// Overrides info spacing in logical pixels. Null preserves the current default.
+  final double? infoSpacing;
+
+  /// Overrides info run spacing in logical pixels. Null preserves the current default.
+  final double? infoRunSpacing;
+
   /// The primary illustration or image displayed at the top of the card.
   final AppImageData illustration;
 
@@ -50,6 +92,20 @@ class GtLessonCard extends GtStatelessWidget {
     this.variant = .featured,
     this.cardBackgroundColor,
     required this.onTap,
+    this.gradient,
+    this.backgroundColor,
+    this.illustrationPadding,
+    this.padding,
+    this.titleStyle,
+    this.titleColor,
+    this.descriptionStyle,
+    this.descriptionColor,
+    this.verticalSpacing,
+    this.sectionSpacing,
+    this.infoStyle,
+    this.infoColor,
+    this.infoSpacing,
+    this.infoRunSpacing,
   }) : assert(watchedLessons <= totalLessons),
        assert(watchedDuration == null || watchedDuration < duration);
 
@@ -72,7 +128,7 @@ class GtLessonCard extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gradient = variant.getGradient(context);
+    final gradient = this.gradient ?? variant.getGradient(context);
 
     return GtCard(
       // Identity only. Folding the watch progress in here rebuilt the card
@@ -81,7 +137,7 @@ class GtLessonCard extends GtStatelessWidget {
       key: ValueKey(('gt-lesson-card', title)),
       onPressed: context.scrollIntoViewNow,
       constraints: BoxConstraints(maxWidth: context.fractionalShortest(.55)),
-      color: context.palette.bg.white,
+      color: backgroundColor ?? context.palette.bg.white,
       padding: .zero,
       borderRadius: context.borderRadiusXl,
       shadows: context.shadows.lg(),
@@ -92,7 +148,9 @@ class GtLessonCard extends GtStatelessWidget {
           Expanded(
             child: Container(
               constraints: BoxConstraints(minHeight: context.dp(126)),
-              padding: context.insets.symmetricDp(vertical: 2.px),
+              padding:
+                  illustrationPadding ??
+                  context.insets.symmetricDp(vertical: 2.px),
               decoration: BoxDecoration(gradient: gradient),
               child: GtImage(
                 image: illustration,
@@ -104,26 +162,36 @@ class GtLessonCard extends GtStatelessWidget {
           ),
           Flexible(
             child: GtCard(
-              padding: context.insets.symmetricDp(
-                vertical: 16.px,
-                horizontal: 12.px,
-              ),
+              padding:
+                  padding ??
+                  context.insets.symmetricDp(
+                    vertical: 16.px,
+                    horizontal: 12.px,
+                  ),
               color: cardBackgroundColor,
               onPressed: onTap,
               borderRadius: .zero,
               child: Column(
-                spacing: context.spacingSm,
+                spacing: verticalSpacing ?? context.spacingSm,
                 crossAxisAlignment: .start,
                 mainAxisAlignment: .start,
                 children: [
                   if (hasWatchedLessons) ...[
-                    const GtGap.yBase(),
+                    (sectionSpacing == null
+                        ? const GtGap.yBase()
+                        : SizedBox(height: sectionSpacing)),
                     GtAnimatedProgress(value: watchFraction),
-                    const GtGap.yBase(),
+                    (sectionSpacing == null
+                        ? const GtGap.yBase()
+                        : SizedBox(height: sectionSpacing)),
                   ],
                   GtText(
                     title.upper,
-                    style: context.textStyles.button(),
+                    style: GtTextStyleOverrides.resolve(
+                      titleStyle,
+                      context.textStyles.button(),
+                      titleColor,
+                    ),
                     overflow: .ellipsis,
                     maxLines: 1,
                   ),
@@ -132,13 +200,23 @@ class GtLessonCard extends GtStatelessWidget {
                       description,
                       maxLines: hasWatchedLessons ? 1 : 2,
                       overflow: .ellipsis,
-                      style: context.textStyles.body2s(
-                        color: context.palette.text.darkerSub,
+                      style: GtTextStyleOverrides.resolve(
+                        descriptionStyle,
+                        context.textStyles.body2s(
+                          color: context.palette.text.darkerSub,
+                        ),
+                        descriptionColor,
                       ),
                     ),
                   ),
-                  const GtGap.yBase(),
+                  (sectionSpacing == null
+                      ? const GtGap.yBase()
+                      : SizedBox(height: sectionSpacing)),
                   GtLessonInfoTile(
+                    style: infoStyle,
+                    textColor: infoColor,
+                    spacing: infoSpacing,
+                    runSpacing: infoRunSpacing,
                     progress: progress,
                     progressDuration: progressDuration,
                   ),
@@ -155,6 +233,18 @@ class GtLessonCard extends GtStatelessWidget {
 /// A supporting widget for [GtLessonCard] that displays the lesson's progress
 /// and duration side-by-side using icons and text.
 class GtLessonInfoTile extends GtStatelessWidget {
+  /// Overrides spacing in logical pixels. Null preserves the current default.
+  final double? spacing;
+
+  /// Overrides run spacing in logical pixels. Null preserves the current default.
+  final double? runSpacing;
+
+  /// Overrides style. Null preserves the current default.
+  final TextStyle? style;
+
+  /// Overrides text color. Null preserves the current default.
+  final Color? textColor;
+
   /// The formatted string representing the lesson completion progress.
   final String progress;
 
@@ -174,17 +264,23 @@ class GtLessonInfoTile extends GtStatelessWidget {
     required this.progressDuration,
     this.alignment,
     this.crossAlignment,
+    this.spacing,
+    this.runSpacing,
+    this.style,
+    this.textColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: context.spacingMd,
-      runSpacing: context.spacingBase,
+      spacing: spacing ?? context.spacingMd,
+      runSpacing: runSpacing ?? context.spacingBase,
       alignment: alignment ?? .start,
       crossAxisAlignment: crossAlignment ?? .start,
       children: [
         GtSimpleInfoTile(
+          style: style,
+          textColor: textColor,
           leading: GtSvg(
             GtVectors.coin,
             width: 16,
@@ -194,6 +290,8 @@ class GtLessonInfoTile extends GtStatelessWidget {
           text: progress,
         ),
         GtSimpleInfoTile(
+          style: style,
+          textColor: textColor,
           leading: GtSvg(
             GtVectors.clock,
             width: 16,

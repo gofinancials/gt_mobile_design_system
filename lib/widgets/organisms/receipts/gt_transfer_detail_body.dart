@@ -89,10 +89,18 @@ class GtTransferDetailBody extends GtStatelessWidget {
   /// Defaults to [AppStrings.naira] (`₦`).
   final String currency;
 
+  /// Whether the transfer is money in.
+  ///
+  /// When `true`, a `+` is prefixed to [currency] and drawn in the same style,
+  /// and the `+` is included in the default semantics label. Defaults to
+  /// `false`, which draws no sign.
+  final bool isCredit;
+
   /// Overrides the label announced for [amount].
   ///
   /// Defaults to the `transferAmountIs` translation, passed the formatted
-  /// amount as `amount` and [currency] as `currency`.
+  /// amount as `amount` (prefixed with `+` when [isCredit]) and [currency] as
+  /// `currency`.
   final String? amountSemanticsLabel;
 
   /// The actions rendered as a centred row beneath the amount.
@@ -124,6 +132,7 @@ class GtTransferDetailBody extends GtStatelessWidget {
     this.controller,
     this.physics,
     this.currency = AppStrings.naira,
+    this.isCredit = false,
     this.amountSemanticsLabel,
     this.actions = const [],
     this.sections = const [],
@@ -151,6 +160,7 @@ class GtTransferDetailBody extends GtStatelessWidget {
           recipient: recipient,
           amount: amount,
           currency: currency,
+          isCredit: isCredit,
           amountSemanticsLabel: amountSemanticsLabel,
         ),
         if (actions.hasValue) ...[
@@ -222,6 +232,9 @@ class _TransferDetailHeader extends GtStatelessWidget {
   /// The currency glyph drawn ahead of [amount].
   final String currency;
 
+  /// Whether [amount] is drawn with a leading `+`.
+  final bool isCredit;
+
   /// Overrides the label announced for [amount]. See [amountLabel].
   final String? amountSemanticsLabel;
 
@@ -230,15 +243,22 @@ class _TransferDetailHeader extends GtStatelessWidget {
     required this.recipient,
     required this.amount,
     required this.currency,
+    required this.isCredit,
     this.amountSemanticsLabel,
   });
+
+  /// The sign drawn ahead of [amount]: `+` for a credit, otherwise none.
+  String? get sign => isCredit ? '+' : null;
 
   /// The label announced for [amount]: [amountSemanticsLabel] when supplied,
   /// otherwise the `transferAmountIs` translation.
   String get amountLabel {
     final display = AppTextFormatter.formatCurrency(amount, symbol: '');
     return amountSemanticsLabel ??
-        'transferAmountIs'.tr({'amount': display, 'currency': currency});
+        'transferAmountIs'.tr({
+          'amount': '${sign ?? ''}$display',
+          'currency': currency,
+        });
   }
 
   @override
@@ -285,6 +305,7 @@ class _TransferDetailHeader extends GtStatelessWidget {
               key: const Key('transfer-detail-amount'),
               amount: amount,
               currencySymbol: currency,
+              sign: sign,
               showVisibilityIcon: false,
               amountStyle: context.textStyles.h3(heightPx: 40),
               semanticsLabel: amountLabel,

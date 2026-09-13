@@ -8,6 +8,51 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// along with the total [messageCount] and a visual badge for the [ureadCount]
 /// (unread messages).
 class GtInboxCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides message count style. Null preserves the current default.
+  final TextStyle? messageCountStyle;
+
+  /// Overrides message count color. Null preserves the current default.
+  final Color? messageCountColor;
+
+  /// Overrides icon color. Null preserves the current default.
+  final Color? iconColor;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides content padding. Null preserves the current default.
+  final EdgeInsetsGeometry? contentPadding;
+
+  /// Overrides unread background color. Null preserves the current default.
+  final Color? unreadBackgroundColor;
+
+  /// Overrides unread text color. Null preserves the current default.
+  final Color? unreadTextColor;
+
+  /// Overrides unread text style. Null preserves the current default.
+  final TextStyle? unreadTextStyle;
+
   /// The primary title of the inbox item.
   final String title;
 
@@ -33,6 +78,21 @@ class GtInboxCard extends GtStatelessWidget {
     required this.messageCount,
     this.onTap,
     super.key,
+    this.backgroundColor,
+    this.padding,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.messageCountStyle,
+    this.messageCountColor,
+    this.iconColor,
+    this.horizontalSpacing,
+    this.verticalSpacing,
+    this.contentPadding,
+    this.unreadBackgroundColor,
+    this.unreadTextColor,
+    this.unreadTextStyle,
   });
 
   @override
@@ -45,15 +105,43 @@ class GtInboxCard extends GtStatelessWidget {
       borderRadius: context.borderRadiusXl,
       onTap: onTap,
       child: GtCard(
-        padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 16.px),
+        color: backgroundColor,
+        padding:
+            padding ??
+            context.insets.symmetricDp(horizontal: 8.px, vertical: 16.px),
         borderRadius: context.borderRadiusXl,
         child: GtBaseListTileTemplate(
-          title: GtText(title, style: context.textStyles.bodyM()),
-          spacing: context.spacingMd,
-          subtitle: GtText(subtitle, style: subStyle),
+          spacingToSubTitle: verticalSpacing,
+          padding: contentPadding,
+          title: GtText(
+            title,
+            style: GtTextStyleOverrides.resolve(
+              titleStyle,
+              context.textStyles.bodyM(),
+              titleColor,
+            ),
+          ),
+          spacing: horizontalSpacing ?? context.spacingMd,
+          subtitle: GtText(
+            subtitle,
+            style: GtTextStyleOverrides.resolve(
+              subtitleStyle,
+              subStyle,
+              subtitleColor,
+            ),
+          ),
           trailing: GtSquareConstrainedBox(
             25,
-            child: Center(child: GtText("$messageCount", style: subStyle)),
+            child: Center(
+              child: GtText(
+                "$messageCount",
+                style: GtTextStyleOverrides.resolve(
+                  messageCountStyle,
+                  subStyle,
+                  messageCountColor,
+                ),
+              ),
+            ),
           ),
           leading: GtSquareConstrainedBox(
             36,
@@ -63,7 +151,7 @@ class GtInboxCard extends GtStatelessWidget {
                 Positioned.fill(
                   child: GtIcon.withColor(
                     GtIcons.messages,
-                    color: context.palette.primary.base,
+                    color: iconColor ?? context.palette.primary.base,
                     size: 24,
                   ),
                 ),
@@ -73,7 +161,12 @@ class GtInboxCard extends GtStatelessWidget {
                     right: -context.dp(4.px),
                     child: Transform.scale(
                       scale: .6,
-                      child: GtCountIndicator(ureadCount),
+                      child: GtCountIndicator(
+                        ureadCount,
+                        backgroundColor: unreadBackgroundColor,
+                        textColor: unreadTextColor,
+                        style: unreadTextStyle,
+                      ),
                     ),
                   ),
               ],

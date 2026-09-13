@@ -6,6 +6,7 @@ export 'gt_input_styles.dart';
 export 'gt_radii.dart';
 export 'gt_shadows.dart';
 export 'gt_spacing.dart';
+export 'gt_text_style_overrides.dart';
 export 'gt_text_styles.dart';
 export 'gt_theme.dart';
 export 'palettes/palettes.dart';

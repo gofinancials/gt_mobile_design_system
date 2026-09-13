@@ -21,6 +21,11 @@ Widget playgroundGtHelpCardUseCase(BuildContext context) {
     labelBuilder: (v) => v.name,
   );
 
+  final custom = context.knobs.boolean(
+    label: 'Custom styling',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtHelpCard',
     description:
@@ -28,10 +33,29 @@ Widget playgroundGtHelpCardUseCase(BuildContext context) {
     code:
         '''
 GtHelpCard(
+  // Set custom to false (or omit these inputs) for the original defaults.
+  backgroundColor: $custom ? context.palette.primary.alpha16 : null,
+  titleStyle: $custom ? context.textStyles.subHeadM() : null,
+  titleColor: $custom ? context.palette.primary.dark : null,
+  padding: $custom ? context.insets.allDp(24.px) : null,
+  verticalSpacing: $custom ? 0 : null,
+  subtitleStyle: $custom ? context.textStyles.bodyS() : null,
+  horizontalSpacing: $custom ? context.spacingXl : null,
   title: "$title",
   subtitle: "$subtitle",
   variant: GtCardVariant.${variant.name},
 )''',
-    child: GtHelpCard(title: title, subtitle: subtitle, variant: variant),
+    child: GtHelpCard(
+      backgroundColor: custom ? context.palette.primary.alpha16 : null,
+      titleStyle: custom ? context.textStyles.subHeadM() : null,
+      titleColor: custom ? context.palette.primary.dark : null,
+      padding: custom ? context.insets.allDp(24.px) : null,
+      verticalSpacing: custom ? 0 : null,
+      subtitleStyle: custom ? context.textStyles.bodyS() : null,
+      horizontalSpacing: custom ? context.spacingXl : null,
+      title: title,
+      subtitle: subtitle,
+      variant: variant,
+    ),
   );
 }

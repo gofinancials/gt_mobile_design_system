@@ -65,12 +65,14 @@ void main() {
     List<GtTransferDetailSection> sections = sections,
     List<GtReceiptAction> actions = const [],
     String currency = AppStrings.naira,
+    bool isCredit = false,
     String? amountSemanticsLabel,
   }) {
     return GtTransferDetailBody(
       recipient: recipient,
       amount: 20000,
       currency: currency,
+      isCredit: isCredit,
       amountSemanticsLabel: amountSemanticsLabel,
       steps: steps,
       sections: sections,
@@ -119,6 +121,35 @@ void main() {
       expect(find.bySemanticsLabel(RegExp('You sent 20,000')), findsOneWidget);
 
       handle.dispose();
+    });
+
+    testWidgets('draws a + ahead of the currency for a credit', (tester) async {
+      await tester.pumpWidget(buildTestWidget(buildBody()));
+
+      expect(
+        tester
+            .widget<GtBalanceText>(
+              find.byKey(const Key('transfer-detail-amount')),
+            )
+            .sign,
+        isNull,
+      );
+
+      await tester.pumpWidget(buildTestWidget(buildBody(isCredit: true)));
+
+      final amount = tester.widget<GtBalanceText>(
+        find.byKey(const Key('transfer-detail-amount')),
+      );
+      expect(amount.sign, '+');
+      expect(find.text('+${AppStrings.naira} '), findsOneWidget);
+    });
+
+    test('GtBalanceText announces its sign and drops it while hidden', () {
+      const visible = GtBalanceText(amount: 20000, sign: '+');
+      expect(visible.semanticLabel, contains('+20,000.00'));
+
+      const hidden = GtBalanceText(amount: 20000, sign: '+', hidden: true);
+      expect(hidden.semanticLabel, isNot(contains('+')));
     });
 
     testWidgets('renders a custom currency', (tester) async {

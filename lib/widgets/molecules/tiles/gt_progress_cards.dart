@@ -9,6 +9,21 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Includes a visual progress bar indicating the current amount vs the goal
 /// amount, and an optional edit button.
 class GtGoalProgressListTile extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides style. Null preserves the current default.
+  final TextStyle? style;
+
+  /// Overrides text color. Null preserves the current default.
+  final Color? textColor;
+
+  /// Overrides progress color. Null preserves the current default.
+  final Color? progressColor;
+
+  /// Overrides track color. Null preserves the current default.
+  final Color? trackColor;
+
   /// The current accumulated or utilized amount towards the goal.
   final num currentAmount;
 
@@ -48,6 +63,11 @@ class GtGoalProgressListTile extends GtStatelessWidget {
     this.currency = AppStrings.naira,
     this.verticalSpacing,
     this.padding,
+    this.backgroundColor,
+    this.style,
+    this.textColor,
+    this.progressColor,
+    this.trackColor,
   });
 
   /// Calculates the ratio of the utilized value to the maximum, capped at 1.0
@@ -81,13 +101,16 @@ class GtGoalProgressListTile extends GtStatelessWidget {
               TextSpan(text: " ${AppStrings.dotSeparator} $percentage%"),
             ],
           ),
-          style: context.textStyles.body2Xs(
-            color: context.palette.text.darkerSub,
+          style: GtTextStyleOverrides.resolve(
+            style,
+            context.textStyles.body2Xs(color: context.palette.text.darkerSub),
+            textColor,
           ),
         ),
         GtAnimatedProgress(
+          inActiveColor: trackColor,
           value: _fraction,
-          valueColor: context.palette.primary.base,
+          valueColor: progressColor ?? context.palette.primary.base,
         ),
         if (onEdit != null)
           GtTextButton(
@@ -105,6 +128,7 @@ class GtGoalProgressListTile extends GtStatelessWidget {
 
     if (asCard) {
       child = GtCard(
+        color: backgroundColor,
         borderRadius: context.borderRadiusXl,
         padding: padding ?? context.insets.allDp(16.px),
         child: child,

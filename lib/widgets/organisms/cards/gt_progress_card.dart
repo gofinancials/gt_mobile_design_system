@@ -5,6 +5,66 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A card that prompts the user to take one or two actions (e.g., a primary
 /// action and a dismiss option).
 class GtProgressCard extends GtStatelessWidget {
+  /// Overrides background color. Null preserves the current default.
+  final Color? backgroundColor;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides subtitle color. Null preserves the current default.
+  final Color? subtitleColor;
+
+  /// Overrides percentage style. Null preserves the current default.
+  final TextStyle? percentageStyle;
+
+  /// Overrides percentage color. Null preserves the current default.
+  final Color? percentageColor;
+
+  /// Overrides percent subtext style. Null preserves the current default.
+  final TextStyle? percentSubtextStyle;
+
+  /// Overrides percent subtext color. Null preserves the current default.
+  final Color? percentSubtextColor;
+
+  /// Overrides progress color. Null preserves the current default.
+  final Color? progressColor;
+
+  /// Overrides track color. Null preserves the current default.
+  final Color? trackColor;
+
+  /// Overrides button variant. Null preserves the current default.
+  final GtButtonVariant? buttonVariant;
+
+  /// Overrides vertical spacing in logical pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides horizontal spacing in logical pixels. Null preserves the current default.
+  final double? horizontalSpacing;
+
+  /// Overrides text spacing in logical pixels. Null preserves the current default.
+  final double? textSpacing;
+
+  /// Overrides action spacing in logical pixels. Null preserves the current default.
+  final double? actionSpacing;
+
+  /// Overrides button color. Null preserves the current default.
+  final Color? buttonColor;
+
+  /// Overrides button text color. Null preserves the current default.
+  final Color? buttonTextColor;
+
+  /// Overrides button style. Null preserves the current default.
+  final TextStyle? buttonStyle;
+
   /// The main title of the action card.
   final String title;
 
@@ -40,6 +100,26 @@ class GtProgressCard extends GtStatelessWidget {
     required this.continueText,
     required this.onContinue,
     required this.percentSubtext,
+    this.backgroundColor,
+    this.padding,
+    this.titleStyle,
+    this.titleColor,
+    this.subtitleStyle,
+    this.subtitleColor,
+    this.percentageStyle,
+    this.percentageColor,
+    this.percentSubtextStyle,
+    this.percentSubtextColor,
+    this.progressColor,
+    this.trackColor,
+    this.buttonVariant,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.textSpacing,
+    this.actionSpacing,
+    this.buttonColor,
+    this.buttonTextColor,
+    this.buttonStyle,
   }) : assert(
          currentValue <= maxValue,
          'Current value should be equal or less than max value',
@@ -51,28 +131,38 @@ class GtProgressCard extends GtStatelessWidget {
     final valueColor = variant.getProgressColor(palette);
 
     return GtCard(
-      padding: context.insets.allDp(12.px),
+      color: backgroundColor,
+      padding: padding ?? context.insets.allDp(12.px),
       variant: variant,
       child: Column(
         crossAxisAlignment: .stretch,
         mainAxisAlignment: .center,
         mainAxisSize: .min,
-        spacing: context.spacingMd,
+        spacing: verticalSpacing ?? context.spacingMd,
         children: [
           Row(
-            spacing: context.spacingSectionMd,
+            spacing: horizontalSpacing ?? context.spacingSectionMd,
             crossAxisAlignment: .start,
             children: [
               Expanded(
                 child: Column(
-                  spacing: context.spacingSm,
+                  spacing: textSpacing ?? context.spacingSm,
                   crossAxisAlignment: .stretch,
                   children: [
-                    GtText(title.upper, style: context.textStyles.buttonS()),
+                    GtText(
+                      title.upper,
+                      style: GtTextStyleOverrides.resolve(
+                        titleStyle,
+                        context.textStyles.buttonS(),
+                        titleColor,
+                      ),
+                    ),
                     GtText(
                       subtitle,
-                      style: context.textStyles.subHead2xs(
-                        color: palette.text.sub,
+                      style: GtTextStyleOverrides.resolve(
+                        subtitleStyle,
+                        context.textStyles.subHead2xs(color: palette.text.sub),
+                        subtitleColor,
                       ),
                     ),
                   ],
@@ -85,12 +175,18 @@ class GtProgressCard extends GtStatelessWidget {
                   children: [
                     GtText(
                       "$percentage%",
-                      style: context.textStyles.h4(color: valueColor),
+                      style: GtTextStyleOverrides.resolve(
+                        percentageStyle,
+                        context.textStyles.h4(color: valueColor),
+                        percentageColor,
+                      ),
                     ),
                     GtText(
                       percentSubtext,
-                      style: context.textStyles.buttonXs(
-                        color: palette.text.sub,
+                      style: GtTextStyleOverrides.resolve(
+                        percentSubtextStyle,
+                        context.textStyles.buttonXs(color: palette.text.sub),
+                        percentSubtextColor,
                       ),
                     ),
                   ],
@@ -100,13 +196,18 @@ class GtProgressCard extends GtStatelessWidget {
           ),
           GtAnimatedProgress(
             value: fraction,
-            valueColor: valueColor,
-            inActiveColor: palette.bg.soft,
+            valueColor: progressColor ?? valueColor,
+            inActiveColor: trackColor ?? palette.bg.soft,
           ),
-          const GtGap.yMd(),
+          (actionSpacing == null
+              ? const GtGap.yMd()
+              : SizedBox(height: actionSpacing)),
           GtRaisedButton(
+            color: buttonColor,
+            textColor: buttonTextColor,
+            style: buttonStyle,
             onPressed: onContinue,
-            variant: variant.buttonVariant,
+            variant: buttonVariant ?? variant.buttonVariant,
             text: continueText,
             size: .xsmall,
             alignment: .centerLeft,

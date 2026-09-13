@@ -25,6 +25,11 @@ Widget playgroundGtInstructionCardUseCase(BuildContext context) {
     labelBuilder: (v) => v.name,
   );
 
+  final custom = context.knobs.boolean(
+    label: 'Custom styling',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtInstructionCard',
     description:
@@ -32,6 +37,14 @@ Widget playgroundGtInstructionCardUseCase(BuildContext context) {
     code:
         '''
 GtInstructionCard(
+  // Set custom to false (or omit these inputs) for the original defaults.
+  backgroundColor: $custom ? context.palette.primary.alpha16 : null,
+  titleStyle: $custom ? context.textStyles.subHeadM() : null,
+  titleColor: $custom ? context.palette.primary.dark : null,
+  padding: $custom ? context.insets.allDp(24.px) : null,
+  verticalSpacing: $custom ? 0 : null,
+  borderColor: $custom ? context.palette.primary.base : null,
+  descriptionStyle: $custom ? context.textStyles.bodyS() : null,
   title: "$title",
   description: "$description",
   icon: GtIcon(GtIcons.camera, size: 24),
@@ -40,6 +53,14 @@ GtInstructionCard(
   onPressed: () {},
 )''',
     child: GtInstructionCard(
+      backgroundColor: custom ? context.palette.primary.alpha16 : null,
+      titleStyle: custom ? context.textStyles.subHeadM() : null,
+      titleColor: custom ? context.palette.primary.dark : null,
+      padding: custom ? context.insets.allDp(24.px) : null,
+      verticalSpacing: custom ? 0 : null,
+      borderColor: custom ? context.palette.primary.base : null,
+      descriptionStyle: custom ? context.textStyles.bodyS() : null,
+
       title: title,
       description: description,
       icon: GtIcon(GtIcons.camera, size: 24),
