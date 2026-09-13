@@ -83,6 +83,9 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped.
   final OnChanged<T> onSelect;
 
+  /// Overrides title style. Null preserves the current default.
+  final TextStyle? titleStyle;
+
   /// Creates a standard [GtSelectionListTile].
   const GtSelectionListTile(
     this.text, {
@@ -91,6 +94,7 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
     required this.isSelected,
     required this.onSelect,
     this.leading,
+    this.titleStyle,
   });
 
   /// Creates a [GtSelectionColumnListTile] that displays a secondary [description]
@@ -103,6 +107,8 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
     required OnChanged<T> onSelect,
     required String description,
     Widget? leading,
+    TextStyle? titleStyle,
+    TextStyle? descriptionStyle,
   }) = GtSelectionColumnListTile;
 
   /// Creates a [GtRoleSelectionListTile] specifically designed for assigning
@@ -143,7 +149,7 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
         spacing: context.spacingMd,
         children: [
           if (leading != null) GtSquareConstrainedBox(30, child: leading),
-          Expanded(child: GtText(text, style: labelStyle)),
+          Expanded(child: GtText(text, style: titleStyle ?? labelStyle)),
           GtSquareConstrainedBox(
             30,
             child: Visibility(
@@ -171,6 +177,9 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
   /// The secondary text providing more details about the selection option.
   final String description;
 
+  /// Overrides description style. Null preserves the current default.
+  final TextStyle? descriptionStyle;
+
   /// Creates a [GtSelectionColumnListTile].
   const GtSelectionColumnListTile(
     super.text, {
@@ -180,6 +189,8 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
     required super.onSelect,
     required this.description,
     super.leading,
+    super.titleStyle,
+    this.descriptionStyle,
   });
 
   @override
@@ -198,8 +209,11 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
             crossAxisAlignment: .stretch,
             spacing: context.spacingBase,
             children: [
-              GtText(text.upper, style: textStyle),
-              GtText(description, style: descriptionStyle),
+              GtText(text.upper, style: titleStyle ?? textStyle),
+              GtText(
+                description,
+                style: this.descriptionStyle ?? descriptionStyle,
+              ),
             ],
           ),
         ),
@@ -252,9 +266,6 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
   /// Overrides padding. Null preserves the current default.
   final EdgeInsetsGeometry? padding;
 
-  /// Overrides title style. Null preserves the current default.
-  final TextStyle? titleStyle;
-
   /// Overrides title color. Null preserves the current default.
   final Color? titleColor;
 
@@ -294,7 +305,7 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
     bool? asCard,
     this.backgroundColor,
     this.padding,
-    this.titleStyle,
+    super.titleStyle,
     this.titleColor,
     this.descriptionStyle,
     this.descriptionColor,
@@ -390,6 +401,9 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
   /// The callback triggered when the tile is tapped.
   final OnChanged<Country> onSelect;
 
+  /// Overrides text style. Null preserves the current default.
+  final TextStyle? textStyle;
+
   /// Creates a [GtCountrySelectionListTile].
   const GtCountrySelectionListTile(
     this.value, {
@@ -397,11 +411,13 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
     this.showCountryCode = false,
     required this.isSelected,
     required this.onSelect,
+    this.textStyle,
   });
 
   @override
   Widget build(BuildContext context) {
-    final style = context.textStyles.bodyS(color: context.palette.text.soft);
+    final style =
+        textStyle ?? context.textStyles.bodyS(color: context.palette.text.soft);
     final size = context.dp(34.px);
 
     return GtInkWell(

@@ -15,10 +15,14 @@ class GtContextMenuItem<T> {
   /// The callback triggered when this menu item is selected.
   final OnPressed onTap;
 
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
   /// Creates a new [GtContextMenuItem].
   const GtContextMenuItem({
     required this.label,
     required this.icon,
     required this.onTap,
+    this.labelStyle,
   });
 }

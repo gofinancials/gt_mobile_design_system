@@ -33,17 +33,28 @@ class GtContextMenu<T> extends GtStatefulWidget {
   State<StatefulWidget> createState() => _GtContextMenuState<T>();
 }
 
+/// A private state for [GtContextMenu] that owns the [MenuController] used to
+/// open and close the menu.
 class _GtContextMenuState<T> extends State<GtContextMenu<T>> {
+  /// The focus node for the anchor, taken from [GtContextMenu.focusNode] or
+  /// created here when none is supplied.
   late final FocusNode _focusNode;
+
+  /// Whether [_focusNode] was created here, and so must be disposed here.
+  late final bool _ownsFocusNode;
+
+  /// Controls whether the menu is open.
   late final MenuController _menuController;
 
   @override
   void initState() {
     super.initState();
+    _ownsFocusNode = widget.focusNode == null;
     _focusNode = widget.focusNode ?? FocusNode();
     _menuController = MenuController();
   }
 
+  /// Opens the menu if it is closed, or closes it if it is open.
   void _toggle() {
     if (_menuController.isOpen) {
       return _menuController.close();
@@ -54,6 +65,9 @@ class _GtContextMenuState<T> extends State<GtContextMenu<T>> {
   @override
   void dispose() {
     _menuController.close();
+    if (_ownsFocusNode) {
+      _focusNode.dispose();
+    }
     super.dispose();
   }
 
@@ -208,7 +222,7 @@ class GtContextMenuTile<T> extends GtStatelessWidget {
             Expanded(
               child: GtText(
                 item.label.capitalise(true),
-                style: context.textStyles.subHeadS(),
+                style: item.labelStyle ?? context.textStyles.subHeadS(),
                 maxLines: 1,
                 overflow: .ellipsis,
               ),
