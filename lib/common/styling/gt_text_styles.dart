@@ -11,6 +11,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This class uses the provided [BuildContext] to resolve theme-dependent
 /// text styles, scaling factors, and responsive typography tokens as defined
 /// in the design system.
+///
+/// Apart from the display (`d*`), [welcome] and heading (`h*`) styles, every
+/// style method accepts optional overrides for each [buildStyle] argument
+/// except `size`. A null override falls back to the style's token value.
 class GtTextStyles {
   /// The [BuildContext] used to access the current theme and scaling utilities.
   final BuildContext context;
@@ -171,7 +175,7 @@ class GtTextStyles {
   // TITLES (h prefix) | H1: Youth, H2-H6: Readex Pro
   // ---------------------------------------------------------------------------
 
-  /// Generates the welcom screen title text style.
+  /// Generates the welcome screen title text style.
   TextStyle welcome({
     double? heightPx,
     Color? color,
@@ -373,19 +377,30 @@ class GtTextStyles {
 
   /// Generates the avatar text style
   TextStyle avatar({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
     required double size,
   }) {
     return buildStyle(
-      family: fonts.title,
+      family: family ?? fonts.title,
       size: size,
       heightPx: heightPx ?? size * 1.25,
       overflow: overflow,
-      widthPct: 0.0,
-      weight: .w600,
+      widthPct: widthPct ?? 0.0,
+      weight: weight ?? .w600,
       color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
     );
   }
 
@@ -395,19 +410,23 @@ class GtTextStyles {
 
   /// Generates the Extra Large Body (Body XL) paragraph text style.
   TextStyle bodyXl({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 24,
       heightPx: heightPx ?? 32,
-      widthPct: -1.5,
+      widthPct: widthPct ?? -1.5,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -419,19 +438,23 @@ class GtTextStyles {
 
   /// Generates the Large Body (Body L) paragraph text style.
   TextStyle bodyL({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 18,
       heightPx: heightPx ?? 24,
-      widthPct: -1.5,
+      widthPct: widthPct ?? -1.5,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -443,19 +466,23 @@ class GtTextStyles {
 
   /// Generates the Medium Body (Body M) paragraph text style.
   TextStyle bodyM({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 16,
       heightPx: heightPx ?? 24,
-      widthPct: -1.1,
+      widthPct: widthPct ?? -1.1,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -467,19 +494,23 @@ class GtTextStyles {
 
   /// Generates the Small Body (Body S) paragraph text style.
   TextStyle bodyS({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
-      widthPct: -0.6,
+      widthPct: widthPct ?? -0.6,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -489,21 +520,25 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Small Body (Body S) paragraph text style.
+  /// Generates the Secondary Small Body (Body 2S) paragraph text style.
   TextStyle body2s({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 13,
       heightPx: heightPx ?? 16,
-      widthPct: 1,
+      widthPct: widthPct ?? 1,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -515,19 +550,23 @@ class GtTextStyles {
 
   /// Generates the Extra Small Body (Body XS) paragraph text style.
   TextStyle bodyXs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 12,
       heightPx: heightPx ?? 16,
-      widthPct: 0.0,
+      widthPct: widthPct ?? 0.0,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -539,19 +578,23 @@ class GtTextStyles {
 
   /// Generates the Double Extra Small Body (Body 2XS) paragraph text style.
   TextStyle body2Xs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 11,
       heightPx: heightPx ?? 12,
-      widthPct: 0.0,
+      widthPct: widthPct ?? 0.0,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -561,21 +604,25 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Body (Body 2XS) paragraph text style.
+  /// Generates the Body 2.5XS paragraph text style.
   TextStyle body2_5Xs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 10,
       heightPx: heightPx ?? 10,
-      widthPct: 0.0,
+      widthPct: widthPct ?? 0.0,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -587,19 +634,23 @@ class GtTextStyles {
 
   /// Generates the Triple Extra Small Body (Body 3XS) paragraph text style.
   TextStyle body3Xs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 8,
       heightPx: heightPx ?? 12,
-      widthPct: 0.0,
+      widthPct: widthPct ?? 0.0,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -611,19 +662,23 @@ class GtTextStyles {
 
   /// Generates the standard Input text style, typically used inside text fields.
   TextStyle input({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 17,
       heightPx: heightPx ?? 24,
-      widthPct: 0.0,
+      widthPct: widthPct ?? 0.0,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -639,19 +694,23 @@ class GtTextStyles {
 
   /// Generates the Extra Large Label (Label XL) text style.
   TextStyle labelXl({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 24,
       heightPx: heightPx ?? 32,
-      widthPct: 0.0,
+      widthPct: widthPct ?? 0.0,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -663,19 +722,23 @@ class GtTextStyles {
 
   /// Generates the Large Label (Label L) text style.
   TextStyle labelL({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 18,
       heightPx: heightPx ?? 24,
-      widthPct: 0.0,
+      widthPct: widthPct ?? 0.0,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -687,19 +750,23 @@ class GtTextStyles {
 
   /// Generates the Medium Label (Label M) text style.
   TextStyle labelM({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 16,
       heightPx: heightPx ?? 24,
-      widthPct: 0.0,
+      widthPct: widthPct ?? 0.0,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -711,19 +778,23 @@ class GtTextStyles {
 
   /// Generates the Small Label (Label S) text style.
   TextStyle labelS({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
-      widthPct: 0.0,
+      widthPct: widthPct ?? 0.0,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -735,19 +806,23 @@ class GtTextStyles {
 
   /// Generates the Extra Small Label (Label XS) text style.
   TextStyle labelXs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 12,
       heightPx: heightPx ?? 16,
-      widthPct: 0.0,
+      widthPct: widthPct ?? 0.0,
+      weight: weight,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -763,20 +838,23 @@ class GtTextStyles {
 
   /// Generates the Title text style.
   TextStyle title({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 48,
       heightPx: heightPx ?? 96,
-      widthPct: 0,
-      weight: .w700,
+      widthPct: widthPct ?? 0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -788,20 +866,23 @@ class GtTextStyles {
 
   /// Generates the Title 3 text style.
   TextStyle title3({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 20,
       heightPx: heightPx ?? 40,
-      widthPct: 0,
-      weight: .w700,
+      widthPct: widthPct ?? 0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -813,20 +894,23 @@ class GtTextStyles {
 
   /// Generates the Medium Title (Title M) text style.
   TextStyle titleM({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 16,
       heightPx: heightPx ?? 24,
-      widthPct: 6.0,
-      weight: .w700,
+      widthPct: widthPct ?? 6.0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -838,20 +922,23 @@ class GtTextStyles {
 
   /// Generates the Small Title (Title S) text style.
   TextStyle titleS({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
-      widthPct: 6.0,
-      weight: .w700,
+      widthPct: widthPct ?? 6.0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -863,20 +950,23 @@ class GtTextStyles {
 
   /// Generates the Extra Small Title (Title XS) text style.
   TextStyle titleXs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 12,
       heightPx: heightPx ?? 16,
-      widthPct: 4.0,
-      weight: .w700,
+      widthPct: widthPct ?? 4.0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -888,20 +978,23 @@ class GtTextStyles {
 
   /// Generates the Double Extra Small Title (Title 2XS) text style.
   TextStyle title2xs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 11,
       heightPx: heightPx ?? 12,
-      widthPct: 2.0,
-      weight: .w700,
+      widthPct: widthPct ?? 2.0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -911,22 +1004,25 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Title (Title 2XS) text style.
+  /// Generates the Triple Extra Small Title (Title 3XS) text style.
   TextStyle title3xs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 10,
       heightPx: heightPx ?? 11,
-      widthPct: 2.0,
-      weight: .w700,
+      widthPct: widthPct ?? 2.0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -936,22 +1032,25 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Title (Title 2XS) text style.
+  /// Generates the Quadruple Extra Small Title (Title 4XS) text style.
   TextStyle title4xs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 8,
       heightPx: heightPx ?? 9,
-      widthPct: 2.0,
-      weight: .w700,
+      widthPct: widthPct ?? 2.0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -967,6 +1066,7 @@ class GtTextStyles {
 
   /// Generates the Extra Large Subheading (Subhead XL) text style.
   TextStyle subHeadXl({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -975,12 +1075,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 24,
       heightPx: heightPx ?? 32,
-      widthPct: -1.5,
+      widthPct: widthPct ?? -1.5,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -991,8 +1092,9 @@ class GtTextStyles {
     );
   }
 
-  /// subHeadL: 20px, weight 500
+  /// Generates the Large Subheading (Subhead L) text style.
   TextStyle subHeadL({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1001,12 +1103,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 20,
       heightPx: heightPx ?? 24,
-      widthPct: -1.5,
+      widthPct: widthPct ?? -1.5,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1019,6 +1122,7 @@ class GtTextStyles {
 
   /// Generates the Medium Subheading (Subhead M) text style.
   TextStyle subHeadM({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1027,12 +1131,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 16,
       heightPx: heightPx ?? 24,
-      widthPct: 6.0,
+      widthPct: widthPct ?? 6.0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1043,8 +1148,10 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Medium Subheading (Subhead M) text style with no widthPct.
+  /// Generates the Secondary Medium Subheading (Subhead 2M) text style, with
+  /// no tracking.
   TextStyle subHead2M({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1053,12 +1160,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 16,
       heightPx: heightPx ?? 24,
-      widthPct: 0,
+      widthPct: widthPct ?? 0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1069,8 +1177,10 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Medium Subheading (Subhead M) text style with no widthPct.
+  /// Generates the Tertiary Medium Subheading (Subhead 3M) text style, a 15px
+  /// Subhead 2M.
   TextStyle subHead3M({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1079,12 +1189,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 15,
       heightPx: heightPx ?? 24,
-      widthPct: 0,
+      widthPct: widthPct ?? 0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1097,6 +1208,7 @@ class GtTextStyles {
 
   /// Generates the Small Subheading (Subhead S) text style.
   TextStyle subHeadS({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1105,12 +1217,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
-      widthPct: 6.0,
+      widthPct: widthPct ?? 6.0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1123,6 +1236,7 @@ class GtTextStyles {
 
   /// Generates the Secondary Small Subheading (Subhead 2S) text style.
   TextStyle subHead2s({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1131,12 +1245,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 13,
       heightPx: heightPx ?? 16,
-      widthPct: 0,
+      widthPct: widthPct ?? 0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1151,6 +1266,7 @@ class GtTextStyles {
   ///
   /// Tracking defaults to 4%. Pass [widthPct] to override it.
   TextStyle subHeadXs({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1162,7 +1278,7 @@ class GtTextStyles {
     double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 12,
       heightPx: heightPx ?? 16,
       widthPct: widthPct ?? 4.0,
@@ -1176,8 +1292,9 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Extra Small Subheading (Subhead XS) text style.
+  /// Generates the chart Y-axis tick (Chart Y Tick) text style.
   TextStyle chartYtick({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1186,12 +1303,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.title,
+      family: family ?? fonts.title,
       size: 12,
       heightPx: heightPx ?? 16,
-      widthPct: 4.0,
+      widthPct: widthPct ?? 4.0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1204,6 +1322,7 @@ class GtTextStyles {
 
   /// Generates the Double Extra Small Subheading (Subhead 2XS) text style.
   TextStyle subHead2xs({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1212,12 +1331,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 11,
       heightPx: heightPx ?? 12,
-      widthPct: 2.0,
+      widthPct: widthPct ?? 2.0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1228,8 +1348,9 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Subheading (Subhead #XS) text style.
+  /// Generates the Triple Extra Small Subheading (Subhead 3XS) text style.
   TextStyle subHead3xs({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1238,12 +1359,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 10,
       heightPx: heightPx ?? 14,
-      widthPct: 0,
+      widthPct: widthPct ?? 0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1254,8 +1376,9 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Subheading (Subhead #XS) text style.
+  /// Generates the Subhead 3.5XS text style.
   TextStyle subHead3_5xs({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1264,12 +1387,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 9,
       heightPx: heightPx ?? 12,
-      widthPct: 0,
+      widthPct: widthPct ?? 0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1280,8 +1404,9 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the Double Extra Small Subheading (Subhead #XS) text style.
+  /// Generates the Quadruple Extra Small Subheading (Subhead 4XS) text style.
   TextStyle subHead4xs({
+    String? family,
     double? heightPx,
     Color? color,
     FontWeight? weight,
@@ -1290,12 +1415,13 @@ class GtTextStyles {
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 8,
       heightPx: heightPx ?? 12,
-      widthPct: 0,
+      widthPct: widthPct ?? 0,
       weight: weight ?? .w500,
       color: color,
       decoration: decoration,
@@ -1308,20 +1434,23 @@ class GtTextStyles {
 
   /// Generates the standard Button text style.
   TextStyle button({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.title,
+      family: family ?? fonts.title,
       size: 18,
       heightPx: heightPx ?? 32,
-      widthPct: 1,
-      weight: .w700,
+      widthPct: widthPct ?? 1,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1333,20 +1462,23 @@ class GtTextStyles {
 
   /// Generates the Small Button (Button S) text style.
   TextStyle buttonS({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.title,
+      family: family ?? fonts.title,
       size: 14,
       heightPx: heightPx ?? 16,
-      widthPct: 0,
-      weight: .w700,
+      widthPct: widthPct ?? 0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1358,20 +1490,23 @@ class GtTextStyles {
 
   /// Generates the Secondary Small Button (Button 2S) text style.
   TextStyle button2s({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.title,
+      family: family ?? fonts.title,
       size: 12,
       heightPx: heightPx ?? 12,
-      widthPct: 0,
-      weight: .w700,
+      widthPct: widthPct ?? 0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1383,20 +1518,23 @@ class GtTextStyles {
 
   /// Generates the Extra Small Button (Button XS) text style.
   TextStyle buttonXs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.title,
+      family: family ?? fonts.title,
       size: 10,
       heightPx: heightPx ?? 12,
-      widthPct: 0,
-      weight: .w700,
+      widthPct: widthPct ?? 0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1408,20 +1546,23 @@ class GtTextStyles {
 
   /// Generates the Double Extra Small Button (Button XXS) text style.
   TextStyle buttonXxs({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.title,
+      family: family ?? fonts.title,
       size: 8,
       heightPx: heightPx ?? 8,
-      widthPct: 0,
-      weight: .w700,
+      widthPct: widthPct ?? 0,
+      weight: weight ?? .w700,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1438,24 +1579,27 @@ class GtTextStyles {
   /// Bottom navigation label text for the floating **iOS** bar or Material
   /// **Android** [BottomNavigationBar].
   ///
-  /// When [isAndroid] is true, [GtFonts.bottomNav] is used; iOS uses an empty
-  /// family so the platform/theme default applies.
+  /// When [isAndroid] is true, [GtFonts.title] is used; iOS uses
+  /// [GtFonts.body].
   TextStyle navBarLabel({
+    String? family,
     double? heightPx,
     bool isAndroid = false,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: isAndroid ? fonts.title : fonts.body,
+      family: family ?? (isAndroid ? fonts.title : fonts.body),
       size: isAndroid ? 11 : 9,
       heightPx: heightPx ?? 12,
-      widthPct: 0,
-      weight: isAndroid ? .w700 : .w600,
+      widthPct: widthPct ?? 0,
+      weight: weight ?? (isAndroid ? .w700 : .w600),
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1467,20 +1611,23 @@ class GtTextStyles {
 
   /// Generates the text style used for calendar days and headers.
   TextStyle calendar({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.body,
+      family: family ?? fonts.body,
       size: 14,
       heightPx: heightPx ?? 20,
-      widthPct: -.6,
-      weight: .w500,
+      widthPct: widthPct ?? -.6,
+      weight: weight ?? .w500,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1490,22 +1637,25 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the text style used for calendar days and headers.
+  /// Generates the FX amount input (FX Input) text style.
   TextStyle fxInput({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.title,
+      family: family ?? fonts.title,
       size: 28,
       heightPx: heightPx ?? 32,
-      widthPct: 0,
-      weight: .bold,
+      widthPct: widthPct ?? 0,
+      weight: weight ?? .bold,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
@@ -1515,22 +1665,25 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the text style used for calendar days and headers.
+  /// Generates the Rate Pill text style.
   TextStyle ratePill({
+    String? family,
     double? heightPx,
     Color? color,
+    FontWeight? weight,
     TextDecoration? decoration,
     Color? decorationColor,
     double? decorationThickness,
     TextDecorationStyle? decorationStyle,
     TextOverflow? overflow,
+    double? widthPct,
   }) {
     return buildStyle(
-      family: fonts.title,
+      family: family ?? fonts.title,
       size: 14,
       heightPx: heightPx ?? 20,
-      widthPct: 0,
-      weight: .w600,
+      widthPct: widthPct ?? 0,
+      weight: weight ?? .w600,
       color: color,
       decoration: decoration,
       decorationColor: decorationColor,
