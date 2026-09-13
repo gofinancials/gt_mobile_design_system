@@ -157,8 +157,11 @@ class GtTextField<T> extends GtStatefulWidget {
   State<GtTextField> createState() => _GtTextFieldState();
 }
 
+/// The state for [GtTextField].
 class _GtTextFieldState extends State<GtTextField>
     with WidgetsBindingObserver, AppTaskMixin {
+  /// The input controller in use, either [GtTextField.controller] or one
+  /// owned by this state.
   late final GtInputController controller;
 
   @override
@@ -167,8 +170,13 @@ class _GtTextFieldState extends State<GtTextField>
     controller = widget.controller ?? GtInputController();
   }
 
+  /// The focus node of [controller].
   FocusNode get _inputFocus => controller.focusNode;
+
+  /// The text editing controller of [controller].
   TextEditingController get _ctrl => controller.controller;
+
+  /// The decoration passed to the widget, if any.
   GtInputDecoration? get _decoration => widget.decoration;
 
   @override
@@ -182,7 +190,7 @@ class _GtTextFieldState extends State<GtTextField>
     BuildContext context,
     FormFieldState formState,
   ) {
-    final decor = _decoration ?? context.inputStyles.defaultDecoration;
+    final decor = _decoration ?? context.inputStyles.defaultDecoration();
     final hasFocus = _inputFocus.hasFocus;
     if (!widget.isEnabled) return decor.disabledDecoration;
     if (formState.hasError) {
@@ -193,7 +201,7 @@ class _GtTextFieldState extends State<GtTextField>
 
   @override
   Widget build(BuildContext context) {
-    final decoration = _decoration ?? context.inputStyles.defaultDecoration;
+    final decoration = _decoration ?? context.inputStyles.defaultDecoration();
     final style = decoration.textStyle;
     final hintStyle = decoration.hintStyle;
     final labelStyle = decoration.labelStyle ?? hintStyle;
@@ -286,14 +294,15 @@ class _GtTextFieldState extends State<GtTextField>
           scrollPadding: .zero,
           onChanged: widget.onChanged,
           autofillHints: widget.autofillHints,
-          decoration: context.inputStyles.inputStyle.copyWith(
-            hintStyle: hintStyle,
-            hintMaxLines: decoration.hintMaxLines,
-            floatingLabelStyle: hintStyle,
-            hintText: widget.hintText ?? widget.label,
-            counter: const SizedBox.shrink(),
-            enabled: widget.isEnabled,
-          ),
+          decoration: context.inputStyles
+              .inputStyle(hintMaxLines: decoration.hintMaxLines)
+              .copyWith(
+                hintStyle: hintStyle,
+                floatingLabelStyle: hintStyle,
+                hintText: widget.hintText ?? widget.label,
+                counter: const SizedBox.shrink(),
+                enabled: widget.isEnabled,
+              ),
         ),
       ),
     );
@@ -302,21 +311,49 @@ class _GtTextFieldState extends State<GtTextField>
 
 /// An internal layout widget that structures the input container and its helper/error text.
 class _GtTextFieldLayout extends GtStatelessWidget {
+  /// The input decoration supplying the constraints, padding and size.
   final GtInputDecoration decoration;
+
+  /// The box decoration for the field's current state.
   final BoxDecoration activeDecoration;
+
+  /// The helper or error text shown beneath the field.
   final String? helperText;
+
+  /// The style of [helperText].
   final TextStyle helperStyle;
+
+  /// Whether the field is showing an error.
   final bool hasError;
+
+  /// The label shown above the input while it is focused or filled.
   final String? labelText;
+
+  /// The style of [labelText].
   final TextStyle? labelStyle;
+
+  /// The maximum number of lines [helperText] can occupy.
   final int maxLines;
+
+  /// How [helperText] is aligned horizontally.
   final TextAlign? textAlign;
+
+  /// An optional widget displayed before the input.
   final Widget? prefix;
+
+  /// An optional widget displayed after the input.
   final Widget? suffix;
+
+  /// The text input itself.
   final Widget child;
+
+  /// Whether the field is focused or holds a value, which reveals [labelText].
   final bool focused;
+
+  /// Whether the field grows vertically for multiline input.
   final bool multiline;
 
+  /// Creates a [_GtTextFieldLayout].
   const _GtTextFieldLayout({
     required this.decoration,
     required this.activeDecoration,
@@ -409,13 +446,24 @@ class _GtTextFieldLayout extends GtStatelessWidget {
   }
 }
 
+/// A private widget that shows the helper or error text beneath a [GtTextField].
 class _GtTextFieldSupportingText extends GtStatelessWidget {
+  /// The helper or error text to show; nothing renders when it is empty.
   final String? helperText;
+
+  /// The style of [helperText].
   final TextStyle helperStyle;
+
+  /// Whether [helperText] is an error, announced as a live region.
   final bool hasError;
+
+  /// How [helperText] is aligned horizontally.
   final TextAlign? textAlign;
+
+  /// The maximum number of lines [helperText] can occupy.
   final int maxLines;
 
+  /// Creates a [_GtTextFieldSupportingText].
   const _GtTextFieldSupportingText({
     super.key,
     required this.helperText,

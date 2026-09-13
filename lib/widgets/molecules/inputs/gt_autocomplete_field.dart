@@ -124,6 +124,7 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
   State<GtAutocompleteField<T>> createState() => _GtAutocompleteFieldState<T>();
 }
 
+/// The state for [GtAutocompleteField].
 class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
   /// The controller managing the text and focus state.
   late final GtInputController controller;
@@ -209,7 +210,7 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
       optionsViewBuilder: (context, onSelected, options) {
         if (!widget.isEnabled) return Offstage();
         final decoration =
-            widget.decoration ?? context.inputStyles.defaultDecoration;
+            widget.decoration ?? context.inputStyles.defaultDecoration();
 
         return GtCard(
           margin: context.insets.symmetricDp(vertical: 12.px),

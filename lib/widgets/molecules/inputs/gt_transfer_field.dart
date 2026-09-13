@@ -72,7 +72,9 @@ class GtTransferField extends GtStatefulWidget {
   State<GtTransferField> createState() => _GtTransferFieldState();
 }
 
+/// The state for [GtTransferField].
 class _GtTransferFieldState extends State<GtTransferField> {
+  /// The balance of the participant being validated, or zero if neither is.
   double get balance {
     final first = widget.firstParticipant;
     final second = widget.secondParticipant;
@@ -110,7 +112,7 @@ class _GtTransferFieldState extends State<GtTransferField> {
         );
       },
       builder: (field) {
-        GtInputDecoration decoration = context.inputStyles.transferInputStyle;
+        GtInputDecoration decoration = context.inputStyles.transferInputStyle();
         String? footer;
         TextStyle? subStyle;
 
@@ -211,7 +213,7 @@ class _GtTransferFieldState extends State<GtTransferField> {
                 controller: widget.noteController,
                 hintText: widget.noteHint,
                 isEnabled: widget.isEnabled,
-                decoration: context.inputStyles.plainDecoration,
+                decoration: context.inputStyles.plainDecoration(),
                 onChanged: widget.onNoteChanged,
               ),
             ),
@@ -272,7 +274,7 @@ class GtFxTransferField extends GtStatefulWidget {
   /// The content to display between the two participants.
   final Widget? child;
 
-  /// Creates a new [GtTransferField].
+  /// Creates a new [GtFxTransferField].
   const GtFxTransferField({
     super.key,
     required this.sourceAmountController,
@@ -297,7 +299,9 @@ class GtFxTransferField extends GtStatefulWidget {
   State<GtFxTransferField> createState() => _GtFxTransferFieldState();
 }
 
+/// The state for [GtFxTransferField].
 class _GtFxTransferFieldState extends State<GtFxTransferField> {
+  /// The balance of the participant being validated, or zero if neither is.
   double get balance {
     final first = widget.firstParticipant;
     final second = widget.secondParticipant;
@@ -335,7 +339,8 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
         );
       },
       builder: (field) {
-        GtInputDecoration decoration = context.inputStyles.fxTransferInputStyle;
+        GtInputDecoration decoration = context.inputStyles
+            .fxTransferInputStyle();
         String? footer;
         TextStyle? subStyle;
 
@@ -476,7 +481,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
                 controller: widget.noteController,
                 hintText: widget.noteHint,
                 isEnabled: widget.isEnabled,
-                decoration: context.inputStyles.plainDecoration,
+                decoration: context.inputStyles.plainDecoration(),
                 onChanged: widget.onNoteChanged,
               ),
             ),
@@ -487,13 +492,24 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
   }
 }
 
+/// A private widget that renders one participant of a transfer as a tile.
 class _GtTransferParticipantWidget extends GtStatelessWidget {
+  /// The participant to display.
   final GtTransferParticipantData data;
+
+  /// Extra subtitle text, such as a validation error, shown after the balance.
   final String? footerSuffix;
+
+  /// An optional style for the subtitle, used to highlight errors.
   final TextStyle? footerStyle;
+
+  /// The tile's cross-axis alignment when a name or footer is shown.
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// The maximum number of lines for the tile's text.
   final int? maxLines;
 
+  /// Creates a [_GtTransferParticipantWidget].
   const _GtTransferParticipantWidget({
     super.key,
     required this.data,
@@ -595,8 +611,10 @@ class GtTransferCategoryField extends GtStatefulWidget {
       _GtTransferCategoryFieldState();
 }
 
+/// The state for [GtTransferCategoryField].
 class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     with GtBottomSheetMixin, GtTransactionCategoryMixin {
+  /// The category controller, created locally if none is given.
   late final GtTransactionCategoryController controller;
 
   @override
@@ -623,10 +641,12 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     super.dispose();
   }
 
+  /// The category shown when none is selected.
   GtTransactionCategory get _fallbackCategory {
     return defaultInputCategories.first;
   }
 
+  /// The controller's categories as dropdown data, or the defaults if empty.
   FutureOr<List<GtDropdownData<GtTransactionCategory>>>
   get _allCategories async {
     List<GtTransactionCategory> categories = controller.categories;
@@ -636,6 +656,7 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     return categories.mapList((it) => it.dropdownData);
   }
 
+  /// Opens a [GtDropDownModal] for picking a category, unless disabled.
   void _showSheet() {
     if (!widget.isEnabled) return;
     final dropdownController = GtDropdownInputController(
@@ -679,7 +700,7 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
 
   @override
   Widget build(BuildContext context) {
-    final decoration = context.inputStyles.plainDecoration;
+    final decoration = context.inputStyles.plainDecoration();
 
     Widget child = GtDisabledOverlay(
       !widget.isEnabled,

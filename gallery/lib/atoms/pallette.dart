@@ -701,7 +701,7 @@ class _PalettePageState extends State<_PalettePage> {
                     hintText: 'Search by name or hex...',
                     controller: _searchCtrl,
                     onChanged: (v) => setState(() => _query = v ?? ''),
-                    decoration: context.inputStyles.searchDecoration,
+                    decoration: context.inputStyles.searchDecoration(),
                     prefix: GtIcon(GtIcons.magnifier, variant: .sub),
                     textInputAction: TextInputAction.search,
                   ),

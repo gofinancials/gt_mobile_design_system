@@ -37,6 +37,7 @@ class GtDobField extends GtStatefulWidget {
   State<GtDobField> createState() => _GtDobFieldState();
 }
 
+/// The state for [GtDobField].
 class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
   /// The controller used to manage the date selection state.
   late GtDobController _dobController;
@@ -82,6 +83,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
     _yearCtrl.text = _dobController.year?.toString() ?? '';
   }
 
+  /// Requests focus on [node] after this frame, or clears focus if it is null.
   void _updateFocus([FocusNode? node]) {
     if (node == null) {
       context.resetFocus();
@@ -97,7 +99,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
   @override
   Widget build(BuildContext context) {
     final decoration =
-        widget.decoration ?? context.inputStyles.defaultDecoration;
+        widget.decoration ?? context.inputStyles.defaultDecoration();
     return ListenableBuilder(
       listenable: _dobController,
       builder: (context, child) {

@@ -71,11 +71,12 @@ class GtAmountField extends GtStatefulWidget {
   State<GtAmountField> createState() => _GtAmountFieldState();
 }
 
+/// The state for [GtAmountField].
 class _GtAmountFieldState extends State<GtAmountField> {
   @override
   Widget build(BuildContext context) {
     return GtTextField(
-      decoration: widget.decoration ?? context.inputStyles.transferInputStyle,
+      decoration: widget.decoration ?? context.inputStyles.transferInputStyle(),
       isEnabled: widget.isEnabled,
       label: widget.label,
       autoCorrect: false,

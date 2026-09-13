@@ -137,7 +137,9 @@ class GtSuccessRateBody extends GtStatefulWidget {
   State<GtSuccessRateBody> createState() => _GtSuccessRateBodyState();
 }
 
+/// The state for [GtSuccessRateBody].
 class _GtSuccessRateBodyState extends State<GtSuccessRateBody> {
+  /// The debouncer used to delay applying the search query.
   late final AppDebouncer debouncer;
 
   /// The source data plus its loading/error state.
@@ -191,6 +193,7 @@ class _GtSuccessRateBodyState extends State<GtSuccessRateBody> {
     }
   }
 
+  /// Publishes [query] to [queryNotifier] once typing settles.
   void _filterRates(String? query) {
     debouncer.abort();
     debouncer.run(() {
@@ -225,7 +228,7 @@ class _GtSuccessRateBodyState extends State<GtSuccessRateBody> {
                   onChange: _filterRates,
                   autoFocus: widget.autoFocusSearch,
                   hintText: widget.searchHint ?? "searchBankName".utr(),
-                  decoration: context.inputStyles.searchDecoration,
+                  decoration: context.inputStyles.searchDecoration(),
                   prefix: ExcludeSemantics(
                     child: GtIcon.withColor(
                       GtIcons.magnifier,
@@ -262,15 +265,31 @@ class _GtSuccessRateBodyState extends State<GtSuccessRateBody> {
 
 /// Resolves the load state into the list, or into the matching placeholder.
 class _SuccessRateContent extends GtStatelessWidget {
+  /// The source entries together with their loading and error state.
   final FutureListData<GtSuccessRateData> state;
+
+  /// The debounced search query used to filter the entries.
   final String? query;
+
+  /// An optional controller for the underlying scroll view.
   final ScrollController? controller;
+
+  /// Displayed during the first load, defaulting to a [GtSpinner].
   final Widget? loadingWidget;
+
+  /// Displayed when the entries fail to resolve.
   final Widget? errorWidget;
+
+  /// Displayed when there are no entries, or none match [query].
   final Widget? emptyWidget;
+
+  /// Overrides how an individual entry renders.
   final ValueBuilder<GtSuccessRateData>? builder;
+
+  /// Replaces the entire list, receiving the filtered entries and [controller].
   final ValueBuilder2<List<GtSuccessRateData>, ScrollController?>? listBuilder;
 
+  /// Creates a [_SuccessRateContent].
   const _SuccessRateContent({
     required this.state,
     required this.query,
@@ -303,10 +322,16 @@ class _SuccessRateContent extends GtStatelessWidget {
 /// The default presentation: a lazily built list whose rows are stitched into
 /// one continuous card by [GtCardListTile].
 class _SuccessRateList extends GtStatelessWidget {
+  /// The filtered entries to list, one row each.
   final List<GtSuccessRateData> entries;
+
+  /// An optional controller for the underlying scroll view.
   final ScrollController? controller;
+
+  /// Overrides how an individual entry renders.
   final ValueBuilder<GtSuccessRateData>? builder;
 
+  /// Creates a [_SuccessRateList].
   const _SuccessRateList(this.entries, {this.controller, this.builder});
 
   @override
@@ -340,9 +365,13 @@ class _SuccessRateList extends GtStatelessWidget {
 /// Renders a single entry, delegating to [builder] when one is supplied and
 /// wrapping the row in a [GtInkWell] when the entry is tappable.
 class _SuccessRateRow extends GtStatelessWidget {
+  /// The entry this row displays.
   final GtSuccessRateData entry;
+
+  /// Overrides how the entry renders.
   final ValueBuilder<GtSuccessRateData>? builder;
 
+  /// Creates a [_SuccessRateRow].
   const _SuccessRateRow(this.entry, {this.builder});
 
   @override

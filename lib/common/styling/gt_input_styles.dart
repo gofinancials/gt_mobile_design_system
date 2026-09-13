@@ -8,6 +8,12 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// colors, border radii, padding, and typography for various input components
 /// (e.g., text fields, dropdowns) as defined in the design system.
 ///
+/// Every style method accepts optional overrides for the icon color, the
+/// hint, error and helper max lines, and each text style the method sets.
+/// A null override falls back to the style's token value. Styles derived from
+/// the main text style (hint, disabled, and the search styles' error) follow
+/// an overridden `textStyle` unless they are overridden as well.
+///
 /// {@category Styling}
 class GtInputStyles {
   /// The [BuildContext] used to access the current theme and adaptive sizing utilities.
@@ -22,12 +28,18 @@ class GtInputStyles {
   ///
   /// Useful as a base for custom input fields where all default Material
   /// borders, padding, and background colors need to be stripped away.
-  InputDecoration get inputStyle {
+  /// The icon color defaults to transparent and the max lines to 0.
+  InputDecoration inputStyle({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+  }) {
     return InputDecoration(
-      iconColor: Colors.transparent,
-      errorMaxLines: 0,
-      helperMaxLines: 0,
-      hintMaxLines: 0,
+      iconColor: iconColor ?? Colors.transparent,
+      errorMaxLines: errorMaxLines ?? 0,
+      helperMaxLines: helperMaxLines ?? 0,
+      hintMaxLines: hintMaxLines ?? 0,
       isDense: true,
       filled: false,
       alignLabelWithHint: true,
@@ -63,37 +75,74 @@ class GtInputStyles {
 
   /// The style configuration used for large, emphasis-heavy inputs,
   /// typically seen in money transfer screens.
-  GtInputDecoration get transferInputStyle {
-    final textStyle = context.textStyles.h3();
-    final disabledStyle = textStyle.copyWith(
-      color: context.palette.text.disabled,
-    );
+  ///
+  /// The hint shares the disabled style.
+  GtInputDecoration transferInputStyle({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    final computedTextStyle = textStyle ?? context.textStyles.h3();
+    final computedDisabledStyle =
+        disabledStyle ??
+        computedTextStyle.copyWith(color: context.palette.text.disabled);
     return GtInputDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines ?? 1,
+      errorMaxLines: errorMaxLines ?? 1,
+      helperMaxLines: helperMaxLines ?? 1,
       size: Size(.infinity, 70),
-      textStyle: textStyle,
-      disabledStyle: disabledStyle,
-      hintStyle: disabledStyle,
-      errorStyle: context.textStyles.body2s(color: context.palette.error.base),
-      helperStyle: context.textStyles.body2s(),
+      textStyle: computedTextStyle,
+      disabledStyle: computedDisabledStyle,
+      hintStyle: hintStyle ?? computedDisabledStyle,
+      errorStyle:
+          errorStyle ??
+          context.textStyles.body2s(color: context.palette.error.base),
+      helperStyle: helperStyle ?? context.textStyles.body2s(),
       decoration: BoxDecoration(),
       padding: context.insets.allDp(8.px),
     );
   }
 
-  /// The style configuration used for large, emphasis-heavy inputs,
-  /// typically seen in money transfer screens.
-  GtInputDecoration get fxTransferInputStyle {
-    final textStyle = context.textStyles.fxInput();
-    final disabledStyle = textStyle.copyWith(
-      color: context.palette.text.disabled,
-    );
+  /// The style configuration used for the large amount input on FX transfer
+  /// screens, set in the FX input type at a shorter height than
+  /// [transferInputStyle].
+  ///
+  /// The hint shares the disabled style.
+  GtInputDecoration fxTransferInputStyle({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    final computedTextStyle = textStyle ?? context.textStyles.fxInput();
+    final computedDisabledStyle =
+        disabledStyle ??
+        computedTextStyle.copyWith(color: context.palette.text.disabled);
     return GtInputDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines ?? 1,
+      errorMaxLines: errorMaxLines ?? 1,
+      helperMaxLines: helperMaxLines ?? 1,
       size: Size(.infinity, 48),
-      textStyle: textStyle,
-      disabledStyle: disabledStyle,
-      hintStyle: disabledStyle,
-      errorStyle: context.textStyles.body2s(color: context.palette.error.base),
-      helperStyle: context.textStyles.body2s(),
+      textStyle: computedTextStyle,
+      disabledStyle: computedDisabledStyle,
+      hintStyle: hintStyle ?? computedDisabledStyle,
+      errorStyle:
+          errorStyle ??
+          context.textStyles.body2s(color: context.palette.error.base),
+      helperStyle: helperStyle ?? context.textStyles.body2s(),
       decoration: BoxDecoration(),
       padding: context.insets.allDp(8.px),
     );
@@ -101,21 +150,40 @@ class GtInputStyles {
 
   /// The default style configuration for standard form text fields,
   /// featuring a weak background and standard height.
-  GtInputDecoration get defaultDecoration {
-    final textStyle = context.textStyles.input();
-    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
-    final disabledStyle = textStyle.copyWith(
-      color: context.palette.text.disabled,
-    );
+  GtInputDecoration defaultDecoration({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? labelStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    final computedTextStyle = textStyle ?? context.textStyles.input();
 
     return GtInputDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines ?? 1,
+      errorMaxLines: errorMaxLines ?? 1,
+      helperMaxLines: helperMaxLines ?? 1,
       size: Size(.infinity, 64),
-      textStyle: textStyle,
-      disabledStyle: disabledStyle,
-      hintStyle: hintStyle,
-      labelStyle: context.textStyles.body2s(color: context.palette.text.soft),
-      errorStyle: context.textStyles.body2s(color: context.palette.error.base),
-      helperStyle: context.textStyles.body2s(),
+      textStyle: computedTextStyle,
+      disabledStyle:
+          disabledStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.disabled),
+      hintStyle:
+          hintStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.soft),
+      labelStyle:
+          labelStyle ??
+          context.textStyles.body2s(color: context.palette.text.soft),
+      errorStyle:
+          errorStyle ??
+          context.textStyles.body2s(color: context.palette.error.base),
+      helperStyle: helperStyle ?? context.textStyles.body2s(),
       decoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
@@ -145,16 +213,58 @@ class GtInputStyles {
 
   /// The style configuration specifically tailored for phone number input fields,
   /// matching the default decoration but optimizing padding for phone numbers.
-  GtInputDecoration get phoneInputDecoration {
-    return defaultDecoration.copyWith(
-      padding: context.insets.symmetricDp(horizontal: 16.px),
-    );
+  GtInputDecoration phoneInputDecoration({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? labelStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    return defaultDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines,
+      errorMaxLines: errorMaxLines,
+      helperMaxLines: helperMaxLines,
+      textStyle: textStyle,
+      hintStyle: hintStyle,
+      errorStyle: errorStyle,
+      labelStyle: labelStyle,
+      helperStyle: helperStyle,
+      disabledStyle: disabledStyle,
+    ).copyWith(padding: context.insets.symmetricDp(horizontal: 16.px));
   }
 
   /// The style configuration for country or phone code selector fields,
   /// featuring a subtle border to distinguish it from the main phone input.
-  GtInputDecoration get phoneCodeDecoration {
-    return phoneInputDecoration.copyWith(
+  GtInputDecoration phoneCodeDecoration({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? labelStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    return phoneInputDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines,
+      errorMaxLines: errorMaxLines,
+      helperMaxLines: helperMaxLines,
+      textStyle: textStyle,
+      hintStyle: hintStyle,
+      errorStyle: errorStyle,
+      labelStyle: labelStyle,
+      helperStyle: helperStyle,
+      disabledStyle: disabledStyle,
+    ).copyWith(
       decoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         border: Border.all(color: context.palette.stroke.sub, width: 1.5),
@@ -163,23 +273,42 @@ class GtInputStyles {
     );
   }
 
-  /// The default style configuration for standard form text fields,
-  /// featuring a weak background and standard height.
-  GtInputDecoration get plainDecoration {
-    final textStyle = context.textStyles.bodyS();
-    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
-    final disabledStyle = textStyle.copyWith(
-      color: context.palette.text.disabled,
-    );
+  /// A plain style configuration for inline form fields, featuring a weak
+  /// background, small body text and no focused, error or disabled variants.
+  GtInputDecoration plainDecoration({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? labelStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    final computedTextStyle = textStyle ?? context.textStyles.bodyS();
 
     return GtInputDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines ?? 1,
+      errorMaxLines: errorMaxLines ?? 1,
+      helperMaxLines: helperMaxLines ?? 1,
       size: Size(.infinity, 48),
-      textStyle: textStyle,
-      disabledStyle: disabledStyle,
-      hintStyle: hintStyle,
-      labelStyle: context.textStyles.body2s(color: context.palette.text.soft),
-      errorStyle: context.textStyles.body2s(color: context.palette.error.base),
-      helperStyle: context.textStyles.body2s(),
+      textStyle: computedTextStyle,
+      disabledStyle:
+          disabledStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.disabled),
+      hintStyle:
+          hintStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.soft),
+      labelStyle:
+          labelStyle ??
+          context.textStyles.body2s(color: context.palette.text.soft),
+      errorStyle:
+          errorStyle ??
+          context.textStyles.body2s(color: context.palette.error.base),
+      helperStyle: helperStyle ?? context.textStyles.body2s(),
       decoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
@@ -190,21 +319,40 @@ class GtInputStyles {
 
   /// A compact style configuration for standard form text fields,
   /// featuring a smaller height and reduced text size.
-  GtInputDecoration get smDecoration {
-    final textStyle = context.textStyles.bodyS();
-    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
-    final disabledStyle = textStyle.copyWith(
-      color: context.palette.text.disabled,
-    );
+  GtInputDecoration smDecoration({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? labelStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    final computedTextStyle = textStyle ?? context.textStyles.bodyS();
 
     return GtInputDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines ?? 1,
+      errorMaxLines: errorMaxLines ?? 1,
+      helperMaxLines: helperMaxLines ?? 1,
       size: Size(.infinity, 60),
-      textStyle: textStyle,
-      disabledStyle: disabledStyle,
-      hintStyle: hintStyle,
-      labelStyle: context.textStyles.body2s(color: context.palette.text.soft),
-      errorStyle: context.textStyles.body2s(color: context.palette.error.base),
-      helperStyle: context.textStyles.body2s(),
+      textStyle: computedTextStyle,
+      disabledStyle:
+          disabledStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.disabled),
+      hintStyle:
+          hintStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.soft),
+      labelStyle:
+          labelStyle ??
+          context.textStyles.body2s(color: context.palette.text.soft),
+      errorStyle:
+          errorStyle ??
+          context.textStyles.body2s(color: context.palette.error.base),
+      helperStyle: helperStyle ?? context.textStyles.body2s(),
       decoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
@@ -234,20 +382,36 @@ class GtInputStyles {
 
   /// The style configuration tailored for standard search inputs,
   /// featuring a weak background and smaller text.
-  GtInputDecoration get searchDecoration {
-    final textStyle = context.textStyles.bodyXs();
-    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
-    final disabledStyle = textStyle.copyWith(
-      color: context.palette.text.disabled,
-    );
+  GtInputDecoration searchDecoration({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    final computedTextStyle = textStyle ?? context.textStyles.bodyXs();
 
     return GtInputDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines ?? 1,
+      errorMaxLines: errorMaxLines ?? 1,
+      helperMaxLines: helperMaxLines ?? 1,
       size: Size(.infinity, 52),
-      textStyle: textStyle,
-      disabledStyle: disabledStyle,
-      hintStyle: hintStyle,
-      errorStyle: textStyle.copyWith(color: context.palette.error.base),
-      helperStyle: context.textStyles.body2s(),
+      textStyle: computedTextStyle,
+      disabledStyle:
+          disabledStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.disabled),
+      hintStyle:
+          hintStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.soft),
+      errorStyle:
+          errorStyle ??
+          computedTextStyle.copyWith(color: context.palette.error.base),
+      helperStyle: helperStyle ?? context.textStyles.body2s(),
       decoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
@@ -276,21 +440,37 @@ class GtInputStyles {
   }
 
   /// A compact style configuration for search inputs,
-  /// featuring a smaller height than [searchStyle].
-  GtInputDecoration get smSearchDecoration {
-    final textStyle = context.textStyles.bodyXs();
-    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
-    final disabledStyle = textStyle.copyWith(
-      color: context.palette.text.disabled,
-    );
+  /// featuring a smaller height than [searchDecoration].
+  GtInputDecoration smSearchDecoration({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    final computedTextStyle = textStyle ?? context.textStyles.bodyXs();
 
     return GtInputDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines ?? 1,
+      errorMaxLines: errorMaxLines ?? 1,
+      helperMaxLines: helperMaxLines ?? 1,
       size: Size(.infinity, 40),
-      textStyle: textStyle,
-      disabledStyle: disabledStyle,
-      hintStyle: hintStyle,
-      errorStyle: textStyle.copyWith(color: context.palette.error.base),
-      helperStyle: context.textStyles.body2s(),
+      textStyle: computedTextStyle,
+      disabledStyle:
+          disabledStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.disabled),
+      hintStyle:
+          hintStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.soft),
+      errorStyle:
+          errorStyle ??
+          computedTextStyle.copyWith(color: context.palette.error.base),
+      helperStyle: helperStyle ?? context.textStyles.body2s(),
       decoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.weak,
@@ -320,20 +500,36 @@ class GtInputStyles {
 
   /// A compact style configuration for search inputs with a white background,
   /// typically used on slightly darker or off-white surfaces.
-  GtInputDecoration get smWhiteSearchDecoration {
-    final textStyle = context.textStyles.bodyXs();
-    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
-    final disabledStyle = textStyle.copyWith(
-      color: context.palette.text.disabled,
-    );
+  GtInputDecoration smWhiteSearchDecoration({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    final computedTextStyle = textStyle ?? context.textStyles.bodyXs();
 
     return GtInputDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines ?? 1,
+      errorMaxLines: errorMaxLines ?? 1,
+      helperMaxLines: helperMaxLines ?? 1,
       size: Size(.infinity, 40),
-      textStyle: textStyle,
-      disabledStyle: disabledStyle,
-      hintStyle: hintStyle,
-      errorStyle: textStyle.copyWith(color: context.palette.error.base),
-      helperStyle: context.textStyles.body2s(),
+      textStyle: computedTextStyle,
+      disabledStyle:
+          disabledStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.disabled),
+      hintStyle:
+          hintStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.soft),
+      errorStyle:
+          errorStyle ??
+          computedTextStyle.copyWith(color: context.palette.error.base),
+      helperStyle: helperStyle ?? context.textStyles.body2s(),
       decoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.white,
@@ -363,14 +559,20 @@ class GtInputStyles {
     );
   }
 
-  /// A compact style configuration for search inputs with a white background,
-  /// typically used on slightly darker or off-white surfaces.
-  GtInputDecoration get smWhiteSearchBorderlessDecoration {
-    final textStyle = context.textStyles.bodyXs();
-    final hintStyle = textStyle.copyWith(color: context.palette.text.soft);
-    final disabledStyle = textStyle.copyWith(
-      color: context.palette.text.disabled,
-    );
+  /// A borderless variant of [smWhiteSearchDecoration] that signals errors
+  /// with a tinted fill instead of a border.
+  GtInputDecoration smWhiteSearchBorderlessDecoration({
+    Color? iconColor,
+    int? hintMaxLines,
+    int? errorMaxLines,
+    int? helperMaxLines,
+    TextStyle? textStyle,
+    TextStyle? hintStyle,
+    TextStyle? errorStyle,
+    TextStyle? helperStyle,
+    TextStyle? disabledStyle,
+  }) {
+    final computedTextStyle = textStyle ?? context.textStyles.bodyXs();
     final border = Border.all(
       color: Colors.transparent,
       width: 0,
@@ -378,12 +580,22 @@ class GtInputStyles {
     );
 
     return GtInputDecoration(
+      iconColor: iconColor,
+      hintMaxLines: hintMaxLines ?? 1,
+      errorMaxLines: errorMaxLines ?? 1,
+      helperMaxLines: helperMaxLines ?? 1,
       size: Size(.infinity, 40),
-      textStyle: textStyle,
-      disabledStyle: disabledStyle,
-      hintStyle: hintStyle,
-      errorStyle: textStyle.copyWith(color: context.palette.error.base),
-      helperStyle: context.textStyles.body2s(),
+      textStyle: computedTextStyle,
+      disabledStyle:
+          disabledStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.disabled),
+      hintStyle:
+          hintStyle ??
+          computedTextStyle.copyWith(color: context.palette.text.soft),
+      errorStyle:
+          errorStyle ??
+          computedTextStyle.copyWith(color: context.palette.error.base),
+      helperStyle: helperStyle ?? context.textStyles.body2s(),
       decoration: BoxDecoration(
         borderRadius: context.borderRadiusXl,
         color: context.palette.bg.white,
@@ -413,19 +625,20 @@ class GtInputStyles {
     );
   }
 
-  /// A collection containing all predefined [GtInputDecoration] configurations paired with their labels.
+  /// A collection containing all predefined [GtInputDecoration] configurations
+  /// paired with their labels, each built without overrides.
   List<(String, GtInputDecoration)> get all => [
-    ('Default Decoration', defaultDecoration),
-    ('Transfer Input Style', transferInputStyle),
-    ('FX Transfer Input Style', fxTransferInputStyle),
-    ('Plain Decoration', plainDecoration),
-    ('Small Decoration', smDecoration),
-    ('Search Decoration', searchDecoration),
-    ('Small Search Decoration', smSearchDecoration),
-    ('Small White Search Decoration', smWhiteSearchDecoration),
+    ('Default Decoration', defaultDecoration()),
+    ('Transfer Input Style', transferInputStyle()),
+    ('FX Transfer Input Style', fxTransferInputStyle()),
+    ('Plain Decoration', plainDecoration()),
+    ('Small Decoration', smDecoration()),
+    ('Search Decoration', searchDecoration()),
+    ('Small Search Decoration', smSearchDecoration()),
+    ('Small White Search Decoration', smWhiteSearchDecoration()),
     (
       'Small White Search Borderless Decoration',
-      smWhiteSearchBorderlessDecoration,
+      smWhiteSearchBorderlessDecoration(),
     ),
   ];
 }
@@ -557,6 +770,8 @@ class GtInputDecoration {
     return BoxConstraints.tightFor(height: size.height);
   }
 
+  /// Returns BoxConstraints that use the configured [size]'s height as a
+  /// minimum, letting multiline inputs grow past it.
   BoxConstraints get multilineConstraints {
     return BoxConstraints(minHeight: size.height);
   }

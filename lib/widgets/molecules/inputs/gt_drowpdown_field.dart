@@ -126,10 +126,13 @@ class GtDropdownField<T> extends GtStatefulWidget {
   State<GtDropdownField<T>> createState() => _GtDropdownFieldState<T>();
 }
 
+/// The state for [GtDropdownField].
 class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
     with GtBottomSheetMixin {
   /// The controller managing the text and focus state.
   late final GtDropdownInputController<T> controller;
+
+  /// The focus node that controls the focus state of the input.
   late final FocusNode focusNode;
 
   @override
@@ -148,6 +151,7 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
     super.dispose();
   }
 
+  /// Opens a [GtDropDownModal] in a draggable sheet, unless disabled.
   void _showSheet() {
     if (!widget.isEnabled) return;
     showDraggableSheet(
@@ -270,11 +274,19 @@ class GtDropDownModal<T> extends GtStatefulWidget {
   State<GtDropDownModal> createState() => _GtDropDownModalState<T>();
 }
 
+/// The state for [GtDropDownModal].
 class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
     with AppTaskMixin {
+  /// The debouncer used to delay filtering until the user stops typing.
   late final AppDebouncer debouncer;
+
+  /// The full list of options resolved from [GtDropDownModal.options].
   List<GtDropdownData<T>> options = [];
+
+  /// The options currently shown, narrowed by the search query.
   late final ValueNotifier<List<GtDropdownData<T>>> presentedOptions;
+
+  /// The pending task that resolves [GtDropDownModal.options].
   late final Future<List<GtDropdownData<T>>> _optionsFuture;
 
   @override
@@ -292,6 +304,8 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
     super.dispose();
   }
 
+  /// Resolves [GtDropDownModal.options] into [options] and [presentedOptions],
+  /// falling back to an empty list if the task fails.
   Future<List<GtDropdownData<T>>> _getOptions() async {
     final data = await tryRunThrowableTask(() async => await widget.options);
     options = data ?? [];
@@ -299,6 +313,7 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
     return options;
   }
 
+  /// Narrows [presentedOptions] to those matching [query] after a debounce.
   void _filterOptions(String? query) {
     debouncer.abort();
     debouncer.run(() {
@@ -333,7 +348,8 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
                       child: GtSearchField(
                         onChange: _filterOptions,
                         autoFocus: widget.autoFocus,
-                        decoration: context.inputStyles.smWhiteSearchDecoration,
+                        decoration: context.inputStyles
+                            .smWhiteSearchDecoration(),
                       ),
                     ),
                     if (!widget.title.hasValue) GtCancelButton(size: .medium),
