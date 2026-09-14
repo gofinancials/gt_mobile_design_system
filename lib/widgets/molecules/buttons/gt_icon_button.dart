@@ -33,6 +33,10 @@ class GtIconButton extends GtButton {
   /// Custom padding to apply inside the button, overriding the default zero padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// Custom size for the [icon], in logical pixels, overriding the default
+  /// size-based icon size.
+  final double? iconSize;
+
   /// The shape of the button, either square or round.
   /// Defaults to [GtIconButtonShape.round].
   final GtIconButtonShape shape;
@@ -89,6 +93,9 @@ class GtIconButton extends GtButton {
 
     /// Custom padding to apply inside the button.
     this.contentPadding,
+
+    /// Custom size for the icon, overriding the default size-based icon size.
+    this.iconSize,
 
     /// The shape of the button. Defaults to [GtIconButtonShape.round].
     this.shape = .round,
@@ -229,13 +236,16 @@ class GtIconButton extends GtButton {
     final bgColor = _bgColor(palette);
     final focusColor = _focusColor(palette);
     final style = baseStyle(context);
-    final iconSize = switch (size) {
+    double iconSize = switch (size) {
       .pill => 12.0,
       .xsmall => 14.0,
       .small => 16.0,
       .medium => 22.0,
       _ => 24.0,
     };
+    if (this.iconSize != null) {
+      iconSize = this.iconSize!;
+    }
 
     Widget child = IconButton(
       icon: ExcludeSemantics(
