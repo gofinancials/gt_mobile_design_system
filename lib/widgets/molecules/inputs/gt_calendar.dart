@@ -224,6 +224,9 @@ class GtCalendarCell extends GtStatelessWidget {
 /// A private widget that shows the calendar's month and year, and opens a
 /// month and year [GtDateWheelScroll] in a bottom sheet to jump to another
 /// month.
+///
+/// The month wheel shows short names, such as "Sep", so that they fit the
+/// wheel's width.
 class _GtCalendarHeader extends GtStatelessWidget with GtBottomSheetMixin {
   /// The formatted month and year shown in the header.
   final String day;
@@ -251,6 +254,7 @@ class _GtCalendarHeader extends GtStatelessWidget with GtBottomSheetMixin {
             child: GtDateWheelScroll(
               controller: controller,
               fields: const {.month, .year},
+              monthFormat: "MMM",
             ),
           ),
         );

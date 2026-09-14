@@ -197,6 +197,56 @@ void main() {
     });
   });
 
+  group('GtWheelScrollGroup', () {
+    Widget buildGroup({int count = 1, double? maxWheelWidth}) {
+      return buildTestWidget(
+        GtWheelScrollGroup(
+          maxWheelWidth: maxWheelWidth,
+          children: [
+            for (int i = 0; i < count; i++)
+              GtWheelScroll<int>(items: years, value: 2020, label: 'Year'),
+          ],
+        ),
+      );
+    }
+
+    double wheelWidth(WidgetTester tester) {
+      return tester.getSize(find.byType(GtWheelScroll<int>).first).width;
+    }
+
+    testWidgets('caps each wheel at the design width by default', (
+      tester,
+    ) async {
+      await tester.pumpWidget(buildGroup());
+
+      final context = tester.element(find.byType(GtWheelScrollGroup));
+      expect(wheelWidth(tester), context.dp(92.px));
+    });
+
+    testWidgets('widens each wheel up to maxWheelWidth', (tester) async {
+      await tester.pumpWidget(buildGroup());
+      final wider = wheelWidth(tester) + 40;
+
+      await tester.pumpWidget(buildGroup(maxWheelWidth: wider));
+
+      expect(wheelWidth(tester), wider);
+    });
+
+    testWidgets('never widens a wheel past its share of the card', (
+      tester,
+    ) async {
+      await tester.pumpWidget(buildGroup(count: 2, maxWheelWidth: 10000));
+
+      final row = find
+          .descendant(
+            of: find.byType(GtWheelScrollGroup),
+            matching: find.byType(Row),
+          )
+          .first;
+      expect(wheelWidth(tester), tester.getSize(row).width / 2);
+    });
+  });
+
   group('GtDateWheelScroll', () {
     Widget buildDateWheel(
       GtCalendarController controller, {
@@ -351,6 +401,7 @@ void main() {
             fadeGradient: gradient,
             backgroundColor: Colors.teal,
             padding: padding,
+            maxWheelWidth: 120,
           ),
         ),
       );
@@ -372,6 +423,7 @@ void main() {
       );
       expect(group.color, Colors.teal);
       expect(group.padding, padding);
+      expect(group.maxWheelWidth, 120);
     });
   });
 
@@ -404,6 +456,7 @@ void main() {
           find.byKey(const ValueKey('gt_date_wheel_scroll_day')),
           findsNothing,
         );
+        expect(find.text('Jun'), findsOneWidget);
 
         await scrollByRows(
           tester,
