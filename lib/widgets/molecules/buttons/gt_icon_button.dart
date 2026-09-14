@@ -236,16 +236,15 @@ class GtIconButton extends GtButton {
     final bgColor = _bgColor(palette);
     final focusColor = _focusColor(palette);
     final style = baseStyle(context);
-    double iconSize = switch (size) {
-      .pill => 12.0,
-      .xsmall => 14.0,
-      .small => 16.0,
-      .medium => 22.0,
-      _ => 24.0,
-    };
-    if (this.iconSize != null) {
-      iconSize = this.iconSize!;
-    }
+    double iconSize =
+        this.iconSize ??
+        switch (size) {
+          .pill => 12.0,
+          .xsmall => 14.0,
+          .small => 16.0,
+          .medium => 22.0,
+          _ => 24.0,
+        };
 
     Widget child = IconButton(
       icon: ExcludeSemantics(

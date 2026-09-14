@@ -96,6 +96,29 @@ void main() {
       );
     });
 
+    testWidgets('GtOutlineButton and GtTextButton keep their size-based icon '
+        'size by default', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          GtOutlineButton(
+            text: 'Next',
+            leading: GtIcons.spark,
+            onPressed: () {},
+          ),
+        ),
+      );
+
+      expect(iconRect(tester, GtIcons.spark).size, const Size.square(20));
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          GtTextButton(text: 'Next', leading: GtIcons.spark, onPressed: () {}),
+        ),
+      );
+
+      expect(iconRect(tester, GtIcons.spark).size, const Size.square(20));
+    });
+
     testWidgets('GtRaisedButton applies a custom iconSize and iconSpacing', (
       tester,
     ) async {

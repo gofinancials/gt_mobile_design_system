@@ -160,8 +160,6 @@ class GtRaisedButton extends GtButton {
     Widget? leadingIcon;
     Widget? trailingIcon;
 
-    final iconSize = this.iconSize ?? context.dp(16.px);
-
     if (leading != null) {
       leadingIcon = ExcludeSemantics(
         child: GtIcon.withColor(
@@ -215,7 +213,7 @@ class GtRaisedButton extends GtButton {
           animateChanges: enableLabelAnimation,
           style: style,
           textCase: textCase,
-          iconSize: this.iconSize,
+          iconSize: iconSize,
           iconSpacing: iconSpacing,
         ),
         child2: GtSpinner(color: textColor),
