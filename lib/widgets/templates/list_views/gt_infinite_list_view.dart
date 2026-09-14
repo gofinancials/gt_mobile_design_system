@@ -78,6 +78,7 @@ class _GtInfiniteListViewState extends State<GtInfiniteListView> {
 
   @override
   Widget build(BuildContext context) {
+    bool showLoader = data.isLoading && data.hasData;
     Widget body = RefreshIndicator.adaptive(
       onRefresh: widget.onRefresh,
       edgeOffset: indicatorOffset,
@@ -93,13 +94,7 @@ class _GtInfiniteListViewState extends State<GtInfiniteListView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(child: body),
-        Visibility(
-          visible: data.isLoading && data.hasData,
-          maintainSize: true,
-          maintainState: true,
-          maintainAnimation: true,
-          child: const GtProgress(),
-        ),
+        if (showLoader) const GtProgress(),
       ],
     );
   }
