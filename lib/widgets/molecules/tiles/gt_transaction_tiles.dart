@@ -2,6 +2,126 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// A circular leading badge for a transaction, showing up to two initials
+/// over a gradient.
+///
+/// By default the gradient is resolved from the initials by
+/// [StringGradientResolutionExtension.toGradient], so the same initials
+/// always get the same colors. [GtTransactionListTile] falls back to this
+/// badge when it has no leading widget.
+///
+/// The badge is announced as an image named by [semanticsLabel]. When it is
+/// [isDecorative], or has no [semanticsLabel], it is left out of the
+/// semantics tree, so screen readers never read the initials out.
+///
+/// {@category molecules}
+/// {@category tiles}
+class GtTransactionLeading extends GtStatelessWidget {
+  /// The text to show in the badge, usually the initials of the
+  /// transaction's counterparty.
+  ///
+  /// Longer text, such as a full name, is shortened by [text], and blank
+  /// text shows `%` instead. It also seeds the default [gradient].
+  final String initials;
+
+  /// Optional custom style override for the initials.
+  ///
+  /// Defaults to [GtTextStyles.subHeadXs] at weight 700.
+  final TextStyle? style;
+
+  /// Optional background gradient override.
+  ///
+  /// Defaults to the gradient resolved from [text] by
+  /// [StringGradientResolutionExtension.toGradient], unless [color] is set.
+  final Gradient? gradient;
+
+  /// A solid background color, drawn instead of the default gradient.
+  ///
+  /// Don't combine it with [gradient]: a [ShapeDecoration] can't paint both.
+  final Color? color;
+
+  /// The diameter of the badge. Defaults to 38dp.
+  final double? size;
+
+  /// Optional padding between the edge of the badge and the initials.
+  final EdgeInsetsGeometry? padding;
+
+  /// An accessible name for the badge, already localised.
+  ///
+  /// Supply the person or entity the transaction is with. Leave it unset, or
+  /// set [isDecorative], when that name is already on screen beside the
+  /// badge, as it is in [GtTransactionListTile].
+  final String? semanticsLabel;
+
+  /// Whether this badge is purely decorative.
+  ///
+  /// Decorative badges are excluded from the semantics tree. Prefer setting
+  /// this explicitly over simply omitting [semanticsLabel], so the intent is
+  /// visible to readers and to the lint that flags unlabelled graphics.
+  final bool isDecorative;
+
+  /// Creates a [GtTransactionLeading] showing [initials].
+  const GtTransactionLeading(
+    this.initials, {
+    this.gradient,
+    this.size,
+    this.style,
+    this.color,
+    this.padding,
+    this.semanticsLabel,
+    this.isDecorative = false,
+    super.key,
+  });
+
+  /// The text drawn in the badge.
+  ///
+  /// Uses [initials] as-is when it is one or two characters long. Longer text
+  /// is shortened with `String.initials`, which takes the first letters of the
+  /// first and last words, or the first two letters of a single word. Blank
+  /// [initials] show `%`.
+  String get text {
+    String text_ = initials.hasValue ? initials : "%";
+    if (text_.length > 2) text_ = text_.initials ?? "${text_[0]}${text_[1]}";
+    return text_;
+  }
+
+  /// Whether the badge is announced to assistive technologies.
+  ///
+  /// Only when it is not [isDecorative] and has a [semanticsLabel].
+  bool get _isAnnounced => !isDecorative && semanticsLabel.hasValue;
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyle = context.textStyles.subHeadXs(weight: .w700, heightPx: 19);
+
+    return GtSemantics(
+      role: _isAnnounced ? .image : .none,
+      label: _isAnnounced ? semanticsLabel : null,
+      excludeDescendants: true,
+      child: Container(
+        width: size,
+        height: size,
+        padding: padding,
+        alignment: .center,
+        constraints: .tight(.square(size ?? context.dp(38))),
+        decoration: ShapeDecoration(
+          shape: CircleBorder(),
+          gradient: color == null
+              ? gradient ?? text.toGradient(context)
+              : gradient,
+          color: color,
+        ),
+        child: GtText(
+          text,
+          maxLines: 1,
+          textAlign: .center,
+          style: style ?? textStyle,
+        ),
+      ),
+    );
+  }
+}
+
 /// A collection of specialized list tiles for transaction-related UI.
 ///
 /// Includes [GtTransactionListTile] for displaying financial transactions
@@ -102,16 +222,14 @@ class GtTransactionListTile extends GtStatelessWidget {
       true => palette.text.strong,
       _ => palette.success.darker,
     };
-    Widget icon = GtSquareConstrainedBox(leadingSize, child: leading);
+    Widget icon = GtTransactionLeading(
+      name.initials.value,
+      size: leadingSize,
+      isDecorative: true,
+    );
 
-    if (leading == null) {
-      final svgAsset = isDebit ? GtVectors.outflow : GtVectors.inflow;
-      icon = GtSvg(
-        svgAsset,
-        width: leadingSize,
-        height: leadingSize,
-        isDecorative: true,
-      );
+    if (leading != null) {
+      icon = GtSquareConstrainedBox(leadingSize, child: leading);
     }
 
     final valueStyle = style.subHeadS(color: amountColor, weight: .w600);
