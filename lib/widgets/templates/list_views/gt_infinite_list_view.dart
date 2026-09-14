@@ -94,7 +94,7 @@ class _GtInfiniteListViewState extends State<GtInfiniteListView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(child: body),
-        if (showLoader) const GtProgress(),
+        if (showLoader) const GtProgress() else GtSizedBox(height: 6),
       ],
     );
   }
