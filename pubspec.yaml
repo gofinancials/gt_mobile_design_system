@@ -19,7 +19,6 @@ dependencies:
     git:
       url: https://github.com/gofinancials/gt_mobile_foundation.git
       ref: v0.0.49
-  lottie: ^3.0.0
   pin_code_fields: ^9.3.0
   shimmer: ^3.0.0
   styled_text:
