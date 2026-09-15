@@ -1459,6 +1459,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               ),
               _widgetbook.WidgetbookComponent(
+                name: 'GtStackedCopyTile',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtStackedCopyTile',
+                    builder: _gallery_molecules_tiles_gt_info_tiles_usecase
+                        .playgroundGtStackedCopyTileUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtStakeHolderListTile',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
