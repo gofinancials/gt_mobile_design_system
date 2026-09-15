@@ -5,5 +5,4 @@ export 'gt_asset_image_usecase.dart';
 export 'gt_file_image_usecase.dart';
 export 'gt_memory_image_usecase.dart';
 export 'gt_svg_usecase.dart';
-export 'gt_lottie_usecase.dart';
 export 'gt_media_gallery_usecase.dart';

@@ -35,8 +35,6 @@ import 'package:gallery/atoms/media/gt_icons.dart'
     as _gallery_atoms_media_gt_icons;
 import 'package:gallery/atoms/media/gt_images.dart'
     as _gallery_atoms_media_gt_images;
-import 'package:gallery/atoms/media/gt_lottie_usecase.dart'
-    as _gallery_atoms_media_gt_lottie_usecase;
 import 'package:gallery/atoms/media/gt_media_gallery_usecase.dart'
     as _gallery_atoms_media_gt_media_gallery_usecase;
 import 'package:gallery/atoms/media/gt_memory_image_usecase.dart'
@@ -583,16 +581,6 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'Images',
                     builder:
                         _gallery_atoms_media_gt_images.playgroundImageUseCase,
-                  ),
-                ],
-              ),
-              _widgetbook.WidgetbookComponent(
-                name: 'GtLottie',
-                useCases: [
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'GtLottie',
-                    builder: _gallery_atoms_media_gt_lottie_usecase
-                        .playgroundGtLottieUseCase,
                   ),
                 ],
               ),
@@ -1467,6 +1455,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtSimpleInfoTile',
                     builder: _gallery_molecules_tiles_gt_info_tiles_usecase
                         .playgroundGtSimpleInfoTileUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtStackedCopyTile',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtStackedCopyTile',
+                    builder: _gallery_molecules_tiles_gt_info_tiles_usecase
+                        .playgroundGtStackedCopyTileUseCase,
                   ),
                 ],
               ),

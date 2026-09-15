@@ -158,23 +158,279 @@ Widget playgroundGtCopyTileUseCase(BuildContext context) {
     label: 'Value',
     initialValue: 'REF-8902517',
   );
+  final copyIconVariant = context.knobs.objectOrNull.dropdown<GtIconVariant?>(
+    label: 'Copy Icon Variant',
+    options: [null, ...GtIconVariant.values],
+    initialOption: null,
+    labelBuilder: (v) => v?.name ?? 'Default (strong)',
+  );
+  final copyIconSize = context.knobs.objectOrNull.dropdown<double?>(
+    label: 'Copy Icon Size',
+    options: const [null, 12.0, 20.0, 24.0],
+    initialOption: null,
+    labelBuilder: (v) => v == null ? 'Default (16)' : '${v.toInt()}dp',
+  );
+  final crossAxisAlignment = context.knobs.object.dropdown<CrossAxisAlignment>(
+    label: 'Cross Axis Alignment',
+    options: const [
+      CrossAxisAlignment.start,
+      CrossAxisAlignment.center,
+      CrossAxisAlignment.end,
+    ],
+    initialOption: CrossAxisAlignment.center,
+    labelBuilder: (v) => v.name,
+  );
 
   return GtWidgetDocPage(
     title: 'GtCopyTile',
     description:
         'A tile displaying label and value, enabling copying value to clipboard on tap.',
-    code:
-        '''
-GtCopyTile(
-  "$label",
-  value: "$value",
-  leading: GtIcons.gem,
-)''',
+    code: [
+      'GtCopyTile(',
+      '  "$label",',
+      '  value: "$value",',
+      '  leading: GtIcons.gem,',
+      if (copyIconVariant != null)
+        '  copyIconVariant: GtIconVariant.${copyIconVariant.name},',
+      if (copyIconSize != null)
+        '  copyIconSize: context.dp(${copyIconSize.toInt()}.px),',
+      if (crossAxisAlignment != CrossAxisAlignment.center)
+        '  crossAxisAlignment: CrossAxisAlignment.${crossAxisAlignment.name},',
+      ')',
+    ].join('\n'),
     child: Center(
       child: GtCard(
         padding: context.insets.allDp(12.px),
         variant: GtCardVariant.normal,
-        child: GtCopyTile(label, value: value, leading: GtIcons.gem),
+        child: GtCopyTile(
+          label,
+          value: value,
+          leading: GtIcons.gem,
+          copyIconVariant: copyIconVariant,
+          copyIconSize: copyIconSize == null
+              ? null
+              : context.dp(copyIconSize.px),
+          crossAxisAlignment: crossAxisAlignment,
+        ),
+      ),
+    ),
+  );
+}
+
+const _stackedCopyLeadingPresets = ['Icon', 'Avatar', 'None'];
+
+const _stackedCopyTrailingPresets = ['Copy Icon', 'Pill'];
+
+const _stackedCopyPaddingPresets = ['Default', 'Vertical', 'All', 'None'];
+
+Widget? _getStackedCopyLeading(String preset, BuildContext context) {
+  return switch (preset) {
+    'Avatar' => const GtAvatar(initials: 'GT', size: 40),
+    'Icon' => GtIcon(
+      GtIcons.temple,
+      size: context.dp(20.px),
+      variant: .verified,
+    ),
+    _ => null,
+  };
+}
+
+Widget? _getStackedCopyTrailing(String preset) {
+  return switch (preset) {
+    'Pill' => const GtButtonPill(text: 'Copy'),
+    _ => null,
+  };
+}
+
+EdgeInsetsGeometry? _getStackedCopyPadding(
+  String preset,
+  BuildContext context,
+) {
+  return switch (preset) {
+    'Vertical' => context.insets.symmetricDp(vertical: 12.px),
+    'All' => context.insets.allDp(16.px),
+    'None' => EdgeInsets.zero,
+    _ => null,
+  };
+}
+
+Widget _buildConfiguredStackedCopyTile({
+  required BuildContext context,
+  required String label,
+  required String subtitle,
+  required String value,
+  required String leadingPreset,
+  required String trailingPreset,
+  required String paddingPreset,
+  required GtIconVariant? copyIconVariant,
+  required double? copyIconSize,
+  required CrossAxisAlignment rowCrossAxisAlignment,
+  required MainAxisAlignment columnCrossAxisAlignment,
+  required double? horizontalSpacing,
+  required double? verticalSpacing,
+}) {
+  return GtStackedCopyTile(
+    label,
+    subtitle: subtitle.isEmpty ? null : subtitle,
+    value: value,
+    leading: _getStackedCopyLeading(leadingPreset, context),
+    trailing: _getStackedCopyTrailing(trailingPreset),
+    padding: _getStackedCopyPadding(paddingPreset, context),
+    copyIconVariant: copyIconVariant,
+    copyIconSize: copyIconSize == null ? null : context.dp(copyIconSize.px),
+    rowCrossAxisAlignment: rowCrossAxisAlignment,
+    columnMainAxisAlignment: columnCrossAxisAlignment,
+    horizontalSpacing: horizontalSpacing == null
+        ? null
+        : context.dp(horizontalSpacing.px),
+    verticalSpacing: verticalSpacing == null
+        ? null
+        : context.dp(verticalSpacing.px),
+  );
+}
+
+@widgetbook.UseCase(name: 'GtStackedCopyTile', type: GtStackedCopyTile)
+Widget playgroundGtStackedCopyTileUseCase(BuildContext context) {
+  final label = context.knobs.string(
+    label: 'Label',
+    initialValue: 'Account Number',
+  );
+  final subtitle = context.knobs.string(
+    label: 'Subtitle',
+    initialValue: '0123 456 789',
+  );
+  final value = context.knobs.string(
+    label: 'Value (copied)',
+    initialValue: '0123456789',
+  );
+  final leadingPreset = context.knobs.object.dropdown<String>(
+    label: 'Leading',
+    options: _stackedCopyLeadingPresets,
+    initialOption: _stackedCopyLeadingPresets.first,
+  );
+  final trailingPreset = context.knobs.object.dropdown<String>(
+    label: 'Trailing',
+    options: _stackedCopyTrailingPresets,
+    initialOption: _stackedCopyTrailingPresets.first,
+  );
+  final paddingPreset = context.knobs.object.dropdown<String>(
+    label: 'Padding',
+    options: _stackedCopyPaddingPresets,
+    initialOption: _stackedCopyPaddingPresets.first,
+  );
+  final copyIconVariant = context.knobs.objectOrNull.dropdown<GtIconVariant?>(
+    label: 'Copy Icon Variant',
+    options: [null, ...GtIconVariant.values],
+    initialOption: null,
+    labelBuilder: (v) => v?.name ?? 'Default (disabled)',
+  );
+  final copyIconSize = context.knobs.objectOrNull.dropdown<double?>(
+    label: 'Copy Icon Size',
+    options: const [null, 16.0, 24.0, 28.0],
+    initialOption: null,
+    labelBuilder: (v) => v == null ? 'Default (20dp)' : '${v.toInt()}dp',
+  );
+  final rowCrossAxisAlignment = context.knobs.object
+      .dropdown<CrossAxisAlignment>(
+        label: 'Row Cross Axis Alignment',
+        options: const [
+          CrossAxisAlignment.start,
+          CrossAxisAlignment.center,
+          CrossAxisAlignment.end,
+        ],
+        initialOption: CrossAxisAlignment.start,
+        labelBuilder: (v) => v.name,
+      );
+  final columnCrossAxisAlignment = context.knobs.object
+      .dropdown<MainAxisAlignment>(
+        label: 'Column Cross Axis Alignment',
+        options: const [
+          .start,
+          .center,
+          .end,
+        ],
+        initialOption: .start,
+        labelBuilder: (v) => v.name,
+      );
+  final horizontalSpacing = context.knobs.objectOrNull.dropdown<double?>(
+    label: 'Horizontal Spacing',
+    options: const [null, 4.0, 12.0, 16.0],
+    initialOption: null,
+    labelBuilder: (v) => v == null ? 'Default (8dp)' : '${v.toInt()}dp',
+  );
+  final verticalSpacing = context.knobs.objectOrNull.dropdown<double?>(
+    label: 'Vertical Spacing',
+    options: const [null, 0.0, 8.0, 12.0],
+    initialOption: null,
+    labelBuilder: (v) => v == null ? 'Default (4dp)' : '${v.toInt()}dp',
+  );
+
+  final leadingSource = switch (leadingPreset) {
+    'Avatar' => "GtAvatar(initials: 'GT', size: 40)",
+    'Icon' => 'GtIcon(GtIcons.gem, size: context.dp(24.px))',
+    _ => null,
+  };
+  final trailingSource = switch (trailingPreset) {
+    'Pill' => "GtButtonPill(text: 'Copy')",
+    _ => null,
+  };
+  final paddingSource = switch (paddingPreset) {
+    'Vertical' => 'context.insets.symmetricDp(vertical: 12.px)',
+    'All' => 'context.insets.allDp(16.px)',
+    'None' => 'EdgeInsets.zero',
+    _ => null,
+  };
+
+  return GtWidgetDocPage(
+    title: 'GtStackedCopyTile',
+    description:
+        'A tile that stacks a label above a subtitle and copies a separate '
+        'value to the clipboard on tap, so the subtitle can show a formatted '
+        'or masked version of what gets copied. Picking a trailing widget '
+        'replaces the copy icon, and the copy icon knobs then have no effect. '
+        'Row Cross Axis Alignment lines up the leading widget, the text and '
+        'the copy icon. Column Cross Axis Alignment lines up the label and '
+        'subtitle against each other.',
+    code: [
+      'GtStackedCopyTile(',
+      '  "$label",',
+      if (subtitle.isNotEmpty) '  subtitle: "$subtitle",',
+      '  value: "$value",',
+      '  padding: $paddingSource,',
+      if (leadingSource != null) '  leading: $leadingSource,',
+      if (trailingSource != null) '  trailing: $trailingSource,',
+      if (copyIconVariant != null)
+        '  copyIconVariant: GtIconVariant.${copyIconVariant.name},',
+      if (copyIconSize != null)
+        '  copyIconSize: context.dp(${copyIconSize.toInt()}.px),',
+      if (rowCrossAxisAlignment != CrossAxisAlignment.start)
+        '  rowCrossAxisAlignment: CrossAxisAlignment.${rowCrossAxisAlignment.name},',
+      if (columnCrossAxisAlignment != .start)
+        '  columnCrossAxisAlignment: CrossAxisAlignment.${columnCrossAxisAlignment.name},',
+      if (horizontalSpacing != null)
+        '  horizontalSpacing: context.dp(${horizontalSpacing.toInt()}.px),',
+      if (verticalSpacing != null)
+        '  verticalSpacing: context.dp(${verticalSpacing.toInt()}.px),',
+      ')',
+    ].join('\n'),
+    child: Center(
+      child: GtCard(
+        variant: .normal,
+        child: _buildConfiguredStackedCopyTile(
+          context: context,
+          label: label,
+          subtitle: subtitle,
+          value: value,
+          leadingPreset: leadingPreset,
+          trailingPreset: trailingPreset,
+          paddingPreset: paddingPreset,
+          copyIconVariant: copyIconVariant,
+          copyIconSize: copyIconSize,
+          rowCrossAxisAlignment: rowCrossAxisAlignment,
+          columnCrossAxisAlignment: columnCrossAxisAlignment,
+          horizontalSpacing: horizontalSpacing,
+          verticalSpacing: verticalSpacing,
+        ),
       ),
     ),
   );

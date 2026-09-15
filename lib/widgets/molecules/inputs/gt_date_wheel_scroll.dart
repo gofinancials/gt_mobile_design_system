@@ -90,6 +90,10 @@ class GtDateWheelScroll extends GtStatefulWidget {
   /// [GtWheelScrollGroup.padding].
   final EdgeInsetsGeometry? padding;
 
+  /// The widest each wheel may grow, in logical pixels. See
+  /// [GtWheelScrollGroup.maxWheelWidth].
+  final double? maxWheelWidth;
+
   /// Creates a [GtDateWheelScroll].
   const GtDateWheelScroll({
     super.key,
@@ -110,6 +114,7 @@ class GtDateWheelScroll extends GtStatefulWidget {
     this.fadeGradient,
     this.backgroundColor,
     this.padding,
+    this.maxWheelWidth,
   });
 
   @override
@@ -273,6 +278,7 @@ class _GtDateWheelScrollState extends State<GtDateWheelScroll> {
         return GtWheelScrollGroup(
           color: widget.backgroundColor,
           padding: widget.padding,
+          maxWheelWidth: widget.maxWheelWidth,
           children: [
             for (final field in GtDateWheelField.values)
               if (widget.fields.contains(field)) _buildWheel(field, date),

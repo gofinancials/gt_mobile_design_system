@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:gt_mobile_foundation/foundation.dart';
-import 'package:gt_mobile_ui/gt_mobile_ui.dart';
+import 'package:gt_mobile_ui/documents.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 /// Renders a [GtPdfReceiptData] into a paginated PDF document.
