@@ -15,22 +15,34 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A utility class that extracts and caches common [MediaQuery] properties
 /// for the given context, simplifying access to screen dimensions, pixel ratios,
-/// and safe area insets.
+/// and view insets.
 final class GtMediaQueryData {
+  /// The view insets, from [MediaQuery.viewInsetsOf].
   late final EdgeInsets _insetsData;
+
+  /// The screen size, from [MediaQuery.sizeOf].
   late final Size _sizeData;
+
+  /// The device pixel ratio, from [MediaQuery.devicePixelRatioOf].
   late final double _pxData;
 
+  /// Creates a [GtMediaQueryData] from the [MediaQuery] above [context].
   GtMediaQueryData(BuildContext context) {
     _insetsData = MediaQuery.viewInsetsOf(context);
     _pxData = MediaQuery.devicePixelRatioOf(context);
     _sizeData = MediaQuery.sizeOf(context);
   }
 
-  /// The top padding (e.g., safe area for status bar).
+  /// The top view inset, from [MediaQuery.viewInsetsOf].
+  ///
+  /// This is not the status bar. Use [MediaQuery.paddingOf] for that.
   double get topInset => _insetsData.top;
 
-  /// The bottom padding (e.g., safe area for system navigation).
+  /// The bottom view inset, typically the on-screen keyboard, from
+  /// [MediaQuery.viewInsetsOf].
+  ///
+  /// This is not the navigation bar or other system bottom inset. Use
+  /// [MediaQuery.paddingOf] for that.
   double get bottomInset => _insetsData.bottom;
 
   /// The shortest side of the screen (typically width on mobile portrait).
@@ -56,7 +68,10 @@ final class GtMediaQueryData {
 /// screen size, adjusted dynamically based on the current device screen type
 /// (mobile, tablet, laptop, monitor).
 class GtFractionalSizer {
+  /// The screen metrics the fractions are taken from.
   late GtMediaQueryData _queryData;
+
+  /// The screen category that picks [breakPointFraction].
   late GtScreenType screenType;
 
   /// Creates an instance of [GtFractionalSizer] using the provided [context].
@@ -76,11 +91,19 @@ class GtFractionalSizer {
     return 1;
   }
 
+  /// The shortest side of the screen.
   double get _shortest => _queryData.shortestSide;
+
+  /// The longest side of the screen.
   double get _longest => _queryData.longestSide;
+
+  /// The total height of the screen.
   double get height => _queryData.height;
+
+  /// The total width of the screen.
   double get width => _queryData.width;
 
+  /// Scales [value] down by [breakPointFraction] for the current screen type.
   double _resolveFraction(double value) => value * breakPointFraction;
 
   /// Calculates a dimension based on a [fraction] of the screen's longest side.
@@ -120,6 +143,7 @@ class GtDpComputer {
   /// Creates a [GtDpComputer] using the standard reference design dimensions.
   GtDpComputer({this.width = 375, this.height = 812});
 
+  /// The scale factor both conversions are relative to.
   double get _scale => (width + height) / 4.5;
 
   /// Converts a given [percentage] into device-independent pixels (DP).
@@ -137,6 +161,7 @@ class GtDpComputer {
 /// reference dimensions to the actual screen size, ensuring sizes don't
 /// over-scale on very large screens.
 class GtContextSensitiveDpComputer {
+  /// The context whose screen size bounds the reference dimensions.
   final BuildContext _context;
 
   /// The maximum target design width.
@@ -152,16 +177,19 @@ class GtContextSensitiveDpComputer {
     this.designHeight = 812,
   });
 
+  /// The screen's shortest side, capped at [designWidth].
   double get _computedWidth {
     final x = MediaQuery.sizeOf(_context).shortestSide;
     return min(x, designWidth);
   }
 
+  /// The screen's longest side, capped at [designHeight].
   double get _computedHeight {
     final y = MediaQuery.sizeOf(_context).longestSide;
     return min(y, designHeight);
   }
 
+  /// A [GtDpComputer] built from the capped screen dimensions.
   GtDpComputer get _dpComputer {
     return GtDpComputer(width: _computedWidth, height: _computedHeight);
   }
@@ -173,7 +201,10 @@ class GtContextSensitiveDpComputer {
 /// A utility for generating adaptive [EdgeInsets] using either fractional
 /// screen dimensions or device-independent pixels (DP).
 class GtInsets {
+  /// Resolves the fractional insets.
   late GtFractionalSizer _fracSizer;
+
+  /// Resolves the DP insets.
   late GtContextSensitiveDpComputer _dpSizer;
 
   /// Creates an instance of [GtInsets] using the provided [context].
@@ -362,6 +393,7 @@ class GtScaleUtil {
 /// A utility class for determining the current device screen category
 /// based on predefined width breakpoints.
 class GtScreenType {
+  /// The context whose screen width is compared against the breakpoints.
   final BuildContext _context;
 
   /// The width breakpoint above which a device is considered a tablet.
