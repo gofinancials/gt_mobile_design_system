@@ -102,6 +102,10 @@ class GtIconListTile extends GtStatelessWidget {
   final CrossAxisAlignment? crossAxisAlignment;
 
   /// The callback triggered when the tile is tapped.
+  ///
+  /// Null renders a static row with no [GtInkWell] and no semantic role, so
+  /// an informational tile is not announced as a button. Matches
+  /// [GtBaseListTileTemplate].
   final OnPressed? onTap;
 
   /// Optional vertical spacing override.
@@ -173,41 +177,47 @@ class GtIconListTile extends GtStatelessWidget {
       );
     }
 
-    return GtInkWell(
-      role: .button,
-      borderRadius: context.borderRadius2Xl,
-      onTap: onTap,
-      child: Padding(
-        padding: padding ?? context.insets.symmetricDp(vertical: 12.px),
-        child: Row(
-          spacing: horizontalSpacing ?? context.spacingMd,
-          crossAxisAlignment: crossAxisAlignment ?? .start,
-          children: [
-            ?lead,
-            Expanded(
-              child: Column(
-                spacing: verticalSpacing ?? context.spacingSm,
-                crossAxisAlignment: .start,
-                children: [
+    final child = Padding(
+      padding: padding ?? context.insets.symmetricDp(vertical: 12.px),
+      child: Row(
+        spacing: horizontalSpacing ?? context.spacingMd,
+        crossAxisAlignment: crossAxisAlignment ?? .start,
+        children: [
+          ?lead,
+          Expanded(
+            child: Column(
+              spacing: verticalSpacing ?? context.spacingSm,
+              crossAxisAlignment: .start,
+              children: [
+                GtText(
+                  title,
+                  style: titleStyle ?? context.textStyles.subHeadS(),
+                ),
+                if (subtitle.hasValue)
                   GtText(
-                    title,
-                    style: titleStyle ?? context.textStyles.subHeadS(),
+                    subtitle,
+                    style:
+                        subtitleStyle ??
+                        context.textStyles.bodyXs(color: palette.text.sub),
                   ),
-                  if (subtitle.hasValue)
-                    GtText(
-                      subtitle,
-                      style:
-                          subtitleStyle ??
-                          context.textStyles.bodyXs(color: palette.text.sub),
-                    ),
-                ],
-              ),
+              ],
             ),
-            ?trailing,
-          ],
-        ),
+          ),
+          ?trailing,
+        ],
       ),
     );
+
+    if (onTap != null) {
+      return GtInkWell(
+        role: .button,
+        borderRadius: context.borderRadius2Xl,
+        onTap: onTap,
+        child: child,
+      );
+    }
+
+    return child;
   }
 }
 
@@ -234,50 +244,56 @@ class _GtIconListTileAlt extends GtIconListTile {
   Widget build(BuildContext context) {
     final palette = context.palette;
 
-    return GtInkWell(
-      role: .button,
-      borderRadius: context.borderRadius2Xl,
-      onTap: onTap,
-      child: Padding(
-        padding: padding ?? context.insets.symmetricDp(vertical: 12.px),
-        child: Row(
-          spacing: horizontalSpacing ?? context.spacingMd,
-          crossAxisAlignment: crossAxisAlignment ?? .center,
-          children: [
-            Container(
-              alignment: .center,
-              width: context.dp(36.px),
-              height: context.dp(36.px),
-              decoration: BoxDecoration(
-                color: context.palette.bg.weak,
-                borderRadius: context.borderRadiusXl,
-              ),
-              child: leading ?? GtIcon(icon!, size: context.dp(24.px)),
+    final child = Padding(
+      padding: padding ?? context.insets.symmetricDp(vertical: 12.px),
+      child: Row(
+        spacing: horizontalSpacing ?? context.spacingMd,
+        crossAxisAlignment: crossAxisAlignment ?? .center,
+        children: [
+          Container(
+            alignment: .center,
+            width: context.dp(36.px),
+            height: context.dp(36.px),
+            decoration: BoxDecoration(
+              color: context.palette.bg.weak,
+              borderRadius: context.borderRadiusXl,
             ),
-            Expanded(
-              child: Column(
-                spacing: verticalSpacing ?? 0,
-                crossAxisAlignment: .start,
-                children: [
+            child: leading ?? GtIcon(icon!, size: context.dp(24.px)),
+          ),
+          Expanded(
+            child: Column(
+              spacing: verticalSpacing ?? 0,
+              crossAxisAlignment: .start,
+              children: [
+                GtText(
+                  title,
+                  style: titleStyle ?? context.textStyles.bodyM(),
+                ),
+                if (subtitle.hasValue)
                   GtText(
-                    title,
-                    style: titleStyle ?? context.textStyles.bodyM(),
+                    subtitle,
+                    style:
+                        subtitleStyle ??
+                        context.textStyles.bodyXs(color: palette.text.sub),
                   ),
-                  if (subtitle.hasValue)
-                    GtText(
-                      subtitle,
-                      style:
-                          subtitleStyle ??
-                          context.textStyles.bodyXs(color: palette.text.sub),
-                    ),
-                ],
-              ),
+              ],
             ),
-            ?trailing,
-          ],
-        ),
+          ),
+          ?trailing,
+        ],
       ),
     );
+
+    if (onTap != null) {
+      return GtInkWell(
+        role: .button,
+        borderRadius: context.borderRadius2Xl,
+        onTap: onTap,
+        child: child,
+      );
+    }
+
+    return child;
   }
 }
 
