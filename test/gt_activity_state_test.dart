@@ -172,6 +172,46 @@ void main() {
         });
       },
     );
+
+    test(
+      'A route change while tracking is off updates currentRouteSettings but '
+      'does not arm the timer or set lastActivityTime',
+      () {
+        fakeAsync((async) {
+          final state = GtActivityState(
+            defaultDuration: 1.seconds,
+            throttleDuration: Duration.zero,
+          );
+          var fired = 0;
+          state.startTracking(onInactivity: (_) => fired++);
+
+          // Re-authentication: the host stops tracking, but still needs the
+          // route to return to once the customer is back.
+          state.stopTracking();
+
+          GtActivityRouteObserver(state).didPush(
+            PageRouteBuilder<void>(
+              settings: const RouteSettings(name: '/pushed-while-stopped'),
+              pageBuilder: (_, _, _) => const SizedBox(),
+            ),
+            null,
+          );
+
+          expect(
+            state.currentRouteSettings?.name,
+            equals('/pushed-while-stopped'),
+          );
+          expect(state.lastActivityTime, isNull);
+          expect(state.isTrackingActive, isFalse);
+
+          async.elapse(3.seconds);
+
+          expect(fired, equals(0));
+
+          state.dispose();
+        });
+      },
+    );
   });
 
   group('GtActivityRouteObserver Tests', () {

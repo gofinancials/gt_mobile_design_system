@@ -92,6 +92,8 @@ class GalleryConfig extends AppConfig {
       requestTimedOut: "The request timed out",
       secureConnectionFailed: "Could not establish a secure connection",
       requestCancelled: "The request was cancelled",
+      exactLength: 'Exact length',
+      requestRefused: 'Request refused',
     );
   }
 

@@ -154,14 +154,20 @@ class GtActivityState extends StateModel with WidgetsBindingObserver {
   /// exceeds [_throttleDuration] or if [force] is true.
   /// Optionally updates [_currentRouteSettings] if provided.
   ///
-  /// While the app is not resumed (backgrounded), only [_currentRouteSettings]
-  /// is updated: the timer stays cancelled and [_lastActivityTime] is left
-  /// alone, so a route change driven by a notification, deep link or finished
-  /// request while backgrounded does not push back the inactivity lock.
+  /// [routeSettings] is recorded ahead of both guards below, so
+  /// [currentRouteSettings] stays current whether or not tracking is active.
+  /// Route position and inactivity are separate concerns: a host that stops
+  /// tracking during re-authentication still needs the route to return to.
+  ///
+  /// While tracking is off, or while the app is not resumed (backgrounded),
+  /// only [_currentRouteSettings] is updated: the timer stays cancelled and
+  /// [_lastActivityTime] is left alone, so a route change driven by a
+  /// notification, deep link or finished request while backgrounded does not
+  /// push back the inactivity lock.
   void registerActivity({RouteSettings? routeSettings, bool force = false}) {
-    if (!_isTrackingActive) return;
-
     if (routeSettings != null) _currentRouteSettings = routeSettings;
+
+    if (!_isTrackingActive) return;
 
     if (!_isAppResumed) return;
 
