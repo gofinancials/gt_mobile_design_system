@@ -210,4 +210,57 @@ void main() {
       isTrue,
     );
   });
+
+  testWidgets('scrollDirection reaches the scroll view', (tester) async {
+    await tester.pumpWidget(
+      const _ScrollableBodyTestApp(
+        child: GtScrollableBody(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(width: 80),
+        ),
+      ),
+    );
+
+    expect(
+      tester
+          .widget<SingleChildScrollView>(find.byType(SingleChildScrollView))
+          .scrollDirection,
+      Axis.horizontal,
+    );
+  });
+
+  testWidgets('clipBehavior reaches the scroll view on both branches', (
+    tester,
+  ) async {
+    for (final fillViewport in [false, true]) {
+      await tester.pumpWidget(
+        _ScrollableBodyTestApp(
+          child: GtScrollableBody(
+            clipBehavior: Clip.none,
+            fillViewport: fillViewport,
+            child: const SizedBox(height: 80),
+          ),
+        ),
+      );
+
+      expect(
+        tester
+            .widget<SingleChildScrollView>(find.byType(SingleChildScrollView))
+            .clipBehavior,
+        Clip.none,
+        reason: 'fillViewport: $fillViewport',
+      );
+    }
+  });
+
+  test('fillViewport asserts against a horizontal scrollDirection', () {
+    expect(
+      () => GtScrollableBody(
+        scrollDirection: Axis.horizontal,
+        fillViewport: true,
+        child: const SizedBox(),
+      ),
+      throwsAssertionError,
+    );
+  });
 }

@@ -8,7 +8,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Nothing here wrapped one before — [GtInfiniteListView] is pagination, and no
 /// scaffold takes a scrolling body — so each host settled its own padding, and
 /// a body that wanted to fill the viewport solved that by hand. This carries
-/// the four things those hosts kept rewriting:
+/// the pieces those hosts kept rewriting:
 ///
 /// - [padding], defaulting to [GtInsets.defaultAllInsets], so a page body does
 ///   not restate the design system's own gutter.
@@ -18,6 +18,9 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///   refresh.
 /// - [fillViewport], the piece with no counterpart anywhere else in the
 ///   package.
+/// - [scrollDirection] and [clipBehavior], so a horizontal strip — a row of
+///   cards or filter pills inside a fixed-height box — reaches for this
+///   instead of a raw [SingleChildScrollView].
 ///
 /// ```dart
 /// GtScrollableBody(
@@ -54,6 +57,12 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// inside a [CustomScrollView], a `SliverFillRemaining(hasScrollBody: false)`
 /// is the same behaviour, laid out by the viewport itself. Reach for that when
 /// the screen is already a [CustomScrollView]; reach for this when it is not.
+///
+/// ## Horizontal strips
+///
+/// [fillViewport] has no horizontal counterpart — a [ConstrainedBox] with a
+/// `minHeight` stretches height, not width — so it asserts against a
+/// [scrollDirection] of [Axis.horizontal] rather than silently doing nothing.
 class GtScrollableBody extends GtStatelessWidget {
   /// The scrolling content.
   ///
@@ -91,7 +100,25 @@ class GtScrollableBody extends GtStatelessWidget {
   /// wraps its content — pays for neither the [LayoutBuilder] nor the
   /// [IntrinsicHeight]. Set it true for a body built with [Spacer] or
   /// [Expanded].
+  ///
+  /// Vertical only: it stretches height along a vertical main axis using
+  /// [BoxConstraints.maxHeight]. There is no `minWidth` counterpart for a
+  /// horizontal [scrollDirection]. Asserted against at construction.
   final bool fillViewport;
+
+  /// The axis the body scrolls along.
+  ///
+  /// Defaults to [Axis.vertical], a page body. Pass [Axis.horizontal] for a
+  /// strip — a row of cards or filter pills inside a fixed-height box — that
+  /// used to reach for a raw [SingleChildScrollView] instead.
+  final Axis scrollDirection;
+
+  /// How to clip the body against its bounds.
+  ///
+  /// Forwarded to the underlying [SingleChildScrollView]. A horizontal strip
+  /// that means to bleed past its bounds — a carousel peeking into the next
+  /// screen edge — passes [Clip.none] here.
+  final Clip clipBehavior;
 
   /// Creates a [GtScrollableBody] around [child].
   const GtScrollableBody({
@@ -101,7 +128,13 @@ class GtScrollableBody extends GtStatelessWidget {
     this.controller,
     this.physics,
     this.fillViewport = false,
-  });
+    this.scrollDirection = .vertical,
+    this.clipBehavior = .hardEdge,
+  }) : assert(
+         !fillViewport || scrollDirection == Axis.vertical,
+         'fillViewport stretches height to the incoming viewport height, '
+         'which has no meaning on a horizontal scrollDirection.',
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +142,11 @@ class GtScrollableBody extends GtStatelessWidget {
 
     if (!fillViewport) {
       return SingleChildScrollView(
+        scrollDirection: scrollDirection,
         controller: controller,
         physics: physics,
         padding: insets,
+        clipBehavior: clipBehavior,
         child: child,
       );
     }
@@ -121,6 +156,7 @@ class GtScrollableBody extends GtStatelessWidget {
         return SingleChildScrollView(
           controller: controller,
           physics: physics,
+          clipBehavior: clipBehavior,
           child: ConstrainedBox(
             // Unbounded height means there is no viewport to fill — a
             // SingleChildScrollView throws there anyway, and an infinite

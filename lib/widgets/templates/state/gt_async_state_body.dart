@@ -419,17 +419,17 @@ class _GtAsyncStateArmView extends GtStatelessWidget {
 
     // In the middle of the host's height, at the arm's own height. The loading
     // arm is left as supplied so a skeleton lands where the rows go.
-    return arm == .loading ? view : _GtCentredArm(child: view);
+    return arm == .loading ? view : GtCentredAsyncStateArm(child: view);
   }
 }
 
 /// Centres a non-data arm in the middle of the host's height, at the arm's own
 /// height, stretched to the host's full width so its copy wraps and centres
 /// against the screen rather than against its own intrinsic width.
-class _GtCentredArm extends GtStatelessWidget {
+class GtCentredAsyncStateArm extends GtStatelessWidget {
   final Widget child;
 
-  const _GtCentredArm({required this.child});
+  const GtCentredAsyncStateArm({required this.child, super.key});
 
   @override
   Widget build(BuildContext context) {
