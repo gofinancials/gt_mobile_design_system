@@ -83,10 +83,20 @@ class GtIconListTile extends GtStatelessWidget {
   final String? subtitle;
 
   /// The icon displayed at the start of the tile.
-  final IconData icon;
+  ///
+  /// Ignored when [leading] is provided. One of [icon] or [leading] is
+  /// required.
+  final IconData? icon;
 
   /// Optional custom color for the [icon].
   final Color? iconColor;
+
+  /// A widget rendered at the start of the tile in place of [icon].
+  ///
+  /// Use this when the icon needs to carry its own [GtIconVariant] or other
+  /// styling that [icon] and [iconColor] cannot express, e.g.
+  /// `GtIcon(myIcon, variant: .soft)`.
+  final Widget? leading;
 
   /// Vertical alignment of the row's children. Defaults to [CrossAxisAlignment.start].
   final CrossAxisAlignment? crossAxisAlignment;
@@ -117,7 +127,8 @@ class GtIconListTile extends GtStatelessWidget {
     this.title, {
     super.key,
     this.subtitle,
-    required this.icon,
+    this.icon,
+    this.leading,
     this.crossAxisAlignment,
     this.iconColor,
     this.onTap,
@@ -127,14 +138,18 @@ class GtIconListTile extends GtStatelessWidget {
     this.trailing,
     this.titleStyle,
     this.subtitleStyle,
-  });
+  }) : assert(
+         icon != null || leading != null,
+         'Either icon or leading must be provided.',
+       );
 
   /// Creates a [GtIconListTile].
   const factory GtIconListTile.alt(
     String title, {
     Key? key,
     String? subtitle,
-    required IconData icon,
+    IconData? icon,
+    Widget? leading,
     CrossAxisAlignment? crossAxisAlignment,
     OnPressed? onTap,
     Widget? trailing,
@@ -148,6 +163,15 @@ class GtIconListTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    Widget? lead = leading;
+
+    if (icon case IconData data) {
+      lead ??= GtIcon.withColor(
+        data,
+        size: context.dp(24.px),
+        color: iconColor,
+      );
+    }
 
     return GtInkWell(
       role: .button,
@@ -159,7 +183,7 @@ class GtIconListTile extends GtStatelessWidget {
           spacing: horizontalSpacing ?? context.spacingMd,
           crossAxisAlignment: crossAxisAlignment ?? .start,
           children: [
-            GtIcon.withColor(icon, size: context.dp(24.px), color: iconColor),
+            ?lead,
             Expanded(
               child: Column(
                 spacing: verticalSpacing ?? context.spacingSm,
@@ -194,7 +218,8 @@ class _GtIconListTileAlt extends GtIconListTile {
     super.title, {
     super.key,
     super.subtitle,
-    required super.icon,
+    super.icon,
+    super.leading,
     super.crossAxisAlignment,
     super.onTap,
     super.trailing,
@@ -227,7 +252,7 @@ class _GtIconListTileAlt extends GtIconListTile {
                 color: context.palette.bg.weak,
                 borderRadius: context.borderRadiusXl,
               ),
-              child: GtIcon(icon, size: context.dp(24.px)),
+              child: leading ?? GtIcon(icon!, size: context.dp(24.px)),
             ),
             Expanded(
               child: Column(

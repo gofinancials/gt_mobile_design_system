@@ -32,6 +32,17 @@ class GtInfoListTile extends GtStatelessWidget {
   /// If null, defaults to [GtTextStyles.bodyXs] with a subtle color.
   final TextStyle? labelStyle;
 
+  /// The gap between the [label] row and the [text] below it.
+  ///
+  /// Defaults to 8dp.
+  final double? spacing;
+
+  /// If true, [trailing] is centered against the [label] and [text] as a
+  /// pair instead of sitting beside the [label] alone.
+  ///
+  /// Defaults to false.
+  final bool centerTrailing;
+
   /// Creates a [GtInfoListTile].
   const GtInfoListTile(
     this.label, {
@@ -41,6 +52,8 @@ class GtInfoListTile extends GtStatelessWidget {
     this.labelStyle,
     this.textStyle,
     this.onTap,
+    this.spacing,
+    this.centerTrailing = false,
   });
 
   @override
@@ -50,27 +63,46 @@ class GtInfoListTile extends GtStatelessWidget {
     final style = textStyle ?? styles.subHead3M(heightPx: 0);
     final hintStyle = labelStyle ?? styles.bodyS(color: textColors.sub);
 
+    Widget labelChild = Row(
+      crossAxisAlignment: .center,
+      spacing: context.spacingSm,
+      children: [
+        Expanded(child: GtText(label, style: hintStyle)),
+        ?trailing,
+      ],
+    );
+    
+    if (centerTrailing) {
+      labelChild = GtText(label, style: hintStyle);
+    }
+
+    Widget child = Column(
+      spacing: spacing ?? context.spacingSm,
+      crossAxisAlignment: .stretch,
+      children: [
+        labelChild,
+        GtText(text, style: style),
+      ],
+    );
+
+    if (centerTrailing && trailing != null) {
+      child = Row(
+        crossAxisAlignment: .center,
+        spacing: context.spacingSm,
+        children: [
+          Expanded(child: child),
+          trailing!,
+        ],
+      );
+    }
+
     return GtInkWell(
       role: .button,
       borderRadius: .zero,
       onTap: onTap,
       child: Padding(
         padding: context.insets.symmetricDp(vertical: 8.px),
-        child: Column(
-          spacing: context.spacingSm,
-          crossAxisAlignment: .stretch,
-          children: [
-            Row(
-              crossAxisAlignment: .center,
-              spacing: context.spacingSm,
-              children: [
-                Expanded(child: GtText(label, style: hintStyle)),
-                ?trailing,
-              ],
-            ),
-            GtText(text, style: style),
-          ],
-        ),
+        child: child,
       ),
     );
   }
@@ -730,6 +762,22 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   /// Optional custom [TextStyle] for the [label].
   final TextStyle? labelTextStyle;
 
+  /// The padding applied around the tile's content.
+  ///
+  /// Null preserves the current default of no padding.
+  final EdgeInsetsGeometry? padding;
+
+  /// If true, the [label] column expands to fill the available space and the
+  /// value column sizes to its own content, instead of splitting the row at
+  /// a fixed 4:5 ratio.
+  ///
+  /// Because the value column is no longer width-constrained, [valueMaxLines]
+  /// and its ellipsis stop applying: use this only where the value is known
+  /// to stay short.
+  ///
+  /// Defaults to false.
+  final bool fitColumnsToContent;
+
   /// Creates a [GtDoubleColumnListTile].
   const GtDoubleColumnListTile(
     this.label, {
@@ -744,6 +792,8 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     this.highlightValue = true,
     this.valueTextStyle,
     this.labelTextStyle,
+    this.padding,
+    this.fitColumnsToContent = false,
   }) : assert(
          highlightValue || (valueTextStyle == null && labelTextStyle == null),
          'valueTextStyle and labelTextStyle must be null if highlightValue is false',
@@ -779,32 +829,48 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
       );
     }
 
-    return Row(
+    final valueChild = Row(
+      mainAxisAlignment: .end,
+      mainAxisSize: .min,
+      spacing: valueSpacing ?? context.spacingBase,
+      children: [
+        ?valuePrefix,
+        Flexible(
+          child: GtText(
+            value,
+            style: valueStyle,
+            textAlign: TextAlign.end,
+            overflow: .ellipsis,
+            maxLines: valueMaxLines,
+          ),
+        ),
+        ?valueSuffix,
+      ],
+    );
+
+    Widget row = Row(
       spacing: context.spacingMd,
       children: [
         Expanded(flex: 4, child: labelChild),
-        Expanded(
-          flex: 5,
-          child: Row(
-            mainAxisAlignment: .end,
-            spacing: valueSpacing ?? context.spacingBase,
-            children: [
-              ?valuePrefix,
-              Flexible(
-                child: GtText(
-                  value,
-                  style: valueStyle,
-                  textAlign: TextAlign.end,
-                  overflow: .ellipsis,
-                  maxLines: valueMaxLines,
-                ),
-              ),
-              ?valueSuffix,
-            ],
-          ),
-        ),
+        Expanded(flex: 5, child: valueChild),
       ],
     );
+
+    if (fitColumnsToContent) {
+      row = Row(
+        spacing: context.spacingMd,
+        children: [
+          Expanded(child: labelChild),
+          valueChild,
+        ],
+      );
+    }
+
+    if (padding != null) {
+      row = Padding(padding: padding!, child: row);
+    }
+
+    return row;
   }
 }
 
