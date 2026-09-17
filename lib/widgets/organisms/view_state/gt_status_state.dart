@@ -92,6 +92,11 @@ class GtStatusState extends GtStatelessWidget {
   /// Defaults to `GtGap.yMd()`. Can be customized with a [GtViewStateSpacer].
   final GtViewStateSpacer? gapToTitle;
 
+  /// The size of the status icon.
+  ///
+  /// Defaults to 124.
+  final double? iconSize;
+
   /// Creates a [GtStatusState] configured for the given [variant] and copy.
   const GtStatusState({
     super.key,
@@ -112,6 +117,7 @@ class GtStatusState extends GtStatelessWidget {
     this.titleStyle,
     this.subtitleStyle,
     this.titleCase = .upper,
+    this.iconSize,
   }) : assert(
          variant != .custom || statusIcon != null || graphic != null,
          'statusIcon or graphic is required when variant is '
@@ -140,6 +146,7 @@ class GtStatusState extends GtStatelessWidget {
     this.titleStyle,
     this.subtitleStyle,
     this.titleCase = .upper,
+    this.iconSize,
   }) : variant = .success,
        statusIcon = null,
        assert(
@@ -165,6 +172,7 @@ class GtStatusState extends GtStatelessWidget {
     this.titleStyle,
     this.subtitleStyle,
     this.titleCase = .upper,
+    this.iconSize,
   }) : variant = .error,
        statusIcon = null,
        assert(
@@ -193,6 +201,7 @@ class GtStatusState extends GtStatelessWidget {
     this.titleStyle,
     this.subtitleStyle,
     this.titleCase = .upper,
+    this.iconSize,
   }) : variant = .custom,
        statusIcon = icon,
        assert(
@@ -223,6 +232,7 @@ class GtStatusState extends GtStatelessWidget {
       description: subtitle,
       icon: _statusIcon,
       graphic: graphic,
+      iconSize: iconSize,
       actionText: actionLabel,
       onActionPressed: onActionPressed,
       actionVariant: actionVariant,
