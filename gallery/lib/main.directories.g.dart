@@ -348,6 +348,8 @@ import 'package:gallery/templates/screens/gt_lesson_complete_screen.dart'
     as _gallery_templates_screens_gt_lesson_complete_screen;
 import 'package:gallery/templates/screens/gt_splash_screen.dart'
     as _gallery_templates_screens_gt_splash_screen;
+import 'package:gallery/templates/scroll_views/gt_scrollable_body_usecase.dart'
+    as _gallery_templates_scroll_views_gt_scrollable_body_usecase;
 import 'package:gallery/templates/slides/gt_lesson_slides_usecase.dart'
     as _gallery_templates_slides_gt_lesson_slides_usecase;
 import 'package:gallery/templates/slides/gt_onboarding_slides_usecase.dart'
@@ -2840,6 +2842,22 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtWelcomeScreen.withTitleWidget Gallery',
                     builder: _gallery_templates_screens_gt_splash_screen
                         .buildGtWelcomeScreenTitleUsecase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'scroll_views',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtScrollableBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtScrollableBody',
+                    builder:
+                        _gallery_templates_scroll_views_gt_scrollable_body_usecase
+                            .playgroundGtScrollableBodyUseCase,
                   ),
                 ],
               ),
