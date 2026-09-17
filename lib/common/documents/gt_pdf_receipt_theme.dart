@@ -20,7 +20,9 @@ PdfColor gtPdfColorOf(Color color) => PdfColor.fromInt(color.toARGB32());
 /// package's own default family, which is embedded in every reader and needs no
 /// assets or async loading; the app's brand faces stay on screen where they
 /// belong. That family is Latin-1 only, so content outside that range — a naira
-/// sign, a curly quote pasted into a narration — cannot be rendered.
+/// sign, a curly quote pasted into a narration — cannot be rendered; callers do
+/// not have to guard against that themselves, because [GtPdfReceiptBuilder]
+/// runs every string it renders through [gtPdfSafeText] first.
 class GtPdfReceiptTheme {
   /// The page background.
   final PdfColor pageColor;

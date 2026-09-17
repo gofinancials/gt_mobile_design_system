@@ -62,6 +62,12 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
   /// The color of the inactive dots
   final Color? inactiveColor;
 
+  /// Whether [errorText] is cleared as soon as the entry changes.
+  ///
+  /// Defaults to true. Set to false if the caller wants to manage clearing
+  /// [errorText] itself.
+  final bool clearErrorOnEdit;
+
   /// Creates a standard virtual keypad form.
   ///
   /// Use this constructor when you need a simple title and subtitle layout
@@ -83,6 +89,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.fillInactiveDots = false,
     this.color,
     this.inactiveColor,
+    this.clearErrorOnEdit = true,
     OnPressed? onBioAuth,
   }) : _subtitle = subtitle,
        _onBioAuth = onBioAuth,
@@ -112,6 +119,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.action,
     this.color,
     this.inactiveColor,
+    this.clearErrorOnEdit = true,
     this.headerQuestionButton,
   }) : _subtitle = null,
        _onBioAuth = onBioAuth,
@@ -136,6 +144,39 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
 }
 
 class _GtVirtualKeypadFormState extends State<GtVirtualKeypadForm> {
+  String? _errorText;
+
+  @override
+  void initState() {
+    super.initState();
+    _errorText = widget.errorText;
+    widget.controller.addListener(_clearErrorOnEdit);
+  }
+
+  @override
+  void didUpdateWidget(GtVirtualKeypadForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.errorText != oldWidget.errorText) {
+      _errorText = widget.errorText;
+    }
+    if (widget.controller != oldWidget.controller) {
+      oldWidget.controller.removeListener(_clearErrorOnEdit);
+      widget.controller.addListener(_clearErrorOnEdit);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_clearErrorOnEdit);
+    super.dispose();
+  }
+
+  void _clearErrorOnEdit() {
+    if (widget.clearErrorOnEdit && _errorText != null) {
+      setState(() => _errorText = null);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     GtOptionalWidgetPair? trailing;
@@ -186,7 +227,7 @@ class _GtVirtualKeypadFormState extends State<GtVirtualKeypadForm> {
               GtDotFormField(
                 controller: widget.controller,
                 length: widget.maxLength,
-                errorText: widget.errorText,
+                errorText: _errorText,
                 helperText: widget.helperText,
                 validator: widget.validator,
                 filled: widget.fillInactiveDots,

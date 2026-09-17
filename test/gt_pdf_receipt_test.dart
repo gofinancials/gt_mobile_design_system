@@ -127,7 +127,37 @@ void main() {
         ],
       );
 
-      expect(named.resolvedFileName, 'receipt-1234.pdf');
+      expect(named.resolvedFileName, 'receipt_1234.pdf');
+    });
+
+    test('slugs a supplied file name the same way as a derived one', () {
+      const supplied = GtPdfReceiptData(
+        title: 'Transfer Confirmation',
+        fileName: '  Ref 81a0cf3b/9696 \u2014 Caf\u00e9  ',
+        sections: [
+          GtPdfReceiptSection(
+            title: 'Details',
+            entries: [GtPdfReceiptEntry(label: 'Amount', value: '1.00')],
+          ),
+        ],
+      );
+
+      expect(supplied.resolvedFileName, 'ref_81a0cf3b_9696_caf.pdf');
+    });
+
+    test('falls back to a usable file name for an unsluggable one', () {
+      const symbols = GtPdfReceiptData(
+        title: 'Transfer Confirmation',
+        fileName: '***',
+        sections: [
+          GtPdfReceiptSection(
+            title: 'Details',
+            entries: [GtPdfReceiptEntry(label: 'Amount', value: '1.00')],
+          ),
+        ],
+      );
+
+      expect(symbols.resolvedFileName, 'receipt.pdf');
     });
 
     test('falls back to a usable file name for an unsluggable title', () {
@@ -188,6 +218,28 @@ void main() {
       final bytes = await builder.render(data);
 
       expect(bytes, isNotEmpty);
+      expect(looksLikePdf(bytes), isTrue);
+    });
+
+    test('renders a receipt carrying characters the font cannot set', () async {
+      const unsettable = GtPdfReceiptData(
+        title: 'Transfer Confirmation \u2014 \u201cRent\u201d',
+        sections: [
+          GtPdfReceiptSection(
+            title: 'Details',
+            entries: [
+              GtPdfReceiptEntry(label: 'Amount', value: '\u20a620,000.00'),
+              GtPdfReceiptEntry(
+                label: 'Message',
+                value: 'Rent \u2013 flat 3\u2026',
+              ),
+            ],
+          ),
+        ],
+      );
+
+      final bytes = await const GtPdfReceiptBuilder().render(unsettable);
+
       expect(looksLikePdf(bytes), isTrue);
     });
 
@@ -305,6 +357,48 @@ void main() {
         () => const GtPdfReceiptBuilder().build(zeroColumns),
         throwsA(isA<AssertionError>()),
       );
+    });
+  });
+
+  group('gtPdfSafeText', () {
+    test('leaves text the font can already set alone', () {
+      expect(
+        gtPdfSafeText('Instant bank transfer - 20,000.00 NGN'),
+        'Instant bank transfer - 20,000.00 NGN',
+      );
+      expect(gtPdfSafeText(''), '');
+    });
+
+    test('normalises a currency glyph to its code, spaced off the figure', () {
+      expect(gtPdfSafeText('\u20a620,000.00'), 'NGN 20,000.00');
+      expect(gtPdfSafeText('20,000.00\u20a6'), '20,000.00 NGN');
+      expect(gtPdfSafeText('\u20a6 20,000.00'), 'NGN 20,000.00');
+      expect(gtPdfSafeText('(\u20a620,000.00)'), '(NGN 20,000.00)');
+      expect(gtPdfSafeText('\u00a31,000.00'), 'GBP 1,000.00');
+      expect(gtPdfSafeText(r'$1,000.00'), 'USD 1,000.00');
+      expect(gtPdfSafeText('\u20ac1,000.00'), 'EUR 1,000.00');
+    });
+
+    test('leaves the yen glyph alone, since it denotes two currencies', () {
+      expect(gtPdfSafeText('\u00a51,000'), '\u00a51,000');
+      expect(gtPdfSafeText('\uffe51,000'), '\u00a51,000');
+    });
+
+    test('transliterates the typographic characters a paste carries', () {
+      expect(
+        gtPdfSafeText(
+          '\u201cRent\u201d \u2014 flat\u00a03, \u2018paid\u2019\u2026',
+        ),
+        '"Rent" - flat 3, \'paid\'...',
+      );
+      expect(gtPdfSafeText('\u2022 First\n\u2022 Second'), '- First\n- Second');
+      expect(gtPdfSafeText('Sterling\u2122'), 'Sterling(TM)');
+      expect(gtPdfSafeText('soft\u00adhyphen\u200bjoin'), 'softhyphenjoin');
+    });
+
+    test('replaces anything the font still cannot set', () {
+      expect(gtPdfSafeText('\u0915\u0941\u0926\u093e'), '????');
+      expect(gtPdfSafeText('Caf\u00e9 \u5143'), 'Caf\u00e9 ?');
     });
   });
 
