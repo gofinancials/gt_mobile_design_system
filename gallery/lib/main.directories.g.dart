@@ -354,6 +354,10 @@ import 'package:gallery/templates/slides/gt_onboarding_slides_usecase.dart'
     as _gallery_templates_slides_gt_onboarding_slides_usecase;
 import 'package:gallery/templates/slides/gt_welcome_slides_usecase.dart'
     as _gallery_templates_slides_gt_welcome_slides_usecase;
+import 'package:gallery/templates/state/gt_async_state_body_usecase.dart'
+    as _gallery_templates_state_gt_async_state_body_usecase;
+import 'package:gallery/templates/state/gt_async_state_sliver_usecase.dart'
+    as _gallery_templates_state_gt_async_state_sliver_usecase;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -2888,6 +2892,33 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtWelcomeSlides Gallery',
                     builder: _gallery_templates_slides_gt_welcome_slides_usecase
                         .playgroundGtWelcomeSlidesUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'state',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAsyncStateBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAsyncStateBody',
+                    builder:
+                        _gallery_templates_state_gt_async_state_body_usecase
+                            .playgroundGtAsyncStateBodyUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAsyncStateSliver',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAsyncStateSliver',
+                    builder:
+                        _gallery_templates_state_gt_async_state_sliver_usecase
+                            .playgroundGtAsyncStateSliverUseCase,
                   ),
                 ],
               ),
