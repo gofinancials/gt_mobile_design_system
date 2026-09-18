@@ -89,13 +89,25 @@ class GtIconListTile extends GtStatelessWidget {
   final IconData? icon;
 
   /// Optional custom color for the [icon].
+  ///
+  /// Takes precedence over [iconVariant].
   final Color? iconColor;
+
+  /// Optional custom size for the [icon].
+  ///
+  /// If null, defaults to 24px.
+  final double? iconSize;
+
+  /// The visual style variant for the [icon].
+  ///
+  /// Ignored when [iconColor] is set. If null, defaults to
+  /// [GtIconVariant.strong].
+  final GtIconVariant? iconVariant;
 
   /// A widget rendered at the start of the tile in place of [icon].
   ///
-  /// Use this when the icon needs to carry its own [GtIconVariant] or other
-  /// styling that [icon] and [iconColor] cannot express, e.g.
-  /// `GtIcon(myIcon, variant: .soft)`.
+  /// Use this when the start of the tile needs content that [icon] cannot
+  /// express, e.g. an avatar, a badge or a stack of widgets.
   final Widget? leading;
 
   /// Vertical alignment of the row's children. Defaults to [CrossAxisAlignment.start].
@@ -135,6 +147,8 @@ class GtIconListTile extends GtStatelessWidget {
     this.leading,
     this.crossAxisAlignment,
     this.iconColor,
+    this.iconSize,
+    this.iconVariant,
     this.onTap,
     this.verticalSpacing,
     this.horizontalSpacing,
@@ -155,6 +169,8 @@ class GtIconListTile extends GtStatelessWidget {
     IconData? icon,
     Widget? leading,
     CrossAxisAlignment? crossAxisAlignment,
+    double? iconSize,
+    GtIconVariant? iconVariant,
     OnPressed? onTap,
     Widget? trailing,
     double? verticalSpacing,
@@ -170,11 +186,11 @@ class GtIconListTile extends GtStatelessWidget {
     Widget? lead = leading;
 
     if (icon case IconData data) {
-      lead ??= GtIcon.withColor(
-        data,
-        size: context.dp(24.px),
-        color: iconColor,
-      );
+      final size = iconSize ?? context.dp(24.px);
+      lead ??= switch (iconColor) {
+        Color color => GtIcon.withColor(data, size: size, color: color),
+        null => GtIcon(data, size: size, variant: iconVariant ?? .strong),
+      };
     }
 
     final child = Padding(
@@ -231,6 +247,8 @@ class _GtIconListTileAlt extends GtIconListTile {
     super.icon,
     super.leading,
     super.crossAxisAlignment,
+    super.iconSize,
+    super.iconVariant,
     super.onTap,
     super.trailing,
     super.verticalSpacing,
@@ -258,7 +276,13 @@ class _GtIconListTileAlt extends GtIconListTile {
               color: context.palette.bg.weak,
               borderRadius: context.borderRadiusXl,
             ),
-            child: leading ?? GtIcon(icon!, size: context.dp(24.px)),
+            child:
+                leading ??
+                GtIcon(
+                  icon!,
+                  size: iconSize ?? context.dp(24.px),
+                  variant: iconVariant ?? .strong,
+                ),
           ),
           Expanded(
             child: Column(

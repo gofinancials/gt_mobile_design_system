@@ -259,9 +259,11 @@ class GtPdfReceiptData extends AppEquatable {
   /// The file name used when the document is shared or saved.
   ///
   /// Slugged before use, so a transaction reference or a title carrying
-  /// spaces, punctuation or an accent is safe to pass straight through. Any
-  /// `.pdf` suffix is optional. Defaults to a slug derived from [title]. See
-  /// [resolvedFileName].
+  /// spaces, punctuation or an accent is safe to pass straight through. The
+  /// case, dots, underscores and hyphens of a reference survive the slug
+  /// unchanged, so an app quoting a reference back to the user does not need a
+  /// file name helper of its own. Any `.pdf` suffix is optional. Defaults to a
+  /// slug derived from [title]. See [resolvedFileName].
   final String? fileName;
 
   /// Creates a [GtPdfReceiptData].
@@ -281,19 +283,22 @@ class GtPdfReceiptData extends AppEquatable {
 
   /// The file name used on export, always suffixed with `.pdf`.
   ///
-  /// Derived from [fileName] when given and from [title] otherwise, and either
-  /// way lowercased and reduced to underscore-separated alphanumerics. A
-  /// caller-supplied name goes through the same slug as a derived one, so no
-  /// app has to pre-slug a reference of its own; a `.pdf` the caller already
-  /// wrote is not slugged into the name.
+  /// Derived from [fileName] when given and from [title] otherwise. Either way
+  /// letters, digits, dots, underscores and hyphens are kept as they were
+  /// written — a receipt names a record before it reads as a slug, and the case
+  /// of a transaction reference is part of that record — while every other run
+  /// of characters collapses to a single underscore, and any separator left at
+  /// either edge is dropped. A caller-supplied name goes through the same slug
+  /// as a derived one, so no app has to pre-slug a reference of its own; a
+  /// `.pdf` the caller already wrote is not slugged into the name.
   String get resolvedFileName {
     final source = fileName.hasValue ? fileName! : title;
     final base = source.trim().replaceAll(
       RegExp(r'\.pdf$', caseSensitive: false),
       '',
     );
-    final slug = base.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]+'), '_');
-    final trimmed = slug.replaceAll(RegExp(r'^_+|_+$'), '');
+    final slug = base.replaceAll(RegExp(r'[^A-Za-z0-9._-]+'), '_');
+    final trimmed = slug.replaceAll(RegExp(r'^[._-]+|[._-]+$'), '');
     final name = trimmed.hasValue ? trimmed : 'receipt';
     return '$name.pdf';
   }

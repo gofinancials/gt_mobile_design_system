@@ -112,7 +112,7 @@ void main() {
 
   group('GtPdfReceiptData', () {
     test('derives a slugged file name from the title', () {
-      expect(data.resolvedFileName, 'transfer_confirmation.pdf');
+      expect(data.resolvedFileName, 'Transfer_Confirmation.pdf');
     });
 
     test('prefers an explicit file name and suffixes it once', () {
@@ -127,7 +127,7 @@ void main() {
         ],
       );
 
-      expect(named.resolvedFileName, 'receipt_1234.pdf');
+      expect(named.resolvedFileName, 'receipt-1234.pdf');
     });
 
     test('slugs a supplied file name the same way as a derived one', () {
@@ -142,7 +142,52 @@ void main() {
         ],
       );
 
-      expect(supplied.resolvedFileName, 'ref_81a0cf3b_9696_caf.pdf');
+      expect(supplied.resolvedFileName, 'Ref_81a0cf3b_9696_Caf.pdf');
+    });
+
+    test('keeps the case and hyphens of a supplied reference', () {
+      const reference = GtPdfReceiptData(
+        title: 'Transfer Confirmation',
+        fileName: 'transaction_TXN-2026-08-21',
+        sections: [
+          GtPdfReceiptSection(
+            title: 'Details',
+            entries: [GtPdfReceiptEntry(label: 'Amount', value: '1.00')],
+          ),
+        ],
+      );
+
+      expect(reference.resolvedFileName, 'transaction_TXN-2026-08-21.pdf');
+    });
+
+    test('drops a separator left at either edge of a supplied name', () {
+      const edged = GtPdfReceiptData(
+        title: 'Transfer Confirmation',
+        fileName: '..-Ref.',
+        sections: [
+          GtPdfReceiptSection(
+            title: 'Details',
+            entries: [GtPdfReceiptEntry(label: 'Amount', value: '1.00')],
+          ),
+        ],
+      );
+
+      expect(edged.resolvedFileName, 'Ref.pdf');
+    });
+
+    test('falls back to a usable file name for a separator-only one', () {
+      const dot = GtPdfReceiptData(
+        title: 'Transfer Confirmation',
+        fileName: '.',
+        sections: [
+          GtPdfReceiptSection(
+            title: 'Details',
+            entries: [GtPdfReceiptEntry(label: 'Amount', value: '1.00')],
+          ),
+        ],
+      );
+
+      expect(dot.resolvedFileName, 'receipt.pdf');
     });
 
     test('falls back to a usable file name for an unsluggable one', () {
