@@ -20,6 +20,10 @@ class GtInfoListTile extends GtStatelessWidget {
   /// A callback triggered when the tile is tapped.
   ///
   /// If provided, the tile becomes interactive and provides haptic feedback.
+  ///
+  /// Null renders a static row with no [GtInkWell] and no semantic role, so
+  /// an informational tile is not announced as a button. Matches
+  /// [GtBaseListTileTemplate].
   final OnPressed? onTap;
 
   /// Optional custom [TextStyle] for the [text].
@@ -43,6 +47,9 @@ class GtInfoListTile extends GtStatelessWidget {
   /// Defaults to false.
   final bool centerTrailing;
 
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtInfoListTile].
   const GtInfoListTile(
     this.label, {
@@ -53,6 +60,7 @@ class GtInfoListTile extends GtStatelessWidget {
     this.textStyle,
     this.onTap,
     this.spacing,
+    this.padding,
     this.centerTrailing = false,
   });
 
@@ -71,7 +79,7 @@ class GtInfoListTile extends GtStatelessWidget {
         ?trailing,
       ],
     );
-    
+
     if (centerTrailing) {
       labelChild = GtText(label, style: hintStyle);
     }
@@ -96,15 +104,21 @@ class GtInfoListTile extends GtStatelessWidget {
       );
     }
 
-    return GtInkWell(
-      role: .button,
-      borderRadius: .zero,
-      onTap: onTap,
-      child: Padding(
-        padding: context.insets.symmetricDp(vertical: 8.px),
-        child: child,
-      ),
+    child = Padding(
+      padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
+      child: child,
     );
+
+    if (onTap != null) {
+      return GtInkWell(
+        role: .button,
+        borderRadius: .zero,
+        onTap: onTap,
+        child: child,
+      );
+    }
+
+    return child;
   }
 }
 
@@ -664,6 +678,10 @@ class GtInstructionListTile extends GtStatelessWidget {
   final TextStyle? textStyle;
 
   /// An optional callback triggered when the tile is tapped.
+  ///
+  /// Null renders a static row with no [GtInkWell] and no semantic role, so
+  /// an instructional tile is not announced as a button. Matches
+  /// [GtBaseListTileTemplate].
   final OnPressed? onTap;
 
   /// Optional custom size for the [icon].
@@ -676,6 +694,11 @@ class GtInstructionListTile extends GtStatelessWidget {
   /// Defaults to [CrossAxisAlignment.start].
   final CrossAxisAlignment crossAxisAlignment;
 
+  /// Overrides the gap between the [leading] widget, the text column and the
+  /// copy icon or [trailing] widget in logical pixels. Null preserves the
+  /// current default.
+  final double? horizontalSpacing;
+
   /// Creates a [GtInstructionListTile] with the given [text] and [icon].
   const GtInstructionListTile(
     this.text, {
@@ -685,34 +708,38 @@ class GtInstructionListTile extends GtStatelessWidget {
     this.iconVariant,
     this.textStyle,
     this.iconSize,
+    this.horizontalSpacing,
     this.crossAxisAlignment = CrossAxisAlignment.start,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GtInkWell(
-      role: .button,
-      borderRadius: .zero,
-      onTap: onTap,
-      child: Row(
-        spacing: context.spacingBase,
-        crossAxisAlignment: crossAxisAlignment,
-        children: [
-          GtIcon(
-            icon,
-            size: iconSize ?? context.dp(24.px),
-            alignment: Alignment.topLeft,
-            variant: iconVariant ?? GtIconVariant.soft,
-          ),
-          Expanded(
-            child: GtText(
-              text,
-              style: textStyle ?? context.textStyles.bodyXs(),
-            ),
-          ),
-        ],
-      ),
+    final child = Row(
+      spacing: horizontalSpacing ?? context.spacingBase,
+      crossAxisAlignment: crossAxisAlignment,
+      children: [
+        GtIcon(
+          icon,
+          size: iconSize ?? context.dp(24.px),
+          alignment: Alignment.topLeft,
+          variant: iconVariant ?? GtIconVariant.soft,
+        ),
+        Expanded(
+          child: GtText(text, style: textStyle ?? context.textStyles.bodyXs()),
+        ),
+      ],
     );
+
+    if (onTap != null) {
+      return GtInkWell(
+        role: .button,
+        borderRadius: .zero,
+        onTap: onTap,
+        child: child,
+      );
+    }
+
+    return child;
   }
 }
 
