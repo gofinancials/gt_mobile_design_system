@@ -260,7 +260,7 @@ class GtPdfReceiptData extends AppEquatable {
   ///
   /// Slugged before use, so a transaction reference or a title carrying
   /// spaces, punctuation or an accent is safe to pass straight through. The
-  /// case, dots, underscores and hyphens of a reference survive the slug
+  /// case, dots, underscores and hyphens inside a reference survive the slug
   /// unchanged, so an app quoting a reference back to the user does not need a
   /// file name helper of its own. Any `.pdf` suffix is optional. Defaults to a
   /// slug derived from [title]. See [resolvedFileName].
