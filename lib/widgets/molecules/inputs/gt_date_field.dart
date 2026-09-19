@@ -16,7 +16,7 @@ class GtDateField extends GtStatefulWidget {
   final String? calendarTitle;
 
   /// The hint text shown in the text field when no date is selected.
-  final String hintText;
+  final String? hintText;
 
   /// The format used to display the selected date or date range.
   final String dateFormat;
@@ -56,7 +56,7 @@ class GtDateField extends GtStatefulWidget {
     super.key,
     this.controller,
     this.dateFormat = "dd-MM-yyyy",
-    this.hintText = "DD-MM-YYYY",
+    this.hintText,
     this.validator,
     this.decoration,
     this.suffix,
@@ -67,14 +67,14 @@ class GtDateField extends GtStatefulWidget {
     this.calendarTitle,
     this.label,
     this.focusNode,
-  }) : _selectionMode = GtCalendarSelectionMode.day;
+  }) : _selectionMode = .day;
 
   /// Creates a date field configured for date range selection.
   const GtDateField.range({
     super.key,
     this.controller,
     this.dateFormat = "dd-MM-yyyy",
-    this.hintText = "DD-MM-YYYY - DD-MM-YYYY",
+    this.hintText,
     this.validator,
     this.decoration,
     this.suffix,
@@ -85,7 +85,7 @@ class GtDateField extends GtStatefulWidget {
     this.calendarTitle,
     this.label,
     this.focusNode,
-  }) : _selectionMode = GtCalendarSelectionMode.range;
+  }) : _selectionMode = .range;
 
   @override
   State<GtDateField> createState() => _GtDateFieldState();
@@ -150,19 +150,26 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
   /// Opens the [GtCalendarModal] in a draggable bottom sheet.
   void _showPicker() {
     if (!widget.isEnabled) return;
+    final title = widget.calendarTitle ?? widget.label ?? widget.hintText;
+
     showDraggableSheet(
       context,
       useRootNavigator: false,
       builder: (controller) => GtCalendarModal(
         controller,
         controller: _calendarController,
-        title: widget.calendarTitle ?? widget.label ?? widget.hintText,
+        title: title ?? defaultHint,
         selectionMode: widget.selectionMode,
         onSelectDay: (_) => _pop(context),
         onSelectRange: (_) => _pop(context),
       ),
     );
   }
+
+  String get defaultHint => switch (widget._selectionMode) {
+    .range => "DD-MM-YYYY - DD-MM-YYYY",
+    _ => "DD-MM-YYYY",
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +188,7 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
           controller: _localCtrl,
           textInputAction: widget.action,
           validator: (_) => widget.validator?.call(_calendarController.value),
-          hintText: widget.hintText,
+          hintText: widget.hintText ?? widget.label ?? defaultHint,
           label: widget.label,
           keyboardType: TextInputType.datetime,
           suffix: widget.suffix ?? GtIcon(GtIcons.calendarDays),
