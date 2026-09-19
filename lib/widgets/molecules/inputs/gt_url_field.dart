@@ -35,6 +35,18 @@ class GtUrlField extends GtStatefulWidget {
   /// Custom visual styling for the input.
   final GtInputDecoration? decoration;
 
+  /// Optional message shown when the entered URL is invalid.
+  /// Defaults to [AppValidators.urlValidator]'s error message if omitted.
+  final String? errorMessage;
+
+  /// Optional message shown when the field is required but left empty.
+  /// Defaults to [AppValidators.urlValidator]'s empty message if omitted.
+  final String? emptyMessage;
+
+  /// An optional widget to display at the end of the field.
+  /// Defaults to a "paste" button that reads a valid URL from the clipboard.
+  final Widget? suffix;
+
   /// Creates a new [GtUrlField].
   const GtUrlField({
     super.key,
@@ -47,6 +59,9 @@ class GtUrlField extends GtStatefulWidget {
     this.helperText,
     this.fillColor,
     this.isEnabled = true,
+    this.errorMessage,
+    this.emptyMessage,
+    this.suffix,
   });
   @override
   State<GtUrlField> createState() => _GtUrlFieldState();
@@ -55,24 +70,33 @@ class GtUrlField extends GtStatefulWidget {
 class _GtUrlFieldState extends State<GtUrlField> {
   @override
   Widget build(BuildContext context) {
+    final trailing = GtTextButton(
+      text: "paste".ctr(),
+      size: .xsmall,
+      alignment: .centerEnd,
+      onPressed: () async {
+        final text = await context.getClipboardText();
+        if (!text.hasValue) return;
+        if (!AppRegex.urlRegex.hasMatch(text.value)) return;
+        widget.controller.text = text.value;
+      },
+    );
+    
+    String? urlValidator(text) => AppValidators.urlValidator(
+      text,
+      isRequired: widget.isRequired,
+      errorMessage: widget.errorMessage,
+      emptyMessage: widget.emptyMessage,
+    );
+
     return GtTextField(
       isEnabled: widget.isEnabled,
       decoration: widget.decoration,
       helperText: widget.helperText,
       label: widget.label,
       controller: widget.controller,
-      suffix: GtTextButton(
-        text: "paste".ctr(),
-        size: .xsmall,
-        alignment: .centerEnd,
-        onPressed: () async {
-          final text = await context.getClipboardText();
-          if (!text.hasValue) return;
-          if (!AppRegex.urlRegex.hasMatch(text.value)) return;
-          widget.controller.text = text.value;
-        },
-      ),
-      validator: widget.validator ?? AppValidators.urlValidator,
+      suffix: widget.suffix ?? trailing,
+      validator: widget.validator ?? urlValidator,
       keyboardType: TextInputType.url,
       onChanged: widget.onChange,
       autofillHints: const [AutofillHints.url],
