@@ -104,6 +104,7 @@ class TestAppConfig extends AppConfig {
       exactLength: 'Exact length',
       requestRefused: 'Request refused',
       serverUnavailable: 'Service Unavailable',
+      malformedResponse: 'Bad response',
     );
   }
 }
