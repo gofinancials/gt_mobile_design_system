@@ -103,6 +103,7 @@ class TestAppConfig extends AppConfig {
       requestCancelled: "The request was cancelled",
       exactLength: 'Exact length',
       requestRefused: 'Request refused',
+      serverUnavailable: 'Service Unavailable',
     );
   }
 }
