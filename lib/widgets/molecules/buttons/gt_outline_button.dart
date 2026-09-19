@@ -25,6 +25,14 @@ class GtOutlineButton extends GtButton {
   /// Custom padding to apply inside the button, overriding the default size-based padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// Custom size for the [leading] and [trailing] icons, in logical pixels,
+  /// overriding the default size-based icon size.
+  final double? iconSize;
+
+  /// Custom gap between the [leading] and [trailing] icons and the [text], in
+  /// logical pixels, overriding the default spacing.
+  final double? iconSpacing;
+
   /// Optional text style to override the default button text style.
   final TextStyle? style;
 
@@ -45,6 +53,8 @@ class GtOutlineButton extends GtButton {
     super.pressedScale,
     super.enableLabelAnimation = true,
     this.contentPadding,
+    this.iconSize,
+    this.iconSpacing,
     this.leading,
     this.trailing,
     super.alignment,
@@ -56,6 +66,8 @@ class GtOutlineButton extends GtButton {
     super.key,
   });
 
+  /// Determines the label and icon color, which follows the border color
+  /// except on a few variants, unless a custom [textColor] is provided.
   Color _textColor(GtPalette palette) {
     if (isDisabled) return palette.text.disabled;
     if (textColor != null) return textColor!;
@@ -67,6 +79,8 @@ class GtOutlineButton extends GtButton {
     };
   }
 
+  /// Determines the border color based on the button's [variant] and
+  /// [isDisabled] state, unless a custom [color] is provided.
   Color _borderColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
     if (color != null) return color!;
@@ -90,6 +104,8 @@ class GtOutlineButton extends GtButton {
     };
   }
 
+  /// Determines the faint background tint shown in focus, hover and pressed
+  /// states, derived from the border color.
   Color _bgColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
     final color = _borderColor(palette);
@@ -106,8 +122,6 @@ class GtOutlineButton extends GtButton {
 
     Widget? leadingIcon;
     Widget? trailingIcon;
-
-    final iconSize = context.dp(16.px);
 
     if (leading != null) {
       leadingIcon = GtIcon.withColor(
@@ -158,6 +172,8 @@ class GtOutlineButton extends GtButton {
           animateChanges: enableLabelAnimation,
           style: style,
           textCase: textCase,
+          iconSize: iconSize,
+          iconSpacing: iconSpacing,
         ),
         child2: GtSpinner(color: textColor),
         showFirst: !isLoading,

@@ -53,6 +53,11 @@ class GtEmptyState extends GtStatelessWidget {
   /// Defines the text capitalization behavior for the title.
   final GtTextCase titleCase;
 
+  /// The size of the [icon].
+  ///
+  /// Defaults to 124.
+  final double? iconSize;
+
   /// Creates a [GtEmptyState] with required icon/title/subtitle content.
   const GtEmptyState({
     super.key,
@@ -68,6 +73,7 @@ class GtEmptyState extends GtStatelessWidget {
     this.titleCase = .upper,
     this.titleStyle,
     this.subtitleStyle,
+    this.iconSize,
   }) : assert(
          (onActionPressed == null) == (actionText == null),
          'onActionPressed and actionText must be provided together',
@@ -80,6 +86,7 @@ class GtEmptyState extends GtStatelessWidget {
       description: subtitle,
       icon: icon,
       graphic: graphic,
+      iconSize: iconSize,
       alignment: alignment ?? .center,
       gapToDescription: gapToSubtitle,
       actionText: actionText,

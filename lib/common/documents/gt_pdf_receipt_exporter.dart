@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
+import 'package:gt_mobile_ui/documents.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Delivers a rendered PDF receipt to the user.

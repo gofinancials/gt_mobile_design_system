@@ -288,7 +288,7 @@ class _GtWheelScrollState<T> extends State<GtWheelScroll<T>> {
 /// A card that lays out [GtWheelScroll]s side by side.
 ///
 /// Each wheel takes an equal share of the width and is centred in it, capped
-/// at the width of the selection band in the design.
+/// at [maxWheelWidth].
 class GtWheelScrollGroup extends GtStatelessWidget {
   /// The wheels to display, from left to right.
   final List<Widget> children;
@@ -303,17 +303,25 @@ class GtWheelScrollGroup extends GtStatelessWidget {
   /// Defaults to 16 logical pixels above and below the wheels.
   final EdgeInsetsGeometry? padding;
 
+  /// The widest each wheel may grow, in logical pixels.
+  ///
+  /// Defaults to 92 logical pixels, the width of the selection band in the
+  /// design. Raise it for wheels with long labels, such as full month names.
+  /// A wheel never grows past its equal share of the card's width.
+  final double? maxWheelWidth;
+
   /// Creates a [GtWheelScrollGroup].
   const GtWheelScrollGroup({
     super.key,
     required this.children,
     this.color,
     this.padding,
+    this.maxWheelWidth,
   });
 
   @override
   Widget build(BuildContext context) {
-    final maxWheelWidth = context.dp(92.px);
+    final maxWidth = maxWheelWidth ?? context.dp(92.px);
 
     return GtCard(
       color: color,
@@ -326,7 +334,7 @@ class GtWheelScrollGroup extends GtStatelessWidget {
             Expanded(
               child: Center(
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: maxWheelWidth),
+                  constraints: BoxConstraints(maxWidth: maxWidth),
                   child: child,
                 ),
               ),

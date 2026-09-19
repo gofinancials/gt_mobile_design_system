@@ -35,8 +35,6 @@ import 'package:gallery/atoms/media/gt_icons.dart'
     as _gallery_atoms_media_gt_icons;
 import 'package:gallery/atoms/media/gt_images.dart'
     as _gallery_atoms_media_gt_images;
-import 'package:gallery/atoms/media/gt_lottie_usecase.dart'
-    as _gallery_atoms_media_gt_lottie_usecase;
 import 'package:gallery/atoms/media/gt_media_gallery_usecase.dart'
     as _gallery_atoms_media_gt_media_gallery_usecase;
 import 'package:gallery/atoms/media/gt_memory_image_usecase.dart'
@@ -350,12 +348,18 @@ import 'package:gallery/templates/screens/gt_lesson_complete_screen.dart'
     as _gallery_templates_screens_gt_lesson_complete_screen;
 import 'package:gallery/templates/screens/gt_splash_screen.dart'
     as _gallery_templates_screens_gt_splash_screen;
+import 'package:gallery/templates/scroll_views/gt_scrollable_body_usecase.dart'
+    as _gallery_templates_scroll_views_gt_scrollable_body_usecase;
 import 'package:gallery/templates/slides/gt_lesson_slides_usecase.dart'
     as _gallery_templates_slides_gt_lesson_slides_usecase;
 import 'package:gallery/templates/slides/gt_onboarding_slides_usecase.dart'
     as _gallery_templates_slides_gt_onboarding_slides_usecase;
 import 'package:gallery/templates/slides/gt_welcome_slides_usecase.dart'
     as _gallery_templates_slides_gt_welcome_slides_usecase;
+import 'package:gallery/templates/state/gt_async_state_body_usecase.dart'
+    as _gallery_templates_state_gt_async_state_body_usecase;
+import 'package:gallery/templates/state/gt_async_state_sliver_usecase.dart'
+    as _gallery_templates_state_gt_async_state_sliver_usecase;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -583,16 +587,6 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'Images',
                     builder:
                         _gallery_atoms_media_gt_images.playgroundImageUseCase,
-                  ),
-                ],
-              ),
-              _widgetbook.WidgetbookComponent(
-                name: 'GtLottie',
-                useCases: [
-                  _widgetbook.WidgetbookUseCase(
-                    name: 'GtLottie',
-                    builder: _gallery_atoms_media_gt_lottie_usecase
-                        .playgroundGtLottieUseCase,
                   ),
                 ],
               ),
@@ -1467,6 +1461,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtSimpleInfoTile',
                     builder: _gallery_molecules_tiles_gt_info_tiles_usecase
                         .playgroundGtSimpleInfoTileUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtStackedCopyTile',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtStackedCopyTile',
+                    builder: _gallery_molecules_tiles_gt_info_tiles_usecase
+                        .playgroundGtStackedCopyTileUseCase,
                   ),
                 ],
               ),
@@ -2844,6 +2848,22 @@ final directories = <_widgetbook.WidgetbookNode>[
             ],
           ),
           _widgetbook.WidgetbookFolder(
+            name: 'scroll_views',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtScrollableBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtScrollableBody',
+                    builder:
+                        _gallery_templates_scroll_views_gt_scrollable_body_usecase
+                            .playgroundGtScrollableBodyUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
             name: 'slides',
             children: [
               _widgetbook.WidgetbookComponent(
@@ -2890,6 +2910,33 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtWelcomeSlides Gallery',
                     builder: _gallery_templates_slides_gt_welcome_slides_usecase
                         .playgroundGtWelcomeSlidesUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'state',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAsyncStateBody',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAsyncStateBody',
+                    builder:
+                        _gallery_templates_state_gt_async_state_body_usecase
+                            .playgroundGtAsyncStateBodyUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtAsyncStateSliver',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtAsyncStateSliver',
+                    builder:
+                        _gallery_templates_state_gt_async_state_sliver_usecase
+                            .playgroundGtAsyncStateSliverUseCase,
                   ),
                 ],
               ),

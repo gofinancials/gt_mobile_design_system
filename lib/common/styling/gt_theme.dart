@@ -349,10 +349,18 @@ class GtTheme {
     return transitionMap;
   }
 
+  /// Whether [other] is a theme of the same runtime type with equal palettes
+  /// and [name].
+  ///
+  /// The runtime type is compared so a [GtTheme] subclass never equals the base
+  /// theme it was derived from, even when they share palettes and a name.
+  /// [GtThemeProvider] relies on this to notify its dependents when an app
+  /// swaps between the two.
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! GtTheme) return false;
+    if (other.runtimeType != runtimeType) return false;
     return lightPalette == other.lightPalette &&
         darkPalette == other.darkPalette &&
         name == other.name;
@@ -410,14 +418,17 @@ final kGoTechTheme = GtTheme(
 /// A comprehensive list of all available themes in the design system.
 ///
 /// This list includes predefined themes such as [kPersonalTheme] and [kKidsTheme].
-List<GtTheme> kAllThemes = [
+///
+/// The list is unmodifiable. An app that subclasses [GtTheme] supplies its own
+/// list through [GtThemeState] instead of changing this one.
+final List<GtTheme> kAllThemes = List.unmodifiable([
   kPersonalTheme,
   kKidsTheme,
   kFlexTheme,
   kProTheme,
   kGoTechTheme,
-];
+]);
 
-/// Retrieves the default theme, which is the first theme in the list of all themes.
+/// The default theme, which is the first theme in [kAllThemes].
 /// This can be used as a fallback or default selection when no specific theme is chosen.
-GtTheme get kDefaultTheme => kAllThemes.first;
+final GtTheme kDefaultTheme = kAllThemes.first;

@@ -18,8 +18,7 @@ dependencies:
   gt_mobile_foundation:
     git:
       url: https://github.com/gofinancials/gt_mobile_foundation.git
-      ref: v0.0.46
-  lottie: ^3.0.0
+      ref: v0.0.57
   pin_code_fields: ^9.3.0
   shimmer: ^3.0.0
   styled_text:
@@ -35,6 +34,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  fake_async: ^1.3.3
   flutter_lints: ^6.0.0
   custom_lint: ^0.8.1
   gt_a11y_lints:

@@ -52,20 +52,37 @@ Widget playgroundGtIconListTileUseCase(BuildContext context) {
     label: 'Use Alternate Style (Boxed Icon)',
     initialValue: false,
   );
+  final iconSize = context.knobs.double.slider(
+    label: 'Icon Size',
+    initialValue: 24.0,
+    min: 14.0,
+    max: 36.0,
+  );
+  final iconVariant = context.knobs.object.dropdown<GtIconVariant>(
+    label: 'Icon Variant',
+    initialOption: GtIconVariant.strong,
+    options: GtIconVariant.values,
+    labelBuilder: (v) => v.name,
+  );
+
+  final sizeParam = iconSize == 24.0 ? '' : '\n  iconSize: $iconSize,';
+  final variantParam = iconVariant == GtIconVariant.strong
+      ? ''
+      : '\n  iconVariant: GtIconVariant.${iconVariant.name},';
 
   final code = isAlt
       ? '''
 GtIconListTile.alt(
   "$title",
   subtitle: "$subtitle",
-  icon: GtIcons.user,
+  icon: GtIcons.user,$sizeParam$variantParam
   onTap: () {},
 )'''
       : '''
 GtIconListTile(
   "$title",
   subtitle: "$subtitle",
-  icon: GtIcons.user,
+  icon: GtIcons.user,$sizeParam$variantParam
   onTap: () {},
 )''';
 
@@ -83,12 +100,16 @@ GtIconListTile(
                 title,
                 subtitle: subtitle.isEmpty ? null : subtitle,
                 icon: GtIcons.user,
+                iconSize: iconSize,
+                iconVariant: iconVariant,
                 onTap: () {},
               )
             : GtIconListTile(
                 title,
                 subtitle: subtitle.isEmpty ? null : subtitle,
                 icon: GtIcons.user,
+                iconSize: iconSize,
+                iconVariant: iconVariant,
                 onTap: () {},
               ),
       ),

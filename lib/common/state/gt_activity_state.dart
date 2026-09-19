@@ -55,6 +55,7 @@ class GtActivityState extends StateModel with WidgetsBindingObserver {
   DateTime? _lastActivityTime;
   bool _isTrackingActive = false;
   bool _isObservingLifecycle = false;
+  bool _isAppResumed = true;
   RouteSettings? _currentRouteSettings;
   GtInactivityCallback? _onInactivityDetected;
   Timer? _inactivityTimer;
@@ -111,6 +112,11 @@ class GtActivityState extends StateModel with WidgetsBindingObserver {
       _currentRouteSettings = initialRouteSettings;
     }
 
+    final lifecycleState = WidgetsBinding.instance.lifecycleState;
+    if (lifecycleState != null) {
+      _isAppResumed = lifecycleState == AppLifecycleState.resumed;
+    }
+
     _isTrackingActive = true;
     _lastActivityTime = DateTime.now();
 
@@ -147,10 +153,23 @@ class GtActivityState extends StateModel with WidgetsBindingObserver {
   /// Updates [_lastActivityTime] if the elapsed time since last activity
   /// exceeds [_throttleDuration] or if [force] is true.
   /// Optionally updates [_currentRouteSettings] if provided.
+  ///
+  /// [routeSettings] is recorded ahead of both guards below, so
+  /// [currentRouteSettings] stays current whether or not tracking is active.
+  /// Route position and inactivity are separate concerns: a host that stops
+  /// tracking during re-authentication still needs the route to return to.
+  ///
+  /// While tracking is off, or while the app is not resumed (backgrounded),
+  /// only [_currentRouteSettings] is updated: the timer stays cancelled and
+  /// [_lastActivityTime] is left alone, so a route change driven by a
+  /// notification, deep link or finished request while backgrounded does not
+  /// push back the inactivity lock.
   void registerActivity({RouteSettings? routeSettings, bool force = false}) {
+    if (routeSettings != null) _currentRouteSettings = routeSettings;
+
     if (!_isTrackingActive) return;
 
-    if (routeSettings != null) _currentRouteSettings = routeSettings;
+    if (!_isAppResumed) return;
 
     final now = DateTime.now();
     if (!force && _lastActivityTime != null) {
@@ -201,6 +220,8 @@ class GtActivityState extends StateModel with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    _isAppResumed = state == AppLifecycleState.resumed;
+
     if (!_isTrackingActive) return;
 
     switch (state) {

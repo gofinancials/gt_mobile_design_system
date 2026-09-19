@@ -6,6 +6,11 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// The standard help action button used across app bars and screens.
 ///
 /// Renders a small [GtRaisedButton] with a predefined spark icon and localized "HELP" label.
+///
+/// By default the spark is drawn at 20dp, 6dp in from the left edge and
+/// 6dp before the label, and the label ends 10dp from the right edge,
+/// matching the help pill in the header nav. Override these with [iconSize],
+/// [iconSpacing] and [contentPadding].
 class GtHelpButton extends GtStatelessWidget {
   /// Creates a [GtHelpButton].
   const GtHelpButton({
@@ -14,6 +19,9 @@ class GtHelpButton extends GtStatelessWidget {
     this.variant = .secondary,
     this.backgroundColor,
     this.textColor,
+    this.iconSize,
+    this.iconSpacing,
+    this.contentPadding,
   });
 
   /// Callback invoked when the button is tapped.
@@ -30,8 +38,27 @@ class GtHelpButton extends GtStatelessWidget {
   /// An optional custom text color to override the default text color.
   final Color? textColor;
 
+  /// An optional size for the spark icon, in logical pixels.
+  ///
+  /// Defaults to 20dp.
+  final double? iconSize;
+
+  /// An optional gap between the spark icon and the label, in logical pixels.
+  ///
+  /// Defaults to 6dp.
+  final double? iconSpacing;
+
+  /// Custom padding to apply inside the button.
+  ///
+  /// Defaults to 6dp on the left (spark) side and 10dp on the right. The
+  /// design's label sits in a text frame with a 4dp inset of its own, which
+  /// the right padding absorbs.
+  final EdgeInsetsGeometry? contentPadding;
+
   @override
   Widget build(BuildContext context) {
+    final padding = context.insets.onlyDp(left: 6.px, right: 10.px);
+
     return GtRaisedButton(
       text: "help".utr(),
       leading: GtIcons.spark,
@@ -41,6 +68,9 @@ class GtHelpButton extends GtStatelessWidget {
       color: backgroundColor,
       textColor: textColor,
       cornerRadius: context.borderRadiusMd,
+      iconSize: iconSize ?? context.dp(20.px),
+      iconSpacing: iconSpacing ?? context.dp(6.px),
+      contentPadding: contentPadding ?? padding,
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:fake_async/fake_async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
@@ -131,6 +132,84 @@ void main() {
 
         expect(callbackFired, isTrue);
         expect(capturedSettings?.name, equals('/accounts'));
+      },
+    );
+
+    test(
+      'A route change while backgrounded updates currentRouteSettings but '
+      'does not move lastActivityTime or restart the timer',
+      () {
+        fakeAsync((async) {
+          final state = GtActivityState(
+            defaultDuration: 1.seconds,
+            throttleDuration: Duration.zero,
+          );
+          var fired = 0;
+          state.startTracking(onInactivity: (_) => fired++);
+
+          state.didChangeAppLifecycleState(AppLifecycleState.paused);
+          final lastActivityTimeWhenPaused = state.lastActivityTime;
+
+          GtActivityRouteObserver(state).didPush(
+            PageRouteBuilder<void>(
+              settings: const RouteSettings(name: '/pushed-in-background'),
+              pageBuilder: (_, _, _) => const SizedBox(),
+            ),
+            null,
+          );
+
+          expect(
+            state.currentRouteSettings?.name,
+            equals('/pushed-in-background'),
+          );
+          expect(state.lastActivityTime, equals(lastActivityTimeWhenPaused));
+
+          async.elapse(3.seconds);
+
+          expect(fired, equals(0));
+
+          state.dispose();
+        });
+      },
+    );
+
+    test(
+      'A route change while tracking is off updates currentRouteSettings but '
+      'does not arm the timer or set lastActivityTime',
+      () {
+        fakeAsync((async) {
+          final state = GtActivityState(
+            defaultDuration: 1.seconds,
+            throttleDuration: Duration.zero,
+          );
+          var fired = 0;
+          state.startTracking(onInactivity: (_) => fired++);
+
+          // Re-authentication: the host stops tracking, but still needs the
+          // route to return to once the customer is back.
+          state.stopTracking();
+
+          GtActivityRouteObserver(state).didPush(
+            PageRouteBuilder<void>(
+              settings: const RouteSettings(name: '/pushed-while-stopped'),
+              pageBuilder: (_, _, _) => const SizedBox(),
+            ),
+            null,
+          );
+
+          expect(
+            state.currentRouteSettings?.name,
+            equals('/pushed-while-stopped'),
+          );
+          expect(state.lastActivityTime, isNull);
+          expect(state.isTrackingActive, isFalse);
+
+          async.elapse(3.seconds);
+
+          expect(fired, equals(0));
+
+          state.dispose();
+        });
       },
     );
   });
