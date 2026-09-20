@@ -333,6 +333,8 @@ import 'package:gallery/templates/scaffolds/gt_dashboard_scaffold.dart'
     as _gallery_templates_scaffolds_gt_dashboard_scaffold;
 import 'package:gallery/templates/scaffolds/gt_receipt_scaffold_usecase.dart'
     as _gallery_templates_scaffolds_gt_receipt_scaffold_usecase;
+import 'package:gallery/templates/scaffolds/gt_step_scaffold_usecase.dart'
+    as _gallery_templates_scaffolds_gt_step_scaffold_usecase;
 import 'package:gallery/templates/scaffolds/gt_summary_scaffold_usecase.dart'
     as _gallery_templates_scaffolds_gt_summary_scaffold_usecase;
 import 'package:gallery/templates/scaffolds/gt_transfer_detail_scaffold_usecase.dart'
@@ -2710,6 +2712,23 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _gallery_templates_scaffolds_gt_receipt_scaffold_usecase
                             .playgroundGtReceiptScaffoldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtStepScaffold',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtStepScaffold',
+                    builder:
+                        _gallery_templates_scaffolds_gt_step_scaffold_usecase
+                            .playgroundGtStepScaffoldUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtStepScaffold Gallery',
+                    builder:
+                        _gallery_templates_scaffolds_gt_step_scaffold_usecase
+                            .playgroundGtStepScaffoldGalleryUseCase,
                   ),
                 ],
               ),
