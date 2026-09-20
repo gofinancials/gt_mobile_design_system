@@ -305,6 +305,10 @@ import 'package:gallery/templates/forms/gt_virtual_keypad_form_with_avatar_doc.d
     as _gallery_templates_forms_gt_virtual_keypad_form_with_avatar_doc;
 import 'package:gallery/templates/forms/gt_virtual_keypad_form_with_avatar_usecase.dart'
     as _gallery_templates_forms_gt_virtual_keypad_form_with_avatar_usecase;
+import 'package:gallery/templates/list_views/gt_card_list_view_doc.dart'
+    as _gallery_templates_list_views_gt_card_list_view_doc;
+import 'package:gallery/templates/list_views/gt_card_list_view_usecase.dart'
+    as _gallery_templates_list_views_gt_card_list_view_usecase;
 import 'package:gallery/templates/list_views/gt_infinite_list_view_doc.dart'
     as _gallery_templates_list_views_gt_infinite_list_view_doc;
 import 'package:gallery/templates/list_views/gt_infinite_list_view_usecase.dart'
@@ -2557,6 +2561,22 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'list_views',
             children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtCardListView',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Documentation',
+                    builder: _gallery_templates_list_views_gt_card_list_view_doc
+                        .playgroundGtCardListViewDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtCardListView',
+                    builder:
+                        _gallery_templates_list_views_gt_card_list_view_usecase
+                            .playgroundGtCardListViewUseCase,
+                  ),
+                ],
+              ),
               _widgetbook.WidgetbookComponent(
                 name: 'GtInfiniteListView',
                 useCases: [

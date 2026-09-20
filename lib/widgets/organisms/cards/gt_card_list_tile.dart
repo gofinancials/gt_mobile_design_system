@@ -16,12 +16,21 @@ enum GtCardListTileType {
   terminus,
 
   /// An item acting as a divider.
+  ///
+  /// This is the gap between two rows: it keeps the card surface unbroken
+  /// behind the gap, so a separator drawn as a bare gap instead splits the
+  /// group into two boxes. [GtCardListTileType.fromIndex] never returns it,
+  /// since it describes no row; [GtCardListView] and [GtCardListSliver] build
+  /// their separators with it.
   divider,
 
   /// The only item in a list. Typically has all corners rounded.
   sole;
 
   /// Determines the tile type based on its [index] within a list of a given [length].
+  ///
+  /// Only ever returns a row type; [GtCardListTileType.divider] describes the
+  /// gap between two rows, not a row.
   factory GtCardListTileType.fromIndex({
     required int index,
     required int length,
