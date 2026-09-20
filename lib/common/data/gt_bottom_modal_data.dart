@@ -115,10 +115,13 @@ class GtBottomModalController<T> extends ChangeNotifier {
   /// outlive a screen: a task that lands after its screen is gone.
   bool _isDisposed = false;
 
+  /// Resolves once this controller has finished with a task — see [settled].
+  Completer<void> _settled = Completer<void>();
+
   /// Creates a [GtBottomModalController] associated with an asynchronous task.
   GtBottomModalController({
     required GtBottomModalData data,
-    required OnChanged<TaskResponse<T>> onComplete,
+    OnChanged<TaskResponse<T>>? onComplete,
     required Duration onCompleteDelay,
     this.keepOpenOnFailure = false,
     double? progress,
@@ -182,6 +185,22 @@ class GtBottomModalController<T> extends ChangeNotifier {
   /// calling [dispose], so a modal kept open by [keepOpenOnFailure] is not left
   /// listening to a disposed controller.
   Future<void> get closed => _presentation ?? Future<void>.value();
+
+  /// Resolves once this controller has finished with the task it is driving:
+  /// the completion delay has elapsed, the modal has been taken down if it is
+  /// going to be, and the completion callback has run.
+  ///
+  /// Also resolves when the controller is [reset] or [dispose]d with a task
+  /// still in flight, so anything sequencing work behind a task — a runner
+  /// waiting to report its outcome — is released rather than left waiting on a
+  /// completion that is never coming.
+  Future<void> get settled => _settled.future;
+
+  /// Resolves [settled], if nothing has yet.
+  void _markSettled() {
+    if (_settled.isCompleted) return;
+    _settled.complete();
+  }
 
   /// Closes this controller's modal, if it is still on screen.
   ///
@@ -262,6 +281,7 @@ class GtBottomModalController<T> extends ChangeNotifier {
       if (!keepOpen) await dismiss();
       if (_isDisposed) return;
       _completionCallback?.call(value);
+      _markSettled();
     });
   }
 
@@ -342,6 +362,13 @@ class GtBottomModalController<T> extends ChangeNotifier {
     _notify();
   }
 
+  /// Whether this controller has been disposed.
+  ///
+  /// Disposing is how an owner says it is finished with the task: the modal
+  /// comes down and anything sequencing work behind the task stops reporting
+  /// into a screen that is no longer interested.
+  bool get isDisposed => _isDisposed;
+
   /// Whether progress is currently being tracked.
   bool get hasProgress => _progress != null;
 
@@ -377,6 +404,8 @@ class GtBottomModalController<T> extends ChangeNotifier {
     _completionValue = null;
     _debouncer.abort();
     _releaseModal();
+    _markSettled();
+    _settled = Completer<void>();
     _notify();
   }
 
@@ -394,6 +423,7 @@ class GtBottomModalController<T> extends ChangeNotifier {
     _completer = Completer();
     _completionValue = null;
     _releaseModal();
+    _markSettled();
     super.dispose();
   }
 }

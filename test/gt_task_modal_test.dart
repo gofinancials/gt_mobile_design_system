@@ -482,6 +482,80 @@ void main() {
       variant: bothPlatforms,
     );
 
+    testWidgets('a caller-owned controller takes the modal down with the '
+        'screen', (tester) async {
+      final host = await pumpHost(tester);
+      final gate = Completer<TaskResponse<String>>();
+      final controller = GtBottomModalController<String>(
+        data: const GtBottomModalData(title: 'Processing'),
+        onCompleteDelay: Duration.zero,
+      );
+
+      final run = GtTaskRunner.run<String>(
+        host.context,
+        controller: controller,
+        task: (_) => gate.future,
+        onSuccess: (_) => fail('the screen is gone'),
+      );
+
+      await pumpFrames(tester);
+      expect(modal, findsOneWidget);
+
+      // The screen is removed while the request is still in flight — the
+      // account it was about was retired. Its dispose takes the modal with it
+      // rather than leaving a spinner over whatever replaced the screen.
+      controller.dispose();
+      await pumpFrames(tester);
+      expect(modal, findsNothing);
+
+      // The task landing later neither resurrects the modal nor strands the
+      // runner.
+      gate.complete(TaskSuccess<String>(data: 'late'));
+      final result = await pumpUntil(tester, run);
+      await pumpFrames(tester);
+
+      expect(result, isA<TaskSuccess<String>>());
+      expect(modal, findsNothing);
+    }, variant: bothPlatforms);
+
+    testWidgets('leaves a caller-owned controller usable afterwards', (
+      tester,
+    ) async {
+      final host = await pumpHost(tester);
+      final controller = GtBottomModalController<String>(
+        data: const GtBottomModalData(title: 'Processing'),
+        onCompleteDelay: Duration.zero,
+      );
+      addTearDown(controller.dispose);
+
+      await pumpUntil(
+        tester,
+        GtTaskRunner.run<String>(
+          host.context,
+          controller: controller,
+          task: (_) async => TaskSuccess<String>(data: 'first'),
+          onSuccess: (_) {},
+        ),
+      );
+      await pumpFrames(tester);
+      expect(modal, findsNothing);
+
+      // The runner disposed nothing it did not create, so the same controller
+      // drives a second task.
+      controller.reset();
+      await pumpUntil(
+        tester,
+        GtTaskRunner.run<String>(
+          host.context,
+          controller: controller,
+          task: (_) async => TaskSuccess<String>(data: 'second'),
+          onSuccess: (_) {},
+        ),
+      );
+      await pumpFrames(tester);
+      expect(modal, findsNothing);
+    }, variant: bothPlatforms);
+
     testWidgets('reports a thrown task as a failure', (tester) async {
       final host = await pumpHost(tester);
       TaskError? error;
