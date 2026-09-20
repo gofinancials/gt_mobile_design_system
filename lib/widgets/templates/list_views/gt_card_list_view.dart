@@ -47,6 +47,14 @@ class GtCardListView<T> extends GtStatelessWidget {
   /// The variant applied to every tile in the group.
   final GtCardVariant variant;
 
+  /// Overrides the surface color of every tile in the group, including the
+  /// separators between them.
+  ///
+  /// Null keeps the color [variant] resolves to. A color given here is applied
+  /// to the separators as well, since a gap left on the variant's default would
+  /// show as a stripe through the group.
+  final Color? backgroundColor;
+
   /// Overrides the horizontal padding of every tile in the group.
   final double? horizontalPadding;
 
@@ -79,6 +87,7 @@ class GtCardListView<T> extends GtStatelessWidget {
     required this.itemKey,
     this.separator = const GtGap.yBase(),
     this.variant = .normal,
+    this.backgroundColor,
     this.horizontalPadding,
     this.verticalPadding,
     this.edgeRadius,
@@ -104,12 +113,14 @@ class GtCardListView<T> extends GtStatelessWidget {
         length: items.length,
         itemBuilder: itemBuilder,
         variant: variant,
+        backgroundColor: backgroundColor,
         horizontalPadding: horizontalPadding,
         verticalPadding: verticalPadding,
         edgeRadius: edgeRadius,
       ),
       separatorBuilder: (context, index) => _GtCardListSeparator(
         variant: variant,
+        backgroundColor: backgroundColor,
         horizontalPadding: horizontalPadding,
         child: separator,
       ),
@@ -138,6 +149,14 @@ class GtCardListSliver<T> extends GtStatelessWidget {
   /// The variant applied to every tile in the group.
   final GtCardVariant variant;
 
+  /// Overrides the surface color of every tile in the group, including the
+  /// separators between them.
+  ///
+  /// Null keeps the color [variant] resolves to. A color given here is applied
+  /// to the separators as well, since a gap left on the variant's default would
+  /// show as a stripe through the group.
+  final Color? backgroundColor;
+
   /// Overrides the horizontal padding of every tile in the group.
   final double? horizontalPadding;
 
@@ -155,6 +174,7 @@ class GtCardListSliver<T> extends GtStatelessWidget {
     required this.itemKey,
     this.separator = const GtGap.yBase(),
     this.variant = .normal,
+    this.backgroundColor,
     this.horizontalPadding,
     this.verticalPadding,
     this.edgeRadius,
@@ -172,12 +192,14 @@ class GtCardListSliver<T> extends GtStatelessWidget {
         length: items.length,
         itemBuilder: itemBuilder,
         variant: variant,
+        backgroundColor: backgroundColor,
         horizontalPadding: horizontalPadding,
         verticalPadding: verticalPadding,
         edgeRadius: edgeRadius,
       ),
       separatorBuilder: (context, index) => _GtCardListSeparator(
         variant: variant,
+        backgroundColor: backgroundColor,
         horizontalPadding: horizontalPadding,
         child: separator,
       ),
@@ -219,6 +241,9 @@ class _GtCardListRow<T> extends GtStatelessWidget {
   /// The variant of the tile.
   final GtCardVariant variant;
 
+  /// Overrides the tile's surface color.
+  final Color? backgroundColor;
+
   /// Overrides the tile's horizontal padding.
   final double? horizontalPadding;
 
@@ -236,6 +261,7 @@ class _GtCardListRow<T> extends GtStatelessWidget {
     required this.length,
     required this.itemBuilder,
     required this.variant,
+    this.backgroundColor,
     this.horizontalPadding,
     this.verticalPadding,
     this.edgeRadius,
@@ -246,6 +272,7 @@ class _GtCardListRow<T> extends GtStatelessWidget {
     return GtCardListTile(
       type: .fromIndex(index: index, length: length),
       variant: variant,
+      backgroundColor: backgroundColor,
       horizontalPadding: horizontalPadding,
       verticalPadding: verticalPadding,
       edgeRadius: edgeRadius,
@@ -262,6 +289,9 @@ class _GtCardListSeparator extends GtStatelessWidget {
   /// The variant of the tile, matching the rows it separates.
   final GtCardVariant variant;
 
+  /// Overrides the tile's surface color, matching the rows it separates.
+  final Color? backgroundColor;
+
   /// Overrides the tile's horizontal padding, matching the rows it separates.
   final double? horizontalPadding;
 
@@ -272,6 +302,7 @@ class _GtCardListSeparator extends GtStatelessWidget {
   const _GtCardListSeparator({
     required this.variant,
     required this.child,
+    this.backgroundColor,
     this.horizontalPadding,
   });
 
@@ -280,6 +311,7 @@ class _GtCardListSeparator extends GtStatelessWidget {
     return GtCardListTile(
       type: .divider,
       variant: variant,
+      backgroundColor: backgroundColor,
       horizontalPadding: horizontalPadding,
       child: child,
     );

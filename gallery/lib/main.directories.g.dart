@@ -309,6 +309,8 @@ import 'package:gallery/templates/list_views/gt_card_list_view_doc.dart'
     as _gallery_templates_list_views_gt_card_list_view_doc;
 import 'package:gallery/templates/list_views/gt_card_list_view_usecase.dart'
     as _gallery_templates_list_views_gt_card_list_view_usecase;
+import 'package:gallery/templates/list_views/gt_infinite_list_sliver_usecase.dart'
+    as _gallery_templates_list_views_gt_infinite_list_sliver_usecase;
 import 'package:gallery/templates/list_views/gt_infinite_list_view_doc.dart'
     as _gallery_templates_list_views_gt_infinite_list_view_doc;
 import 'package:gallery/templates/list_views/gt_infinite_list_view_usecase.dart'
@@ -2574,6 +2576,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _gallery_templates_list_views_gt_card_list_view_usecase
                             .playgroundGtCardListViewUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtInfiniteListSliver',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtInfiniteListSliver',
+                    builder:
+                        _gallery_templates_list_views_gt_infinite_list_sliver_usecase
+                            .playgroundGtInfiniteListSliverUseCase,
                   ),
                 ],
               ),

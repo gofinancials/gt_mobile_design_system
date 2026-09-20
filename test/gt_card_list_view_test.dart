@@ -31,9 +31,10 @@ class _StatefulRowState extends State<_StatefulRow> {
   Widget build(BuildContext context) => GtText(widget.label);
 }
 
-GtCardListView<String> _listOf(List<String> items) {
+GtCardListView<String> _listOf(List<String> items, {Color? backgroundColor}) {
   return GtCardListView<String>(
     items: items,
+    backgroundColor: backgroundColor,
     itemKey: (item) => ValueKey(item),
     itemBuilder: (context, item, index) => _StatefulRow(item),
   );
@@ -74,9 +75,7 @@ void main() {
   testWidgets('GtCardListView draws its separator as a divider tile', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      _CardListTestApp(child: _listOf(const ['a', 'b'])),
-    );
+    await tester.pumpWidget(_CardListTestApp(child: _listOf(const ['a', 'b'])));
 
     final separator = tester.widget<GtCardListTile>(
       find.byWidgetPredicate(
@@ -93,6 +92,30 @@ void main() {
         matching: find.byType(GtCard),
       ),
       findsOneWidget,
+    );
+  });
+
+  testWidgets('GtCardListView tints its separators alongside its rows', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _CardListTestApp(
+        child: _listOf(const ['a', 'b'], backgroundColor: Colors.red),
+      ),
+    );
+
+    final tiles = tester.widgetList<GtCardListTile>(
+      find.byType(GtCardListTile),
+    );
+
+    expect(
+      tiles.map((tile) => tile.type),
+      contains(GtCardListTileType.divider),
+    );
+    expect(
+      tiles.every((tile) => tile.backgroundColor == Colors.red),
+      isTrue,
+      reason: 'a separator left on the variant default shows as a stripe',
     );
   });
 
@@ -114,9 +137,7 @@ void main() {
     final b = stateOf('b');
     final c = stateOf('c');
 
-    await tester.pumpWidget(
-      _CardListTestApp(child: _listOf(const ['b', 'c'])),
-    );
+    await tester.pumpWidget(_CardListTestApp(child: _listOf(const ['b', 'c'])));
 
     expect(stateOf('b'), same(b));
     expect(stateOf('c'), same(c));

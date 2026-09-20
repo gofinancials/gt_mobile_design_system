@@ -50,6 +50,7 @@ It provides:
 • Lazy row building, so only the rows the viewport reaches are built.
 • Separators drawn as divider tiles, which keep the card surface unbroken behind the gap — a bare gap would split the group into two boxes.
 • Keys taken from the item rather than its index, so a row keeps its element when filtering or pagination moves it.
+• A backgroundColor override applied to rows and separators alike, for a surface the variant defaults do not cover.
 
 <b>GtCardListSliver</b> is the same list for use inside a CustomScrollView; prefer it there, since a shrink-wrapped list builds every row eagerly. Pagination composes on top by wrapping the host scroll view in a GtInfiniteListView.''',
     code: codeSnippet,

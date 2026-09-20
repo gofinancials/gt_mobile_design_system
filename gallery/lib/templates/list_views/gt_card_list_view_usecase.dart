@@ -21,6 +21,11 @@ Widget playgroundGtCardListViewUseCase(BuildContext context) {
     labelBuilder: (value) => value.name,
   );
 
+  final tinted = context.knobs.boolean(
+    label: 'Custom Background',
+    initialValue: false,
+  );
+
   final items = List.generate(
     count,
     (i) => _SampleItem(
@@ -39,6 +44,7 @@ Widget playgroundGtCardListViewUseCase(BuildContext context) {
       child: GtCardListView<_SampleItem>(
         items: items,
         variant: variant,
+        backgroundColor: tinted ? context.palette.primary.alpha10 : null,
         itemKey: (item) => ValueKey(item.id),
         itemBuilder: (context, item, index) => GtTransactionListTile(
           item.name,
