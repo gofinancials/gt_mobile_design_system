@@ -44,8 +44,14 @@ jobs:
       - name: Build Widgetbook
         run: cd gallery && dart run build_runner build -d && flutter build web --wasm --target lib/main.dart --base-href "/${{ github.event.repository.name }}/"
 
+      # The dartdoc bundled with Flutter 3.47.x (9.0.6) crashes in
+      # `_stripDocImports` on the `@docImport` comments added in `platform`
+      # 3.2.0; 9.0.8 fixes it (dart-lang/dartdoc#4268). Switch back to
+      # `dart doc` once the bundled dartdoc is 9.0.8 or newer.
       - name: Build Docs
-        run: pwd && dart doc --output=gallery/build/web/api
+        run: |
+          dart pub global activate dartdoc 9.0.8
+          dart pub global run dartdoc --output=gallery/build/web/api
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3

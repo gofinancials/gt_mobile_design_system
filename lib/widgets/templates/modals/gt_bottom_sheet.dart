@@ -238,6 +238,10 @@ class _GtSheetContainer extends GtStatelessWidget {
 
   /// Whether the sheet floats above the bottom edge with margins and fully
   /// rounded corners.
+  ///
+  /// On mobile, a floating sheet keeps its margin clear of the system bottom
+  /// inset, while an attached sheet paints under that inset and pads only
+  /// its content.
   final bool floating;
 
   /// Creates a [_GtSheetContainer].
@@ -270,6 +274,13 @@ class _GtSheetContainer extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final defaultRadius = defaultBorderRadius(context);
+    final isDocked = context.isMobile;
+
+    Widget content = child;
+    if (isDocked && !floating) {
+      content = SafeArea(top: false, child: content);
+    }
+
     Widget body = Container(
       margin: resolveMargin(context),
       decoration: BoxDecoration(
@@ -277,9 +288,9 @@ class _GtSheetContainer extends GtStatelessWidget {
         borderRadius: borderRadius ?? defaultRadius,
       ),
       constraints: constraints,
-      child: child,
+      child: content,
     );
-    if (floating && context.isAndroid) {
+    if (isDocked && floating) {
       body = SafeArea(
         top: false,
         bottom: true,

@@ -7,4 +7,6 @@ export 'nav_aware/nav_aware.dart';
 export 'overlays/overlays.dart';
 export 'scaffolds/scaffolds.dart';
 export 'screens/screens.dart';
+export 'scroll_views/scroll_views.dart';
 export 'slides/slides.dart';
+export 'state/state.dart';

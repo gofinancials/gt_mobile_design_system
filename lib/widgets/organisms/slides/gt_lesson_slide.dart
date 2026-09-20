@@ -275,7 +275,6 @@ class _GtLessonSlideMediaState extends State<GtLessonSlideMedia>
           builder: (context) {
             if (source.isVideo) return GtVideoPlayer(source.video!);
             if (source.isYoutube) return GtYoutubePlayer(source.youtube!);
-            if (source.isAudio) return GtLottie(GtNetworkLotties.waveForm);
 
             return const SizedBox.shrink();
           },

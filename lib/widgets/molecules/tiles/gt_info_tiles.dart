@@ -20,6 +20,10 @@ class GtInfoListTile extends GtStatelessWidget {
   /// A callback triggered when the tile is tapped.
   ///
   /// If provided, the tile becomes interactive and provides haptic feedback.
+  ///
+  /// Null renders a static row with no [GtInkWell] and no semantic role, so
+  /// an informational tile is not announced as a button. Matches
+  /// [GtBaseListTileTemplate].
   final OnPressed? onTap;
 
   /// Optional custom [TextStyle] for the [text].
@@ -32,6 +36,20 @@ class GtInfoListTile extends GtStatelessWidget {
   /// If null, defaults to [GtTextStyles.bodyXs] with a subtle color.
   final TextStyle? labelStyle;
 
+  /// The gap between the [label] row and the [text] below it.
+  ///
+  /// Defaults to 8dp.
+  final double? spacing;
+
+  /// If true, [trailing] is centered against the [label] and [text] as a
+  /// pair instead of sitting beside the [label] alone.
+  ///
+  /// Defaults to false.
+  final bool centerTrailing;
+
+  /// Overrides padding. Null preserves the current default.
+  final EdgeInsetsGeometry? padding;
+
   /// Creates a [GtInfoListTile].
   const GtInfoListTile(
     this.label, {
@@ -41,6 +59,9 @@ class GtInfoListTile extends GtStatelessWidget {
     this.labelStyle,
     this.textStyle,
     this.onTap,
+    this.spacing,
+    this.padding,
+    this.centerTrailing = false,
   });
 
   @override
@@ -50,29 +71,54 @@ class GtInfoListTile extends GtStatelessWidget {
     final style = textStyle ?? styles.subHead3M(heightPx: 0);
     final hintStyle = labelStyle ?? styles.bodyS(color: textColors.sub);
 
-    return GtInkWell(
-      role: .button,
-      borderRadius: .zero,
-      onTap: onTap,
-      child: Padding(
-        padding: context.insets.symmetricDp(vertical: 8.px),
-        child: Column(
-          spacing: context.spacingSm,
-          crossAxisAlignment: .stretch,
-          children: [
-            Row(
-              crossAxisAlignment: .center,
-              spacing: context.spacingSm,
-              children: [
-                Expanded(child: GtText(label, style: hintStyle)),
-                ?trailing,
-              ],
-            ),
-            GtText(text, style: style),
-          ],
-        ),
-      ),
+    Widget labelChild = Row(
+      crossAxisAlignment: .center,
+      spacing: context.spacingSm,
+      children: [
+        Expanded(child: GtText(label, style: hintStyle)),
+        ?trailing,
+      ],
     );
+
+    if (centerTrailing) {
+      labelChild = GtText(label, style: hintStyle);
+    }
+
+    Widget child = Column(
+      spacing: spacing ?? context.spacingSm,
+      crossAxisAlignment: .stretch,
+      children: [
+        labelChild,
+        GtText(text, style: style),
+      ],
+    );
+
+    if (centerTrailing && trailing != null) {
+      child = Row(
+        crossAxisAlignment: .center,
+        spacing: context.spacingSm,
+        children: [
+          Expanded(child: child),
+          trailing!,
+        ],
+      );
+    }
+
+    child = Padding(
+      padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
+      child: child,
+    );
+
+    if (onTap != null) {
+      return GtInkWell(
+        role: .button,
+        borderRadius: .zero,
+        onTap: onTap,
+        child: child,
+      );
+    }
+
+    return child;
   }
 }
 
@@ -372,11 +418,16 @@ class GtInputListTile extends GtStatelessWidget {
   }
 }
 
-/// A list tile that displays a label and a value, allowing the user to copy
-/// the value to the clipboard by tapping the tile.
+/// A single-row tile that shows a label and its value side by side, and copies
+/// the value to the clipboard when tapped.
 ///
-/// This is ideal for IDs, account numbers, or any data that the user might
-/// need to use elsewhere. It includes a copy icon by default.
+/// The row reads, from start to end: the [leading] icon, the [label], the
+/// [value] aligned to the end, and a copy icon. It suits IDs, account numbers,
+/// or any short value the user might need to paste elsewhere.
+///
+/// The copy icon can be restyled with [copyIconVariant] and [copyIconSize].
+/// For a layout that stacks the label above a subtitle, use
+/// [GtStackedCopyTile].
 class GtCopyTile extends GtStatelessWidget {
   /// The icon displayed at the start of the tile, typically representing the data type.
   final IconData leading;
@@ -384,7 +435,8 @@ class GtCopyTile extends GtStatelessWidget {
   /// The descriptive label for the data (e.g., "Account Number").
   final String label;
 
-  /// The actual text value that will be copied to the clipboard when tapped.
+  /// The text value displayed at the end of the row and copied to the
+  /// clipboard when the tile is tapped.
   final String value;
 
   /// Overrides label style. Null preserves the current default.
@@ -392,6 +444,21 @@ class GtCopyTile extends GtStatelessWidget {
 
   /// Overrides value style. Null preserves the current default.
   final TextStyle? valueStyle;
+
+  /// Overrides the color variant of the copy icon.
+  ///
+  /// Defaults to [GtIconVariant.strong].
+  final GtIconVariant? copyIconVariant;
+
+  /// Overrides the size of the copy icon in logical pixels.
+  ///
+  /// Defaults to 16.
+  final double? copyIconSize;
+
+  /// How the leading icon, the texts and the copy icon line up vertically.
+  ///
+  /// Defaults to [CrossAxisAlignment.center].
+  final CrossAxisAlignment crossAxisAlignment;
 
   /// Creates a [GtCopyTile] for easy data copying.
   const GtCopyTile(
@@ -401,6 +468,9 @@ class GtCopyTile extends GtStatelessWidget {
     required this.leading,
     this.labelStyle,
     this.valueStyle,
+    this.copyIconVariant,
+    this.copyIconSize,
+    this.crossAxisAlignment = .center,
   });
 
   @override
@@ -416,6 +486,7 @@ class GtCopyTile extends GtStatelessWidget {
       },
       child: Row(
         spacing: context.spacingBase,
+        crossAxisAlignment: crossAxisAlignment,
         children: [
           GtIcon(leading, size: 20, alignment: Alignment.centerLeft),
           Expanded(
@@ -434,10 +505,152 @@ class GtCopyTile extends GtStatelessWidget {
           ),
           GtIcon(
             GtIcons.copyFilled,
-            size: 16,
+            size: copyIconSize ?? 16,
             alignment: Alignment.centerRight,
+            variant: copyIconVariant ?? .strong,
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// A tile that stacks a label above a subtitle and copies [value] to the
+/// clipboard when tapped.
+///
+/// The text column sits between an optional [leading] widget and a copy icon
+/// at the end. Passing a [trailing] widget replaces the copy icon. Tapping
+/// anywhere on the tile still copies [value].
+///
+/// The tile shows [subtitle], not [value]. That lets it display a formatted or
+/// masked version of the data while copying the raw value.
+///
+/// For a single-row label and value layout, use [GtCopyTile].
+class GtStackedCopyTile extends GtStatelessWidget {
+  /// An optional widget displayed at the start of the tile, such as an icon or
+  /// avatar representing the data type.
+  final Widget? leading;
+
+  /// An optional widget displayed at the end of the tile in place of the
+  /// default copy icon.
+  ///
+  /// When set, [copyIconVariant] and [copyIconSize] have no effect.
+  final Widget? trailing;
+
+  /// The descriptive label for the data (e.g., "Account Number").
+  final String label;
+
+  /// The text displayed beneath the [label], typically a readable form of
+  /// [value].
+  final String? subtitle;
+
+  /// The text copied to the clipboard when the tile is tapped.
+  ///
+  /// It is not displayed. Show it, or a formatted version of it, through
+  /// [subtitle].
+  final String value;
+
+  /// Overrides label style. Null preserves the current default.
+  final TextStyle? labelStyle;
+
+  /// Overrides subtitle style. Null preserves the current default.
+  final TextStyle? subtitleStyle;
+
+  /// Overrides the gap between the [label] and the [subtitle] in logical
+  /// pixels. Null preserves the current default.
+  final double? verticalSpacing;
+
+  /// Overrides the gap between the [leading] widget, the text column and the
+  /// copy icon or [trailing] widget in logical pixels. Null preserves the
+  /// current default.
+  final double? horizontalSpacing;
+
+  /// The padding applied around the tile's content, inside the tap area.
+  final EdgeInsetsGeometry? padding;
+
+  /// Overrides the color variant of the default copy icon.
+  ///
+  /// Defaults to [GtIconVariant.disabled]. Ignored when [trailing] is set.
+  final GtIconVariant? copyIconVariant;
+
+  /// Overrides the size of the default copy icon in logical pixels.
+  ///
+  /// Defaults to 20dp. Ignored when [trailing] is set.
+  final double? copyIconSize;
+
+  /// How the [leading] widget, the text column and the copy icon or
+  /// [trailing] widget line up vertically.
+  ///
+  /// Defaults to [CrossAxisAlignment.start].
+  final CrossAxisAlignment rowCrossAxisAlignment;
+
+  /// How the [label] and the [subtitle] line up horizontally within the text
+  /// column.
+  ///
+  /// Defaults to [CrossAxisAlignment.start].
+  final MainAxisAlignment columnMainAxisAlignment;
+
+  /// Creates a [GtStackedCopyTile] for easy data copying.
+  const GtStackedCopyTile(
+    this.label, {
+    super.key,
+    required this.value,
+    this.leading,
+    this.labelStyle,
+    this.trailing,
+    this.subtitle,
+    this.subtitleStyle,
+    this.verticalSpacing,
+    this.horizontalSpacing,
+    this.padding,
+    this.copyIconVariant,
+    this.copyIconSize,
+    this.rowCrossAxisAlignment = .start,
+    this.columnMainAxisAlignment = .start,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final styles = context.textStyles;
+    final textColors = context.palette.text;
+    final style = styles.subHeadXs(color: textColors.sub);
+    final icon = GtIcon(
+      GtIcons.copyFilled,
+      size: copyIconSize ?? context.dp(20.px),
+      alignment: Alignment.centerRight,
+      variant: copyIconVariant ?? GtIconVariant.disabled,
+    );
+
+    return GtInkWell(
+      role: .button,
+      borderRadius: .zero,
+      onTap: () {
+        context.copyText(value);
+      },
+      child: Padding(
+        padding: padding ?? context.insets.symmetricDp(vertical: 8.px),
+        child: Row(
+          spacing: horizontalSpacing ?? context.spacingBase,
+          crossAxisAlignment: rowCrossAxisAlignment,
+          children: [
+            ?leading,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: .start,
+                mainAxisAlignment: columnMainAxisAlignment,
+                spacing: verticalSpacing ?? context.spacingSm,
+                children: [
+                  GtText(label, style: labelStyle ?? style),
+                  GtText(
+                    subtitle,
+                    style: subtitleStyle ?? styles.subHeadS(weight: .w600),
+                  ),
+                ],
+              ),
+            ),
+            trailing ?? icon,
+          ],
+        ),
       ),
     );
   }
@@ -465,6 +678,10 @@ class GtInstructionListTile extends GtStatelessWidget {
   final TextStyle? textStyle;
 
   /// An optional callback triggered when the tile is tapped.
+  ///
+  /// Null renders a static row with no [GtInkWell] and no semantic role, so
+  /// an instructional tile is not announced as a button. Matches
+  /// [GtBaseListTileTemplate].
   final OnPressed? onTap;
 
   /// Optional custom size for the [icon].
@@ -477,6 +694,11 @@ class GtInstructionListTile extends GtStatelessWidget {
   /// Defaults to [CrossAxisAlignment.start].
   final CrossAxisAlignment crossAxisAlignment;
 
+  /// Overrides the gap between the [leading] widget, the text column and the
+  /// copy icon or [trailing] widget in logical pixels. Null preserves the
+  /// current default.
+  final double? horizontalSpacing;
+
   /// Creates a [GtInstructionListTile] with the given [text] and [icon].
   const GtInstructionListTile(
     this.text, {
@@ -486,34 +708,38 @@ class GtInstructionListTile extends GtStatelessWidget {
     this.iconVariant,
     this.textStyle,
     this.iconSize,
+    this.horizontalSpacing,
     this.crossAxisAlignment = CrossAxisAlignment.start,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GtInkWell(
-      role: .button,
-      borderRadius: .zero,
-      onTap: onTap,
-      child: Row(
-        spacing: context.spacingBase,
-        crossAxisAlignment: crossAxisAlignment,
-        children: [
-          GtIcon(
-            icon,
-            size: iconSize ?? context.dp(24.px),
-            alignment: Alignment.topLeft,
-            variant: iconVariant ?? GtIconVariant.soft,
-          ),
-          Expanded(
-            child: GtText(
-              text,
-              style: textStyle ?? context.textStyles.bodyXs(),
-            ),
-          ),
-        ],
-      ),
+    final child = Row(
+      spacing: horizontalSpacing ?? context.spacingBase,
+      crossAxisAlignment: crossAxisAlignment,
+      children: [
+        GtIcon(
+          icon,
+          size: iconSize ?? context.dp(24.px),
+          alignment: Alignment.topLeft,
+          variant: iconVariant ?? GtIconVariant.soft,
+        ),
+        Expanded(
+          child: GtText(text, style: textStyle ?? context.textStyles.bodyXs()),
+        ),
+      ],
     );
+
+    if (onTap != null) {
+      return GtInkWell(
+        role: .button,
+        borderRadius: .zero,
+        onTap: onTap,
+        child: child,
+      );
+    }
+
+    return child;
   }
 }
 
@@ -563,6 +789,22 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   /// Optional custom [TextStyle] for the [label].
   final TextStyle? labelTextStyle;
 
+  /// The padding applied around the tile's content.
+  ///
+  /// Null preserves the current default of no padding.
+  final EdgeInsetsGeometry? padding;
+
+  /// If true, the [label] column expands to fill the available space and the
+  /// value column sizes to its own content, instead of splitting the row at
+  /// a fixed 4:5 ratio.
+  ///
+  /// Because the value column is no longer width-constrained, [valueMaxLines]
+  /// and its ellipsis stop applying: use this only where the value is known
+  /// to stay short.
+  ///
+  /// Defaults to false.
+  final bool fitColumnsToContent;
+
   /// Creates a [GtDoubleColumnListTile].
   const GtDoubleColumnListTile(
     this.label, {
@@ -577,6 +819,8 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     this.highlightValue = true,
     this.valueTextStyle,
     this.labelTextStyle,
+    this.padding,
+    this.fitColumnsToContent = false,
   }) : assert(
          highlightValue || (valueTextStyle == null && labelTextStyle == null),
          'valueTextStyle and labelTextStyle must be null if highlightValue is false',
@@ -612,32 +856,48 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
       );
     }
 
-    return Row(
+    final valueChild = Row(
+      mainAxisAlignment: .end,
+      mainAxisSize: .min,
+      spacing: valueSpacing ?? context.spacingBase,
+      children: [
+        ?valuePrefix,
+        Flexible(
+          child: GtText(
+            value,
+            style: valueStyle,
+            textAlign: TextAlign.end,
+            overflow: .ellipsis,
+            maxLines: valueMaxLines,
+          ),
+        ),
+        ?valueSuffix,
+      ],
+    );
+
+    Widget row = Row(
       spacing: context.spacingMd,
       children: [
         Expanded(flex: 4, child: labelChild),
-        Expanded(
-          flex: 5,
-          child: Row(
-            mainAxisAlignment: .end,
-            spacing: valueSpacing ?? context.spacingBase,
-            children: [
-              ?valuePrefix,
-              Flexible(
-                child: GtText(
-                  value,
-                  style: valueStyle,
-                  textAlign: TextAlign.end,
-                  overflow: .ellipsis,
-                  maxLines: valueMaxLines,
-                ),
-              ),
-              ?valueSuffix,
-            ],
-          ),
-        ),
+        Expanded(flex: 5, child: valueChild),
       ],
     );
+
+    if (fitColumnsToContent) {
+      row = Row(
+        spacing: context.spacingMd,
+        children: [
+          Expanded(child: labelChild),
+          valueChild,
+        ],
+      );
+    }
+
+    if (padding != null) {
+      row = Padding(padding: padding!, child: row);
+    }
+
+    return row;
   }
 }
 

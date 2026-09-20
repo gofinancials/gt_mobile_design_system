@@ -2,8 +2,131 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:gt_mobile_foundation/foundation.dart';
-import 'package:gt_mobile_ui/gt_mobile_ui.dart';
+import 'package:gt_mobile_ui/documents.dart';
 import 'package:pdf/widgets.dart' as pw;
+
+/// The ISO 4217 code each currency glyph is normalised to by [gtPdfSafeText].
+///
+/// The yen glyph is deliberately absent: it is the one mark the apps' own
+/// currency tables spell two currencies with — JPY and CNY — so no single code
+/// is right, and Latin-1 can set it, so it is left as the caller wrote it. The
+/// dollar and pound signs are ambiguous too but take their overwhelmingly
+/// common reading; a receipt in another dollar currency should state its code
+/// in the amount rather than lean on the glyph.
+const _currencyCodes = <String, String>{
+  '\u20a6': 'NGN',
+  r'$': 'USD',
+  '\u20ac': 'EUR',
+  '\u00a3': 'GBP',
+  '\u20b5': 'GHS',
+  '\u20b9': 'INR',
+  '\u20bd': 'RUB',
+  '\u20a9': 'KRW',
+  '\u20aa': 'ILS',
+  '\u20ba': 'TRY',
+  '\u20ab': 'VND',
+  '\u20b4': 'UAH',
+  '\u0e3f': 'THB',
+  '\u20b1': 'PHP',
+  '\u20a1': 'CRC',
+  '\u20b8': 'KZT',
+};
+
+/// The ASCII spelling each typographic character is transliterated to by
+/// [gtPdfSafeText].
+///
+/// These are the characters that arrive in a narration or a beneficiary name
+/// pasted from a word processor, where a plain quote or hyphen was meant.
+const _transliterations = <String, String>{
+  '\u2018': "'",
+  '\u2019': "'",
+  '\u201a': "'",
+  '\u201b': "'",
+  '\u2032': "'",
+  '\u201c': '"',
+  '\u201d': '"',
+  '\u201e': '"',
+  '\u201f': '"',
+  '\u2033': '"',
+  '\u2039': '<',
+  '\u203a': '>',
+  '\u2013': '-',
+  '\u2014': '-',
+  '\u2015': '-',
+  '\u2212': '-',
+  '\u2022': '-',
+  '\u2026': '...',
+  '\u2044': '/',
+  '\u2122': '(TM)',
+  '\uffe5': '\u00a5',
+  '\u00a0': ' ',
+  '\u2007': ' ',
+  '\u2009': ' ',
+  '\u200a': ' ',
+  '\u202f': ' ',
+  '\u200b': '',
+  '\u00ad': '',
+};
+
+/// Every glyph [_currencyCodes] knows, as one alternation.
+final _currencyPattern = RegExp(
+  _currencyCodes.keys.map(RegExp.escape).join('|'),
+);
+
+/// A character a currency code must be spaced away from.
+final _wordCharacter = RegExp(r'[0-9A-Za-z]');
+
+/// The character substituted for anything the typeface cannot set.
+const _replacementRune = 0x3f;
+
+/// The last rune the typeface can set.
+const _lastLatin1Rune = 0xff;
+
+/// Rewrites [value] into text the receipt typeface can actually set.
+///
+/// Documents are typeset in the `pdf` package's default family — see
+/// [GtPdfReceiptTheme] — which carries no glyph above `U+00FF`. Shipping a
+/// Unicode face for a receipt is not worth the megabytes, so
+/// [GtPdfReceiptBuilder] runs every string it renders through this instead, and
+/// the font's limits are handled once where the font is chosen rather than
+/// again in every app that exports a receipt.
+///
+/// Three passes, in order:
+///
+/// 1. A currency glyph becomes its ISO 4217 code, spaced off the figure it
+///    marks, so an amount reads `"NGN 20,000.00"`. That is the intended
+///    reading of a receipt amount, not merely a fallback.
+/// 2. The typographic characters a pasted narration carries — smart quotes,
+///    the dashes, an ellipsis, a bullet, a non-breaking space — are
+///    transliterated to their ASCII spellings.
+/// 3. Anything still outside the typeface's range becomes a question mark.
+///
+/// Example usage:
+/// ```dart
+/// gtPdfSafeText('\u20a620,000.00 \u2014 \u201crent\u201d');
+/// // NGN 20,000.00 - "rent"
+/// ```
+String gtPdfSafeText(String value) {
+  if (value.isEmpty) return value;
+
+  var text = value.replaceAllMapped(_currencyPattern, (match) {
+    final code = _currencyCodes[match[0]]!;
+    final before = match.start > 0 ? value[match.start - 1] : '';
+    final after = match.end < value.length ? value[match.end] : '';
+    final lead = _wordCharacter.hasMatch(before) ? ' ' : '';
+    final trail = _wordCharacter.hasMatch(after) ? ' ' : '';
+
+    return '$lead$code$trail';
+  });
+
+  for (final MapEntry(key: from, value: to) in _transliterations.entries) {
+    text = text.replaceAll(from, to);
+  }
+
+  return String.fromCharCodes(
+    text.runes.map((rune) => rune <= _lastLatin1Rune ? rune : _replacementRune),
+  );
+}
 
 /// Renders a [GtPdfReceiptData] into a paginated PDF document.
 ///
@@ -118,18 +241,18 @@ class GtPdfReceiptBuilder {
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text(data.title, style: theme.titleStyle),
+              pw.Text(gtPdfSafeText(data.title), style: theme.titleStyle),
               if (data.issuedOn.hasValue) ...[
                 pw.SizedBox(height: 8),
                 pw.RichText(
                   text: pw.TextSpan(
                     children: [
                       pw.TextSpan(
-                        text: '${data.displayIssuedOnLabel} ',
+                        text: '${gtPdfSafeText(data.displayIssuedOnLabel)} ',
                         style: theme.subtitleLabelStyle,
                       ),
                       pw.TextSpan(
-                        text: data.issuedOn,
+                        text: gtPdfSafeText(data.issuedOn!),
                         style: theme.subtitleStyle,
                       ),
                     ],
@@ -172,7 +295,10 @@ class GtPdfReceiptBuilder {
     return [
       pw.Divider(color: theme.divider, thickness: 0.6, height: 0.6),
       pw.SizedBox(height: _sectionTopGap),
-      pw.Text(section.title.upper, style: theme.sectionTitleStyle),
+      pw.Text(
+        gtPdfSafeText(section.title.upper),
+        style: theme.sectionTitleStyle,
+      ),
       pw.SizedBox(height: _sectionHeadingGap),
       switch (section.resolvedLayout) {
         .split => _splitSection(section),
@@ -223,7 +349,10 @@ class GtPdfReceiptBuilder {
       children: [
         pw.Expanded(
           child: section.heading.hasValue
-              ? pw.Text(section.heading!, style: theme.headingStyle)
+              ? pw.Text(
+                  gtPdfSafeText(section.heading!),
+                  style: theme.headingStyle,
+                )
               : pw.SizedBox(),
         ),
         pw.SizedBox(width: _columnGap),
@@ -247,9 +376,9 @@ class GtPdfReceiptBuilder {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Text(entry.label, style: theme.labelStyle),
+        pw.Text(gtPdfSafeText(entry.label), style: theme.labelStyle),
         pw.SizedBox(height: _entryGap),
-        pw.Text(entry.value, style: theme.valueStyle),
+        pw.Text(gtPdfSafeText(entry.value), style: theme.valueStyle),
       ],
     );
   }
@@ -269,11 +398,11 @@ class GtPdfReceiptBuilder {
       ],
       if (footer.disclaimer.hasValue) ...[
         pw.SizedBox(height: _footnoteGap),
-        pw.Text(footer.disclaimer!, style: theme.footnoteStyle),
+        pw.Text(gtPdfSafeText(footer.disclaimer!), style: theme.footnoteStyle),
       ],
       if (footer.note.hasValue) ...[
         pw.SizedBox(height: _noteGap),
-        pw.Text(footer.note!, style: theme.footnoteStyle),
+        pw.Text(gtPdfSafeText(footer.note!), style: theme.footnoteStyle),
       ],
     ];
   }
@@ -284,16 +413,19 @@ class GtPdfReceiptBuilder {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         if (footer.title.hasValue) ...[
-          pw.Text(footer.title!, style: theme.footerTitleStyle),
+          pw.Text(gtPdfSafeText(footer.title!), style: theme.footerTitleStyle),
           pw.SizedBox(height: 4),
         ],
         if (footer.address.hasValue) ...[
-          pw.Text(footer.address!, style: theme.footerAddressStyle),
+          pw.Text(
+            gtPdfSafeText(footer.address!),
+            style: theme.footerAddressStyle,
+          ),
           pw.SizedBox(height: 1),
         ],
         for (final (index, line) in footer.contactLines.indexed) ...[
           if (index > 0) pw.SizedBox(height: 1),
-          pw.Text(line, style: theme.footerContactStyle),
+          pw.Text(gtPdfSafeText(line), style: theme.footerContactStyle),
         ],
       ],
     );

@@ -85,6 +85,20 @@ class GtGradients {
     );
   }
 
+  /// Creates a two-tone linear gradient that runs diagonally from the
+  /// middle of the right edge down toward the bottom, just right of center.
+  ///
+  /// Stays the solid [first] color until 23.2% of the way along, blends
+  /// into [second] by 84.44%, and stays [second] after that.
+  Gradient stringGradient(Color first, Color second) {
+    return LinearGradient(
+      begin: .bottomLeft,
+      end: .topRight,
+      colors: [first, second],
+      stops: [0.232, .8444],
+    );
+  }
+
   /// Creates a two-tone linear gradient.
   ///
   /// Transitions from the provided [light] color at the top-left to the [dark] color at the bottom-right.

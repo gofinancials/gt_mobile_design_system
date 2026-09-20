@@ -1,18 +1,25 @@
 import 'dart:typed_data';
 
 import 'package:gt_mobile_foundation/foundation.dart';
+import 'package:gt_mobile_ui/documents.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A single label/value pair within a [GtPdfReceiptSection].
 ///
 /// Values are never formatted here. As everywhere else in the design system,
 /// callers pass presentation-ready strings — amounts already grouped, dates
-/// already formatted, account numbers already masked.
+/// already formatted, account numbers already masked. What the document
+/// typeface cannot set is the one thing they need not handle; see [value].
 class GtPdfReceiptEntry extends AppEquatable {
   /// The row label, for example `"Amount"`.
   final String label;
 
   /// The presentation-ready value, for example `"20,000.00 NGN"`.
+  ///
+  /// A value carrying a currency glyph or the typography of a pasted narration
+  /// needs no cleaning up first: [GtPdfReceiptBuilder] runs it through
+  /// [gtPdfSafeText] at render time, which normalises a glyph to its currency
+  /// code and transliterates what the document typeface cannot set.
   final String value;
 
   /// Creates a [GtPdfReceiptEntry].
@@ -249,10 +256,14 @@ class GtPdfReceiptData extends AppEquatable {
   /// The optional closing block.
   final GtPdfReceiptFooter? footer;
 
-  /// The file name used when the document is shared or saved, without an
-  /// extension.
+  /// The file name used when the document is shared or saved.
   ///
-  /// Defaults to a slug derived from [title]. See [resolvedFileName].
+  /// Slugged before use, so a transaction reference or a title carrying
+  /// spaces, punctuation or an accent is safe to pass straight through. The
+  /// case, dots, underscores and hyphens inside a reference survive the slug
+  /// unchanged, so an app quoting a reference back to the user does not need a
+  /// file name helper of its own. Any `.pdf` suffix is optional. Defaults to a
+  /// slug derived from [title]. See [resolvedFileName].
   final String? fileName;
 
   /// Creates a [GtPdfReceiptData].
@@ -272,15 +283,24 @@ class GtPdfReceiptData extends AppEquatable {
 
   /// The file name used on export, always suffixed with `.pdf`.
   ///
-  /// Derived from [fileName] when given, otherwise from a lowercased,
-  /// underscore-separated [title].
+  /// Derived from [fileName] when given and from [title] otherwise. Either way
+  /// letters, digits, dots, underscores and hyphens are kept as they were
+  /// written — a receipt names a record before it reads as a slug, and the case
+  /// of a transaction reference is part of that record — while every other run
+  /// of characters collapses to a single underscore, and any separator left at
+  /// either edge is dropped. A caller-supplied name goes through the same slug
+  /// as a derived one, so no app has to pre-slug a reference of its own; a
+  /// `.pdf` the caller already wrote is not slugged into the name.
   String get resolvedFileName {
-    final base = fileName.hasValue
-        ? fileName!
-        : title.trim().toLowerCase().replaceAll(RegExp(r'[^a-z0-9]+'), '_');
-    final trimmed = base.replaceAll(RegExp(r'^_+|_+$'), '');
+    final source = fileName.hasValue ? fileName! : title;
+    final base = source.trim().replaceAll(
+      RegExp(r'\.pdf$', caseSensitive: false),
+      '',
+    );
+    final slug = base.replaceAll(RegExp(r'[^A-Za-z0-9._-]+'), '_');
+    final trimmed = slug.replaceAll(RegExp(r'^[._-]+|[._-]+$'), '');
     final name = trimmed.hasValue ? trimmed : 'receipt';
-    return name.endsWith('.pdf') ? name : '$name.pdf';
+    return '$name.pdf';
   }
 
   @override

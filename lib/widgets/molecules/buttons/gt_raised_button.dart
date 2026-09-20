@@ -24,6 +24,14 @@ class GtRaisedButton extends GtButton {
   /// Custom padding to apply inside the button, overriding the default size-based padding.
   final EdgeInsetsGeometry? contentPadding;
 
+  /// Custom size for the [leading] and [trailing] icons, in logical pixels,
+  /// overriding the default size-based icon size.
+  final double? iconSize;
+
+  /// Custom gap between the [leading] and [trailing] icons and the [text], in
+  /// logical pixels, overriding the default spacing.
+  final double? iconSpacing;
+
   /// Optional text style to override the default button text style.
   final TextStyle? style;
 
@@ -44,6 +52,8 @@ class GtRaisedButton extends GtButton {
     super.pressedScale,
     super.enableLabelAnimation = true,
     this.contentPadding,
+    this.iconSize,
+    this.iconSpacing,
     this.leading,
     this.trailing,
     super.alignment,
@@ -57,6 +67,8 @@ class GtRaisedButton extends GtButton {
     super.key,
   });
 
+  /// Determines the label color based on the button's [variant] and
+  /// [isDisabled] state, unless a custom [textColor] is provided.
   Color _textColor(GtPalette palette) {
     if (isDisabled) return palette.text.disabled;
     if (textColor != null) return textColor!;
@@ -73,6 +85,8 @@ class GtRaisedButton extends GtButton {
     };
   }
 
+  /// Determines the [leading] and [trailing] icon color, which follows the
+  /// label color except on the [GtButtonVariant.neutral] variant.
   Color _iconColor(GtPalette palette) {
     if (isDisabled) return palette.text.disabled;
     if (textColor != null) return textColor!;
@@ -82,6 +96,8 @@ class GtRaisedButton extends GtButton {
     };
   }
 
+  /// Determines the background color based on the button's [variant] and
+  /// [isDisabled] state, unless a custom [color] is provided.
   Color _bgColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
     if (color != null) return color!;
@@ -106,6 +122,8 @@ class GtRaisedButton extends GtButton {
     };
   }
 
+  /// Determines the background color for focus, hover and pressed states,
+  /// unless a custom [focusColor] is provided.
   Color _focusColor(GtPalette palette) {
     if (isDisabled) return palette.bg.weak;
     if (focusColor != null) return focusColor!;
@@ -141,8 +159,6 @@ class GtRaisedButton extends GtButton {
 
     Widget? leadingIcon;
     Widget? trailingIcon;
-
-    final iconSize = context.dp(16.px);
 
     if (leading != null) {
       leadingIcon = ExcludeSemantics(
@@ -197,6 +213,8 @@ class GtRaisedButton extends GtButton {
           animateChanges: enableLabelAnimation,
           style: style,
           textCase: textCase,
+          iconSize: iconSize,
+          iconSpacing: iconSpacing,
         ),
         child2: GtSpinner(color: textColor),
         showFirst: !isLoading,

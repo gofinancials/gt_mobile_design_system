@@ -8,6 +8,18 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 Widget playgroundGtUrlFieldUseCase(BuildContext context) {
   final label = context.knobs.string(label: 'Label', initialValue: 'URL');
   final isEnabled = context.knobs.boolean(label: 'Enabled', initialValue: true);
+  final isRequired = context.knobs.boolean(
+    label: 'Required',
+    initialValue: true,
+  );
+  final errorMessage = context.knobs.stringOrNull(
+    label: 'Error Message',
+    initialValue: null,
+  );
+  final emptyMessage = context.knobs.stringOrNull(
+    label: 'Empty Message',
+    initialValue: null,
+  );
   final decoration = context.knobs.object.dropdown<(String, GtInputDecoration)>(
     label: 'Input Style',
     options: context.inputStyles.all,
@@ -21,6 +33,9 @@ GtUrlField(
   controller: GtInputController(),
   label: "$label",
   isEnabled: $isEnabled,
+  isRequired: $isRequired,
+  errorMessage: ${errorMessage == null ? 'null' : '"$errorMessage"'},
+  emptyMessage: ${emptyMessage == null ? 'null' : '"$emptyMessage"'},
   decoration: /* Selected: ${decoration.$1} */,
 )''';
 
@@ -33,6 +48,9 @@ GtUrlField(
       controller: GtInputController(),
       label: label,
       isEnabled: isEnabled,
+      isRequired: isRequired,
+      errorMessage: errorMessage,
+      emptyMessage: emptyMessage,
       decoration: decoration.$2,
     ),
   );

@@ -6,18 +6,32 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// [ios] is the default floating glass bar; [android] uses Material
 /// [BottomNavigationBar] with fixed tabs (no trailing action).
-enum GtBottomNavigationStyle { ios, android }
+enum GtBottomNavigationStyle {
+  /// The floating frosted glass bar.
+  ios,
+
+  /// The full-width Material bar.
+  android,
+}
 
 /// A single tab item for [GtBottomNavigationBar] and [GtAndroidBottomNavigationBar].
 ///
 /// `selectedIcon` and `unselectedIcon` allow teams to use outlined/filled icon
 /// pairs for both iOS and Android variants.
 class GtBottomNavigationItem extends AppEquatable {
+  /// The icon shown while this tab is selected.
   final IconData selectedIcon;
+
+  /// The icon shown while this tab is not selected.
   final IconData unselectedIcon;
+
+  /// The tab label, also used as its semantics label.
   final String label;
+
+  /// Called with the tab index instead of switching tabs, when provided.
   final OnChanged<int>? onSelected;
 
+  /// Creates a [GtBottomNavigationItem].
   const GtBottomNavigationItem({
     required this.selectedIcon,
     required this.unselectedIcon,
@@ -37,8 +51,13 @@ class GtBottomNavigationItem extends AppEquatable {
 ///
 /// @category Organisms
 class GtBottomNavigationBar extends GtStatelessWidget {
+  /// The tabs, in display order. Needs at least two.
   final List<GtBottomNavigationItem> items;
+
+  /// The index of the selected tab in [items].
   final int currentIndex;
+
+  /// Called with the index of the tab the user taps.
   final ValueChanged<int> onIndexChanged;
 
   /// Defaults to [GtBottomNavigationStyle.ios].
@@ -47,6 +66,7 @@ class GtBottomNavigationBar extends GtStatelessWidget {
   /// Whether the selection highlight and icon change should animate.
   final bool enableSelectionAnimation;
 
+  /// Creates a [GtBottomNavigationBar].
   const GtBottomNavigationBar({
     super.key,
     required this.items,
@@ -84,13 +104,24 @@ class GtBottomNavigationBar extends GtStatelessWidget {
 ///
 /// Does **not** support a trailing action; use the iOS variant for that.
 ///
+/// The bar's surface runs under the system bottom inset (the navigation bar
+/// on edge-to-edge Android), while its tabs stay above it.
+///
 /// @category Organisms
 class GtAndroidBottomNavigationBar extends GtStatelessWidget {
+  /// The tabs, in display order. Needs at least two.
   final List<GtBottomNavigationItem> items;
+
+  /// The index of the selected tab in [items].
   final int currentIndex;
+
+  /// Called with the index of the tab the user taps.
   final ValueChanged<int> onIndexChanged;
+
+  /// Whether the selected icon change should animate.
   final bool enableSelectionAnimation;
 
+  /// Creates a [GtAndroidBottomNavigationBar].
   const GtAndroidBottomNavigationBar({
     super.key,
     required this.items,
@@ -112,59 +143,58 @@ class GtAndroidBottomNavigationBar extends GtStatelessWidget {
       alignment: .bottomCenter,
       children: [
         Container(
-          padding: context.insets.fromLTRBDp(
-            7.5.px,
-            12.px,
-            7.5.px,
-            (context.mediaQueryData.bottomInset + 12).px,
-          ),
+          padding: context.insets.fromLTRBDp(7.5.px, 12.px, 7.5.px, 12.px),
           color: palette.bg.white,
-          child: Table(
-            defaultVerticalAlignment: .middle,
-            children: [
-              TableRow(
-                children: [
-                  for (final (i, item) in items.indexed)
-                    GtInkWell(
-                      // Tabs announced as buttons lose their selected state,
-                      // so the user cannot hear which section they are in.
-                      role: .tab,
-                      isSelected: currentIndex == i,
-                      semanticsLabel: item.label,
-                      excludeDescendantSemantics: true,
-                      onTap: () => onIndexChanged(i),
-                      child: Padding(
-                        padding: context.insets.allDp(11.px),
-                        child: Column(
-                          spacing: context.spacingBase,
-                          mainAxisSize: .min,
-                          crossAxisAlignment: .center,
-                          children: [
-                            GtBottomNavIcon(
-                              currentIndex == i
-                                  ? item.selectedIcon
-                                  : item.unselectedIcon,
-                              selected: currentIndex == i,
-                              selectedColor: palette.primary.dark,
-                              unselectedColor: palette.icon.soft,
-                              enableSelectionAnimation:
-                                  enableSelectionAnimation,
-                            ),
-                            GtText(
-                              item.label.upper,
-                              maxLines: 1,
-                              style: context.textStyles.navBarLabel(
-                                isAndroid: true,
-                                color: currentIndex == i ? active : inactive,
+          child: SafeArea(
+            top: false,
+            maintainBottomViewPadding: true,
+            child: Table(
+              defaultVerticalAlignment: .middle,
+              children: [
+                TableRow(
+                  children: [
+                    for (final (i, item) in items.indexed)
+                      GtInkWell(
+                        // Tabs announced as buttons lose their selected state,
+                        // so the user cannot hear which section they are in.
+                        role: .tab,
+                        isSelected: currentIndex == i,
+                        semanticsLabel: item.label,
+                        excludeDescendantSemantics: true,
+                        onTap: () => onIndexChanged(i),
+                        child: Padding(
+                          padding: context.insets.allDp(11.px),
+                          child: Column(
+                            spacing: context.spacingBase,
+                            mainAxisSize: .min,
+                            crossAxisAlignment: .center,
+                            children: [
+                              GtBottomNavIcon(
+                                currentIndex == i
+                                    ? item.selectedIcon
+                                    : item.unselectedIcon,
+                                selected: currentIndex == i,
+                                selectedColor: palette.primary.dark,
+                                unselectedColor: palette.icon.soft,
+                                enableSelectionAnimation:
+                                    enableSelectionAnimation,
                               ),
-                            ),
-                          ],
+                              GtText(
+                                item.label.upper,
+                                maxLines: 1,
+                                style: context.textStyles.navBarLabel(
+                                  isAndroid: true,
+                                  color: currentIndex == i ? active : inactive,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -203,11 +233,19 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
   /// Horizontal padding inside a tab, which is what truncates long labels.
   static const _tabInsetX = 8.0;
 
+  /// The tabs, in display order.
   final List<GtBottomNavigationItem> items;
+
+  /// The index of the selected tab in [items].
   final int currentIndex;
+
+  /// Called with the index of the tab the user taps.
   final ValueChanged<int> onIndexChanged;
+
+  /// Whether the selection pill and icon change should animate.
   final bool enableSelectionAnimation;
 
+  /// Creates a [_GtIosFloatingBottomNavigationBar].
   const _GtIosFloatingBottomNavigationBar({
     required this.items,
     required this.currentIndex,
@@ -261,8 +299,10 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
 /// drop shadow. Every layer resolves through the palette, so the surface
 /// inverts with the theme instead of staying light in dark mode.
 class _GtBottomNavigationGlass extends GtStatelessWidget {
+  /// The content painted on the glass.
   final Widget child;
 
+  /// Creates a [_GtBottomNavigationGlass].
   const _GtBottomNavigationGlass({required this.child});
 
   @override
@@ -297,13 +337,25 @@ class _GtBottomNavigationGlass extends GtStatelessWidget {
 
 /// The tab row plus the selection pill that slides behind the active tab.
 class _GtBottomNavigationTabs extends GtStatelessWidget {
+  /// The tabs, in display order.
   final List<GtBottomNavigationItem> items;
+
+  /// The index of the selected tab in [items].
   final int currentIndex;
+
+  /// Called with the index of the tab the user taps.
   final ValueChanged<int> onIndexChanged;
+
+  /// Tab icon size in design pixels.
   final double iconSize;
+
+  /// Horizontal padding inside each tab in design pixels.
   final double tabInsetX;
+
+  /// Whether the selection pill and icon change should animate.
   final bool enableSelectionAnimation;
 
+  /// Creates a [_GtBottomNavigationTabs].
   const _GtBottomNavigationTabs({
     required this.items,
     required this.currentIndex,
@@ -373,11 +425,22 @@ class _GtBottomNavigationTabs extends GtStatelessWidget {
   }
 }
 
+/// A bottom navigation tab icon that springs between its selected and
+/// unselected states.
 class GtBottomNavIcon extends GtStatelessWidget {
+  /// The icon to show.
   final IconData icon;
+
+  /// Whether the owning tab is selected, which picks the icon color.
   final bool selected;
+
+  /// The icon color while the tab is not selected.
   final Color unselectedColor;
+
+  /// The icon color while the tab is selected.
   final Color selectedColor;
+
+  /// Whether swapping [icon] should animate.
   final bool enableSelectionAnimation;
 
   /// Icon size in design pixels; scaled through [BuildContext.dp].
@@ -386,6 +449,7 @@ class GtBottomNavIcon extends GtStatelessWidget {
   /// spec calls for.
   final double size;
 
+  /// Creates a [GtBottomNavIcon] for [icon].
   const GtBottomNavIcon(
     this.icon, {
     required this.selected,
@@ -417,14 +481,27 @@ class GtBottomNavIcon extends GtStatelessWidget {
   }
 }
 
+/// A single tab in [_GtBottomNavigationTabs]: an icon over a one-line label.
 class _GtBottomNavigationTab extends GtStatelessWidget {
+  /// The tab's icons and label.
   final GtBottomNavigationItem item;
+
+  /// Whether this tab is selected.
   final bool selected;
+
+  /// Icon size in design pixels.
   final double iconSize;
+
+  /// Horizontal padding inside the tab in design pixels.
   final double insetX;
+
+  /// Called when the tab is tapped.
   final OnPressed onTap;
+
+  /// Whether the icon change should animate.
   final bool enableSelectionAnimation;
 
+  /// Creates a [_GtBottomNavigationTab].
   const _GtBottomNavigationTab({
     required this.item,
     required this.selected,

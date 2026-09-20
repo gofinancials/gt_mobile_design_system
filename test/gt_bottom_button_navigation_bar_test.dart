@@ -135,6 +135,80 @@ void main() {
     expect(isShown(tester, footerHider), isFalse);
   });
 
+  Future<Rect> pumpInsetBar(
+    WidgetTester tester, {
+    required bool asBottomSheet,
+    Widget? bottomNavigationBar,
+    double keyboard = 0,
+  }) async {
+    tester.view.physicalSize = const Size(375, 812);
+    tester.view.devicePixelRatio = 1;
+    tester.view.padding = FakeViewPadding(bottom: keyboard > 0 ? 0 : 48);
+    tester.view.viewPadding = const FakeViewPadding(bottom: 48);
+    tester.view.viewInsets = FakeViewPadding(bottom: keyboard);
+    addTearDown(tester.view.reset);
+
+    final bar = GtButtonBottomNavBar(
+      button: GtRaisedButton(
+        key: const Key('button'),
+        text: 'BUTTON',
+        onPressed: () {},
+      ),
+    );
+
+    await tester.pumpWidget(
+      GtThemeProvider(
+        theme: kPersonalTheme,
+        child: MaterialApp(
+          home: Scaffold(
+            bottomSheet: asBottomSheet ? bar : null,
+            bottomNavigationBar: asBottomSheet ? bottomNavigationBar : bar,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    return tester.getRect(find.byKey(const Key('button')));
+  }
+
+  testWidgets(
+    'keeps the button above the system bottom inset as a bottom navigation bar',
+    (tester) async {
+      final button = await pumpInsetBar(tester, asBottomSheet: false);
+      expect(button.bottom, closeTo(812 - 48 - 24, 1));
+    },
+  );
+
+  testWidgets(
+    'keeps the button above the system bottom inset as a bottom sheet',
+    (tester) async {
+      final button = await pumpInsetBar(tester, asBottomSheet: true);
+      expect(button.bottom, closeTo(812 - 48 - 24, 1));
+    },
+  );
+
+  testWidgets(
+    'does not add the inset as a bottom sheet above a bottom navigation bar',
+    (tester) async {
+      final button = await pumpInsetBar(
+        tester,
+        asBottomSheet: true,
+        bottomNavigationBar: const SizedBox(height: 56),
+      );
+      expect(button.bottom, closeTo(812 - 56 - 24, 1));
+    },
+  );
+
+  testWidgets('sits just above the keyboard as a bottom sheet', (tester) async {
+    final button = await pumpInsetBar(
+      tester,
+      asBottomSheet: true,
+      keyboard: 300,
+    );
+    expect(button.bottom, closeTo(812 - 300 - 10, 1));
+  });
+
   testWidgets('all hides every region while the keyboard is open', (
     tester,
   ) async {

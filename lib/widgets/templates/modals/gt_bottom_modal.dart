@@ -8,13 +8,20 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// When driven by a [GtBottomModalController], it animates seamlessly between loading, success,
 /// and error states without needing to dismiss and rebuild the modal.
 class GtBottomModal extends StatefulWidget {
+  /// The controller driving the modal's phase, set by [GtBottomModal.controller].
   final GtBottomModalController? _controller;
+
+  /// The static content, set by [GtBottomModal.new].
   final GtBottomModalData? _data;
+
+  /// The custom body, set by [GtBottomModal.child].
   final Widget? _child;
 
   /// Optional margin to apply around the modal container.
   ///
-  /// If not provided, it defaults to a standard inset at the bottom of the screen.
+  /// Defaults to 18dp vertically and 16dp horizontally. The modal always sits
+  /// above the system bottom inset reported by [MediaQuery], such as the
+  /// Android navigation bar, so this margin is the gap above that inset.
   final EdgeInsetsGeometry? margin;
 
   /// The alignment of the modal within its parent.
@@ -83,13 +90,25 @@ class GtBottomModal extends StatefulWidget {
   State<GtBottomModal> createState() => _GtBottomModalState();
 }
 
+/// The state for [GtBottomModal], which owns the entrance animations.
 class _GtBottomModalState extends State<GtBottomModal>
     with TickerProviderStateMixin {
+  /// Drives the entrance of the whole modal body.
   late AnimationController _titleController;
+
+  /// Drives the entrance of the title and description block.
   late AnimationController _successController;
+
+  /// Slides the modal body up into place.
   late Animation<Offset> _titleSlide;
+
+  /// Fades the modal body in.
   late Animation<double> _titleFade;
+
+  /// Slides the title and description block up into place.
   late Animation<Offset> _successSlide;
+
+  /// Fades the title and description block in.
   late Animation<double> _successFade;
 
   @override
@@ -98,6 +117,7 @@ class _GtBottomModalState extends State<GtBottomModal>
     _initAnimation();
   }
 
+  /// Creates the entrance controllers and starts them.
   void _initAnimation() {
     _titleController = AnimationController(duration: 1.seconds, vsync: this)
       ..forward();
@@ -263,6 +283,7 @@ class _GtModalBody extends GtStatelessWidget {
   /// The icon widget to display above the title.
   final Widget? icon;
 
+  /// Creates a [_GtModalBody].
   const _GtModalBody({
     required this.titleSlide,
     required this.titleFade,
@@ -279,7 +300,8 @@ class _GtModalBody extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.palette;
     final resolvedMargin =
-        margin ?? context.insets.symmetricDp(horizontal: 16.px);
+        margin ??
+        context.insets.symmetricDp(vertical: 18.px, horizontal: 16.px);
     final header = GtText(
       title.upper,
       style: context.textStyles.button(),
@@ -368,13 +390,15 @@ class _GtModalBodyWithChild extends GtStatelessWidget {
   /// Margin applied around the modal container.
   final EdgeInsetsGeometry? margin;
 
+  /// Creates a [_GtModalBodyWithChild].
   const _GtModalBodyWithChild({required this.child, this.margin});
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
     final resolvedMargin =
-        margin ?? context.insets.symmetricDp(horizontal: 16.px);
+        margin ??
+        context.insets.symmetricDp(vertical: 18.px, horizontal: 16.px);
 
     return SafeArea(
       top: false,
@@ -414,6 +438,7 @@ class _GtBottomModalIconWidget extends StatelessWidget {
   /// An optional custom icon to display when the phase is idle.
   final AppImageData? icon;
 
+  /// Creates a [_GtBottomModalIconWidget] for the given [phase].
   const _GtBottomModalIconWidget(this.phase, {this.icon});
 
   @override
@@ -452,6 +477,7 @@ class _GtBottomModalIconWidget extends StatelessWidget {
 
 /// Renders the top drag handle pill for the modal.
 class GtBottomModalHandle extends StatelessWidget {
+  /// Creates a [GtBottomModalHandle].
   const GtBottomModalHandle({super.key});
 
   @override

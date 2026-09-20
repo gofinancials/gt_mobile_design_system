@@ -3,7 +3,22 @@ import 'package:gt_mobile_foundation/extensions/string_extensions.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Defines the text capitalization behavior for [GtButtonText].
-enum GtTextCase { upper, lower, sentence, title, none }
+enum GtTextCase {
+  /// Renders every letter in uppercase.
+  upper,
+
+  /// Renders every letter in lowercase.
+  lower,
+
+  /// Capitalizes the first letter of the text only.
+  sentence,
+
+  /// Capitalizes the first letter of every word.
+  title,
+
+  /// Renders the text exactly as provided.
+  none,
+}
 
 /// A specialized text widget for use within Go Tech buttons.
 ///
@@ -53,6 +68,16 @@ class GtButtonText extends GtStatelessWidget {
   /// Duration of the label change transition.
   final Duration animationDuration;
 
+  /// An optional square size for [icon] and [trailingIcon], in logical pixels.
+  ///
+  /// When null, the icons are fitted to a square derived from [size].
+  final double? iconSize;
+
+  /// An optional gap between the icons and [text], in logical pixels.
+  ///
+  /// When null, the gap is [BuildContext.spacingBase].
+  final double? iconSpacing;
+
   /// Creates a [GtButtonText] widget.
   const GtButtonText(
     this.text, {
@@ -70,6 +95,8 @@ class GtButtonText extends GtStatelessWidget {
     this.style,
     this.animateChanges = true,
     this.animationDuration = GtMotion.fast,
+    this.iconSize,
+    this.iconSpacing,
   });
 
   @override
@@ -106,6 +133,8 @@ class GtButtonText extends GtStatelessWidget {
         leadingIcon: icon,
         trailingIcon: trailingIcon,
         size: size,
+        iconSize: iconSize,
+        iconSpacing: iconSpacing,
         textAlign: textAlign,
         animateChanges: animateChanges,
         animationDuration: animationDuration,
@@ -141,11 +170,20 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
   /// The size category used to scale the icons appropriately.
   final GtButtonSize size;
 
+  /// An optional square size for the icons, overriding the one derived from [size].
+  final double? iconSize;
+
+  /// An optional gap between the icons and [text], overriding
+  /// [BuildContext.spacingBase].
+  final double? iconSpacing;
+
   /// Optional text alignment to override the default button text alignment.
   final TextAlign textAlign;
 
+  /// Whether changes to [text] use a short directional transition.
   final bool animateChanges;
 
+  /// Duration of the label change transition.
   final Duration animationDuration;
 
   /// Creates a [_ButtonTextWithIcon].
@@ -156,6 +194,8 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
     this.leadingIcon,
     this.trailingIcon,
     required this.size,
+    this.iconSize,
+    this.iconSpacing,
     this.textAlign = .center,
     required this.animateChanges,
     required this.animationDuration,
@@ -179,11 +219,13 @@ class _ButtonTextWithIcon extends GtStatelessWidget {
       crossAxisAlignment: .center,
       mainAxisAlignment: .center,
       mainAxisSize: .min,
-      spacing: context.spacingBase,
+      spacing: iconSpacing ?? context.spacingBase,
       children: [
-        if (leadingIcon != null) _ButtonIconContainer(leadingIcon, size),
+        if (leadingIcon != null)
+          _ButtonIconContainer(leadingIcon, size, iconSize),
         ?child,
-        if (trailingIcon != null) _ButtonIconContainer(trailingIcon, size),
+        if (trailingIcon != null)
+          _ButtonIconContainer(trailingIcon, size, iconSize),
       ],
     );
 
@@ -203,20 +245,26 @@ class _ButtonIconContainer extends GtStatelessWidget {
   /// The size category used to determine the exact pixel constraints for the icon.
   final GtButtonSize size;
 
+  /// An optional square size for the icon, overriding the one derived from [size].
+  final double? iconSize;
+
   /// Creates a [_ButtonIconContainer].
-  const _ButtonIconContainer(this.icon, this.size);
+  const _ButtonIconContainer(this.icon, this.size, this.iconSize);
 
   @override
   Widget build(BuildContext context) {
     if (icon == null) return const Offstage();
-    final iconSize = switch (size) {
+    double dimension = switch (size) {
       .pill => 11.0,
       .xsmall => 14.0,
       .small => 18.0,
       _ => 20.0,
     };
+    if (iconSize case double iconSize) {
+      dimension = iconSize;
+    }
     return ConstrainedBox(
-      constraints: BoxConstraints.tight(Size.square(iconSize)),
+      constraints: BoxConstraints.tight(Size.square(dimension)),
       child: FittedBox(fit: BoxFit.cover, child: icon),
     );
   }
@@ -233,8 +281,10 @@ class _ButtonText extends GtStatelessWidget {
   /// Optional text alignment to override the default button text alignment.
   final TextAlign textAlign;
 
+  /// Whether changes to [text] use a short directional transition.
   final bool animateChanges;
 
+  /// Duration of the label change transition.
   final Duration animationDuration;
 
   /// Creates a [_ButtonText].
@@ -275,11 +325,19 @@ class _ButtonText extends GtStatelessWidget {
   }
 }
 
+/// A private widget that fades and slides a button label in or out.
 class _GtButtonTextTransition extends GtStatelessWidget {
+  /// The label being transitioned.
   final Widget child;
+
+  /// The animation driving the fade and slide.
   final Animation<double> animation;
+
+  /// Whether [child] is the incoming label, which slides up from below,
+  /// rather than the outgoing one, which slides up and out.
   final bool incoming;
 
+  /// Creates a [_GtButtonTextTransition].
   const _GtButtonTextTransition({
     required this.child,
     required this.animation,
