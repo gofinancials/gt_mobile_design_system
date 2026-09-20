@@ -74,6 +74,7 @@ It supports:
 • A nudge callback handed to that request, which slides the freshly appended page partly into view once it has settled.
 • A single request at a time — the returned future is awaited, so a second scroll tick cannot ask for the same page twice.
 • A loading footer while a page is in flight, replaceable through <b>loader</b>.
+• A page requested straight away when the content is too short to fill the viewport, so pagination does not stall on a first page with nothing to scroll through.
 
 <b>GtInfiniteListSliver</b> is the same pagination for a CustomScrollView. It takes the enclosing scrollable's position instead of a controller, and appends its footer as a sliver so it scrolls in at the end of the content. Refresh belongs to the host there, which wraps its scroll view in a RefreshIndicator.''',
     code: codeSnippet,

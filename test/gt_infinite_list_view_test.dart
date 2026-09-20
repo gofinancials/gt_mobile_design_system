@@ -59,7 +59,7 @@ void main() {
 
     await tester.pumpWidget(
       _ListTestApp(
-        child: GtInfiniteListView<_Row>(
+        child: GtInfiniteListView<String>(
           data: _data(),
           controller: controller,
           onRefresh: () async {},
@@ -84,7 +84,7 @@ void main() {
 
     await tester.pumpWidget(
       _ListTestApp(
-        child: GtInfiniteListView<_Row>(
+        child: GtInfiniteListView<String>(
           data: _data(page: 3, pages: 3),
           controller: controller,
           onRefresh: () async {},
@@ -109,7 +109,7 @@ void main() {
 
     await tester.pumpWidget(
       _ListTestApp(
-        child: GtInfiniteListView<_Row>(
+        child: GtInfiniteListView<String>(
           data: _data(isLoading: true),
           controller: controller,
           onRefresh: () async {},
@@ -135,7 +135,7 @@ void main() {
 
     await tester.pumpWidget(
       _ListTestApp(
-        child: GtInfiniteListView<_Row>(
+        child: GtInfiniteListView<String>(
           data: _data(),
           controller: controller,
           onRefresh: () async {},
@@ -168,7 +168,7 @@ void main() {
 
     Widget appWith(PaginatedData<_Row> data) {
       return _ListTestApp(
-        child: GtInfiniteListView<_Row>(
+        child: GtInfiniteListView<String>(
           data: data,
           controller: controller,
           onRefresh: () async {},
@@ -185,6 +185,92 @@ void main() {
     expect(find.byType(GtProgress), findsOneWidget);
   });
 
+  testWidgets('GtInfiniteListView fills a viewport a short page leaves empty', (
+    tester,
+  ) async {
+    final controller = ScrollController();
+    addTearDown(controller.dispose);
+    var requests = 0;
+
+    await tester.pumpWidget(
+      _ListTestApp(
+        child: GtInfiniteListView<String>(
+          data: _data(count: 2),
+          controller: controller,
+          onRefresh: () async {},
+          onScrollEnd: (nudge) async => requests++,
+          child: _rows(controller, count: 2),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(controller.position.maxScrollExtent, 0);
+    expect(requests, 1);
+  });
+
+  testWidgets('GtInfiniteListView stops filling once a page comes back empty', (
+    tester,
+  ) async {
+    final controller = ScrollController();
+    addTearDown(controller.dispose);
+    var requests = 0;
+
+    Widget appWith(PaginatedData<_Row> data) {
+      return _ListTestApp(
+        child: GtInfiniteListView<String>(
+          data: data,
+          controller: controller,
+          onRefresh: () async {},
+          onScrollEnd: (nudge) async => requests++,
+          child: _rows(controller, count: data.data.length),
+        ),
+      );
+    }
+
+    await tester.pumpWidget(appWith(_data(count: 2)));
+    await tester.pump();
+    expect(requests, 1);
+
+    // The page came back with nothing in it, so the short viewport must not be
+    // grounds for asking again.
+    await tester.pumpWidget(appWith(_data(count: 2, page: 2)));
+    await tester.pump();
+
+    expect(requests, 1);
+  });
+
+  testWidgets(
+    'GtInfiniteListSliver fills a viewport a short page leaves empty',
+    (tester) async {
+      final controller = ScrollController();
+      addTearDown(controller.dispose);
+      var requests = 0;
+
+      await tester.pumpWidget(
+        _ListTestApp(
+          child: CustomScrollView(
+            controller: controller,
+            slivers: [
+              GtInfiniteListSliver<String>(
+                data: _data(count: 2),
+                onScrollEnd: (nudge) async => requests++,
+                child: SliverList.builder(
+                  itemCount: 2,
+                  itemBuilder: (context, index) => GtSizedBox(height: 80),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(controller.position.maxScrollExtent, 0);
+      expect(requests, 1);
+    },
+  );
+
   testWidgets('GtInfiniteListSliver paginates the host scroll view', (
     tester,
   ) async {
@@ -197,7 +283,7 @@ void main() {
         child: CustomScrollView(
           controller: controller,
           slivers: [
-            GtInfiniteListSliver<_Row>(
+            GtInfiniteListSliver<String>(
               data: _data(),
               onScrollEnd: (nudge) async => requests++,
               child: SliverList.builder(
@@ -230,7 +316,7 @@ void main() {
         child: CustomScrollView(
           controller: controller,
           slivers: [
-            GtInfiniteListSliver<_Row>(
+            GtInfiniteListSliver<String>(
               data: _data(),
               onScrollEnd: (nudge) async => requests++,
               child: SliverList.builder(
@@ -263,7 +349,7 @@ void main() {
         child: CustomScrollView(
           controller: controller,
           slivers: [
-            GtInfiniteListSliver<_Row>(
+            GtInfiniteListSliver<String>(
               data: _data(count: 2, isLoading: true),
               onScrollEnd: (nudge) async {},
               child: SliverList.builder(

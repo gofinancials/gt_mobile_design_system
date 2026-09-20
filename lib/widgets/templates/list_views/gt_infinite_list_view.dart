@@ -30,8 +30,8 @@ class _GtPaginationObserver {
   /// the host is gone.
   final BuildContext? Function() hostContext;
 
-  /// The position last seen, which the nudge scrolls.
-  ScrollPosition? _position;
+  /// Resolves the position to act on, or null before the host has been laid out.
+  final ScrollPosition? Function() positionOf;
 
   /// The last offset seen, which tells a downward scroll from an upward one.
   ///
@@ -53,20 +53,17 @@ class _GtPaginationObserver {
     required this.threshold,
     required this.canRequest,
     required this.hostContext,
+    required this.positionOf,
   });
 
-  /// Forgets the position being tracked, so a host that moves to another scroll
+  /// Forgets the offset being tracked, so a host that moves to another scroll
   /// view starts measuring afresh.
-  void reset() {
-    _position = null;
-    _lastOffset = 0;
-  }
+  void reset() => _lastOffset = 0;
 
   /// Requests the next page when [position] nears the end of its extent on a
   /// downward scroll.
   Future<void> onScroll(ScrollPosition position) async {
     if (!position.hasPixels) return;
-    _position = position;
     if (_requesting || !canRequest()) return;
 
     final offset = position.pixels;
@@ -76,6 +73,28 @@ class _GtPaginationObserver {
     if (!isScrollingDown) return;
     if (position.maxScrollExtent - offset > threshold()) return;
 
+    await _request();
+  }
+
+  /// Requests a page for content that does not fill the viewport, once the
+  /// frame that laid it out is done.
+  ///
+  /// A collection shorter than the viewport has no extent to scroll through, so
+  /// the scroll-driven trigger never fires and pagination stalls on the first
+  /// page. The host calls this when its content has grown, and the check costs
+  /// one post-frame closure reading an extent the frame already computed.
+  void fillViewport() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final position = positionOf();
+      if (position == null || !position.hasPixels) return;
+      if (_requesting || !canRequest()) return;
+      if (position.maxScrollExtent > 0) return;
+      _request();
+    });
+  }
+
+  /// Asks for the next page, holding off any other request until it settles.
+  Future<void> _request() async {
     _requesting = true;
     try {
       await onScrollEnd(_nudge);
@@ -88,7 +107,7 @@ class _GtPaginationObserver {
   /// scroll view has come to rest.
   void _nudge() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final position = _position;
+      final position = positionOf();
       final context = hostContext();
       if (position == null || context == null) return;
       if (position.isScrollingNotifier.value) return;
@@ -110,12 +129,21 @@ class _GtPaginationObserver {
 /// free to be any lazy scroll view; pair it with a [GtCardListView] for a
 /// grouped card list.
 ///
+/// A page too short to fill the viewport leaves nothing to scroll through, so
+/// this widget asks for the next one straight away rather than stalling on the
+/// first page.
+///
 /// Inside a [CustomScrollView], reach for [GtInfiniteListSliver] instead: it
 /// observes the host scroll view's own position, needs no controller, and puts
 /// its footer inside the scroll view rather than below it.
-class GtInfiniteListView<T extends Identifiable> extends GtStatefulWidget {
+class GtInfiniteListView<T> extends GtStatefulWidget {
   /// The page state driving the footer and deciding whether to request more.
-  final PaginatedData<T> data;
+  ///
+  /// Typed at [PaginatedData]'s own floor rather than at [T], so any
+  /// `PaginatedData<Row>` is accepted without [T] having to satisfy that floor.
+  /// Nothing here reads the rows — this widget wraps a scroll view it does not
+  /// build — so [T] stays the caller's to name.
+  final PaginatedData<Identifiable> data;
 
   /// Requests the next page.
   ///
@@ -163,17 +191,17 @@ class GtInfiniteListView<T extends Identifiable> extends GtStatefulWidget {
   State<GtInfiniteListView<T>> createState() => _GtInfiniteListViewState<T>();
 }
 
-class _GtInfiniteListViewState<T extends Identifiable>
-    extends State<GtInfiniteListView<T>> {
+class _GtInfiniteListViewState<T> extends State<GtInfiniteListView<T>> {
   /// The observer requesting pages off the controller's position.
   late final _GtPaginationObserver _observer = _GtPaginationObserver(
     onScrollEnd: (nudge) => widget.onScrollEnd(nudge),
     threshold: () => widget.threshold,
     canRequest: () => !data.isLoading && data.hasNext,
     hostContext: () => mounted ? context : null,
+    positionOf: () => controller.hasClients ? controller.position : null,
   );
 
-  PaginatedData<T> get data => widget.data;
+  PaginatedData<Identifiable> get data => widget.data;
   EdgeInsetsGeometry? get padding => widget.padding;
   ScrollController get controller => widget.controller;
   double get indicatorOffset => widget.indicatorOffset;
@@ -182,15 +210,22 @@ class _GtInfiniteListViewState<T extends Identifiable>
   void initState() {
     super.initState();
     controller.addListener(_observe);
+    _observer.fillViewport();
   }
 
   @override
   void didUpdateWidget(GtInfiniteListView<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller == controller) return;
-    oldWidget.controller.removeListener(_observe);
-    _observer.reset();
-    controller.addListener(_observe);
+    if (oldWidget.controller != controller) {
+      oldWidget.controller.removeListener(_observe);
+      _observer.reset();
+      controller.addListener(_observe);
+    }
+    if (data.data.length > oldWidget.data.data.length) {
+      // Only a grown collection re-checks, so a page that came back empty
+      // cannot be asked for again frame after frame.
+      _observer.fillViewport();
+    }
   }
 
   /// Hands the controller's position to the observer on every scroll tick.
@@ -244,11 +279,19 @@ class _GtInfiniteListViewState<T extends Identifiable>
 /// too, so it scrolls in at the end of the content rather than sitting pinned
 /// below the viewport as the box form's does.
 ///
+/// Like the box form, it asks for another page straight away when the content
+/// does not fill the viewport.
+///
 /// Pull-to-refresh is not part of this widget: [RefreshIndicator] is a box
 /// widget, so the host wraps its [CustomScrollView] in one.
-class GtInfiniteListSliver<T extends Identifiable> extends GtStatefulWidget {
+class GtInfiniteListSliver<T> extends GtStatefulWidget {
   /// The page state driving the footer and deciding whether to request more.
-  final PaginatedData<T> data;
+  ///
+  /// Typed at [PaginatedData]'s own floor rather than at [T], so any
+  /// `PaginatedData<Row>` is accepted without [T] having to satisfy that floor.
+  /// Nothing here reads the rows — this widget wraps a scroll view it does not
+  /// build — so [T] stays the caller's to name.
+  final PaginatedData<Identifiable> data;
 
   /// Requests the next page.
   ///
@@ -281,20 +324,20 @@ class GtInfiniteListSliver<T extends Identifiable> extends GtStatefulWidget {
       _GtInfiniteListSliverState<T>();
 }
 
-class _GtInfiniteListSliverState<T extends Identifiable>
-    extends State<GtInfiniteListSliver<T>> {
+class _GtInfiniteListSliverState<T> extends State<GtInfiniteListSliver<T>> {
   /// The observer requesting pages off the host scroll view's position.
   late final _GtPaginationObserver _observer = _GtPaginationObserver(
     onScrollEnd: (nudge) => widget.onScrollEnd(nudge),
     threshold: () => widget.threshold,
     canRequest: () => !data.isLoading && data.hasNext,
     hostContext: () => mounted ? context : null,
+    positionOf: () => _position,
   );
 
   /// The host position currently listened to.
   ScrollPosition? _position;
 
-  PaginatedData<T> get data => widget.data;
+  PaginatedData<Identifiable> get data => widget.data;
 
   @override
   void didChangeDependencies() {
@@ -307,6 +350,16 @@ class _GtInfiniteListSliverState<T extends Identifiable>
     _detach();
     _position = position;
     position.addListener(_observe);
+    _observer.fillViewport();
+  }
+
+  @override
+  void didUpdateWidget(GtInfiniteListSliver<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Only a grown collection re-checks, so a page that came back empty cannot
+    // be asked for again frame after frame.
+    if (data.data.length <= oldWidget.data.data.length) return;
+    _observer.fillViewport();
   }
 
   /// Hands the host's position to the observer on every scroll tick.
