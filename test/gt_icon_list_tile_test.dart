@@ -49,12 +49,7 @@ void main() {
           // Regression guard: the tile used to wrap in GtInkWell(role: .button)
           // whatever onTap was, so an informational row read as a button.
           expect(within(GtInkWell), findsNothing);
-          expectSemantics(
-            tester,
-            tile,
-            isButton: false,
-            hasTapAction: false,
-          );
+          expectSemantics(tester, tile, isButton: false, hasTapAction: false);
         });
       });
 

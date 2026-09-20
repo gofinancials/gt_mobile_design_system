@@ -135,43 +135,40 @@ void main() {
       },
     );
 
-    test(
-      'A route change while backgrounded updates currentRouteSettings but '
-      'does not move lastActivityTime or restart the timer',
-      () {
-        fakeAsync((async) {
-          final state = GtActivityState(
-            defaultDuration: 1.seconds,
-            throttleDuration: Duration.zero,
-          );
-          var fired = 0;
-          state.startTracking(onInactivity: (_) => fired++);
+    test('A route change while backgrounded updates currentRouteSettings but '
+        'does not move lastActivityTime or restart the timer', () {
+      fakeAsync((async) {
+        final state = GtActivityState(
+          defaultDuration: 1.seconds,
+          throttleDuration: Duration.zero,
+        );
+        var fired = 0;
+        state.startTracking(onInactivity: (_) => fired++);
 
-          state.didChangeAppLifecycleState(AppLifecycleState.paused);
-          final lastActivityTimeWhenPaused = state.lastActivityTime;
+        state.didChangeAppLifecycleState(AppLifecycleState.paused);
+        final lastActivityTimeWhenPaused = state.lastActivityTime;
 
-          GtActivityRouteObserver(state).didPush(
-            PageRouteBuilder<void>(
-              settings: const RouteSettings(name: '/pushed-in-background'),
-              pageBuilder: (_, _, _) => const SizedBox(),
-            ),
-            null,
-          );
+        GtActivityRouteObserver(state).didPush(
+          PageRouteBuilder<void>(
+            settings: const RouteSettings(name: '/pushed-in-background'),
+            pageBuilder: (_, _, _) => const SizedBox(),
+          ),
+          null,
+        );
 
-          expect(
-            state.currentRouteSettings?.name,
-            equals('/pushed-in-background'),
-          );
-          expect(state.lastActivityTime, equals(lastActivityTimeWhenPaused));
+        expect(
+          state.currentRouteSettings?.name,
+          equals('/pushed-in-background'),
+        );
+        expect(state.lastActivityTime, equals(lastActivityTimeWhenPaused));
 
-          async.elapse(3.seconds);
+        async.elapse(3.seconds);
 
-          expect(fired, equals(0));
+        expect(fired, equals(0));
 
-          state.dispose();
-        });
-      },
-    );
+        state.dispose();
+      });
+    });
 
     test(
       'A route change while tracking is off updates currentRouteSettings but '
