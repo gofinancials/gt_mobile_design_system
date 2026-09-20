@@ -27,17 +27,14 @@ class GtAlert extends GtOverlay {
       if (_entry != null || _inserted) return;
       super.closeExistingOverlays();
 
-      _entry = OverlayEntry(
-        opaque: false,
-        builder: (context) {
-          return GtAlertOverlay(
-            title,
-            message: message,
-            type: type ?? .error,
-            onClose: close,
-          );
-        },
-      );
+      _entry = buildEntry((context) {
+        return GtAlertOverlay(
+          title,
+          message: message,
+          type: type ?? .error,
+          onClose: close,
+        );
+      });
       _inserted = true;
       super.present(entry: _entry!, instance: this);
       Timer(timeout, close);

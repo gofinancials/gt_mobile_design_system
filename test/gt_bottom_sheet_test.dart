@@ -119,17 +119,19 @@ void main() {
       variant: bothPlatforms,
     );
 
-    testWidgets('a floating sheet stays above the system bottom inset', (
-      tester,
-    ) async {
-      setBottomInset(tester);
+    testWidgets(
+      'a floating sheet stays above the system bottom inset',
+      (tester) async {
+        setBottomInset(tester);
 
-      await openSheet(tester, const _SheetOpener(floating: true));
+        await openSheet(tester, const _SheetOpener(floating: true));
 
-      final card = sheetCard(tester, find.byKey(content));
-      expect(card, findsOneWidget);
-      expect(tester.getRect(card).bottom, closeTo(812 - 48 - 18, 1));
-    }, variant: bothPlatforms);
+        final card = sheetCard(tester, find.byKey(content));
+        expect(card, findsOneWidget);
+        expect(tester.getRect(card).bottom, closeTo(812 - 48 - 18, 1));
+      },
+      variant: bothPlatforms,
+    );
 
     testWidgets(
       'an attached sheet paints under the system bottom inset but keeps its '

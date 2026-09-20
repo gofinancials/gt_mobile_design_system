@@ -96,6 +96,32 @@ extension ThemeContextExtension on BuildContext {
     return themeState?.isInDarkMode(this) ?? defualtValue;
   }
 
+  /// Captures the themes between this context and the navigator a route is
+  /// about to be pushed onto, so the route keeps the styling of the subtree
+  /// it was opened from.
+  ///
+  /// [showModalBottomSheet] and [showDialog] do this on their own, but the
+  /// Cupertino routes behind `showCupertinoSheet` and [showAdaptiveDialog] do
+  /// not, so a [GtThemedScope] installed below the navigator would be lost on
+  /// iOS. Wrap the route's content in the result:
+  ///
+  /// ```dart
+  /// final themes = context.capturedThemes();
+  /// showCupertinoSheet<void>(
+  ///   context: context,
+  ///   scrollableBuilder: (context, _) => themes.wrap(child),
+  /// );
+  /// ```
+  ///
+  /// Wrapping content that is already captured is harmless: it only adds a
+  /// second copy of inherited widgets that resolve to the same values.
+  CapturedThemes capturedThemes({bool useRootNavigator = true}) {
+    return InheritedTheme.capture(
+      from: this,
+      to: Navigator.of(this, rootNavigator: useRootNavigator).context,
+    );
+  }
+
   /// Retrieves the color palette defined in the current theme.
   GtPalette get palette =>
       Theme.of(this).extension<GtPalette>() ?? PersonalLightPalette();

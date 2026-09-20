@@ -51,6 +51,7 @@ import 'package:gallery/atoms/spacers/gt_divider.dart'
     as _gallery_atoms_spacers_gt_divider;
 import 'package:gallery/atoms/spacers/gt_gap.dart'
     as _gallery_atoms_spacers_gt_gap;
+import 'package:gallery/atoms/theming.dart' as _gallery_atoms_theming;
 import 'package:gallery/atoms/typography/gt_editable_text.dart'
     as _gallery_atoms_typography_gt_editable_text;
 import 'package:gallery/atoms/typography/gt_rich_text.dart'
@@ -386,6 +387,20 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtPdfReceiptExporter',
                 builder: _gallery_templates_documents_gt_pdf_receipt_usecase
                     .playgroundGtPdfReceiptExporterUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'providers',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtThemedScope',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Scoped Themes',
+                builder: _gallery_atoms_theming.playgroundGtThemedScopeUseCase,
               ),
             ],
           ),
