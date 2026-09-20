@@ -37,12 +37,16 @@ final class GtTaskRunner with GtBottomModalMixin {
   /// * [completeDelay] is how long the finished state stays on screen before the
   ///   modal is taken down.
   /// * [keepOpenOnFailure] leaves a failed task's modal on screen, showing the
-  ///   error inside it; the caller closes it with
-  ///   [GtBottomModalController.dismiss].
+  ///   error inside it. The controller passed to [task] is the handle that
+  ///   closes it — call [GtBottomModalController.dismiss] on it. The callbacks
+  ///   still run while that modal is up, so the screen underneath can mark the
+  ///   input the task rejected.
   /// * [onlyWhenVisible] skips the callbacks when the screen that started the
-  ///   task is no longer where the customer is — it has been closed, or another
-  ///   route now covers it. Flows that must report their outcome wherever the
-  ///   customer ended up turn this off.
+  ///   task is no longer where the customer is — it has been closed, or a route
+  ///   the customer navigated to now covers it. This runner's own modal does
+  ///   not count as covering it, so it composes with [keepOpenOnFailure].
+  ///   Flows that must report their outcome wherever the customer ended up turn
+  ///   this off.
   ///
   /// The modal is removed in place when something was pushed over it while the
   /// task ran, so a confirmation or re-authentication route opened mid-task is
@@ -70,7 +74,8 @@ final class GtTaskRunner with GtBottomModalMixin {
     final owner = ModalRoute.of(context);
     final settled = Completer<TaskResponse<T>>();
 
-    final controller = GtBottomModalController<T>(
+    late final GtBottomModalController<T> controller;
+    controller = GtBottomModalController<T>(
       data: GtBottomModalData(
         title: loadingTitle,
         description: description,
@@ -84,7 +89,14 @@ final class GtTaskRunner with GtBottomModalMixin {
         // underneath is the one that acts on the result — and only if it is
         // still the screen the customer is looking at.
         if (!context.mounted) return;
-        if (onlyWhenVisible && owner?.isCurrent == false) return;
+        // The runner's own modal counts as part of the screen that started the
+        // task: [keepOpenOnFailure] holds it on top of [owner], which makes
+        // owner.isCurrent false, and testing that alone would read this modal
+        // as the customer having navigated away — silently dropping the very
+        // failure the modal is displaying.
+        final isVisible =
+            owner?.isCurrent != false || controller.isModalCurrent;
+        if (onlyWhenVisible && !isVisible) return;
         switch (result) {
           case TaskSuccess<T>(data: final data):
             onSuccess(data);

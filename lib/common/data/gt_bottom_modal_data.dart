@@ -101,6 +101,12 @@ class GtBottomModalController<T> extends ChangeNotifier {
   /// pushed, so this is never awaited on its own — see [dismiss].
   Completer<Route<dynamic>>? _routeCompleter;
 
+  /// The route this controller's modal was pushed as, once it has built.
+  ///
+  /// Held alongside [_routeCompleter] so [isModalCurrent] can be answered
+  /// synchronously, which a completion callback needs.
+  Route<dynamic>? _route;
+
   /// The future of the presentation itself, which resolves once the route has
   /// been popped — including when it was popped before it ever built.
   Future<void>? _presentation;
@@ -128,9 +134,29 @@ class GtBottomModalController<T> extends ChangeNotifier {
   /// Called by [GtBottomModalMixin.showTaskBottomModal] from the modal's
   /// builder. Builders re-run, so only the first call is recorded.
   void attachRoute(Route<dynamic> route) {
+    _route = route;
     final completer = _routeCompleter;
     if (completer == null || completer.isCompleted) return;
     completer.complete(route);
+  }
+
+  /// Whether this controller's modal is the surface the customer is on.
+  ///
+  /// A modal still on screen covers the screen that opened it, so that screen
+  /// is no longer the navigator's current route. Anything deciding whether the
+  /// customer is still where the task started has to count this modal as part
+  /// of that screen rather than as something the customer navigated to —
+  /// otherwise a modal held open by [keepOpenOnFailure] reads as the customer
+  /// having left, and the failure it is displaying is never reported.
+  ///
+  /// A modal that has been pushed but has not built yet counts too: it has no
+  /// route to ask, but it is on its way to the top of the navigator, and a
+  /// task that completes that fast — a cached read, a rejected input — must not
+  /// be treated as the customer having navigated away.
+  bool get isModalCurrent {
+    final route = _route;
+    if (route != null) return route.isCurrent;
+    return isPresented;
   }
 
   /// Binds this controller to the presentation of its modal.
@@ -175,6 +201,7 @@ class GtBottomModalController<T> extends ChangeNotifier {
     final presentation = _presentation;
     _routeCompleter = null;
     _presentation = null;
+    _route = null;
     unawaited(_dismissRoute(completer, presentation));
   }
 
