@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 /// A versatile circular avatar widget for displaying user profile pictures, initials, or placeholders.
 ///
@@ -62,6 +61,9 @@ class GtAvatar extends GtStatelessWidget {
   /// Initials text color
   final Color? initialsColor;
 
+  /// Initials text style
+  final TextStyle? initialsStyle;
+
   /// Avatar background color
   final Color? bgColor;
 
@@ -86,6 +88,7 @@ class GtAvatar extends GtStatelessWidget {
     this.gradient,
     this.bgColor,
     this.initialsColor,
+    this.initialsStyle,
     this.borderColor,
   });
 
@@ -94,37 +97,20 @@ class GtAvatar extends GtStatelessWidget {
     final defaultSize = context.dp(36.px);
     final computedSize = size ?? defaultSize;
     final computedTagSize = tagSize ?? computedSize * 0.4;
-    final hasAvatar = avatar != null;
+    final hasAvatar = avatar != null && avatar.hasValidData;
+    final style = context.textStyles.subHeadS(
+      color: initialsColor ?? context.palette.primary.base,
+      weight: .w700,
+    );
     final defaultGradient = forceGradiant
         ? context.gradients.avatarGradient
         : null;
 
     Border? border;
-    ImageProvider? image;
-    DecorationImage? decoration;
+    AppImageData? image = avatar;
 
     if (!hasAvatar && isUserAvatar) {
-      image = AssetImage(GtAssetImages.avatar);
-    }
-
-    if (hasAvatar && avatar!.isString) {
-      image = AssetImage(avatar?.filePath ?? "");
-    }
-
-    if (hasAvatar && avatar!.isUrl) {
-      image = CachedNetworkImageProvider(avatar?.fileUrl ?? "");
-    }
-
-    if (hasAvatar && avatar!.isFile) {
-      image = FileImage(avatar!.file!);
-    }
-
-    if (image != null) {
-      decoration = DecorationImage(
-        image: image,
-        fit: fit ?? .cover,
-        alignment: alignment,
-      );
+      image = AppImageData(GtAssetImages.avatar);
     }
 
     if (showBorder) {
@@ -159,36 +145,48 @@ class GtAvatar extends GtStatelessWidget {
         child: Container(
           width: computedSize,
           height: computedSize,
-          alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: gradient ?? defaultGradient,
             color: backgroundColor,
-            image: decoration,
             border: border,
           ),
           child: Stack(
             children: [
-              if (!hasAvatar && initials.hasValue)
+              if (initials.hasValue)
                 Positioned.fill(
                   child: Center(
                     child: FittedBox(
                       fit: .scaleDown,
                       child: GtText(
                         initials,
-                        style: context.textStyles.subHeadS(
-                          color: initialsColor ?? context.palette.primary.base,
-                          weight: .w700,
-                        ),
-                        textAlign: TextAlign.center,
+                        style: initialsStyle ?? style,
+                        textAlign: .center,
                       ),
                     ),
                   ),
                 ),
+              if (image != null)
+                Positioned.fill(
+                  child: ClipOval(
+                    child: GtImage(
+                      image: image,
+                      fit: fit ?? .cover,
+                      alignment: alignment,
+                      width: computedSize,
+                      height: computedSize,
+                      isDecorative: true,
+                    ),
+                  ),
+                ),
               if (tag != null)
-                FractionalTranslation(
-                  translation: Offset(.9, .8),
-                  child: GtSquareConstrainedBox(computedTagSize, child: tag),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: FractionalTranslation(
+                    translation: Offset(.1, .1),
+                    child: GtSquareConstrainedBox(computedTagSize, child: tag),
+                  ),
                 ),
             ],
           ),

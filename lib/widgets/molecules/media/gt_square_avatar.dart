@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 /// A specialized avatar widget that includes an overlay icon for editing.
 ///
 /// This widget is typically used in profile editing screens where the user
 /// needs a visual indicator that their avatar can be tapped and changed.
+///
+/// With no image to show it falls back the way [GtAvatar] does: [initials]
+/// first, then the [isUserAvatar] placeholder icon, then the default avatar
+/// artwork.
 class GtSquareAvatar extends GtStatelessWidget {
-  /// The optional image data to display. If null, a default placeholder is used.
+  /// The optional image data to display.
+  ///
+  /// With nothing valid here the widget falls back to [initials], then to the
+  /// [isUserAvatar] placeholder icon, then to the default avatar artwork.
   final AppImageData? avatar;
 
   /// How the image should be inscribed into the avatar's bounding box.
@@ -60,6 +66,24 @@ class GtSquareAvatar extends GtStatelessWidget {
   /// and there is no image. Defaults to the [GtIcon] default size.
   final double? userIconSize;
 
+  /// The text initials to display centered in the avatar when there is no image.
+  ///
+  /// Initials take precedence over both fallbacks: the default avatar artwork
+  /// and the [isUserAvatar] placeholder icon stay hidden while they are set.
+  final String? initials;
+
+  /// The color of the [initials]. Defaults to the base primary color.
+  ///
+  /// Ignored once [initialsStyle] is supplied, since that style carries its
+  /// own color.
+  final Color? initialsColor;
+
+  /// The text style of the [initials].
+  ///
+  /// Replaces the scaled default outright; supply it only when the initials
+  /// need a family or weight the default cannot express.
+  final TextStyle? initialsStyle;
+
   /// Creates a [GtSquareAvatar].
   const GtSquareAvatar({
     this.avatar,
@@ -72,6 +96,9 @@ class GtSquareAvatar extends GtStatelessWidget {
     this.bgColor,
     this.editPenSize,
     this.userIconSize,
+    this.initials,
+    this.initialsColor,
+    this.initialsStyle,
     this.onEdit,
     this.semanticsLabel,
     this.isUserAvatar = false,
@@ -81,38 +108,17 @@ class GtSquareAvatar extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     BoxFit defaultFit = BoxFit.cover;
-    final hasAvatar = avatar != null;
+    final hasAvatar = avatar != null && avatar.hasValidData;
 
-    ImageProvider? image;
-    DecorationImage? decoration;
+    AppImageData? image = avatar;
 
     Border? border;
     if (showBorder) {
       border = Border.all(color: context.palette.stroke.white, width: 1.5);
     }
 
-    if (!hasAvatar && !isUserAvatar) {
-      image = CachedNetworkImageProvider(GtNetworkImages.avatar3d2);
-    }
-
-    if (hasAvatar && avatar!.isString) {
-      image = AssetImage(avatar?.filePath ?? "");
-    }
-
-    if (hasAvatar && avatar!.isUrl) {
-      image = CachedNetworkImageProvider(avatar?.fileUrl ?? "");
-    }
-
-    if (hasAvatar && avatar!.isFile) {
-      image = FileImage(avatar!.file!);
-    }
-
-    if (image != null) {
-      decoration = DecorationImage(
-        image: image,
-        fit: fit ?? defaultFit,
-        alignment: alignment,
-      );
+    if (!hasAvatar && !initials.hasValue) {
+      image = AppImageData(GtNetworkImages.avatar3d2);
     }
 
     final computedSize = size ?? context.dp(180.px);
@@ -121,6 +127,29 @@ class GtSquareAvatar extends GtStatelessWidget {
     Gradient? gradient;
     if (showGradient) {
       gradient = context.gradients.avatarGradient;
+    }
+
+    Widget? initialsLabel;
+
+    if (initials.hasValue && image == null) {
+      final style =
+          initialsStyle ??
+          context.textStyles.title(
+            color: initialsColor ?? context.palette.primary.base,
+            weight: .w700,
+          );
+
+      initialsLabel = Padding(
+        // FittedBox only shrinks, so the padding is what keeps three or four
+        // initials off the rounded corners once they stop scaling.
+        padding: .all(computedSize * .1),
+        child: Center(
+          child: FittedBox(
+            fit: .scaleDown,
+            child: GtText(initials, style: style, textAlign: .center),
+          ),
+        ),
+      );
     }
 
     Widget? editPen;
@@ -132,8 +161,8 @@ class GtSquareAvatar extends GtStatelessWidget {
           alignment: .center,
           width: computedPenSize,
           height: computedPenSize,
-          margin: EdgeInsets.all(computedSize * .06),
-          padding: EdgeInsets.all(computedPenSize * .165),
+          margin: .all(computedSize * .06),
+          padding: .all(computedPenSize * .165),
           decoration: BoxDecoration(
             color: context.palette.bg.white,
             borderRadius: context.borderRadiusMd,
@@ -162,14 +191,22 @@ class GtSquareAvatar extends GtStatelessWidget {
               borderRadius: borderRadius ?? context.borderRadius4Xl,
               gradient: gradient,
               color: bgColor ?? context.palette.bg.weak,
-              image: decoration,
               border: border,
             ),
             child: Stack(
               children: [
+                if (initialsLabel case Widget label)
+                  Positioned.fill(child: label),
+                if (image != null)
+                  GtImage(
+                    image: image,
+                    fit: fit ?? defaultFit,
+                    alignment: alignment,
+                    isDecorative: true,
+                  ),
                 if (editPen case Widget edit)
                   Positioned(top: 0, right: 0, child: edit),
-                if (isUserAvatar && image == null)
+                if (isUserAvatar && (image == null && !initials.hasValue))
                   Positioned.fill(
                     child: GtIcon(
                       GtIcons.userSolid,

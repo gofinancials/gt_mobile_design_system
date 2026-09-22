@@ -269,7 +269,7 @@ class _ReceiptParticipant extends GtStatelessWidget {
         _ => GtAvatar(
           avatar: data.image,
           size: imageSize,
-          initials: data.title.initials,
+          initials: data.initials ?? data.title.initials,
           tag: tag,
         ),
       },
