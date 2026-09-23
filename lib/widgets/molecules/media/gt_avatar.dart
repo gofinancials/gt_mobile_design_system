@@ -33,12 +33,17 @@ class GtAvatar extends GtStatelessWidget {
 
   /// Indicates whether this avatar represents the primary user.
   ///
-  /// If `true`, it provides a default placeholder asset if [avatar] is null, applies
-  /// a specific background color, and wraps the widget in a [Hero] with the tag "user-avatar"
-  /// for smooth transition animations across screens.
+  /// If `true`, it falls back to the bundled placeholder asset when there is no
+  /// valid [avatar] and no [initials], applies a specific background color, and
+  /// wraps the widget in a [Hero] with the tag "user-avatar" for smooth
+  /// transition animations across screens.
   final bool isUserAvatar;
 
-  /// The text initials to display centered in the avatar if [avatar] is null.
+  /// The text initials to display centered in the avatar when there is no image.
+  ///
+  /// Initials outrank the [isUserAvatar] placeholder asset, which stays hidden
+  /// while they are set. An [avatar] that fails validation does not count as an
+  /// image, so a blank URL falls through to these rather than covering them.
   final String? initials;
 
   /// An optional miniature widget to overlay at the bottom-right corner of the avatar.
@@ -58,10 +63,18 @@ class GtAvatar extends GtStatelessWidget {
   /// Avatar container background gradient
   final Gradient? gradient;
 
-  /// Initials text color
+  /// The color of the [initials]. Defaults to the base primary color.
+  ///
+  /// Ignored once [initialsStyle] is supplied, since that style carries its
+  /// own color.
   final Color? initialsColor;
 
-  /// Initials text style
+  /// The text style of the [initials].
+  ///
+  /// Replaces the default outright rather than merging with it, so it also
+  /// overrides [initialsColor] — fold the color into this style when both
+  /// matter. Supply it only when the initials need a family, size or weight
+  /// the default cannot express.
   final TextStyle? initialsStyle;
 
   /// Avatar background color
@@ -107,9 +120,13 @@ class GtAvatar extends GtStatelessWidget {
         : null;
 
     Border? border;
-    AppImageData? image = avatar;
+    // An avatar that fails validation is not something to draw, and leaving it
+    // in would paint an empty image over the initials below.
+    AppImageData? image = hasAvatar ? avatar : null;
 
-    if (!hasAvatar && isUserAvatar) {
+    // Initials outrank the placeholder asset, so it only stands in when there
+    // is nothing else to show.
+    if (!hasAvatar && !initials.hasValue && isUserAvatar) {
       image = AppImageData(GtAssetImages.avatar);
     }
 

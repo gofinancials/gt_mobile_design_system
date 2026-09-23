@@ -35,6 +35,11 @@ class GtSquareAvatar extends GtStatelessWidget {
   ///
   /// If `true`, the widget is wrapped in a [Hero] widget with the tag "user-avatar"
   /// for smooth transition animations across screens.
+  ///
+  /// It also decides what an empty avatar falls back to. A user avatar with no
+  /// image and no [initials] draws the user glyph, and never requests the
+  /// default artwork over the network; a non-user avatar with no image and no
+  /// initials is the one case that falls back to that artwork.
   final bool isUserAvatar;
 
   /// The size (width and height) of the square avatar box. Defaults to 180dp.
@@ -80,8 +85,10 @@ class GtSquareAvatar extends GtStatelessWidget {
 
   /// The text style of the [initials].
   ///
-  /// Replaces the scaled default outright; supply it only when the initials
-  /// need a family or weight the default cannot express.
+  /// Replaces the scaled default outright rather than merging with it, so it
+  /// also overrides [initialsColor] — fold the color into this style when both
+  /// matter. Supply it only when the initials need a family or weight the
+  /// default cannot express.
   final TextStyle? initialsStyle;
 
   /// Creates a [GtSquareAvatar].
@@ -110,14 +117,20 @@ class GtSquareAvatar extends GtStatelessWidget {
     BoxFit defaultFit = BoxFit.cover;
     final hasAvatar = avatar != null && avatar.hasValidData;
 
-    AppImageData? image = avatar;
+    // An avatar that fails validation is not something to draw. Dropping it
+    // here is what lets the initials and the user glyph below stay reachable,
+    // since both are guarded on there being no image.
+    AppImageData? image = hasAvatar ? avatar : null;
 
     Border? border;
     if (showBorder) {
       border = Border.all(color: context.palette.stroke.white, width: 1.5);
     }
 
-    if (!hasAvatar && !initials.hasValue) {
+    // The default artwork is the last fallback, not the first: initials and
+    // the user glyph both outrank it, and a user avatar never reaches for the
+    // network when the glyph is what the empty state calls for.
+    if (!hasAvatar && !initials.hasValue && !isUserAvatar) {
       image = AppImageData(GtNetworkImages.avatar3d2);
     }
 
@@ -198,11 +211,14 @@ class GtSquareAvatar extends GtStatelessWidget {
                 if (initialsLabel case Widget label)
                   Positioned.fill(child: label),
                 if (image != null)
-                  GtImage(
-                    image: image,
-                    fit: fit ?? defaultFit,
-                    alignment: alignment,
-                    isDecorative: true,
+                  Positioned.fill(
+                    child: GtImage(
+                      image: image,
+                      fit: fit ?? defaultFit,
+                      isDecorative: true,
+                      width: computedSize,
+                      height: computedSize,
+                    ),
                   ),
                 if (editPen case Widget edit)
                   Positioned(top: 0, right: 0, child: edit),

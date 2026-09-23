@@ -127,6 +127,8 @@ import 'package:gallery/molecules/inputs/gt_wheel_scroll_usecase.dart'
     as _gallery_molecules_inputs_gt_wheel_scroll_usecase;
 import 'package:gallery/molecules/media/gt_avatar.dart'
     as _gallery_molecules_media_gt_avatar;
+import 'package:gallery/molecules/media/gt_square_avatar.dart'
+    as _gallery_molecules_media_gt_square_avatar;
 import 'package:gallery/molecules/pills/gt_account_copy_pill_usecase.dart'
     as _gallery_molecules_pills_gt_account_copy_pill_usecase;
 import 'package:gallery/molecules/pills/gt_button_pill_usecase.dart'
@@ -1107,6 +1109,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtAvatar',
                     builder:
                         _gallery_molecules_media_gt_avatar.buildGtAvatarUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSquareAvatar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSquareAvatar',
+                    builder: _gallery_molecules_media_gt_square_avatar
+                        .buildGtSquareAvatarUseCase,
                   ),
                 ],
               ),

@@ -19,40 +19,37 @@ const _images = [
 ];
 
 const _notes = [
-  'The avatar only joins the semantics tree once onPressed makes it tappable; pass semanticsLabel naming the person or entity it stands for.',
-  'A decorative avatar sitting beside a name that is already on screen should stay silent, so leave onPressed and semanticsLabel unset there.',
-  'The image, the initials and the tag are excluded from the tree, so whatever the tag conveys has to be stated by the surrounding copy too.',
+  'The box only joins the semantics tree once onEdit is set; pass semanticsLabel describing the action, not the picture.',
+  'The edit pen carries no label of its own, so semanticsLabel is the only announcement a screen reader gets for it.',
+  'Initials are a visual fallback and are excluded from the tree; the name they abbreviate must already be on screen.',
 ];
 
-@widgetbook.UseCase(name: 'GtAvatar', type: GtAvatar)
-Widget buildGtAvatarUseCase(BuildContext context) {
-  return const _AvatarPlayground();
+@widgetbook.UseCase(name: 'GtSquareAvatar', type: GtSquareAvatar)
+Widget buildGtSquareAvatarUseCase(BuildContext context) {
+  return const _SquareAvatarPlayground();
 }
 
-class _AvatarPlayground extends GtStatelessWidget {
-  const _AvatarPlayground();
+class _SquareAvatarPlayground extends GtStatelessWidget {
+  const _SquareAvatarPlayground();
 
   @override
   Widget build(BuildContext context) {
     final image = context.knobs.object.dropdown(
       label: 'Image',
       options: _images,
-      initialOption: _images.first,
+      initialOption: _images.last,
       labelBuilder: (value) => value.$1,
     );
-    final initials = context.knobs.string(
-      label: 'Initials',
-      initialValue: 'JD',
-    );
+    final initials = context.knobs.string(label: 'Initials', initialValue: '');
     final isUserAvatar = context.knobs.boolean(
       label: 'Is User Avatar',
-      initialValue: false,
+      initialValue: true,
     );
     final size = context.knobs.double.slider(
       label: 'Size',
-      min: 20,
-      max: 200,
-      initialValue: 80,
+      min: 40,
+      max: 300,
+      initialValue: 150,
     );
     final fit = context.knobs.object.dropdown(
       label: 'Fit',
@@ -67,24 +64,20 @@ class _AvatarPlayground extends GtStatelessWidget {
       initialOption: alignments.first,
       labelBuilder: (value) => value.$1,
     );
+    final radii = _radii(context);
+    final radius = context.knobs.object.dropdown(
+      label: 'Border Radius',
+      options: radii,
+      initialOption: radii.first,
+      labelBuilder: (value) => value.$1,
+    );
     final showBorder = context.knobs.boolean(
       label: 'Show Border',
       initialValue: false,
     );
-    final borderColor = context.knobs.colorOrNull(
-      label: 'Border Color',
-      initialValue: null,
-    );
-    final forceGradiant = context.knobs.boolean(
-      label: 'Force Gradient',
+    final showGradient = context.knobs.boolean(
+      label: 'Show Gradient',
       initialValue: true,
-    );
-    final gradients = _gradients(context);
-    final gradient = context.knobs.object.dropdown(
-      label: 'Gradient',
-      options: gradients,
-      initialOption: gradients.first,
-      labelBuilder: (value) => value.$1,
     );
     final bgColor = context.knobs.colorOrNull(
       label: 'Background Color',
@@ -101,73 +94,72 @@ class _AvatarPlayground extends GtStatelessWidget {
       initialOption: styles.first,
       labelBuilder: (value) => value.$1,
     );
-    final tags = _tagOptions(context);
-    final tag = context.knobs.object.dropdown(
-      label: 'Tag',
-      options: tags,
-      initialOption: tags.first,
-      labelBuilder: (value) => value.$1,
-    );
-    final tagSize = context.knobs.doubleOrNull.slider(
-      label: 'Tag Size',
-      min: 8,
-      max: 64,
-      initialValue: 24,
+    final userIconSize = context.knobs.doubleOrNull.slider(
+      label: 'User Icon Size',
+      min: 12,
+      max: 120,
+      initialValue: 48,
       defaultToNull: true,
     );
-    final isInteractive = context.knobs.boolean(
-      label: 'Interactive (onPressed)',
-      initialValue: false,
+    final isEditable = context.knobs.boolean(
+      label: 'Editable (onEdit)',
+      initialValue: true,
+    );
+    final editPenSize = context.knobs.doubleOrNull.slider(
+      label: 'Edit Pen Size',
+      min: 16,
+      max: 80,
+      initialValue: 32,
+      defaultToNull: true,
     );
     final semanticsLabel = context.knobs.string(
       label: 'Semantics Label',
-      initialValue: 'Jane Doe',
+      initialValue: 'Change profile photo',
     );
 
     final avatarImage = image.$2 == null ? null : AppImageData(image.$2!);
     final avatarInitials = initials.isEmpty ? null : initials;
 
     return GtWidgetDocPage(
-      title: 'GtAvatar',
+      title: 'GtSquareAvatar',
       description:
-          'A circular avatar showing a profile picture, fallback initials, an '
-          'optional corner tag and an optional tap target. With no usable '
-          'image it falls back to initials first, then, for a user avatar, '
-          'the bundled placeholder.',
+          'A square, rounded avatar used for business profile headers and '
+          'list rows. With no usable image it falls back to initials first, '
+          'then, for a user avatar, the glyph; anything else gets the default '
+          'artwork.',
       accessibilityNotes: _notes,
       code:
           '''
-GtAvatar(
+GtSquareAvatar(
   avatar: ${image.$3 == null ? 'null' : 'AppImageData(${image.$3})'},
   initials: ${avatarInitials == null ? 'null' : '"$avatarInitials"'},
   isUserAvatar: $isUserAvatar,
   size: $size,
   fit: BoxFit.${fit.name},
   alignment: ${alignment.$2},
-  showBorder: $showBorder,${_colorArg('borderColor', borderColor)}
-  forceGradiant: $forceGradiant,${gradient.$3 == null ? '' : '\n  gradient: ${gradient.$3},'}${_colorArg('bgColor', bgColor)}${_colorArg('initialsColor', initialsColor)}${initialsStyle.$3 == null ? '' : '\n  initialsStyle: ${initialsStyle.$3},'}${tag.$3 == null ? '' : '\n  tag: ${tag.$3},'}${tagSize == null ? '' : '\n  tagSize: $tagSize,'}${isInteractive ? '\n  onPressed: () {},\n  semanticsLabel: "$semanticsLabel",' : ''}
+  showBorder: $showBorder,
+  showGradient: $showGradient,${radius.$3 == null ? '' : '\n  borderRadius: ${radius.$3},'}${_colorArg('bgColor', bgColor)}${_colorArg('initialsColor', initialsColor)}${initialsStyle.$3 == null ? '' : '\n  initialsStyle: ${initialsStyle.$3},'}${userIconSize == null ? '' : '\n  userIconSize: $userIconSize,'}${editPenSize == null ? '' : '\n  editPenSize: $editPenSize,'}${isEditable ? '\n  onEdit: () {},\n  semanticsLabel: "$semanticsLabel",' : ''}
 )''',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Center(
-            child: GtAvatar(
+            child: GtSquareAvatar(
               avatar: avatarImage,
               initials: avatarInitials,
               isUserAvatar: isUserAvatar,
               size: size,
               fit: fit,
               alignment: alignment.$2,
+              borderRadius: radius.$2,
               showBorder: showBorder,
-              borderColor: borderColor,
-              forceGradiant: forceGradiant,
-              gradient: gradient.$2,
+              showGradient: showGradient,
               bgColor: bgColor,
               initialsColor: initialsColor,
               initialsStyle: initialsStyle.$2,
-              tag: tag.$2,
-              tagSize: tagSize,
-              onPressed: isInteractive ? () {} : null,
+              userIconSize: userIconSize,
+              editPenSize: editPenSize,
+              onEdit: isEditable ? () {} : null,
               semanticsLabel: semanticsLabel,
             ),
           ),
@@ -176,90 +168,62 @@ GtAvatar(
             title: 'Fallback order',
             caption:
                 'Each step applies only when the one before it has nothing to '
-                'show. A blank URL counts as nothing, and initials outrank the '
-                'bundled placeholder.',
+                'show. A blank URL counts as nothing, and a user avatar never '
+                'reaches for the default artwork.',
             items: [
               (
                 'Image',
-                GtAvatar(
+                GtSquareAvatar(
                   avatar: AppImageData(GtNetworkImages.sampleAvatar1),
                   initials: 'JD',
                   isUserAvatar: true,
-                  size: 64,
+                  size: 72,
                 ),
               ),
               (
                 'Initials',
-                GtAvatar(
+                GtSquareAvatar(
                   avatar: AppImageData(''),
                   initials: 'JD',
                   isUserAvatar: true,
-                  size: 64,
+                  size: 72,
                 ),
               ),
-              ('Placeholder', GtAvatar(isUserAvatar: true, size: 64)),
-              ('Empty', GtAvatar(size: 64)),
+              ('User glyph', GtSquareAvatar(isUserAvatar: true, size: 72)),
+              ('Default artwork', GtSquareAvatar(size: 72)),
             ],
           ),
           const GtGap.ySectionSm(),
           _Showcase(
-            title: 'Tags',
-            caption:
-                'The tag sits at the bottom-right and is excluded from '
-                'semantics, so state whatever it conveys in the surrounding '
-                'copy.',
+            title: 'Shape and surface',
             items: [
-              for (final (label, widget, _) in _tagOptions(context).skip(1))
-                (
-                  label,
-                  GtAvatar(
-                    avatar: const AppImageData(GtNetworkImages.sampleAvatar1),
-                    size: 64,
-                    tag: widget,
-                  ),
-                ),
               (
-                'Interactive',
-                GtAvatar(
-                  avatar: const AppImageData(GtNetworkImages.sampleAvatar1),
-                  size: 64,
-                  semanticsLabel: 'Jane Doe',
-                  onPressed: _noop,
+                'Squared',
+                GtSquareAvatar(
+                  initials: 'GT',
+                  size: 72,
+                  borderRadius: context.borderRadiusXs,
                 ),
               ),
-            ],
-          ),
-          const GtGap.ySectionSm(),
-          _Showcase(
-            title: 'Surface',
-            items: [
+              (
+                'Rounded',
+                GtSquareAvatar(
+                  initials: 'GT',
+                  size: 72,
+                  borderRadius: context.borderRadius2Xl,
+                ),
+              ),
               (
                 'Bordered',
-                GtAvatar(initials: 'GT', size: 64, showBorder: true),
+                GtSquareAvatar(initials: 'GT', size: 72, showBorder: true),
               ),
               (
-                'Flat',
-                GtAvatar(
+                'No gradient',
+                GtSquareAvatar(
                   initials: 'GT',
-                  size: 64,
-                  forceGradiant: false,
+                  size: 72,
+                  showGradient: false,
                   bgColor: context.palette.bg.sub,
-                ),
-              ),
-              (
-                'Ghost',
-                GtAvatar(
-                  initials: 'GT',
-                  size: 64,
-                  gradient: context.gradients.ghostGradient,
-                ),
-              ),
-              (
-                'Appbar',
-                GtAvatar(
-                  initials: 'GT',
-                  size: 64,
-                  gradient: context.gradients.appbarAvatarGradient,
                 ),
               ),
             ],
@@ -268,11 +232,18 @@ GtAvatar(
           const _Showcase(
             title: 'Sizes',
             items: [
-              ('24', GtAvatar(initials: 'GT', size: 24)),
-              ('32', GtAvatar(initials: 'GT', size: 32)),
-              ('48', GtAvatar(initials: 'GT', size: 48)),
-              ('80', GtAvatar(initials: 'GT', size: 80)),
-              ('120', GtAvatar(initials: 'GT', size: 120)),
+              ('40', GtSquareAvatar(initials: 'GT', size: 40)),
+              ('64', GtSquareAvatar(initials: 'GT', size: 64)),
+              ('96', GtSquareAvatar(initials: 'GT', size: 96)),
+              (
+                'Editable',
+                GtSquareAvatar(
+                  isUserAvatar: true,
+                  size: 96,
+                  semanticsLabel: 'Change profile photo',
+                  onEdit: _noop,
+                ),
+              ),
             ],
           ),
         ],
@@ -340,24 +311,13 @@ List<(String, Alignment)> _alignments() {
   ];
 }
 
-List<(String, Gradient?, String?)> _gradients(BuildContext context) {
+List<(String, BorderRadius?, String?)> _radii(BuildContext context) {
   return [
     ('Default', null, null),
-    (
-      'Avatar',
-      context.gradients.avatarGradient,
-      'context.gradients.avatarGradient',
-    ),
-    (
-      'Appbar Avatar',
-      context.gradients.appbarAvatarGradient,
-      'context.gradients.appbarAvatarGradient',
-    ),
-    (
-      'Ghost',
-      context.gradients.ghostGradient,
-      'context.gradients.ghostGradient',
-    ),
+    ('Xs', context.borderRadiusXs, 'context.borderRadiusXs'),
+    ('Md', context.borderRadiusMd, 'context.borderRadiusMd'),
+    ('2Xl', context.borderRadius2Xl, 'context.borderRadius2Xl'),
+    ('Full', context.borderRadiusFull, 'context.borderRadiusFull'),
   ];
 }
 
@@ -371,33 +331,6 @@ List<(String, TextStyle?, String?)> _initialsStyles(BuildContext context) {
       'context.textStyles.subHeadS()',
     ),
     ('Display 3', context.textStyles.d3(), 'context.textStyles.d3()'),
-  ];
-}
-
-List<(String, Widget?, String?)> _tagOptions(BuildContext context) {
-  return [
-    ('None', null, null),
-    (
-      'Bank Logo',
-      const GtImage(image: AppImageData(GtVectors.logo), isDecorative: true),
-      'GtImage(image: AppImageData(GtNetworkImages.avatar3d2), isDecorative: true)',
-    ),
-    (
-      'Status Dot',
-      DecoratedBox(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: context.palette.information.base,
-          border: Border.all(color: context.palette.stroke.white, width: 1.5),
-        ),
-      ),
-      'DecoratedBox(decoration: BoxDecoration(shape: BoxShape.circle, color: context.palette.success.base))',
-    ),
-    (
-      'Verified Icon',
-      const GtIcon(GtIcons.verified, variant: .info),
-      'GtIcon(GtIcons.verified, variant: .success)',
-    ),
   ];
 }
 
