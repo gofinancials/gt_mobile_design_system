@@ -115,6 +115,10 @@ class _AvatarPlayground extends GtStatelessWidget {
       initialValue: 24,
       defaultToNull: true,
     );
+    final showLoadingIndicator = context.knobs.boolean(
+      label: 'Show Loading Indicator',
+      initialValue: false,
+    );
     final isInteractive = context.knobs.boolean(
       label: 'Interactive (onPressed)',
       initialValue: false,
@@ -143,6 +147,7 @@ GtAvatar(
   isUserAvatar: $isUserAvatar,
   size: $size,
   fit: BoxFit.${fit.name},
+  showLoadingIndicator: $showLoadingIndicator,
   alignment: ${alignment.$2},
   showBorder: $showBorder,${_colorArg('borderColor', borderColor)}
   forceGradiant: $forceGradiant,${gradient.$3 == null ? '' : '\n  gradient: ${gradient.$3},'}${_colorArg('bgColor', bgColor)}${_colorArg('initialsColor', initialsColor)}${initialsStyle.$3 == null ? '' : '\n  initialsStyle: ${initialsStyle.$3},'}${tag.$3 == null ? '' : '\n  tag: ${tag.$3},'}${tagSize == null ? '' : '\n  tagSize: $tagSize,'}${isInteractive ? '\n  onPressed: () {},\n  semanticsLabel: "$semanticsLabel",' : ''}
@@ -167,6 +172,7 @@ GtAvatar(
               initialsStyle: initialsStyle.$2,
               tag: tag.$2,
               tagSize: tagSize,
+              showLoadingIndicator: showLoadingIndicator,
               onPressed: isInteractive ? () {} : null,
               semanticsLabel: semanticsLabel,
             ),

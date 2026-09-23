@@ -101,6 +101,10 @@ class _SquareAvatarPlayground extends GtStatelessWidget {
       initialValue: 48,
       defaultToNull: true,
     );
+    final showLoadingIndicator = context.knobs.boolean(
+      label: 'Show Loading Indicator',
+      initialValue: false,
+    );
     final isEditable = context.knobs.boolean(
       label: 'Editable (onEdit)',
       initialValue: true,
@@ -136,6 +140,7 @@ GtSquareAvatar(
   isUserAvatar: $isUserAvatar,
   size: $size,
   fit: BoxFit.${fit.name},
+  showLoadingIndicator: $showLoadingIndicator,
   alignment: ${alignment.$2},
   showBorder: $showBorder,
   showGradient: $showGradient,${radius.$3 == null ? '' : '\n  borderRadius: ${radius.$3},'}${_colorArg('bgColor', bgColor)}${_colorArg('initialsColor', initialsColor)}${initialsStyle.$3 == null ? '' : '\n  initialsStyle: ${initialsStyle.$3},'}${userIconSize == null ? '' : '\n  userIconSize: $userIconSize,'}${editPenSize == null ? '' : '\n  editPenSize: $editPenSize,'}${isEditable ? '\n  onEdit: () {},\n  semanticsLabel: "$semanticsLabel",' : ''}
@@ -159,6 +164,7 @@ GtSquareAvatar(
               initialsStyle: initialsStyle.$2,
               userIconSize: userIconSize,
               editPenSize: editPenSize,
+              showLoadingIndicator: showLoadingIndicator,
               onEdit: isEditable ? () {} : null,
               semanticsLabel: semanticsLabel,
             ),

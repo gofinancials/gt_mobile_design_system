@@ -108,33 +108,37 @@ void main() {
   }
 
   group('GtThemedScope route capture', () {
-    testWidgets('a sheet opened from a scope keeps its brand on a phone', (
-      tester,
-    ) async {
-      late BuildContext sheetContext;
+    testWidgets(
+      'a sheet opened from a scope keeps its brand on a phone',
+      (tester) async {
+        late BuildContext sheetContext;
 
-      await openFromScope(
-        tester,
-        _SheetOpener((context) => sheetContext = context),
-        size: phone,
-      );
+        await openFromScope(
+          tester,
+          _SheetOpener((context) => sheetContext = context),
+          size: phone,
+        );
 
-      expectFlex(sheetContext);
-    }, variant: bothPlatforms);
+        expectFlex(sheetContext);
+      },
+      variant: bothPlatforms,
+    );
 
-    testWidgets('a sheet opened from a scope keeps its brand on a tablet', (
-      tester,
-    ) async {
-      late BuildContext sheetContext;
+    testWidgets(
+      'a sheet opened from a scope keeps its brand on a tablet',
+      (tester) async {
+        late BuildContext sheetContext;
 
-      await openFromScope(
-        tester,
-        _SheetOpener((context) => sheetContext = context),
-        size: tablet,
-      );
+        await openFromScope(
+          tester,
+          _SheetOpener((context) => sheetContext = context),
+          size: tablet,
+        );
 
-      expectFlex(sheetContext);
-    }, variant: bothPlatforms);
+        expectFlex(sheetContext);
+      },
+      variant: bothPlatforms,
+    );
 
     testWidgets(
       'a confirmation dialog keeps the brand of the scope that opened it',
@@ -146,15 +150,17 @@ void main() {
       variant: bothPlatforms,
     );
 
-    testWidgets('a toast overlay keeps the brand of the scope that raised it', (
-      tester,
-    ) async {
-      await openFromScope(tester, const _ToastOpener(), size: phone);
+    testWidgets(
+      'a toast overlay keeps the brand of the scope that raised it',
+      (tester) async {
+        await openFromScope(tester, const _ToastOpener(), size: phone);
 
-      expectFlex(tester.element(find.byType(GtToastOverlay)));
+        expectFlex(tester.element(find.byType(GtToastOverlay)));
 
-      // The toast dismisses itself on a timer the test must outlive.
-      await tester.pumpAndSettle(const Duration(seconds: 4));
-    }, variant: bothPlatforms);
+        // The toast dismisses itself on a timer the test must outlive.
+        await tester.pumpAndSettle(const Duration(seconds: 4));
+      },
+      variant: bothPlatforms,
+    );
   });
 }

@@ -39,7 +39,10 @@ class GtAvatar extends GtStatelessWidget {
   /// transition animations across screens.
   final bool isUserAvatar;
 
-  /// The text initials to display centered in the avatar when there is no image.
+  /// The text initials to display centered in the avatar, behind any image.
+  ///
+  /// Painted whenever they are set, so they show while a network [avatar]
+  /// loads and through any transparency once it has.
   ///
   /// Initials outrank the [isUserAvatar] placeholder asset, which stays hidden
   /// while they are set. An [avatar] that fails validation does not count as an
@@ -69,6 +72,15 @@ class GtAvatar extends GtStatelessWidget {
   /// own color.
   final Color? initialsColor;
 
+  /// Whether a spinner is drawn while a network [avatar] loads.
+  ///
+  /// Defaults to `false`, because the gradient and any [initials] are already
+  /// painted underneath, and a spinner would cover an answer the customer can
+  /// read. Set it to `true` where the avatar is large enough that a spinner
+  /// reads as progress rather than clutter, or where nothing meaningful sits
+  /// behind the image.
+  final bool showLoadingIndicator;
+
   /// The text style of the [initials].
   ///
   /// Replaces the default outright rather than merging with it, so it also
@@ -94,6 +106,7 @@ class GtAvatar extends GtStatelessWidget {
     this.semanticsLabel,
     this.initials,
     this.isUserAvatar = false,
+    this.showLoadingIndicator = false,
     this.tag,
     this.tagSize,
     this.showBorder = false,
@@ -193,6 +206,7 @@ class GtAvatar extends GtStatelessWidget {
                       width: computedSize,
                       height: computedSize,
                       isDecorative: true,
+                      showLoadingIndicator: showLoadingIndicator,
                     ),
                   ),
                 ),

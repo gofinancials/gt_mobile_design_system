@@ -71,7 +71,10 @@ class GtSquareAvatar extends GtStatelessWidget {
   /// and there is no image. Defaults to the [GtIcon] default size.
   final double? userIconSize;
 
-  /// The text initials to display centered in the avatar when there is no image.
+  /// The text initials to display centered in the avatar, behind any image.
+  ///
+  /// Painted whenever they are set, so they show while a network [avatar]
+  /// loads and through any transparency once it has.
   ///
   /// Initials take precedence over both fallbacks: the default avatar artwork
   /// and the [isUserAvatar] placeholder icon stay hidden while they are set.
@@ -82,6 +85,15 @@ class GtSquareAvatar extends GtStatelessWidget {
   /// Ignored once [initialsStyle] is supplied, since that style carries its
   /// own color.
   final Color? initialsColor;
+
+  /// Whether a spinner is drawn while a network [avatar] loads.
+  ///
+  /// Defaults to `false`, because the gradient and any [initials] are already
+  /// painted underneath, and a spinner would cover an answer the customer can
+  /// read. Set it to `true` where the avatar is large enough that a spinner
+  /// reads as progress rather than clutter, or where nothing meaningful sits
+  /// behind the image.
+  final bool showLoadingIndicator;
 
   /// The text style of the [initials].
   ///
@@ -109,6 +121,7 @@ class GtSquareAvatar extends GtStatelessWidget {
     this.onEdit,
     this.semanticsLabel,
     this.isUserAvatar = false,
+    this.showLoadingIndicator = false,
     this.size,
   });
 
@@ -144,7 +157,7 @@ class GtSquareAvatar extends GtStatelessWidget {
 
     Widget? initialsLabel;
 
-    if (initials.hasValue && image == null) {
+    if (initials.hasValue) {
       final style =
           initialsStyle ??
           context.textStyles.title(
@@ -218,6 +231,7 @@ class GtSquareAvatar extends GtStatelessWidget {
                       isDecorative: true,
                       width: computedSize,
                       height: computedSize,
+                      showLoadingIndicator: showLoadingIndicator,
                     ),
                   ),
                 if (editPen case Widget edit)

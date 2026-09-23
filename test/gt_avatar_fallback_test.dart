@@ -89,6 +89,8 @@ void main() {
       await tester.pump();
 
       expect(_drawnImage(tester), 'https://example.com/a.png');
+      // The initials stay in the tree as the image's backing layer.
+      expect(find.text('JD'), findsOneWidget);
     });
   });
 
