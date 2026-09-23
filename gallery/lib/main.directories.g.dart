@@ -2393,6 +2393,11 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder: _gallery_organisms_tab_bars_gt_tab_bar_usecase
                         .playgroundGtTabbarUseCase,
                   ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Relabelled Tabs',
+                    builder: _gallery_organisms_tab_bars_gt_tab_bar_usecase
+                        .playgroundRelabelledGtTabbarUseCase,
+                  ),
                 ],
               ),
               _widgetbook.WidgetbookComponent(

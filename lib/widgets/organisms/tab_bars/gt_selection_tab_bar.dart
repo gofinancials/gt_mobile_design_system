@@ -9,6 +9,11 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// the [useAlternateStyle] flag.
 class GtSelectionTabbar<T> extends GtStatefulWidget {
   /// The list of tab data objects defining the labels, values, and icons for each tab.
+  ///
+  /// Passing a new list writes the incoming instance of the selected tab back
+  /// to [controller] once the frame settles, so a tab relabelled while it is
+  /// on screen leaves [GtTabController.value] holding the new label and icon
+  /// rather than the ones it was seeded with.
   final List<GtTabData<T>> tabs;
 
   /// The controller that manages the currently selected tab.
@@ -55,6 +60,7 @@ class _GtSelectionTabbarState<T> extends State<GtSelectionTabbar<T>> {
   late List<GlobalKey> _tabKeys;
   Rect? _indicatorRect;
   bool _measureScheduled = false;
+  bool _refreshScheduled = false;
 
   @override
   void initState() {
@@ -84,6 +90,9 @@ class _GtSelectionTabbarState<T> extends State<GtSelectionTabbar<T>> {
       );
       _indicatorRect = null;
     }
+    if (!identical(oldWidget.tabs, widget.tabs)) {
+      _scheduleSelectedTabRefresh();
+    }
     _scheduleIndicatorMeasure();
   }
 
@@ -97,6 +106,32 @@ class _GtSelectionTabbarState<T> extends State<GtSelectionTabbar<T>> {
     if (!mounted) return;
     setState(() {});
     _scheduleIndicatorMeasure();
+  }
+
+  /// Writes the incoming instance of the selected tab back to the controller,
+  /// so a tab relabelled while it is on screen stops reading as its old label.
+  ///
+  /// Deferred to after the frame because the controller notifies when the
+  /// label changed, and [didUpdateWidget] runs while the tree is building —
+  /// notifying there would rebuild a listener mid-build.
+  void _scheduleSelectedTabRefresh() {
+    if (_refreshScheduled) return;
+    _refreshScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _refreshScheduled = false;
+      if (!mounted) return;
+      _refreshSelectedTab();
+    });
+  }
+
+  void _refreshSelectedTab() {
+    final activeTab = widget.controller.value;
+    if (activeTab == null) return;
+    final activeIndex = widget.tabs.indexOf(activeTab);
+    if (activeIndex < 0) return;
+    // Equal by value, so the controller stays quiet unless the label or icon
+    // actually moved.
+    widget.controller.value = widget.tabs[activeIndex];
   }
 
   void _scheduleIndicatorMeasure() {
