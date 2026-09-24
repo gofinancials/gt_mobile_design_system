@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Shared timing and scale tokens for motion across the design system.
 abstract final class GtMotion {
@@ -13,8 +14,6 @@ abstract final class GtMotion {
 
   /// Returns [Duration.zero] when the platform asks animations to be disabled.
   static Duration adaptiveDuration(BuildContext context, Duration duration) {
-    return MediaQuery.maybeOf(context)?.disableAnimations ?? false
-        ? Duration.zero
-        : duration;
+    return context.reduceMotion ? Duration.zero : duration;
   }
 }

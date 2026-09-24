@@ -26,6 +26,11 @@ class GtNetworkImage extends GtStatelessWidget {
   /// A standalone image with nothing behind it should leave this `true`, or a
   /// slow network reads as a blank rectangle.
   ///
+  /// `flutter_test` refuses network requests, so under test the spinner is
+  /// never replaced by the image. It holds still whenever
+  /// [MediaQueryData.disableAnimations] is set, which is what lets a test that
+  /// sets that flag `pumpAndSettle`; see [GtSpinner].
+  ///
   /// Ignored when [placeHolderPath] supplies still artwork instead.
   final bool showLoadingIndicator;
 

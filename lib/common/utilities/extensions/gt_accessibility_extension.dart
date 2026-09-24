@@ -13,7 +13,10 @@ extension GtAccessibilityContextExtension on BuildContext {
   /// Set by "Reduce Motion" on iOS and "Remove animations" on Android. Users
   /// enable it for vestibular disorders and motion sensitivity, where sliding
   /// and scaling transitions can cause real nausea.
-  bool get reduceMotion => MediaQuery.disableAnimationsOf(this);
+  ///
+  /// Reads `false` rather than throwing when there is no [MediaQuery] above
+  /// this context, and rebuilds the caller only when this setting changes.
+  bool get reduceMotion => MediaQuery.maybeDisableAnimationsOf(this) ?? false;
 
   /// Whether the user has asked for heavier font weights.
   ///
