@@ -291,6 +291,8 @@ import 'package:gallery/organisms/view_state/gt_view_state.dart'
     as _gallery_organisms_view_state_gt_view_state;
 import 'package:gallery/templates/dialogs/gt_confirm_dialog.dart'
     as _gallery_templates_dialogs_gt_confirm_dialog;
+import 'package:gallery/templates/documents/gt_pdf_invoice_usecase.dart'
+    as _gallery_templates_documents_gt_pdf_invoice_usecase;
 import 'package:gallery/templates/documents/gt_pdf_receipt_usecase.dart'
     as _gallery_templates_documents_gt_pdf_receipt_usecase;
 import 'package:gallery/templates/forms/gt_form_doc.dart'
@@ -390,6 +392,16 @@ final directories = <_widgetbook.WidgetbookNode>[
       _widgetbook.WidgetbookFolder(
         name: 'documents',
         children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtPdfInvoiceExporter',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtPdfInvoiceExporter',
+                builder: _gallery_templates_documents_gt_pdf_invoice_usecase
+                    .playgroundGtPdfInvoiceExporterUseCase,
+              ),
+            ],
+          ),
           _widgetbook.WidgetbookComponent(
             name: 'GtPdfReceiptExporter',
             useCases: [
