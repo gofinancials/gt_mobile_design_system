@@ -35,12 +35,15 @@ const _account = GtPdfInvoiceAccount(
   bank: 'Sterling Bank PLC',
 );
 
+const _note = 'Thank you for your business. Payment is due within 7 days.';
+
 class _PdfInvoiceKnobs {
   final String number;
   final bool isPaid;
   final int itemCount;
   final bool withTaxRate;
   final bool showAvatar;
+  final bool showNote;
   final bool showPayment;
   final bool showPoweredBy;
   final bool themeFromPalette;
@@ -52,6 +55,7 @@ class _PdfInvoiceKnobs {
     required this.itemCount,
     required this.withTaxRate,
     required this.showAvatar,
+    required this.showNote,
     required this.showPayment,
     required this.showPoweredBy,
     required this.themeFromPalette,
@@ -79,6 +83,7 @@ class _PdfInvoiceKnobs {
         label: 'Show Avatar',
         initialValue: true,
       ),
+      showNote: context.knobs.boolean(label: 'Show Note', initialValue: true),
       showPayment: context.knobs.boolean(
         label: 'Show Payment Block',
         initialValue: true,
@@ -138,6 +143,7 @@ class _PdfInvoiceKnobs {
           const GtPdfReceiptEntry(label: 'Tax', value: 'NGN 22,500'),
       ],
       total: withTaxRate ? 'NGN 322,500.00' : 'NGN 300,000.00',
+      note: showNote ? _note : null,
       payment: showPayment
           ? GtPdfInvoicePayment(url: 'https://pay.sterling.ng/$number')
           : null,
@@ -158,6 +164,7 @@ class _PdfInvoiceKnobs {
     itemCount,
     withTaxRate,
     showAvatar,
+    showNote,
     showPayment,
     showPoweredBy,
     themeFromPalette,
@@ -240,7 +247,8 @@ class _PdfInvoiceExportPreviewState extends State<_PdfInvoiceExportPreview> {
           'avatar and powered-by mark are supplied by the app, and every '
           'amount is printed exactly as the app formatted it. The tax rate '
           'column only appears when an item carries a rate, and a long items '
-          'table breaks between rows onto further pages.',
+          'table breaks between rows onto further pages. The issuer\'s note, '
+          'such as a thank-you or their terms, is set beneath the totals.',
       code:
           '''
 final exporter = GtPdfInvoiceExporter.fromPalette(context.palette);
@@ -278,7 +286,8 @@ final data = GtPdfInvoiceData(
     ),
   ],
   subtotal: "NGN 300,000",
-  total: "NGN 300,000.00",${knobs.showPayment ? '''
+  total: "NGN 300,000.00",${knobs.showNote ? '''
+  note: "Thank you for your business. Payment is due within 7 days.",''' : ''}${knobs.showPayment ? '''
   payment: const GtPdfInvoicePayment(url: "https://pay.sterling.ng/..."),''' : ''}${knobs.showPoweredBy ? '''
   poweredBy: GtPdfInvoicePoweredBy(svg: brandSvg),''' : ''}
 );

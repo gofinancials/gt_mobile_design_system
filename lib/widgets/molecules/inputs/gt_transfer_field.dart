@@ -86,6 +86,12 @@ class _GtTransferFieldState extends State<GtTransferField> {
     return value ?? 0;
   }
 
+  /// Whether either participant asks for the amount to be validated.
+  bool get isValidated {
+    return widget.firstParticipant.validate ||
+        widget.secondParticipant.validate;
+  }
+
   @override
   Widget build(BuildContext context) {
     final first = widget.firstParticipant;
@@ -99,11 +105,12 @@ class _GtTransferFieldState extends State<GtTransferField> {
     return FormField(
       initialValue: widget.amountController.controller,
       validator: (text) {
+        if (!isValidated) return null;
         if (widget.min != null || widget.max != null) {
           return AppValidators.amountValidator(
             text?.text,
             minAmount: widget.min,
-            maxAmount: min(balance, widget.max ?? 0),
+            maxAmount: min(balance, widget.max ?? balance),
           );
         }
         return AppValidators.balanceValidator(
@@ -313,6 +320,12 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
     return value ?? 0;
   }
 
+  /// Whether either participant asks for the amount to be validated.
+  bool get isValidated {
+    return widget.firstParticipant.validate ||
+        widget.secondParticipant.validate;
+  }
+
   @override
   Widget build(BuildContext context) {
     final first = widget.firstParticipant;
@@ -326,11 +339,12 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
     return FormField(
       initialValue: widget.sourceAmountController.controller,
       validator: (text) {
+        if (!isValidated) return null;
         if (widget.min != null || widget.max != null) {
           return AppValidators.amountValidator(
             text?.text,
             minAmount: widget.min,
-            maxAmount: min(balance, widget.max ?? 0),
+            maxAmount: min(balance, widget.max ?? balance),
           );
         }
         return AppValidators.balanceValidator(

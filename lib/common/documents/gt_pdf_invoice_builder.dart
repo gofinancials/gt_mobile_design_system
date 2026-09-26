@@ -13,8 +13,10 @@ import 'package:pdf/widgets.dart' as pw;
 ///
 /// The page closes on a full-width band carrying the page count and the
 /// [GtPdfInvoiceData.poweredBy] mark on every page, with the
-/// [GtPdfInvoiceData.payment] block above them on the last. A long items table
-/// breaks between rows onto as many pages as it needs.
+/// [GtPdfInvoiceData.payment] block above them on the last. The
+/// [GtPdfInvoiceData.note] sits between the totals and that band. A long items
+/// table breaks between rows, and a long note between lines, onto as many
+/// pages as they need.
 ///
 /// Example usage:
 /// ```dart
@@ -39,6 +41,9 @@ class GtPdfInvoiceBuilder {
 
   /// The gap between the blocks of the body.
   static const _blockGap = 40.0;
+
+  /// The gap kept between the body and the closing band.
+  static const _bandGap = 35.0;
 
   /// The gap between a block's heading and its content.
   static const _headingGap = 16.0;
@@ -101,7 +106,7 @@ class GtPdfInvoiceBuilder {
           ..._table(data),
           pw.SizedBox(height: _columnGap),
           _padded(_totals(data)),
-          pw.SizedBox(height: 35),
+          ..._note(data),
         ],
       ),
     );
@@ -465,6 +470,33 @@ class GtPdfInvoiceBuilder {
     );
   }
 
+  /// The issuer's note under its heading, after a block gap.
+  ///
+  /// Returned as separate widgets rather than one column so the paragraph can
+  /// break across pages. Empty when the invoice carries no note.
+  List<pw.Widget> _note(GtPdfInvoiceData data) {
+    if (data.note case String note when note.hasValue) {
+      return [
+        pw.SizedBox(height: _blockGap),
+        _padded(_heading(data.labels.note)),
+        pw.SizedBox(height: _headingGap),
+        _padded(
+          pw.Text(
+            gtPdfSafeText(note),
+            overflow: pw.TextOverflow.span,
+            style: pw.TextStyle(
+              fontSize: 10,
+              color: theme.textSoft,
+              lineSpacing: 4,
+            ),
+          ),
+        ),
+      ];
+    }
+
+    return const [];
+  }
+
   /// The full-width band closing every page.
   ///
   /// Carries the page count and the powered-by mark, with the payment block
@@ -472,6 +504,10 @@ class GtPdfInvoiceBuilder {
   /// is known, when every page still reads as the last, so every page keeps
   /// room for the payment block. Pages before the last leave that room blank
   /// on the page itself, so the band only opens where its content starts.
+  ///
+  /// The band keeps its own [_bandGap] from the body, rather than the body
+  /// ending on a spacer, so a spacer that no longer fits cannot open a page
+  /// of its own.
   pw.Widget _band(GtPdfInvoiceData data, pw.Context context) {
     final isLastPage = context.pageNumber == context.pagesCount;
     final payment = data.payment;
@@ -485,6 +521,7 @@ class GtPdfInvoiceBuilder {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.stretch,
       children: [
+        pw.SizedBox(height: _bandGap),
         if (paymentBlock != null && !isLastPage)
           pw.Padding(
             padding: const pw.EdgeInsets.symmetric(horizontal: _gutter),

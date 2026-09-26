@@ -244,6 +244,9 @@ class GtPdfInvoiceLabels extends AppEquatable {
   /// The label of [GtPdfInvoiceData.total].
   final String total;
 
+  /// The heading over [GtPdfInvoiceData.note].
+  final String note;
+
   /// The heading over [GtPdfInvoiceData.payment].
   final String payOnline;
 
@@ -268,6 +271,7 @@ class GtPdfInvoiceLabels extends AppEquatable {
     this.amount = 'Amount',
     this.subtotal = 'Subtotal',
     this.total = 'Total',
+    this.note = 'Note',
     this.payOnline = 'Pay this invoice online',
     this.poweredBy = 'Powered by',
     this.pageOf = _pageOf,
@@ -290,6 +294,7 @@ class GtPdfInvoiceLabels extends AppEquatable {
     amount,
     subtotal,
     total,
+    note,
     payOnline,
     poweredBy,
     pageOf,
@@ -329,6 +334,7 @@ class GtPdfInvoiceLabels extends AppEquatable {
 ///   ],
 ///   subtotal: 'NGN 300,000',
 ///   total: 'NGN 300,000.00',
+///   note: 'Thank you for your business.',
 /// );
 /// ```
 class GtPdfInvoiceData extends AppEquatable {
@@ -372,6 +378,14 @@ class GtPdfInvoiceData extends AppEquatable {
   /// The amount due.
   final String total;
 
+  /// The issuer's own message to the customer, such as a thank-you or the
+  /// terms they bill under, set as a paragraph beneath the [total]. Omitted
+  /// when null or empty.
+  ///
+  /// Line breaks are kept, and a note too long for the page runs on to the
+  /// next.
+  final String? note;
+
   /// The block inviting the customer to pay online. Omitted when null.
   final GtPdfInvoicePayment? payment;
 
@@ -400,6 +414,7 @@ class GtPdfInvoiceData extends AppEquatable {
     this.account,
     this.subtotal,
     this.adjustments = const [],
+    this.note,
     this.payment,
     this.poweredBy,
     this.labels = const GtPdfInvoiceLabels(),
@@ -437,6 +452,7 @@ class GtPdfInvoiceData extends AppEquatable {
     subtotal,
     adjustments,
     total,
+    note,
     payment,
     poweredBy,
     labels,

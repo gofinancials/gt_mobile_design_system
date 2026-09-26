@@ -159,6 +159,7 @@ void main() {
         items: [item],
         total: '₦300,000',
         adjustments: [GtPdfReceiptEntry(label: 'Tax', value: '')],
+        note: '',
       );
 
       final bytes = await const GtPdfInvoiceBuilder().render(minimal);
@@ -189,6 +190,50 @@ void main() {
             ),
         ],
         total: '₦40,000',
+        payment: reference.payment,
+        poweredBy: reference.poweredBy,
+      );
+
+      final document = const GtPdfInvoiceBuilder().build(long);
+      await document.save();
+
+      expect(document.document.pdfPageList.pages.length, greaterThan(1));
+    });
+
+    test('runs a note past a full page on to the next', () async {
+      final noted = GtPdfInvoiceData(
+        number: reference.number,
+        status: reference.status,
+        details: reference.details,
+        billedTo: reference.billedTo,
+        from: reference.from,
+        account: reference.account,
+        items: reference.items,
+        subtotal: reference.subtotal,
+        total: reference.total,
+        note: 'Thank you for your business.',
+        payment: reference.payment,
+        poweredBy: reference.poweredBy,
+      );
+
+      final document = const GtPdfInvoiceBuilder().build(noted);
+      await document.save();
+
+      // The reference fills its page, so the note opens a second one.
+      expect(document.document.pdfPageList.pages, hasLength(2));
+    });
+
+    test('runs a long note on to further pages', () async {
+      final long = GtPdfInvoiceData(
+        number: reference.number,
+        billedTo: reference.billedTo,
+        from: reference.from,
+        items: const [item],
+        total: reference.total,
+        note: [
+          for (var line = 0; line < 120; line++)
+            'Term $line: goods remain the issuer\'s until paid in full.',
+        ].join('\n'),
         payment: reference.payment,
         poweredBy: reference.poweredBy,
       );
