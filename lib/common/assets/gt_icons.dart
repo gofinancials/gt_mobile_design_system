@@ -20,6 +20,7 @@ class GtIcons {
   static const userSolid = IconData(0xf110, fontFamily: _f, fontPackage: _p);
   static const spark = IconData(0xf112, fontFamily: _f, fontPackage: _p);
   static const shareSolid = IconData(0xf113, fontFamily: _f, fontPackage: _p);
+  static const send = IconData(0xf187, fontFamily: _f, fontPackage: _p);
   static const sendSolid = IconData(0xf114, fontFamily: _f, fontPackage: _p);
   static const search = IconData(0xf115, fontFamily: _f, fontPackage: _p);
   static const scan = IconData(0xf116, fontFamily: _f, fontPackage: _p);
@@ -995,6 +996,7 @@ class GtIcons {
     (label: 'scissorsCoupon', value: scissorsCoupon),
     (label: 'scribble', value: scribble),
     (label: 'search', value: search),
+    (label: 'send', value: send),
     (label: 'sendSolid', value: sendSolid),
     (label: 'shapes', value: shapes),
     (label: 'share', value: share),

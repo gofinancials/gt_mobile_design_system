@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:vector_graphics/vector_graphics.dart';
+import 'package:vector_graphics/vector_graphics_compat.dart';
 
 /// A widget for efficiently rendering scalable vector graphics (SVGs).
 ///
-/// This widget wraps the `vector_graphics` package for high-performance rendering.
+/// This widget wraps the `vector_graphics` package, rendering with its picture
+/// strategy so edges stay crisp at any size or scale.
+///
 /// It supports two primary modes: as a general-purpose scalable graphic, or as a
 /// semantically colored icon via [GtSvg.asIcon].
 class GtSvg extends GtStatelessWidget {
@@ -101,13 +103,18 @@ class GtSvg extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final graphic = VectorGraphic(
+    // The public `VectorGraphic` constructor forces the raster strategy, which
+    // caches a bitmap and rescales it with bilinear filtering, leaving edges
+    // jagged whenever the graphic is drawn at another size or under a scaling
+    // transform. The picture strategy replays the vector commands instead.
+    final graphic = createCompatVectorGraphic(
+      strategy: RenderingStrategy.picture,
       loader: path.vectorBytes(package),
       width: width,
       height: height,
       fit: fit,
       alignment: alignment,
-      placeholderBuilder: placeholderBuilder,
+      placeholderBuilder: placeholderBuilder ?? (_) => GtSpinner(),
       semanticsLabel: semanticsLabel,
       clipBehavior: Clip.antiAlias,
       colorFilter: _getColor(context),

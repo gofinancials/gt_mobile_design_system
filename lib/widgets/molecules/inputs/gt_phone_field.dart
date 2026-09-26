@@ -364,14 +364,12 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
                 spacing: context.spacingBase,
                 mainAxisSize: .min,
                 children: [
-                  ClipOval(
-                    child: GtNetworkImage(
-                      country.rasterFlagUrl,
-                      fit: .fill,
-                      width: size,
-                      height: size,
-                      isDecorative: true,
-                    ),
+                  GtSvg(
+                    country.circleSvgFlagUrl,
+                    fit: .cover,
+                    width: size,
+                    height: size,
+                    isDecorative: true,
                   ),
                   GtIcon(
                     GtIcons.chevronDown,

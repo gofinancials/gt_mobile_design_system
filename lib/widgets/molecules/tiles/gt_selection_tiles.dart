@@ -429,14 +429,12 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
       child: Row(
         spacing: context.spacingBase,
         children: [
-          ClipOval(
-            child: GtNetworkImage(
-              value.rasterFlagUrl,
-              width: size,
-              height: size,
-              fit: .cover,
-              isDecorative: true,
-            ),
+          GtSvg(
+            value.circleSvgFlagUrl,
+            fit: .cover,
+            width: size,
+            height: size,
+            isDecorative: true,
           ),
           Expanded(
             child: Text.rich(
