@@ -51,6 +51,7 @@ import 'package:gallery/atoms/spacers/gt_divider.dart'
     as _gallery_atoms_spacers_gt_divider;
 import 'package:gallery/atoms/spacers/gt_gap.dart'
     as _gallery_atoms_spacers_gt_gap;
+import 'package:gallery/atoms/theming.dart' as _gallery_atoms_theming;
 import 'package:gallery/atoms/typography/gt_editable_text.dart'
     as _gallery_atoms_typography_gt_editable_text;
 import 'package:gallery/atoms/typography/gt_rich_text.dart'
@@ -126,6 +127,8 @@ import 'package:gallery/molecules/inputs/gt_wheel_scroll_usecase.dart'
     as _gallery_molecules_inputs_gt_wheel_scroll_usecase;
 import 'package:gallery/molecules/media/gt_avatar.dart'
     as _gallery_molecules_media_gt_avatar;
+import 'package:gallery/molecules/media/gt_square_avatar.dart'
+    as _gallery_molecules_media_gt_square_avatar;
 import 'package:gallery/molecules/pills/gt_account_copy_pill_usecase.dart'
     as _gallery_molecules_pills_gt_account_copy_pill_usecase;
 import 'package:gallery/molecules/pills/gt_button_pill_usecase.dart'
@@ -288,6 +291,8 @@ import 'package:gallery/organisms/view_state/gt_view_state.dart'
     as _gallery_organisms_view_state_gt_view_state;
 import 'package:gallery/templates/dialogs/gt_confirm_dialog.dart'
     as _gallery_templates_dialogs_gt_confirm_dialog;
+import 'package:gallery/templates/documents/gt_pdf_invoice_usecase.dart'
+    as _gallery_templates_documents_gt_pdf_invoice_usecase;
 import 'package:gallery/templates/documents/gt_pdf_receipt_usecase.dart'
     as _gallery_templates_documents_gt_pdf_receipt_usecase;
 import 'package:gallery/templates/forms/gt_form_doc.dart'
@@ -304,6 +309,12 @@ import 'package:gallery/templates/forms/gt_virtual_keypad_form_with_avatar_doc.d
     as _gallery_templates_forms_gt_virtual_keypad_form_with_avatar_doc;
 import 'package:gallery/templates/forms/gt_virtual_keypad_form_with_avatar_usecase.dart'
     as _gallery_templates_forms_gt_virtual_keypad_form_with_avatar_usecase;
+import 'package:gallery/templates/list_views/gt_card_list_view_doc.dart'
+    as _gallery_templates_list_views_gt_card_list_view_doc;
+import 'package:gallery/templates/list_views/gt_card_list_view_usecase.dart'
+    as _gallery_templates_list_views_gt_card_list_view_usecase;
+import 'package:gallery/templates/list_views/gt_infinite_list_sliver_usecase.dart'
+    as _gallery_templates_list_views_gt_infinite_list_sliver_usecase;
 import 'package:gallery/templates/list_views/gt_infinite_list_view_doc.dart'
     as _gallery_templates_list_views_gt_infinite_list_view_doc;
 import 'package:gallery/templates/list_views/gt_infinite_list_view_usecase.dart'
@@ -332,6 +343,8 @@ import 'package:gallery/templates/scaffolds/gt_dashboard_scaffold.dart'
     as _gallery_templates_scaffolds_gt_dashboard_scaffold;
 import 'package:gallery/templates/scaffolds/gt_receipt_scaffold_usecase.dart'
     as _gallery_templates_scaffolds_gt_receipt_scaffold_usecase;
+import 'package:gallery/templates/scaffolds/gt_step_scaffold_usecase.dart'
+    as _gallery_templates_scaffolds_gt_step_scaffold_usecase;
 import 'package:gallery/templates/scaffolds/gt_summary_scaffold_usecase.dart'
     as _gallery_templates_scaffolds_gt_summary_scaffold_usecase;
 import 'package:gallery/templates/scaffolds/gt_transfer_detail_scaffold_usecase.dart'
@@ -380,12 +393,36 @@ final directories = <_widgetbook.WidgetbookNode>[
         name: 'documents',
         children: [
           _widgetbook.WidgetbookComponent(
+            name: 'GtPdfInvoiceExporter',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtPdfInvoiceExporter',
+                builder: _gallery_templates_documents_gt_pdf_invoice_usecase
+                    .playgroundGtPdfInvoiceExporterUseCase,
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookComponent(
             name: 'GtPdfReceiptExporter',
             useCases: [
               _widgetbook.WidgetbookUseCase(
                 name: 'GtPdfReceiptExporter',
                 builder: _gallery_templates_documents_gt_pdf_receipt_usecase
                     .playgroundGtPdfReceiptExporterUseCase,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _widgetbook.WidgetbookFolder(
+        name: 'providers',
+        children: [
+          _widgetbook.WidgetbookComponent(
+            name: 'GtThemedScope',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'Scoped Themes',
+                builder: _gallery_atoms_theming.playgroundGtThemedScopeUseCase,
               ),
             ],
           ),
@@ -1084,6 +1121,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtAvatar',
                     builder:
                         _gallery_molecules_media_gt_avatar.buildGtAvatarUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSquareAvatar',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSquareAvatar',
+                    builder: _gallery_molecules_media_gt_square_avatar
+                        .buildGtSquareAvatarUseCase,
                   ),
                 ],
               ),
@@ -2370,6 +2417,11 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder: _gallery_organisms_tab_bars_gt_tab_bar_usecase
                         .playgroundGtTabbarUseCase,
                   ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Relabelled Tabs',
+                    builder: _gallery_organisms_tab_bars_gt_tab_bar_usecase
+                        .playgroundRelabelledGtTabbarUseCase,
+                  ),
                 ],
               ),
               _widgetbook.WidgetbookComponent(
@@ -2541,6 +2593,33 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'list_views',
             children: [
               _widgetbook.WidgetbookComponent(
+                name: 'GtCardListView',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Documentation',
+                    builder: _gallery_templates_list_views_gt_card_list_view_doc
+                        .playgroundGtCardListViewDoc,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtCardListView',
+                    builder:
+                        _gallery_templates_list_views_gt_card_list_view_usecase
+                            .playgroundGtCardListViewUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtInfiniteListSliver',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtInfiniteListSliver',
+                    builder:
+                        _gallery_templates_list_views_gt_infinite_list_sliver_usecase
+                            .playgroundGtInfiniteListSliverUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtInfiniteListView',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(
@@ -2695,6 +2774,23 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _gallery_templates_scaffolds_gt_receipt_scaffold_usecase
                             .playgroundGtReceiptScaffoldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtStepScaffold',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtStepScaffold',
+                    builder:
+                        _gallery_templates_scaffolds_gt_step_scaffold_usecase
+                            .playgroundGtStepScaffoldUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtStepScaffold Gallery',
+                    builder:
+                        _gallery_templates_scaffolds_gt_step_scaffold_usecase
+                            .playgroundGtStepScaffoldGalleryUseCase,
                   ),
                 ],
               ),

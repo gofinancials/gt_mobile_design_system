@@ -44,8 +44,7 @@ class _GtPressableState extends State<GtPressable> {
 
   @override
   Widget build(BuildContext context) {
-    final reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ?? false;
+    final reduceMotion = context.reduceMotion;
 
     return Listener(
       onPointerDown: (_) => _setPressed(true),

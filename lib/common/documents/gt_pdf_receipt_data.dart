@@ -4,6 +4,25 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/documents.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// Slugs [source] into a file name for an exported PDF, always suffixed with
+/// `.pdf`.
+///
+/// Letters, digits, dots, underscores and hyphens are kept as they were
+/// written, while every other run of characters collapses to a single
+/// underscore and any separator left at either edge is dropped. A `.pdf` the
+/// caller already wrote is not slugged into the name, and a source with
+/// nothing usable left falls back to [fallback].
+String gtPdfFileName(String source, {String fallback = 'receipt'}) {
+  final base = source.trim().replaceAll(
+    RegExp(r'\.pdf$', caseSensitive: false),
+    '',
+  );
+  final slug = base.replaceAll(RegExp(r'[^A-Za-z0-9._-]+'), '_');
+  final trimmed = slug.replaceAll(RegExp(r'^[._-]+|[._-]+$'), '');
+  final name = trimmed.hasValue ? trimmed : fallback;
+  return '$name.pdf';
+}
+
 /// A single label/value pair within a [GtPdfReceiptSection].
 ///
 /// Values are never formatted here. As everywhere else in the design system,
@@ -292,15 +311,7 @@ class GtPdfReceiptData extends AppEquatable {
   /// as a derived one, so no app has to pre-slug a reference of its own; a
   /// `.pdf` the caller already wrote is not slugged into the name.
   String get resolvedFileName {
-    final source = fileName.hasValue ? fileName! : title;
-    final base = source.trim().replaceAll(
-      RegExp(r'\.pdf$', caseSensitive: false),
-      '',
-    );
-    final slug = base.replaceAll(RegExp(r'[^A-Za-z0-9._-]+'), '_');
-    final trimmed = slug.replaceAll(RegExp(r'^[._-]+|[._-]+$'), '');
-    final name = trimmed.hasValue ? trimmed : 'receipt';
-    return '$name.pdf';
+    return gtPdfFileName(fileName.hasValue ? fileName! : title);
   }
 
   @override

@@ -53,7 +53,7 @@ class GtIcons {
   static const checkSolid = IconData(0xf124, fontFamily: _f, fontPackage: _p);
   static const cautionSolid = IconData(0xf109, fontFamily: _f, fontPackage: _p);
   static const cancel = IconData(0xf126, fontFamily: _f, fontPackage: _p);
-  static const add = IconData(0xf127, fontFamily: _f, fontPackage: _p);
+  static const add = IconData(0xf024, fontFamily: _f, fontPackage: _p);
 
   /// ---------------------------------------------------------------------------
   /// CREDIT CARD ICONS

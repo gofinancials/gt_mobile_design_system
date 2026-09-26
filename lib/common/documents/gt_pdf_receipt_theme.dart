@@ -10,7 +10,8 @@ import 'package:pdf/widgets.dart' as pw;
 PdfColor gtPdfColorOf(Color color) => PdfColor.fromInt(color.toARGB32());
 
 /// The typography, colour and page geometry applied to a
-/// [GtPdfReceiptData] by [GtPdfReceiptBuilder].
+/// [GtPdfReceiptData] by [GtPdfReceiptBuilder], and to a [GtPdfInvoiceData] by
+/// [GtPdfInvoiceBuilder].
 ///
 /// Kept separate from the receipt content so the same data can be rendered
 /// against a light default, an institution's own colours, or the live app
@@ -39,7 +40,14 @@ class GtPdfReceiptTheme {
   /// The colour of the hairlines separating sections.
   final PdfColor divider;
 
-  /// The colour of the built-in brand mark drawn when no logo is supplied.
+  /// The colour of the faintest copy, such as an invoice's detail labels.
+  final PdfColor textDisabled;
+
+  /// The fill of the band an invoice closes on.
+  final PdfColor band;
+
+  /// The brand colour: the receipt's built-in mark when no logo is supplied,
+  /// and the accent picking out an invoice's account number and subtotal.
   final PdfColor brand;
 
   /// The colour of the cut-out inside the built-in brand mark.
@@ -88,6 +96,8 @@ class GtPdfReceiptTheme {
     this.textSub = const PdfColor.fromInt(0xFF666666),
     this.textSoft = const PdfColor.fromInt(0xFF808080),
     this.divider = const PdfColor.fromInt(0xFF000000),
+    this.textDisabled = const PdfColor.fromInt(0xFFA3A3A3),
+    this.band = const PdfColor.fromInt(0xFFF7F7F7),
     this.brand = const PdfColor.fromInt(0xFFCB0828),
     this.brandAccent = PdfColors.white,
     this.titleSize = 16,
@@ -122,6 +132,8 @@ class GtPdfReceiptTheme {
       textSub: gtPdfColorOf(palette.text.sub),
       textSoft: gtPdfColorOf(palette.text.soft),
       divider: gtPdfColorOf(palette.stroke.strong),
+      textDisabled: gtPdfColorOf(palette.text.disabled),
+      band: gtPdfColorOf(palette.bg.weak),
       brand: gtPdfColorOf(palette.primary.base),
       brandAccent: gtPdfColorOf(palette.text.white),
       pageFormat: pageFormat,
@@ -207,6 +219,8 @@ class GtPdfReceiptTheme {
     PdfColor? textSub,
     PdfColor? textSoft,
     PdfColor? divider,
+    PdfColor? textDisabled,
+    PdfColor? band,
     PdfColor? brand,
     PdfColor? brandAccent,
     double? titleSize,
@@ -228,6 +242,8 @@ class GtPdfReceiptTheme {
       textSub: textSub ?? this.textSub,
       textSoft: textSoft ?? this.textSoft,
       divider: divider ?? this.divider,
+      textDisabled: textDisabled ?? this.textDisabled,
+      band: band ?? this.band,
       brand: brand ?? this.brand,
       brandAccent: brandAccent ?? this.brandAccent,
       titleSize: titleSize ?? this.titleSize,

@@ -20,39 +20,36 @@ class GtTooltip extends GtOverlay {
       if (_entry != null || _inserted) return;
       super.closeExistingOverlays();
 
-      _entry = OverlayEntry(
-        opaque: false,
-        builder: (context) {
-          final pos = anchorContext.overlayPosition(context);
-          return GestureDetector(
-            onTap: close,
-            // A dismiss scrim rather than a control; the tooltip carries its
-            // own close action.
-            excludeFromSemantics: true,
-            child: Semantics(
-              // A tooltip is a new context laid over the page. Without route
-              // semantics it appears with no announcement and the user's
-              // focus stays behind it.
-              scopesRoute: true,
-              namesRoute: true,
-              explicitChildNodes: true,
-              label: title,
-              child: Material(
-                color: context.palette.bg.strong.setOpacity(0.17),
-                child: GtTooltipWidget(
-                  title,
-                  message: message,
-                  anchorPosition: pos.anchorPosition,
-                  anchorRect: pos.anchorRect,
-                  onClose: close,
-                  anchorWidget: anchorWidget,
-                  overlayBoxConstraints: pos.overlayBoxConstraints,
-                ),
+      _entry = buildEntry((context) {
+        final pos = anchorContext.overlayPosition(context);
+        return GestureDetector(
+          onTap: close,
+          // A dismiss scrim rather than a control; the tooltip carries its
+          // own close action.
+          excludeFromSemantics: true,
+          child: Semantics(
+            // A tooltip is a new context laid over the page. Without route
+            // semantics it appears with no announcement and the user's
+            // focus stays behind it.
+            scopesRoute: true,
+            namesRoute: true,
+            explicitChildNodes: true,
+            label: title,
+            child: Material(
+              color: context.palette.bg.strong.setOpacity(0.17),
+              child: GtTooltipWidget(
+                title,
+                message: message,
+                anchorPosition: pos.anchorPosition,
+                anchorRect: pos.anchorRect,
+                onClose: close,
+                anchorWidget: anchorWidget,
+                overlayBoxConstraints: pos.overlayBoxConstraints,
               ),
             ),
-          );
-        },
-      );
+          ),
+        );
+      });
       _inserted = true;
       super.present(entry: _entry!, instance: this);
     }, onError: close);

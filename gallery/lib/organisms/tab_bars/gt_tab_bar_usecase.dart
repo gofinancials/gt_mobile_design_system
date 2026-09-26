@@ -19,6 +19,11 @@ Widget playgroundLazyGtTabbarViewUseCase(BuildContext context) {
   return const _TabbarViewPlayground(lazy: true);
 }
 
+@widgetbook.UseCase(name: 'Relabelled Tabs', type: GtTabbar)
+Widget playgroundRelabelledGtTabbarUseCase(BuildContext context) {
+  return const _RelabelPlayground();
+}
+
 class _TabbarPlayground extends GtStatefulWidget {
   const _TabbarPlayground();
 
@@ -206,4 +211,103 @@ GtTabbarView<String>.lazy(
     'activity': (_) => const ActivityPage(),
     'settings': (_) => const SettingsPage(),
   },
+)''';
+
+class _RelabelPlayground extends GtStatefulWidget {
+  const _RelabelPlayground();
+
+  @override
+  State<_RelabelPlayground> createState() => _RelabelPlaygroundState();
+}
+
+class _RelabelPlaygroundState extends State<_RelabelPlayground> {
+  static const _personalTabs = [
+    GtTabData(label: 'Pay', value: 'pay'),
+    GtTabData(label: 'Schedule', value: 'schedule'),
+    GtTabData(label: 'History', value: 'history'),
+  ];
+
+  static const _flexTabs = [
+    GtTabData(label: 'Send', value: 'pay'),
+    GtTabData(label: 'Schedule', value: 'schedule'),
+    GtTabData(label: 'History', value: 'history'),
+  ];
+
+  late final GtTabController<String> _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = GtTabController<String>(initialValue: _personalTabs.first);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isFlex = context.knobs.boolean(
+      label: 'Flex Account',
+      initialValue: false,
+    );
+    final tabs = isFlex ? _flexTabs : _personalTabs;
+
+    return GtWidgetDocPage(
+      title: 'Relabelled Tabs',
+      description:
+          'Switch account family to relabel the first pill in place. The '
+          'selection, the indicator and the page below all stay put, and the '
+          'header reads the new label back off the controller.',
+      code: _relabelCode,
+      child: AspectRatio(
+        aspectRatio: 3 / 2,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ListenableBuilder(
+              listenable: _controller,
+              builder: (context, _) => GtText(
+                'Selected: ${_controller.value?.label} '
+                '(${_controller.value?.value})',
+                style: context.textStyles.subHeadS(),
+              ),
+            ),
+            const GtGap.yMd(),
+            GtTabbar<String>(controller: _controller, tabs: tabs),
+            const GtGap.yMd(),
+            Expanded(
+              child: GtTabbarView<String>(
+                controller: _controller,
+                tabs: tabs,
+                tabViews: {
+                  for (final tab in tabs)
+                    tab.value: _TabViewContent(label: tab.label),
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+const _relabelCode = '''
+// The same tabs, drawn differently per account family.
+const personalTabs = [
+  GtTabData(label: 'Pay', value: 'pay'),
+  GtTabData(label: 'Schedule', value: 'schedule'),
+];
+const flexTabs = [
+  GtTabData(label: 'Send', value: 'pay'),
+  GtTabData(label: 'Schedule', value: 'schedule'),
+];
+
+// Tabs are identified by `value`, so swapping the list keeps the selection.
+GtTabbar<String>(
+  controller: tabController,
+  tabs: isFlex ? flexTabs : personalTabs,
 )''';

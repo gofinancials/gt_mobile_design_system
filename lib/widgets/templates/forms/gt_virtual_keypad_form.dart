@@ -32,6 +32,9 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
   /// The avatar image displayed above the user's name in [GtVirtualKeypadForm.withAvatar].
   final AppImageData? _avatar;
 
+  /// Optional initials in avatar widget,
+  final String? initials;
+
   /// An optional question-and-action button displayed below the header/avatar section and above the input dots.
   final GtQuestionTextButton? headerQuestionButton;
 
@@ -94,6 +97,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
   }) : _subtitle = subtitle,
        _onBioAuth = onBioAuth,
        headerQuestionButton = null,
+       initials = null,
        _avatar = null;
 
   /// Creates a virtual keypad form customized for user authentication.
@@ -121,6 +125,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.inactiveColor,
     this.clearErrorOnEdit = true,
     this.headerQuestionButton,
+    this.initials,
   }) : _subtitle = null,
        _onBioAuth = onBioAuth,
        title = name,
@@ -208,7 +213,8 @@ class _GtVirtualKeypadFormState extends State<GtVirtualKeypadForm> {
                 GtAvatar(
                   avatar: widget.avatar,
                   size: context.dp(64.px),
-                  isUserAvatar: true,
+                  isUserAvatar: !widget.initials.hasValue,
+                  initials: widget.initials,
                 ),
                 const GtGap.ySectionSm(),
                 GtText(
