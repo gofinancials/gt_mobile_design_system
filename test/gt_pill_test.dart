@@ -109,4 +109,91 @@ void main() {
       findsOneWidget,
     );
   });
+
+  group('GtPill border', () {
+    BoxDecoration decorationOf(WidgetTester tester) {
+      final container = tester.widget<AnimatedContainer>(
+        find.descendant(
+          of: find.byType(GtPill),
+          matching: find.byType(AnimatedContainer),
+        ),
+      );
+      return container.decoration! as BoxDecoration;
+    }
+
+    Widget pill({Color? borderColor}) => GtPill(
+      text: '50% faster',
+      variant: .primary,
+      bgColor: const Color(0x3D00A19A),
+      borderColor: borderColor,
+    );
+
+    testWidgets('is transparent when no border color is given', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_PillTestApp(child: pill()));
+
+      final border = decorationOf(tester).border! as Border;
+      expect(border.top.color, GtColors.transparent.value);
+    });
+
+    testWidgets('keeps the pill size whether or not a color is given', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_PillTestApp(child: pill()));
+      final withoutColor = tester.getSize(find.byType(AnimatedContainer));
+
+      await tester.pumpWidget(
+        _PillTestApp(child: pill(borderColor: const Color(0xFF00A19A))),
+      );
+      final withColor = tester.getSize(find.byType(AnimatedContainer));
+
+      expect(withoutColor, withColor);
+    });
+  });
+
+  group('GtPill spacing', () {
+    const iconKey = Key('icon');
+    const trailingKey = Key('trailing');
+
+    Future<(double, double)> pumpGaps(
+      WidgetTester tester, {
+      double? spacingPx,
+    }) async {
+      await tester.pumpWidget(
+        _PillTestApp(
+          child: GtPill(
+            text: 'Label',
+            variant: .primary,
+            bgColor: const Color(0xFFFFFFFF),
+            icon: const SizedBox.square(key: iconKey, dimension: 12),
+            trailing: const SizedBox.square(key: trailingKey, dimension: 12),
+            spacingPx: spacingPx,
+          ),
+        ),
+      );
+      final text = find.byType(GtText);
+      return (
+        tester.getTopLeft(text).dx -
+            tester.getTopRight(find.byKey(iconKey)).dx,
+        tester.getTopLeft(find.byKey(trailingKey)).dx -
+            tester.getTopRight(text).dx,
+      );
+    }
+
+    testWidgets('defaults to the small spacing', (tester) async {
+      final (leading, trailing) = await pumpGaps(tester);
+      final context = tester.element(find.byType(GtPill));
+
+      expect(leading, context.spacing.sm);
+      expect(trailing, context.spacing.sm);
+    });
+
+    testWidgets('places the icon and trailing flush at zero', (tester) async {
+      final (leading, trailing) = await pumpGaps(tester, spacingPx: 0);
+
+      expect(leading, 0);
+      expect(trailing, 0);
+    });
+  });
 }
