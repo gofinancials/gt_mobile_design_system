@@ -1243,6 +1243,9 @@ base class GtLightPalette extends GtPalette {
                lighter: GtColors.teal50.value,
              ),
        );
+
+  /// Light mode primary ink color
+  Color get opPrimaryInk => primary.darker;
 }
 
 /// Base class for Dark mode palettes providing standard default color definitions.
@@ -1445,4 +1448,7 @@ base class GtDarkPalette extends GtPalette {
 
   @override
   GtPaletteRawColors get raw => const GtPaletteRawColors.dark();
+
+  /// Dark mode primary ink color
+  Color get opPrimaryInk => primary.base;
 }
