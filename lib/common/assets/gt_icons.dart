@@ -586,6 +586,13 @@ class GtIcons {
   static const delete = IconData(0xf129, fontFamily: _f, fontPackage: _p);
   static const faceId = IconData(0xf128, fontFamily: _f, fontPackage: _p);
 
+  /// The biometric glyph a user on [platform] most likely recognises: Face ID
+  /// on iOS, and a fingerprint on every other platform.
+  static IconData biometricFor(TargetPlatform platform) => switch (platform) {
+    .iOS => faceId,
+    _ => fingerprint,
+  };
+
   static const temple = IconData(0xf12c, fontFamily: _f, fontPackage: _p);
   static const childHead = IconData(0xf146, fontFamily: _f, fontPackage: _p);
   static const verifiedUsers = IconData(

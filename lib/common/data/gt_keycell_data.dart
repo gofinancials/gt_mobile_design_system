@@ -6,7 +6,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// This class encapsulates the value and optional icon for each button
 /// displayed in the [GtKeyPadGrid].
 class GtKeyCellData {
-  /// An optional icon to display on the key (e.g., backspace, biometric icon).
+  /// An optional icon to display on the key (e.g., backspace).
+  ///
+  /// The biometric key carries none: [GtKeyCell] draws its `bioIcon`, or
+  /// [GtIcons.biometricFor] the current platform.
   final IconData? icon;
 
   /// The underlying string value associated with this key.
@@ -26,7 +29,7 @@ class GtKeyCellData {
       [GtKeyCellData._('4'), GtKeyCellData._('5'), GtKeyCellData._('6')],
       [GtKeyCellData._('7'), GtKeyCellData._('8'), GtKeyCellData._('9')],
       [
-        GtKeyCellData._('bio', icon: GtIcons.faceId),
+        GtKeyCellData._('bio'),
         GtKeyCellData._('0'),
         GtKeyCellData._('x', icon: GtIcons.delete),
       ],

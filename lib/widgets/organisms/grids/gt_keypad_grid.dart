@@ -17,6 +17,12 @@ class GtKeyPadGrid extends GtStatefulWidget {
   /// If this is null, the biometric button in the grid will be hidden.
   final OnPressed? onBioAuth;
 
+  /// The glyph drawn on the biometric key.
+  ///
+  /// Defaults to [GtIcons.biometricFor] the current platform: Face ID on iOS,
+  /// a fingerprint elsewhere. Pass one to follow the device's actual sensor.
+  final IconData? bioIcon;
+
   /// The maximum number of characters allowed in the input.
   final int limit;
 
@@ -46,6 +52,7 @@ class GtKeyPadGrid extends GtStatefulWidget {
     required this.controller,
     required this.limit,
     this.onBioAuth,
+    this.bioIcon,
     this.alignment = Alignment.center,
     super.key,
     this.onChanged,
@@ -107,6 +114,7 @@ class _GtKeyPadGridState extends State<GtKeyPadGrid> {
                     data: keyRow[index],
                     onSelected: _updateValue,
                     onBioAuth: onBioAuth,
+                    bioIcon: widget.bioIcon,
                     enableScaleEffect: widget.enableScaleEffect,
                     pressedScale: widget.pressedScale,
                     keyHapticFeedbackType: widget.keyHapticFeedbackType,
@@ -137,6 +145,11 @@ class GtKeyCell extends GtStatelessWidget {
   /// Callback invoked when a biometric key is tapped.
   final OnPressed? onBioAuth;
 
+  /// The glyph drawn on the biometric key.
+  ///
+  /// Defaults to [GtIcons.biometricFor] the current platform.
+  final IconData? bioIcon;
+
   /// Whether the key scales down while pressed.
   final bool enableScaleEffect;
 
@@ -154,6 +167,7 @@ class GtKeyCell extends GtStatelessWidget {
     required this.data,
     required this.onSelected,
     this.onBioAuth,
+    this.bioIcon,
     this.enableScaleEffect = true,
     this.pressedScale = GtMotion.buttonPressScale,
     this.keyHapticFeedbackType = .light,
@@ -179,7 +193,8 @@ class GtKeyCell extends GtStatelessWidget {
     );
 
     if (data.value == "bio" && onBioAuth != null) {
-      child = GtIcon(data.icon ?? GtIcons.faceId, size: 32, variant: .soft);
+      final icon = bioIcon ?? GtIcons.biometricFor(Theme.of(context).platform);
+      child = GtIcon(icon, size: 32, variant: .soft);
     }
 
     if (data.value == 'x') {

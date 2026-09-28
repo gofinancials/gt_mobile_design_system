@@ -23,6 +23,11 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
   /// Optional callback invoked when the biometric authentication button is tapped.
   final OnPressed? _onBioAuth;
 
+  /// The glyph drawn on the keypad's biometric key.
+  ///
+  /// Defaults to [GtIcons.biometricFor] the current platform.
+  final IconData? bioIcon;
+
   /// Controls the text being edited by the virtual keypad.
   final TextEditingController controller;
 
@@ -94,6 +99,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.inactiveColor,
     this.clearErrorOnEdit = true,
     OnPressed? onBioAuth,
+    this.bioIcon,
   }) : _subtitle = subtitle,
        _onBioAuth = onBioAuth,
        headerQuestionButton = null,
@@ -113,6 +119,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.helperText,
     this.errorText,
     OnPressed? onBioAuth,
+    this.bioIcon,
     AppImageData? avatar,
     this.validator,
     required this.formKey,
@@ -246,6 +253,7 @@ class _GtVirtualKeypadFormState extends State<GtVirtualKeypadForm> {
                   controller: widget.controller,
                   limit: widget.maxLength,
                   onBioAuth: widget.onBioAuth,
+                  bioIcon: widget.bioIcon,
                   onChanged: widget.onChanged,
                   onCompleted: widget.onCompleted,
                 ),

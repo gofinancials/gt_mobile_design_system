@@ -10,6 +10,15 @@ Widget gtKeypadGridUseCase(BuildContext context) {
     label: 'Enable Scale Effect',
     initialValue: true,
   );
+  final bioIcon = context.knobs.object.dropdown<String>(
+    label: 'Bio Icon',
+    options: ['platform', 'faceId', 'fingerprint'],
+  );
+  final bioIconData = switch (bioIcon) {
+    'faceId' => GtIcons.faceId,
+    'fingerprint' => GtIcons.fingerprint,
+    _ => null,
+  };
 
   return GtWidgetDocPage(
     title: "Keypad Grid",
@@ -20,12 +29,13 @@ GtKeyPadGrid(
   controller: TextEditingController(),
   limit: 4,
   enableScaleEffect: $enableScaleEffect,
-  onBioAuth: () {},
+  onBioAuth: () {},${bioIconData == null ? '' : '\n  bioIcon: GtIcons.$bioIcon,'}
 )
 ''',
     child: GtKeyPadGrid(
       controller: TextEditingController(),
       enableScaleEffect: enableScaleEffect,
+      bioIcon: bioIconData,
       limit: context.knobs.int.slider(
         label: 'Limit',
         initialValue: 4,

@@ -257,11 +257,11 @@ void main() {
         );
 
         final green = paletteOf(tester).success.base;
-        expect(
-          connectorColors(tester),
-          [green, green, null],
-          reason: 'expected a green track ending in ${outcome.name}',
-        );
+        expect(connectorColors(tester), [
+          green,
+          green,
+          null,
+        ], reason: 'expected a green track ending in ${outcome.name}');
       }
     });
   });
