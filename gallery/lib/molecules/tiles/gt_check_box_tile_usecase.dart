@@ -24,6 +24,19 @@ Widget playgroundGtCheckBoxTileUseCase(BuildContext context) {
     initialOption: GtCheckBoxShape.square,
     labelBuilder: (s) => s.name,
   );
+  final position = context.knobs.object.dropdown<GtIndicatorPosition>(
+    label: 'Indicator position',
+    options: GtIndicatorPosition.values,
+    initialOption: GtIndicatorPosition.trailing,
+    labelBuilder: (p) => p.name,
+  );
+  final spacingPx = context.knobs.double.slider(
+    label: 'Spacing (px)',
+    initialValue: 16,
+    min: 0,
+    max: 32,
+    divisions: 8,
+  );
   final hasIcon = context.knobs.boolean(label: 'Has Icon', initialValue: true);
   final leading = hasIcon ? const GtIcon(GtIcons.bell) : null;
 
@@ -40,6 +53,8 @@ GtCheckBoxTile<String>(
   onChanged: (value) {},
   disabled: $disabled,
   shape: GtCheckBoxShape.${shape.name},
+  indicatorPosition: GtIndicatorPosition.${position.name},
+  spacingPx: $spacingPx,
   ${hasIcon ? 'leading: GtIcon(GtIcons.bell),' : ''}
   subtitle: "Get alerts for incoming transfers.",
 )''',
@@ -56,6 +71,8 @@ GtCheckBoxTile<String>(
             onChanged: (val) {},
             disabled: disabled,
             shape: shape,
+            indicatorPosition: position,
+            spacingPx: spacingPx,
             leading: leading,
             subtitle: subtitle.isEmpty ? null : subtitle,
           ),

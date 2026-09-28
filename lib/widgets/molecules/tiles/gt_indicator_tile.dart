@@ -2,6 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// Where an indicator tile places its indicator (checkbox, radio, switch)
+/// relative to the title.
+enum GtIndicatorPosition {
+  /// Before the title, at the start of the row.
+  leading,
+
+  /// After the title, at the end of the row.
+  trailing,
+}
+
 /// A foundational tile component often used alongside indicators (e.g.,
 /// checkboxes, switches, radios). It provides a standardized layout for titles,
 /// subtitles, and icons.
@@ -33,6 +43,13 @@ class GtIndicatorTile extends GtStatelessWidget {
   /// Custom padding to apply to the tile.
   final EdgeInsetsGeometry? padding;
 
+  /// Horizontal gap between [icon], the title and [trailing], in **design
+  /// pixels**.
+  ///
+  /// When `null`, uses [BuildContext.spacingLg] (~16dp). Otherwise passed
+  /// through [BuildContext.dp] via [num.px].
+  final double? spacingPx;
+
   /// Creates a [GtIndicatorTile].
   const GtIndicatorTile(
     this.title, {
@@ -45,12 +62,15 @@ class GtIndicatorTile extends GtStatelessWidget {
     this.titleStyle,
     this.subtitleStyle,
     this.padding,
+    this.spacingPx,
   });
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
     final textStyles = context.textStyles;
+    final gapPx = spacingPx;
+    final spacing = gapPx == null ? context.spacingLg : context.dp(gapPx.px);
 
     final text = GtText(
       title,
@@ -90,7 +110,7 @@ class GtIndicatorTile extends GtStatelessWidget {
             false => CrossAxisAlignment.start,
             _ => CrossAxisAlignment.center,
           },
-          spacing: context.spacingLg,
+          spacing: spacing,
           children: [
             ?icon,
             Expanded(child: leading),
