@@ -128,9 +128,7 @@ void main() {
       borderColor: borderColor,
     );
 
-    testWidgets('is transparent when no border color is given', (
-      tester,
-    ) async {
+    testWidgets('is transparent when no border color is given', (tester) async {
       await tester.pumpWidget(_PillTestApp(child: pill()));
 
       final border = decorationOf(tester).border! as Border;
@@ -174,8 +172,7 @@ void main() {
       );
       final text = find.byType(GtText);
       return (
-        tester.getTopLeft(text).dx -
-            tester.getTopRight(find.byKey(iconKey)).dx,
+        tester.getTopLeft(text).dx - tester.getTopRight(find.byKey(iconKey)).dx,
         tester.getTopLeft(find.byKey(trailingKey)).dx -
             tester.getTopRight(text).dx,
       );
