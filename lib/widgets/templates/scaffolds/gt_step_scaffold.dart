@@ -21,6 +21,12 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///   `clockwise: false`, so it reads as a segment count rather than a loader.
 /// - The action is pinned in a [GtButtonBottomNavBar] rather than trailing the
 ///   body, so it holds its place as the body grows.
+/// - That bar is the scaffold's [Scaffold.bottomSheet], which rides above the
+///   keyboard, rather than its [Scaffold.bottomNavigationBar], which the
+///   keyboard covers. The iOS number pad has no return key, so a bar beneath
+///   it would leave a customer who has typed into a field with no way to
+///   continue. The body then ends with room for the bar, so its last field
+///   scrolls clear of it.
 /// - The body scrolls beneath a fixed header, and the header-to-body gap is
 ///   stated once here rather than redrawn per screen.
 ///
@@ -55,10 +61,11 @@ class GtStepScaffold extends GtStatelessWidget {
 
   /// An optional action pinned to the foot of the screen.
   ///
-  /// Rendered inside a [GtButtonBottomNavBar], so it holds its place while the
-  /// body scrolls. Null leaves the scaffold without a bottom bar, which is what
-  /// a step whose rows are themselves the action — a list of chevron cards —
-  /// wants.
+  /// Rendered inside a [GtButtonBottomNavBar] placed as the scaffold's
+  /// [Scaffold.bottomSheet], so it holds its place while the body scrolls and
+  /// stays above the keyboard while a field is focused. Null leaves the
+  /// scaffold without a bottom bar, which is what a step whose rows are
+  /// themselves the action — a list of chevron cards — wants.
   final Widget? bottomAction;
 
   /// How far through the journey this step sits, from `0` to `1`.
@@ -155,11 +162,16 @@ class GtStepScaffold extends GtStatelessWidget {
     }
 
     Widget? bottomBar;
+    List<Widget> trailingSpace = const [GtGap.ySectionSm()];
     if (bottomAction case final action?) {
       bottomBar = GtButtonBottomNavBar(
         key: const Key('step-bottom-bar'),
         button: action,
       );
+
+      // A bottom sheet overlays the body rather than shrinking it, so the body
+      // ends with room for the bar, clearing it with or without the keyboard.
+      trailingSpace = const GtGap.ySection4xl() * 2;
     }
 
     final gapPx = bodySpacingPx;
@@ -173,7 +185,7 @@ class GtStepScaffold extends GtStatelessWidget {
         implyLeading: false,
         trailing: .new(tail: trailing),
       ),
-      bottomNavigationBar: bottomBar,
+      bottomSheet: bottomBar,
       body: GtScrollableBody(
         child: Column(
           crossAxisAlignment: .stretch,
@@ -181,7 +193,7 @@ class GtStepScaffold extends GtStatelessWidget {
           children: [
             GtPageHeader(title: title, subtitle: subtitle),
             body,
-            const GtGap.ySectionSm(),
+            ...trailingSpace,
           ],
         ),
       ),
