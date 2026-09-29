@@ -1,56 +1,114 @@
 import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtInfiniteListView', type: GtInfiniteListView)
 Widget playgroundGtInfiniteListViewUseCase(BuildContext context) {
-  final items = List.generate(
-    10,
-    (i) => _SampleItem(
-      id: '$i',
-      name: 'Transaction ${i + 1}',
-      amount: (i + 1) * 1000,
-    ),
-  );
-
   return GtWidgetDocPage(
     title: 'GtInfiniteListView',
     description:
-        'A layout template providing pull-to-refresh and automatic pagination triggers for lists.',
-    child: GtSizedBox(
-      height: 400,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: ListView.separated(
-              itemCount: items.length,
-              separatorBuilder: (_, _) => const GtGap.ySm(),
-              itemBuilder: (_, i) {
-                final item = items[i];
-                return GtTransactionListTile(
-                  item.name,
-                  subtitle: 'Ref: TXN-${item.id.padLeft(6, '0')}',
-                  amount: item.amount,
-                  isDebit: i.isEven,
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    ),
+        'A layout template providing pull-to-refresh and automatic pagination triggers for lists. Scroll to the bottom to load the next page.',
+    child: const GtSizedBox(height: 480, child: _InfiniteListDemo()),
   );
 }
 
-class _SampleItem {
-  final String id;
+/// A list paginated over a fake page source, so the scroll-end trigger, the
+/// footer and pull-to-refresh can all be exercised in the gallery.
+class _InfiniteListDemo extends StatefulWidget {
+  const _InfiniteListDemo();
+
+  @override
+  State<_InfiniteListDemo> createState() => _InfiniteListDemoState();
+}
+
+class _InfiniteListDemoState extends State<_InfiniteListDemo> {
+  final _controller = ScrollController();
+  final _notifier = PaginatedDataNotifier<_SampleItem>(
+    _SampleItem.page(1),
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _notifier.dispose();
+    super.dispose();
+  }
+
+  /// Appends the next page, then nudges the scroll position into it.
+  Future<void> _loadMore(OnPressed nudge) async {
+    final current = _notifier.value;
+    _notifier.setLoading();
+    await Future<void>.delayed(const Duration(milliseconds: 900));
+    _notifier.value = current.addData(_SampleItem.page(current.next));
+    nudge();
+  }
+
+  /// Drops back to the first page.
+  Future<void> _refresh() async {
+    _notifier.setLoading();
+    await Future<void>.delayed(const Duration(milliseconds: 900));
+    _notifier.value = _SampleItem.page(1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: _notifier,
+      builder: (context, data, _) {
+        return GtInfiniteListView<_SampleItem>(
+          data: data,
+          controller: _controller,
+          onScrollEnd: _loadMore,
+          onRefresh: _refresh,
+          child: GtCardListView<_SampleItem>(
+            items: data.data,
+            controller: _controller,
+            itemKey: (item) => ValueKey(item.uuid),
+            itemBuilder: (context, item, index) => GtTransactionListTile(
+              item.name,
+              subtitle: 'Ref: TXN-${item.uuid.padLeft(6, '0')}',
+              amount: item.amount,
+              isDebit: index.isEven,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// A sample row, identified by its uuid so pagination can key off it.
+class _SampleItem extends Identifiable {
   final String name;
   final int amount;
+
   const _SampleItem({
-    required this.id,
+    required super.uuid,
     required this.name,
     required this.amount,
   });
+
+  /// Builds one page of ten sample rows, out of five pages in total.
+  static PaginatedData<_SampleItem> page(int page) {
+    final offset = (page - 1) * 10;
+    return PaginatedData(
+      page: page,
+      pages: 5,
+      limit: 10,
+      updatedAt: DateTime.now(),
+      data: List.generate(10, (i) {
+        final index = offset + i;
+        return _SampleItem(
+          uuid: '$index',
+          name: 'Transaction ${index + 1}',
+          amount: (index + 1) * 1000,
+        );
+      }),
+    );
+  }
+
+  @override
+  List<Object?> get props => [uuid, name, amount];
 }

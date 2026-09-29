@@ -81,7 +81,7 @@ class _GtUrlFieldState extends State<GtUrlField> {
         widget.controller.text = text.value;
       },
     );
-    
+
     String? urlValidator(text) => AppValidators.urlValidator(
       text,
       isRequired: widget.isRequired,

@@ -20,6 +20,7 @@ class GtIcons {
   static const userSolid = IconData(0xf110, fontFamily: _f, fontPackage: _p);
   static const spark = IconData(0xf112, fontFamily: _f, fontPackage: _p);
   static const shareSolid = IconData(0xf113, fontFamily: _f, fontPackage: _p);
+  static const send = IconData(0xf187, fontFamily: _f, fontPackage: _p);
   static const sendSolid = IconData(0xf114, fontFamily: _f, fontPackage: _p);
   static const search = IconData(0xf115, fontFamily: _f, fontPackage: _p);
   static const scan = IconData(0xf116, fontFamily: _f, fontPackage: _p);
@@ -53,7 +54,7 @@ class GtIcons {
   static const checkSolid = IconData(0xf124, fontFamily: _f, fontPackage: _p);
   static const cautionSolid = IconData(0xf109, fontFamily: _f, fontPackage: _p);
   static const cancel = IconData(0xf126, fontFamily: _f, fontPackage: _p);
-  static const add = IconData(0xf127, fontFamily: _f, fontPackage: _p);
+  static const add = IconData(0xf024, fontFamily: _f, fontPackage: _p);
 
   /// ---------------------------------------------------------------------------
   /// CREDIT CARD ICONS
@@ -585,6 +586,13 @@ class GtIcons {
   static const delete = IconData(0xf129, fontFamily: _f, fontPackage: _p);
   static const faceId = IconData(0xf128, fontFamily: _f, fontPackage: _p);
 
+  /// The biometric glyph a user on [platform] most likely recognises: Face ID
+  /// on iOS, and a fingerprint on every other platform.
+  static IconData biometricFor(TargetPlatform platform) => switch (platform) {
+    .iOS => faceId,
+    _ => fingerprint,
+  };
+
   static const temple = IconData(0xf12c, fontFamily: _f, fontPackage: _p);
   static const childHead = IconData(0xf146, fontFamily: _f, fontPackage: _p);
   static const verifiedUsers = IconData(
@@ -995,6 +1003,7 @@ class GtIcons {
     (label: 'scissorsCoupon', value: scissorsCoupon),
     (label: 'scribble', value: scribble),
     (label: 'search', value: search),
+    (label: 'send', value: send),
     (label: 'sendSolid', value: sendSolid),
     (label: 'shapes', value: shapes),
     (label: 'share', value: share),

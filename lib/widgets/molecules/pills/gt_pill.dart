@@ -126,7 +126,11 @@ class GtPill extends GtStatelessWidget {
   /// The fill or background color of the pill's container.
   final Color bgColor;
 
-  /// The border color. If null, the border color defaults to the [bgColor], effectively hiding the border.
+  /// The border color. If null, the border is transparent, so the fill shows
+  /// through it and a translucent [bgColor] carries no darker outline.
+  ///
+  /// The border keeps its width either way, so the pill's size does not
+  /// depend on whether a border color is given.
   final Color? borderColor;
 
   /// The color of the text. Icons will inherit this color unless overridden.
@@ -156,6 +160,13 @@ class GtPill extends GtStatelessWidget {
   /// An alternative accessibility label for the pill text.
   final String? semanticsLabel;
 
+  /// Gap between [icon] and the text, and between the text and [trailing], in
+  /// **design pixels**.
+  ///
+  /// When `null`, uses `context.spacing.sm` (~4dp). Otherwise passed through
+  /// [BuildContext.dp] via [num.px]; `0` places them flush.
+  final double? spacingPx;
+
   /// The duration used when the pill's visual styling changes.
   final Duration animationDuration;
 
@@ -180,6 +191,7 @@ class GtPill extends GtStatelessWidget {
     this.borderStyle = .solid,
     this.constraints,
     this.semanticsLabel,
+    this.spacingPx,
     this.animationDuration = GtMotion.normal,
     this.animationCurve = Curves.easeOutCubic,
   });
@@ -193,12 +205,16 @@ class GtPill extends GtStatelessWidget {
       shadow = context.shadows.pillShadow(shadowColor);
     }
 
+    final gapPx = spacingPx;
+    final spacing = gapPx == null ? context.spacing.sm : context.dp(gapPx.px);
+
     Widget child = _GtPillContent(
       text: text,
       icon: icon,
       trailing: trailing,
       textStyle: textStyle ?? context.textStyles.buttonXs(color: textColor),
       semanticsLabel: semanticsLabel,
+      spacing: spacing,
     );
 
     child = AnimatedContainer(
@@ -209,7 +225,10 @@ class GtPill extends GtStatelessWidget {
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: borderRadius ?? context.borderRadiusSm,
-        border: Border.all(color: borderColor ?? bgColor, style: borderStyle),
+        border: Border.all(
+          color: borderColor ?? GtColors.transparent.value,
+          style: borderStyle,
+        ),
         boxShadow: shadow,
       ),
       child: child,
@@ -225,6 +244,7 @@ class _GtPillContent extends GtStatelessWidget {
   final Widget? trailing;
   final TextStyle textStyle;
   final String? semanticsLabel;
+  final double spacing;
 
   const _GtPillContent({
     required this.text,
@@ -232,14 +252,16 @@ class _GtPillContent extends GtStatelessWidget {
     required this.trailing,
     required this.textStyle,
     required this.semanticsLabel,
+    required this.spacing,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
+      spacing: spacing,
       children: [
-        if (icon != null) ...[icon!, const GtGap.hSm()],
+        ?icon,
         Flexible(
           child: GtText(
             text,
@@ -249,7 +271,7 @@ class _GtPillContent extends GtStatelessWidget {
             style: textStyle,
           ),
         ),
-        if (trailing != null) ...[const GtGap.hSm(), trailing!],
+        ?trailing,
       ],
     );
   }

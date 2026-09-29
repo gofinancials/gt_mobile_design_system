@@ -47,7 +47,7 @@ class _GtSpringShakeState extends State<GtSpringShake>
   }
 
   void _shake() {
-    if (MediaQuery.maybeOf(context)?.disableAnimations ?? false) return;
+    if (context.reduceMotion) return;
     _animation.forward(from: 0);
   }
 

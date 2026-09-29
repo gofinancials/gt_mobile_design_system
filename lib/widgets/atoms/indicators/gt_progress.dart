@@ -6,6 +6,13 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// If [value] is null, this widget displays an indeterminate progress animation.
 /// Otherwise, it displays a determinate progress bar filling up to [value].
+///
+/// The indeterminate sweep honours
+/// [GtAccessibilityContextExtension.reduceMotion]: with it set, the sweep is
+/// held where it is, which from the first frame is an empty track. The bar
+/// still reports itself busy to screen readers, and a test that turns
+/// [MediaQueryData.disableAnimations] on can `pumpAndSettle` past it instead
+/// of timing out on a loop that never ends.
 class GtProgress extends GtStatelessWidget {
   /// The color of the active progress indicator. Defaults to the primary base color.
   final Color? color;
@@ -53,17 +60,24 @@ class GtProgress extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
+    final reduceMotion = context.reduceMotion;
 
     return RepaintBoundary(
       child: SizedBox(
         height: size ?? context.dp(6.px),
-        child: LinearProgressIndicator(
-          borderRadius: 999.circularBorderRadius,
-          valueColor: AlwaysStoppedAnimation(color ?? palette.primary.base),
-          backgroundColor: inactiveColor ?? palette.bg.soft,
-          value: value,
-          semanticsLabel: semanticsLabel,
-          semanticsValue: semanticsValue,
+        // The indicator runs its own repeating controller with no way to pause
+        // it, so its ticker is muted instead. The value stays null so the bar
+        // is still announced as busy rather than as sitting at zero.
+        child: TickerMode(
+          enabled: !reduceMotion,
+          child: LinearProgressIndicator(
+            borderRadius: 999.circularBorderRadius,
+            valueColor: AlwaysStoppedAnimation(color ?? palette.primary.base),
+            backgroundColor: inactiveColor ?? palette.bg.soft,
+            value: value,
+            semanticsLabel: semanticsLabel,
+            semanticsValue: semanticsValue,
+          ),
         ),
       ),
     );

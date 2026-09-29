@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 /// A versatile circular avatar widget for displaying user profile pictures, initials, or placeholders.
 ///
@@ -34,12 +33,20 @@ class GtAvatar extends GtStatelessWidget {
 
   /// Indicates whether this avatar represents the primary user.
   ///
-  /// If `true`, it provides a default placeholder asset if [avatar] is null, applies
-  /// a specific background color, and wraps the widget in a [Hero] with the tag "user-avatar"
-  /// for smooth transition animations across screens.
+  /// If `true`, it falls back to the bundled placeholder asset when there is no
+  /// valid [avatar] and no [initials], applies a specific background color, and
+  /// wraps the widget in a [Hero] with the tag "user-avatar" for smooth
+  /// transition animations across screens.
   final bool isUserAvatar;
 
-  /// The text initials to display centered in the avatar if [avatar] is null.
+  /// The text initials to display centered in the avatar, behind any image.
+  ///
+  /// Painted whenever they are set, so they show while a network [avatar]
+  /// loads and through any transparency once it has.
+  ///
+  /// Initials outrank the [isUserAvatar] placeholder asset, which stays hidden
+  /// while they are set. An [avatar] that fails validation does not count as an
+  /// image, so a blank URL falls through to these rather than covering them.
   final String? initials;
 
   /// An optional miniature widget to overlay at the bottom-right corner of the avatar.
@@ -59,8 +66,28 @@ class GtAvatar extends GtStatelessWidget {
   /// Avatar container background gradient
   final Gradient? gradient;
 
-  /// Initials text color
+  /// The color of the [initials]. Defaults to the base primary color.
+  ///
+  /// Ignored once [initialsStyle] is supplied, since that style carries its
+  /// own color.
   final Color? initialsColor;
+
+  /// Whether a spinner is drawn while a network [avatar] loads.
+  ///
+  /// Defaults to `false`, because the gradient and any [initials] are already
+  /// painted underneath, and a spinner would cover an answer the customer can
+  /// read. Set it to `true` where the avatar is large enough that a spinner
+  /// reads as progress rather than clutter, or where nothing meaningful sits
+  /// behind the image.
+  final bool showLoadingIndicator;
+
+  /// The text style of the [initials].
+  ///
+  /// Replaces the default outright rather than merging with it, so it also
+  /// overrides [initialsColor] — fold the color into this style when both
+  /// matter. Supply it only when the initials need a family, size or weight
+  /// the default cannot express.
+  final TextStyle? initialsStyle;
 
   /// Avatar background color
   final Color? bgColor;
@@ -79,6 +106,7 @@ class GtAvatar extends GtStatelessWidget {
     this.semanticsLabel,
     this.initials,
     this.isUserAvatar = false,
+    this.showLoadingIndicator = false,
     this.tag,
     this.tagSize,
     this.showBorder = false,
@@ -86,6 +114,7 @@ class GtAvatar extends GtStatelessWidget {
     this.gradient,
     this.bgColor,
     this.initialsColor,
+    this.initialsStyle,
     this.borderColor,
   });
 
@@ -94,37 +123,24 @@ class GtAvatar extends GtStatelessWidget {
     final defaultSize = context.dp(36.px);
     final computedSize = size ?? defaultSize;
     final computedTagSize = tagSize ?? computedSize * 0.4;
-    final hasAvatar = avatar != null;
+    final hasAvatar = avatar != null && avatar.hasValidData;
+    final style = context.textStyles.subHeadS(
+      color: initialsColor ?? context.palette.primary.base,
+      weight: .w700,
+    );
     final defaultGradient = forceGradiant
         ? context.gradients.avatarGradient
         : null;
 
     Border? border;
-    ImageProvider? image;
-    DecorationImage? decoration;
+    // An avatar that fails validation is not something to draw, and leaving it
+    // in would paint an empty image over the initials below.
+    AppImageData? image = hasAvatar ? avatar : null;
 
-    if (!hasAvatar && isUserAvatar) {
-      image = AssetImage(GtAssetImages.avatar);
-    }
-
-    if (hasAvatar && avatar!.isString) {
-      image = AssetImage(avatar?.filePath ?? "");
-    }
-
-    if (hasAvatar && avatar!.isUrl) {
-      image = CachedNetworkImageProvider(avatar?.fileUrl ?? "");
-    }
-
-    if (hasAvatar && avatar!.isFile) {
-      image = FileImage(avatar!.file!);
-    }
-
-    if (image != null) {
-      decoration = DecorationImage(
-        image: image,
-        fit: fit ?? .cover,
-        alignment: alignment,
-      );
+    // Initials outrank the placeholder asset, so it only stands in when there
+    // is nothing else to show.
+    if (!hasAvatar && !initials.hasValue && isUserAvatar) {
+      image = AppImageData(GtAssetImages.avatar);
     }
 
     if (showBorder) {
@@ -159,36 +175,49 @@ class GtAvatar extends GtStatelessWidget {
         child: Container(
           width: computedSize,
           height: computedSize,
-          alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: gradient ?? defaultGradient,
             color: backgroundColor,
-            image: decoration,
             border: border,
           ),
           child: Stack(
             children: [
-              if (!hasAvatar && initials.hasValue)
+              if (initials.hasValue)
                 Positioned.fill(
                   child: Center(
                     child: FittedBox(
                       fit: .scaleDown,
                       child: GtText(
                         initials,
-                        style: context.textStyles.subHeadS(
-                          color: initialsColor ?? context.palette.primary.base,
-                          weight: .w700,
-                        ),
-                        textAlign: TextAlign.center,
+                        style: initialsStyle ?? style,
+                        textAlign: .center,
                       ),
                     ),
                   ),
                 ),
+              if (image != null)
+                Positioned.fill(
+                  child: ClipOval(
+                    child: GtImage(
+                      image: image,
+                      fit: fit ?? .cover,
+                      alignment: alignment,
+                      width: computedSize,
+                      height: computedSize,
+                      isDecorative: true,
+                      showLoadingIndicator: showLoadingIndicator,
+                    ),
+                  ),
+                ),
               if (tag != null)
-                FractionalTranslation(
-                  translation: Offset(.9, .8),
-                  child: GtSquareConstrainedBox(computedTagSize, child: tag),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: FractionalTranslation(
+                    translation: Offset(.1, .1),
+                    child: GtSquareConstrainedBox(computedTagSize, child: tag),
+                  ),
                 ),
             ],
           ),

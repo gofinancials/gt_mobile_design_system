@@ -13,8 +13,26 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 class GtNetworkImage extends GtStatelessWidget {
   /// An optional local asset path to display while the network image is loading.
   ///
-  /// If null, a circular progress indicator is shown by default.
+  /// Takes precedence over [showLoadingIndicator]: supplied artwork stands in
+  /// for the image whether or not a spinner would otherwise be drawn.
   final String? placeHolderPath;
+
+  /// Whether to draw a spinner while the image loads.
+  ///
+  /// The placeholder is laid out at this widget's full size and paints over
+  /// whatever sits behind it. Set it to `false` where the caller has already
+  /// drawn something worth keeping — an avatar's initials, a card's artwork —
+  /// so the image fades in over that rather than replacing it with a spinner.
+  /// A standalone image with nothing behind it should leave this `true`, or a
+  /// slow network reads as a blank rectangle.
+  ///
+  /// `flutter_test` refuses network requests, so under test the spinner is
+  /// never replaced by the image. It holds still whenever
+  /// [MediaQueryData.disableAnimations] is set, which is what lets a test that
+  /// sets that flag `pumpAndSettle`; see [GtSpinner].
+  ///
+  /// Ignored when [placeHolderPath] supplies still artwork instead.
+  final bool showLoadingIndicator;
 
   /// The source URL or base64 data URI of the image to display.
   final String imageUrl;
@@ -58,6 +76,7 @@ class GtNetworkImage extends GtStatelessWidget {
     this.imageUrl, {
     super.key,
     this.placeHolderPath,
+    this.showLoadingIndicator = true,
     this.alignment = Alignment.center,
     this.fit,
     this.width,
@@ -113,6 +132,9 @@ class GtNetworkImage extends GtStatelessWidget {
             },
             placeholder: (context, _) {
               if (placeHolderPath == null) {
+                if (!showLoadingIndicator) {
+                  return SizedBox(height: height, width: width);
+                }
                 return FittedBox(fit: BoxFit.scaleDown, child: GtSpinner());
               }
               return GtAssetImage(

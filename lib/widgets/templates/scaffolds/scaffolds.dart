@@ -1,5 +1,6 @@
 export 'gt_confirmation_scaffold.dart';
 export 'gt_dashboard_scaffold.dart';
 export 'gt_receipt_scaffold.dart';
+export 'gt_step_scaffold.dart';
 export 'gt_summary_scaffold.dart';
 export 'gt_transfer_detail_scaffold.dart';

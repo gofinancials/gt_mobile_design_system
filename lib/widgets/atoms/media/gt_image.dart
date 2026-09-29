@@ -38,6 +38,13 @@ class GtImage extends GtStatelessWidget {
   /// An optional color filter to apply to the image.
   final Color? color;
 
+  /// Whether a network image draws a spinner while it loads.
+  ///
+  /// Forwarded to [GtNetworkImage] and ignored for every other source, since
+  /// they resolve without a round trip. Set it to `false` where something is
+  /// already painted behind the image; see [GtNetworkImage.showLoadingIndicator].
+  final bool showLoadingIndicator;
+
   /// A description of what this image conveys, for screen readers.
   ///
   /// Supply this whenever the image carries information the surrounding text
@@ -67,6 +74,7 @@ class GtImage extends GtStatelessWidget {
     this.height,
     this.color,
     this.useDefaultSize = true,
+    this.showLoadingIndicator = true,
     this.semanticsLabel,
     this.isDecorative = false,
   });
@@ -86,6 +94,7 @@ class GtImage extends GtStatelessWidget {
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
               color: color,
+              showLoadingIndicator: showLoadingIndicator,
               semanticsLabel: semanticsLabel,
               isDecorative: isDecorative,
             );

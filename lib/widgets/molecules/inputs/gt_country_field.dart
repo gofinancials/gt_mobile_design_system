@@ -158,14 +158,12 @@ class _GtCountryFieldState extends State<GtCountryField>
         Widget? prefix;
 
         if (selectedCountry != null) {
-          prefix = ClipOval(
-            child: GtNetworkImage(
-              selectedCountry.value.rasterFlagUrl,
-              fit: .fill,
-              width: widget.flagSize ?? 20,
-              height: widget.flagSize ?? 20,
-              isDecorative: true,
-            ),
+          prefix = GtSvg(
+            selectedCountry.value.circleSvgFlagUrl,
+            fit: .cover,
+            width: widget.flagSize ?? 20,
+            height: widget.flagSize ?? 20,
+            isDecorative: true,
           );
         }
 

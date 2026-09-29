@@ -124,18 +124,26 @@ mixin GtConfirmDialogMixin {
     bool isDismissable = true,
     required OnPressed onContinue,
   }) async {
+    // On iOS and macOS [showAdaptiveDialog] pushes a `CupertinoDialogRoute`,
+    // which does not capture the caller's inherited themes the way the
+    // Material route does, so a [GtThemedScope] below the root navigator would
+    // be lost. Carrying them across by hand keeps the dialog in the same brand
+    // as the screen that opened it.
+    final themes = context.capturedThemes();
     showAdaptiveDialog(
       context: context,
       barrierDismissible: isDismissable,
       useRootNavigator: true,
       builder: (context) {
-        return GtConfirmDialog(
-          key: ValueKey((title, allowText, denyText, description)),
-          title: title,
-          description: description,
-          onContinue: onContinue,
-          allowText: allowText,
-          denyText: denyText,
+        return themes.wrap(
+          GtConfirmDialog(
+            key: ValueKey((title, allowText, denyText, description)),
+            title: title,
+            description: description,
+            onContinue: onContinue,
+            allowText: allowText,
+            denyText: denyText,
+          ),
         );
       },
     );

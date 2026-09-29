@@ -149,9 +149,15 @@ class GtBottomSheet<T> {
       // `useNestedNavigation`, which is unrelated — that flag gives the sheet
       // its own nested [Navigator], hiding any route pushed inside it from the
       // root navigator's observers.
+      //
+      // It also pushes the route without the [InheritedTheme.capture] that
+      // [showModalBottomSheet] does, so a [Theme] or [GtThemeProvider] scoped
+      // below the root navigator has to be carried across by hand. Without
+      // this the sheet reverts to the app-wide brand.
+      final themes = context.capturedThemes();
       return showCupertinoSheet<T>(
         context: context,
-        scrollableBuilder: (context, _) => child,
+        scrollableBuilder: (context, _) => themes.wrap(child),
         enableDrag: canDragToClose,
         showDragHandle: canDragToClose,
       );
@@ -173,48 +179,57 @@ class GtBottomSheet<T> {
   /// Presents the bottom sheet using desktop-specific configurations.
   ///
   /// Uses [showAdaptiveDialog] to display the sheet as a centered modal dialog.
+  ///
+  /// On iOS and macOS that resolves to a `CupertinoDialogRoute`, which is
+  /// pushed without the [InheritedTheme.capture] the Material route does, so
+  /// the themes are carried across by hand. The [Builder] puts the sheet's own
+  /// styling reads beneath the captured themes rather than beside them.
   Future<T?> _presentDesktopSheet(BuildContext context) async {
+    final themes = context.capturedThemes(useRootNavigator: useRootNavigator);
     return showAdaptiveDialog<T>(
       context: context,
       barrierDismissible: isDismissable,
       barrierColor: barrierColor,
       useRootNavigator: useRootNavigator,
       anchorPoint: Offset(context.width * .5, context.height * .5),
-      builder: (context) {
-        final constraints = BoxConstraints(
-          maxWidth: 500,
-          maxHeight: context.height * maxChildSize,
-          minHeight: context.height * minChildSize,
-        );
-        if (_isDraggable) {
-          return DraggableScrollableSheet(
-            initialChildSize: initialChildSize,
-            maxChildSize: maxChildSize,
-            minChildSize: minChildSize,
-            expand: false,
-            builder: (context, scrollController) {
-              return _GtSheetContainer(
-                floating: floating,
-                constraints: constraints,
-                alignment: .center,
-                borderRadius: context.borderRadius4Xl,
-                controller: scrollController,
-                child: _builder!(scrollController),
-              );
-            },
-          );
-        }
-        return GtPopScope(
-          canPop: canPop,
-          child: _GtSheetContainer(
+      builder: (context) => themes.wrap(Builder(builder: _buildDesktopSheet)),
+    );
+  }
+
+  /// Builds the content of the sheet presented by [_presentDesktopSheet].
+  Widget _buildDesktopSheet(BuildContext context) {
+    final constraints = BoxConstraints(
+      maxWidth: 500,
+      maxHeight: context.height * maxChildSize,
+      minHeight: context.height * minChildSize,
+    );
+    if (_isDraggable) {
+      return DraggableScrollableSheet(
+        initialChildSize: initialChildSize,
+        maxChildSize: maxChildSize,
+        minChildSize: minChildSize,
+        expand: false,
+        builder: (context, scrollController) {
+          return _GtSheetContainer(
             floating: floating,
             constraints: constraints,
             alignment: .center,
             borderRadius: context.borderRadius4Xl,
-            child: modalWidget,
-          ),
-        );
-      },
+            controller: scrollController,
+            child: _builder!(scrollController),
+          );
+        },
+      );
+    }
+    return GtPopScope(
+      canPop: canPop,
+      child: _GtSheetContainer(
+        floating: floating,
+        constraints: constraints,
+        alignment: .center,
+        borderRadius: context.borderRadius4Xl,
+        child: modalWidget,
+      ),
     );
   }
 }

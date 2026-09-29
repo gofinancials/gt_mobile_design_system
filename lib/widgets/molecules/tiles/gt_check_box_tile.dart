@@ -29,7 +29,21 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
   final GtCheckBoxShape shape;
 
   /// An optional widget (typically an icon or image) to display at the start of the tile.
+  ///
+  /// When [indicatorPosition] is [GtIndicatorPosition.leading], it follows the
+  /// checkbox, so the row reads checkbox, [leading], [title].
   final Widget? leading;
+
+  /// Where the checkbox sits relative to the [title]. Defaults to
+  /// [GtIndicatorPosition.trailing].
+  final GtIndicatorPosition indicatorPosition;
+
+  /// Horizontal gap between the tile's checkbox, [leading] and [title], in
+  /// **design pixels**.
+  ///
+  /// When `null`, uses [BuildContext.spacingLg] (~16dp). Otherwise passed
+  /// through [BuildContext.dp] via [num.px].
+  final double? spacingPx;
 
   /// An optional widget to display below the main content of the tile.
   final Widget? footer;
@@ -65,10 +79,38 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
     super.key,
     this.titleStyle,
     this.subtitleStyle,
+    this.indicatorPosition = GtIndicatorPosition.trailing,
+    this.spacingPx,
   });
 
   @override
   Widget build(BuildContext context) {
+    final checkBox = GtCheckBox(
+      value: value,
+      onChanged: onChanged,
+      isActive: isActive,
+      disabled: disabled,
+      shape: shape,
+      activeColor: activeColor,
+    );
+
+    Widget? icon = leading;
+    Widget? trailing = checkBox;
+
+    if (indicatorPosition == .leading) {
+      icon = checkBox;
+      trailing = null;
+
+      if (leading != null) {
+        final gapPx = spacingPx;
+        icon = Row(
+          mainAxisSize: .min,
+          spacing: gapPx == null ? context.spacingLg : context.dp(gapPx.px),
+          children: [checkBox, ?leading],
+        );
+      }
+    }
+
     return GtIndicatorTile(
       onTap: () {
         if (disabled) return;
@@ -77,18 +119,12 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
       padding: padding,
       title,
       subtitle: subtitle,
-      icon: leading,
+      icon: icon,
       footer: footer,
       titleStyle: titleStyle,
       subtitleStyle: subtitleStyle,
-      trailing: GtCheckBox(
-        value: value,
-        onChanged: onChanged,
-        isActive: isActive,
-        disabled: disabled,
-        shape: shape,
-        activeColor: activeColor,
-      ),
+      trailing: trailing,
+      spacingPx: spacingPx,
     );
   }
 }

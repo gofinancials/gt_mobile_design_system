@@ -8,6 +8,17 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// When [value] is null, this widget displays a continuous spinning animation.
 /// When [value] is provided, it smoothly animates to display a pie chart representing
 /// the given progress.
+///
+/// Both honour [GtAccessibilityContextExtension.reduceMotion]. With it set,
+/// the spinner holds a still arc and the pie jumps straight to [value]: a loop
+/// that never ends is exactly what reduced motion asks to be spared, and it is
+/// also what keeps `pumpAndSettle` from ever returning.
+///
+/// Tests that draw a spinner — or anything that shows one while it waits, such
+/// as a [GtNetworkImage] whose request never completes — settle once they turn
+/// [MediaQueryData.disableAnimations] on, either through a `MediaQuery`
+/// ancestor or through
+/// `tester.platformDispatcher.accessibilityFeaturesTestValue`.
 class GtSpinner extends GtStatefulWidget {
   /// The progress value of the spinner, ranging from 0.0 to 1.0.
   ///
@@ -76,6 +87,7 @@ class _GtSpinnerState extends State<GtSpinner> {
     final palette = context.palette;
     final trackColor = widget.trackColor;
     final color = widget.color ?? palette.text.strong;
+    final reduceMotion = context.reduceMotion;
 
     return Align(
       alignment: widget.alignment,
@@ -96,6 +108,9 @@ class _GtSpinnerState extends State<GtSpinner> {
                   return RepeatingAnimationBuilder(
                     animatable: Tween<double>(begin: 0.0, end: 360),
                     duration: 1.seconds,
+                    // Stopped rather than dropped, so the arc stays on screen
+                    // and picks the rotation back up if the setting changes.
+                    paused: reduceMotion,
                     builder: (context, value, child) {
                       return Transform.rotate(
                         angle: value * math.pi / 180,
@@ -112,7 +127,7 @@ class _GtSpinnerState extends State<GtSpinner> {
                 }
                 return TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0.0, end: widget.value),
-                  duration: 1.seconds,
+                  duration: GtMotion.adaptiveDuration(context, 1.seconds),
                   builder: (context, value, child) {
                     return CustomPaint(
                       painter: GtDonutPainter(

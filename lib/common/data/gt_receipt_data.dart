@@ -113,8 +113,11 @@ class GtReceiptParticipant extends AppEquatable {
   /// "To" by position.
   final String? label;
 
+  /// Optional initials in place of avatar
+  final String? initials;
+
   /// The participant's avatar or image, drawn according to [imageType].
-  final AppImageData image;
+  final AppImageData? image;
 
   /// A small badge, such as a bank logo, drawn over the corner of an avatar.
   /// Only used with [GtReceiptImageType.avatar].
@@ -130,8 +133,8 @@ class GtReceiptParticipant extends AppEquatable {
   /// Creates a [GtReceiptParticipant].
   const GtReceiptParticipant({
     required this.title,
-
-    required this.image,
+    this.image,
+    this.initials,
     this.subtitle,
     this.label,
     this.transactions = const [],

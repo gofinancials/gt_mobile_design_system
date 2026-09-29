@@ -35,7 +35,7 @@ class GtTipCard extends GtStatelessWidget {
   final String title;
 
   /// The secondary text or subtitle of the tip.
-  final String subtitle;
+  final String? subtitle;
 
   /// If true, the tip card will be hidden (faded out).
   final bool hidden;
@@ -62,7 +62,7 @@ class GtTipCard extends GtStatelessWidget {
   const GtTipCard({
     super.key,
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     this.hidden = false,
     this.variant = .away,
     required this.onClose,
@@ -87,6 +87,7 @@ class GtTipCard extends GtStatelessWidget {
     final iconColor = variant.getIconColor(palette);
     final borderColor = variant.getBorderColor(palette);
     final subStyle = context.textStyles.bodyXs(color: palette.text.darkerSub);
+    CrossAxisAlignment rowAlignment = subtitle.hasValue ? .start : .center;
 
     return GtAnimatedFade(
       showFirst: !hidden,
@@ -101,7 +102,7 @@ class GtTipCard extends GtStatelessWidget {
         variant: variant,
         child: Row(
           spacing: horizontalSpacing ?? context.spacingBase,
-          crossAxisAlignment: .start,
+          crossAxisAlignment: rowAlignment,
           children: [
             GtIcon.withColor(
               icon,
@@ -116,7 +117,7 @@ class GtTipCard extends GtStatelessWidget {
                 children: [
                   Row(
                     spacing: closeButtonSpacing ?? context.spacingBase,
-                    crossAxisAlignment: .start,
+                    crossAxisAlignment: rowAlignment,
                     children: [
                       Expanded(
                         child: GtText(
@@ -135,14 +136,15 @@ class GtTipCard extends GtStatelessWidget {
                       ),
                     ],
                   ),
-                  GtRichText(
-                    subtitle,
-                    style: GtTextStyleOverrides.resolve(
-                      subtitleStyle,
-                      subStyle,
-                      subtitleColor,
+                  if (subtitle.hasValue)
+                    GtRichText(
+                      subtitle,
+                      style: GtTextStyleOverrides.resolve(
+                        subtitleStyle,
+                        subStyle,
+                        subtitleColor,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

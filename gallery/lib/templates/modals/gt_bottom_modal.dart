@@ -27,13 +27,12 @@ Stream<double> _getProgressStream() async* {
 
 class _BottomModalPreviewState extends State<_BottomModalPreview>
     with GtBottomModalMixin {
-  final GtBottomModalController _controller = GtBottomModalController(
-    data: GtBottomModalData(title: "PROCESSING"),
-    onComplete: (value) {
-      GtRouter.popView();
-    },
-    onCompleteDelay: const Duration(seconds: 2),
-  );
+  final GtBottomModalController<String> _controller =
+      GtBottomModalController<String>(
+        data: GtBottomModalData(title: "PROCESSING"),
+        onComplete: (value) {},
+        onCompleteDelay: const Duration(seconds: 2),
+      );
 
   Future<TaskResponse<String>> _getSuccessFuture() async {
     await Future.delayed(const Duration(seconds: 2));
@@ -81,10 +80,17 @@ class _BottomModalPreviewState extends State<_BottomModalPreview>
 class MyState extends State<MyWidget> with GtBottomModalMixin {
   
   // 2. Define a persistent modal controller to drive task state transitions (dislocated controller)
-  final GtBottomModalController _controller = GtBottomModalController(
+  // The controller closes its own modal once the task completes, so onComplete
+  // only handles the result.
+  final GtBottomModalController<Receipt> _controller = GtBottomModalController(
     data: GtBottomModalData(title: "PROCESSING"),
     onComplete: (value) {
-      GtRouter.popView();
+      switch (value) {
+        case TaskSuccess<Receipt>(data: final receipt):
+          showReceipt(receipt);
+        case TaskFailure<Receipt>(error: final error):
+          showError(error.message);
+      }
     },
   );
 
@@ -100,13 +106,28 @@ class MyState extends State<MyWidget> with GtBottomModalMixin {
 
   // B. Present a Task-bound Modal (Success/Failure Flow)
   void startAsyncWork() async {
+    // The returned Future resolves once the modal is gone.
     showTaskBottomModal(context, controller: _controller);
-    
+
     // Simulate async operation
     final result = await performApiCall();
-    
-    // Complete the controller to transition to Success or Failure state
+
+    // Complete the controller to transition to Success or Failure state.
+    // After the completion delay the controller takes its own modal down —
+    // removing that route in place, so a route pushed over the modal while the
+    // task ran is never the one that closes.
     _controller.complete(result);
+  }
+
+  // D. Or let GtTaskRunner do all of B for you
+  void runTask() {
+    GtTaskRunner.run<Receipt>(
+      context,
+      loadingTitle: "PROCESSING",
+      task: (controller) => performApiCall(),
+      onSuccess: showReceipt,
+      onError: (error) => showError(error.message),
+    );
   }
 
   // C. Present a Progressive Task Modal (Progress Updating Flow)
@@ -193,6 +214,26 @@ class MyState extends State<MyWidget> with GtBottomModalMixin {
                     _controller.progress = value;
                   },
                 ),
+              );
+            },
+          ),
+          GtRaisedButton(
+            text: 'Run A Task With GtTaskRunner',
+            variant: GtButtonVariant.primary,
+            onPressed: () {
+              GtTaskRunner.run<String>(
+                context,
+                loadingTitle: "PROCESSING",
+                useRootNavigator: false,
+                task: (controller) => _getSuccessFuture(),
+                onSuccess: (data) {
+                  showBottomModal(
+                    context,
+                    title: data,
+                    description: 'The runner closed its own modal first.',
+                    useRootNavigator: false,
+                  );
+                },
               );
             },
           ),

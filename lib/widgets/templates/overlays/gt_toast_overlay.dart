@@ -27,12 +27,9 @@ class GtToast extends GtOverlay {
       if (_entry != null || _inserted) return;
       super.closeExistingOverlays();
 
-      _entry = OverlayEntry(
-        opaque: false,
-        builder: (context) {
-          return GtToastOverlay(message, icon: icon, type: type ?? .strong);
-        },
-      );
+      _entry = buildEntry((context) {
+        return GtToastOverlay(message, icon: icon, type: type ?? .strong);
+      });
       _inserted = true;
       super.present(entry: _entry!, instance: this);
       Timer(timeout, close);

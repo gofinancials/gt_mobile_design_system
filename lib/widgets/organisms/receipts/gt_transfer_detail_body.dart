@@ -279,7 +279,7 @@ class _TransferDetailHeader extends GtStatelessWidget {
       _ => GtAvatar(
         avatar: recipient.image,
         size: imageSize,
-        initials: recipient.title.initials,
+        initials: recipient.initials ?? recipient.title.initials,
         tag: tag,
         tagSize: context.dp(28.px),
         showBorder: true,

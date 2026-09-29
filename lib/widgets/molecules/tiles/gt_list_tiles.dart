@@ -289,10 +289,7 @@ class _GtIconListTileAlt extends GtIconListTile {
               spacing: verticalSpacing ?? 0,
               crossAxisAlignment: .start,
               children: [
-                GtText(
-                  title,
-                  style: titleStyle ?? context.textStyles.bodyM(),
-                ),
+                GtText(title, style: titleStyle ?? context.textStyles.bodyM()),
                 if (subtitle.hasValue)
                   GtText(
                     subtitle,

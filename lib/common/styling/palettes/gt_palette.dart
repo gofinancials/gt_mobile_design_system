@@ -1018,6 +1018,9 @@ base class GtPalette extends ThemeExtension<GtPalette> {
         other.stable == stable;
   }
 
+  /// Light mode primary ink color
+  Color get opPrimaryInk => primary.darker;
+
   @override
   int get hashCode => Object.hash(
     primary,
@@ -1445,4 +1448,8 @@ base class GtDarkPalette extends GtPalette {
 
   @override
   GtPaletteRawColors get raw => const GtPaletteRawColors.dark();
+
+  /// Dark mode primary ink color
+  @override
+  Color get opPrimaryInk => primary.base;
 }

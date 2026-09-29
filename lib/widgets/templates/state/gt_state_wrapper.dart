@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
 class GtStateWrapper extends GtStatelessWidget {
   final Widget child;
-  final List<ChangeNotifierProvider> providers;
+  final List<SingleChildWidget> providers;
   final String? path;
 
   const GtStateWrapper({

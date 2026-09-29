@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
+import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// An abstract base class for creating and managing overlay components (like toasts or alerts).
 ///
@@ -21,14 +22,17 @@ abstract class GtOverlay with AppTaskMixin, RouteAware {
 
   /// Closes all currently active overlays that are marked as [closableOnNavigation].
   static void closeCurrentOverlays() {
-    try {
-      for (int index = 0; index < _curentOverlays.length; index++) {
-        final overlay = _curentOverlays[index];
-        if (!overlay.closableOnNavigation) continue;
+    // Walked backwards because closing an overlay removes it: counting forwards
+    // over a shrinking list skips the entry that slides into the freed index,
+    // leaving every other overlay open.
+    for (int index = _curentOverlays.length - 1; index >= 0; index--) {
+      final overlay = _curentOverlays[index];
+      if (!overlay.closableOnNavigation) continue;
+      try {
         overlay.close();
-        _curentOverlays.removeAt(index);
-      }
-    } catch (_) {}
+      } catch (_) {}
+      _curentOverlays.removeAt(index);
+    }
   }
 
   /// Convenience method to close all currently active overlays.
@@ -53,6 +57,23 @@ abstract class GtOverlay with AppTaskMixin, RouteAware {
   void didPopNext() {
     close();
     super.didPopNext();
+  }
+
+  /// Creates an overlay entry whose content keeps the styling of the subtree
+  /// this overlay was created from.
+  ///
+  /// An [OverlayEntry] is built from the navigator's overlay, which sits above
+  /// any [GtThemedScope] installed inside a route, so the entry would
+  /// otherwise fall back to the app-wide brand. The themes between the two are
+  /// captured and reinstalled around [builder], and the [Builder] puts the
+  /// content's own styling reads beneath them rather than beside them.
+  @protected
+  OverlayEntry buildEntry(WidgetBuilder builder) {
+    final themes = context.capturedThemes(useRootNavigator: false);
+    return OverlayEntry(
+      opaque: false,
+      builder: (context) => themes.wrap(Builder(builder: builder)),
+    );
   }
 
   /// Inserts the given [entry] into the navigator's overlay and registers

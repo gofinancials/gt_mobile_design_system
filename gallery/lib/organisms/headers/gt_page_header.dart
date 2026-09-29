@@ -14,6 +14,10 @@ Widget playgroundGtPageHeaderUseCase(BuildContext context) {
     label: 'Subtitle',
     initialValue: 'See balances and recent activity in one place.',
   );
+  final centred = context.knobs.boolean(
+    label: 'Centred prompt styles',
+    initialValue: false,
+  );
 
   return GtWidgetDocPage(
     title: 'GtPageHeader',
@@ -23,7 +27,13 @@ Widget playgroundGtPageHeaderUseCase(BuildContext context) {
         '''
 GtPageHeader(
   title: "$title",
-  subtitle: "$subtitle",
+  subtitle: "$subtitle",${centred ? '''
+  textAlign: .center,
+  titleStyle: context.textStyles.h4(),
+  subtitleStyle: context.textStyles.labelS(
+    weight: .w500,
+    color: context.palette.text.darkerSub,
+  ),''' : ''}
 )''',
     child: Center(
       child: GtCard(
@@ -32,6 +42,14 @@ GtPageHeader(
         child: GtPageHeader(
           title: title,
           subtitle: subtitle.isEmpty ? null : subtitle,
+          textAlign: centred ? .center : .start,
+          titleStyle: centred ? context.textStyles.h4() : null,
+          subtitleStyle: centred
+              ? context.textStyles.labelS(
+                  weight: .w500,
+                  color: context.palette.text.darkerSub,
+                )
+              : null,
         ),
       ),
     ),
