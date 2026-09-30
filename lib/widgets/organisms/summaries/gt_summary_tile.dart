@@ -108,16 +108,22 @@ class _GtSummaryColumnsTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final styles = context.textStyles;
-    final leading = tile.leading;
-    final trailing = tile.trailing;
+    // Left null rather than given an empty widget, because the tile uses the
+    // absence of a slot to decide its own spacing.
+    Widget? prefix;
+    Widget? suffix;
+    if (tile.leading case final image?) {
+      prefix = _GtSummaryTileImage(image, size: tile.imageSize);
+    }
+    if (tile.trailing case final image?) {
+      suffix = _GtSummaryTileImage(image, size: tile.imageSize);
+    }
 
     return GtDoubleColumnListTile(
       tile.label,
       value: tile.value,
-      // Left null rather than given an empty widget, because the tile uses the
-      // absence of a slot to decide its own spacing.
-      valuePrefix: leading == null ? null : _GtSummaryTileImage(leading),
-      valueSuffix: trailing == null ? null : _GtSummaryTileImage(trailing),
+      valuePrefix: prefix,
+      valueSuffix: suffix,
       labelTextStyle: GtTextStyleOverrides.resolve(
         labelStyle,
         styles.subHeadXs(color: context.palette.text.sub),
@@ -138,11 +144,14 @@ class _GtSummaryTileImage extends GtStatelessWidget {
   /// The image to render.
   final AppImageData data;
 
-  const _GtSummaryTileImage(this.data);
+  /// The caller's scaled size, or null for `dp(20)`.
+  final double? size;
+
+  const _GtSummaryTileImage(this.data, {this.size});
 
   @override
   Widget build(BuildContext context) {
-    final size = context.dp(20.px);
+    final size = this.size ?? context.dp(20.px);
 
     return GtImage(
       image: data,
