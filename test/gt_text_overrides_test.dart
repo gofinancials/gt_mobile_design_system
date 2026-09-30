@@ -84,11 +84,20 @@ void main() {
   });
 
   group('GtDebitCardScreen', () {
+    final illustration = find.descendant(
+      of: find.byType(GtImage),
+      matching: find.byType(GtAssetImage),
+    );
+
     Widget screen({
       TextStyle? titleStyle,
       TextStyle? subtitleStyle,
       TextAlign textAlign = .start,
       DecorationImage? backgroundImage,
+      double? titleSpacingPx,
+      Alignment imageAlignment = .centerRight,
+      double? imageWidth,
+      double? imageHeight,
     }) {
       return GtThemeProvider(
         theme: kPersonalTheme,
@@ -101,6 +110,10 @@ void main() {
             subtitleStyle: subtitleStyle,
             textAlign: textAlign,
             backgroundImage: backgroundImage,
+            titleSpacingPx: titleSpacingPx,
+            imageAlignment: imageAlignment,
+            imageWidth: imageWidth,
+            imageHeight: imageHeight,
           ),
         ),
       );
@@ -156,6 +169,44 @@ void main() {
       );
       expect((box.decoration as BoxDecoration).image, image);
     });
+
+    testWidgets('spaces the title and subtitle by titleSpacingPx', (
+      tester,
+    ) async {
+      await tester.pumpWidget(screen(titleSpacingPx: 12));
+
+      final context = tester.element(find.text('YOUR CARD'));
+      final gap =
+          tester.getTopLeft(find.text('Spend Anywhere')).dy -
+          tester.getBottomLeft(find.text('YOUR CARD')).dy;
+      expect(gap, context.dp(12.px));
+    });
+
+    testWidgets('hugs the right edge with the image by default', (
+      tester,
+    ) async {
+      await tester.pumpWidget(screen());
+
+      final screenWidth = tester.getSize(find.byType(Scaffold)).width;
+      expect(tester.getTopRight(illustration).dx, screenWidth);
+    });
+
+    testWidgets('sizes the image with imageWidth and imageHeight', (
+      tester,
+    ) async {
+      await tester.pumpWidget(screen(imageWidth: 200, imageHeight: 120));
+
+      final asset = tester.widget<GtAssetImage>(illustration);
+      expect(asset.width, 200);
+      expect(asset.height, 120);
+    });
+
+    testWidgets('centres the image with imageAlignment', (tester) async {
+      await tester.pumpWidget(screen(imageAlignment: .center));
+
+      final screenWidth = tester.getSize(find.byType(Scaffold)).width;
+      expect(tester.getCenter(illustration).dx, screenWidth / 2);
+    });
   });
 
   group('GtGuageChartCenter', () {
@@ -189,6 +240,36 @@ void main() {
       expect(pill.bgColor, Colors.white);
       expect(pill.textStyle, pillStyle);
       expect(textStyle(tester, 'of ₦50,000'), footerStyle);
+    });
+
+    testWidgets('applies the value style, with valueColor winning', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        app(
+          const GtGuageChartCenter(
+            '₦20,000',
+            valueStyle: customStyle,
+            valueColor: Colors.red,
+          ),
+        ),
+      );
+
+      final style = textStyle(tester, '₦20,000');
+      expect(style.fontSize, 19);
+      expect(style.color, Colors.red);
+    });
+  });
+
+  group('GtTextStyles.d3_5', () {
+    testWidgets('sets Youth 40 on a 40 line with no tracking', (tester) async {
+      await tester.pumpWidget(app(const SizedBox()));
+
+      final context = tester.element(find.byType(SizedBox));
+      final style = context.textStyles.d3_5();
+      expect(style.fontSize, 40);
+      expect(style.height, 1);
+      expect(style.letterSpacing, 0);
     });
   });
 

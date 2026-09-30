@@ -31,6 +31,16 @@ Widget playgroundGtGuageChartCenterUseCase(BuildContext context) {
     initialValue: false,
   );
 
+  final displayValue = context.knobs.boolean(
+    label: 'Display Value Style (D4, 32)',
+    initialValue: false,
+  );
+
+  TextStyle? valueStyle;
+  if (displayValue) {
+    valueStyle = context.textStyles.d4(heightPx: 32);
+  }
+
   TextStyle? pillTextStyle;
   TextStyle? footerStyle;
   if (dashboardStyles) {
@@ -45,7 +55,7 @@ Widget playgroundGtGuageChartCenterUseCase(BuildContext context) {
 GtGuageChartCenter(
   '$valueText',
   pillText: '$pillText',
-  footerText: '$footerText',${valueColor != null ? "\n  valueColor: Color(0x${valueColor.toARGB32().toRadixString(16)})," : ""}${pillColor != null ? "\n  pillColor: Color(0x${pillColor.toARGB32().toRadixString(16)})," : ""}${dashboardStyles ? "\n  pillTextStyle: context.textStyles.labelXs(\n    color: context.palette.text.strong,\n  ),\n  footerStyle: context.textStyles.bodyXs(\n    color: context.palette.text.soft,\n  )," : ""}
+  footerText: '$footerText',${valueColor != null ? "\n  valueColor: Color(0x${valueColor.toARGB32().toRadixString(16)})," : ""}${displayValue ? "\n  valueStyle: context.textStyles.d4(heightPx: 32)," : ""}${pillColor != null ? "\n  pillColor: Color(0x${pillColor.toARGB32().toRadixString(16)})," : ""}${dashboardStyles ? "\n  pillTextStyle: context.textStyles.labelXs(\n    color: context.palette.text.strong,\n  ),\n  footerStyle: context.textStyles.bodyXs(\n    color: context.palette.text.soft,\n  )," : ""}
 )''';
 
   return GtWidgetDocPage(
@@ -59,6 +69,7 @@ GtGuageChartCenter(
         pillText: pillText.isEmpty ? null : pillText,
         footerText: footerText.isEmpty ? null : footerText,
         valueColor: valueColor,
+        valueStyle: valueStyle,
         pillColor: pillColor,
         pillTextStyle: pillTextStyle,
         footerStyle: footerStyle,

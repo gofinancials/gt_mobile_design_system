@@ -146,6 +146,34 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the Display 3.5 (D3.5) text style, Figma's Display/M.
+  ///
+  /// Youth 40px on a 40px line. It sits between [d3] and [d4]. Unlike [h3],
+  /// which shares its size, it carries no tracking.
+  TextStyle d3_5({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return buildStyle(
+      family: fonts.title,
+      size: 40,
+      heightPx: heightPx ?? 40,
+      widthPct: 0.0,
+      weight: .bold,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   /// Generates the Display 4 (D4) text style.
   TextStyle d4({
     double? heightPx,
@@ -1698,6 +1726,7 @@ class GtTextStyles {
     ('Display 1 (context.textStyles.d1)', d1()),
     ('Display 2 (context.textStyles.d2)', d2()),
     ('Display 3 (context.textStyles.d3)', d3()),
+    ('Display 3.5 (context.textStyles.d3_5)', d3_5()),
     ('Display 4 (context.textStyles.d4)', d4()),
     ('Welcome (context.textStyles.welcome)', welcome()),
     ('Heading 1 (context.textStyles.h1)', h1()),

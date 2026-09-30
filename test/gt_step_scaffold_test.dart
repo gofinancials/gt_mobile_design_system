@@ -51,6 +51,21 @@ void main() {
       expect(find.text('body'), findsOneWidget);
     });
 
+    testWidgets('forwards headerSpacingPx to the page header', (tester) async {
+      await pumpStep(
+        tester,
+        const GtStepScaffold(
+          title: 'Step',
+          subtitle: 'Sub',
+          headerSpacingPx: 12,
+          body: GtText('body'),
+        ),
+      );
+
+      final header = tester.widget<GtPageHeader>(find.byType(GtPageHeader));
+      expect(header.spacingPx, 12);
+    });
+
     testWidgets('renders no ring and no pill by default', (tester) async {
       await pumpStep(
         tester,

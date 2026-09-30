@@ -15,8 +15,14 @@ class GtGuageChartCenter extends StatelessWidget {
   /// The optional secondary descriptive text displayed below the primary value.
   final String? footerText;
 
-  /// The optional color for the [valueText]. Defaults to the standard h5 text color.
+  /// The optional color for the [valueText]. Defaults to the standard h4 text color.
   final Color? valueColor;
+
+  /// Overrides the [valueText]'s style. Null preserves the default Heading 4.
+  ///
+  /// Replaces the default wholesale; an explicit [valueColor] still wins over
+  /// its colour.
+  final TextStyle? valueStyle;
 
   /// Overrides the pill's fill. Null preserves the default [GtPalette.bg.weak].
   final Color? pillColor;
@@ -37,6 +43,7 @@ class GtGuageChartCenter extends StatelessWidget {
     this.pillText,
     this.footerText,
     this.valueColor,
+    this.valueStyle,
     this.pillColor,
     this.pillTextStyle,
     this.footerStyle,
@@ -48,7 +55,11 @@ class GtGuageChartCenter extends StatelessWidget {
     final styles = context.textStyles;
     final palette = context.palette;
 
-    final valueStyle = styles.h4(color: valueColor, heightPx: 32);
+    final computedValueStyle = GtTextStyleOverrides.resolve(
+      valueStyle,
+      styles.h4(color: valueColor, heightPx: 32),
+      valueColor,
+    );
     final computedFooterStyle =
         footerStyle ?? styles.body2Xs(color: palette.text.soft);
     final pillStyle = pillTextStyle ?? styles.buttonXs(heightPx: 13.15);
@@ -74,7 +85,12 @@ class GtGuageChartCenter extends StatelessWidget {
             alignment: .center,
             borderRadius: context.borderRadiusFull,
           ),
-        GtText(valueText, style: valueStyle, maxLines: 1, textAlign: .center),
+        GtText(
+          valueText,
+          style: computedValueStyle,
+          maxLines: 1,
+          textAlign: .center,
+        ),
         if (footerText.hasValue)
           GtText(
             footerText!,

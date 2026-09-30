@@ -50,6 +50,37 @@ Widget buildGtDebitCardScreenUsecase(BuildContext context) {
     ),
     labelBuilder: (value) => value.$1,
   );
+  final imageAlignment = context.knobs.object.dropdown<Alignment>(
+    label: 'Image Alignment',
+    options: const [Alignment.centerRight, Alignment.center],
+    initialOption: Alignment.centerRight,
+    labelBuilder: (value) =>
+        value == Alignment.center ? 'center' : 'centerRight',
+  );
+  final imageWidth = context.knobs.doubleOrNull.slider(
+    label: 'Image Width',
+    min: 120,
+    max: 400,
+    divisions: 28,
+    initialValue: 358,
+    defaultToNull: true,
+  );
+  final imageHeight = context.knobs.doubleOrNull.slider(
+    label: 'Image Height',
+    min: 120,
+    max: 400,
+    divisions: 28,
+    initialValue: 280,
+    defaultToNull: true,
+  );
+  final titleSpacingPx = context.knobs.doubleOrNull.slider(
+    label: 'Title Spacing',
+    min: 0,
+    max: 32,
+    divisions: 16,
+    initialValue: 12,
+    defaultToNull: true,
+  );
   final buttonText = context.knobs.string(
     label: 'Button text',
     initialValue: 'continue',
@@ -61,7 +92,7 @@ Widget buildGtDebitCardScreenUsecase(BuildContext context) {
     labelBuilder: (value) => value.name,
   );
   final welcomeStyles = context.knobs.boolean(
-    label: 'Welcome Text Styles (40 / Body M)',
+    label: 'Welcome Text Styles (Display 3.5 / Body M)',
     initialValue: false,
   );
   final textured = context.knobs.boolean(
@@ -73,7 +104,7 @@ Widget buildGtDebitCardScreenUsecase(BuildContext context) {
   TextStyle? subtitleStyle;
   if (welcomeStyles) {
     final white = context.palette.staticColors.white;
-    titleStyle = context.textStyles.h3(color: white, heightPx: 40);
+    titleStyle = context.textStyles.d3_5(color: white);
     subtitleStyle = context.textStyles.bodyM(color: white);
   }
 
@@ -94,6 +125,10 @@ Widget buildGtDebitCardScreenUsecase(BuildContext context) {
     titleStyle: titleStyle,
     subtitleStyle: subtitleStyle,
     backgroundImage: backgroundImage,
+    imageAlignment: imageAlignment,
+    imageWidth: imageWidth,
+    imageHeight: imageHeight,
+    titleSpacingPx: titleSpacingPx,
     onClose: () => context.showToast('Closed', type: GtPillVariant.info),
     button: GtRaisedButton(
       text: buttonText,

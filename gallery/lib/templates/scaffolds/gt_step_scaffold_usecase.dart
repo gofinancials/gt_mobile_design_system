@@ -29,6 +29,7 @@ class _StepKnobs {
   final bool showBackButton;
   final bool showBottomAction;
   final bool tightBodySpacing;
+  final bool personalHeaderSpacing;
   final bool flexHeaderStyles;
 
   const _StepKnobs({
@@ -43,6 +44,7 @@ class _StepKnobs {
     required this.showBackButton,
     required this.showBottomAction,
     required this.tightBodySpacing,
+    required this.personalHeaderSpacing,
     required this.flexHeaderStyles,
   });
 
@@ -96,6 +98,10 @@ class _StepKnobs {
         label: 'Tight Body Spacing (16)',
         initialValue: false,
       ),
+      personalHeaderSpacing: context.knobs.boolean(
+        label: 'Personal Header Spacing (12)',
+        initialValue: false,
+      ),
       flexHeaderStyles: context.knobs.boolean(
         label: 'Flex Header Styles',
         initialValue: false,
@@ -104,6 +110,8 @@ class _StepKnobs {
   }
 
   double? get bodySpacingPx => tightBodySpacing ? 16 : null;
+
+  double? get headerSpacingPx => personalHeaderSpacing ? 12 : null;
 }
 
 /// The doc entry, which points at the full-screen use case.
@@ -131,7 +139,7 @@ class _StepScaffoldDoc extends StatelessWidget {
       code:
           '''
 GtStepScaffold(
-  title: "${knobs.title}",${knobs.showSubtitle ? '\n  subtitle: "${knobs.subtitle}",' : ''}${knobs.showProgress ? '\n  progress: ${knobs.progress},' : ''}${knobs.showHelp ? '\n  onHelp: () => openSupportSheet(),' : ''}${knobs.showBackButton ? '' : '\n  showBackButton: false,'}${knobs.bodySpacingPx == null ? '' : '\n  bodySpacingPx: 16,'}${knobs.flexHeaderStyles ? '\n  titleStyle: context.textStyles.h5(heightPx: 24),\n  subtitleStyle: context.textStyles.bodyM(\n    weight: .w500,\n    color: context.palette.text.sub,\n  ),' : ''}${knobs.showBottomAction ? '\n  bottomAction: GtRaisedButton(\n    text: "${knobs.actionLabel}",\n    onPressed: goToNextStep,\n  ),' : ''}
+  title: "${knobs.title}",${knobs.showSubtitle ? '\n  subtitle: "${knobs.subtitle}",' : ''}${knobs.showProgress ? '\n  progress: ${knobs.progress},' : ''}${knobs.showHelp ? '\n  onHelp: () => openSupportSheet(),' : ''}${knobs.showBackButton ? '' : '\n  showBackButton: false,'}${knobs.bodySpacingPx == null ? '' : '\n  bodySpacingPx: 16,'}${knobs.headerSpacingPx == null ? '' : '\n  headerSpacingPx: 12,'}${knobs.flexHeaderStyles ? '\n  titleStyle: context.textStyles.h5(heightPx: 24),\n  subtitleStyle: context.textStyles.bodyM(\n    weight: .w500,\n    color: context.palette.text.sub,\n  ),' : ''}${knobs.showBottomAction ? '\n  bottomAction: GtRaisedButton(\n    text: "${knobs.actionLabel}",\n    onPressed: goToNextStep,\n  ),' : ''}
   body: GtTextField(label: "BVN", controller: bvnController),
 );''',
       child: const GtEmptyStateCard(
@@ -221,6 +229,7 @@ class _StepScaffoldPreviewState extends State<_StepScaffoldPreview> {
           : null,
       showBackButton: knobs.showBackButton,
       bodySpacingPx: knobs.bodySpacingPx,
+      headerSpacingPx: knobs.headerSpacingPx,
       titleStyle: knobs.flexHeaderStyles
           ? context.textStyles.h5(heightPx: 24)
           : null,

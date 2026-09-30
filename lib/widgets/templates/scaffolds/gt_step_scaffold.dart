@@ -101,6 +101,13 @@ class GtStepScaffold extends GtStatelessWidget {
   /// form step wants. A denser step — a column of chevron cards — passes `16`.
   final double? bodySpacingPx;
 
+  /// The vertical gap between the [title] and the [subtitle], in **design
+  /// pixels**.
+  ///
+  /// Passed through to [GtPageHeader.spacingPx]. When null the header keeps
+  /// its own default, [BuildContext.spacingBase] (~8dp).
+  final double? headerSpacingPx;
+
   /// Overrides the [title]'s style. Null preserves [GtPageHeader]'s default.
   ///
   /// Passed through to [GtPageHeader.titleStyle], which replaces its default
@@ -125,6 +132,7 @@ class GtStepScaffold extends GtStatelessWidget {
     this.helpTextColor,
     this.showBackButton = true,
     this.bodySpacingPx,
+    this.headerSpacingPx,
     this.titleStyle,
     this.subtitleStyle,
   }) : assert(
@@ -208,6 +216,7 @@ class GtStepScaffold extends GtStatelessWidget {
             GtPageHeader(
               title: title,
               subtitle: subtitle,
+              spacingPx: headerSpacingPx,
               titleStyle: titleStyle,
               subtitleStyle: subtitleStyle,
             ),
