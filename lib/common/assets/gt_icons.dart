@@ -716,6 +716,10 @@ class GtIcons {
     fontPackage: _p,
   );
 
+  static const refreshCard = IconData(0xf188, fontFamily: _f, fontPackage: _p);
+  static const coins = IconData(0xf189, fontFamily: _f, fontPackage: _p);
+  static const addCircle = IconData(0xf18a, fontFamily: _f, fontPackage: _p);
+
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
   /// This is particularly useful for cataloging, testing, or building
@@ -1113,5 +1117,8 @@ class GtIcons {
     (label: 'busSolid', value: busSolid),
     (label: 'boltSolid', value: boltSolid),
     (label: 'bankStatementSolid', value: bankStatementSolid),
+    (label: 'refreshCard', value: refreshCard),
+    (label: 'coins', value: coins),
+    (label: 'addCircle', value: addCircle),
   ];
 }

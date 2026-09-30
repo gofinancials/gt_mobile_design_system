@@ -18,12 +18,28 @@ class GtGuageChartCenter extends StatelessWidget {
   /// The optional color for the [valueText]. Defaults to the standard h5 text color.
   final Color? valueColor;
 
+  /// Overrides the pill's fill. Null preserves the default [GtPalette.bg.weak].
+  final Color? pillColor;
+
+  /// Overrides the [pillText]'s style. Null preserves the default.
+  ///
+  /// Replaces the default wholesale, including its colour.
+  final TextStyle? pillTextStyle;
+
+  /// Overrides the [footerText]'s style. Null preserves the default.
+  ///
+  /// Replaces the default wholesale, including its colour.
+  final TextStyle? footerStyle;
+
   /// Creates a new [GtGuageChartCenter] with the given [valueText].
   const GtGuageChartCenter(
     this.valueText, {
     this.pillText,
     this.footerText,
     this.valueColor,
+    this.pillColor,
+    this.pillTextStyle,
+    this.footerStyle,
     super.key,
   });
 
@@ -33,8 +49,9 @@ class GtGuageChartCenter extends StatelessWidget {
     final palette = context.palette;
 
     final valueStyle = styles.h4(color: valueColor, heightPx: 32);
-    final footerStyle = styles.body2Xs(color: palette.text.soft);
-    final pillStyle = styles.buttonXs(heightPx: 13.15);
+    final computedFooterStyle =
+        footerStyle ?? styles.body2Xs(color: palette.text.soft);
+    final pillStyle = pillTextStyle ?? styles.buttonXs(heightPx: 13.15);
 
     return Column(
       mainAxisAlignment: .center,
@@ -50,7 +67,7 @@ class GtGuageChartCenter extends StatelessWidget {
               vertical: 6.px,
             ),
             variant: .neutral,
-            bgColor: palette.bg.weak,
+            bgColor: pillColor ?? palette.bg.weak,
             borderColor: palette.bg.soft,
             textStyle: pillStyle,
             textColor: palette.text.strong,
@@ -61,7 +78,7 @@ class GtGuageChartCenter extends StatelessWidget {
         if (footerText.hasValue)
           GtText(
             footerText!,
-            style: footerStyle,
+            style: computedFooterStyle,
             textAlign: .center,
             maxLines: 1,
           ),

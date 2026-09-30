@@ -6,7 +6,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// @category Organisms
 class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
+  /// The centred title, drawn in uppercase. Null leaves the title column empty.
   final String? _title;
+
+  /// An optional widget drawn before the [_title], such as an icon or avatar.
   final Widget? _titleLeading;
 
   /// An optional widget rendered at the leading edge, opposite the cancel
@@ -33,9 +36,13 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
 
   /// Creates an extended [GtModalAppBar] that includes a back button,
   /// a centered title, and an optional trailing [action] widget.
+  ///
+  /// The title is drawn in uppercase in [style], which falls back to
+  /// [GtTextStyles.button] when null.
   const factory GtModalAppBar.extended({
     required String title,
     required Widget? action,
+    TextStyle? style,
     Key? key,
   }) = _GtExtendedModalAppBar;
 
@@ -102,12 +109,25 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   }
 }
 
-/// Internal implementation for the extended modal app bar.
+/// A private [GtModalAppBar] with a back button, a centred title and an
+/// optional trailing action, built by [GtModalAppBar.extended].
 class _GtExtendedModalAppBar extends GtModalAppBar {
+  /// The centred title, drawn in uppercase.
   final String title;
+
+  /// An optional widget aligned to the trailing edge.
   final Widget? action;
 
-  const _GtExtendedModalAppBar({super.key, required this.title, this.action});
+  /// Overrides the [title]'s style. Null preserves [GtTextStyles.button].
+  final TextStyle? style;
+
+  /// Creates a [_GtExtendedModalAppBar].
+  const _GtExtendedModalAppBar({
+    super.key,
+    required this.title,
+    this.action,
+    this.style,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +150,7 @@ class _GtExtendedModalAppBar extends GtModalAppBar {
                   title.upper,
                   textAlign: .center,
                   maxLines: 1,
-                  style: context.textStyles.button(),
+                  style: style ?? context.textStyles.button(),
                   overflow: .ellipsis,
                   headingLevel: 1,
                 ),
@@ -144,14 +164,26 @@ class _GtExtendedModalAppBar extends GtModalAppBar {
   }
 }
 
-/// Internal implementation for the extended modal app bar.
+/// A private [GtModalAppBar] with a leading, expanded title and an optional
+/// trailing action, built by [GtModalAppBar.title].
 class _GtTitleModalAppBar extends GtModalAppBar {
+  /// The title, cased by [titleCase].
   final String title;
+
+  /// Overrides the [title]'s style. Null preserves [GtTextStyles.button].
   final TextStyle? style;
+
+  /// How the [title] is cased. Null preserves [GtTextCase.upper].
   final GtTextCase? titleCase;
+
+  /// An optional widget drawn after the title.
   final Widget? action;
+
+  /// The gap between the title and the [action], in logical pixels. Null
+  /// preserves [BuildContext.spacingMd].
   final double? horizontalSpacing;
 
+  /// Creates a [_GtTitleModalAppBar].
   const _GtTitleModalAppBar({
     super.key,
     required this.title,

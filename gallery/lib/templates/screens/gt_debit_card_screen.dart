@@ -54,11 +54,46 @@ Widget buildGtDebitCardScreenUsecase(BuildContext context) {
     label: 'Button text',
     initialValue: 'continue',
   );
+  final textAlign = context.knobs.object.dropdown<TextAlign>(
+    label: 'Text Align',
+    options: const [TextAlign.start, TextAlign.center],
+    initialOption: TextAlign.start,
+    labelBuilder: (value) => value.name,
+  );
+  final welcomeStyles = context.knobs.boolean(
+    label: 'Welcome Text Styles (40 / Body M)',
+    initialValue: false,
+  );
+  final textured = context.knobs.boolean(
+    label: 'Textured Background',
+    initialValue: false,
+  );
+
+  TextStyle? titleStyle;
+  TextStyle? subtitleStyle;
+  if (welcomeStyles) {
+    final white = context.palette.staticColors.white;
+    titleStyle = context.textStyles.h3(color: white, heightPx: 40);
+    subtitleStyle = context.textStyles.bodyM(color: white);
+  }
+
+  DecorationImage? backgroundImage;
+  if (textured) {
+    backgroundImage = const DecorationImage(
+      image: NetworkImage(GtNetworkImages.avatarTexture1),
+      fit: BoxFit.cover,
+      opacity: .24,
+    );
+  }
 
   return GtDebitCardScreen(
     image: illustration.$2,
     title: title,
     subtitle: subtitle,
+    textAlign: textAlign,
+    titleStyle: titleStyle,
+    subtitleStyle: subtitleStyle,
+    backgroundImage: backgroundImage,
     onClose: () => context.showToast('Closed', type: GtPillVariant.info),
     button: GtRaisedButton(
       text: buttonText,

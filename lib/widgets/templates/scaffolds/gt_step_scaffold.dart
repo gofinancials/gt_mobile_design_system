@@ -101,6 +101,18 @@ class GtStepScaffold extends GtStatelessWidget {
   /// form step wants. A denser step — a column of chevron cards — passes `16`.
   final double? bodySpacingPx;
 
+  /// Overrides the [title]'s style. Null preserves [GtPageHeader]'s default.
+  ///
+  /// Passed through to [GtPageHeader.titleStyle], which replaces its default
+  /// wholesale.
+  final TextStyle? titleStyle;
+
+  /// Overrides the [subtitle]'s style. Null preserves [GtPageHeader]'s default.
+  ///
+  /// Passed through to [GtPageHeader.subtitleStyle], which replaces its default
+  /// wholesale.
+  final TextStyle? subtitleStyle;
+
   /// Creates a [GtStepScaffold].
   const GtStepScaffold({
     super.key,
@@ -113,6 +125,8 @@ class GtStepScaffold extends GtStatelessWidget {
     this.helpTextColor,
     this.showBackButton = true,
     this.bodySpacingPx,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : assert(
          progress == null || (progress >= 0 && progress <= 1),
          'GtStepScaffold.progress is a fraction of the journey, from 0 to 1.',
@@ -191,7 +205,12 @@ class GtStepScaffold extends GtStatelessWidget {
           crossAxisAlignment: .stretch,
           spacing: spacing,
           children: [
-            GtPageHeader(title: title, subtitle: subtitle),
+            GtPageHeader(
+              title: title,
+              subtitle: subtitle,
+              titleStyle: titleStyle,
+              subtitleStyle: subtitleStyle,
+            ),
             body,
             ...trailingSpace,
           ],

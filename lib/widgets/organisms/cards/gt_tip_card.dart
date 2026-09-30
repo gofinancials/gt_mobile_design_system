@@ -44,7 +44,9 @@ class GtTipCard extends GtStatelessWidget {
   final GtCardVariant variant;
 
   /// A callback function that is invoked when the close button is tapped.
-  final OnPressed onClose;
+  ///
+  /// Null draws no close button, for a notice the customer cannot dismiss.
+  final OnPressed? onClose;
 
   /// An optional custom text style for the [title].
   final TextStyle? titleStyle;
@@ -65,7 +67,7 @@ class GtTipCard extends GtStatelessWidget {
     this.subtitle,
     this.hidden = false,
     this.variant = .away,
-    required this.onClose,
+    this.onClose,
     this.titleStyle,
     this.subtitleStyle,
     this.icon = GtIcons.circleInfo,
@@ -129,11 +131,12 @@ class GtTipCard extends GtStatelessWidget {
                           ),
                         ),
                       ),
-                      GtCancelButton(
-                        onTap: onClose,
-                        size: .xSmall,
-                        color: palette.text.soft,
-                      ),
+                      if (onClose case OnPressed close)
+                        GtCancelButton(
+                          onTap: close,
+                          size: .xSmall,
+                          color: palette.text.soft,
+                        ),
                     ],
                   ),
                   if (subtitle.hasValue)

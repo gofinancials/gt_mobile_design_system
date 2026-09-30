@@ -249,6 +249,28 @@ void main() {
       expect(find.byType(GtBackButton), findsNothing);
     });
 
+    testWidgets('passes title and subtitle styles to the page header', (
+      tester,
+    ) async {
+      const titleStyle = TextStyle(fontSize: 24, height: 1);
+      const subtitleStyle = TextStyle(fontSize: 16, color: Colors.grey);
+
+      await pumpStep(
+        tester,
+        const GtStepScaffold(
+          title: 'Step',
+          subtitle: 'Supporting line',
+          titleStyle: titleStyle,
+          subtitleStyle: subtitleStyle,
+          body: GtText('body'),
+        ),
+      );
+
+      final header = tester.widget<GtPageHeader>(find.byType(GtPageHeader));
+      expect(header.titleStyle, titleStyle);
+      expect(header.subtitleStyle, subtitleStyle);
+    });
+
     testWidgets('rejects a progress value outside 0..1', (tester) async {
       expect(
         () => GtStepScaffold(

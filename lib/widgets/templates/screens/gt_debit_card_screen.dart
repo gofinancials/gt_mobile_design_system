@@ -40,6 +40,29 @@ class GtDebitCardScreen extends GtStatelessWidget {
   /// Defaults to the semantic white color from the active palette.
   final Color? textColor;
 
+  /// An optional image painted over the [backgroundColor], such as a texture.
+  ///
+  /// It fills the whole screen, behind the illustration, and the colour shows
+  /// through wherever the image is transparent.
+  final DecorationImage? backgroundImage;
+
+  /// Overrides the [title]'s style. Null preserves the default Display 1.
+  ///
+  /// Replaces the default wholesale; an explicit [textColor] still wins over
+  /// its colour.
+  final TextStyle? titleStyle;
+
+  /// Overrides the [subtitle]'s style. Null preserves the default Body S.
+  ///
+  /// Replaces the default wholesale; an explicit [textColor] still wins over
+  /// its colour.
+  final TextStyle? subtitleStyle;
+
+  /// Horizontal alignment of the [title] and [subtitle].
+  ///
+  /// Defaults to [TextAlign.start].
+  final TextAlign textAlign;
+
   /// Creates a [GtDebitCardScreen].
   const GtDebitCardScreen({
     super.key,
@@ -50,6 +73,10 @@ class GtDebitCardScreen extends GtStatelessWidget {
     this.textColor,
     this.onClose,
     this.backgroundColor,
+    this.backgroundImage,
+    this.titleStyle,
+    this.subtitleStyle,
+    this.textAlign = .start,
   });
 
   @override
@@ -72,6 +99,10 @@ class GtDebitCardScreen extends GtStatelessWidget {
       ),
       body: Stack(
         children: [
+          if (backgroundImage case DecorationImage image)
+            Positioned.fill(
+              child: DecoratedBox(decoration: BoxDecoration(image: image)),
+            ),
           Positioned(
             right: 0,
             top: context.dp(140.px),
@@ -95,18 +126,26 @@ class GtDebitCardScreen extends GtStatelessWidget {
                   children: [
                     GtText(
                       title.upper,
-                      textAlign: .start,
-                      style: context.textStyles.d1(
-                        color: computedTextColor,
-                        heightPx: 52,
+                      textAlign: textAlign,
+                      style: GtTextStyleOverrides.resolve(
+                        titleStyle,
+                        context.textStyles.d1(
+                          color: computedTextColor,
+                          heightPx: 52,
+                        ),
+                        textColor,
                       ),
                     ),
                     GtGap.yLg(),
                     // Subtitle block.
                     GtText(
                       subtitle.capitalise(),
-                      textAlign: .start,
-                      style: context.textStyles.bodyS(color: computedTextColor),
+                      textAlign: textAlign,
+                      style: GtTextStyleOverrides.resolve(
+                        subtitleStyle,
+                        context.textStyles.bodyS(color: computedTextColor),
+                        textColor,
+                      ),
                     ),
                     GtGap.yXl(),
                     button,

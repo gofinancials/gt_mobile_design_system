@@ -30,6 +30,9 @@ class GtNetworkImages {
   /// Image URL for the cash illustration.
   static const String clipboardCheck = '$_baseUrl/ClipboardCheck.webp';
 
+  /// Image URL for the cash illustration.
+  static const String clipboardCheckTeal = '$_baseUrl/ClipBoardCheckTeal.webp';
+
   /// Image URL for the charity illustration.
   static const String heart = '$_baseUrl/Charity.webp';
 
@@ -235,6 +238,7 @@ class GtNetworkImages {
     (label: 'card', value: card),
     (label: 'cash', value: cash),
     (label: 'clipboardCheck', value: clipboardCheck),
+    (label: 'clipboardCheckTeal', value: clipboardCheckTeal),
     (label: 'heart', value: heart),
     (label: 'emergency', value: emergency),
     (label: 'fun', value: fun),

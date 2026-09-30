@@ -18,14 +18,19 @@ class GtSectionHeader extends GtStatelessWidget {
   /// Often used for actions related to the section, like a text button or an icon.
   final Widget? trailing;
 
-  /// The main title text of the header.
-  ///
-  /// This text is automatically converted to uppercase.
+  /// The main title text of the header, cased by [titleCase].
   final String title;
+
+  /// How the [title] is cased before it is drawn.
+  ///
+  /// Defaults to [GtTextCase.upper]. A header drawn in sentence case passes
+  /// [GtTextCase.none] to keep the title as written.
+  final GtTextCase titleCase;
 
   /// Creates a [GtSectionHeader].
   const GtSectionHeader(
     this.title, {
+    this.titleCase = .upper,
     this.style,
     this.textColor,
     this.trailing,
@@ -34,8 +39,16 @@ class GtSectionHeader extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final casedTitle = switch (titleCase) {
+      .upper => title.upper,
+      .lower => title.lower,
+      .sentence => title.capitalise(true),
+      .title => title.capitalise(),
+      .none => title,
+    };
+
     Widget child = GtText(
-      title.upper,
+      casedTitle,
       style: GtTextStyleOverrides.resolve(
         style,
         context.textStyles.buttonS(),
