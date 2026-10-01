@@ -36,8 +36,12 @@ class GtGoalProgressListTile extends GtStatelessWidget {
   /// An optional callback triggered when the edit button is tapped. If null, the button is hidden.
   final OnPressed? onEdit;
 
-  /// The varinat of the button to be used for the edit action. Defaults to [GtButtonVariant.primary].
+  /// The variant of the button to be used for the edit action. Defaults to [GtButtonVariant.primary].
   final GtButtonVariant buttonVariant;
+
+  /// Overrides the color of the edit button's label. Null preserves the color
+  /// of the [buttonVariant].
+  final Color? buttonTextColor;
 
   /// Whether to wrap the tile in a [GtCard] with padding and rounded corners.
   ///
@@ -72,6 +76,7 @@ class GtGoalProgressListTile extends GtStatelessWidget {
     this.progressColor,
     this.trackColor,
     this.buttonVariant = .primary,
+    this.buttonTextColor,
   });
 
   /// Calculates the ratio of the utilized value to the maximum, capped at 1.0
@@ -123,6 +128,7 @@ class GtGoalProgressListTile extends GtStatelessWidget {
             },
             text: editText ?? "edit".tr(),
             variant: buttonVariant,
+            textColor: buttonTextColor,
             size: .small,
             alignment: .centerLeft,
             contentPadding: .zero,

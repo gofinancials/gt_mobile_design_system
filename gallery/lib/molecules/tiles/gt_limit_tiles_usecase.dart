@@ -115,6 +115,10 @@ Widget playgroundGtGoalProgressListTileUseCase(BuildContext context) {
     initialOption: GtButtonVariant.primary,
     labelBuilder: (v) => v.name,
   );
+  final buttonTextColor = context.knobs.colorOrNull(
+    label: 'Button Text Color',
+    initialValue: null,
+  );
   final asCard = context.knobs.boolean(label: 'As Card', initialValue: true);
 
   return GtWidgetDocPage(
@@ -129,6 +133,7 @@ GtGoalProgressListTile(
   editText: "$editText",
   onEdit: ${showEdit ? '() {}' : 'null'},
   buttonVariant: GtButtonVariant.${buttonVariant.name},
+  ${buttonTextColor == null ? '' : 'buttonTextColor: Color(0x${buttonTextColor.toARGB32().toRadixString(16)}),'}
   asCard: $asCard,
 )''',
     child: GtGoalProgressListTile(
@@ -137,6 +142,7 @@ GtGoalProgressListTile(
       editText: editText,
       onEdit: showEdit ? () {} : null,
       buttonVariant: buttonVariant,
+      buttonTextColor: buttonTextColor,
       asCard: asCard,
     ),
   );
