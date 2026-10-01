@@ -1343,6 +1343,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                 ],
               ),
               _widgetbook.WidgetbookComponent(
+                name: 'GtGoalProgressListTile',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtGoalProgressListTile',
+                    builder: _gallery_molecules_tiles_gt_limit_tiles_usecase
+                        .playgroundGtGoalProgressListTileUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
                 name: 'GtIconListTile',
                 useCases: [
                   _widgetbook.WidgetbookUseCase(

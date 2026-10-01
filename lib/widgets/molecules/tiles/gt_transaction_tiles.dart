@@ -163,12 +163,20 @@ class GtTransactionListTile extends GtStatelessWidget {
   final bool maskAmount;
 
   /// Optional custom style override for the [name] text.
+  ///
+  /// Defaults to [GtTextStyles.labelS] at weight 500, with no tracking.
   final TextStyle? nameStyle;
 
   /// Optional custom style override for the [subtitle] text.
+  ///
+  /// Defaults to [GtTextStyles.bodyXs] at weight 500 in the sub text color,
+  /// with no tracking.
   final TextStyle? subtitleStyle;
 
   /// Optional custom style override for the [amount] text.
+  ///
+  /// Defaults to [GtTextStyles.labelS] at weight 600 in the debit or credit
+  /// color, with no tracking.
   final TextStyle? amountStyle;
 
   /// Determines the maximum number of lines for the name and amount.
@@ -232,8 +240,9 @@ class GtTransactionListTile extends GtStatelessWidget {
       icon = GtSquareConstrainedBox(leadingSize, child: leading);
     }
 
-    final valueStyle = style.subHeadS(color: amountColor, weight: .w600);
-    final subStyle = style.subHeadXs(color: palette.text.sub);
+    final titleStyle = style.labelS(weight: .w500);
+    final valueStyle = style.labelS(color: amountColor, weight: .w600);
+    final subStyle = style.bodyXs(color: palette.text.sub, weight: .w500);
 
     return GtInkWell(
       role: .button,
@@ -257,7 +266,7 @@ class GtTransactionListTile extends GtStatelessWidget {
                       Expanded(
                         child: GtText(
                           name,
-                          style: nameStyle ?? style.subHeadS(),
+                          style: nameStyle ?? titleStyle,
                           textAlign: .start,
                           overflow: .ellipsis,
                           maxLines: maxLines,
