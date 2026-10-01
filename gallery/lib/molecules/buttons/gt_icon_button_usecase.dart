@@ -33,6 +33,11 @@ Widget playgroundGtIconButtonUseCase(BuildContext context) {
     initialValue: false,
   );
 
+  final enableGlassEffect = context.knobs.boolean(
+    label: 'Glass Effect',
+    initialValue: false,
+  );
+
   final codeSnippet =
       '''
 GtIconButton(
@@ -42,6 +47,7 @@ GtIconButton(
   size: GtButtonSize.${size.name},
   isDisabled: $isDisabled,
   isLoading: $isLoading,
+  ${enableGlassEffect ? 'enableGlassEffect: true,' : ''}
   onPressed: () {},
 )''';
 
@@ -52,15 +58,19 @@ GtIconButton(
 
 <b>When to use:</b> Toolbar actions, quick icon options, floating actions, or close/dismiss buttons.''',
     code: codeSnippet,
-    child: GtIconButton(
-      icon: GtIcons.add,
-      variant: variant,
-      shape: shape,
-      size: size,
-      isDisabled: isDisabled,
-      isLoading: isLoading,
-      alignment: .center,
-      onPressed: () {},
+    child: GalleryGlassBackdrop(
+      enabled: enableGlassEffect,
+      child: GtIconButton(
+        icon: GtIcons.add,
+        variant: variant,
+        shape: shape,
+        size: size,
+        isDisabled: isDisabled,
+        isLoading: isLoading,
+        alignment: .center,
+        onPressed: () {},
+        enableGlassEffect: enableGlassEffect,
+      ),
     ),
   );
 }

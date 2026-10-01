@@ -91,6 +91,9 @@ class GtIconButton extends GtButton {
     /// Scale applied while pressed.
     super.pressedScale = GtMotion.iconPressScale,
 
+    /// Whether the button is drawn as raised glass.
+    super.enableGlassEffect = false,
+
     /// Custom padding to apply inside the button.
     this.contentPadding,
 
@@ -242,6 +245,7 @@ class GtIconButton extends GtButton {
           .pill => 12.0,
           .xsmall => 14.0,
           .small => 16.0,
+          .regular => 20.0,
           .medium => 22.0,
           _ => 24.0,
         };
@@ -302,6 +306,18 @@ class GtIconButton extends GtButton {
               onPressed();
             },
     );
+
+    if (enableGlassEffect) {
+      child = GtGlassSurface(
+        shape: switch (shape) {
+          .round => const CircleBorder(),
+          .square => RoundedRectangleBorder(
+            borderRadius: borderRadius(context),
+          ),
+        },
+        child: child,
+      );
+    }
 
     if (alignment != null) {
       child = Align(alignment: alignment!, child: child);

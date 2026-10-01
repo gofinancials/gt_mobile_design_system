@@ -5,5 +5,6 @@ export 'motion/motion.dart';
 export 'pallette.dart';
 export 'shadows.dart';
 export 'spacers/spacers.dart';
+export 'surfaces/surfaces.dart';
 export 'theming.dart';
 export 'typography/typography.dart';

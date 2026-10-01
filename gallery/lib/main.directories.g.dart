@@ -51,6 +51,8 @@ import 'package:gallery/atoms/spacers/gt_divider.dart'
     as _gallery_atoms_spacers_gt_divider;
 import 'package:gallery/atoms/spacers/gt_gap.dart'
     as _gallery_atoms_spacers_gt_gap;
+import 'package:gallery/atoms/surfaces/gt_glass_surface_usecase.dart'
+    as _gallery_atoms_surfaces_gt_glass_surface_usecase;
 import 'package:gallery/atoms/theming.dart' as _gallery_atoms_theming;
 import 'package:gallery/atoms/typography/gt_editable_text.dart'
     as _gallery_atoms_typography_gt_editable_text;
@@ -695,6 +697,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                   _widgetbook.WidgetbookUseCase(
                     name: 'Gaps',
                     builder: _gallery_atoms_spacers_gt_gap.playgroundGapUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'surfaces',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtGlassSurface',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtGlassSurface',
+                    builder: _gallery_atoms_surfaces_gt_glass_surface_usecase
+                        .playgroundGtGlassSurfaceUseCase,
                   ),
                 ],
               ),

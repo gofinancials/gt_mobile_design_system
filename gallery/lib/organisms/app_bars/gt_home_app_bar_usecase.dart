@@ -16,7 +16,7 @@ Widget playgroundGtHomeAppBarUseCase(BuildContext context) {
   );
   final showSearch = context.knobs.boolean(
     label: 'Show Search Button',
-    initialValue: true,
+    initialValue: false,
   );
   final showHide = context.knobs.boolean(
     label: 'Show Hide Button',
@@ -24,17 +24,17 @@ Widget playgroundGtHomeAppBarUseCase(BuildContext context) {
   );
   final showNotification = context.knobs.boolean(
     label: 'Show Notification Button',
-    initialValue: true,
+    initialValue: false,
   );
   final showToggleAccounts = context.knobs.boolean(
     label: 'Show Account Toggle',
-    initialValue: false,
+    initialValue: true,
   );
 
   return GtWidgetDocPage(
     title: 'GtHomeAppBar',
     description:
-        'A specialized app bar for home dashboards displaying user avatar, name, search triggers, and notifications. Every icon-only button takes a localised semantics label so screen readers can name it.',
+        'A specialized app bar for home dashboards displaying user avatar, name, search triggers, and notifications. Every button is drawn as raised glass, 36pt tall, over the primary alpha-10 fill. Every icon-only button takes a localised semantics label so screen readers can name it.',
     code:
         '''
 GtHomeAppBar(
@@ -46,20 +46,22 @@ GtHomeAppBar(
   ${showNotification ? 'onClickNotification: () {},\n  notificationSemanticsLabel: "Notifications",' : ''}
   ${showToggleAccounts ? 'onToggleAccounts: () {},\n  toggleAccountText: "All Accounts",\n  toggleAccountSemanticsLabel: "Switch account, All Accounts",' : ''}
 )''',
-    child: GtHomeAppBar(
-      userFullName: userFullName,
-      onClickAvatar: () {},
-      onClickHelp: showHelp ? () {} : null,
-      helpSemanticsLabel: 'Help',
-      onClickSearch: showSearch ? () {} : null,
-      searchSemanticsLabel: 'Search',
-      onClickHide: showHide ? () {} : null,
-      hideSemanticsLabel: 'Hide balances',
-      onClickNotification: showNotification ? () {} : null,
-      notificationSemanticsLabel: 'Notifications',
-      onToggleAccounts: showToggleAccounts ? () {} : null,
-      toggleAccountText: 'All Accounts',
-      toggleAccountSemanticsLabel: 'Switch account, All Accounts',
+    child: GalleryGlassBackdrop(
+      child: GtHomeAppBar(
+        userFullName: userFullName,
+        onClickAvatar: () {},
+        onClickHelp: showHelp ? () {} : null,
+        helpSemanticsLabel: 'Help',
+        onClickSearch: showSearch ? () {} : null,
+        searchSemanticsLabel: 'Search',
+        onClickHide: showHide ? () {} : null,
+        hideSemanticsLabel: 'Hide balances',
+        onClickNotification: showNotification ? () {} : null,
+        notificationSemanticsLabel: 'Notifications',
+        onToggleAccounts: showToggleAccounts ? () {} : null,
+        toggleAccountText: 'All Accounts',
+        toggleAccountSemanticsLabel: 'Switch account, All Accounts',
+      ),
     ),
   );
 }

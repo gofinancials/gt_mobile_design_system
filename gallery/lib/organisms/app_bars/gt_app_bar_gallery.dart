@@ -21,9 +21,16 @@ Widget _withGradient(BuildContext context, bool enabled, Widget child) {
 
 @widgetbook.UseCase(name: 'GtHomeAppbarGallery', type: GtHomeAppBar)
 Widget buildGtHomeAppbarUsecase(BuildContext context) {
-  final showGradient = context.knobs.boolean(label: "Show Gradient");
+  final showGradient = context.knobs.boolean(
+    label: "Show Gradient",
+    initialValue: true,
+  );
   return Scaffold(
     appBar: GtHomeAppBar(
+      onClickHelp: () {},
+      helpSemanticsLabel: 'Help',
+      onToggleAccounts: () {},
+      toggleAccountText: 'All Accounts',
       onClickSearch: () {},
       searchSemanticsLabel: 'Search',
       onClickHide: () {},

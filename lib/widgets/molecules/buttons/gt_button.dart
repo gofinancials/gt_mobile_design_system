@@ -10,8 +10,12 @@ enum GtButtonSize {
   /// An extra small button with a baseline height of 28.
   xsmall(28),
 
-  /// A small button with a baseline height of 36.
+  /// A small button with a baseline height of 32.
   small(32),
+
+  /// A regular button with a baseline height of 36, between [small] and
+  /// [medium].
+  regular(36),
 
   /// A medium button with a baseline height of 40.
   medium(40),
@@ -114,6 +118,12 @@ abstract class GtButton extends GtStatelessWidget {
   /// Whether changes to the button label use a short directional transition.
   final bool enableLabelAnimation;
 
+  /// Whether the button is drawn as raised glass: a frosted backdrop and a
+  /// light rim over its fill, via [GtGlassSurface].
+  ///
+  /// Only [GtIconButton] and [GtRaisedButton] honour it.
+  final bool enableGlassEffect;
+
   /// An optional custom color to override the default background color of the button variant.
   final Color? color;
 
@@ -146,6 +156,7 @@ abstract class GtButton extends GtStatelessWidget {
     this.enableScaleEffect = true,
     this.pressedScale = GtMotion.buttonPressScale,
     this.enableLabelAnimation = true,
+    this.enableGlassEffect = false,
     this.textColor,
     this.alignment,
     this.semanticLabel,
@@ -213,6 +224,7 @@ abstract class GtButton extends GtStatelessWidget {
       .pill => Size(width ?? context.dp(52.px), height),
       .xsmall => Size(width ?? context.dp(67.px), height),
       .small => Size(width ?? context.dp(68.px), height),
+      .regular => Size(width ?? context.dp(72.px), height),
       .medium => Size(width ?? context.dp(80.px), height),
       .large => Size(width ?? context.dp(120.px), height),
       .xlarge => Size(width ?? context.dp(160.px), height),
@@ -231,6 +243,7 @@ abstract class GtButton extends GtStatelessWidget {
     return switch (size) {
       .pill => i.symmetricDp(horizontal: 6.px),
       .xsmall || .small => i.symmetricDp(horizontal: 10.px),
+      .regular => i.symmetricDp(horizontal: 12.px),
       .medium => i.symmetricDp(horizontal: 16.px),
       .large => i.symmetricDp(horizontal: 20.px),
       .xlarge => i.symmetricDp(horizontal: 24.px),
@@ -242,7 +255,7 @@ abstract class GtButton extends GtStatelessWidget {
     if (cornerRadius case BorderRadius radius) return radius;
 
     final radius = switch (size) {
-      .large || .xlarge || .medium => 10,
+      .large || .xlarge || .medium || .regular => 10,
       _ => 6,
     };
     return BorderRadius.circular(context.dp(radius.px));
