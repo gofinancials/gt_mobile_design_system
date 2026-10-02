@@ -21,23 +21,34 @@ Widget playgroundGtNotificationCardUseCase(BuildContext context) {
     labelBuilder: (v) => v.name,
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtNotificationCard',
     description:
         'A critical message notification card that displays alert state colors.',
-    code:
-        '''
+    code: isSkeleton
+        ? '''GtNotificationCard.skeleton(
+  // Neutral by default; pass a variant to tint it.
+  // variant: GtNotificationVariant.${variant.name},
+)'''
+        : '''
 GtNotificationCard(
   title: "$title",
   subtitle: "$subtitle",
   variant: GtNotificationVariant.${variant.name},
   onClose: () {},
 )''',
-    child: GtNotificationCard(
-      title: title,
-      subtitle: subtitle,
-      variant: variant,
-      onClose: () {},
-    ),
+    child: isSkeleton
+        ? const GtNotificationCard.skeleton()
+        : GtNotificationCard(
+            title: title,
+            subtitle: subtitle,
+            variant: variant,
+            onClose: () {},
+          ),
   );
 }

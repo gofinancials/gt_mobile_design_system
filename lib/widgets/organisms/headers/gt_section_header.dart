@@ -37,6 +37,10 @@ class GtSectionHeader extends GtStatelessWidget {
     super.key,
   });
 
+  /// Creates a skeleton of a section header, standing in for one whose
+  /// title is still loading.
+  const factory GtSectionHeader.skeleton({Key? key}) = _GtSectionHeaderSkeleton;
+
   @override
   Widget build(BuildContext context) {
     final casedTitle = switch (titleCase) {
@@ -142,6 +146,11 @@ class GtTransactionGroupHeader extends GtStatelessWidget {
   }) : _sum = null,
        _trailing = trailing;
 
+  /// Creates a skeleton of a group header with an aggregate amount,
+  /// standing in for one whose group is still loading.
+  const factory GtTransactionGroupHeader.skeleton({Key? key}) =
+      _GtTransactionGroupHeaderSkeleton;
+
   @override
   Widget build(BuildContext context) {
     final defaultStyle = switch (highlighted) {
@@ -166,6 +175,35 @@ class GtTransactionGroupHeader extends GtStatelessWidget {
         ),
         ?trailing,
       ],
+    );
+  }
+}
+
+/// A private skeleton of [GtSectionHeader], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtSectionHeaderSkeleton extends GtSectionHeader {
+  /// Creates a [_GtSectionHeaderSkeleton].
+  const _GtSectionHeaderSkeleton({super.key}) : super('Section title');
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
+    );
+  }
+}
+
+/// A private skeleton of [GtTransactionGroupHeader], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtTransactionGroupHeaderSkeleton extends GtTransactionGroupHeader {
+  /// Creates a [_GtTransactionGroupHeaderSkeleton].
+  const _GtTransactionGroupHeaderSkeleton({super.key})
+    : super('12 Mar 2026', sum: '-₦24,500.00');
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

@@ -229,6 +229,10 @@ class GtRaisedButton extends GtButton {
       );
     }
 
+    if (context.inSkeleton) {
+      child = GtBone(borderRadius: borderRadius(context), child: child);
+    }
+
     if (alignment != null) {
       child = Align(alignment: alignment!, child: child);
     }

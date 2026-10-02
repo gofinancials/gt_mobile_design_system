@@ -85,6 +85,20 @@ class GtSummaryScaffold extends GtStatelessWidget {
   /// Whether the action button is in its loading state.
   final bool isActionLoading;
 
+  /// Whether the body is drawn as a skeleton of itself while its content
+  /// loads. Defaults to false.
+  ///
+  /// Only the body is boned; the app bar and the bottom action stay real and
+  /// usable. The body is laid out as given, so while this is set pass it
+  /// placeholder data shaped like the real content. The skeleton absorbs
+  /// touches, so the body does not scroll until it lifts.
+  final bool isLoading;
+
+  /// What is announced while [isLoading] is set, such as "Loading summary".
+  ///
+  /// See [GtSkeleton.semanticsLabel].
+  final String? loadingSemanticsLabel;
+
   /// Creates a [GtSummaryScaffold].
   const GtSummaryScaffold({
     super.key,
@@ -98,8 +112,11 @@ class GtSummaryScaffold extends GtStatelessWidget {
     this.onSecondaryAction,
     this.isActionDisabled = false,
     this.isActionLoading = false,
+    this.isLoading = false,
+    this.loadingSemanticsLabel,
   });
 
+  /// Whether the square secondary button is drawn beside the action.
   bool get _hasSecondaryAction =>
       secondaryIcon != null && onSecondaryAction != null;
 
@@ -154,9 +171,17 @@ class GtSummaryScaffold extends GtStatelessWidget {
       description: body.description,
     );
 
+    Widget content = titleStyle.isHeadline ? headlineBody : body;
+    if (isLoading) {
+      content = GtSkeleton(
+        semanticsLabel: loadingSemanticsLabel,
+        child: content,
+      );
+    }
+
     return Scaffold(
       appBar: appBar,
-      body: titleStyle.isHeadline ? headlineBody : body,
+      body: content,
       bottomNavigationBar: GtButtonBottomNavBar(button: action),
     );
   }

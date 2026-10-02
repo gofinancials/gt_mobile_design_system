@@ -31,12 +31,18 @@ Widget playgroundGtPaymentSourceCardUseCase(BuildContext context) {
     initialValue: false,
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtPaymentSourceCard',
     description:
         'A transaction card displaying account information, branding image, and current balances.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtPaymentSourceCard.skeleton(label: "$label")'
+        : '''
 GtPaymentSourceCard(
   // Set custom to false (or omit these inputs) for the original defaults.
   backgroundColor: $custom ? context.palette.primary.alpha16 : null,
@@ -54,22 +60,24 @@ GtPaymentSourceCard(
   variant: GtCardVariant.${variant.name},
   onTap: () {},
 )''',
-    child: GtPaymentSourceCard(
-      backgroundColor: custom ? context.palette.primary.alpha16 : null,
-      labelStyle: custom ? context.textStyles.bodyS() : null,
-      titleColor: custom ? context.palette.primary.dark : null,
-      titleStyle: custom ? context.textStyles.subHeadM() : null,
-      subtitleStyle: custom ? context.textStyles.bodyS() : null,
-      verticalSpacing: custom ? 8 : null,
-      subSpacing: custom ? 4 : null,
-      label: label,
-      title: title,
-      subTitle: subTitle,
-      leading: GtNetworkImage(GtNetworkImages.savings),
-      trailing: _getTrailing(trailing),
-      variant: variant,
-      onTap: () {},
-    ),
+    child: isSkeleton
+        ? GtPaymentSourceCard.skeleton(label: label)
+        : GtPaymentSourceCard(
+            backgroundColor: custom ? context.palette.primary.alpha16 : null,
+            labelStyle: custom ? context.textStyles.bodyS() : null,
+            titleColor: custom ? context.palette.primary.dark : null,
+            titleStyle: custom ? context.textStyles.subHeadM() : null,
+            subtitleStyle: custom ? context.textStyles.bodyS() : null,
+            verticalSpacing: custom ? 8 : null,
+            subSpacing: custom ? 4 : null,
+            label: label,
+            title: title,
+            subTitle: subTitle,
+            leading: GtNetworkImage(GtNetworkImages.savings),
+            trailing: _getTrailing(trailing),
+            variant: variant,
+            onTap: () {},
+          ),
   );
 }
 

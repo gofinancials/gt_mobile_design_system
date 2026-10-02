@@ -62,6 +62,10 @@ Widget playgroundGtAsyncStateSliverUseCase(BuildContext context) {
     label: 'Show Header Sliver',
     initialValue: true,
   );
+  final useSkeleton = context.knobs.boolean(
+    label: 'Use Skeleton Loading',
+    initialValue: false,
+  );
 
   final task = _taskFor(state);
   final arm = GtAsyncStateArm.of(task);
@@ -79,7 +83,7 @@ GtAsyncStateSliver(
     itemCount: controller.statements.data.length,
     itemBuilder: (context, i) => GtInfoListTile(...),
   ),
-  loading: const SliverFillRemaining(hasScrollBody: false, child: Center(child: GtSpinner())),
+  ${useSkeleton ? 'loading: GtSkeletonList.sliver(itemBuilder: (_, _) => GtInfoListTile.skeleton()),' : 'loading: const SliverFillRemaining(hasScrollBody: false, child: Center(child: GtSpinner())),'}
   // The package's box visuals are opt-in: compose them yourself.
   empty: const SliverFillRemaining(
     hasScrollBody: false,
@@ -127,10 +131,16 @@ GtAsyncStateSliver(
                     itemBuilder: (_, i) =>
                         GtInfoListTile(_rows[i].label, text: 'Ready'),
                   ),
-                  loading: const SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Center(child: GtSpinner()),
-                  ),
+                  loading: useSkeleton
+                      ? GtSkeletonList.sliver(
+                          itemCount: 8,
+                          semanticsLabel: 'Loading statements',
+                          itemBuilder: (_, _) => GtInfoListTile.skeleton(),
+                        )
+                      : const SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Center(child: GtSpinner()),
+                        ),
                   empty: const SliverFillRemaining(
                     hasScrollBody: false,
                     child: GtEmptyStateCard(

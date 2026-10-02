@@ -9,6 +9,8 @@ import 'package:vector_graphics/vector_graphics_compat.dart';
 ///
 /// It supports two primary modes: as a general-purpose scalable graphic, or as a
 /// semantically colored icon via [GtSvg.asIcon].
+///
+/// Inside an enabled [GtSkeleton] it is painted as a [GtBone] block.
 class GtSvg extends GtStatelessWidget {
   /// The path to the vector graphic asset.
   final String path;
@@ -30,6 +32,8 @@ class GtSvg extends GtStatelessWidget {
   final AlignmentGeometry alignment;
 
   /// A builder function that returns a widget to display while the graphic is loading.
+  ///
+  /// Defaults to a [GtImageShimmer] at [width] and [height].
   final WidgetBuilder? placeholderBuilder;
 
   /// A semantic label for the graphic, used by screen readers and accessibility tools.
@@ -90,11 +94,14 @@ class GtSvg extends GtStatelessWidget {
        color = null,
        _renderAsIcon = true;
 
+  /// The tint for an icon-style graphic, taken from its [variant].
   ColorFilter _getIconColor(BuildContext context) {
     final color = variant.getIconColor(context);
     return ColorFilter.mode(color, BlendMode.srcIn);
   }
 
+  /// The tint to draw the graphic with: its [variant]'s when rendered as an
+  /// icon, otherwise [color], or none when [color] is null.
   ColorFilter? _getColor(BuildContext context) {
     if (_renderAsIcon) return _getIconColor(context);
     if (color == null) return null;
@@ -107,18 +114,24 @@ class GtSvg extends GtStatelessWidget {
     // caches a bitmap and rescales it with bilinear filtering, leaving edges
     // jagged whenever the graphic is drawn at another size or under a scaling
     // transform. The picture strategy replays the vector commands instead.
-    final graphic = createCompatVectorGraphic(
+    Widget graphic = createCompatVectorGraphic(
       strategy: RenderingStrategy.picture,
       loader: path.vectorBytes(package),
       width: width,
       height: height,
       fit: fit,
       alignment: alignment,
-      placeholderBuilder: placeholderBuilder ?? (_) => GtSpinner(),
+      placeholderBuilder:
+          placeholderBuilder ??
+          (_) => GtImageShimmer(width: width, height: height),
       semanticsLabel: semanticsLabel,
       clipBehavior: Clip.antiAlias,
       colorFilter: _getColor(context),
     );
+
+    if (context.inSkeleton) {
+      graphic = GtBone(child: graphic);
+    }
 
     // An unlabelled graphic is decoration as far as the user is concerned;
     // announcing it as an anonymous image only adds a stop with no payload.

@@ -69,8 +69,9 @@ const _labelModes = ['Default', 'Title case', 'Number only', 'Type only'];
 
 String Function(GtAccountData<_Account>)? _labelBuilder(String mode) =>
     switch (mode) {
-      'Title case' => (account) =>
-        '${account.type}${AppStrings.dotSeparator}${account.accountNumber}',
+      'Title case' =>
+        (account) =>
+            '${account.type}${AppStrings.dotSeparator}${account.accountNumber}',
       'Number only' => (account) => account.accountNumber,
       'Type only' => (account) => account.type,
       // Null falls through to the widget's own composite caption.
@@ -93,6 +94,10 @@ Widget playgroundGtAccountDetailSlidesUseCase(BuildContext context) {
   final showSubtitles = context.knobs.boolean(
     label: 'Show subtitles',
     initialValue: true,
+  );
+  final isLoading = context.knobs.boolean(
+    label: 'Loading (skeleton)',
+    initialValue: false,
   );
 
   final labelMode = context.knobs.object.dropdown<String>(
@@ -217,6 +222,19 @@ Widget playgroundGtAccountDetailSlidesUseCase(BuildContext context) {
       '  accountPillSemanticHint: '
           '${semanticHint.isEmpty ? 'null' : "'$semanticHint'"},',
       ')',
+      if (isLoading) ...[
+        '',
+        '// While the accounts load, an empty controller inside a GtSkeleton',
+        '// draws a placeholder balance and pill in their real slots.',
+        'GtSkeleton(',
+        "  semanticsLabel: 'Loading accounts',",
+        '  child: GtAccountDetailSlides<Account>(',
+        '    controller: _loadingController, // no accounts yet',
+        '    hidden: false,',
+        '    onToggleHide: () {},',
+        '  ),',
+        ')',
+      ],
     ].join('\n'),
     accessibilityNotes: const [
       'GtBalanceText announces the amount while visible and "Balance is '
@@ -245,6 +263,7 @@ Widget playgroundGtAccountDetailSlidesUseCase(BuildContext context) {
         count: count,
         showSubtitles: showSubtitles,
         showActions: showActions,
+        isLoading: isLoading,
         pill: pill,
       ),
     ),
@@ -255,12 +274,14 @@ class _AccountSlidesPreview extends GtStatefulWidget {
   final int count;
   final bool showSubtitles;
   final bool showActions;
+  final bool isLoading;
   final _PillKnobs pill;
 
   const _AccountSlidesPreview({
     required this.count,
     required this.showSubtitles,
     required this.showActions,
+    required this.isLoading,
     required this.pill,
     super.key,
   });
@@ -271,6 +292,9 @@ class _AccountSlidesPreview extends GtStatefulWidget {
 
 class _AccountSlidesPreviewState extends State<_AccountSlidesPreview> {
   late final GtAccountDataController<_Account> _controller;
+  final _loadingController = GtAccountDataController<_Account>(
+    accounts: const [],
+  );
   bool _hidden = false;
 
   @override
@@ -294,6 +318,7 @@ class _AccountSlidesPreviewState extends State<_AccountSlidesPreview> {
   @override
   void dispose() {
     _controller.dispose();
+    _loadingController.dispose();
     super.dispose();
   }
 
@@ -302,6 +327,61 @@ class _AccountSlidesPreviewState extends State<_AccountSlidesPreview> {
     final raw = context.palette.raw;
     final white = context.palette.staticColors.white;
     final pill = widget.pill;
+
+    Widget slides = GtAccountDetailSlides<_Account>(
+      controller: widget.isLoading ? _loadingController : _controller,
+      hidden: _hidden,
+      onToggleHide: () => setState(() => _hidden = !_hidden),
+      onIndexUpdate: (index, account) =>
+          context.showToast('${account?.type ?? 'Account'} selected'),
+      accountPillLabelBuilder: pill.labelBuilder,
+      accountPillVariant: pill.variant,
+      accountPillTextColor: pill.textColor,
+      accountPillBackgroundColor: pill.backgroundColor,
+      accountPillBorderColor: pill.borderColor,
+      accountPillStyle: pill.style,
+      showAccountPillIcon: pill.showIcon,
+      showAccountPillShadow: pill.showShadow,
+      accountPillBorderStyle: pill.borderStyle,
+      accountPillSemanticHint: pill.semanticHint,
+      actions: widget.showActions
+          ? GtActionButtonBar(
+              buttons: [
+                GtActionButton(
+                  icon: GtIcons.sendSolid,
+                  label: 'Send',
+                  backgroundColor: raw.blue500,
+                  iconColor: white,
+                  onPressed: () => context.showToast('Send tapped'),
+                ),
+                GtActionButton(
+                  icon: GtIcons.transfer,
+                  label: 'Transfer',
+                  backgroundColor: raw.purple500,
+                  iconColor: white,
+                  onPressed: () => context.showToast('Transfer tapped'),
+                ),
+                GtActionButton(
+                  icon: GtIcons.airtime,
+                  label: 'Airtime',
+                  backgroundColor: raw.orange500,
+                  iconColor: white,
+                  onPressed: () => context.showToast('Airtime tapped'),
+                ),
+                GtActionButton(
+                  icon: GtIcons.plus,
+                  label: 'More',
+                  backgroundColor: raw.yellow500,
+                  iconColor: white,
+                  onPressed: () => context.showToast('More tapped'),
+                ),
+              ],
+            )
+          : null,
+    );
+    if (widget.isLoading) {
+      slides = GtSkeleton(semanticsLabel: 'Loading accounts', child: slides);
+    }
 
     return Column(
       crossAxisAlignment: .stretch,
@@ -321,57 +401,7 @@ class _AccountSlidesPreviewState extends State<_AccountSlidesPreview> {
         //   },
         // ),
         // const GtGap.ySm(),
-        GtAccountDetailSlides<_Account>(
-          controller: _controller,
-          hidden: _hidden,
-          onToggleHide: () => setState(() => _hidden = !_hidden),
-          onIndexUpdate: (index, account) =>
-              context.showToast('${account?.type ?? 'Account'} selected'),
-          accountPillLabelBuilder: pill.labelBuilder,
-          accountPillVariant: pill.variant,
-          accountPillTextColor: pill.textColor,
-          accountPillBackgroundColor: pill.backgroundColor,
-          accountPillBorderColor: pill.borderColor,
-          accountPillStyle: pill.style,
-          showAccountPillIcon: pill.showIcon,
-          showAccountPillShadow: pill.showShadow,
-          accountPillBorderStyle: pill.borderStyle,
-          accountPillSemanticHint: pill.semanticHint,
-          actions: widget.showActions
-              ? GtActionButtonBar(
-                  buttons: [
-                    GtActionButton(
-                      icon: GtIcons.sendSolid,
-                      label: 'Send',
-                      backgroundColor: raw.blue500,
-                      iconColor: white,
-                      onPressed: () => context.showToast('Send tapped'),
-                    ),
-                    GtActionButton(
-                      icon: GtIcons.transfer,
-                      label: 'Transfer',
-                      backgroundColor: raw.purple500,
-                      iconColor: white,
-                      onPressed: () => context.showToast('Transfer tapped'),
-                    ),
-                    GtActionButton(
-                      icon: GtIcons.airtime,
-                      label: 'Airtime',
-                      backgroundColor: raw.orange500,
-                      iconColor: white,
-                      onPressed: () => context.showToast('Airtime tapped'),
-                    ),
-                    GtActionButton(
-                      icon: GtIcons.plus,
-                      label: 'More',
-                      backgroundColor: raw.yellow500,
-                      iconColor: white,
-                      onPressed: () => context.showToast('More tapped'),
-                    ),
-                  ],
-                )
-              : null,
-        ),
+        slides,
       ],
     );
   }

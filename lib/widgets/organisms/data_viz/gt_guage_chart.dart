@@ -6,6 +6,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// It visually represents a [value] between 0.0 and 1.0 using a [GtArcPainter].
 /// Optional [center] content can be provided to display information inside the gauge.
+///
+/// Inside an enabled [GtSkeleton] the gauge draws an empty track in the
+/// skeleton's base color, so it still reads as a gauge while [center] bones
+/// itself; the value sweeps in from empty once the skeleton lifts.
 class GtGuageChart extends GtStatelessWidget {
   /// Overrides center padding. Null preserves the current default.
   final EdgeInsetsGeometry? centerPadding;
@@ -65,10 +69,17 @@ class GtGuageChart extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final chartValueColor = valueColor ?? variant.getIconColor(palette);
-    final chartTrackColor = trackColor ?? variant.getBgColor(palette);
     final w = width ?? double.infinity;
     final h = height ?? context.dp(188.px);
+
+    double chartValue = value;
+    Color chartValueColor = valueColor ?? variant.getIconColor(palette);
+    Color chartTrackColor = trackColor ?? variant.getBgColor(palette);
+    if (context.inSkeleton) {
+      chartValue = 0;
+      chartTrackColor = GtSkeletonScope.maybeOf(context)!.baseColor;
+      chartValueColor = chartTrackColor;
+    }
 
     return GtSemantics(
       label: semanticsLabel,
@@ -82,7 +93,7 @@ class GtGuageChart extends GtStatelessWidget {
         width: w,
         child: RepaintBoundary(
           child: TweenAnimationBuilder(
-            tween: Tween(begin: 0.0, end: value),
+            tween: Tween(begin: 0.0, end: chartValue),
             duration: 1.seconds,
             curve: GtSpringCurves.snappy,
             builder: (_, double animatedValue, _) {

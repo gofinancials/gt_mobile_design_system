@@ -30,6 +30,10 @@ Widget playgroundGtHomeAppBarUseCase(BuildContext context) {
     label: 'Show Account Toggle',
     initialValue: true,
   );
+  final isLoading = context.knobs.boolean(
+    label: 'Loading (avatar skeleton)',
+    initialValue: false,
+  );
 
   return GtWidgetDocPage(
     title: 'GtHomeAppBar',
@@ -40,6 +44,7 @@ Widget playgroundGtHomeAppBarUseCase(BuildContext context) {
 GtHomeAppBar(
   userFullName: "$userFullName",
   onClickAvatar: () {},
+  ${isLoading ? 'isLoading: true,' : ''}
   ${showHelp ? 'onClickHelp: () {},\n  helpSemanticsLabel: "Help",' : ''}
   ${showSearch ? 'onClickSearch: () {},\n  searchSemanticsLabel: "Search",' : ''}
   ${showHide ? 'onClickHide: () {},\n  hideSemanticsLabel: "Hide balances",' : ''}
@@ -50,6 +55,7 @@ GtHomeAppBar(
       child: GtHomeAppBar(
         userFullName: userFullName,
         onClickAvatar: () {},
+        isLoading: isLoading,
         onClickHelp: showHelp ? () {} : null,
         helpSemanticsLabel: 'Help',
         onClickSearch: showSearch ? () {} : null,

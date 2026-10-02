@@ -367,6 +367,12 @@ import 'package:gallery/templates/screens/gt_splash_screen.dart'
     as _gallery_templates_screens_gt_splash_screen;
 import 'package:gallery/templates/scroll_views/gt_scrollable_body_usecase.dart'
     as _gallery_templates_scroll_views_gt_scrollable_body_usecase;
+import 'package:gallery/templates/shimmers/gt_image_shimmer_usecase.dart'
+    as _gallery_templates_shimmers_gt_image_shimmer_usecase;
+import 'package:gallery/templates/shimmers/gt_skeleton_list_usecase.dart'
+    as _gallery_templates_shimmers_gt_skeleton_list_usecase;
+import 'package:gallery/templates/shimmers/gt_skeleton_usecase.dart'
+    as _gallery_templates_shimmers_gt_skeleton_usecase;
 import 'package:gallery/templates/slides/gt_lesson_slides_usecase.dart'
     as _gallery_templates_slides_gt_lesson_slides_usecase;
 import 'package:gallery/templates/slides/gt_onboarding_slides_usecase.dart'
@@ -2994,6 +3000,53 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _gallery_templates_scroll_views_gt_scrollable_body_usecase
                             .playgroundGtScrollableBodyUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'shimmers',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtBone',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtBone',
+                    builder: _gallery_templates_shimmers_gt_skeleton_usecase
+                        .playgroundGtBoneUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtImageShimmer',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtImageShimmer',
+                    builder:
+                        _gallery_templates_shimmers_gt_image_shimmer_usecase
+                            .playgroundGtImageShimmerUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSkeleton',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSkeleton',
+                    builder: _gallery_templates_shimmers_gt_skeleton_usecase
+                        .playgroundGtSkeletonUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSkeletonList',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSkeletonList',
+                    builder:
+                        _gallery_templates_shimmers_gt_skeleton_list_usecase
+                            .playgroundGtSkeletonListUseCase,
                   ),
                 ],
               ),

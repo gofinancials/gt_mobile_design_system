@@ -16,13 +16,19 @@ Widget playgroundGtTransactionGroupHeaderUseCase(BuildContext context) {
     initialValue: false,
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtTransactionGroupHeader',
     description:
         'A date-bucket header for a run of transactions, pairing an uppercased '
         'group title with the aggregate amount for that group.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtTransactionGroupHeader.skeleton()'
+        : '''
 GtTransactionGroupHeader(
   "$title",
   sum: "$sum",
@@ -32,11 +38,13 @@ GtTransactionGroupHeader(
       child: GtCard(
         padding: context.insets.allDp(16.px),
         variant: GtCardVariant.normal,
-        child: GtTransactionGroupHeader(
-          title,
-          sum: sum,
-          highlighted: highlighted,
-        ),
+        child: isSkeleton
+            ? const GtTransactionGroupHeader.skeleton()
+            : GtTransactionGroupHeader(
+                title,
+                sum: sum,
+                highlighted: highlighted,
+              ),
       ),
     ),
   );

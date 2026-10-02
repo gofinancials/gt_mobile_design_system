@@ -64,6 +64,15 @@ class GtInfoListTile extends GtStatelessWidget {
     this.centerTrailing = false,
   });
 
+  /// Creates a skeleton of this tile, standing in for a detail that is still
+  /// loading.
+  ///
+  /// The tile is laid out with placeholder data under its own [GtSkeleton], so
+  /// it shows only bones in the real tile's layout and announces nothing.
+  /// Inside a [GtSkeletonList] or another skeleton it joins that skeleton's
+  /// sweep.
+  const factory GtInfoListTile.skeleton({Key? key}) = _GtInfoListTileSkeleton;
+
   @override
   Widget build(BuildContext context) {
     final styles = context.textStyles;
@@ -1060,6 +1069,21 @@ class GtSuccessRateTile extends GtStatelessWidget {
           alignment: .centerRight,
         ),
       ],
+    );
+  }
+}
+
+/// A private skeleton of [GtInfoListTile], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtInfoListTileSkeleton extends GtInfoListTile {
+  /// Creates a [_GtInfoListTileSkeleton].
+  const _GtInfoListTileSkeleton({super.key})
+    : super('Account name', text: 'Adaeze Okafor');
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

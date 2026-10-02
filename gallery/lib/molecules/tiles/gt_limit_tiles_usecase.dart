@@ -121,12 +121,18 @@ Widget playgroundGtGoalProgressListTileUseCase(BuildContext context) {
   );
   final asCard = context.knobs.boolean(label: 'As Card', initialValue: true);
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtGoalProgressListTile',
     description:
         'A list tile showing progress towards a savings goal, with an optional edit action whose button variant can be changed.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtGoalProgressListTile.skeleton(asCard: $asCard)'
+        : '''
 GtGoalProgressListTile(
   currentAmount: $currentAmount,
   goalAmount: $goalAmount,
@@ -136,14 +142,16 @@ GtGoalProgressListTile(
   ${buttonTextColor == null ? '' : 'buttonTextColor: Color(0x${buttonTextColor.toARGB32().toRadixString(16)}),'}
   asCard: $asCard,
 )''',
-    child: GtGoalProgressListTile(
-      currentAmount: currentAmount,
-      goalAmount: goalAmount,
-      editText: editText,
-      onEdit: showEdit ? () {} : null,
-      buttonVariant: buttonVariant,
-      buttonTextColor: buttonTextColor,
-      asCard: asCard,
-    ),
+    child: isSkeleton
+        ? GtGoalProgressListTile.skeleton(asCard: asCard)
+        : GtGoalProgressListTile(
+            currentAmount: currentAmount,
+            goalAmount: goalAmount,
+            editText: editText,
+            onEdit: showEdit ? () {} : null,
+            buttonVariant: buttonVariant,
+            buttonTextColor: buttonTextColor,
+            asCard: asCard,
+          ),
   );
 }

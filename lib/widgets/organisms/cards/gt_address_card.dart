@@ -69,6 +69,10 @@ class GtAddressCard extends GtStatelessWidget {
     this.verticalSpacing,
   });
 
+  /// Creates a skeleton of an address card, standing in for an address
+  /// that is still loading.
+  const factory GtAddressCard.skeleton({Key? key}) = _GtAddressCardSkeleton;
+
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
@@ -105,6 +109,21 @@ class GtAddressCard extends GtStatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// A private skeleton of [GtAddressCard], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtAddressCardSkeleton extends GtAddressCard {
+  /// Creates a [_GtAddressCardSkeleton].
+  const _GtAddressCardSkeleton({super.key})
+    : super(line1: '12 Placeholder Street, Lekki', line2: 'Lagos, Nigeria');
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

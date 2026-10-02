@@ -10,6 +10,7 @@ enum GtRadioStyle {
   /// A donut-shaped style featuring a thicker border and hollow center when active.
   donut;
 
+  /// Creates a [GtRadioStyle].
   const GtRadioStyle();
 
   /// Returns `true` if the style is [GtRadioStyle.donut].
@@ -21,6 +22,8 @@ enum GtRadioStyle {
 /// It supports two modes of operation:
 /// 1. Standard mode using [groupValue] to compare against its [value].
 /// 2. Conditional mode using a direct boolean [condition] to determine if it is active.
+///
+/// Inside an enabled [GtSkeleton] it is painted as a circular [GtBone].
 class GtRadio<T> extends GtStatelessWidget {
   /// The value represented by this radio button.
   final T value;
@@ -108,52 +111,55 @@ class GtRadio<T> extends GtStatelessWidget {
 
     final size = context.dp(20.px);
 
-    // GtTapTarget is deliberately the outermost widget. Hit slop only works
-    // for positions the parent also accepts, and the RepaintBoundary sizes
-    // itself to the 20dp box — nesting the slop inside it would let the
-    // boundary reject the touch before the slop was ever consulted.
-    return GtTapTarget(
-      child: RepaintBoundary(
-        child: GtDisabledOverlay(
-          disabled,
-          child: GtInkWell(
-            hapticFeedbackType: .selection,
-            customBorder: CircleBorder(),
-            role: .radio,
-            semanticsLabel: semanticsLabel,
-            semanticHint: semanticHint,
-            isChecked: _isActive,
-            // The inner circle is decoration; the checked state already
-            // conveys what it shows.
-            excludeDescendantSemantics: true,
-            onTap: () => onChanged(value),
-            child: AnimatedContainer(
-              duration: context.motionDuration(500.milliseconds),
-              height: size,
-              width: size,
-              constraints: BoxConstraints.tightFor(height: size, width: size),
-              decoration: BoxDecoration(
-                border: Border.all(color: borderColor, width: borderWidth),
-                shape: BoxShape.circle,
-              ),
-              alignment: Alignment.center,
-              child: GtAnimatedSwitcher(
-                child: Builder(
-                  builder: (context) {
-                    if (_isActive && !style.isDonut) {
-                      return _ActiveInnerContainer(color);
-                    }
-                    if (_isActive && style.isDonut) return const Offstage();
-                    return const _InActiveInnerContainer();
-                  },
-                  key: ValueKey<T>(value),
-                ),
+    Widget control = RepaintBoundary(
+      child: GtDisabledOverlay(
+        disabled,
+        child: GtInkWell(
+          hapticFeedbackType: .selection,
+          customBorder: CircleBorder(),
+          role: .radio,
+          semanticsLabel: semanticsLabel,
+          semanticHint: semanticHint,
+          isChecked: _isActive,
+          // The inner circle is decoration; the checked state already
+          // conveys what it shows.
+          excludeDescendantSemantics: true,
+          onTap: () => onChanged(value),
+          child: AnimatedContainer(
+            duration: context.motionDuration(500.milliseconds),
+            height: size,
+            width: size,
+            constraints: BoxConstraints.tightFor(height: size, width: size),
+            decoration: BoxDecoration(
+              border: Border.all(color: borderColor, width: borderWidth),
+              shape: BoxShape.circle,
+            ),
+            alignment: Alignment.center,
+            child: GtAnimatedSwitcher(
+              child: Builder(
+                builder: (context) {
+                  if (_isActive && !style.isDonut) {
+                    return _ActiveInnerContainer(color);
+                  }
+                  if (_isActive && style.isDonut) return const Offstage();
+                  return const _InActiveInnerContainer();
+                },
+                key: ValueKey<T>(value),
               ),
             ),
           ),
         ),
       ),
     );
+    if (context.inSkeleton) {
+      control = GtBone(shape: .circle, child: control);
+    }
+
+    // GtTapTarget is deliberately the outermost widget. Hit slop only works
+    // for positions the parent also accepts, and the RepaintBoundary sizes
+    // itself to the 20dp box — nesting the slop inside it would let the
+    // boundary reject the touch before the slop was ever consulted.
+    return GtTapTarget(child: control);
   }
 }
 
@@ -162,6 +168,7 @@ class _ActiveInnerContainer extends StatelessWidget {
   /// The active color of the radio button.
   final Color color;
 
+  /// Creates an [_ActiveInnerContainer] filled with [color].
   const _ActiveInnerContainer(this.color);
 
   @override
@@ -180,6 +187,7 @@ class _ActiveInnerContainer extends StatelessWidget {
 
 /// An internal widget used to render the inner container of an inactive [GtRadio].
 class _InActiveInnerContainer extends StatelessWidget {
+  /// Creates an [_InActiveInnerContainer].
   const _InActiveInnerContainer();
 
   @override

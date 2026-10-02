@@ -14,6 +14,8 @@ enum GtCheckBoxShape {
 /// A highly customizable, stateless checkbox component for the Go Tech design system.
 ///
 /// Supports both square and circular shapes, custom active colors, and disabled states.
+///
+/// Inside an enabled [GtSkeleton] it is painted as a [GtBone] in its own shape.
 class GtCheckBox<T> extends GtStatelessWidget {
   /// The value represented by this checkbox.
   final T value;
@@ -69,60 +71,67 @@ class GtCheckBox<T> extends GtStatelessWidget {
     final boxShape = shape == .circle ? BoxShape.circle : BoxShape.rectangle;
     final borderRadius = shape != .circle ? 4.8.circularBorderRadius : null;
 
-    // GtTapTarget is deliberately the outermost widget. Hit slop only works
-    // for positions the parent also accepts, and the RepaintBoundary sizes
-    // itself to the 20dp box — nesting the slop inside it would let the
-    // boundary reject the touch before the slop was ever consulted.
-    return GtTapTarget(
-      child: RepaintBoundary(
-        child: GtDisabledOverlay(
-          disabled,
-          child: GtInkWell(
-            hapticFeedbackType: .selection,
-            borderRadius: borderRadius,
-            role: .checkbox,
-            semanticsLabel: semanticsLabel,
-            semanticHint: semanticHint,
-            isChecked: isActive,
-            // The tick and the inner container are decoration; the checked
-            // state already conveys everything they show.
-            excludeDescendantSemantics: true,
-            onTap: () => onChanged(value),
-            child: Container(
-              alignment: Alignment.center,
-              height: size,
-              width: size,
-              constraints: BoxConstraints.tightFor(height: size, width: size),
-              decoration: BoxDecoration(
-                color: isActive ? color : GtColors.transparent.value,
-                border: Border.all(color: borderColor, width: 1.8),
-                borderRadius: borderRadius,
-                shape: boxShape,
-              ),
-              child: GtAnimatedSwitcher(
-                child: Builder(
-                  builder: (context) {
-                    if (isActive) {
-                      return GtIcon.withColor(
-                        GtIcons.checkSolid,
-                        alignment: Alignment.center,
-                        size: context.dp(14.px),
-                        color: context.palette.staticColors.white,
-                      );
-                    }
-                    return _InActiveInnerContainer(
-                      boxShape,
-                      borderRadius: borderRadius,
+    Widget control = RepaintBoundary(
+      child: GtDisabledOverlay(
+        disabled,
+        child: GtInkWell(
+          hapticFeedbackType: .selection,
+          borderRadius: borderRadius,
+          role: .checkbox,
+          semanticsLabel: semanticsLabel,
+          semanticHint: semanticHint,
+          isChecked: isActive,
+          // The tick and the inner container are decoration; the checked
+          // state already conveys everything they show.
+          excludeDescendantSemantics: true,
+          onTap: () => onChanged(value),
+          child: Container(
+            alignment: Alignment.center,
+            height: size,
+            width: size,
+            constraints: BoxConstraints.tightFor(height: size, width: size),
+            decoration: BoxDecoration(
+              color: isActive ? color : GtColors.transparent.value,
+              border: Border.all(color: borderColor, width: 1.8),
+              borderRadius: borderRadius,
+              shape: boxShape,
+            ),
+            child: GtAnimatedSwitcher(
+              child: Builder(
+                builder: (context) {
+                  if (isActive) {
+                    return GtIcon.withColor(
+                      GtIcons.checkSolid,
+                      alignment: Alignment.center,
+                      size: context.dp(14.px),
+                      color: context.palette.staticColors.white,
                     );
-                  },
-                  key: ValueKey<T>(value),
-                ),
+                  }
+                  return _InActiveInnerContainer(
+                    boxShape,
+                    borderRadius: borderRadius,
+                  );
+                },
+                key: ValueKey<T>(value),
               ),
             ),
           ),
         ),
       ),
     );
+    if (context.inSkeleton) {
+      control = GtBone(
+        shape: boxShape,
+        borderRadius: borderRadius,
+        child: control,
+      );
+    }
+
+    // GtTapTarget is deliberately the outermost widget. Hit slop only works
+    // for positions the parent also accepts, and the RepaintBoundary sizes
+    // itself to the 20dp box — nesting the slop inside it would let the
+    // boundary reject the touch before the slop was ever consulted.
+    return GtTapTarget(child: control);
   }
 }
 

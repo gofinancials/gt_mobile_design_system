@@ -239,6 +239,11 @@ class _SummaryTilePreview extends StatelessWidget {
           : null,
     );
 
+    final isSkeleton = context.knobs.boolean(
+      label: 'Skeleton',
+      initialValue: false,
+    );
+
     return GtWidgetDocPage(
       title: 'GtSummaryTile',
       description:
@@ -249,8 +254,9 @@ class _SummaryTilePreview extends StatelessWidget {
           'leads the name it belongs to while a category glyph trails it. The '
           'stacked layout puts the label above the value for values with no '
           'room in a right-hand column, and ignores both image slots.',
-      code:
-          '''
+      code: isSkeleton
+          ? 'GtSummaryTile.skeleton(layout: GtSummaryTileLayout.${layout.name})'
+          : '''
 GtSummaryTile(
   GtSummaryTileData(
     label: "$label",
@@ -261,7 +267,11 @@ GtSummaryTile(
   ),
   layout: GtSummaryTileLayout.${layout.name},
 )''',
-      child: GtSummaryCardShell(child: GtSummaryTile(tile, layout: layout)),
+      child: GtSummaryCardShell(
+        child: isSkeleton
+            ? GtSummaryTile.skeleton(layout: layout)
+            : GtSummaryTile(tile, layout: layout),
+      ),
     );
   }
 }

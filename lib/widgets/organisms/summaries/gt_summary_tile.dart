@@ -47,6 +47,11 @@ class GtSummaryTile extends GtStatelessWidget {
     this.layout = .columns,
   });
 
+  /// Creates a skeleton of a summary row, standing in for one whose value
+  /// is still loading.
+  const factory GtSummaryTile.skeleton({Key? key, GtSummaryTileLayout layout}) =
+      _GtSummaryTileSkeleton;
+
   @override
   Widget build(BuildContext context) {
     final Widget child = switch (layout) {
@@ -97,6 +102,7 @@ class _GtSummaryColumnsTile extends GtStatelessWidget {
   /// The label, value and optional images for this row.
   final GtSummaryTileData tile;
 
+  /// Creates a [_GtSummaryColumnsTile].
   const _GtSummaryColumnsTile(
     this.tile, {
     this.labelStyle,
@@ -147,6 +153,7 @@ class _GtSummaryTileImage extends GtStatelessWidget {
   /// The caller's scaled size, or null for `dp(20)`.
   final double? size;
 
+  /// Creates a [_GtSummaryTileImage] for [data].
   const _GtSummaryTileImage(this.data, {this.size});
 
   @override
@@ -180,6 +187,7 @@ class _GtSummaryStackedTile extends GtStatelessWidget {
   /// The label, value and optional tap handler for this row.
   final GtSummaryTileData tile;
 
+  /// Creates a [_GtSummaryStackedTile].
   const _GtSummaryStackedTile(
     this.tile, {
     this.labelStyle,
@@ -204,6 +212,23 @@ class _GtSummaryStackedTile extends GtStatelessWidget {
         context.textStyles.subHeadM(color: tile.valueColor),
         valueColor,
       ),
+    );
+  }
+}
+
+/// A private skeleton of [GtSummaryTile], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtSummaryTileSkeleton extends GtSummaryTile {
+  /// Creates a [_GtSummaryTileSkeleton].
+  const _GtSummaryTileSkeleton({super.key, super.layout})
+    : super(
+        const GtSummaryTileData(label: 'Field label', value: 'Field value'),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

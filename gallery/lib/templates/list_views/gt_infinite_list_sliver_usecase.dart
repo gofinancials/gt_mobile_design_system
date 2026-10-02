@@ -2,22 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
+import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtInfiniteListSliver', type: GtInfiniteListSliver)
 Widget playgroundGtInfiniteListSliverUseCase(BuildContext context) {
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton (first page loading)',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtInfiniteListSliver',
     description:
         'The sliver form of the paginated list: it observes the host scroll view rather than a controller, and appends its loading footer to the scroll view. Scroll to the bottom to load the next page.',
-    child: const GtSizedBox(height: 480, child: _InfiniteSliverDemo()),
+    code: isSkeleton
+        ? '''
+GtCardListSliver.skeleton(
+  itemCount: 8,
+  semanticsLabel: 'Loading transactions',
+  itemBuilder: (_, _) => const GtTransactionListTile.skeleton(),
+)'''
+        : null,
+    child: GtSizedBox(
+      height: 480,
+      child: _InfiniteSliverDemo(isSkeleton: isSkeleton),
+    ),
   );
 }
 
 /// A CustomScrollView with a header sliver above a paginated group of rows, the
 /// arrangement the sliver form exists for.
 class _InfiniteSliverDemo extends StatefulWidget {
-  const _InfiniteSliverDemo();
+  final bool isSkeleton;
+
+  const _InfiniteSliverDemo({required this.isSkeleton});
 
   @override
   State<_InfiniteSliverDemo> createState() => _InfiniteSliverDemoState();
@@ -54,6 +73,28 @@ class _InfiniteSliverDemoState extends State<_InfiniteSliverDemo> {
     return ValueListenableBuilder(
       valueListenable: _notifier,
       builder: (context, data, _) {
+        Widget list = GtInfiniteListSliver<_SampleItem>(
+          data: data,
+          onScrollEnd: _loadMore,
+          child: GtCardListSliver<_SampleItem>(
+            items: data.data,
+            itemKey: (item) => ValueKey(item.uuid),
+            itemBuilder: (context, item, index) => GtTransactionListTile(
+              item.name,
+              subtitle: 'Ref: TXN-${item.uuid.padLeft(6, '0')}',
+              amount: item.amount,
+              isDebit: index.isEven,
+            ),
+          ),
+        );
+        if (widget.isSkeleton) {
+          list = GtCardListSliver.skeleton(
+            itemCount: 8,
+            semanticsLabel: 'Loading transactions',
+            itemBuilder: (_, _) => const GtTransactionListTile.skeleton(),
+          );
+        }
+
         return RefreshIndicator.adaptive(
           onRefresh: _refresh,
           child: CustomScrollView(
@@ -67,20 +108,7 @@ class _InfiniteSliverDemoState extends State<_InfiniteSliverDemo> {
                   ),
                 ),
               ),
-              GtInfiniteListSliver<_SampleItem>(
-                data: data,
-                onScrollEnd: _loadMore,
-                child: GtCardListSliver<_SampleItem>(
-                  items: data.data,
-                  itemKey: (item) => ValueKey(item.uuid),
-                  itemBuilder: (context, item, index) => GtTransactionListTile(
-                    item.name,
-                    subtitle: 'Ref: TXN-${item.uuid.padLeft(6, '0')}',
-                    amount: item.amount,
-                    isDebit: index.isEven,
-                  ),
-                ),
-              ),
+              list,
             ],
           ),
         );

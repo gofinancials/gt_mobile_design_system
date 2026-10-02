@@ -68,6 +68,14 @@ class GtBillCard extends GtStatelessWidget {
     this.horizontalSpacing,
   }) : _asTile = true;
 
+  /// Creates a skeleton of a bill card, standing in for a biller that is
+  /// still loading. Use [GtBillCard.tileSkeleton] for the tile layout.
+  const factory GtBillCard.skeleton({Key? key}) = _GtBillCardSkeleton;
+
+  /// Creates a skeleton of a [GtBillCard.tile], standing in for a biller that
+  /// is still loading.
+  const factory GtBillCard.tileSkeleton({Key? key}) = _GtBillCardTileSkeleton;
+
   @override
   Widget build(BuildContext context) {
     final text = GtText(
@@ -106,6 +114,42 @@ class GtBillCard extends GtStatelessWidget {
       borderRadius: context.borderRadiusXl,
       onTap: onTap,
       child: child,
+    );
+  }
+}
+
+/// A private skeleton of [GtBillCard], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtBillCardSkeleton extends GtBillCard {
+  /// Creates a [_GtBillCardSkeleton].
+  const _GtBillCardSkeleton({super.key})
+    : super(
+        name: 'Biller name',
+        icon: const GtBone(child: GtSquareBox(size: 34)),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
+    );
+  }
+}
+
+/// A private skeleton of [GtBillCard.tile], laid out with placeholder data
+/// under its own [GtSkeleton].
+class _GtBillCardTileSkeleton extends GtBillCard {
+  /// Creates a [_GtBillCardTileSkeleton].
+  const _GtBillCardTileSkeleton({super.key})
+    : super.tile(
+        name: 'Biller name',
+        icon: const GtBone(child: GtSquareBox(size: 34)),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

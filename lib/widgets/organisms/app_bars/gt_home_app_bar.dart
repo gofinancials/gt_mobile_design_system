@@ -31,6 +31,14 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// Callback triggered when the avatar is pressed.
   final OnPressed? onClickAvatar;
 
+  /// Whether the avatar is drawn as a skeleton while the user's profile loads.
+  /// Defaults to false.
+  ///
+  /// Only the avatar is boned. The help, search, hide and notification buttons
+  /// and the account toggle stay real and usable, since none of them waits on
+  /// the profile.
+  final bool isLoading;
+
   /// The label shown on the account toggle button.
   ///
   /// Required whenever [onToggleAccounts] is supplied — the two together form
@@ -79,6 +87,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     this.onClickNotification,
     this.userFullName,
     this.onClickAvatar,
+    this.isLoading = false,
     this.onClickHelp,
     this.onToggleAccounts,
     this.toggleAccountText,
@@ -104,6 +113,20 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
       _ => context.palette.primary.darker,
     };
 
+    Widget userAvatar = GtAvatar(
+      avatar: avatar,
+      alignment: .centerLeft,
+      initials: AppHelpers.getInitials(userFullName),
+      bgColor: avatarColor,
+      initialsColor: context.palette.text.white,
+      forceGradiant: false,
+      onPressed: onClickAvatar,
+      size: context.dp(42.px),
+    );
+    if (isLoading) {
+      userAvatar = GtSkeleton(child: userAvatar);
+    }
+
     return Material(
       type: .transparency,
       child: Container(
@@ -114,16 +137,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
         child: Row(
           spacing: context.spacingBase,
           children: [
-            GtAvatar(
-              avatar: avatar,
-              alignment: .centerLeft,
-              initials: AppHelpers.getInitials(userFullName),
-              bgColor: avatarColor,
-              initialsColor: context.palette.text.white,
-              forceGradiant: false,
-              onPressed: onClickAvatar,
-              size: context.dp(42.px),
-            ),
+            userAvatar,
             const Spacer(),
             if (onClickHelp != null)
               GtIconButton(

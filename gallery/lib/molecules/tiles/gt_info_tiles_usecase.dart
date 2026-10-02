@@ -16,12 +16,18 @@ Widget playgroundGtInfoListTileUseCase(BuildContext context) {
     initialValue: '0123456789',
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtInfoListTile',
     description:
         'A layout displaying a descriptive label and its corresponding text value.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtInfoListTile.skeleton()'
+        : '''
 GtInfoListTile(
   "$label",
   text: "$text",
@@ -31,7 +37,9 @@ GtInfoListTile(
       child: GtCard(
         padding: context.insets.allDp(12.px),
         variant: GtCardVariant.normal,
-        child: GtInfoListTile(label, text: text, onTap: () {}),
+        child: isSkeleton
+            ? const GtInfoListTile.skeleton()
+            : GtInfoListTile(label, text: text, onTap: () {}),
       ),
     ),
   );
@@ -344,11 +352,7 @@ Widget playgroundGtStackedCopyTileUseCase(BuildContext context) {
   final columnCrossAxisAlignment = context.knobs.object
       .dropdown<MainAxisAlignment>(
         label: 'Column Cross Axis Alignment',
-        options: const [
-          .start,
-          .center,
-          .end,
-        ],
+        options: const [.start, .center, .end],
         initialOption: .start,
         labelBuilder: (v) => v.name,
       );

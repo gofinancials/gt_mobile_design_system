@@ -94,30 +94,36 @@ class GtTransactionLeading extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = context.textStyles.subHeadXs(weight: .w700, heightPx: 19);
 
+    Widget badge = Container(
+      width: size,
+      height: size,
+      padding: padding,
+      alignment: .center,
+      constraints: .tight(.square(size ?? context.dp(38))),
+      decoration: ShapeDecoration(
+        shape: CircleBorder(),
+        gradient: color == null
+            ? gradient ?? text.toGradient(context)
+            : gradient,
+        color: color,
+      ),
+      child: GtText(
+        text,
+        maxLines: 1,
+        textAlign: .center,
+        style: style ?? textStyle,
+      ),
+    );
+
+    if (context.inSkeleton) {
+      badge = GtBone(shape: .circle, child: badge);
+    }
+
     return GtSemantics(
       role: _isAnnounced ? .image : .none,
       label: _isAnnounced ? semanticsLabel : null,
       excludeDescendants: true,
-      child: Container(
-        width: size,
-        height: size,
-        padding: padding,
-        alignment: .center,
-        constraints: .tight(.square(size ?? context.dp(38))),
-        decoration: ShapeDecoration(
-          shape: CircleBorder(),
-          gradient: color == null
-              ? gradient ?? text.toGradient(context)
-              : gradient,
-          color: color,
-        ),
-        child: GtText(
-          text,
-          maxLines: 1,
-          textAlign: .center,
-          style: style ?? textStyle,
-        ),
-      ),
+      child: badge,
     );
   }
 }
@@ -212,6 +218,20 @@ class GtTransactionListTile extends GtStatelessWidget {
     this.padding,
   });
 
+  /// Creates a skeleton of this tile, standing in for a transaction that is still
+  /// loading.
+  ///
+  /// The tile is laid out with placeholder data under its own [GtSkeleton], so
+  /// it shows only bones in the real tile's layout and announces nothing.
+  /// Inside a [GtSkeletonList] or another skeleton it joins that skeleton's
+  /// sweep.
+  ///
+  /// [leadingSize] matches the real tile's, so the two line up.
+  const factory GtTransactionListTile.skeleton({Key? key, double leadingSize}) =
+      _GtTransactionListTileSkeleton;
+
+  /// The amount as drawn: masked when [maskAmount] is set, shortened past a
+  /// hundred million, and signed with `+` for a credit.
   String get _formattedAmount {
     if (maskAmount) return '*' * ("$amount".length).clamp(4, 10);
     final bool isLong = amount >= 100_000_000;
@@ -389,6 +409,18 @@ class GtPaymentListTile extends GtStatelessWidget {
     this.feesStyle,
     this.feesColor,
   });
+
+  /// Creates a skeleton of this tile, standing in for a payment that is still
+  /// loading.
+  ///
+  /// The tile is laid out with placeholder data under its own [GtSkeleton], so
+  /// it shows only bones in the real tile's layout and announces nothing.
+  /// Inside a [GtSkeletonList] or another skeleton it joins that skeleton's
+  /// sweep.
+  ///
+  /// [leadingSize] sets the diameter of the placeholder badge.
+  factory GtPaymentListTile.skeleton({Key? key, double leadingSize}) =
+      _GtPaymentListTileSkeleton;
 
   @override
   Widget build(BuildContext context) {
@@ -589,6 +621,51 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
             child: trailing,
           ),
       ],
+    );
+  }
+}
+
+/// A private skeleton of [GtTransactionListTile], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtTransactionListTileSkeleton extends GtTransactionListTile {
+  /// Creates a [_GtTransactionListTileSkeleton].
+  const _GtTransactionListTileSkeleton({super.key, super.leadingSize})
+    : super(
+        'Transfer to Adaeze Okafor',
+        subtitle: '12 Sep, 10:42',
+        amount: 25000,
+        isDebit: true,
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
+    );
+  }
+}
+
+/// A private skeleton of [GtPaymentListTile], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtPaymentListTileSkeleton extends GtPaymentListTile {
+  /// Creates a [_GtPaymentListTileSkeleton].
+  _GtPaymentListTileSkeleton({super.key, super.leadingSize})
+    : super(
+        'Electricity bill',
+        subtitle: 'Meter 0123 4567 890',
+        amount: '₦25,000.00',
+        fees: 'Fee ₦100.00',
+        leading: GtTransactionLeading(
+          'EB',
+          size: leadingSize,
+          isDecorative: true,
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

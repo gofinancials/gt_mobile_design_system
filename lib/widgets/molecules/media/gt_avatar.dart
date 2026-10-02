@@ -72,13 +72,11 @@ class GtAvatar extends GtStatelessWidget {
   /// own color.
   final Color? initialsColor;
 
-  /// Whether a spinner is drawn while a network [avatar] loads.
+  /// Whether a [GtImageShimmer] is drawn while a network [avatar] loads.
   ///
   /// Defaults to `false`, because the gradient and any [initials] are already
-  /// painted underneath, and a spinner would cover an answer the customer can
-  /// read. Set it to `true` where the avatar is large enough that a spinner
-  /// reads as progress rather than clutter, or where nothing meaningful sits
-  /// behind the image.
+  /// painted underneath, and a shimmer would cover an answer the customer can
+  /// read. Set it to `true` where nothing meaningful sits behind the image.
   final bool showLoadingIndicator;
 
   /// The text style of the [initials].
@@ -156,6 +154,61 @@ class GtAvatar extends GtStatelessWidget {
       backgroundColor = context.palette.bg.sub;
     }
 
+    Widget avatarBox = Container(
+      width: computedSize,
+      height: computedSize,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: gradient ?? defaultGradient,
+        color: backgroundColor,
+        border: border,
+      ),
+      child: Stack(
+        children: [
+          if (initials.hasValue)
+            Positioned.fill(
+              child: Center(
+                child: FittedBox(
+                  fit: .scaleDown,
+                  child: GtText(
+                    initials,
+                    style: initialsStyle ?? style,
+                    textAlign: .center,
+                  ),
+                ),
+              ),
+            ),
+          if (image != null)
+            Positioned.fill(
+              child: ClipOval(
+                child: GtImage(
+                  image: image,
+                  fit: fit ?? .cover,
+                  alignment: alignment,
+                  width: computedSize,
+                  height: computedSize,
+                  isDecorative: true,
+                  showLoadingIndicator: showLoadingIndicator,
+                ),
+              ),
+            ),
+          if (tag != null)
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: FractionalTranslation(
+                translation: Offset(.1, .1),
+                child: GtSquareConstrainedBox(computedTagSize, child: tag),
+              ),
+            ),
+        ],
+      ),
+    );
+
+    if (context.inSkeleton) {
+      avatarBox = GtBone(shape: .circle, child: avatarBox);
+    }
+
     Widget child = Align(
       alignment: alignment,
       child: GtInkWell(
@@ -172,56 +225,7 @@ class GtAvatar extends GtStatelessWidget {
                 HapticFeedback.lightImpact();
                 onPressed!.call();
               },
-        child: Container(
-          width: computedSize,
-          height: computedSize,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: gradient ?? defaultGradient,
-            color: backgroundColor,
-            border: border,
-          ),
-          child: Stack(
-            children: [
-              if (initials.hasValue)
-                Positioned.fill(
-                  child: Center(
-                    child: FittedBox(
-                      fit: .scaleDown,
-                      child: GtText(
-                        initials,
-                        style: initialsStyle ?? style,
-                        textAlign: .center,
-                      ),
-                    ),
-                  ),
-                ),
-              if (image != null)
-                Positioned.fill(
-                  child: ClipOval(
-                    child: GtImage(
-                      image: image,
-                      fit: fit ?? .cover,
-                      alignment: alignment,
-                      width: computedSize,
-                      height: computedSize,
-                      isDecorative: true,
-                      showLoadingIndicator: showLoadingIndicator,
-                    ),
-                  ),
-                ),
-              if (tag != null)
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: FractionalTranslation(
-                    translation: Offset(.1, .1),
-                    child: GtSquareConstrainedBox(computedTagSize, child: tag),
-                  ),
-                ),
-            ],
-          ),
-        ),
+        child: avatarBox,
       ),
     );
 

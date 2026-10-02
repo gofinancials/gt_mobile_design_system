@@ -25,6 +25,11 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// With an empty [controller] only the empty 76dp row and [actions] render;
 /// the subtitle and the pill need a selected account.
 ///
+/// Inside an enabled [GtSkeleton] an empty [controller] instead draws one
+/// placeholder balance and account pill in their real slots, so the screen
+/// keeps the shape of a loaded balance while the accounts load. Accounts
+/// already loaded, such as during a refresh, are boned as they are.
+///
 /// @category Organisms
 class GtAccountDetailSlides<T> extends GtStatelessWidget {
   /// The accounts to page through and which one is selected.
@@ -218,8 +223,22 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
       builder: (context, child) {
         final count = controller.count;
         final index = controller.activeIndex;
-        final accounts = controller.accounts;
         final account = controller.selectedAccount;
+
+        List<({num amount, String? currency})> balances = [
+          for (final account in controller.accounts)
+            (amount: account.balance, currency: account.currency),
+        ];
+        String? pillNumber = account?.accountNumber;
+        String? pillLabel;
+        if (account case GtAccountData<T> data) {
+          pillLabel = _getAccountLabel(data);
+        }
+        if (context.inSkeleton && balances.isEmpty) {
+          balances = const [(amount: 1250000, currency: null)];
+          pillNumber = '0123456789';
+          pillLabel = 'SAVINGS • 0123456789';
+        }
 
         return Column(
           spacing: context.spacingSectionMd,
@@ -242,7 +261,7 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
                     padding: context.insets.symmetricDp(vertical: 8.px),
                     child: GtSizedBox(
                       height: 48,
-                      key: Key("accounts-slider-${accounts.length}"),
+                      key: Key("accounts-slider-${balances.length}"),
                       child: PageView(
                         controller: controller.pageController,
                         onPageChanged: (value) {
@@ -255,14 +274,14 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
                           });
                         },
                         children: [
-                          for (final (index, account) in accounts.indexed)
+                          for (final (index, balance) in balances.indexed)
                             Padding(
                               padding: balancePadding ?? padding,
                               child: GtBalanceText(
                                 key: ValueKey("gt-account-$index"),
-                                amount: account.balance,
+                                amount: balance.amount,
                                 currencySymbol:
-                                    account.currency ?? AppStrings.naira,
+                                    balance.currency ?? AppStrings.naira,
                                 hidden: hidden,
                                 onVisibilityIconTap: onToggleHide,
                               ),
@@ -280,10 +299,10 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
                     ),
                     const GtGap.yLg(),
                   ],
-                  if (account case GtAccountData<T> data?)
+                  if (pillNumber case String number)
                     GtAccountCopyPill(
-                      data.accountNumber,
-                      label: _getAccountLabel(data),
+                      number,
+                      label: pillLabel,
                       variant: accountPillVariant,
                       textColor: pillTextColor,
                       backgroundColor: accountPillBackgroundColor ?? pillColor,

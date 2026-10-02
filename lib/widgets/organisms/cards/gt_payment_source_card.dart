@@ -102,6 +102,17 @@ class GtPaymentSourceCard extends GtStatelessWidget {
     this.borderRadius,
   });
 
+  /// Creates a skeleton of a payment source card, standing in for an
+  /// account that is still loading.
+  ///
+  /// The card takes the neutral [GtCardVariant.normal] background by default
+  /// rather than the card's own tint. Pass [variant] to show another.
+  const factory GtPaymentSourceCard.skeleton({
+    Key? key,
+    String? label,
+    GtCardVariant variant,
+  }) = _GtPaymentSourceCardSkeleton;
+
   @override
   Widget build(BuildContext context) {
     return GtCard(
@@ -146,6 +157,28 @@ class GtPaymentSourceCard extends GtStatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// A private skeleton of [GtPaymentSourceCard], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtPaymentSourceCardSkeleton extends GtPaymentSourceCard {
+  /// Creates a [_GtPaymentSourceCardSkeleton].
+  const _GtPaymentSourceCardSkeleton({
+    super.key,
+    super.label,
+    super.variant = .normal,
+  }) : super(
+         title: 'Savings • 0123456789',
+         subTitle: '₦1,250,000.00',
+         leading: const GtBone(shape: .circle, child: GtSquareBox(size: 36)),
+       );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

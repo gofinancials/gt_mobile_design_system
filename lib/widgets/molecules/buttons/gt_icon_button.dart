@@ -319,6 +319,17 @@ class GtIconButton extends GtButton {
       );
     }
 
+    if (context.inSkeleton) {
+      child = GtBone(
+        borderRadius: borderRadius(context),
+        shape: switch (shape) {
+          .round => .circle,
+          .square => .rectangle,
+        },
+        child: child,
+      );
+    }
+
     if (alignment != null) {
       child = Align(alignment: alignment!, child: child);
     }

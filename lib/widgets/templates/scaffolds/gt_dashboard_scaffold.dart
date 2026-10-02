@@ -20,16 +20,44 @@ class GtDashboardPageData extends AppEquatable {
   /// The background color of the page.
   final Color? backgroundColor;
 
+  /// Whether [page] is drawn as a skeleton of itself while its content loads.
+  /// Defaults to false.
+  ///
+  /// Only this page's body is boned. The gradient, the [appBar] and the bottom
+  /// navigation stay real, so the customer can still switch tabs, and each tab
+  /// loads on its own. While this is set, pass [page] as it is with no data
+  /// yet, or with placeholder data shaped like the real content:
+  /// [GtAccountDetailSlides] with no accounts draws a placeholder balance in a
+  /// skeleton, and lists can take a [GtSkeletonList]. The skeleton absorbs
+  /// touches, so the page does not scroll until it lifts.
+  ///
+  /// The app bar loads separately; see [GtHomeAppBar.isLoading].
+  final bool isLoading;
+
+  /// What is announced while [isLoading] is set, such as "Loading your
+  /// accounts". See [GtSkeleton.semanticsLabel].
+  final String? loadingSemanticsLabel;
+
+  /// Creates a [GtDashboardPageData] for [page], reached through [navItem].
   const GtDashboardPageData({
     required this.page,
     required this.navItem,
     this.showGradient = false,
     this.appBar,
     this.backgroundColor,
+    this.isLoading = false,
+    this.loadingSemanticsLabel,
   });
 
   @override
-  List<Object?> get props => [page, navItem, showGradient, appBar];
+  List<Object?> get props => [
+    page,
+    navItem,
+    showGradient,
+    appBar,
+    isLoading,
+    loadingSemanticsLabel,
+  ];
 }
 
 /// Utility extension on a list of [GtDashboardPageData] to easily extract
@@ -48,6 +76,9 @@ extension GtDashboardPageDataList on List<GtDashboardPageData> {
 /// an integrated [GtBottomNavigationBar] (derived from [data]), and a styled
 /// background using [GtHomeGradientPainter]. It also manages a [PageView] to
 /// handle navigation between the provided dashboard pages.
+///
+/// A page whose [GtDashboardPageData.isLoading] is set is drawn as a skeleton
+/// of itself, inside the same gradient, app bar and bottom navigation.
 ///
 /// @category Templates
 class GtDashboardScaffold extends GtStatefulWidget {
@@ -99,7 +130,10 @@ class GtDashboardScaffold extends GtStatefulWidget {
   State<GtDashboardScaffold> createState() => _GtDashboardScaffoldState();
 }
 
+/// The state of a [GtDashboardScaffold], which tracks the page in view.
 class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
+  /// The index of the page in view: [GtDashboardScaffold.pageController] when
+  /// one is supplied, otherwise one owned and disposed here.
   late final ValueNotifier<int> _pageController;
 
   @override
@@ -119,6 +153,7 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
     super.dispose();
   }
 
+  /// Reports a page change through [GtDashboardScaffold.onPageChanged].
   void _pageListener() {
     widget.onPageChanged?.call(_pageController.value);
   }
@@ -142,7 +177,15 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
           final appBar = data.appBar;
           final bgColor = data.backgroundColor;
 
-          Widget body = SafeArea(child: pages[index]);
+          Widget page = pages[index];
+          if (data.isLoading) {
+            page = GtSkeleton(
+              semanticsLabel: data.loadingSemanticsLabel,
+              child: page,
+            );
+          }
+
+          Widget body = SafeArea(child: page);
 
           if (data.showGradient) {
             body = CustomPaint(

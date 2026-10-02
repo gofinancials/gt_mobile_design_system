@@ -98,7 +98,7 @@ GtAsyncStateBody(
   errorTitle: '$errorTitle',
   ${hasRetry ? "retryLabel: 'Try again'," : ''}
   ${hasRetry ? 'onRetry: controller.load,' : ''}
-  ${useSkeleton ? 'loading: const _TransactionsSkeleton(),' : ''}
+  ${useSkeleton ? 'loading: GtSkeletonList(itemCount: 4, itemBuilder: (_, _) => GtInfoListTile.skeleton()),' : ''}
   ${hasPadding ? '' : 'padding: EdgeInsets.zero,'}
   builder: (context) => ListView(children: [...]),
 )''',
@@ -123,7 +123,13 @@ GtAsyncStateBody(
               errorIconSize: 96,
               retryLabel: hasRetry ? 'Try again' : null,
               onRetry: hasRetry ? () {} : null,
-              loading: useSkeleton ? const _TransactionsSkeleton() : null,
+              loading: useSkeleton
+                  ? GtSkeletonList(
+                      itemCount: 4,
+                      semanticsLabel: 'Loading transactions',
+                      itemBuilder: (_, _) => GtInfoListTile.skeleton(),
+                    )
+                  : null,
               builder: (context) => ListView.separated(
                 itemCount: _items.length,
                 separatorBuilder: (_, _) => const GtGap.ySm(),
@@ -136,24 +142,4 @@ GtAsyncStateBody(
       ],
     ),
   );
-}
-
-class _TransactionsSkeleton extends StatelessWidget {
-  const _TransactionsSkeleton();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        for (var i = 0; i < 4; i++) ...[
-          GtCard(
-            padding: context.insets.allDp(16.px),
-            child: const GtSizedBox(height: 16),
-          ),
-          const GtGap.ySm(),
-        ],
-      ],
-    );
-  }
 }

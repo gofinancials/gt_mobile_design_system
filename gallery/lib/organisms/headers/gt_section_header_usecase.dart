@@ -34,14 +34,20 @@ Widget playgroundGtSectionHeaderUseCase(BuildContext context) {
         )
       : null;
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtSectionHeader',
     description:
         'A header that introduces a section of content, with an optional '
         'trailing action. The title is uppercased unless a titleCase says '
         'otherwise.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtSectionHeader.skeleton()'
+        : '''
 GtSectionHeader(
   "$title",
   titleCase: GtTextCase.${titleCase.name},${titleSmall ? '\n  style: context.textStyles.titleS(),' : ''}${showTrailing ? '\n  trailing: GtTextButton(\n    text: "Edit",\n    size: GtButtonSize.small,\n    onPressed: () {},\n  ),' : ''}
@@ -50,12 +56,14 @@ GtSectionHeader(
       child: GtCard(
         padding: context.insets.allDp(16.px),
         variant: GtCardVariant.normal,
-        child: GtSectionHeader(
-          title,
-          titleCase: titleCase,
-          style: style,
-          trailing: trailing,
-        ),
+        child: isSkeleton
+            ? const GtSectionHeader.skeleton()
+            : GtSectionHeader(
+                title,
+                titleCase: titleCase,
+                style: style,
+                trailing: trailing,
+              ),
       ),
     ),
   );

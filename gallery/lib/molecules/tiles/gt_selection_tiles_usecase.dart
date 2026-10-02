@@ -50,12 +50,18 @@ Widget playgroundGtSelectionListTileUseCase(BuildContext context) {
     initialValue: true,
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtSelectionListTile',
     description:
         'A generic selection list tile displaying a prominent checkmark when active.',
-    code:
-        '''
+    code: isSkeleton
+        ? "GtSelectionListTile<String>.skeleton(value: '')"
+        : '''
 GtSelectionListTile<String>(
   "savings",
   text: "$title",
@@ -66,12 +72,14 @@ GtSelectionListTile<String>(
       child: GtCard(
         padding: context.insets.allDp(12.px),
         variant: GtCardVariant.normal,
-        child: GtSelectionListTile<String>(
-          title,
-          value: 'savings',
-          isSelected: isSelected,
-          onSelect: (val) {},
-        ),
+        child: isSkeleton
+            ? const GtSelectionListTile<String>.skeleton(value: '')
+            : GtSelectionListTile<String>(
+                title,
+                value: 'savings',
+                isSelected: isSelected,
+                onSelect: (val) {},
+              ),
       ),
     ),
   );
