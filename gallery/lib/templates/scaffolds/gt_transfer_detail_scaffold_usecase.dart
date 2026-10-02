@@ -300,6 +300,7 @@ class _TransferDetailScaffoldPreviewState
     required String actionsPreset,
     required bool showFeeInfo,
     required bool showDownload,
+    required bool isLoading,
   }) {
     showDraggableSheet(
       context,
@@ -309,6 +310,8 @@ class _TransferDetailScaffoldPreviewState
       useRootNavigator: false,
       builder: (controller) {
         return GtTransferDetailScaffold(
+          isLoading: isLoading,
+          loadingSemanticsLabel: 'Loading transfer',
           onClose: () => GtRouter.forcePopView(),
           onReportProblem: () {
             GtToast.of(context).show("Report problem tapped");
@@ -383,6 +386,11 @@ class _TransferDetailScaffoldPreviewState
       initialValue: false,
     );
 
+    final isLoading = context.knobs.boolean(
+      label: 'Loading (skeleton body)',
+      initialValue: false,
+    );
+
     return GtWidgetDocPage(
       title: 'GtTransferDetailScaffold',
       description:
@@ -393,6 +401,7 @@ showDraggableSheet(
   context,
   builder: (controller) {
     return GtTransferDetailScaffold(
+      ${isLoading ? "isLoading: true,\n      loadingSemanticsLabel: 'Loading transfer'," : ''}
       onClose: () => GtRouter.popView(),
       onReportProblem: () => handleReportProblem(),
       body: GtTransferDetailBody(
@@ -430,6 +439,7 @@ showDraggableSheet(
           actionsPreset: actionsPreset,
           showFeeInfo: showFeeInfo,
           showDownload: showDownload,
+          isLoading: isLoading,
         ),
       ),
     );

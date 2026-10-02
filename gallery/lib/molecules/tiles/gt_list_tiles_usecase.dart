@@ -11,12 +11,18 @@ Widget playgroundGtListTileUseCase(BuildContext context) {
     initialValue: 'General List Item',
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: "GtListTile",
     description:
         "A general-purpose list tile that displays a primary text with optional leading/trailing widgets.",
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtListTile.skeleton(showTrailing: true)'
+        : '''
 GtListTile(
   text: "$text",
   leading: GtIcon(GtIcons.user),
@@ -27,12 +33,14 @@ GtListTile(
       child: GtCard(
         padding: context.insets.symmetricDp(horizontal: 16.px, vertical: 8.px),
         variant: GtCardVariant.normal,
-        child: GtListTile(
-          text: text,
-          leading: const GtIcon(GtIcons.user),
-          trailing: const GtIcon(GtIcons.chevronRight),
-          onTap: () {},
-        ),
+        child: isSkeleton
+            ? const GtListTile.skeleton(showTrailing: true)
+            : GtListTile(
+                text: text,
+                leading: const GtIcon(GtIcons.user),
+                trailing: const GtIcon(GtIcons.chevronRight),
+                onTap: () {},
+              ),
       ),
     ),
   );
@@ -126,26 +134,26 @@ Widget playgroundGtSimpleActionListTileUseCase(BuildContext context) {
     label: 'Title',
     initialValue: 'Personal Info',
   );
-  final (trailingLabel, trailingIcon) =
-      context.knobs.object.dropdown<(String, IconData)>(
-    label: 'Trailing Icon',
-    initialOption: ('chevronRight', GtIcons.chevronRight),
-    options: const [
-      ('chevronRight', GtIcons.chevronRight),
-      ('chevronLeft', GtIcons.chevronLeft),
-      ('chevronDown', GtIcons.chevronDown),
-      ('chevronUp', GtIcons.chevronUp),
-      ('arrowNorthEast', GtIcons.arrowNorthEast),
-      ('arrowDoorOut', GtIcons.arrowDoorOut),
-      ('more', GtIcons.more),
-      ('moreHorizontal', GtIcons.moreHorizontal),
-      ('add', GtIcons.add),
-      ('cancel', GtIcons.cancel),
-      ('spark', GtIcons.spark),
-      ('info', GtIcons.info),
-    ],
-    labelBuilder: (option) => option.$1,
-  );
+  final (trailingLabel, trailingIcon) = context.knobs.object
+      .dropdown<(String, IconData)>(
+        label: 'Trailing Icon',
+        initialOption: ('chevronRight', GtIcons.chevronRight),
+        options: const [
+          ('chevronRight', GtIcons.chevronRight),
+          ('chevronLeft', GtIcons.chevronLeft),
+          ('chevronDown', GtIcons.chevronDown),
+          ('chevronUp', GtIcons.chevronUp),
+          ('arrowNorthEast', GtIcons.arrowNorthEast),
+          ('arrowDoorOut', GtIcons.arrowDoorOut),
+          ('more', GtIcons.more),
+          ('moreHorizontal', GtIcons.moreHorizontal),
+          ('add', GtIcons.add),
+          ('cancel', GtIcons.cancel),
+          ('spark', GtIcons.spark),
+          ('info', GtIcons.info),
+        ],
+        labelBuilder: (option) => option.$1,
+      );
   final trailingVariant = context.knobs.object.dropdown<GtIconVariant>(
     label: 'Trailing Icon Variant',
     initialOption: GtIconVariant.soft,
@@ -158,19 +166,19 @@ Widget playgroundGtSimpleActionListTileUseCase(BuildContext context) {
     min: 14.0,
     max: 36.0,
   );
-  final (styleName, titleStyle) =
-      context.knobs.object.dropdown<(String, TextStyle?)>(
-    label: 'Title Style',
-    initialOption: ('Default (h6)', null),
-    options: [
-      ('Default (h6)', null),
-      ('h5', context.textStyles.h5()),
-      ('subHeadS', context.textStyles.subHeadS()),
-      ('bodyM', context.textStyles.bodyM()),
-      ('labelM', context.textStyles.labelM()),
-    ],
-    labelBuilder: (v) => v.$1,
-  );
+  final (styleName, titleStyle) = context.knobs.object
+      .dropdown<(String, TextStyle?)>(
+        label: 'Title Style',
+        initialOption: ('Default (h6)', null),
+        options: [
+          ('Default (h6)', null),
+          ('h5', context.textStyles.h5()),
+          ('subHeadS', context.textStyles.subHeadS()),
+          ('bodyM', context.textStyles.bodyM()),
+          ('labelM', context.textStyles.labelM()),
+        ],
+        labelBuilder: (v) => v.$1,
+      );
   final customPadding = context.knobs.boolean(
     label: 'Custom Padding (Dense)',
     initialValue: false,
@@ -192,7 +200,8 @@ Widget playgroundGtSimpleActionListTileUseCase(BuildContext context) {
       ? ''
       : '\n  titleStyle: context.textStyles.$styleName(),';
 
-  final code = '''
+  final code =
+      '''
 GtSimpleActionListTile(
   "$title",$iconParam$sizeParam$variantParam$styleParam$paddingParam
   onTap: () {},

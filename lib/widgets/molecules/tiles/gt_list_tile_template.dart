@@ -153,20 +153,50 @@ class GtStandardTextTileTemplate extends GtStatelessWidget {
   /// Overrides footer spacing in logical pixels. Null preserves the current default.
   final double? footerSpacing;
 
+  /// The primary text of the tile.
   final String title;
+
+  /// Optional secondary text displayed below the [title].
   final String? subtitle;
+
+  /// An optional widget displayed at the start of the tile.
   final Widget? leading;
+
+  /// An optional widget displayed at the end of the tile.
   final Widget? trailing;
+
+  /// An optional widget displayed beneath the title and subtitle.
   final Widget? footer;
+
+  /// The callback triggered when the tile is tapped.
   final OnPressed? onTap;
+
+  /// Optional custom style override for the [title].
+  ///
+  /// Defaults to [GtTextStyles.subHeadS].
   final TextStyle? titleStyle;
+
+  /// Optional custom style override for the [subtitle].
+  ///
+  /// Defaults to [GtTextStyles.bodyXs] in the sub text color.
   final TextStyle? subtitleStyle;
+
+  /// If true, wraps the entire tile in a [GtCard].
   final bool asCard;
+
+  /// Vertical alignment of the leading, middle, and trailing elements.
   final CrossAxisAlignment crossAxisAlignment;
+
+  /// The color of the card, if [asCard] is true.
   final Color? cardColor;
+
+  /// The border radius of the card, if [asCard] is true.
   final BorderRadius? cardBorderRadius;
+
+  /// The padding of the card, if [asCard] is true.
   final EdgeInsetsGeometry? cardPadding;
 
+  /// Creates a [GtStandardTextTileTemplate].
   const GtStandardTextTileTemplate({
     super.key,
     required this.title,
@@ -189,6 +219,24 @@ class GtStandardTextTileTemplate extends GtStatelessWidget {
     this.verticalSpacing,
     this.footerSpacing,
   });
+
+  /// Creates a skeleton of this tile, standing in for a row that is still
+  /// loading.
+  ///
+  /// The tile is laid out with placeholder data under its own [GtSkeleton], so
+  /// it shows only bones in the real tile's layout and announces nothing.
+  /// Inside a [GtSkeletonList] or another skeleton it joins that skeleton's
+  /// sweep.
+  ///
+  /// [leading] and [trailing] are laid out as given and boned with the rest,
+  /// so pass the real tile's own, such as a [GtAvatar] or a [GtIcon]. [asCard]
+  /// matches the real tile's.
+  const factory GtStandardTextTileTemplate.skeleton({
+    Key? key,
+    Widget? leading,
+    Widget? trailing,
+    bool asCard,
+  }) = _GtStandardTextTileTemplateSkeleton;
 
   @override
   Widget build(BuildContext context) {
@@ -229,6 +277,25 @@ class GtStandardTextTileTemplate extends GtStatelessWidget {
       cardColor: cardColor,
       cardBorderRadius: cardBorderRadius,
       cardPadding: cardPadding,
+    );
+  }
+}
+
+/// A private skeleton of [GtStandardTextTileTemplate], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtStandardTextTileTemplateSkeleton extends GtStandardTextTileTemplate {
+  /// Creates a [_GtStandardTextTileTemplateSkeleton].
+  const _GtStandardTextTileTemplateSkeleton({
+    super.key,
+    super.leading,
+    super.trailing,
+    super.asCard,
+  }) : super(title: 'Adaeze Okafor', subtitle: 'Savings • 0123456789');
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

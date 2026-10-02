@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/data/models/media_data.dart';
 import 'package:gt_mobile_foundation/extensions/extensions.dart';
+import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 @widgetbook.UseCase(name: 'GtSectionSlide Gallery', type: GtSectionSlide)
 Widget buildGtSectionSlideUsecase(BuildContext context) {
+  final labelTitles = context.knobs.boolean(
+    label: 'Label Title Style (12)',
+    initialValue: false,
+  );
+  final titleStyle = labelTitles ? context.textStyles.labelXs() : null;
+
   void showToast() {
     context.showToast("Clicked Lesson Card", type: .highlighted);
   }
@@ -70,14 +77,23 @@ Widget buildGtSectionSlideUsecase(BuildContext context) {
           ),
         ),
         SliverToBoxAdapter(
-          child: GtSectionSlide(title: "Featured", children: featured),
+          child: GtSectionSlide(
+            title: "Featured",
+            titleStyle: titleStyle,
+            children: featured,
+          ),
         ),
         SliverToBoxAdapter(
-          child: GtSectionSlide(title: "Completed", children: completed),
+          child: GtSectionSlide(
+            title: "Completed",
+            titleStyle: titleStyle,
+            children: completed,
+          ),
         ),
         SliverToBoxAdapter(
           child: GtSectionSlide(
             title: "Savings & Investments",
+            titleStyle: titleStyle,
             children: [...featured, ...completed],
           ),
         ),

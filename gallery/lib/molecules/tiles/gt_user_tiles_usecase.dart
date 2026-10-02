@@ -20,12 +20,18 @@ Widget playgroundGtAccountListTileUseCase(BuildContext context) {
     initialValue: true,
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtAccountListTile',
     description:
         'A list tile tailored for displaying account details with title, subtitle and leading avatar/icon.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtAccountListTile.skeleton()'
+        : '''
 GtAccountListTile(
   "$title",
   subtitle: "$subtitle",
@@ -39,15 +45,17 @@ GtAccountListTile(
       child: GtCard(
         padding: context.insets.allDp(12.px),
         variant: GtCardVariant.normal,
-        child: GtAccountListTile(
-          title,
-          subtitle: subtitle,
-          leading: const GtImage(
-            image: AppImageData(GtNetworkImages.sampleAvatar1),
-          ),
-          hasBoldSubtitle: hasBoldSubtitle,
-          onTap: () {},
-        ),
+        child: isSkeleton
+            ? const GtAccountListTile.skeleton()
+            : GtAccountListTile(
+                title,
+                subtitle: subtitle,
+                leading: const GtImage(
+                  image: AppImageData(GtNetworkImages.sampleAvatar1),
+                ),
+                hasBoldSubtitle: hasBoldSubtitle,
+                onTap: () {},
+              ),
       ),
     ),
   );
@@ -64,12 +72,18 @@ Widget playgroundGtContactListTileUseCase(BuildContext context) {
     initialValue: 'alex.loba@sterling.com',
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtContactListTile',
     description:
         'A list tile tailored for displaying contact lists with a standard right chevron indicator.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtContactListTile.skeleton()'
+        : '''
 GtContactListTile(
   "$title",
   subtitle: "$subtitle",
@@ -80,12 +94,14 @@ GtContactListTile(
       child: GtCard(
         padding: context.insets.allDp(12.px),
         variant: GtCardVariant.normal,
-        child: GtContactListTile(
-          title,
-          subtitle: subtitle,
-          leading: const GtAvatar(initials: "AL"),
-          onTap: () {},
-        ),
+        child: isSkeleton
+            ? const GtContactListTile.skeleton()
+            : GtContactListTile(
+                title,
+                subtitle: subtitle,
+                leading: const GtAvatar(initials: "AL"),
+                onTap: () {},
+              ),
       ),
     ),
   );

@@ -5,6 +5,9 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This widget wraps the standard Flutter [Icon] to provide consistent sizing,
 /// semantic colors based on [GtIconVariant], and optional alignment handling.
+///
+/// Inside an enabled [GtSkeleton] it paints a [GtBone] block the size of the
+/// glyph in its place.
 class GtIcon extends GtStatelessWidget {
   /// The icon data to display (e.g., [Icons.home]).
   final IconData icon;
@@ -81,6 +84,9 @@ class GtIcon extends GtStatelessWidget {
       shadows: shadows,
       weight: weight,
     );
+    if (context.inSkeleton) {
+      child = GtBone(borderRadius: context.borderRadiusXs, child: child);
+    }
     if (alignment != null) {
       child = Align(alignment: alignment!, child: child);
     }

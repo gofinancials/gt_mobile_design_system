@@ -246,6 +246,53 @@ void main() {
       expect(tile.valueSuffix, isNotNull);
     });
 
+    testWidgets('sizes its images to the caller\'s size when given', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          const GtSummaryTile(
+            GtSummaryTileData(
+              label: 'Category',
+              value: 'Transfer',
+              leading: AppImageData(GtVectors.logo),
+              trailing: AppImageData(GtVectors.sterling),
+              imageSize: 32,
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final images = tester.widgetList<GtImage>(find.byType(GtImage));
+
+      expect(images, hasLength(2));
+      for (final image in images) {
+        expect(image.width, 32);
+        expect(image.height, 32);
+      }
+    });
+
+    testWidgets('draws its images at dp(20) by default', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          const GtSummaryTile(
+            GtSummaryTileData(
+              label: 'Category',
+              value: 'Transfer',
+              trailing: AppImageData(GtVectors.sterling),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final context = tester.element(find.byType(GtSummaryTile));
+      final image = tester.widget<GtImage>(find.byType(GtImage));
+
+      expect(image.width, context.dp(20.px));
+    });
+
     testWidgets('stacked layout puts the label above the value', (
       tester,
     ) async {

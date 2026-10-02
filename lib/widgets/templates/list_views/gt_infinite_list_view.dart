@@ -171,6 +171,18 @@ class GtInfiniteListView<T> extends GtStatefulWidget {
   final double threshold;
 
   /// Replaces the footer shown while a page is in flight.
+  ///
+  /// Defaults to an indeterminate [GtProgress]. For a footer that reads as
+  /// the next rows arriving, pass a few skeleton rows of the list's own kind;
+  /// the footer is a box in both list forms, so it takes the box
+  /// [GtSkeletonList]:
+  ///
+  /// ```dart
+  /// loader: GtSkeletonList(
+  ///   itemCount: 2,
+  ///   itemBuilder: (context, i) => GtTransactionListTile.skeleton(),
+  /// ),
+  /// ```
   final Widget? loader;
 
   /// Creates a [GtInfiniteListView].
@@ -191,6 +203,7 @@ class GtInfiniteListView<T> extends GtStatefulWidget {
   State<GtInfiniteListView<T>> createState() => _GtInfiniteListViewState<T>();
 }
 
+/// The state of a [GtInfiniteListView], which observes its controller.
 class _GtInfiniteListViewState<T> extends State<GtInfiniteListView<T>> {
   /// The observer requesting pages off the controller's position.
   late final _GtPaginationObserver _observer = _GtPaginationObserver(
@@ -201,9 +214,16 @@ class _GtInfiniteListViewState<T> extends State<GtInfiniteListView<T>> {
     positionOf: () => controller.hasClients ? controller.position : null,
   );
 
+  /// See [GtInfiniteListView.data].
   PaginatedData<Identifiable> get data => widget.data;
+
+  /// See [GtInfiniteListView.padding].
   EdgeInsetsGeometry? get padding => widget.padding;
+
+  /// See [GtInfiniteListView.controller].
   ScrollController get controller => widget.controller;
+
+  /// See [GtInfiniteListView.indicatorOffset].
   double get indicatorOffset => widget.indicatorOffset;
 
   @override
@@ -307,6 +327,18 @@ class GtInfiniteListSliver<T> extends GtStatefulWidget {
   final double threshold;
 
   /// Replaces the footer shown while a page is in flight.
+  ///
+  /// Defaults to an indeterminate [GtProgress]. For a footer that reads as
+  /// the next rows arriving, pass a few skeleton rows of the list's own kind;
+  /// the footer is a box in both list forms, so it takes the box
+  /// [GtSkeletonList]:
+  ///
+  /// ```dart
+  /// loader: GtSkeletonList(
+  ///   itemCount: 2,
+  ///   itemBuilder: (context, i) => GtTransactionListTile.skeleton(),
+  /// ),
+  /// ```
   final Widget? loader;
 
   /// Creates a [GtInfiniteListSliver].
@@ -324,6 +356,8 @@ class GtInfiniteListSliver<T> extends GtStatefulWidget {
       _GtInfiniteListSliverState<T>();
 }
 
+/// The state of a [GtInfiniteListSliver], which observes the host scroll
+/// view's position.
 class _GtInfiniteListSliverState<T> extends State<GtInfiniteListSliver<T>> {
   /// The observer requesting pages off the host scroll view's position.
   late final _GtPaginationObserver _observer = _GtPaginationObserver(
@@ -337,6 +371,7 @@ class _GtInfiniteListSliverState<T> extends State<GtInfiniteListSliver<T>> {
   /// The host position currently listened to.
   ScrollPosition? _position;
 
+  /// See [GtInfiniteListSliver.data].
   PaginatedData<Identifiable> get data => widget.data;
 
   @override

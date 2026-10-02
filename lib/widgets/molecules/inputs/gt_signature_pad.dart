@@ -118,7 +118,10 @@ class GtSignaturePad extends GtStatefulWidget {
   State<GtSignaturePad> createState() => _GtSignaturePadState();
 }
 
+/// The state of a [GtSignaturePad], which owns or borrows its controller.
 class _GtSignaturePadState extends State<GtSignaturePad> {
+  /// The controller holding the strokes, either [GtSignaturePad.controller] or
+  /// one this state created and disposes.
   late GtSignaturePadController _controller;
 
   @override
@@ -144,15 +147,19 @@ class _GtSignaturePadState extends State<GtSignaturePad> {
     super.dispose();
   }
 
+  /// Makes [controller] the active controller and listens for image changes.
   void _attachController(GtSignaturePadController controller) {
     _controller = controller;
     _controller.imageListenable.addListener(_notifyImageChanged);
   }
 
+  /// Reports the signature's current bytes to [GtSignaturePad.onChanged].
   void _notifyImageChanged() {
     widget.onChanged?.call(_controller.bytes);
   }
 
+  /// Clamps [point] to a canvas of [size], so a stroke dragged past an edge
+  /// stays on the canvas.
   Offset _boundedPoint(Offset point, Size size) {
     return Offset(
       point.dx.clamp(0, size.width).toDouble(),
@@ -160,12 +167,15 @@ class _GtSignaturePadState extends State<GtSignaturePad> {
     );
   }
 
+  /// Clears the signature and reports it to [GtSignaturePad.onClear].
   void _clear() {
     if (!widget.isEnabled) return;
     _controller.clear();
     widget.onClear?.call();
   }
 
+  /// Runs [GtSignaturePad.onSecondaryAction], or picks an image when none is
+  /// supplied.
   Future<void> _handleSecondaryAction() async {
     if (!widget.isEnabled) return;
     if (widget.onSecondaryAction != null) {
@@ -183,161 +193,168 @@ class _GtSignaturePadState extends State<GtSignaturePad> {
     final canvasColor = widget.backgroundColor ?? palette.bg.soft;
     final signatureColor = widget.strokeColor ?? palette.text.strong;
 
-    return GtDisabledOverlay(
-      !widget.isEnabled,
-      child: GtSizedBox(
-        width: double.infinity,
-        height: canvasHeight,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final canvasSize = constraints.biggest;
-            return Stack(
-              clipBehavior: Clip.hardEdge,
-              children: [
-                Positioned.fill(
-                  child: RepaintBoundary(
-                    key: _controller.repaintBoundaryKey,
-                    child: ColoredBox(
-                      color: canvasColor,
-                      child: Semantics(
-                        label: widget.semanticsLabel,
-                        hint: widget.semanticsHint,
-                        enabled: widget.isEnabled,
-                        child: MouseRegion(
-                          cursor: widget.isEnabled
-                              ? SystemMouseCursors.precise
-                              : SystemMouseCursors.forbidden,
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onPanStart: widget.isEnabled
-                                ? (details) {
-                                    _controller.beginStroke(
-                                      _boundedPoint(
-                                        details.localPosition,
-                                        canvasSize,
-                                      ),
-                                    );
-                                  }
-                                : null,
-                            onPanUpdate: widget.isEnabled
-                                ? (details) {
-                                    _controller.appendPoint(
-                                      _boundedPoint(
-                                        details.localPosition,
-                                        canvasSize,
-                                      ),
-                                    );
-                                  }
-                                : null,
-                            onPanEnd: widget.isEnabled
-                                ? (_) => _controller.endStroke()
-                                : null,
-                            onPanCancel: widget.isEnabled
-                                ? _controller.endStroke
-                                : null,
-                            child: CustomPaint(
-                              painter: GtSignaturePainter(
-                                controller: _controller,
-                                strokeColor: signatureColor,
-                                strokeWidth: widget.strokeWidth,
-                              ),
-                              child: const SizedBox.expand(),
+    Widget pad = GtSizedBox(
+      width: double.infinity,
+      height: canvasHeight,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final canvasSize = constraints.biggest;
+          return Stack(
+            clipBehavior: Clip.hardEdge,
+            children: [
+              Positioned.fill(
+                child: RepaintBoundary(
+                  key: _controller.repaintBoundaryKey,
+                  child: ColoredBox(
+                    color: canvasColor,
+                    child: Semantics(
+                      label: widget.semanticsLabel,
+                      hint: widget.semanticsHint,
+                      enabled: widget.isEnabled,
+                      child: MouseRegion(
+                        cursor: widget.isEnabled
+                            ? SystemMouseCursors.precise
+                            : SystemMouseCursors.forbidden,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onPanStart: widget.isEnabled
+                              ? (details) {
+                                  _controller.beginStroke(
+                                    _boundedPoint(
+                                      details.localPosition,
+                                      canvasSize,
+                                    ),
+                                  );
+                                }
+                              : null,
+                          onPanUpdate: widget.isEnabled
+                              ? (details) {
+                                  _controller.appendPoint(
+                                    _boundedPoint(
+                                      details.localPosition,
+                                      canvasSize,
+                                    ),
+                                  );
+                                }
+                              : null,
+                          onPanEnd: widget.isEnabled
+                              ? (_) => _controller.endStroke()
+                              : null,
+                          onPanCancel: widget.isEnabled
+                              ? _controller.endStroke
+                              : null,
+                          child: CustomPaint(
+                            painter: GtSignaturePainter(
+                              controller: _controller,
+                              strokeColor: signatureColor,
+                              strokeWidth: widget.strokeWidth,
                             ),
+                            child: const SizedBox.expand(),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-                GenericListener<GtSignaturePadValue>(
-                  valueListenable: _controller,
-                  builder: (state) {
-                    final image = state.image;
-                    if (image == null) return const SizedBox.shrink();
-                    return Positioned.fill(
-                      child: Padding(
-                        padding: context.insets.allDp(12.px),
-                        child: GtImage(
-                          image: AppImageData.bytes(image),
-                          fit: BoxFit.contain,
-                          isDecorative: true,
-                        ),
+              ),
+              GenericListener<GtSignaturePadValue>(
+                valueListenable: _controller,
+                builder: (state) {
+                  final image = state.image;
+                  if (image == null) return const SizedBox.shrink();
+                  return Positioned.fill(
+                    child: Padding(
+                      padding: context.insets.allDp(12.px),
+                      child: GtImage(
+                        image: AppImageData.bytes(image),
+                        fit: BoxFit.contain,
+                        isDecorative: true,
                       ),
-                    );
-                  },
+                    ),
+                  );
+                },
+              ),
+              GenericListener<GtSignaturePadValue>(
+                valueListenable: _controller,
+                builder: (state) {
+                  if (!state.isEmpty) return const SizedBox.shrink();
+                  return Positioned.fill(
+                    child: IgnorePointer(child: _Placeholder(widget: widget)),
+                  );
+                },
+              ),
+              PositionedDirectional(
+                start: 0,
+                top: context.dp(context.spacing.xs.px),
+                child: _SignatureActionTarget(
+                  semanticsLabel: widget.secondaryActionSemanticLabel,
+                  isEnabled: widget.isEnabled,
+                  onPressed: _handleSecondaryAction,
+                  child:
+                      widget.secondaryAction ??
+                      GtIcon(GtIcons.uploadFolder, size: context.dp(20.px)),
                 ),
-                GenericListener<GtSignaturePadValue>(
-                  valueListenable: _controller,
-                  builder: (state) {
-                    if (!state.isEmpty) return const SizedBox.shrink();
-                    return Positioned.fill(
-                      child: IgnorePointer(child: _Placeholder(widget: widget)),
-                    );
-                  },
-                ),
-                PositionedDirectional(
-                  start: 0,
-                  top: context.dp(context.spacing.xs.px),
-                  child: _SignatureActionTarget(
-                    semanticsLabel: widget.secondaryActionSemanticLabel,
-                    isEnabled: widget.isEnabled,
-                    onPressed: _handleSecondaryAction,
-                    child:
-                        widget.secondaryAction ??
-                        GtIcon(GtIcons.uploadFolder, size: context.dp(20.px)),
-                  ),
-                ),
-                GenericListener<GtSignaturePadValue>(
-                  valueListenable: _controller,
-                  builder: (state) {
-                    if (!state.canUndo && !state.canRedo && !state.isImage) {
-                      return const SizedBox.shrink();
-                    }
-                    return PositionedDirectional(
-                      end: context.dp(context.spacing.sm.px),
-                      top: 0,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (state.strokes.isNotEmpty ||
-                              state.redoStrokes.isNotEmpty) ...[
-                            _SignatureHistoryAction(
-                              icon: GtIcons.rotateAnticlockwise,
-                              semanticsLabel: widget.undoSemanticLabel,
-                              isEnabled: widget.isEnabled && state.canUndo,
-                              onPressed: _controller.undo,
-                            ),
-                            _SignatureHistoryAction(
-                              icon: GtIcons.rotateAnticlockwise,
-                              flipHorizontally: true,
-                              semanticsLabel: widget.redoSemanticLabel,
-                              isEnabled: widget.isEnabled && state.canRedo,
-                              onPressed: _controller.redo,
-                            ),
-                          ],
+              ),
+              GenericListener<GtSignaturePadValue>(
+                valueListenable: _controller,
+                builder: (state) {
+                  if (!state.canUndo && !state.canRedo && !state.isImage) {
+                    return const SizedBox.shrink();
+                  }
+                  return PositionedDirectional(
+                    end: context.dp(context.spacing.sm.px),
+                    top: 0,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (state.strokes.isNotEmpty ||
+                            state.redoStrokes.isNotEmpty) ...[
                           _SignatureHistoryAction(
-                            icon: GtIcons.trash,
-                            semanticsLabel: widget.clearSemanticLabel,
-                            isEnabled: widget.isEnabled && state.hasSignature,
-                            onPressed: _clear,
+                            icon: GtIcons.rotateAnticlockwise,
+                            semanticsLabel: widget.undoSemanticLabel,
+                            isEnabled: widget.isEnabled && state.canUndo,
+                            onPressed: _controller.undo,
+                          ),
+                          _SignatureHistoryAction(
+                            icon: GtIcons.rotateAnticlockwise,
+                            flipHorizontally: true,
+                            semanticsLabel: widget.redoSemanticLabel,
+                            isEnabled: widget.isEnabled && state.canRedo,
+                            onPressed: _controller.redo,
                           ),
                         ],
-                      ),
-                    );
-                  },
-                ),
-              ],
-            );
-          },
-        ),
+                        _SignatureHistoryAction(
+                          icon: GtIcons.trash,
+                          semanticsLabel: widget.clearSemanticLabel,
+                          isEnabled: widget.isEnabled && state.hasSignature,
+                          onPressed: _clear,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
+
+    if (context.inSkeleton) {
+      pad = GtBone(child: pad);
+    }
+
+    return GtDisabledOverlay(!widget.isEnabled, child: pad);
   }
 }
 
+/// A private widget that shows a [GtSignaturePad]'s title and subtitle while
+/// the pad is empty.
 class _Placeholder extends GtStatelessWidget {
+  /// The pad whose copy is shown.
   final GtSignaturePad widget;
 
+  /// Creates a [_Placeholder] for [widget].
   const _Placeholder({required this.widget});
 
   @override
@@ -374,12 +391,22 @@ class _Placeholder extends GtStatelessWidget {
   }
 }
 
+/// A private widget that wraps a [GtSignaturePad]'s secondary action in a
+/// minimum-size tap target.
 class _SignatureActionTarget extends GtStatelessWidget {
+  /// The glyph drawn for the action.
   final Widget child;
+
+  /// What the action is announced as.
   final String semanticsLabel;
+
+  /// Whether the action can be tapped.
   final bool isEnabled;
+
+  /// Called when the action is tapped.
   final OnPressed onPressed;
 
+  /// Creates a [_SignatureActionTarget].
   const _SignatureActionTarget({
     required this.child,
     required this.semanticsLabel,
@@ -403,13 +430,25 @@ class _SignatureActionTarget extends GtStatelessWidget {
   }
 }
 
+/// A private widget that draws one of a [GtSignaturePad]'s undo, redo or
+/// clear buttons.
 class _SignatureHistoryAction extends GtStatelessWidget {
+  /// The glyph drawn for the action.
   final IconData icon;
+
+  /// What the action is announced as.
   final String semanticsLabel;
+
+  /// Whether the action can be tapped.
   final bool isEnabled;
+
+  /// Called when the action is tapped.
   final OnPressed onPressed;
+
+  /// Whether [icon] is mirrored, which turns the undo glyph into redo.
   final bool flipHorizontally;
 
+  /// Creates a [_SignatureHistoryAction].
   const _SignatureHistoryAction({
     required this.icon,
     required this.semanticsLabel,

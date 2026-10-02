@@ -38,6 +38,9 @@ class GtSectionSlide extends GtStatelessWidget {
   /// This text is automatically converted to uppercase.
   final String title;
 
+  /// Overrides the [title]'s style. Null preserves [GtSectionHeader]'s default.
+  final TextStyle? titleStyle;
+
   /// The builder function for creating items lazily.
   ///
   /// Used by the [GtSectionSlide.builder] constructor.
@@ -57,6 +60,7 @@ class GtSectionSlide extends GtStatelessWidget {
     required this.children,
     this.scrollHeight = 300,
     this.gutter,
+    this.titleStyle,
     super.key,
   }) : _builder = null,
        _itemCount = null;
@@ -71,6 +75,7 @@ class GtSectionSlide extends GtStatelessWidget {
     required this.title,
     this.scrollHeight = 300,
     this.gutter,
+    this.titleStyle,
     super.key,
     required IndexedWidgetBuilder builder,
     required int itemCount,
@@ -88,7 +93,7 @@ class GtSectionSlide extends GtStatelessWidget {
       children: [
         Padding(
           padding: context.insets.defaultHorizontalInsets,
-          child: GtSectionHeader(title.upper),
+          child: GtSectionHeader(title.upper, style: titleStyle),
         ),
         GtGap.yBase(),
         GtSizedBox(

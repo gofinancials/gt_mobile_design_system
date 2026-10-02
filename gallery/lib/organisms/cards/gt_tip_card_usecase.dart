@@ -22,6 +22,10 @@ Widget playgroundGtTipCardUseCase(BuildContext context) {
     labelBuilder: (v) => v.name,
   );
   final hidden = context.knobs.boolean(label: 'Hidden', initialValue: false);
+  final dismissible = context.knobs.boolean(
+    label: 'Dismissible',
+    initialValue: true,
+  );
 
   return GtWidgetDocPage(
     title: 'GtTipCard',
@@ -33,15 +37,14 @@ GtTipCard(
   title: "$title",
   subtitle: "$subtitle",
   variant: GtCardVariant.${variant.name},
-  hidden: $hidden,
-  onClose: () {},
+  hidden: $hidden,${dismissible ? '\n  onClose: () {},' : ''}
 )''',
     child: GtTipCard(
       title: title,
       subtitle: subtitle,
       variant: variant,
       hidden: hidden,
-      onClose: () {},
+      onClose: dismissible ? () {} : null,
     ),
   );
 }

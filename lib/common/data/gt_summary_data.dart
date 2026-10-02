@@ -58,6 +58,11 @@ class GtSummaryTileData extends AppEquatable {
   /// [GtSummaryTileLayout.stacked].
   final AppImageData? trailing;
 
+  /// The width and height of [leading] and [trailing], already scaled by the
+  /// caller with `context.dp`. Null draws them at `dp(20)`, the size of a bank
+  /// logo or avatar; a category glyph such as the transfer summary's is 32.
+  final double? imageSize;
+
   /// An optional colour override for the [value] text.
   ///
   /// Used by category rows, which tint the value to match their glyph.
@@ -72,12 +77,20 @@ class GtSummaryTileData extends AppEquatable {
     required this.value,
     this.leading,
     this.trailing,
+    this.imageSize,
     this.valueColor,
     this.onTap,
   });
 
   @override
-  List<Object?> get props => [label, value, leading, trailing, valueColor];
+  List<Object?> get props => [
+    label,
+    value,
+    leading,
+    trailing,
+    imageSize,
+    valueColor,
+  ];
 }
 
 /// One payee within a [GtSummaryPaymentsSection].

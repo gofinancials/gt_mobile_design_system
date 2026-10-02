@@ -300,6 +300,7 @@ class _ReceiptScaffoldPreviewState extends State<_ReceiptScaffoldPreview>
     required bool showFooter,
     required String footerType,
     required String physicsChoice,
+    required bool isLoading,
   }) {
     showDraggableSheet(
       context,
@@ -309,6 +310,8 @@ class _ReceiptScaffoldPreviewState extends State<_ReceiptScaffoldPreview>
       useRootNavigator: false,
       builder: (controller) {
         return GtReceiptScaffold(
+          isLoading: isLoading,
+          loadingSemanticsLabel: 'Loading receipt',
           onClose: () => GtRouter.forcePopView(),
           onReportProblem: () {
             GtToast.of(context).show("Report problem tapped");
@@ -502,6 +505,11 @@ class _ReceiptScaffoldPreviewState extends State<_ReceiptScaffoldPreview>
       initialOption: 'Clamping (Default)',
     );
 
+    final isLoading = context.knobs.boolean(
+      label: 'Loading (skeleton body)',
+      initialValue: false,
+    );
+
     return GtWidgetDocPage(
       title: 'GtReceiptScaffold',
       description:
@@ -512,6 +520,7 @@ showDraggableSheet(
   context,
   builder: (controller) {
     return GtReceiptScaffold(
+      ${isLoading ? "isLoading: true,\n      loadingSemanticsLabel: 'Loading receipt'," : ''}
       onClose: () => Navigator.of(context).pop(),
       onReportProblem: () => handleReportProblem(),
       body: GtReceiptBody(
@@ -589,6 +598,7 @@ showDraggableSheet(
           showFooter: showFooter,
           footerType: footerType,
           physicsChoice: physicsChoice,
+          isLoading: isLoading,
         ),
       ),
     );

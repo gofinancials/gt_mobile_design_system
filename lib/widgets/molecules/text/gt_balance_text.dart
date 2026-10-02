@@ -276,6 +276,10 @@ class GtBalanceText extends GtStatelessWidget {
       );
     }
 
+    if (context.inSkeleton) {
+      child = GtBone(child: child);
+    }
+
     child = FittedBox(
       fit: .scaleDown,
       child: Semantics(

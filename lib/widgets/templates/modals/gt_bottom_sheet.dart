@@ -115,10 +115,13 @@ class GtBottomSheet<T> {
     Widget child = Builder(
       builder: (context) {
         if (_isDraggable) {
+          // Not `expand`ed: a full-height sheet would sit over the barrier and
+          // swallow a tap above the visible sheet, so it could never dismiss.
           return DraggableScrollableSheet(
             initialChildSize: initialChildSize,
             maxChildSize: maxChildSize,
             minChildSize: minChildSize,
+            expand: false,
             builder: (context, scrollController) {
               return _GtSheetContainer(
                 floating: floating,
@@ -313,9 +316,13 @@ class _GtSheetContainer extends GtStatelessWidget {
         child: body,
       );
     }
+    // `heightFactor` keeps the transparent [Material] as tall as the sheet.
+    // Without it the [Align] fills the whole box the route offers, and that
+    // [Material] absorbs taps above the visible sheet before they can reach
+    // the modal barrier.
     return Material(
       type: .transparency,
-      child: Align(alignment: alignment, child: body),
+      child: Align(alignment: alignment, heightFactor: 1, child: body),
     );
   }
 }

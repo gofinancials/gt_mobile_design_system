@@ -10,26 +10,28 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// - Base64 encoded strings (starting with "data:") are routed to [GtMemoryImage].
 /// - SVG URLs (ending with ".svg") are routed to [GtSvg].
 /// - Standard image URLs are handled by [CachedNetworkImage] for efficient caching.
+///
+/// Inside an enabled [GtSkeleton] the image is painted as a [GtBone] block.
 class GtNetworkImage extends GtStatelessWidget {
   /// An optional local asset path to display while the network image is loading.
   ///
   /// Takes precedence over [showLoadingIndicator]: supplied artwork stands in
-  /// for the image whether or not a spinner would otherwise be drawn.
+  /// for the image whether or not a shimmer would otherwise be drawn.
   final String? placeHolderPath;
 
-  /// Whether to draw a spinner while the image loads.
+  /// Whether to draw a [GtImageShimmer] while the image loads.
   ///
   /// The placeholder is laid out at this widget's full size and paints over
   /// whatever sits behind it. Set it to `false` where the caller has already
   /// drawn something worth keeping — an avatar's initials, a card's artwork —
-  /// so the image fades in over that rather than replacing it with a spinner.
+  /// so the image fades in over that rather than replacing it with a shimmer.
   /// A standalone image with nothing behind it should leave this `true`, or a
   /// slow network reads as a blank rectangle.
   ///
-  /// `flutter_test` refuses network requests, so under test the spinner is
+  /// `flutter_test` refuses network requests, so under test the shimmer is
   /// never replaced by the image. It holds still whenever
   /// [MediaQueryData.disableAnimations] is set, which is what lets a test that
-  /// sets that flag `pumpAndSettle`; see [GtSpinner].
+  /// sets that flag `pumpAndSettle`; see [GtSkeleton].
   ///
   /// Ignored when [placeHolderPath] supplies still artwork instead.
   final bool showLoadingIndicator;
@@ -120,7 +122,7 @@ class GtNetworkImage extends GtStatelessWidget {
             );
           }
 
-          final Widget image = CachedNetworkImage(
+          Widget image = CachedNetworkImage(
             imageUrl: imageUrl,
             height: height,
             width: width,
@@ -135,7 +137,7 @@ class GtNetworkImage extends GtStatelessWidget {
                 if (!showLoadingIndicator) {
                   return SizedBox(height: height, width: width);
                 }
-                return FittedBox(fit: BoxFit.scaleDown, child: GtSpinner());
+                return GtImageShimmer(width: width, height: height);
               }
               return GtAssetImage(
                 placeHolderPath!,
@@ -148,6 +150,10 @@ class GtNetworkImage extends GtStatelessWidget {
               );
             },
           );
+
+          if (context.inSkeleton) {
+            image = GtBone(child: image);
+          }
 
           // CachedNetworkImage exposes no semantics parameters of its own, so
           // the annotation has to be applied from outside. An unlabelled image

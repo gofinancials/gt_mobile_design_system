@@ -36,6 +36,13 @@ class GtGoalProgressListTile extends GtStatelessWidget {
   /// An optional callback triggered when the edit button is tapped. If null, the button is hidden.
   final OnPressed? onEdit;
 
+  /// The variant of the button to be used for the edit action. Defaults to [GtButtonVariant.primary].
+  final GtButtonVariant buttonVariant;
+
+  /// Overrides the color of the edit button's label. Null preserves the color
+  /// of the [buttonVariant].
+  final Color? buttonTextColor;
+
   /// Whether to wrap the tile in a [GtCard] with padding and rounded corners.
   ///
   /// Defaults to `true`.
@@ -68,7 +75,21 @@ class GtGoalProgressListTile extends GtStatelessWidget {
     this.textColor,
     this.progressColor,
     this.trackColor,
+    this.buttonVariant = .primary,
+    this.buttonTextColor,
   });
+
+  /// Creates a skeleton of this tile, standing in for a goal that is still
+  /// loading.
+  ///
+  /// The tile is laid out with placeholder data under its own [GtSkeleton], so
+  /// it shows only bones in the real tile's layout and announces nothing.
+  /// Inside a [GtSkeletonList] or another skeleton it joins that skeleton's
+  /// sweep.
+  ///
+  /// [asCard] matches the real tile's, so the skeleton keeps its card.
+  const factory GtGoalProgressListTile.skeleton({Key? key, bool asCard}) =
+      _GtGoalProgressListTileSkeleton;
 
   /// Calculates the ratio of the utilized value to the maximum, capped at 1.0
   /// for the progress bar.
@@ -88,25 +109,31 @@ class GtGoalProgressListTile extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final percentage = (100 * _fraction).toStringAsFixed(0);
 
+    Widget summary = Text.rich(
+      TextSpan(
+        text: _formattedValue,
+        children: [
+          TextSpan(text: " ${"of".tr()} "),
+          TextSpan(text: _formattedGoal),
+          TextSpan(text: " ${AppStrings.dotSeparator} $percentage%"),
+        ],
+      ),
+      style: GtTextStyleOverrides.resolve(
+        style,
+        context.textStyles.body2Xs(color: context.palette.text.darkerSub),
+        textColor,
+      ),
+    );
+
+    if (context.inSkeleton) {
+      summary = GtBone(child: summary);
+    }
+
     Widget child = Column(
       spacing: verticalSpacing ?? context.spacingMd,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text.rich(
-          TextSpan(
-            text: _formattedValue,
-            children: [
-              TextSpan(text: " ${"of".tr()} "),
-              TextSpan(text: _formattedGoal),
-              TextSpan(text: " ${AppStrings.dotSeparator} $percentage%"),
-            ],
-          ),
-          style: GtTextStyleOverrides.resolve(
-            style,
-            context.textStyles.body2Xs(color: context.palette.text.darkerSub),
-            textColor,
-          ),
-        ),
+        summary,
         GtAnimatedProgress(
           inActiveColor: trackColor,
           value: _fraction,
@@ -118,7 +145,8 @@ class GtGoalProgressListTile extends GtStatelessWidget {
               onEdit?.call();
             },
             text: editText ?? "edit".tr(),
-            variant: .featured,
+            variant: buttonVariant,
+            textColor: buttonTextColor,
             size: .small,
             alignment: .centerLeft,
             contentPadding: .zero,
@@ -136,5 +164,20 @@ class GtGoalProgressListTile extends GtStatelessWidget {
     }
 
     return child;
+  }
+}
+
+/// A private skeleton of [GtGoalProgressListTile], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtGoalProgressListTileSkeleton extends GtGoalProgressListTile {
+  /// Creates a [_GtGoalProgressListTileSkeleton].
+  const _GtGoalProgressListTileSkeleton({super.key, super.asCard})
+    : super(currentAmount: 120000, goalAmount: 500000);
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
+    );
   }
 }

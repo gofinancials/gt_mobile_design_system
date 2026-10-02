@@ -83,3 +83,75 @@ GtLimitEditListTile(
     ),
   );
 }
+
+@widgetbook.UseCase(
+  name: 'GtGoalProgressListTile',
+  type: GtGoalProgressListTile,
+)
+Widget playgroundGtGoalProgressListTileUseCase(BuildContext context) {
+  final goalAmount = context.knobs.double.slider(
+    label: 'Goal Amount',
+    initialValue: 500000.0,
+    min: 10000.0,
+    max: 2000000.0,
+  );
+  final currentAmount = context.knobs.double.slider(
+    label: 'Current Amount',
+    initialValue: 200000.0,
+    min: 0.0,
+    max: goalAmount,
+  );
+  final editText = context.knobs.string(
+    label: 'Edit Text',
+    initialValue: 'edit',
+  );
+  final showEdit = context.knobs.boolean(
+    label: 'Show Edit',
+    initialValue: true,
+  );
+  final buttonVariant = context.knobs.object.dropdown<GtButtonVariant>(
+    label: 'Button Variant',
+    options: GtButtonVariant.values,
+    initialOption: GtButtonVariant.primary,
+    labelBuilder: (v) => v.name,
+  );
+  final buttonTextColor = context.knobs.colorOrNull(
+    label: 'Button Text Color',
+    initialValue: null,
+  );
+  final asCard = context.knobs.boolean(label: 'As Card', initialValue: true);
+
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
+  return GtWidgetDocPage(
+    title: 'GtGoalProgressListTile',
+    description:
+        'A list tile showing progress towards a savings goal, with an optional edit action whose button variant can be changed.',
+    code: isSkeleton
+        ? 'GtGoalProgressListTile.skeleton(asCard: $asCard)'
+        : '''
+GtGoalProgressListTile(
+  currentAmount: $currentAmount,
+  goalAmount: $goalAmount,
+  editText: "$editText",
+  onEdit: ${showEdit ? '() {}' : 'null'},
+  buttonVariant: GtButtonVariant.${buttonVariant.name},
+  ${buttonTextColor == null ? '' : 'buttonTextColor: Color(0x${buttonTextColor.toARGB32().toRadixString(16)}),'}
+  asCard: $asCard,
+)''',
+    child: isSkeleton
+        ? GtGoalProgressListTile.skeleton(asCard: asCard)
+        : GtGoalProgressListTile(
+            currentAmount: currentAmount,
+            goalAmount: goalAmount,
+            editText: editText,
+            onEdit: showEdit ? () {} : null,
+            buttonVariant: buttonVariant,
+            buttonTextColor: buttonTextColor,
+            asCard: asCard,
+          ),
+  );
+}

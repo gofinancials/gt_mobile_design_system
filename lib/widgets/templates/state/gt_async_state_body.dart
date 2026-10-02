@@ -65,11 +65,20 @@ enum GtAsyncStateArm {
 /// )
 /// ```
 ///
-/// It ships **no skeleton default**, because the package ships no shimmer
-/// primitive to default to: `gt_generic_shimmer.dart` and
-/// `gt_image_shimmer.dart` are still stubs. Where a screen shows
-/// content-shaped loading, pass that skeleton as [loading]; where it shows a
-/// centred spinner, leave it null.
+/// The loading arm defaults to a centred [GtSpinner]. Where a screen shows
+/// content-shaped loading instead, a skeleton is one line: pass a
+/// [GtSkeletonList] of the rows the screen will show as [loading].
+///
+/// ```dart
+/// GtAsyncStateBody(
+///   task: controller.transactions,
+///   loading: GtSkeletonList(
+///     semanticsLabel: 'Loading transactions',
+///     itemBuilder: (context, i) => GtTransactionListTile.skeleton(),
+///   ),
+///   ...
+/// )
+/// ```
 ///
 /// For a task rendered inside a [CustomScrollView], use [GtAsyncStateSliver].
 class GtAsyncStateBody extends GtStatelessWidget {
@@ -131,9 +140,10 @@ class GtAsyncStateBody extends GtStatelessWidget {
 
   /// Replaces the centred [GtSpinner].
   ///
-  /// Supply a locally-composed skeleton where the screen shows content-shaped
-  /// loading. Unlike the other arms it is laid out at the host's own height
-  /// rather than centred, so a skeleton sits where the rows go.
+  /// Supply a skeleton where the screen shows content-shaped loading: a
+  /// [GtSkeletonList] of the screen's own rows, or any subtree wrapped in a
+  /// [GtSkeleton]. Unlike the other arms it is laid out at the host's own
+  /// height rather than centred, so a skeleton sits where the rows go.
   final Widget? loading;
 
   /// Replaces the default [GtEmptyStateCard].
@@ -229,8 +239,8 @@ class GtAsyncStateBody extends GtStatelessWidget {
 ///
 /// That is the whole point: the arm goes to the viewport as the sliver it is.
 /// A million-row [SliverList] on the data arm builds only the rows in view,
-/// and a skeleton on the loading arm can be just as lazy, because neither is
-/// ever wrapped in a box.
+/// and a [GtSkeletonList.sliver] on the loading arm is just as lazy, because
+/// neither is ever wrapped in a box.
 ///
 /// ```dart
 /// CustomScrollView(
@@ -242,9 +252,10 @@ class GtAsyncStateBody extends GtStatelessWidget {
 ///         itemCount: controller.statements.data.length,
 ///         itemBuilder: (context, i) => GtInfoListTile(...),
 ///       ),
-///       loading: SliverList.builder(
+///       loading: GtSkeletonList.sliver(
 ///         itemCount: 12,
-///         itemBuilder: (context, i) => const StatementRowSkeleton(),
+///         semanticsLabel: 'Loading statements',
+///         itemBuilder: (context, i) => GtInfoListTile.skeleton(),
 ///       ),
 ///       empty: const SliverFillRemaining(
 ///         hasScrollBody: false,
@@ -365,20 +376,46 @@ class GtAsyncStateSliver extends SingleChildRenderObjectWidget
 /// Draws a non-data arm with the package's own visuals, so both the box and the
 /// sliver form show the same thing for the same [arm].
 class _GtAsyncStateArmView extends GtStatelessWidget {
+  /// The arm to draw. Never [GtAsyncStateArm.data].
   final GtAsyncStateArm arm;
+
+  /// See [GtAsyncStateBody.task].
   final AsyncData task;
+
+  /// See [GtAsyncStateBody.emptyDescription].
   final String? emptyDescription;
+
+  /// See [GtAsyncStateBody.emptyIcon].
   final IconData? emptyIcon;
+
+  /// See [GtAsyncStateBody.errorTitle].
   final String? errorTitle;
+
+  /// See [GtAsyncStateBody.errorSubtitle].
   final String? errorSubtitle;
+
+  /// See [GtAsyncStateBody.errorGraphic].
   final Widget? errorGraphic;
+
+  /// See [GtAsyncStateBody.errorIconSize].
   final double? errorIconSize;
+
+  /// See [GtAsyncStateBody.retryLabel].
   final String? retryLabel;
+
+  /// See [GtAsyncStateBody.onRetry].
   final OnPressed? onRetry;
+
+  /// See [GtAsyncStateBody.loading].
   final Widget? loading;
+
+  /// See [GtAsyncStateBody.empty].
   final Widget? empty;
+
+  /// See [GtAsyncStateBody.error].
   final Widget? error;
 
+  /// Creates a [_GtAsyncStateArmView] for [arm].
   const _GtAsyncStateArmView({
     required this.arm,
     required this.task,
@@ -427,8 +464,10 @@ class _GtAsyncStateArmView extends GtStatelessWidget {
 /// height, stretched to the host's full width so its copy wraps and centres
 /// against the screen rather than against its own intrinsic width.
 class GtCentredAsyncStateArm extends GtStatelessWidget {
+  /// The arm to centre.
   final Widget child;
 
+  /// Creates a [GtCentredAsyncStateArm] around [child].
   const GtCentredAsyncStateArm({required this.child, super.key});
 
   @override

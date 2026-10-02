@@ -37,6 +37,7 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     super.key,
   });
 
+  /// The first word of [fullName], or "User" when there is none.
   String get _firstName {
     if (!fullName.hasValue) return "User";
     final names = fullName.split(" ");
@@ -47,6 +48,28 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final toolbarHeight = MediaQuery.paddingOf(context).top;
     final btnColor = Colors.transparent;
+
+    Widget business = Text.rich(
+      TextSpan(
+        text: businessName.capitalise(),
+        children: [
+          if (verified) ...[
+            const WidgetSpan(child: GtGap.hXs()),
+            WidgetSpan(
+              child: GtIcon.withColor(
+                GtIcons.verified,
+                size: 10,
+                color: context.palette.information.base,
+              ),
+            ),
+          ],
+        ],
+        style: context.textStyles.body2Xs(color: context.palette.text.soft),
+      ),
+    );
+    if (context.inSkeleton) {
+      business = GtBone(child: business);
+    }
 
     return Material(
       type: .transparency,
@@ -77,27 +100,7 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                     style: context.textStyles.h6(),
                     maxLines: 1,
                   ),
-                  if (businessName.hasValue)
-                    Text.rich(
-                      TextSpan(
-                        text: businessName.capitalise(),
-                        children: [
-                          if (verified) ...[
-                            const WidgetSpan(child: GtGap.hXs()),
-                            WidgetSpan(
-                              child: GtIcon.withColor(
-                                GtIcons.verified,
-                                size: 10,
-                                color: context.palette.information.base,
-                              ),
-                            ),
-                          ],
-                        ],
-                        style: context.textStyles.body2Xs(
-                          color: context.palette.text.soft,
-                        ),
-                      ),
-                    ),
+                  if (businessName.hasValue) business,
                 ],
               ),
             ),

@@ -85,6 +85,14 @@ class GtStatusTrackerStepConnector extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget line = GtSizedBox(
+      height: 12,
+      child: VerticalDivider(color: color, width: 2, thickness: 2),
+    );
+    if (context.inSkeleton) {
+      line = GtBone(child: line);
+    }
+
     return IntrinsicHeight(
       child: Table(
         defaultVerticalAlignment: .middle,
@@ -99,10 +107,7 @@ class GtStatusTrackerStepConnector extends GtStatelessWidget {
               Container(
                 height: context.dp(21.px),
                 alignment: .center,
-                child: GtSizedBox(
-                  height: 12,
-                  child: VerticalDivider(color: color, width: 2, thickness: 2),
-                ),
+                child: line,
               ),
               ...const SizedBox.shrink() * 2,
             ],
@@ -160,14 +165,7 @@ class GtStatusTrackerCompactStep extends GtStatelessWidget {
               children: [
                 _CompactStatusNode(data, size: nodeSize),
                 if (connectorColor case Color color)
-                  Container(
-                    width: context.dp(2.px),
-                    height: context.dp(8.px),
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: context.borderRadiusXs,
-                    ),
-                  ),
+                  _CompactConnector(color: color),
               ],
             ),
           ),
@@ -234,7 +232,7 @@ class _StatusDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    Widget dot = Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
@@ -243,6 +241,38 @@ class _StatusDot extends StatelessWidget {
         border: Border.all(color: color, width: borderWidth),
       ),
     );
+    if (context.inSkeleton) {
+      dot = GtBone(shape: .circle, child: dot);
+    }
+
+    return dot;
+  }
+}
+
+/// A private widget that draws the short line hanging beneath a node of a
+/// [GtStatusTrackerCompactStep].
+class _CompactConnector extends StatelessWidget {
+  /// The color of the line.
+  final Color color;
+
+  /// Creates a [_CompactConnector].
+  const _CompactConnector({required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    Widget line = Container(
+      width: context.dp(2.px),
+      height: context.dp(8.px),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: context.borderRadiusXs,
+      ),
+    );
+    if (context.inSkeleton) {
+      line = GtBone(borderRadius: context.borderRadiusXs, child: line);
+    }
+
+    return line;
   }
 }
 

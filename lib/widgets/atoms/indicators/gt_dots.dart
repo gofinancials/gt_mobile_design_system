@@ -100,6 +100,8 @@ class GtScaledDots extends StatelessWidget {
     super.key,
   }) : assert(activeIndex != null);
 
+  /// The size of the dot at [index], shrinking from [size] the further it is
+  /// from [activeIndex].
   double _calculateSize(int index, double size) {
     if (index == activeIndex) return size;
     final distance = ((activeIndex ?? 0) - index).abs();
@@ -138,12 +140,24 @@ class GtScaledDots extends StatelessWidget {
   }
 }
 
+/// A private widget drawing one dot of [GtDots] or [GtScaledDots].
+///
+/// Inside an enabled [GtSkeleton] it is painted as a circular [GtBone].
 class _Dot extends StatelessWidget {
+  /// Whether this dot marks the active position.
   final bool active;
+
+  /// The color of an active dot. Defaults to the palette's primary color.
   final Color? activeColor;
+
+  /// The color of an inactive dot. Defaults to the palette's disabled icon
+  /// color.
   final Color? inActiveColor;
+
+  /// The diameter of the dot. Defaults to 8.
   final double? size;
 
+  /// Creates a [_Dot].
   const _Dot(this.active, {this.activeColor, this.inActiveColor, this.size});
 
   @override
@@ -154,13 +168,17 @@ class _Dot extends StatelessWidget {
 
     final color = active ? colorActive : colorInActive;
 
-    return AnimatedContainer(
+    Widget dot = AnimatedContainer(
       duration: 300.milliseconds,
       curve: Curves.easeIn,
       height: size ?? context.dp(8.px),
       width: size ?? context.dp(8.px),
       decoration: BoxDecoration(color: color, shape: BoxShape.circle),
     );
+    if (context.inSkeleton) {
+      dot = GtBone(shape: .circle, child: dot);
+    }
+    return dot;
   }
 }
 
@@ -219,11 +237,20 @@ class GtInputDots extends StatelessWidget {
   }
 }
 
+/// A private widget drawing one dot of [GtInputDots].
+///
+/// Inside an enabled [GtSkeleton] it is painted as a circular [GtBone].
 class _InputDot extends StatelessWidget {
+  /// The color of the dot's fill or ring.
   final Color color;
+
+  /// Whether this dot stands for an entered character.
   final bool active;
+
+  /// Whether an inactive dot is filled rather than drawn as a ring.
   final bool filled;
 
+  /// Creates an [_InputDot].
   const _InputDot(this.active, {required this.color, this.filled = false});
 
   @override
@@ -231,7 +258,7 @@ class _InputDot extends StatelessWidget {
     final contentColor = active ? color : Colors.transparent;
     final size = 24 * (active ? 1.1 : 1);
 
-    return AnimatedContainer(
+    Widget dot = AnimatedContainer(
       duration: 300.milliseconds,
       curve: Curves.easeIn,
       height: context.dp(size.px),
@@ -242,5 +269,9 @@ class _InputDot extends StatelessWidget {
         border: Border.all(color: color, width: 4),
       ),
     );
+    if (context.inSkeleton) {
+      dot = GtBone(shape: .circle, child: dot);
+    }
+    return dot;
   }
 }

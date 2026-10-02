@@ -5,6 +5,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This widget wraps Flutter's standard [Text] widget, applying the design system's
 /// default typography styles automatically if no [style] is provided.
+///
+/// Inside an enabled [GtSkeleton] it is laid out as usual but painted as one
+/// [GtBone] bar per line, trimmed to that line's glyphs, and it drops its
+/// [headingLevel], since the skeleton hides it from assistive technology.
 class GtText extends GtStatelessWidget {
   /// The text string to display.
   final String? data;
@@ -88,6 +92,7 @@ class GtText extends GtStatelessWidget {
       semanticsLabel: semanticsLabel,
     );
 
+    if (context.inSkeleton) return GtBone(child: text);
     if (headingLevel == null) return text;
 
     return GtSemantics(role: .heading, headingLevel: headingLevel, child: text);

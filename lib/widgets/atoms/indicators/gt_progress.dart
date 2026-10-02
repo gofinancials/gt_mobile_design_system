@@ -13,6 +13,9 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// still reports itself busy to screen readers, and a test that turns
 /// [MediaQueryData.disableAnimations] on can `pumpAndSettle` past it instead
 /// of timing out on a loop that never ends.
+///
+/// Inside an enabled [GtSkeleton] it is painted as a pill-shaped [GtBone], as
+/// are [GtSlider] and [GtAnimatedProgress].
 class GtProgress extends GtStatelessWidget {
   /// The color of the active progress indicator. Defaults to the primary base color.
   final Color? color;
@@ -62,7 +65,7 @@ class GtProgress extends GtStatelessWidget {
     final palette = context.palette;
     final reduceMotion = context.reduceMotion;
 
-    return RepaintBoundary(
+    Widget bar = RepaintBoundary(
       child: SizedBox(
         height: size ?? context.dp(6.px),
         // The indicator runs its own repeating controller with no way to pause
@@ -81,6 +84,10 @@ class GtProgress extends GtStatelessWidget {
         ),
       ),
     );
+    if (context.inSkeleton) {
+      bar = GtBone(borderRadius: context.borderRadiusFull, child: bar);
+    }
+    return bar;
   }
 }
 
@@ -118,7 +125,7 @@ class GtSlider extends GtStatelessWidget {
     final activeColor = color ?? palette.primary.base;
     final inactiveColor = palette.bg.sub;
 
-    return RepaintBoundary(
+    Widget bar = RepaintBoundary(
       child: GtSemantics(
         // Slider owns its value and its enabled state; this only names it.
         role: .delegated,
@@ -135,6 +142,10 @@ class GtSlider extends GtStatelessWidget {
         ),
       ),
     );
+    if (context.inSkeleton) {
+      bar = GtBone(borderRadius: context.borderRadiusFull, child: bar);
+    }
+    return bar;
   }
 }
 
@@ -189,15 +200,20 @@ class GtAnimatedProgress extends StatefulWidget {
   }
 }
 
+/// The state of a [GtAnimatedProgress], which tweens the fill to each new
+/// value.
 class _GtAnimatedProgressState extends State<GtAnimatedProgress>
     with SingleTickerProviderStateMixin {
+  /// How long a sweep takes when [GtAnimatedProgress.duration] is null.
   static const _defaultDuration = Duration(milliseconds: 300);
 
+  /// Drives the sweep from the painted fill to [_target].
   late final AnimationController _ctrl;
 
   /// The fill currently painted, tweened from where the bar was to [_target].
   late Animation<double> _progress;
 
+  /// The value to sweep to, clamped to the bar's range.
   double get _target => widget.value.clamp(0, 1);
 
   @override
@@ -234,6 +250,7 @@ class _GtAnimatedProgressState extends State<GtAnimatedProgress>
     return _ctrl.drive(Tween<double>(begin: from, end: _target));
   }
 
+  /// Reports [GtAnimatedProgress.onDone] once the bar is full.
   void _progressListener() {
     if (_progress.value < 1) return;
     widget.onDone?.call();
@@ -254,7 +271,7 @@ class _GtAnimatedProgressState extends State<GtAnimatedProgress>
     final borderRadius = 999.circularBorderRadius;
     final height = widget.height ?? context.dp(6.px);
 
-    return RepaintBoundary(
+    Widget bar = RepaintBoundary(
       child: ConstrainedBox(
         constraints: BoxConstraints.tightFor(
           height: height,
@@ -292,5 +309,9 @@ class _GtAnimatedProgressState extends State<GtAnimatedProgress>
         ),
       ),
     );
+    if (context.inSkeleton) {
+      bar = GtBone(borderRadius: context.borderRadiusFull, child: bar);
+    }
+    return bar;
   }
 }

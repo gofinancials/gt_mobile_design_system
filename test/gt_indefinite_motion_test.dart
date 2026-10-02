@@ -116,7 +116,7 @@ void main() {
     );
   });
 
-  group('GtNetworkImage with its default spinner', () {
+  group('GtNetworkImage with its default shimmer', () {
     testWidgets('settles on a request that never completes', (tester) async {
       await tester.pumpWidget(
         const _MotionTestApp(
@@ -126,7 +126,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(GtSpinner), findsOneWidget);
+      expect(find.byType(GtImageShimmer), findsOneWidget);
     });
   });
 }

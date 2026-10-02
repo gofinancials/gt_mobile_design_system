@@ -8,6 +8,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [GtSwitch] wraps a [CupertinoSwitch] and applies the application's design
 /// system colors, triggers haptic feedback on toggle, and handles a disabled
 /// state using [GtDisabledOverlay].
+///
+/// Inside an enabled [GtSkeleton] it is painted as a pill-shaped [GtBone].
 class GtSwitch extends GtStatelessWidget {
   /// The current state of the switch. If true, the switch is in the "on" position.
   final bool value;
@@ -58,7 +60,7 @@ class GtSwitch extends GtStatelessWidget {
     final thumbColor = palette.staticColors.white;
     final computedColor = !value ? inActiveColor : color;
 
-    return RepaintBoundary(
+    Widget control = RepaintBoundary(
       child: GtDisabledOverlay(
         disabled,
         child: GtSemantics(
@@ -97,5 +99,9 @@ class GtSwitch extends GtStatelessWidget {
         ),
       ),
     );
+    if (context.inSkeleton) {
+      control = GtBone(borderRadius: context.borderRadiusFull, child: control);
+    }
+    return control;
   }
 }

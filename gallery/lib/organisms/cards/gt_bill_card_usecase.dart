@@ -15,6 +15,10 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
     options: ['standard', 'tile'],
     initialOption: 'standard',
   );
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
 
   Widget cardWidget;
   String codeSnippet;
@@ -22,7 +26,7 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
   if (mode == 'tile') {
     cardWidget = GtBillCard.tile(
       name: name,
-      icon: GtSvg(GtVectorIllustrations.building, width: 34,),
+      icon: GtSvg(GtVectorIllustrations.building, width: 34),
     );
     codeSnippet =
         '''GtBillCard.tile(
@@ -32,13 +36,21 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
   } else {
     cardWidget = GtBillCard(
       name: name,
-      icon: GtSvg(GtVectorIllustrations.building, width: 34,),
+      icon: GtSvg(GtVectorIllustrations.building, width: 34),
     );
     codeSnippet =
         '''GtBillCard(
   name: "$name",
   icon: GtSvg(GtVectorIllustrations.building),
 )''';
+  }
+
+  if (isSkeleton && mode == 'tile') {
+    cardWidget = const GtBillCard.tileSkeleton();
+    codeSnippet = 'GtBillCard.tileSkeleton()';
+  } else if (isSkeleton) {
+    cardWidget = const GtBillCard.skeleton();
+    codeSnippet = 'GtBillCard.skeleton()';
   }
 
   return GtWidgetDocPage(
@@ -48,10 +60,7 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
     code: codeSnippet,
     child: Align(
       alignment: .centerRight,
-      child: AspectRatio(
-        aspectRatio: 16 / 9,
-        child: cardWidget,
-      ),
+      child: AspectRatio(aspectRatio: 16 / 9, child: cardWidget),
     ),
   );
 }

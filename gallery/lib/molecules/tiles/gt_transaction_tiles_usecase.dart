@@ -29,12 +29,18 @@ Widget playgroundGtTransactionListTileUseCase(BuildContext context) {
     initialValue: AppStrings.naira,
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtTransactionListTile',
     description:
         'A list tile tailored for displaying financial transactions (debits/credits) with currency amounts and masking support.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtTransactionListTile.skeleton()'
+        : '''
 GtTransactionListTile(
   "$name",
   subtitle: "$subtitle",
@@ -44,15 +50,17 @@ GtTransactionListTile(
   maskAmount: $maskAmount,
   onTap: () {},
 )''',
-    child: GtTransactionListTile(
-      name,
-      subtitle: subtitle,
-      amount: amount,
-      isDebit: isDebit,
-      currency: currency,
-      maskAmount: maskAmount,
-      onTap: () {},
-    ),
+    child: isSkeleton
+        ? const GtTransactionListTile.skeleton()
+        : GtTransactionListTile(
+            name,
+            subtitle: subtitle,
+            amount: amount,
+            isDebit: isDebit,
+            currency: currency,
+            maskAmount: maskAmount,
+            onTap: () {},
+          ),
   );
 }
 
@@ -91,12 +99,18 @@ Widget playgroundGtPaymentListTileUseCase(BuildContext context) {
     initialValue: true,
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtPaymentListTile',
     description:
         'A specialized list tile for displaying payment summaries, bill payments, and checkout items with optional fee text and amount formatting.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtPaymentListTile.skeleton()'
+        : '''
 GtPaymentListTile(
   "$title",
   subtitle: "$subtitle",
@@ -111,23 +125,25 @@ GtPaymentListTile(
       child: GtCard(
         padding: context.insets.allDp(12.px),
         variant: .normal,
-        child: GtPaymentListTile(
-          title,
-          subtitle: subtitle,
-          amount: "$amount",
-          fees: showFees && fees.isNotEmpty ? fees : null,
-          currency: currency,
-          maskAmount: maskAmount,
-          leading: showLeading
-              ? const GtAvatar(
-                  avatar: AppImageData(GtNetworkImages.sampleAvatar1),
-                  size: 32,
-                )
-              : null,
-          onTap: () {
-            GtToast.of(context).show("Payment tile tapped: $title");
-          },
-        ),
+        child: isSkeleton
+            ? GtPaymentListTile.skeleton()
+            : GtPaymentListTile(
+                title,
+                subtitle: subtitle,
+                amount: "$amount",
+                fees: showFees && fees.isNotEmpty ? fees : null,
+                currency: currency,
+                maskAmount: maskAmount,
+                leading: showLeading
+                    ? const GtAvatar(
+                        avatar: AppImageData(GtNetworkImages.sampleAvatar1),
+                        size: 32,
+                      )
+                    : null,
+                onTap: () {
+                  GtToast.of(context).show("Payment tile tapped: $title");
+                },
+              ),
       ),
     ),
   );

@@ -23,6 +23,8 @@ enum GtCountIndicatorType {
 ///
 /// The indicator will automatically hide itself if the [count] is 0 or less.
 /// If the [count] exceeds 9, it will display '9+'.
+///
+/// Inside an enabled [GtSkeleton] it is painted as a circular [GtBone].
 class GtCountIndicator extends GtStatelessWidget {
   /// Overrides background color. Null preserves the current default.
   final Color? backgroundColor;
@@ -68,6 +70,7 @@ class GtCountIndicator extends GtStatelessWidget {
     this.textColor,
   });
 
+  /// The fill for this indicator's [type] when no [backgroundColor] is set.
   Color _getBgColor(GtPalette palette) {
     return switch (type) {
       .error => palette.error.base,
@@ -86,7 +89,7 @@ class GtCountIndicator extends GtStatelessWidget {
     final bgColor = backgroundColor ?? _getBgColor(palette);
     final textColor = palette.text.white;
 
-    return RepaintBoundary(
+    Widget indicator = RepaintBoundary(
       child: GtSemantics(
         label: semanticsLabel,
         // The rendered digit is capped at "9+", which is a poor thing to hear.
@@ -113,5 +116,9 @@ class GtCountIndicator extends GtStatelessWidget {
         ),
       ),
     );
+    if (context.inSkeleton) {
+      indicator = GtBone(shape: .circle, child: indicator);
+    }
+    return indicator;
   }
 }

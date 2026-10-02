@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 /// This widget automatically detects if the provided [imageUrl] is an SVG file
 /// (by checking the ".svg" extension) and delegates to [GtSvg] for vector rendering.
 /// For all other formats, it falls back to the standard [Image.asset].
+///
+/// Inside an enabled [GtSkeleton] it is painted as a [GtBone] block.
 class GtAssetImage extends GtStatelessWidget {
   /// The path to the image asset (e.g., 'assets/images/logo.png' or 'assets/icons/home.svg').
   final String imageUrl;
@@ -67,7 +69,7 @@ class GtAssetImage extends GtStatelessWidget {
         isDecorative: isDecorative,
       );
     }
-    return Image.asset(
+    Widget image = Image.asset(
       imageUrl,
       fit: fit,
       alignment: alignment,
@@ -79,5 +81,9 @@ class GtAssetImage extends GtStatelessWidget {
       // Excluding unlabelled images keeps them from becoming empty stops.
       excludeFromSemantics: isDecorative || semanticsLabel == null,
     );
+    if (context.inSkeleton) {
+      image = GtBone(child: image);
+    }
+    return image;
   }
 }

@@ -220,6 +220,7 @@ class _SummaryKnobs {
   final bool showSecondaryAction;
   final bool isActionDisabled;
   final bool isActionLoading;
+  final bool isLoading;
 
   const _SummaryKnobs({
     required this.title,
@@ -234,6 +235,7 @@ class _SummaryKnobs {
     required this.showSecondaryAction,
     required this.isActionDisabled,
     required this.isActionLoading,
+    required this.isLoading,
   });
 
   factory _SummaryKnobs.of(BuildContext context) {
@@ -285,6 +287,10 @@ class _SummaryKnobs {
         label: 'Action Loading',
         initialValue: false,
       ),
+      isLoading: context.knobs.boolean(
+        label: 'Loading (skeleton body)',
+        initialValue: false,
+      ),
     );
   }
 
@@ -333,6 +339,7 @@ GtSummaryScaffold(
   titleStyle: GtSummaryTitleStyle.${knobs.titleStyle.name},
   actionLabel: "${knobs.actionLabel}",
   ${knobs.showSecondaryAction ? 'secondaryIcon: GtIcons.calendar,\n  onSecondaryAction: () => scheduleTransfer(),' : ''}
+  ${knobs.isLoading ? "isLoading: true,\n  loadingSemanticsLabel: 'Loading summary'," : ''}
   onAction: () => submitTransfer(),
   body: GtSummaryBody(
     amount: "${knobs.amount}",
@@ -371,6 +378,8 @@ class _SummaryScaffoldPreview extends StatelessWidget {
       actionLabel: knobs.actionLabel,
       isActionDisabled: knobs.isActionDisabled,
       isActionLoading: knobs.isActionLoading,
+      isLoading: knobs.isLoading,
+      loadingSemanticsLabel: 'Loading summary',
       secondaryIcon: knobs.showSecondaryAction ? GtIcons.calendar : null,
       onSecondaryAction: knobs.showSecondaryAction
           ? () => GtToast.of(context).show("Schedule tapped")

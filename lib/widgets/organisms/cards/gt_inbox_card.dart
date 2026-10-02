@@ -95,6 +95,10 @@ class GtInboxCard extends GtStatelessWidget {
     this.unreadTextStyle,
   });
 
+  /// Creates a skeleton of an inbox card, standing in for one whose thread
+  /// is still loading.
+  const factory GtInboxCard.skeleton({Key? key}) = _GtInboxCardSkeleton;
+
   @override
   Widget build(BuildContext context) {
     final subStyle = context.textStyles.bodyXs(
@@ -175,6 +179,26 @@ class GtInboxCard extends GtStatelessWidget {
           onTap: onTap,
         ),
       ),
+    );
+  }
+}
+
+/// A private skeleton of [GtInboxCard], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtInboxCardSkeleton extends GtInboxCard {
+  /// Creates a [_GtInboxCardSkeleton].
+  const _GtInboxCardSkeleton({super.key})
+    : super(
+        title: 'Conversation title',
+        subtitle: 'The latest message in the thread',
+        ureadCount: 0,
+        messageCount: 12,
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

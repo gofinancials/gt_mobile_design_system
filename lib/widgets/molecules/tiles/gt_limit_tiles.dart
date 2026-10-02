@@ -120,6 +120,30 @@ class GtLimitEditListTile extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget title = Text.rich(
+      TextSpan(
+        text: category,
+        children: [
+          TextSpan(text: " "),
+          if (onTapInfo != null)
+            WidgetSpan(
+              child: GtInkWell(
+                role: .button,
+                onTap: onTapInfo,
+                child: GtIcon(GtIcons.info, size: 18, variant: .soft),
+              ),
+              alignment: .middle,
+            ),
+        ],
+        recognizer: TapGestureRecognizer()..onTap = onTapInfo,
+      ),
+      style: categoryStyle ?? context.textStyles.subHeadM(),
+    );
+
+    if (context.inSkeleton) {
+      title = GtBone(child: title);
+    }
+
     return Column(
       spacing: context.spacingSm,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -131,29 +155,7 @@ class GtLimitEditListTile extends GtStatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: context.spacingBase,
                 children: [
-                  Text.rich(
-                    TextSpan(
-                      text: category,
-                      children: [
-                        TextSpan(text: " "),
-                        if (onTapInfo != null)
-                          WidgetSpan(
-                            child: GtInkWell(
-                              role: .button,
-                              onTap: onTapInfo,
-                              child: GtIcon(
-                                GtIcons.info,
-                                size: 18,
-                                variant: .soft,
-                              ),
-                            ),
-                            alignment: .middle,
-                          ),
-                      ],
-                      recognizer: TapGestureRecognizer()..onTap = onTapInfo,
-                    ),
-                    style: categoryStyle ?? context.textStyles.subHeadM(),
-                  ),
+                  title,
                   GtText(
                     _formattedValue,
                     style:
