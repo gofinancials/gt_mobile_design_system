@@ -52,6 +52,10 @@ class GtPhoneField extends GtStatefulWidget {
   /// Autofill hints for the input field.
   final List<String>? autofillHints;
 
+  /// An optional widget to display at the end of the field.
+  /// Defaults to a success check shown once ten digits are entered.
+  final Widget? suffix;
+
   /// Creates a new [GtPhoneField].
   const GtPhoneField({
     super.key,
@@ -69,6 +73,7 @@ class GtPhoneField extends GtStatefulWidget {
     this.showCountryCode = true,
     this.validator,
     this.autofillHints = const [AutofillHints.telephoneNumberNational],
+    this.suffix,
   });
   @override
   State<GtPhoneField> createState() => _GtPhoneFieldState();
@@ -119,6 +124,21 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
         );
       },
     );
+    final suffix = GenericListener(
+      valueListenable: controller.controller,
+      builder: (value) {
+        final chars = value.text.withoutWhiteSpaceAndSpecialChar.length;
+        return GtAnimatedFade(
+          child1: GtIcon(
+            GtIcons.checkBox,
+            variant: .success,
+            alignment: .centerRight,
+          ),
+          child2: const Offstage(),
+          showFirst: chars >= 10,
+        );
+      },
+    );
 
     return ListenableBuilder(
       listenable: controller.selectionNotifier,
@@ -136,21 +156,7 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
           return error;
         },
         prefix: widget.showCountryCode ? prefix : null,
-        suffix: GenericListener(
-          valueListenable: controller.controller,
-          builder: (value) {
-            final chars = value.text.withoutWhiteSpaceAndSpecialChar.length;
-            return GtAnimatedFade(
-              child1: GtIcon(
-                GtIcons.checkBox,
-                variant: .success,
-                alignment: .centerRight,
-              ),
-              child2: const Offstage(),
-              showFirst: chars >= 10,
-            );
-          },
-        ),
+        suffix: widget.suffix ?? suffix,
         textAlign: widget.textAlign,
         autoCorrect: false,
         keyboardType: TextInputType.phone,

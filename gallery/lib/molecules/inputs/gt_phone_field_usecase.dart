@@ -25,6 +25,14 @@ Widget playgroundGtPhoneFieldUseCase(BuildContext context) {
     initialOption: context.inputStyles.all.first,
     labelBuilder: (v) => v.$1,
   );
+  final suffix = context.knobs.object.dropdown<(String, Widget?)>(
+    label: 'Suffix Icon',
+    options: [
+      ('Success check (default)', null),
+      ('Keyboard', GtIcon(GtIcons.keyboard, variant: .sub)),
+    ],
+    labelBuilder: (v) => v.$1,
+  );
 
   final codeSnippet =
       '''
@@ -34,6 +42,7 @@ GtPhoneField(
   isEnabled: $isEnabled,
   isRequired: $isRequired,
   decoration: /* Selected: ${decoration.$1} */,
+  suffix: /* Selected: ${suffix.$1} */,
 )''';
 
   return GtWidgetDocPage(
@@ -54,6 +63,7 @@ GtPhoneField(
         isEnabled: isEnabled,
         isRequired: isRequired,
         decoration: decoration.$2,
+        suffix: suffix.$2,
       ),
     ),
   );
