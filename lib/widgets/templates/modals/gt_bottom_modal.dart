@@ -235,7 +235,10 @@ class _GtBottomModalState extends State<GtBottomModal>
                   ),
                   description: controller.description,
                   margin: widget.margin,
-                  progress: controller.progress != null
+                  // Progress only stands in for the description while the task
+                  // runs; once it completes, the description carries the
+                  // outcome, which on a failure is the error message.
+                  progress: isLoading && controller.hasProgress
                       ? "${controller.percentage}%"
                       : null,
                 ),
@@ -275,6 +278,8 @@ class _GtModalBody extends GtStatelessWidget {
   final String? description;
 
   /// An optional progress text (e.g. "45%"). Overrides the description if provided.
+  ///
+  /// A controller-driven modal only passes this while its task is loading.
   final String? progress;
 
   /// Margin applied around the modal container.
