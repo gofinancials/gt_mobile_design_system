@@ -21,15 +21,33 @@ class GtSignaturePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    paintStrokes(
+      canvas,
+      controller.value.strokes,
+      color: strokeColor,
+      strokeWidth: strokeWidth,
+    );
+  }
+
+  /// Draws [strokes] onto [canvas] in [color] at [strokeWidth].
+  ///
+  /// The pad and [GtSignaturePadController.toUint8List] both draw through
+  /// this, so an exported signature has the same shape as the one on screen.
+  static void paintStrokes(
+    Canvas canvas,
+    Iterable<GtSignatureStroke> strokes, {
+    required Color color,
+    required double strokeWidth,
+  }) {
     final paint = Paint()
-      ..color = strokeColor
+      ..color = color
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
       ..style = PaintingStyle.stroke
       ..isAntiAlias = true;
 
-    for (final stroke in controller.value.strokes) {
+    for (final stroke in strokes) {
       final points = stroke.points;
       if (points.isEmpty) continue;
 

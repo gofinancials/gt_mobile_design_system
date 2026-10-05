@@ -52,13 +52,19 @@ class GtSignaturePad extends GtStatefulWidget {
   /// Height in design pixels, converted through `context.dp(height.px)`.
   final double? height;
 
-  /// Signature stroke color. Defaults to the theme's strong text color.
+  /// Signature stroke color on screen. Defaults to the theme's strong text
+  /// color.
+  ///
+  /// The exported PNG uses [GtSignaturePadController.exportOptions] instead.
   final Color? strokeColor;
 
-  /// Canvas fill color. Defaults to the theme's soft background color.
+  /// Canvas fill color on screen. Defaults to the theme's soft background
+  /// color.
+  ///
+  /// The exported PNG uses [GtSignaturePadController.exportOptions] instead.
   final Color? backgroundColor;
 
-  /// Stroke width in design pixels, converted through `context.dp(width.px)`.
+  /// Logical stroke width, used on screen and in the exported PNG.
   final double strokeWidth;
 
   /// Called when the built-in clear action removes the current signature.
@@ -133,7 +139,10 @@ class _GtSignaturePadState extends State<GtSignaturePad> {
   @override
   void didUpdateWidget(covariant GtSignaturePad oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller == widget.controller) return;
+    if (oldWidget.controller == widget.controller) {
+      _controller.strokeWidth = widget.strokeWidth;
+      return;
+    }
 
     _controller.imageListenable.removeListener(_notifyImageChanged);
     if (oldWidget.controller == null) _controller.dispose();
@@ -147,9 +156,10 @@ class _GtSignaturePadState extends State<GtSignaturePad> {
     super.dispose();
   }
 
-  /// Makes [controller] the active controller and listens for image changes.
+  /// Makes [controller] the active controller, hands it the stroke width, and
+  /// listens for image changes.
   void _attachController(GtSignaturePadController controller) {
-    _controller = controller;
+    _controller = controller..strokeWidth = widget.strokeWidth;
     _controller.imageListenable.addListener(_notifyImageChanged);
   }
 
@@ -268,6 +278,9 @@ class _GtSignaturePadState extends State<GtSignaturePad> {
                       child: GtImage(
                         image: AppImageData.bytes(image),
                         fit: BoxFit.contain,
+                        width: double.infinity,
+                        height: double.infinity,
+                        useDefaultSize: false,
                         isDecorative: true,
                       ),
                     ),
