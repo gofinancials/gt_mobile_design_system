@@ -6,6 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// This widget smoothly animates a pie chart shrinking over a specified [duration],
 /// displaying the remaining seconds in the center.
+///
+/// Inside an enabled [GtSkeleton] it is painted as a circular [GtBone].
 class GtCountdownPie extends GtStatefulWidget {
   /// The total duration of the countdown.
   ///
@@ -52,9 +54,13 @@ class GtCountdownPie extends GtStatefulWidget {
   State<GtCountdownPie> createState() => _GtCountdownPieState();
 }
 
+/// The state of a [GtCountdownPie], which runs the countdown.
 class _GtCountdownPieState extends State<GtCountdownPie>
     with SingleTickerProviderStateMixin {
+  /// Counts the elapsed seconds, from zero up to [_seconds].
   late AnimationController _ctrl;
+
+  /// The length of the countdown.
   late Duration _duration;
 
   @override
@@ -75,6 +81,7 @@ class _GtCountdownPieState extends State<GtCountdownPie>
     super.dispose();
   }
 
+  /// The length of the countdown, in seconds.
   double get _seconds => _duration.inSeconds.toDouble();
 
   @override
@@ -83,7 +90,7 @@ class _GtCountdownPieState extends State<GtCountdownPie>
     final trackColor = widget.trackColor ?? palette.success.light;
     final color = widget.color ?? palette.success.base;
 
-    return RepaintBoundary(
+    Widget pie = RepaintBoundary(
       child: AnimatedBuilder(
         animation: _ctrl,
         builder: (context, child) {
@@ -122,5 +129,9 @@ class _GtCountdownPieState extends State<GtCountdownPie>
         },
       ),
     );
+    if (context.inSkeleton) {
+      pie = GtBone(shape: .circle, child: pie);
+    }
+    return pie;
   }
 }

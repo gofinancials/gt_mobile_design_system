@@ -51,6 +51,7 @@ class GtRaisedButton extends GtButton {
     super.enableScaleEffect = true,
     super.pressedScale,
     super.enableLabelAnimation = true,
+    super.enableGlassEffect = false,
     this.contentPadding,
     this.iconSize,
     this.iconSpacing,
@@ -220,6 +221,17 @@ class GtRaisedButton extends GtButton {
         showFirst: !isLoading,
       ),
     );
+
+    if (enableGlassEffect) {
+      child = GtGlassSurface(
+        shape: RoundedRectangleBorder(borderRadius: borderRadius(context)),
+        child: child,
+      );
+    }
+
+    if (context.inSkeleton) {
+      child = GtBone(borderRadius: borderRadius(context), child: child);
+    }
 
     if (alignment != null) {
       child = Align(alignment: alignment!, child: child);

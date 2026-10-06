@@ -9,6 +9,9 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// It renders a customizable trend line based on the provided [items], supports
 /// optional line gradient fills, and includes an interactive tooltip
 /// that appears when the user taps, hovers, or drags across the chart area.
+///
+/// Inside an enabled [GtSkeleton] the whole chart area is drawn as one bone,
+/// since a placeholder trend line would read as real data.
 class GtLineChartArea extends StatefulWidget {
   /// The primary color of the line chart stroke.
   final Color color;
@@ -72,11 +75,19 @@ class GtLineChartArea extends StatefulWidget {
   State createState() => _GtLineChartAreaState();
 }
 
+/// The state of a [GtLineChartArea], which tracks the point under the
+/// pointer.
 class _GtLineChartAreaState extends State<GtLineChartArea> {
+  /// The plotted value of each of the widget's items, in order.
   late final List<num> values;
+
+  /// The index of the point the tooltip is showing, or null when none is.
   late ValueNotifier<int?> _selectedIndex;
 
+  /// The top of the y-axis: the larger of the widget's max and the data's.
   late final num _max;
+
+  /// The bottom of the y-axis: the smaller of the widget's min and the data's.
   late final num _min;
 
   @override
@@ -120,82 +131,87 @@ class _GtLineChartAreaState extends State<GtLineChartArea> {
     final yMax = _max.asCurrencyShort("");
     final yMin = _min.asCurrencyShort("");
 
+    Widget chart = GtSizedBox(
+      height: widget.height,
+      width: widget.width,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final maxWidth = constraints.maxWidth;
+          return GestureDetector(
+            onTapDown: (details) {
+              _updateIndex(details.localPosition.dx, maxWidth);
+            },
+            onPanStart: (details) {
+              _updateIndex(details.localPosition.dx, maxWidth);
+            },
+            onPanUpdate: (details) {
+              _updateIndex(details.localPosition.dx, maxWidth);
+            },
+            onPanEnd: (_) => _clearSelection(),
+            onPanCancel: _clearSelection,
+            child: MouseRegion(
+              onHover: (event) {
+                _updateIndex(event.localPosition.dx, maxWidth);
+              },
+              onExit: (_) => _clearSelection(),
+              child: NumberListener(
+                valueListenable: _selectedIndex,
+                builder: (index) {
+                  return CustomPaint(
+                    painter: GtTrendPainter(
+                      values,
+                      color: widget.color,
+                      gradient:
+                          widget.gradient ?? context.gradients.chartGradient,
+                      maxValue: _max,
+                      selectedIndex: index,
+                      selectedFillColor: context.palette.bg.weak,
+                    ),
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        if (!widget.hideYAxisLabels) ...[
+                          Positioned(
+                            top: 0,
+                            right: 0,
+                            child: GtText(yMax, style: yTextStyle),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: GtText(yMin, style: yTextStyle),
+                          ),
+                        ],
+                        if (index != null)
+                          _ChartTooltip(
+                            item: widget.items.elementAtOrNull(index),
+                            count: widget.items.length,
+                            index: index,
+                            maxWidth: maxWidth,
+                            maxHeight: constraints.maxHeight,
+                            max: _max,
+                          ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
+    if (context.inSkeleton) {
+      chart = GtBone(borderRadius: context.borderRadiusXl, child: chart);
+    }
+
     return GtSemantics(
       label: widget.semanticsLabel,
       // The chart is read by dragging a finger along it, which a screen reader
       // user cannot do. The summary stands in for the whole interaction.
       excludeDescendants: widget.semanticsLabel != null,
       container: widget.semanticsLabel != null,
-      child: GtSizedBox(
-        height: widget.height,
-        width: widget.width,
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final maxWidth = constraints.maxWidth;
-            return GestureDetector(
-              onTapDown: (details) {
-                _updateIndex(details.localPosition.dx, maxWidth);
-              },
-              onPanStart: (details) {
-                _updateIndex(details.localPosition.dx, maxWidth);
-              },
-              onPanUpdate: (details) {
-                _updateIndex(details.localPosition.dx, maxWidth);
-              },
-              onPanEnd: (_) => _clearSelection(),
-              onPanCancel: _clearSelection,
-              child: MouseRegion(
-                onHover: (event) {
-                  _updateIndex(event.localPosition.dx, maxWidth);
-                },
-                onExit: (_) => _clearSelection(),
-                child: NumberListener(
-                  valueListenable: _selectedIndex,
-                  builder: (index) {
-                    return CustomPaint(
-                      painter: GtTrendPainter(
-                        values,
-                        color: widget.color,
-                        gradient:
-                            widget.gradient ?? context.gradients.chartGradient,
-                        maxValue: _max,
-                        selectedIndex: index,
-                        selectedFillColor: context.palette.bg.weak,
-                      ),
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          if (!widget.hideYAxisLabels) ...[
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: GtText(yMax, style: yTextStyle),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: GtText(yMin, style: yTextStyle),
-                            ),
-                          ],
-                          if (index != null)
-                            _ChartTooltip(
-                              item: widget.items.elementAtOrNull(index),
-                              count: widget.items.length,
-                              index: index,
-                              maxWidth: maxWidth,
-                              maxHeight: constraints.maxHeight,
-                              max: _max,
-                            ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            );
-          },
-        ),
-      ),
+      child: chart,
     );
   }
 }

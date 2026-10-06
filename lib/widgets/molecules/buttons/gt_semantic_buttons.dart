@@ -237,6 +237,26 @@ class GtActionButton extends GtStatelessWidget {
         ),
       );
     }
+
+    Widget disc = AnimatedContainer(
+      width: xy,
+      height: xy,
+      constraints: BoxConstraints.tight(Size.square(xy)),
+      padding: padding ?? context.insets.allDp(10.px),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        shape: .circle,
+        image: _image,
+      ),
+      duration: GtMotion.adaptiveDuration(context, 500.milliseconds),
+      curve: Curves.decelerate,
+      child: child,
+    );
+
+    if (context.inSkeleton) {
+      disc = GtBone(shape: .circle, child: disc);
+    }
+
     return GtTapTarget(
       child: GtInkWell(
         role: .button,
@@ -246,20 +266,7 @@ class GtActionButton extends GtStatelessWidget {
           mainAxisSize: .min,
           spacing: context.spacingBase,
           children: [
-            AnimatedContainer(
-              width: xy,
-              height: xy,
-              constraints: BoxConstraints.tight(Size.square(xy)),
-              padding: padding ?? context.insets.allDp(10.px),
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                shape: .circle,
-                image: _image,
-              ),
-              duration: GtMotion.adaptiveDuration(context, 500.milliseconds),
-              curve: Curves.decelerate,
-              child: child,
-            ),
+            disc,
             if (label case String label)
               GtText(
                 label,
@@ -310,38 +317,40 @@ class GtAccountSwitchButton extends GtStatelessWidget {
     final bgColor = context.palette.primary.dark;
     final txtColor = context.palette.staticColors.white;
 
+    Widget pill = Container(
+      padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 4.px),
+      decoration: BoxDecoration(
+        color: backgroundColor ?? bgColor,
+        borderRadius: context.borderRadiusSm,
+      ),
+      child: Row(
+        crossAxisAlignment: .center,
+        mainAxisAlignment: .center,
+        mainAxisSize: .min,
+        spacing: context.spacingBase,
+        children: [
+          GtText(
+            text.upper,
+            style: context.textStyles.button2s(color: textColor ?? txtColor),
+            textAlign: .center,
+          ),
+          GtIcon.withColor(
+            GtIcons.chevronDownOutline,
+            size: context.dp(16.px),
+            color: textColor ?? txtColor,
+          ),
+        ],
+      ),
+    );
+
+    if (context.inSkeleton) {
+      pill = GtBone(borderRadius: context.borderRadiusSm, child: pill);
+    }
+
     Widget child = GtInkWell(
       role: .button,
       onTap: onPressed,
-      child: GtTapTarget(
-        child: Container(
-          padding: context.insets.symmetricDp(horizontal: 8.px, vertical: 4.px),
-          decoration: BoxDecoration(
-            color: backgroundColor ?? bgColor,
-            borderRadius: context.borderRadiusSm,
-          ),
-          child: Row(
-            crossAxisAlignment: .center,
-            mainAxisAlignment: .center,
-            mainAxisSize: .min,
-            spacing: context.spacingBase,
-            children: [
-              GtText(
-                text.upper,
-                style: context.textStyles.button2s(
-                  color: textColor ?? txtColor,
-                ),
-                textAlign: .center,
-              ),
-              GtIcon.withColor(
-                GtIcons.chevronDownOutline,
-                size: context.dp(16.px),
-                color: textColor ?? txtColor,
-              ),
-            ],
-          ),
-        ),
-      ),
+      child: GtTapTarget(child: pill),
     );
 
     if (alignment case AlignmentGeometry alignment) {
@@ -392,22 +401,26 @@ class GtQuestionTextButton extends GtStatelessWidget {
     final defaultStyle = context.textStyles.subHeadS();
     final defaultQuesStyle = defaultStyle.copyWith(color: questionColor);
 
+    Widget text = Text.rich(
+      TextSpan(
+        text: question,
+        children: [
+          TextSpan(text: " $action", style: actionStyle ?? defaultStyle),
+        ],
+        recognizer: TapGestureRecognizer()..onTap = onPressed,
+        style: questionStyle ?? defaultQuesStyle,
+      ),
+      textAlign: textAlign ?? .center,
+    );
+
+    if (context.inSkeleton) {
+      text = GtBone(child: text);
+    }
+
     return GtInkWell(
       role: .button,
       onTap: onPressed,
-      child: GtTapTarget(
-        child: Text.rich(
-          TextSpan(
-            text: question,
-            children: [
-              TextSpan(text: " $action", style: actionStyle ?? defaultStyle),
-            ],
-            recognizer: TapGestureRecognizer()..onTap = onPressed,
-            style: questionStyle ?? defaultQuesStyle,
-          ),
-          textAlign: textAlign ?? .center,
-        ),
-      ),
+      child: GtTapTarget(child: text),
     );
   }
 }

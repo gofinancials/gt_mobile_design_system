@@ -234,18 +234,39 @@ class GtPill extends GtStatelessWidget {
       child: child,
     );
 
+    if (context.inSkeleton) {
+      child = GtBone(
+        borderRadius: borderRadius ?? context.borderRadiusSm,
+        child: child,
+      );
+    }
+
     return Align(alignment: alignment ?? .center, child: child);
   }
 }
 
+/// A private widget that lays out a [GtPill]'s icon, label and trailing widget
+/// in a row.
 class _GtPillContent extends GtStatelessWidget {
+  /// See [GtPill.text].
   final String text;
+
+  /// See [GtPill.icon].
   final Widget? icon;
+
+  /// See [GtPill.trailing].
   final Widget? trailing;
+
+  /// The resolved style of the label.
   final TextStyle textStyle;
+
+  /// See [GtPill.semanticsLabel].
   final String? semanticsLabel;
+
+  /// The gap between the icon, label and trailing widget.
   final double spacing;
 
+  /// Creates a [_GtPillContent].
   const _GtPillContent({
     required this.text,
     required this.icon,

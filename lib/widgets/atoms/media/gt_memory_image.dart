@@ -6,6 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A widget that displays an image from a [Uint8List] of memory bytes.
 ///
 /// This is a standardized wrapper around [Image.memory] for the Go Tech design system.
+///
+/// Inside an enabled [GtSkeleton] it is painted as a [GtBone] block.
 class GtMemoryImage extends GtStatelessWidget {
   /// The raw image data represented as a list of bytes.
   final Uint8List bytes;
@@ -55,7 +57,7 @@ class GtMemoryImage extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.memory(
+    Widget image = Image.memory(
       bytes,
       fit: fit,
       alignment: alignment,
@@ -67,5 +69,9 @@ class GtMemoryImage extends GtStatelessWidget {
       // Excluding unlabelled images keeps them from becoming empty stops.
       excludeFromSemantics: isDecorative || semanticsLabel == null,
     );
+    if (context.inSkeleton) {
+      image = GtBone(child: image);
+    }
+    return image;
   }
 }

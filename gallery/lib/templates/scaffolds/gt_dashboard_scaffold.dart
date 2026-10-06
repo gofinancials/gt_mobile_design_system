@@ -13,6 +13,10 @@ Widget playgroundGtDashboardScaffoldUseCase(BuildContext context) {
     initialOption: GtBottomNavigationStyle.ios,
     labelBuilder: (v) => v.name,
   );
+  final isLoading = context.knobs.boolean(
+    label: 'Loading',
+    initialValue: false,
+  );
 
   return GtWidgetDocPage(
     title: 'GtDashboardScaffold',
@@ -26,7 +30,7 @@ GtDashboardScaffold(
   data: [
     GtDashboardPageData(
       page: HomePage(),
-      appBar: GtHomeAppBar(),
+      ${isLoading ? "isLoading: true,\n      loadingSemanticsLabel: 'Loading your accounts',\n      appBar: GtHomeAppBar(isLoading: true)," : 'appBar: GtHomeAppBar(),'}
       navItem: GtBottomNavigationItem(
         selectedIcon: GtIcons.homeFilled,
         unselectedIcon: GtIcons.home,
@@ -104,6 +108,10 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
 
   late final GtAccountDataController<_Account> _accountController;
 
+  final _loadingAccountController = GtAccountDataController<_Account>(
+    accounts: const [],
+  );
+
   bool _hidden = false;
 
   final List<GtBottomNavigationItem> _items = const [
@@ -131,7 +139,7 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
 
   void _toggleHidden() => setState(() => _hidden = !_hidden);
 
-  Widget get _homePage {
+  Widget _getHomePage(GtAccountDataController<_Account> controller) {
     final raw = context.palette.raw;
     final white = context.palette.staticColors.white;
 
@@ -141,7 +149,7 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
         slivers: [
           SliverToBoxAdapter(
             child: GtAccountDetailSlides<_Account>(
-              controller: _accountController,
+              controller: controller,
               hidden: _hidden,
               onToggleHide: _toggleHidden,
               actions: GtActionButtonBar(
@@ -184,10 +192,15 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
     );
   }
 
-  List<GtDashboardPageData> get data => [
+  List<GtDashboardPageData> _getData({required bool isLoading}) => [
     GtDashboardPageData(
-      page: _homePage,
+      page: _getHomePage(
+        isLoading ? _loadingAccountController : _accountController,
+      ),
+      isLoading: isLoading,
+      loadingSemanticsLabel: 'Loading your accounts',
       appBar: GtHomeAppBar(
+        isLoading: isLoading,
         userFullName: "Alex Lobaloba",
         onClickHelp: () {},
         helpSemanticsLabel: "Help",
@@ -236,15 +249,21 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
   @override
   void dispose() {
     _accountController.dispose();
+    _loadingAccountController.dispose();
     _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = context.knobs.boolean(
+      label: 'Loading',
+      initialValue: false,
+    );
+
     return GtDashboardScaffold(
       onClickHelp: () {},
-      data: data,
+      data: _getData(isLoading: isLoading),
       pageController: _pageController,
       bottomNavigationStyle: context.knobs.object
           .dropdown<GtBottomNavigationStyle>(

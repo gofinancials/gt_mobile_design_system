@@ -234,6 +234,7 @@ enum GtAccountCopyPillVariant {
     return colors.tealBlueAlpha8;
   }
 
+  /// Resolves the two shadow colors of this variant's elevation from [colors].
   List<Color> _colorsList(GtPaletteRawColors colors) => switch (this) {
     .personalTrailing || .personal => [colors.navyAlpha3, colors.greenAlpha15],
     .flexTrailing || .flex => [colors.greenAlpha3, colors.greenAlpha15],
@@ -422,6 +423,35 @@ class GtAccountCopyPill extends GtStatelessWidget {
     if (variant.isTrailing && showIcon) trailing = icon;
     if (!variant.isTrailing && showIcon) leading = icon;
 
+    Widget pill = Container(
+      padding: context.insets.allDp(6.px),
+      decoration: BoxDecoration(
+        color: bgColor,
+        border: Border.all(color: borderColor ?? bgColor, style: borderStyle),
+        borderRadius: context.borderRadiusMd,
+        boxShadow: shadows,
+      ),
+      child: Row(
+        mainAxisSize: .min,
+        mainAxisAlignment: .start,
+        crossAxisAlignment: .center,
+        spacing: context.spacingSm,
+        children: [
+          ?leading,
+          GtText(
+            label ?? accountNumber.upper,
+            textAlign: .center,
+            style: style ?? context.textStyles.button2s(color: txtColor),
+          ),
+          ?trailing,
+        ],
+      ),
+    );
+
+    if (context.inSkeleton) {
+      pill = GtBone(borderRadius: context.borderRadiusMd, child: pill);
+    }
+
     return GtTapTarget(
       child: GtInkWell(
         role: .button,
@@ -432,33 +462,7 @@ class GtAccountCopyPill extends GtStatelessWidget {
         onTap: () {
           context.copyText(accountNumber);
         },
-        child: Container(
-          padding: context.insets.allDp(6.px),
-          decoration: BoxDecoration(
-            color: bgColor,
-            border: Border.all(
-              color: borderColor ?? bgColor,
-              style: borderStyle,
-            ),
-            borderRadius: context.borderRadiusMd,
-            boxShadow: shadows,
-          ),
-          child: Row(
-            mainAxisSize: .min,
-            mainAxisAlignment: .start,
-            crossAxisAlignment: .center,
-            spacing: context.spacingSm,
-            children: [
-              ?leading,
-              GtText(
-                label ?? accountNumber.upper,
-                textAlign: .center,
-                style: style ?? context.textStyles.button2s(color: txtColor),
-              ),
-              ?trailing,
-            ],
-          ),
-        ),
+        child: pill,
       ),
     );
   }

@@ -4,10 +4,15 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:styled_text/styled_text.dart';
 
+/// A [StyledTextTag] whose text answers taps through [onTap].
+///
+/// [GtRichText] uses it for hashtags, which are styled like links but handled
+/// by the host rather than opened as a URL.
 class GtStyledTextTag extends StyledTextTag {
   /// A callback to be called when the tag is tapped.
   final StyledTextTagActionCallback? onTap;
 
+  /// Creates a [GtStyledTextTag] styled with `style`.
   const GtStyledTextTag({super.style, this.onTap});
 
   @override
@@ -28,6 +33,9 @@ class GtStyledTextTag extends StyledTextTag {
 ///
 /// Additionally, it automatically detects hashtags in the raw [text] and wraps them
 /// in `<ht>` tags.
+///
+/// Inside an enabled [GtSkeleton] it paints one [GtBone] bar per line, as
+/// [GtText] does.
 class GtRichText extends GtStatelessWidget {
   /// How the text should be aligned horizontally.
   final TextAlign? textAlign;
@@ -88,6 +96,8 @@ class GtRichText extends GtStatelessWidget {
     return splitText.join(" ");
   }
 
+  /// Opens the tapped link: the tag's `href` attribute, or its text when it
+  /// has none.
   void _launch(String? text, Map<String?, String?> attributes) {
     final url = attributes["href"] ?? text.value;
     if (!url.hasValue) return;
@@ -185,7 +195,7 @@ class GtRichText extends GtStatelessWidget {
     // key derived from it changed every build and threw the parsed spans away
     // each time. `StyledText` already re-parses whenever its tags, text or
     // style differ, which covers a restyle from a theme or palette change.
-    return StyledText(
+    Widget child = StyledText(
       text: content,
       textAlign: textAlign,
       style: style,
@@ -194,5 +204,9 @@ class GtRichText extends GtStatelessWidget {
       textDirection: text.directionality,
       tags: computedTags,
     );
+    if (context.inSkeleton) {
+      child = GtBone(child: child);
+    }
+    return child;
   }
 }

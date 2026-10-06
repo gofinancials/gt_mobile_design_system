@@ -61,11 +61,17 @@ Widget playgroundGtStandardTextTileTemplateUseCase(BuildContext context) {
   );
   final asCard = context.knobs.boolean(label: 'As Card', initialValue: true);
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtStandardTextTileTemplate',
     description: 'A template emphasizing title and subtitle text layout.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtStandardTextTileTemplate.skeleton(asCard: $asCard)'
+        : '''
 GtStandardTextTileTemplate(
   title: "$title",
   subtitle: "$subtitle",
@@ -75,14 +81,16 @@ GtStandardTextTileTemplate(
   onTap: () {},
 )''',
     child: Center(
-      child: GtStandardTextTileTemplate(
-        title: title,
-        subtitle: subtitle,
-        leading: const GtIcon(GtIcons.user),
-        trailing: GtSwitch(value: true, onChanged: (_) {}),
-        asCard: asCard,
-        onTap: () {},
-      ),
+      child: isSkeleton
+          ? GtStandardTextTileTemplate.skeleton(asCard: asCard)
+          : GtStandardTextTileTemplate(
+              title: title,
+              subtitle: subtitle,
+              leading: const GtIcon(GtIcons.user),
+              trailing: GtSwitch(value: true, onChanged: (_) {}),
+              asCard: asCard,
+              onTap: () {},
+            ),
     ),
   );
 }

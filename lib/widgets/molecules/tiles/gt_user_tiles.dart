@@ -54,6 +54,16 @@ class GtAccountListTile extends GtStatelessWidget {
     this.padding,
   });
 
+  /// Creates a skeleton of this tile, standing in for an account that is still
+  /// loading.
+  ///
+  /// The tile is laid out with placeholder data under its own [GtSkeleton], so
+  /// it shows only bones in the real tile's layout and announces nothing.
+  /// Inside a [GtSkeletonList] or another skeleton it joins that skeleton's
+  /// sweep.
+  const factory GtAccountListTile.skeleton({Key? key}) =
+      _GtAccountListTileSkeleton;
+
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
@@ -141,6 +151,16 @@ class GtContactListTile extends GtStatelessWidget {
     this.horizontalSpacing,
     this.padding,
   });
+
+  /// Creates a skeleton of this tile, standing in for a contact that is still
+  /// loading.
+  ///
+  /// The tile is laid out with placeholder data under its own [GtSkeleton], so
+  /// it shows only bones in the real tile's layout and announces nothing.
+  /// Inside a [GtSkeletonList] or another skeleton it joins that skeleton's
+  /// sweep.
+  const factory GtContactListTile.skeleton({Key? key}) =
+      _GtContactListTileSkeleton;
 
   @override
   Widget build(BuildContext context) {
@@ -506,6 +526,48 @@ class GtAccountTypeListTile extends GtStatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Ignores a tap, for a skeleton tile that cannot be tapped.
+void _ignoreTap() {}
+
+/// A private skeleton of [GtAccountListTile], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtAccountListTileSkeleton extends GtAccountListTile {
+  /// Creates a [_GtAccountListTileSkeleton].
+  const _GtAccountListTileSkeleton({super.key})
+    : super(
+        'Adaeze Okafor',
+        subtitle: '0123456789',
+        leading: const GtAvatar(initials: 'AO'),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
+    );
+  }
+}
+
+/// A private skeleton of [GtContactListTile], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtContactListTileSkeleton extends GtContactListTile {
+  /// Creates a [_GtContactListTileSkeleton].
+  const _GtContactListTileSkeleton({super.key})
+    : super(
+        'Adaeze Okafor',
+        subtitle: '0801 234 5678',
+        leading: const GtAvatar(initials: 'AO'),
+        onTap: _ignoreTap,
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// The kind of alert a [GtNotificationCard] carries, which sets its colors and
+/// illustration.
 enum GtNotificationVariant {
+  /// Something went wrong.
   error,
+
+  /// Something needs the customer's attention.
   warning,
+
+  /// Something completed as expected.
   success,
+
+  /// Neutral information.
   info;
 
+  /// The card variant whose colors the notification takes.
   GtCardVariant get cardVariant => switch (this) {
     error => .error,
     warning => .warning,
@@ -15,6 +25,7 @@ enum GtNotificationVariant {
     info => .info,
   };
 
+  /// The illustration shown for this kind of notification.
   String get illustration => switch (this) {
     .success => GtVectorIllustrations.success,
     .error => GtVectorIllustrations.failed,
@@ -62,6 +73,7 @@ class GtNotificationCard extends GtStatelessWidget {
   /// The visual variant of the notification, which determines its background, border, and icon colors.
   final GtNotificationVariant variant;
 
+  /// Called when the close button is pressed.
   final OnPressed onClose;
 
   /// Creates a [GtNotificationCard].
@@ -81,6 +93,17 @@ class GtNotificationCard extends GtStatelessWidget {
     this.verticalSpacing,
     this.closeButtonSpacing,
   });
+
+  /// Creates a skeleton of a notification card, standing in for one whose
+  /// alert is still loading.
+  ///
+  /// The card is neutral by default, in the normal card background, so a
+  /// loading notification does not read as an alert of any kind. Pass
+  /// [variant] where the kind is already known and its color should show.
+  const factory GtNotificationCard.skeleton({
+    Key? key,
+    GtNotificationVariant? variant,
+  }) = _GtNotificationCardSkeleton;
 
   @override
   Widget build(BuildContext context) {
@@ -136,6 +159,45 @@ class GtNotificationCard extends GtStatelessWidget {
               : SizedBox(width: closeButtonSpacing)),
           GtCancelButton(size: .small, alignment: .topRight, onTap: onClose),
         ],
+      ),
+    );
+  }
+}
+
+/// Ignores a dismissal, for a skeleton card that cannot be closed.
+void _ignoreClose() {}
+
+/// A private skeleton of [GtNotificationCard], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtNotificationCardSkeleton extends GtNotificationCard {
+  /// Whether no variant was asked for, so the card takes the neutral card
+  /// background instead of the variant's tint.
+  final bool _isNeutral;
+
+  /// Creates a [_GtNotificationCardSkeleton].
+  const _GtNotificationCardSkeleton({super.key, GtNotificationVariant? variant})
+    : _isNeutral = variant == null,
+      super(
+        title: 'Notification title',
+        subtitle: 'A line or two of detail about the notification',
+        variant: variant ?? .info,
+        onClose: _ignoreClose,
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(
+        builder: (context) {
+          if (!_isNeutral) return super.build(context);
+          return GtNotificationCard(
+            title: title,
+            subtitle: subtitle,
+            variant: variant,
+            onClose: onClose,
+            backgroundColor: context.palette.bg.weak,
+          );
+        },
       ),
     );
   }

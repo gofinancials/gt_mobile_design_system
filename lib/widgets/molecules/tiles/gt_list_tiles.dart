@@ -44,6 +44,22 @@ class GtListTile extends GtStatelessWidget {
     this.textColor,
   });
 
+  /// Creates a skeleton of this tile, standing in for a row that is still
+  /// loading.
+  ///
+  /// The tile is laid out with placeholder data under its own [GtSkeleton], so
+  /// it shows only bones in the real tile's layout and announces nothing.
+  /// Inside a [GtSkeletonList] or another skeleton it joins that skeleton's
+  /// sweep.
+  ///
+  /// [showLeading] and [showTrailing] add icon-sized bones at either end, for
+  /// rows that carry them.
+  const factory GtListTile.skeleton({
+    Key? key,
+    bool showLeading,
+    bool showTrailing,
+  }) = _GtListTileSkeleton;
+
   @override
   Widget build(BuildContext context) {
     return GtInkWell(
@@ -384,6 +400,28 @@ class GtSimpleActionListTile extends GtStatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// A private skeleton of [GtListTile], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtListTileSkeleton extends GtListTile {
+  /// Creates a [_GtListTileSkeleton].
+  const _GtListTileSkeleton({
+    super.key,
+    bool showLeading = true,
+    bool showTrailing = false,
+  }) : super(
+         text: 'Account settings',
+         leading: showLeading ? const GtIcon(GtIcons.user) : null,
+         trailing: showTrailing ? const GtIcon(GtIcons.chevronRight) : null,
+       );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

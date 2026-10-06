@@ -3,6 +3,9 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A specialized app bar for the home screen featuring a user avatar and quick action icons.
+///
+/// Every button is drawn as raised glass (see [GtButton.enableGlassEffect])
+/// over the [GtPalette.primary] alpha-10 fill.
 class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// Optional avatar image data for the current user.
   final AppImageData? avatar;
@@ -27,6 +30,14 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
 
   /// Callback triggered when the avatar is pressed.
   final OnPressed? onClickAvatar;
+
+  /// Whether the avatar is drawn as a skeleton while the user's profile loads.
+  /// Defaults to false.
+  ///
+  /// Only the avatar is boned. The help, search, hide and notification buttons
+  /// and the account toggle stay real and usable, since none of them waits on
+  /// the profile.
+  final bool isLoading;
 
   /// The label shown on the account toggle button.
   ///
@@ -76,6 +87,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     this.onClickNotification,
     this.userFullName,
     this.onClickAvatar,
+    this.isLoading = false,
     this.onClickHelp,
     this.onToggleAccounts,
     this.toggleAccountText,
@@ -95,12 +107,25 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final toolbarHeight = MediaQuery.paddingOf(context).top;
-    final btnColor = context.palette.primary.alpha16;
     final avatarColor = context.palette.primary.dark;
     final iconColor = switch (context.isInDarkMode) {
       true => context.palette.primary.base,
       _ => context.palette.primary.darker,
     };
+
+    Widget userAvatar = GtAvatar(
+      avatar: avatar,
+      alignment: .centerLeft,
+      initials: AppHelpers.getInitials(userFullName),
+      bgColor: avatarColor,
+      initialsColor: context.palette.text.white,
+      forceGradiant: false,
+      onPressed: onClickAvatar,
+      size: context.dp(42.px),
+    );
+    if (isLoading) {
+      userAvatar = GtSkeleton(child: userAvatar);
+    }
 
     return Material(
       type: .transparency,
@@ -112,16 +137,7 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
         child: Row(
           spacing: context.spacingBase,
           children: [
-            GtAvatar(
-              avatar: avatar,
-              alignment: .centerLeft,
-              initials: AppHelpers.getInitials(userFullName),
-              bgColor: avatarColor,
-              initialsColor: context.palette.text.white,
-              forceGradiant: false,
-              onPressed: onClickAvatar,
-              size: context.dp(42.px),
-            ),
+            userAvatar,
             const Spacer(),
             if (onClickHelp != null)
               GtIconButton(
@@ -130,9 +146,9 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 onPressed: onClickHelp!,
                 semanticLabel: helpSemanticsLabel,
                 shape: .round,
-                color: btnColor,
-                variant: .neutral,
-                size: .medium,
+                variant: .secondary,
+                enableGlassEffect: true,
+                size: .regular,
               ),
             if (onClickSearch != null)
               GtIconButton(
@@ -141,9 +157,9 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 onPressed: onClickSearch!,
                 semanticLabel: searchSemanticsLabel,
                 shape: .round,
-                color: btnColor,
-                variant: .neutral,
-                size: .medium,
+                variant: .secondary,
+                enableGlassEffect: true,
+                size: .regular,
               ),
             if (onClickHide != null)
               GtIconButton(
@@ -152,9 +168,9 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 onPressed: onClickHide!,
                 semanticLabel: hideSemanticsLabel,
                 shape: .round,
-                color: btnColor,
-                variant: .neutral,
-                size: .medium,
+                variant: .secondary,
+                enableGlassEffect: true,
+                size: .regular,
               ),
             if (onClickNotification != null)
               GtIconButton(
@@ -163,9 +179,9 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 onPressed: onClickNotification!,
                 semanticLabel: notificationSemanticsLabel,
                 shape: .round,
-                color: btnColor,
-                variant: .neutral,
-                size: .medium,
+                variant: .secondary,
+                enableGlassEffect: true,
+                size: .regular,
               ),
             if (onToggleAccounts != null)
               GtRaisedButton(
@@ -174,14 +190,18 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 onPressed: onToggleAccounts!,
                 semanticLabel: toggleAccountSemanticsLabel,
                 cornerRadius: context.borderRadiusFull,
-                color: btnColor,
                 textColor: iconColor,
-                variant: .neutral,
-                size: .medium,
+                variant: .secondary,
+                enableGlassEffect: true,
+                size: .regular,
+                contentPadding: context.insets.symmetricDp(horizontal: 8.px),
+                iconSize: context.dp(12.px),
+                iconSpacing: context.dp(4.px),
                 textCase: .title,
-                style: context.textStyles.subHeadS(
+                style: context.textStyles.labelXs(
                   color: iconColor,
                   weight: .w600,
+                  heightPx: 12,
                 ),
               ),
           ],

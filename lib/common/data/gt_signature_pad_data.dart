@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
+import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A single continuous stroke drawn on a [GtSignaturePadController].
 @immutable
@@ -64,30 +67,80 @@ class GtSignaturePadValue {
   bool get canRedo => redoStrokes.isNotEmpty;
 }
 
+/// How [GtSignaturePadController] renders a drawn signature to PNG.
+///
+/// The export is drawn from the strokes, not captured from the pad, so it
+/// does not follow the pad's on-screen colours or the app's theme. The
+/// defaults give dark ink on white, cropped to the signature with a small
+/// margin, which is what signature verification expects.
+@immutable
+class GtSignatureExportOptions {
+  /// Default logical margin kept around the strokes when cropping.
+  static const double defaultMargin = 16;
+
+  /// Colour the strokes are drawn in. Defaults to black.
+  final Color inkColor;
+
+  /// Colour the image is filled with behind the strokes. Defaults to white.
+  ///
+  /// When `null` the background is left transparent.
+  final Color? backgroundColor;
+
+  /// Whether the image is cropped to the strokes plus [margin].
+  ///
+  /// When `false` the image covers the whole pad, which must then be mounted
+  /// in a [GtSignaturePad]; an unmounted pad is cropped instead.
+  final bool cropToSignature;
+
+  /// Logical margin kept around the strokes when [cropToSignature] is `true`.
+  final double margin;
+
+  /// Creates export options, defaulting to black ink on white, cropped.
+  const GtSignatureExportOptions({
+    this.inkColor = const Color(0xFF000000),
+    this.backgroundColor = const Color(0xFFFFFFFF),
+    this.cropToSignature = true,
+    this.margin = defaultMargin,
+  }) : assert(margin >= 0);
+}
+
 /// Controls the drawing, history, and PNG output of a signature pad.
 ///
 /// The controller is the source of truth for the scribble and imported signature images.
-/// It also owns the foundation [ScreenShotService] used to rasterize the keyed drawing boundary.
+/// A drawn signature is rendered from its strokes as [exportOptions] describes,
+/// independently of how the pad draws it on screen.
 /// [bytes] and [base64] synchronously expose the latest completed capture or imported image;
 /// [toUint8List] and [toBase64] request a fresh asynchronous capture.
 class GtSignaturePadController extends ValueNotifier<GtSignaturePadValue> {
   static const double _minimumPointDistanceSquared = .25;
 
-  final ScreenShotService _screenShotService;
   final ValueNotifier<Uint8List?> _imageNotifier = ValueNotifier(null);
 
   int _captureGeneration = 0;
   bool _isDisposed = false;
 
-  /// Creates an empty signature controller.
-  GtSignaturePadController({ScreenShotService? screenShotService})
-    : _screenShotService = screenShotService ?? ScreenShotService(),
-      super(GtSignaturePadValue());
+  /// How a drawn signature is rendered to PNG.
+  final GtSignatureExportOptions exportOptions;
 
-  /// The boundary key used by [ScreenShotService] to capture only the drawing.
+  /// Logical width the strokes are drawn at, used for the export too.
   ///
+  /// [GtSignaturePad] keeps this in step with its [GtSignaturePad.strokeWidth].
+  double strokeWidth = GtSignaturePad.defaultStrokeWidth;
+
+  /// The key [GtSignaturePad] binds to its drawing surface.
+  ///
+  /// The controller reads the surface's size and pixel ratio through it.
   /// Consumers normally do not need this; [GtSignaturePad] binds it for them.
-  GlobalKey get repaintBoundaryKey => _screenShotService.screenShotKey;
+  final GlobalKey repaintBoundaryKey = GlobalKey();
+
+  /// Creates an empty signature controller.
+  ///
+  /// [screenShotService] is ignored: the signature is rendered from its strokes.
+  GtSignaturePadController({
+    @Deprecated('Ignored: the signature is now rendered from its strokes.')
+    ScreenShotService? screenShotService,
+    this.exportOptions = const GtSignatureExportOptions(),
+  }) : super(GtSignaturePadValue());
 
   /// Emits whenever a newly encoded PNG becomes available or the pad clears.
   ValueListenable<Uint8List?> get imageListenable => _imageNotifier;
@@ -218,9 +271,9 @@ class GtSignaturePadController extends ValueNotifier<GtSignaturePadValue> {
   /// Captures the current signature as PNG bytes.
   ///
   /// If an imported image is active, its bytes are returned directly.
-  /// The drawing surface must be mounted in a [GtSignaturePad]. If it is not,
-  /// the latest cached bytes are returned instead. [pixelRatio] defaults to the
-  /// mounted surface's device pixel ratio through [ScreenShotService].
+  /// Otherwise the strokes are rendered as [exportOptions] describes, and
+  /// `null` is returned if that fails. [pixelRatio] defaults to the device
+  /// pixel ratio of the pad, or of the app's view when no pad is mounted.
   Future<Uint8List?> toUint8List({double? pixelRatio}) async {
     if (value.image != null) return bytes;
     if (!hasSignature) {
@@ -228,15 +281,9 @@ class GtSignaturePadController extends ValueNotifier<GtSignaturePadValue> {
       return null;
     }
 
-    final captureContext = repaintBoundaryKey.currentContext;
-    if (captureContext == null) return bytes;
-
     final generation = ++_captureGeneration;
     _setCapturing(true);
-    final image = await _screenShotService.captureScreen(
-      captureContext,
-      pixelRatio: pixelRatio,
-    );
+    final image = await _renderStrokes(pixelRatio: pixelRatio);
 
     if (_isDisposed || generation != _captureGeneration) return bytes;
     _setImage(image);
@@ -248,6 +295,79 @@ class GtSignaturePadController extends ValueNotifier<GtSignaturePadValue> {
   Future<String?> toBase64({double? pixelRatio}) async {
     final image = await toUint8List(pixelRatio: pixelRatio);
     return image == null ? null : base64Encode(image);
+  }
+
+  /// Renders the visible strokes to PNG as [exportOptions] describes.
+  Future<Uint8List?> _renderStrokes({double? pixelRatio}) async {
+    final options = exportOptions;
+    final strokes = [
+      for (final stroke in value.strokes)
+        if (stroke.points.isNotEmpty) stroke,
+    ];
+    if (strokes.isEmpty) return null;
+    final surface = repaintBoundaryKey.currentContext;
+    final ratio =
+        pixelRatio ??
+        (surface == null ? null : View.maybeOf(surface)?.devicePixelRatio) ??
+        ui.PlatformDispatcher.instance.implicitView?.devicePixelRatio ??
+        1;
+
+    var bounds = _strokeBounds(
+      strokes,
+    ).inflate(strokeWidth / 2 + options.margin);
+    final surfaceSize = surface?.size;
+    if (!options.cropToSignature && surfaceSize != null) {
+      bounds = Offset.zero & surfaceSize;
+    }
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder)
+      ..scale(ratio)
+      ..translate(-bounds.left, -bounds.top);
+    if (options.backgroundColor case final color?) {
+      // Fills the whole image, including the edge pixels a fractional
+      // bounds-times-ratio only partly covers.
+      canvas.drawColor(color, BlendMode.src);
+    }
+    GtSignaturePainter.paintStrokes(
+      canvas,
+      strokes,
+      color: options.inkColor,
+      strokeWidth: strokeWidth,
+    );
+    final picture = recorder.endRecording();
+
+    try {
+      final image = await picture.toImage(
+        math.max(1, (bounds.width * ratio).ceil()),
+        math.max(1, (bounds.height * ratio).ceil()),
+      );
+      try {
+        final data = await image.toByteData(format: ui.ImageByteFormat.png);
+        return data?.buffer.asUint8List();
+      } finally {
+        image.dispose();
+      }
+    } catch (e, t) {
+      AppLogger.severe("$e", stackTrace: t, error: e);
+      return null;
+    } finally {
+      picture.dispose();
+    }
+  }
+
+  /// The smallest rectangle holding every point of [strokes].
+  static Rect _strokeBounds(Iterable<GtSignatureStroke> strokes) {
+    final points = strokes.expand((stroke) => stroke.points);
+    var left = points.first.dx, right = left;
+    var top = points.first.dy, bottom = top;
+    for (final point in points) {
+      left = math.min(left, point.dx);
+      right = math.max(right, point.dx);
+      top = math.min(top, point.dy);
+      bottom = math.max(bottom, point.dy);
+    }
+    return Rect.fromLTRB(left, top, right, bottom);
   }
 
   void _scheduleCapture() {

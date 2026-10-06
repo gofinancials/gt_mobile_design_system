@@ -689,8 +689,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.0.65"
-      resolved-ref: "22b34f9b1abac7e69241b31229d6b7896339c4c6"
+      ref: "v0.0.67"
+      resolved-ref: d5e1c519a72b586075c1a498d268576cd9cb0edc
       url: "https://github.com/gofinancials/gt_mobile_foundation.git"
     source: git
     version: "0.0.1"
@@ -1322,14 +1322,6 @@ packages:
     description:
       name: shelf_web_socket
       sha256: "3632775c8e90d6c9712f883e633716432a27758216dfb61bd86a8321c0580925"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
-  shimmer:
-    dependency: transitive
-    description:
-      name: shimmer
-      sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"

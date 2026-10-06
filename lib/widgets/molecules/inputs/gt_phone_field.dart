@@ -52,6 +52,10 @@ class GtPhoneField extends GtStatefulWidget {
   /// Autofill hints for the input field.
   final List<String>? autofillHints;
 
+  /// An optional widget to display at the end of the field.
+  /// Defaults to a success check shown once ten digits are entered.
+  final Widget? suffix;
+
   /// Creates a new [GtPhoneField].
   const GtPhoneField({
     super.key,
@@ -69,6 +73,7 @@ class GtPhoneField extends GtStatefulWidget {
     this.showCountryCode = true,
     this.validator,
     this.autofillHints = const [AutofillHints.telephoneNumberNational],
+    this.suffix,
   });
   @override
   State<GtPhoneField> createState() => _GtPhoneFieldState();
@@ -119,6 +124,21 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
         );
       },
     );
+    final suffix = GenericListener(
+      valueListenable: controller.controller,
+      builder: (value) {
+        final chars = value.text.withoutWhiteSpaceAndSpecialChar.length;
+        return GtAnimatedFade(
+          child1: GtIcon(
+            GtIcons.checkBox,
+            variant: .success,
+            alignment: .centerRight,
+          ),
+          child2: const Offstage(),
+          showFirst: chars >= 10,
+        );
+      },
+    );
 
     return ListenableBuilder(
       listenable: controller.selectionNotifier,
@@ -136,21 +156,7 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
           return error;
         },
         prefix: widget.showCountryCode ? prefix : null,
-        suffix: GenericListener(
-          valueListenable: controller.controller,
-          builder: (value) {
-            final chars = value.text.withoutWhiteSpaceAndSpecialChar.length;
-            return GtAnimatedFade(
-              child1: GtIcon(
-                GtIcons.checkBox,
-                variant: .success,
-                alignment: .centerRight,
-              ),
-              child2: const Offstage(),
-              showFirst: chars >= 10,
-            );
-          },
-        ),
+        suffix: widget.suffix ?? suffix,
         textAlign: widget.textAlign,
         autoCorrect: false,
         keyboardType: TextInputType.phone,
@@ -162,6 +168,33 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
           initialValue: controller.value,
           validator: (value) => _validator(),
           builder: (state) {
+            Widget error = Text.rich(
+              maxLines: 1,
+              overflow: .ellipsis,
+              TextSpan(
+                style: decor.errorStyle,
+                children: [
+                  WidgetSpan(
+                    child: RotatedBox(
+                      quarterTurns: 2,
+                      child: GtIcon(
+                        GtIcons.help,
+                        variant: .error,
+                        size: context.dp(18.px),
+                      ),
+                    ),
+                    alignment: .middle,
+                  ),
+                  TextSpan(text: " "),
+                  TextSpan(text: state.errorText),
+                ],
+              ),
+            );
+
+            if (context.inSkeleton) {
+              error = GtBone(child: error);
+            }
+
             return Column(
               spacing: context.spacingBase,
               crossAxisAlignment: .stretch,
@@ -177,29 +210,7 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
                     Expanded(child: child!),
                   ],
                 ),
-                if (state.hasError)
-                  Text.rich(
-                    maxLines: 1,
-                    overflow: .ellipsis,
-                    TextSpan(
-                      style: decor.errorStyle,
-                      children: [
-                        WidgetSpan(
-                          child: RotatedBox(
-                            quarterTurns: 2,
-                            child: GtIcon(
-                              GtIcons.help,
-                              variant: .error,
-                              size: context.dp(18.px),
-                            ),
-                          ),
-                          alignment: .middle,
-                        ),
-                        TextSpan(text: " "),
-                        TextSpan(text: state.errorText),
-                      ],
-                    ),
-                  ),
+                if (state.hasError) error,
               ],
             );
           },
@@ -340,6 +351,48 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
   Widget build(BuildContext context) {
     final decoration = context.inputStyles.phoneCodeDecoration();
 
+    Widget field = Container(
+      constraints: decoration.constraints,
+      padding: decoration.padding,
+      decoration: decoration.decoration,
+      alignment: .center,
+      child: FutureBuilder(
+        future: _countryFuture,
+        builder: (context, task) {
+          final country = task.data ?? _fallbackCountry;
+          final size = context.dp(32.px);
+
+          return Row(
+            crossAxisAlignment: .center,
+            mainAxisAlignment: .center,
+            spacing: context.spacingBase,
+            mainAxisSize: .min,
+            children: [
+              GtSvg(
+                country.circleSvgFlagUrl,
+                fit: .cover,
+                width: size,
+                height: size,
+                isDecorative: true,
+              ),
+              GtIcon(
+                GtIcons.chevronDown,
+                size: context.dp(16.px),
+                variant: .soft,
+              ),
+            ],
+          );
+        },
+      ),
+    );
+
+    if (context.inSkeleton) {
+      field = GtBone(
+        borderRadius: decoration.decoration.borderRadius,
+        child: field,
+      );
+    }
+
     return GtDisabledOverlay(
       !widget.isEnabled,
       child: GtInkWell(
@@ -347,40 +400,7 @@ class _GtCountryCodeFieldState extends State<GtCountryCodeField>
         borderRadius: context.borderRadiusXl,
         hapticFeedbackType: .medium,
         onTap: _showSheet,
-        child: Container(
-          constraints: decoration.constraints,
-          padding: decoration.padding,
-          decoration: decoration.decoration,
-          alignment: .center,
-          child: FutureBuilder(
-            future: _countryFuture,
-            builder: (context, task) {
-              final country = task.data ?? _fallbackCountry;
-              final size = context.dp(32.px);
-
-              return Row(
-                crossAxisAlignment: .center,
-                mainAxisAlignment: .center,
-                spacing: context.spacingBase,
-                mainAxisSize: .min,
-                children: [
-                  GtSvg(
-                    country.circleSvgFlagUrl,
-                    fit: .cover,
-                    width: size,
-                    height: size,
-                    isDecorative: true,
-                  ),
-                  GtIcon(
-                    GtIcons.chevronDown,
-                    size: context.dp(16.px),
-                    variant: .soft,
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
+        child: field,
       ),
     );
   }

@@ -12,12 +12,12 @@ Widget _app(Widget child) => GtThemeProvider(
   ),
 );
 
-bool _hasSpinner(WidgetTester tester) =>
-    find.byType(GtSpinner).evaluate().isNotEmpty;
+bool _hasShimmer(WidgetTester tester) =>
+    find.byType(GtImageShimmer).evaluate().isNotEmpty;
 
 void main() {
   group('GtNetworkImage', () {
-    testWidgets('spins by default, so a lone image still signals loading', (
+    testWidgets('shimmers by default, so a lone image still signals loading', (
       tester,
     ) async {
       await tester.pumpWidget(
@@ -25,7 +25,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(_hasSpinner(tester), isTrue);
+      expect(_hasShimmer(tester), isTrue);
     });
 
     testWidgets('falls through when the caller has something behind it', (
@@ -43,7 +43,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(_hasSpinner(tester), isFalse);
+      expect(_hasShimmer(tester), isFalse);
     });
 
     testWidgets('placeholder artwork outranks both', (tester) async {
@@ -60,7 +60,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(_hasSpinner(tester), isFalse);
+      expect(_hasShimmer(tester), isFalse);
       expect(find.byType(GtAssetImage), findsOneWidget);
     });
   });
@@ -79,7 +79,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(_hasSpinner(tester), isFalse);
+      expect(_hasShimmer(tester), isFalse);
     });
   });
 
@@ -93,7 +93,7 @@ void main() {
       await tester.pump();
 
       expect(find.text('JD'), findsOneWidget);
-      expect(_hasSpinner(tester), isFalse);
+      expect(_hasShimmer(tester), isFalse);
     });
 
     testWidgets('GtSquareAvatar leaves the initials visible', (tester) async {
@@ -109,10 +109,10 @@ void main() {
       await tester.pump();
 
       expect(find.text('JD'), findsOneWidget);
-      expect(_hasSpinner(tester), isFalse);
+      expect(_hasShimmer(tester), isFalse);
     });
 
-    testWidgets('either avatar can opt back into the spinner', (tester) async {
+    testWidgets('either avatar can opt back into the shimmer', (tester) async {
       await tester.pumpWidget(
         _app(
           const GtAvatar(
@@ -124,7 +124,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(_hasSpinner(tester), isTrue);
+      expect(_hasShimmer(tester), isTrue);
 
       await tester.pumpWidget(
         _app(
@@ -137,7 +137,7 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(_hasSpinner(tester), isTrue);
+      expect(_hasShimmer(tester), isTrue);
     });
 
     testWidgets('an empty user avatar keeps its glyph while loading', (
@@ -154,7 +154,7 @@ void main() {
       );
       await tester.pump();
 
-      expect(_hasSpinner(tester), isFalse);
+      expect(_hasShimmer(tester), isFalse);
     });
   });
 }

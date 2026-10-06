@@ -47,6 +47,11 @@ class GtSummaryTile extends GtStatelessWidget {
     this.layout = .columns,
   });
 
+  /// Creates a skeleton of a summary row, standing in for one whose value
+  /// is still loading.
+  const factory GtSummaryTile.skeleton({Key? key, GtSummaryTileLayout layout}) =
+      _GtSummaryTileSkeleton;
+
   @override
   Widget build(BuildContext context) {
     final Widget child = switch (layout) {
@@ -97,6 +102,7 @@ class _GtSummaryColumnsTile extends GtStatelessWidget {
   /// The label, value and optional images for this row.
   final GtSummaryTileData tile;
 
+  /// Creates a [_GtSummaryColumnsTile].
   const _GtSummaryColumnsTile(
     this.tile, {
     this.labelStyle,
@@ -108,16 +114,22 @@ class _GtSummaryColumnsTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final styles = context.textStyles;
-    final leading = tile.leading;
-    final trailing = tile.trailing;
+    // Left null rather than given an empty widget, because the tile uses the
+    // absence of a slot to decide its own spacing.
+    Widget? prefix;
+    Widget? suffix;
+    if (tile.leading case final image?) {
+      prefix = _GtSummaryTileImage(image, size: tile.imageSize);
+    }
+    if (tile.trailing case final image?) {
+      suffix = _GtSummaryTileImage(image, size: tile.imageSize);
+    }
 
     return GtDoubleColumnListTile(
       tile.label,
       value: tile.value,
-      // Left null rather than given an empty widget, because the tile uses the
-      // absence of a slot to decide its own spacing.
-      valuePrefix: leading == null ? null : _GtSummaryTileImage(leading),
-      valueSuffix: trailing == null ? null : _GtSummaryTileImage(trailing),
+      valuePrefix: prefix,
+      valueSuffix: suffix,
       labelTextStyle: GtTextStyleOverrides.resolve(
         labelStyle,
         styles.subHeadXs(color: context.palette.text.sub),
@@ -138,11 +150,15 @@ class _GtSummaryTileImage extends GtStatelessWidget {
   /// The image to render.
   final AppImageData data;
 
-  const _GtSummaryTileImage(this.data);
+  /// The caller's scaled size, or null for `dp(20)`.
+  final double? size;
+
+  /// Creates a [_GtSummaryTileImage] for [data].
+  const _GtSummaryTileImage(this.data, {this.size});
 
   @override
   Widget build(BuildContext context) {
-    final size = context.dp(20.px);
+    final size = this.size ?? context.dp(20.px);
 
     return GtImage(
       image: data,
@@ -171,6 +187,7 @@ class _GtSummaryStackedTile extends GtStatelessWidget {
   /// The label, value and optional tap handler for this row.
   final GtSummaryTileData tile;
 
+  /// Creates a [_GtSummaryStackedTile].
   const _GtSummaryStackedTile(
     this.tile, {
     this.labelStyle,
@@ -195,6 +212,23 @@ class _GtSummaryStackedTile extends GtStatelessWidget {
         context.textStyles.subHeadM(color: tile.valueColor),
         valueColor,
       ),
+    );
+  }
+}
+
+/// A private skeleton of [GtSummaryTile], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtSummaryTileSkeleton extends GtSummaryTile {
+  /// Creates a [_GtSummaryTileSkeleton].
+  const _GtSummaryTileSkeleton({super.key, super.layout})
+    : super(
+        const GtSummaryTileData(label: 'Field label', value: 'Field value'),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

@@ -378,50 +378,54 @@ class _GtTextFieldLayout extends GtStatelessWidget {
         : decoration.constraints;
     final duration = GtMotion.adaptiveDuration(context, GtMotion.normal);
 
+    Widget field = AnimatedContainer(
+      duration: duration,
+      curve: Curves.easeInOutCubic,
+      constraints: constraints,
+      padding: decoration.padding,
+      height: multiline ? null : decoration.size.height,
+      decoration: activeDecoration,
+      alignment: .center,
+      clipBehavior: .hardEdge,
+      child: Column(
+        crossAxisAlignment: .stretch,
+        mainAxisAlignment: .center,
+        spacing: context.spacingSm,
+        mainAxisSize: .min,
+        children: [
+          if (focused && labelText.hasValue)
+            Flexible(
+              child: GtText(
+                labelText,
+                style: labelStyle,
+                maxLines: 1,
+                overflow: .ellipsis,
+              ),
+            ),
+          Row(
+            spacing: context.spacingBase,
+            mainAxisAlignment: .start,
+            crossAxisAlignment: .center,
+            children: [
+              ?prefix,
+              Expanded(child: child),
+              ?suffix,
+            ],
+          ),
+        ],
+      ),
+    );
+
+    if (context.inSkeleton) {
+      field = GtBone(borderRadius: activeDecoration.borderRadius, child: field);
+    }
+
     return MergeSemantics(
       child: Column(
         crossAxisAlignment: .stretch,
         mainAxisSize: .min,
         children: [
-          RepaintBoundary(
-            child: AnimatedContainer(
-              duration: duration,
-              curve: Curves.easeInOutCubic,
-              constraints: constraints,
-              padding: decoration.padding,
-              height: multiline ? null : decoration.size.height,
-              decoration: activeDecoration,
-              alignment: .center,
-              clipBehavior: .hardEdge,
-              child: Column(
-                crossAxisAlignment: .stretch,
-                mainAxisAlignment: .center,
-                spacing: context.spacingSm,
-                mainAxisSize: .min,
-                children: [
-                  if (focused && labelText.hasValue)
-                    Flexible(
-                      child: GtText(
-                        labelText,
-                        style: labelStyle,
-                        maxLines: 1,
-                        overflow: .ellipsis,
-                      ),
-                    ),
-                  Row(
-                    spacing: context.spacingBase,
-                    mainAxisAlignment: .start,
-                    crossAxisAlignment: .center,
-                    children: [
-                      ?prefix,
-                      Expanded(child: child),
-                      ?suffix,
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          RepaintBoundary(child: field),
           AnimatedSize(
             duration: duration,
             curve: Curves.easeInOutCubic,

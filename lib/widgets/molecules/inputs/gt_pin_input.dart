@@ -98,7 +98,9 @@ class GtPinInput extends GtStatefulWidget {
   State<GtPinInput> createState() => _GtPinInputState();
 }
 
+/// The state of a [GtPinInput], which owns its pin controller.
 class _GtPinInputState extends State<GtPinInput> {
+  /// Binds [GtPinInput.controller] and [GtPinInput.focusNode] to the pin field.
   late final PinInputController _pinInputController;
 
   @override
@@ -193,13 +195,20 @@ class _GtPinInputState extends State<GtPinInput> {
       field = GtSpringShake(controller: widget.shakeController!, child: field);
     }
 
+    if (context.inSkeleton) {
+      field = GtBone(borderRadius: context.borderRadiusXl, child: field);
+    }
+
     return field;
   }
 }
 
+/// A private curve that clamps [curve]'s output to the 0 to 1 range.
 class _GtBoundedCurve extends Curve {
+  /// The curve whose output is clamped.
   final Curve curve;
 
+  /// Creates a [_GtBoundedCurve] around [curve].
   const _GtBoundedCurve(this.curve);
 
   @override

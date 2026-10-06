@@ -62,6 +62,20 @@ class GtReceiptScaffold extends GtStatelessWidget {
   /// If null, no leading widget is displayed.
   final OnPressed? onDownload;
 
+  /// Whether the body is drawn as a skeleton of itself while its content
+  /// loads. Defaults to false.
+  ///
+  /// Only the body is boned; the app bar and the bottom action stay real and
+  /// usable. The body is laid out as given, so while this is set pass it
+  /// placeholder data shaped like the real content. The skeleton absorbs
+  /// touches, so the body does not scroll until it lifts.
+  final bool isLoading;
+
+  /// What is announced while [isLoading] is set, such as "Loading receipt".
+  ///
+  /// See [GtSkeleton.semanticsLabel].
+  final String? loadingSemanticsLabel;
+
   /// Creates a [GtReceiptScaffold].
   ///
   /// The [body], [onClose], and [onReportProblem] parameters are required.
@@ -75,10 +89,20 @@ class GtReceiptScaffold extends GtStatelessWidget {
     this.buttonBackgroundColor,
     this.downloadIcon,
     this.onDownload,
+    this.isLoading = false,
+    this.loadingSemanticsLabel,
   });
 
   @override
   Widget build(BuildContext context) {
+    Widget content = body;
+    if (isLoading) {
+      content = GtSkeleton(
+        semanticsLabel: loadingSemanticsLabel,
+        child: content,
+      );
+    }
+
     Widget? leading;
 
     if (onDownload != null) {
@@ -102,7 +126,7 @@ class GtReceiptScaffold extends GtStatelessWidget {
         ),
         body: Stack(
           children: [
-            Positioned.fill(child: body),
+            Positioned.fill(child: content),
             Positioned(
               bottom: 0,
               left: 0,

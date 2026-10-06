@@ -8,6 +8,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// If the provided [imageFile] is null, this widget gracefully degrades by
 /// rendering an empty space that respects the provided [width], [height],
 /// [fit], and [alignment] properties.
+///
+/// Inside an enabled [GtSkeleton] it is painted as a [GtBone] block.
 class GtFileImage extends GtStatelessWidget {
   /// The local file containing the image data. If null, a blank space is rendered.
   final File? imageFile;
@@ -66,7 +68,7 @@ class GtFileImage extends GtStatelessWidget {
         ),
       );
     }
-    return Image.file(
+    Widget image = Image.file(
       imageFile!,
       fit: fit,
       alignment: alignment,
@@ -78,5 +80,9 @@ class GtFileImage extends GtStatelessWidget {
       // Excluding unlabelled images keeps them from becoming empty stops.
       excludeFromSemantics: isDecorative || semanticsLabel == null,
     );
+    if (context.inSkeleton) {
+      image = GtBone(child: image);
+    }
+    return image;
   }
 }

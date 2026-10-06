@@ -41,6 +41,28 @@ class GtLineChartHeader extends GtStatelessWidget {
     final styles = context.textStyles;
     final palette = context.palette;
 
+    Widget rangeLabel = Text.rich(
+      TextSpan(
+        style: styles.buttonXs(color: palette.text.soft),
+        children: [
+          WidgetSpan(
+            child: GtIcon(
+              isSameDay ? GtIcons.clock : GtIcons.calendar,
+              size: 14,
+              variant: .soft,
+            ),
+            alignment: .middle,
+          ),
+          const WidgetSpan(child: GtGap.hSm()),
+          TextSpan(text: range?.upper),
+        ],
+      ),
+    );
+
+    if (context.inSkeleton) {
+      rangeLabel = GtBone(child: rangeLabel);
+    }
+
     return Row(
       crossAxisAlignment: .start,
       spacing: context.spacingBase,
@@ -56,26 +78,7 @@ class GtLineChartHeader extends GtStatelessWidget {
               ),
               const GtGap.ySm(),
               GtText(value, style: styles.h5()),
-              if (range.hasValue) ...[
-                const GtGap.yBase(),
-                Text.rich(
-                  TextSpan(
-                    style: styles.buttonXs(color: palette.text.soft),
-                    children: [
-                      WidgetSpan(
-                        child: GtIcon(
-                          isSameDay ? GtIcons.clock : GtIcons.calendar,
-                          size: 14,
-                          variant: .soft,
-                        ),
-                        alignment: .middle,
-                      ),
-                      const WidgetSpan(child: GtGap.hSm()),
-                      TextSpan(text: range?.upper),
-                    ],
-                  ),
-                ),
-              ],
+              if (range.hasValue) ...[const GtGap.yBase(), rangeLabel],
             ],
           ),
         ),

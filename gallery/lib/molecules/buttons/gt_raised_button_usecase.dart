@@ -31,6 +31,11 @@ Widget playgroundGtRaisedButtonUseCase(BuildContext context) {
     labelBuilder: (s) => s.name,
   );
 
+  final enableGlassEffect = context.knobs.boolean(
+    label: 'Glass Effect',
+    initialValue: false,
+  );
+
   final codeSnippet =
       '''
 GtRaisedButton(
@@ -39,6 +44,7 @@ GtRaisedButton(
   size: GtButtonSize.${size.name},
   isDisabled: $isDisabled,
   isLoading: $isLoading,
+  ${enableGlassEffect ? 'enableGlassEffect: true,' : ''}
   onPressed: () {},
 )''';
 
@@ -50,13 +56,17 @@ GtRaisedButton(
 <b>When to use:</b> Primary call-to-actions, logins, main submission screens.
 For secondary actions, consider using <b>GtOutlineButton</b> or <b>GtTextButton</b>.''',
     code: codeSnippet,
-    child: GtRaisedButton(
-      text: text,
-      variant: variant,
-      size: size,
-      isDisabled: isDisabled,
-      isLoading: isLoading,
-      onPressed: () {},
+    child: GalleryGlassBackdrop(
+      enabled: enableGlassEffect,
+      child: GtRaisedButton(
+        text: text,
+        variant: variant,
+        size: size,
+        isDisabled: isDisabled,
+        isLoading: isLoading,
+        onPressed: () {},
+        enableGlassEffect: enableGlassEffect,
+      ),
     ),
   );
 }

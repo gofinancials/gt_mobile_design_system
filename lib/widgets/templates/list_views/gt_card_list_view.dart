@@ -97,6 +97,25 @@ class GtCardListView<T> extends GtStatelessWidget {
     this.shrinkWrap = false,
   });
 
+  /// Creates a skeleton of a grouped card list, standing in for one whose
+  /// collection is still loading.
+  ///
+  /// [itemCount] rows are grouped into one card surface exactly as the loaded
+  /// list groups them, and [itemBuilder] builds the content of each, typically
+  /// the `skeleton` constructor of the row the list will show. The list does not
+  /// scroll and clips whatever rows do not fit, so it can stand in the loading
+  /// arm of a screen of any height.
+  const factory GtCardListView.skeleton({
+    Key? key,
+    required IndexedWidgetBuilder itemBuilder,
+    int itemCount,
+    String? semanticsLabel,
+    Widget separator,
+    GtCardVariant variant,
+    Color? backgroundColor,
+    EdgeInsetsGeometry? padding,
+  }) = _GtCardListViewSkeleton<T>;
+
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
@@ -179,6 +198,22 @@ class GtCardListSliver<T> extends GtStatelessWidget {
     this.verticalPadding,
     this.edgeRadius,
   });
+
+  /// Creates the sliver form of [GtCardListView.skeleton], for the loading arm
+  /// of a [GtAsyncStateSliver].
+  ///
+  /// A skeleton is a box, so each row's content is its own [GtSkeleton]; the
+  /// rows sweep in step all the same, and only the first carries
+  /// [semanticsLabel], so it is announced once.
+  const factory GtCardListSliver.skeleton({
+    Key? key,
+    required IndexedWidgetBuilder itemBuilder,
+    int itemCount,
+    String? semanticsLabel,
+    Widget separator,
+    GtCardVariant variant,
+    Color? backgroundColor,
+  }) = _GtCardListSliverSkeleton<T>;
 
   @override
   Widget build(BuildContext context) {
@@ -314,6 +349,111 @@ class _GtCardListSeparator extends GtStatelessWidget {
       backgroundColor: backgroundColor,
       horizontalPadding: horizontalPadding,
       child: child,
+    );
+  }
+}
+
+/// Builds no row, for a skeleton list whose rows come from its own builder.
+Widget _unusedRow(BuildContext context, Object? item, int index) {
+  return const SizedBox.shrink();
+}
+
+/// Keys no row, for a skeleton list whose rows are keyed by index.
+Key _unusedKey(Object? item) => const ValueKey<Object?>(null);
+
+/// A private skeleton of [GtCardListView]: [itemCount] rows from [rowBuilder],
+/// grouped into one card surface under one [GtSkeleton].
+///
+/// The list does not scroll and clips whatever rows do not fit.
+class _GtCardListViewSkeleton<T> extends GtCardListView<T> {
+  /// Builds the content of the row at an index.
+  final IndexedWidgetBuilder rowBuilder;
+
+  /// How many rows to draw.
+  final int itemCount;
+
+  /// What is announced while the list is on screen. See
+  /// [GtSkeleton.semanticsLabel].
+  final String? semanticsLabel;
+
+  /// Creates a [_GtCardListViewSkeleton].
+  const _GtCardListViewSkeleton({
+    super.key,
+    required IndexedWidgetBuilder itemBuilder,
+    this.itemCount = 6,
+    this.semanticsLabel,
+    super.separator,
+    super.variant,
+    super.backgroundColor,
+    super.padding,
+  }) : rowBuilder = itemBuilder,
+       super(
+         items: const [],
+         itemBuilder: _unusedRow,
+         itemKey: _unusedKey,
+         physics: const NeverScrollableScrollPhysics(),
+         shrinkWrap: true,
+       );
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      semanticsLabel: semanticsLabel,
+      child: GtCardListView<int>(
+        items: List.generate(itemCount, (index) => index),
+        itemKey: ValueKey<int>.new,
+        itemBuilder: (context, _, index) => rowBuilder(context, index),
+        separator: separator,
+        variant: variant,
+        backgroundColor: backgroundColor,
+        padding: padding,
+        physics: physics,
+        shrinkWrap: shrinkWrap,
+      ),
+    );
+  }
+}
+
+/// A private skeleton of [GtCardListSliver]: [itemCount] rows from
+/// [rowBuilder], each its own [GtSkeleton], since a skeleton is a box.
+///
+/// Every row sweeps in step all the same, and only the first carries
+/// [semanticsLabel], so it is announced once.
+class _GtCardListSliverSkeleton<T> extends GtCardListSliver<T> {
+  /// Builds the content of the row at an index.
+  final IndexedWidgetBuilder rowBuilder;
+
+  /// How many rows to draw.
+  final int itemCount;
+
+  /// What is announced while the list is on screen. See
+  /// [GtSkeleton.semanticsLabel].
+  final String? semanticsLabel;
+
+  /// Creates a [_GtCardListSliverSkeleton].
+  const _GtCardListSliverSkeleton({
+    super.key,
+    required IndexedWidgetBuilder itemBuilder,
+    this.itemCount = 6,
+    this.semanticsLabel,
+    super.separator,
+    super.variant,
+    super.backgroundColor,
+  }) : rowBuilder = itemBuilder,
+       super(items: const [], itemBuilder: _unusedRow, itemKey: _unusedKey);
+
+  @override
+  Widget build(BuildContext context) {
+    return GtCardListSliver<int>(
+      items: List.generate(itemCount, (index) => index),
+      itemKey: ValueKey<int>.new,
+      itemBuilder: (context, _, index) => GtSkeleton(
+        semanticsLabel: index == 0 ? semanticsLabel : null,
+        child: rowBuilder(context, index),
+      ),
+      separator: separator,
+      variant: variant,
+      backgroundColor: backgroundColor,
     );
   }
 }

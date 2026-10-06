@@ -51,6 +51,8 @@ import 'package:gallery/atoms/spacers/gt_divider.dart'
     as _gallery_atoms_spacers_gt_divider;
 import 'package:gallery/atoms/spacers/gt_gap.dart'
     as _gallery_atoms_spacers_gt_gap;
+import 'package:gallery/atoms/surfaces/gt_glass_surface_usecase.dart'
+    as _gallery_atoms_surfaces_gt_glass_surface_usecase;
 import 'package:gallery/atoms/theming.dart' as _gallery_atoms_theming;
 import 'package:gallery/atoms/typography/gt_editable_text.dart'
     as _gallery_atoms_typography_gt_editable_text;
@@ -245,6 +247,8 @@ import 'package:gallery/organisms/grids/gt_keypad_grid_usecase.dart'
     as _gallery_organisms_grids_gt_keypad_grid_usecase;
 import 'package:gallery/organisms/headers/gt_page_header.dart'
     as _gallery_organisms_headers_gt_page_header;
+import 'package:gallery/organisms/headers/gt_section_header_usecase.dart'
+    as _gallery_organisms_headers_gt_section_header_usecase;
 import 'package:gallery/organisms/headers/gt_transaction_group_header_usecase.dart'
     as _gallery_organisms_headers_gt_transaction_group_header_usecase;
 import 'package:gallery/organisms/listeners/gt_listeners_usecases.dart'
@@ -363,6 +367,12 @@ import 'package:gallery/templates/screens/gt_splash_screen.dart'
     as _gallery_templates_screens_gt_splash_screen;
 import 'package:gallery/templates/scroll_views/gt_scrollable_body_usecase.dart'
     as _gallery_templates_scroll_views_gt_scrollable_body_usecase;
+import 'package:gallery/templates/shimmers/gt_image_shimmer_usecase.dart'
+    as _gallery_templates_shimmers_gt_image_shimmer_usecase;
+import 'package:gallery/templates/shimmers/gt_skeleton_list_usecase.dart'
+    as _gallery_templates_shimmers_gt_skeleton_list_usecase;
+import 'package:gallery/templates/shimmers/gt_skeleton_usecase.dart'
+    as _gallery_templates_shimmers_gt_skeleton_usecase;
 import 'package:gallery/templates/slides/gt_lesson_slides_usecase.dart'
     as _gallery_templates_slides_gt_lesson_slides_usecase;
 import 'package:gallery/templates/slides/gt_onboarding_slides_usecase.dart'
@@ -693,6 +703,21 @@ final directories = <_widgetbook.WidgetbookNode>[
                   _widgetbook.WidgetbookUseCase(
                     name: 'Gaps',
                     builder: _gallery_atoms_spacers_gt_gap.playgroundGapUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'surfaces',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtGlassSurface',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtGlassSurface',
+                    builder: _gallery_atoms_surfaces_gt_glass_surface_usecase
+                        .playgroundGtGlassSurfaceUseCase,
                   ),
                 ],
               ),
@@ -1337,6 +1362,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtExportListTile',
                     builder: _gallery_molecules_tiles_gt_action_tiles_usecase
                         .playgroundGtExportListTileUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtGoalProgressListTile',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtGoalProgressListTile',
+                    builder: _gallery_molecules_tiles_gt_limit_tiles_usecase
+                        .playgroundGtGoalProgressListTileUseCase,
                   ),
                 ],
               ),
@@ -2054,6 +2089,17 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtPageHeader.rich',
                     builder: _gallery_organisms_headers_gt_page_header
                         .playgroundGtPageHeaderRichUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSectionHeader',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSectionHeader',
+                    builder:
+                        _gallery_organisms_headers_gt_section_header_usecase
+                            .playgroundGtSectionHeaderUseCase,
                   ),
                 ],
               ),
@@ -2954,6 +3000,53 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder:
                         _gallery_templates_scroll_views_gt_scrollable_body_usecase
                             .playgroundGtScrollableBodyUseCase,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookFolder(
+            name: 'shimmers',
+            children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtBone',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtBone',
+                    builder: _gallery_templates_shimmers_gt_skeleton_usecase
+                        .playgroundGtBoneUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtImageShimmer',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtImageShimmer',
+                    builder:
+                        _gallery_templates_shimmers_gt_image_shimmer_usecase
+                            .playgroundGtImageShimmerUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSkeleton',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSkeleton',
+                    builder: _gallery_templates_shimmers_gt_skeleton_usecase
+                        .playgroundGtSkeletonUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtSkeletonList',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtSkeletonList',
+                    builder:
+                        _gallery_templates_shimmers_gt_skeleton_list_usecase
+                            .playgroundGtSkeletonListUseCase,
                   ),
                 ],
               ),

@@ -6,8 +6,14 @@ import 'helpers/test_app_config.dart';
 
 class _SheetOpener extends StatelessWidget with GtBottomSheetMixin {
   final bool floating;
+  final bool isScrollable;
+  final bool isDismissable;
 
-  const _SheetOpener({this.floating = false});
+  const _SheetOpener({
+    this.floating = false,
+    this.isScrollable = false,
+    this.isDismissable = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +22,8 @@ class _SheetOpener extends StatelessWidget with GtBottomSheetMixin {
         showSheet(
           context,
           floating: floating,
+          isScrollable: isScrollable,
+          isDismissable: isDismissable,
           child: const SizedBox(
             key: ValueKey('sheet_content'),
             height: 200,
@@ -173,5 +181,83 @@ void main() {
       },
       variant: bothPlatforms,
     );
+  });
+
+  group('GtBottomSheet dismissal', () {
+    const content = ValueKey('sheet_content');
+    const list = ValueKey('sheet_list');
+
+    Future<void> tapAbove(WidgetTester tester, double y) async {
+      await tester.tapAt(Offset(10, y));
+      await tester.pumpAndSettle();
+    }
+
+    // The sheet is 200 tall on an 812 surface, so it starts at y=612. A sheet
+    // that is not scrollable is boxed to 9/16 of the screen, so y=500 sits in
+    // the band that box covers above the sheet, and y=10 above the box.
+    for (final isScrollable in [false, true]) {
+      for (final y in [10.0, 500.0]) {
+        testWidgets(
+          'a tap at y=$y above a sheet with isScrollable: $isScrollable '
+          'dismisses it',
+          (tester) async {
+            await openSheet(tester, _SheetOpener(isScrollable: isScrollable));
+            expect(find.byKey(content), findsOneWidget);
+
+            await tapAbove(tester, y);
+
+            expect(find.byKey(content), findsNothing);
+          },
+        );
+      }
+    }
+
+    testWidgets('a tap above a floating scrollable sheet dismisses it', (
+      tester,
+    ) async {
+      await openSheet(
+        tester,
+        const _SheetOpener(floating: true, isScrollable: true),
+      );
+
+      await tapAbove(tester, 10);
+
+      expect(find.byKey(content), findsNothing);
+    }, variant: bothPlatforms);
+
+    testWidgets('a tap above a draggable sheet dismisses it', (tester) async {
+      await openSheet(tester, const _DraggableSheetOpener());
+      expect(find.byKey(list), findsOneWidget);
+
+      await tapAbove(tester, 10);
+
+      expect(find.byKey(list), findsNothing);
+    }, variant: bothPlatforms);
+
+    for (final isScrollable in [false, true]) {
+      testWidgets(
+        'a tap above a sheet with isScrollable: $isScrollable leaves it open '
+        'when it is not dismissable',
+        (tester) async {
+          await openSheet(
+            tester,
+            _SheetOpener(isScrollable: isScrollable, isDismissable: false),
+          );
+
+          await tapAbove(tester, 10);
+
+          expect(find.byKey(content), findsOneWidget);
+        },
+      );
+    }
+
+    testWidgets('a tap on the sheet itself leaves it open', (tester) async {
+      await openSheet(tester, const _SheetOpener(isScrollable: true));
+
+      await tester.tap(find.byKey(content));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(content), findsOneWidget);
+    });
   });
 }

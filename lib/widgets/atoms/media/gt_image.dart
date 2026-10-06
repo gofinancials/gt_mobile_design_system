@@ -38,7 +38,7 @@ class GtImage extends GtStatelessWidget {
   /// An optional color filter to apply to the image.
   final Color? color;
 
-  /// Whether a network image draws a spinner while it loads.
+  /// Whether a network image draws a [GtImageShimmer] while it loads.
   ///
   /// Forwarded to [GtNetworkImage] and ignored for every other source, since
   /// they resolve without a round trip. Set it to `false` where something is

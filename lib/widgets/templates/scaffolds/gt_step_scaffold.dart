@@ -21,6 +21,12 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///   `clockwise: false`, so it reads as a segment count rather than a loader.
 /// - The action is pinned in a [GtButtonBottomNavBar] rather than trailing the
 ///   body, so it holds its place as the body grows.
+/// - That bar is the scaffold's [Scaffold.bottomSheet], which rides above the
+///   keyboard, rather than its [Scaffold.bottomNavigationBar], which the
+///   keyboard covers. The iOS number pad has no return key, so a bar beneath
+///   it would leave a customer who has typed into a field with no way to
+///   continue. The body then ends with room for the bar, so its last field
+///   scrolls clear of it.
 /// - The body scrolls beneath a fixed header, and the header-to-body gap is
 ///   stated once here rather than redrawn per screen.
 ///
@@ -55,10 +61,11 @@ class GtStepScaffold extends GtStatelessWidget {
 
   /// An optional action pinned to the foot of the screen.
   ///
-  /// Rendered inside a [GtButtonBottomNavBar], so it holds its place while the
-  /// body scrolls. Null leaves the scaffold without a bottom bar, which is what
-  /// a step whose rows are themselves the action — a list of chevron cards —
-  /// wants.
+  /// Rendered inside a [GtButtonBottomNavBar] placed as the scaffold's
+  /// [Scaffold.bottomSheet], so it holds its place while the body scrolls and
+  /// stays above the keyboard while a field is focused. Null leaves the
+  /// scaffold without a bottom bar, which is what a step whose rows are
+  /// themselves the action — a list of chevron cards — wants.
   final Widget? bottomAction;
 
   /// How far through the journey this step sits, from `0` to `1`.
@@ -94,6 +101,25 @@ class GtStepScaffold extends GtStatelessWidget {
   /// form step wants. A denser step — a column of chevron cards — passes `16`.
   final double? bodySpacingPx;
 
+  /// The vertical gap between the [title] and the [subtitle], in **design
+  /// pixels**.
+  ///
+  /// Passed through to [GtPageHeader.spacingPx]. When null the header keeps
+  /// its own default, [BuildContext.spacingBase] (~8dp).
+  final double? headerSpacingPx;
+
+  /// Overrides the [title]'s style. Null preserves [GtPageHeader]'s default.
+  ///
+  /// Passed through to [GtPageHeader.titleStyle], which replaces its default
+  /// wholesale.
+  final TextStyle? titleStyle;
+
+  /// Overrides the [subtitle]'s style. Null preserves [GtPageHeader]'s default.
+  ///
+  /// Passed through to [GtPageHeader.subtitleStyle], which replaces its default
+  /// wholesale.
+  final TextStyle? subtitleStyle;
+
   /// Creates a [GtStepScaffold].
   const GtStepScaffold({
     super.key,
@@ -106,6 +132,9 @@ class GtStepScaffold extends GtStatelessWidget {
     this.helpTextColor,
     this.showBackButton = true,
     this.bodySpacingPx,
+    this.headerSpacingPx,
+    this.titleStyle,
+    this.subtitleStyle,
   }) : assert(
          progress == null || (progress >= 0 && progress <= 1),
          'GtStepScaffold.progress is a fraction of the journey, from 0 to 1.',
@@ -155,11 +184,16 @@ class GtStepScaffold extends GtStatelessWidget {
     }
 
     Widget? bottomBar;
+    List<Widget> trailingSpace = const [GtGap.ySectionSm()];
     if (bottomAction case final action?) {
       bottomBar = GtButtonBottomNavBar(
         key: const Key('step-bottom-bar'),
         button: action,
       );
+
+      // A bottom sheet overlays the body rather than shrinking it, so the body
+      // ends with room for the bar, clearing it with or without the keyboard.
+      trailingSpace = const GtGap.ySection4xl() * 2;
     }
 
     final gapPx = bodySpacingPx;
@@ -173,15 +207,21 @@ class GtStepScaffold extends GtStatelessWidget {
         implyLeading: false,
         trailing: .new(tail: trailing),
       ),
-      bottomNavigationBar: bottomBar,
+      bottomSheet: bottomBar,
       body: GtScrollableBody(
         child: Column(
           crossAxisAlignment: .stretch,
           spacing: spacing,
           children: [
-            GtPageHeader(title: title, subtitle: subtitle),
+            GtPageHeader(
+              title: title,
+              subtitle: subtitle,
+              spacingPx: headerSpacingPx,
+              titleStyle: titleStyle,
+              subtitleStyle: subtitleStyle,
+            ),
             body,
-            const GtGap.ySectionSm(),
+            ...trailingSpace,
           ],
         ),
       ),

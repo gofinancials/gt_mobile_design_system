@@ -97,6 +97,19 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
     this.titleStyle,
   });
 
+  /// Creates a skeleton of this tile, standing in for an option that is still
+  /// loading.
+  ///
+  /// The tile is laid out with placeholder data under its own [GtSkeleton], so
+  /// it shows only bones in the real tile's layout and announces nothing.
+  /// Inside a [GtSkeletonList] or another skeleton it joins that skeleton's
+  /// sweep.
+  ///
+  /// [value] is any placeholder of the list's type; it is never selected or
+  /// reported.
+  const factory GtSelectionListTile.skeleton({Key? key, required T value}) =
+      _GtSelectionListTileSkeleton<T>;
+
   /// Creates a [GtSelectionColumnListTile] that displays a secondary [description]
   /// below the primary text.
   const factory GtSelectionListTile.withDescription(
@@ -420,6 +433,20 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
         textStyle ?? context.textStyles.bodyS(color: context.palette.text.soft);
     final size = context.dp(34.px);
 
+    Widget name = Text.rich(
+      TextSpan(
+        children: [
+          if (showCountryCode)
+            TextSpan(text: "${value.countryCode} ", style: style),
+          TextSpan(text: value.displayName.capitalise(), style: style),
+        ],
+      ),
+    );
+
+    if (context.inSkeleton) {
+      name = GtBone(child: name);
+    }
+
     return GtInkWell(
       borderRadius: .zero,
       hapticFeedbackType: .selection,
@@ -436,21 +463,29 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
             height: size,
             isDecorative: true,
           ),
-          Expanded(
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  if (showCountryCode)
-                    TextSpan(text: "${value.countryCode} ", style: style),
-                  TextSpan(text: value.displayName.capitalise(), style: style),
-                ],
-              ),
-            ),
-          ),
+          Expanded(child: name),
           if (isSelected)
             GtIcon(GtIcons.checkSolid, alignment: Alignment.centerRight),
         ],
       ),
+    );
+  }
+}
+
+/// Ignores a selection, for a skeleton tile that cannot be selected.
+void _ignoreSelection(Object? _) {}
+
+/// A private skeleton of [GtSelectionListTile<T>], laid out with placeholder data under its
+/// own [GtSkeleton].
+class _GtSelectionListTileSkeleton<T> extends GtSelectionListTile<T> {
+  /// Creates a [_GtSelectionListTileSkeleton].
+  const _GtSelectionListTileSkeleton({super.key, required super.value})
+    : super('Savings account', isSelected: false, onSelect: _ignoreSelection);
+
+  @override
+  Widget build(BuildContext context) {
+    return GtSkeleton(
+      child: Builder(builder: (context) => super.build(context)),
     );
   }
 }

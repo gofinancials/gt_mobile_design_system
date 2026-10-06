@@ -22,6 +22,16 @@ class GtBackdropFilters {
     return ImageFilter.blur(sigmaX: sigma, sigmaY: sigma);
   }
 
+  /// A light frost behind small raised-glass controls, such as the
+  /// [GtHomeAppBar] buttons.
+  ///
+  /// Matches Figma's `Liquid Glass/Frost - Regular` of 7, which Figma renders
+  /// as a background blur of half that value.
+  ImageFilter glassFrost() {
+    final sigma = context.dp(3.5.px);
+    return ImageFilter.blur(sigmaX: sigma, sigmaY: sigma);
+  }
+
   /// A heavy blur used behind full-bleed imagery on wide layouts.
   ///
   /// Softens the enlarged copy of a slide image so it reads as ambient

@@ -15,7 +15,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// also what keeps `pumpAndSettle` from ever returning.
 ///
 /// Tests that draw a spinner — or anything that shows one while it waits, such
-/// as a [GtNetworkImage] whose request never completes — settle once they turn
+/// as a [GtButton] that is loading — settle once they turn
 /// [MediaQueryData.disableAnimations] on, either through a `MediaQuery`
 /// ancestor or through
 /// `tester.platformDispatcher.accessibilityFeaturesTestValue`.

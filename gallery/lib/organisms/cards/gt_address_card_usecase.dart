@@ -27,23 +27,31 @@ Widget playgroundGtAddressCardUseCase(BuildContext context) {
     labelBuilder: (v) => v.name,
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtAddressCard',
     description:
         'A structured card specifically styled for displaying addresses and verification borders.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtAddressCard.skeleton()'
+        : '''
 GtAddressCard(
   line1: "$line1",
   line2: "$line2",
   variant: GtCardVariant.${variant.name},
   borderStyle: BorderStyle.${borderStyle.name},
 )''',
-    child: GtAddressCard(
-      line1: line1,
-      line2: line2,
-      variant: variant,
-      borderStyle: borderStyle,
-    ),
+    child: isSkeleton
+        ? const GtAddressCard.skeleton()
+        : GtAddressCard(
+            line1: line1,
+            line2: line2,
+            variant: variant,
+            borderStyle: borderStyle,
+          ),
   );
 }

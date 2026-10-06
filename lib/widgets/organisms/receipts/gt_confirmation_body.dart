@@ -139,6 +139,24 @@ class GtConfirmationBody extends GtStatelessWidget {
       _ => null,
     };
 
+    Widget timestamp = Text.rich(
+      TextSpan(
+        text: date,
+        children: [
+          const WidgetSpan(child: GtGap.hBase()),
+          TextSpan(
+            text: time,
+            style: context.textStyles.body2Xs(color: context.palette.text.soft),
+          ),
+        ],
+        style: context.textStyles.body2Xs(),
+      ),
+      key: const Key('confirmation-timestamp'),
+    );
+    if (context.inSkeleton) {
+      timestamp = GtBone(child: timestamp);
+    }
+
     return ListView(
       physics: physics ?? const ClampingScrollPhysics(),
       controller: controller,
@@ -172,22 +190,7 @@ class GtConfirmationBody extends GtStatelessWidget {
           ),
         ),
         const GtGap.ySm(),
-        Text.rich(
-          TextSpan(
-            text: date,
-            children: [
-              const WidgetSpan(child: GtGap.hBase()),
-              TextSpan(
-                text: time,
-                style: context.textStyles.body2Xs(
-                  color: context.palette.text.soft,
-                ),
-              ),
-            ],
-            style: context.textStyles.body2Xs(),
-          ),
-          key: const Key('confirmation-timestamp'),
-        ),
+        timestamp,
         const GtGap.yLg(),
         for (final (index, section) in sections.indexed) ...[
           GtCard(
@@ -228,8 +231,10 @@ class GtConfirmationBody extends GtStatelessWidget {
 /// [GtConfirmationFooter.note] beneath the pair. Any of the three may be
 /// absent, in which case the remaining content closes up around it.
 class _ConfirmationFooter extends GtStatelessWidget {
+  /// The content of the closing block.
   final GtConfirmationFooter footer;
 
+  /// Creates a [_ConfirmationFooter] for [footer].
   const _ConfirmationFooter(this.footer, {super.key});
 
   @override

@@ -561,4 +561,80 @@ void main() {
       expect(modal, findsNothing);
     }, variant: bothPlatforms);
   });
+
+  group('GtBottomModalController progress', () {
+    testWidgets('shows progress while the task is loading', (tester) async {
+      final controller = controllerFor(completions: []);
+      addTearDown(controller.dispose);
+
+      final host = await pumpHost(tester);
+      unawaited(host.showTaskBottomModal(host.context, controller: controller));
+      await pumpFrames(tester);
+
+      controller.progress = 0.45;
+      await pumpFrames(tester);
+
+      expect(find.text('45%', findRichText: true), findsOneWidget);
+    }, variant: bothPlatforms);
+
+    testWidgets('replaces progress with the error message on a failure', (
+      tester,
+    ) async {
+      final controller = controllerFor(
+        completions: [],
+        keepOpenOnFailure: true,
+      );
+      addTearDown(controller.dispose);
+
+      final host = await pumpHost(tester);
+      unawaited(host.showTaskBottomModal(host.context, controller: controller));
+      await pumpFrames(tester);
+
+      // The file went up in full before the request failed.
+      controller.progress = 1;
+      controller.complete(
+        TaskFailure<String>(
+          error: const TaskError(message: 'File is larger than 2MB'),
+        ),
+      );
+      await pumpFrames(tester);
+
+      expect(find.text('100%', findRichText: true), findsNothing);
+      expect(
+        find.text('File is larger than 2MB', findRichText: true),
+        findsOneWidget,
+      );
+
+      await pumpUntil(tester, controller.dismiss());
+      await pumpFrames(tester);
+    }, variant: bothPlatforms);
+
+    testWidgets('replaces progress with the description on a success', (
+      tester,
+    ) async {
+      final controller = GtBottomModalController<String>(
+        data: const GtBottomModalData(
+          title: 'Processing',
+          description: 'Signature saved',
+        ),
+        onCompleteDelay: const Duration(seconds: 3),
+      );
+      addTearDown(controller.dispose);
+
+      final host = await pumpHost(tester);
+      unawaited(host.showTaskBottomModal(host.context, controller: controller));
+      await pumpFrames(tester);
+
+      controller.progress = 1;
+      controller.complete(TaskSuccess<String>(data: 'done'));
+      await pumpFrames(tester);
+
+      expect(find.text('100%', findRichText: true), findsNothing);
+      expect(find.text('Signature saved', findRichText: true), findsOneWidget);
+
+      // Let the completion delay run out so the modal closes itself.
+      await pumpFrames(tester, const Duration(milliseconds: 500), 8);
+      expect(modal, findsNothing);
+    }, variant: bothPlatforms);
+  });
 }

@@ -24,24 +24,26 @@ Widget playgroundGtModalAppBarUseCase(BuildContext context) {
       initialValue: true,
     );
     final action = showAction ? GtCancelButton() : null;
-    appBar = GtModalAppBar.title(
-      title: title,
-      action: action,
-    );
+    appBar = GtModalAppBar.title(title: title, action: action);
     modeCode =
         '''GtModalAppBar.title(
   title: "$title",
   action: ${showAction ? 'GtCancelButton()' : 'null'},
 )''';
   } else if (mode == 'extended') {
+    final displayTitle = context.knobs.boolean(
+      label: 'Display Title Style (24)',
+      initialValue: false,
+    );
     appBar = GtModalAppBar.extended(
       title: title,
       action: GtIconButton(icon: GtIcons.spark, onPressed: () {}),
+      style: displayTitle ? context.textStyles.h5(heightPx: 24) : null,
     );
     modeCode =
         '''GtModalAppBar.extended(
   title: "$title",
-  action: GtIconButton(icon: GtIcons.spark, onPressed: () {}),
+  action: GtIconButton(icon: GtIcons.spark, onPressed: () {}),${displayTitle ? '\n  style: context.textStyles.h5(heightPx: 24),' : ''}
 )''';
   } else if (mode == 'withLeadingTitleimage') {
     appBar = GtModalAppBar.withLeadingTitleimage(

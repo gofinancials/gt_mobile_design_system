@@ -29,12 +29,18 @@ Widget playgroundGtInboxCardUseCase(BuildContext context) {
     initialValue: false,
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtInboxCard',
     description:
         'Displays customer support inbox status, unread chat indicator badges, and description.',
-    code:
-        '''
+    code: isSkeleton
+        ? 'GtInboxCard.skeleton()'
+        : '''
 GtInboxCard(
   // Set custom to false (or omit these inputs) for the original defaults.
   backgroundColor: $custom ? context.palette.primary.alpha16 : null,
@@ -49,19 +55,21 @@ GtInboxCard(
   ureadCount: $ureadCount,
   messageCount: $messageCount,
 )''',
-    child: GtInboxCard(
-      backgroundColor: custom ? context.palette.primary.alpha16 : null,
-      titleStyle: custom ? context.textStyles.subHeadM() : null,
-      titleColor: custom ? context.palette.primary.dark : null,
-      padding: custom ? context.insets.allDp(24.px) : null,
-      verticalSpacing: custom ? 0 : null,
-      subtitleStyle: custom ? context.textStyles.bodyS() : null,
-      horizontalSpacing: custom ? context.spacingXl : null,
+    child: isSkeleton
+        ? const GtInboxCard.skeleton()
+        : GtInboxCard(
+            backgroundColor: custom ? context.palette.primary.alpha16 : null,
+            titleStyle: custom ? context.textStyles.subHeadM() : null,
+            titleColor: custom ? context.palette.primary.dark : null,
+            padding: custom ? context.insets.allDp(24.px) : null,
+            verticalSpacing: custom ? 0 : null,
+            subtitleStyle: custom ? context.textStyles.bodyS() : null,
+            horizontalSpacing: custom ? context.spacingXl : null,
 
-      title: title,
-      subtitle: subtitle,
-      ureadCount: ureadCount,
-      messageCount: messageCount,
-    ),
+            title: title,
+            subtitle: subtitle,
+            ureadCount: ureadCount,
+            messageCount: messageCount,
+          ),
   );
 }

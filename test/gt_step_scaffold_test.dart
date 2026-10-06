@@ -51,6 +51,21 @@ void main() {
       expect(find.text('body'), findsOneWidget);
     });
 
+    testWidgets('forwards headerSpacingPx to the page header', (tester) async {
+      await pumpStep(
+        tester,
+        const GtStepScaffold(
+          title: 'Step',
+          subtitle: 'Sub',
+          headerSpacingPx: 12,
+          body: GtText('body'),
+        ),
+      );
+
+      final header = tester.widget<GtPageHeader>(find.byType(GtPageHeader));
+      expect(header.spacingPx, 12);
+    });
+
     testWidgets('renders no ring and no pill by default', (tester) async {
       await pumpStep(
         tester,
@@ -143,7 +158,7 @@ void main() {
       expect(pressed, isTrue);
     });
 
-    testWidgets('pins the bottom action in a bottom nav bar', (tester) async {
+    testWidgets('pins the bottom action in the bottom sheet', (tester) async {
       await pumpStep(
         tester,
         GtStepScaffold(
@@ -157,8 +172,55 @@ void main() {
         ),
       );
 
-      expect(find.byKey(const Key('step-bottom-bar')), findsOneWidget);
+      final scaffold = tester.widget<Scaffold>(
+        find.ancestor(
+          of: find.byKey(const Key('step-bottom-bar')),
+          matching: find.byType(Scaffold),
+        ),
+      );
+
+      expect(scaffold.bottomSheet, isA<GtButtonBottomNavBar>());
+      expect(scaffold.bottomNavigationBar, isNull);
       expect(find.byKey(const Key('step-action')), findsOneWidget);
+    });
+
+    testWidgets('keeps the action and the last field above the keyboard', (
+      tester,
+    ) async {
+      tester.view.physicalSize = const Size(375, 812);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+
+      await pumpStep(
+        tester,
+        GtStepScaffold(
+          title: 'What is your NIN?',
+          bottomAction: GtRaisedButton(
+            key: const Key('step-action'),
+            text: 'Continue',
+            onPressed: () {},
+          ),
+          body: const Column(
+            children: [
+              SizedBox(height: 600),
+              SizedBox(key: Key('last-field'), height: 48),
+            ],
+          ),
+        ),
+      );
+
+      tester.view.viewInsets = const FakeViewPadding(bottom: 300);
+      await tester.pumpAndSettle();
+
+      final action = tester.getRect(find.byKey(const Key('step-action')));
+      expect(action.bottom, closeTo(812 - 300 - 10, 1));
+
+      await tester.drag(find.byType(Scrollable).last, const Offset(0, -2000));
+      await tester.pumpAndSettle();
+
+      final bar = tester.getRect(find.byKey(const Key('step-bottom-bar')));
+      final field = tester.getRect(find.byKey(const Key('last-field')));
+      expect(field.bottom, lessThanOrEqualTo(bar.top));
     });
 
     testWidgets('renders no bottom bar without a bottom action', (
@@ -169,7 +231,13 @@ void main() {
         const GtStepScaffold(title: 'Step', body: GtText('body')),
       );
 
+      final scaffold = tester.widget<Scaffold>(
+        find.ancestor(of: find.text('body'), matching: find.byType(Scaffold)),
+      );
+
       expect(find.byKey(const Key('step-bottom-bar')), findsNothing);
+      expect(scaffold.bottomSheet, isNull);
+      expect(scaffold.bottomNavigationBar, isNull);
     });
 
     testWidgets('renders the back chevron on a poppable route', (tester) async {
@@ -194,6 +262,28 @@ void main() {
       );
 
       expect(find.byType(GtBackButton), findsNothing);
+    });
+
+    testWidgets('passes title and subtitle styles to the page header', (
+      tester,
+    ) async {
+      const titleStyle = TextStyle(fontSize: 24, height: 1);
+      const subtitleStyle = TextStyle(fontSize: 16, color: Colors.grey);
+
+      await pumpStep(
+        tester,
+        const GtStepScaffold(
+          title: 'Step',
+          subtitle: 'Supporting line',
+          titleStyle: titleStyle,
+          subtitleStyle: subtitleStyle,
+          body: GtText('body'),
+        ),
+      );
+
+      final header = tester.widget<GtPageHeader>(find.byType(GtPageHeader));
+      expect(header.titleStyle, titleStyle);
+      expect(header.subtitleStyle, subtitleStyle);
     });
 
     testWidgets('rejects a progress value outside 0..1', (tester) async {

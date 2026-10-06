@@ -86,13 +86,11 @@ class GtSquareAvatar extends GtStatelessWidget {
   /// own color.
   final Color? initialsColor;
 
-  /// Whether a spinner is drawn while a network [avatar] loads.
+  /// Whether a [GtImageShimmer] is drawn while a network [avatar] loads.
   ///
   /// Defaults to `false`, because the gradient and any [initials] are already
-  /// painted underneath, and a spinner would cover an answer the customer can
-  /// read. Set it to `true` where the avatar is large enough that a spinner
-  /// reads as progress rather than clutter, or where nothing meaningful sits
-  /// behind the image.
+  /// painted underneath, and a shimmer would cover an answer the customer can
+  /// read. Set it to `true` where nothing meaningful sits behind the image.
   final bool showLoadingIndicator;
 
   /// The text style of the [initials].
@@ -198,6 +196,53 @@ class GtSquareAvatar extends GtStatelessWidget {
       );
     }
 
+    Widget avatarBox = GtSquareConstrainedBox(
+      computedSize,
+      child: Container(
+        clipBehavior: .hardEdge,
+        decoration: BoxDecoration(
+          borderRadius: borderRadius ?? context.borderRadius4Xl,
+          gradient: gradient,
+          color: bgColor ?? context.palette.bg.weak,
+          border: border,
+        ),
+        child: Stack(
+          children: [
+            if (initialsLabel case Widget label) Positioned.fill(child: label),
+            if (image != null)
+              Positioned.fill(
+                child: GtImage(
+                  image: image,
+                  fit: fit ?? defaultFit,
+                  isDecorative: true,
+                  width: computedSize,
+                  height: computedSize,
+                  showLoadingIndicator: showLoadingIndicator,
+                ),
+              ),
+            if (editPen case Widget edit)
+              Positioned(top: 0, right: 0, child: edit),
+            if (isUserAvatar && (image == null && !initials.hasValue))
+              Positioned.fill(
+                child: GtIcon(
+                  GtIcons.userSolid,
+                  alignment: .center,
+                  variant: .strong,
+                  size: userIconSize ?? computedSize * .2,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+
+    if (context.inSkeleton) {
+      avatarBox = GtBone(
+        borderRadius: borderRadius ?? context.borderRadius4Xl,
+        child: avatarBox,
+      );
+    }
+
     Widget child = Align(
       alignment: alignment,
       child: GtInkWell(
@@ -209,46 +254,7 @@ class GtSquareAvatar extends GtStatelessWidget {
         excludeDescendantSemantics: true,
         hapticFeedbackType: .light,
         onTap: onEdit,
-        child: GtSquareConstrainedBox(
-          computedSize,
-          child: Container(
-            clipBehavior: .hardEdge,
-            decoration: BoxDecoration(
-              borderRadius: borderRadius ?? context.borderRadius4Xl,
-              gradient: gradient,
-              color: bgColor ?? context.palette.bg.weak,
-              border: border,
-            ),
-            child: Stack(
-              children: [
-                if (initialsLabel case Widget label)
-                  Positioned.fill(child: label),
-                if (image != null)
-                  Positioned.fill(
-                    child: GtImage(
-                      image: image,
-                      fit: fit ?? defaultFit,
-                      isDecorative: true,
-                      width: computedSize,
-                      height: computedSize,
-                      showLoadingIndicator: showLoadingIndicator,
-                    ),
-                  ),
-                if (editPen case Widget edit)
-                  Positioned(top: 0, right: 0, child: edit),
-                if (isUserAvatar && (image == null && !initials.hasValue))
-                  Positioned.fill(
-                    child: GtIcon(
-                      GtIcons.userSolid,
-                      alignment: .center,
-                      variant: .strong,
-                      size: userIconSize ?? computedSize * .2,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ),
+        child: avatarBox,
       ),
     );
 

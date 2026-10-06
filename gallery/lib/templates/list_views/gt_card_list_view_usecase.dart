@@ -26,6 +26,11 @@ Widget playgroundGtCardListViewUseCase(BuildContext context) {
     initialValue: false,
   );
 
+  final isSkeleton = context.knobs.boolean(
+    label: 'Skeleton',
+    initialValue: false,
+  );
+
   final items = List.generate(
     count,
     (i) => _SampleItem(
@@ -35,25 +40,44 @@ Widget playgroundGtCardListViewUseCase(BuildContext context) {
     ),
   );
 
+  final backgroundColor = tinted ? context.palette.primary.alpha10 : null;
+
+  Widget list = GtCardListView<_SampleItem>(
+    items: items,
+    variant: variant,
+    backgroundColor: backgroundColor,
+    itemKey: (item) => ValueKey(item.id),
+    itemBuilder: (context, item, index) => GtTransactionListTile(
+      item.name,
+      subtitle: 'Ref: TXN-${item.id.padLeft(6, '0')}',
+      amount: item.amount,
+      isDebit: index.isEven,
+    ),
+  );
+  if (isSkeleton) {
+    list = GtCardListView.skeleton(
+      itemCount: count,
+      variant: variant,
+      backgroundColor: backgroundColor,
+      semanticsLabel: 'Loading',
+      itemBuilder: (_, _) => const GtTransactionListTile.skeleton(),
+    );
+  }
+
   return GtWidgetDocPage(
     title: 'GtCardListView',
     description:
         'A lazily built list whose rows are stitched into one continuous card surface, with divider tiles between them.',
-    child: GtSizedBox(
-      height: 400,
-      child: GtCardListView<_SampleItem>(
-        items: items,
-        variant: variant,
-        backgroundColor: tinted ? context.palette.primary.alpha10 : null,
-        itemKey: (item) => ValueKey(item.id),
-        itemBuilder: (context, item, index) => GtTransactionListTile(
-          item.name,
-          subtitle: 'Ref: TXN-${item.id.padLeft(6, '0')}',
-          amount: item.amount,
-          isDebit: index.isEven,
-        ),
-      ),
-    ),
+    code: isSkeleton
+        ? '''
+GtCardListView.skeleton(
+  itemCount: $count,
+  variant: GtCardVariant.${variant.name},
+  semanticsLabel: 'Loading',
+  itemBuilder: (_, _) => const GtTransactionListTile.skeleton(),
+)'''
+        : null,
+    child: GtSizedBox(height: 400, child: list),
   );
 }
 
