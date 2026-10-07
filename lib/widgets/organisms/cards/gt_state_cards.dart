@@ -35,7 +35,7 @@ class GtEmptyStateCard extends GtStatelessWidget {
   /// The padding to apply to the card. Defaults to [context.insets.symmetricDp(vertical: 24.px, horizontal: 16.px)].
   final EdgeInsetsGeometry? padding;
 
-  /// The text style to apply to the description. Defaults to [context.textStyles.subHeadXs(color: context.palette.text.sub)].
+  /// The text style to apply to the description. Defaults to [GtTextStyles.bodyXs] at weight 500, in the palette's sub text colour.
   final TextStyle? style;
 
   /// The size of the icon. Defaults to 24.
@@ -78,8 +78,9 @@ class GtEmptyStateCard extends GtStatelessWidget {
       vertical: 24.px,
       horizontal: 16.px,
     );
-    final defaultStyle = context.textStyles.subHeadXs(
+    final defaultStyle = context.textStyles.bodyXs(
       color: context.palette.text.sub,
+      weight: .w500,
     );
     final defaultIconSize = context.dp(24.px);
 
@@ -216,7 +217,7 @@ class GtActionableEmptyStateCard extends GtStatelessWidget {
             title,
             style: GtTextStyleOverrides.resolve(
               titleStyle,
-              context.textStyles.subHeadS(),
+              context.textStyles.labelS(weight: .w600),
               titleColor,
             ),
             textAlign: .center,

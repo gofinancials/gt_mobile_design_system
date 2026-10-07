@@ -109,7 +109,7 @@ class GtAlertBanner extends GtStatelessWidget {
                 subtitle,
                 style: GtTextStyleOverrides.resolve(
                   subtitleStyle,
-                  context.textStyles.subHeadS(),
+                  context.textStyles.labelS(weight: .w500),
                   subtitleColor,
                 ),
               ),

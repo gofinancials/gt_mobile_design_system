@@ -26,7 +26,7 @@ class GtTransactionLeading extends GtStatelessWidget {
 
   /// Optional custom style override for the initials.
   ///
-  /// Defaults to [GtTextStyles.subHeadXs] at weight 700.
+  /// Defaults to [GtTextStyles.bodyXs] at weight 700.
   final TextStyle? style;
 
   /// Optional background gradient override.
@@ -92,7 +92,7 @@ class GtTransactionLeading extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = context.textStyles.subHeadXs(weight: .w700, heightPx: 19);
+    final textStyle = context.textStyles.bodyXs(weight: .w700, heightPx: 19);
 
     Widget badge = Container(
       width: size,
@@ -453,7 +453,7 @@ class GtPaymentListTile extends GtStatelessWidget {
                           title,
                           style: GtTextStyleOverrides.resolve(
                             nameStyle,
-                            style.subHeadS(),
+                            style.labelS(weight: .w500),
                             nameColor,
                           ),
                           maxLines: 1,
@@ -479,7 +479,7 @@ class GtPaymentListTile extends GtStatelessWidget {
                           amount,
                           style: GtTextStyleOverrides.resolve(
                             amountStyle,
-                            style.subHeadM(weight: .w600),
+                            style.labelM(weight: .w600),
                             amountColor,
                           ),
                           textAlign: .end,

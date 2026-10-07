@@ -28,7 +28,7 @@ class GtInfoListTile extends GtStatelessWidget {
 
   /// Optional custom [TextStyle] for the [text].
   ///
-  /// If null, defaults to [GtTextStyles.subHeadS].
+  /// If null, defaults to [GtTextStyles.subHead3M].
   final TextStyle? textStyle;
 
   /// Optional custom [TextStyle] for the [label].
@@ -324,7 +324,7 @@ class GtInputListTile extends GtStatelessWidget {
 
   /// Optional custom [TextStyle] for the [text].
   ///
-  /// If null, defaults to [GtTextStyles.subHeadS].
+  /// If null, defaults to [GtTextStyles.labelS] at weight 500, Figma Body/M.
   final TextStyle? textStyle;
 
   /// Optional custom [TextStyle] for the [label].
@@ -371,7 +371,7 @@ class GtInputListTile extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = textStyle ?? context.textStyles.subHeadS();
+    final style = textStyle ?? context.textStyles.labelS(weight: .w500);
     final hintStyle =
         (labelStyle ??
         context.textStyles.bodyXs(color: context.palette.text.sub));
@@ -502,14 +502,16 @@ class GtCopyTile extends GtStatelessWidget {
             child: GtText(
               label,
               textAlign: TextAlign.start,
-              style: labelStyle ?? styles.subHeadXs(color: textColors.sub),
+              style:
+                  labelStyle ??
+                  styles.bodyXs(color: textColors.sub, weight: .w500),
             ),
           ),
           Expanded(
             child: GtText(
               value,
               textAlign: TextAlign.end,
-              style: valueStyle ?? styles.subHeadXs(),
+              style: valueStyle ?? styles.bodyXs(weight: .w500),
             ),
           ),
           GtIcon(
@@ -622,7 +624,7 @@ class GtStackedCopyTile extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final styles = context.textStyles;
     final textColors = context.palette.text;
-    final style = styles.subHeadXs(color: textColors.sub);
+    final style = styles.bodyXs(color: textColors.sub, weight: .w500);
     final icon = GtIcon(
       GtIcons.copyFilled,
       size: copyIconSize ?? context.dp(20.px),
@@ -652,7 +654,7 @@ class GtStackedCopyTile extends GtStatelessWidget {
                   GtText(label, style: labelStyle ?? style),
                   GtText(
                     subtitle,
-                    style: subtitleStyle ?? styles.subHeadS(weight: .w600),
+                    style: subtitleStyle ?? styles.labelS(weight: .w600),
                   ),
                 ],
               ),
@@ -840,8 +842,8 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     final palette = context.palette.text;
     final textStyles = context.textStyles;
     TextStyle labelStyle =
-        labelTextStyle ?? textStyles.subHeadXs(color: palette.sub);
-    TextStyle valueStyle = valueTextStyle ?? textStyles.subHeadXs();
+        labelTextStyle ?? textStyles.bodyXs(color: palette.sub, weight: .w500);
+    TextStyle valueStyle = valueTextStyle ?? textStyles.bodyXs(weight: .w500);
 
     if (!highlightValue) {
       labelStyle = labelStyle.copyWith(color: palette.strong);
@@ -1044,7 +1046,7 @@ class GtSuccessRateTile extends GtStatelessWidget {
             text,
             style: GtTextStyleOverrides.resolve(
               textStyle,
-              style.subHeadS(weight: .w600),
+              style.labelS(weight: .w600),
               this.textColor,
             ),
             maxLines: 1,

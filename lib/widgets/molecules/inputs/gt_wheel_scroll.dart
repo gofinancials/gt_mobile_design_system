@@ -167,11 +167,12 @@ class _GtWheelScrollState<T> extends State<GtWheelScroll<T>> {
     final selectedStyle =
         widget.selectedStyle ??
         switch (widget.size) {
-          .large => styles.subHeadM(weight: .w600, color: palette.text.sub),
-          .regular => styles.subHeadS(color: palette.text.sub, weight: .w600),
+          .large => styles.labelM(weight: .w600, color: palette.text.sub),
+          .regular => styles.labelS(color: palette.text.sub, weight: .w600),
         };
     final itemStyle =
-        widget.itemStyle ?? styles.subHeadS(color: palette.text.disabled);
+        widget.itemStyle ??
+        styles.labelS(color: palette.text.disabled, weight: .w500);
     final labelStyle =
         widget.labelStyle ??
         styles.titleS(weight: .w600, color: palette.text.strong);

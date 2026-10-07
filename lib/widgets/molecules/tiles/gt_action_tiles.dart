@@ -45,11 +45,11 @@ class GtExportListTile extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    TextStyle defaultTitleStyle = context.textStyles.subHeadM();
+    TextStyle defaultTitleStyle = context.textStyles.labelM(weight: .w600);
     TextStyle? defaultSubStyle;
 
     if (subtitle.hasValue) {
-      defaultTitleStyle = context.textStyles.subHeadS();
+      defaultTitleStyle = context.textStyles.labelS(weight: .w600);
       defaultSubStyle = context.textStyles.bodyXs(color: palette.text.soft);
     }
 

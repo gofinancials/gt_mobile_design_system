@@ -68,7 +68,7 @@ class GtAccountListTile extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.palette;
     final defaultSubStyle = switch (hasBoldSubtitle) {
-      true => context.textStyles.subHeadXs(color: palette.text.sub),
+      true => context.textStyles.bodyXs(color: palette.text.sub, weight: .w500),
       _ => context.textStyles.bodyXs(color: palette.text.sub),
     };
 
@@ -89,7 +89,8 @@ class GtAccountListTile extends GtStatelessWidget {
                 children: [
                   GtText(
                     title,
-                    style: titleStyle ?? context.textStyles.subHeadS(),
+                    style:
+                        titleStyle ?? context.textStyles.labelS(weight: .w600),
                   ),
                   if (subtitle.hasValue)
                     GtText(subtitle, style: subtitleStyle ?? defaultSubStyle),
@@ -190,7 +191,8 @@ class GtContactListTile extends GtStatelessWidget {
                 children: [
                   GtText(
                     title,
-                    style: titleStyle ?? context.textStyles.subHeadS(),
+                    style:
+                        titleStyle ?? context.textStyles.labelS(weight: .w600),
                   ),
                   if (subtitle.hasValue)
                     GtText(subtitle, style: subtitleStyle ?? subStyle),
