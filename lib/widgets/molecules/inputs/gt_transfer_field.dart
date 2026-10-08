@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
@@ -39,6 +38,10 @@ class GtTransferField extends GtStatefulWidget {
   final num? min;
 
   /// The maximum allowable amount for the transfer.
+  ///
+  /// When set, this is the ceiling even if it is above the validated
+  /// participant's balance, such as a balance plus overdraft headroom. When
+  /// null, the amount is capped at that balance.
   final num? max;
 
   /// The icon to display between the two participants.
@@ -110,7 +113,7 @@ class _GtTransferFieldState extends State<GtTransferField> {
           return AppValidators.amountValidator(
             text?.text,
             minAmount: widget.min,
-            maxAmount: min(balance, widget.max ?? balance),
+            maxAmount: widget.max ?? balance,
           );
         }
         return AppValidators.balanceValidator(
@@ -267,6 +270,10 @@ class GtFxTransferField extends GtStatefulWidget {
   final num? min;
 
   /// The maximum allowable amount for the transfer.
+  ///
+  /// When set, this is the ceiling even if it is above the validated
+  /// participant's balance, such as a balance plus overdraft headroom. When
+  /// null, the amount is capped at that balance.
   final num? max;
 
   /// The icon to display between the two participants.
@@ -344,7 +351,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
           return AppValidators.amountValidator(
             text?.text,
             minAmount: widget.min,
-            maxAmount: min(balance, widget.max ?? balance),
+            maxAmount: widget.max ?? balance,
           );
         }
         return AppValidators.balanceValidator(

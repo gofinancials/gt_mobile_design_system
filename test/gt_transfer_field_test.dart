@@ -85,12 +85,12 @@ void main() {
       expect(await validate(tester, transferField("6,000", min: 100)), isFalse);
     });
 
-    testWidgets('a maximum above the balance caps at the balance', (
+    testWidgets('a maximum above the balance caps at the maximum', (
       tester,
     ) async {
-      expect(await validate(tester, transferField("4,000", max: 9000)), isTrue);
+      expect(await validate(tester, transferField("6,000", max: 9000)), isTrue);
       expect(
-        await validate(tester, transferField("6,000", max: 9000)),
+        await validate(tester, transferField("9,500", max: 9000)),
         isFalse,
       );
     });
@@ -119,7 +119,34 @@ void main() {
         isFalse,
       );
     });
+
+    testWidgets('a maximum above the balance caps at the maximum', (
+      tester,
+    ) async {
+      expect(
+        await validate(tester, fxTransferField("6,000", max: 9000)),
+        isTrue,
+      );
+      expect(
+        await validate(tester, fxTransferField("9,500", max: 9000)),
+        isFalse,
+      );
+    });
+
+    testWidgets('a maximum below the balance caps at the maximum', (
+      tester,
+    ) async {
+      expect(
+        await validate(tester, fxTransferField("2,000", max: 3000)),
+        isTrue,
+      );
+      expect(
+        await validate(tester, fxTransferField("4,000", max: 3000)),
+        isFalse,
+      );
+    });
   });
+
   group('amount validation when no participant is validated', () {
     testWidgets('GtTransferField accepts any amount', (tester) async {
       for (final field in [
