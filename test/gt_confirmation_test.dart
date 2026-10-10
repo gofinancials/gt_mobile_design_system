@@ -207,6 +207,57 @@ void main() {
       expect(image.isDecorative, isFalse);
     });
 
+    testWidgets('paints a QR code from qrData', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          buildBody(
+            footer: const GtConfirmationFooter(
+              qrData: 'TRX24072983910527NGN',
+              trailingLabel: 'Receipt QR code',
+            ),
+          ),
+        ),
+      );
+
+      final code = tester.widget<GtQrCode>(
+        find.byKey(const Key('confirmation-footer-qr')),
+      );
+
+      expect(find.byKey(const Key('confirmation-footer')), findsOneWidget);
+      expect(code.data, 'TRX24072983910527NGN');
+      expect(code.semanticsLabel, 'Receipt QR code');
+      expect(code.isDecorative, isFalse);
+    });
+
+    testWidgets('prefers a trailing image over qrData', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          buildBody(
+            footer: const GtConfirmationFooter(
+              qrData: 'TRX24072983910527NGN',
+              trailing: AppImageData(GtVectors.logo),
+            ),
+          ),
+        ),
+      );
+
+      expect(
+        find.byKey(const Key('confirmation-footer-trailing')),
+        findsOneWidget,
+      );
+      expect(find.byType(GtQrCode), findsNothing);
+    });
+
+    testWidgets('omits the footer when qrData is empty', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          buildBody(footer: const GtConfirmationFooter(qrData: '')),
+        ),
+      );
+
+      expect(find.byKey(const Key('confirmation-footer')), findsNothing);
+    });
+
     testWidgets('prefers an explicit footer over the disclaimer shorthand', (
       tester,
     ) async {

@@ -312,10 +312,10 @@ void main() {
     });
 
     test('keeps headroom beneath the single-page budget', () async {
-      // A full grid row past the reference receipt — two entries across the
-      // two columns — still fits, so the layout is not scraping the page
-      // boundary. That row is the whole of the margin: a third entry starts
-      // the next row and spills onto a second page.
+      // Two full grid rows past the reference receipt — four entries across
+      // the two columns — still fit, so the layout is not scraping the page
+      // boundary. Those rows are the whole of the margin: a fifth entry
+      // starts the next row and spills onto a second page.
       final padded = GtPdfReceiptData(
         title: reference.title,
         issuedOn: reference.issuedOn,
@@ -326,7 +326,7 @@ void main() {
             title: reference.sections.first.title,
             entries: [
               ...reference.sections.first.entries,
-              for (var extra = 0; extra < 2; extra++)
+              for (var extra = 0; extra < 4; extra++)
                 GtPdfReceiptEntry(label: 'Extra $extra', value: 'Value $extra'),
             ],
           ),
@@ -335,6 +335,74 @@ void main() {
       );
 
       final document = const GtPdfReceiptBuilder().build(padded);
+      await document.save();
+
+      expect(document.document.pdfPageList.pages, hasLength(1));
+    });
+
+    test('lays a ten-entry bill receipt out on a single page', () async {
+      // The last section used to close with the gap that separates a section
+      // from the next hairline. A receipt ending within that gap of the footer
+      // opened a second page holding nothing but the repeated footer.
+      final bill = GtPdfReceiptData(
+        title: 'Bill Payment Receipt',
+        issuedOn: '10.10.2026',
+        issuedOnLabel: 'Issued on:',
+        footer: reference.footer,
+        sections: const [
+          GtPdfReceiptSection(
+            title: 'Transaction Details',
+            entries: [
+              GtPdfReceiptEntry(label: 'Amount', value: '\u20a610,000.00'),
+              GtPdfReceiptEntry(
+                label: 'Transaction Date',
+                value: '10.10.2026, 09:41',
+              ),
+              GtPdfReceiptEntry(label: 'Status', value: 'Successful'),
+              GtPdfReceiptEntry(
+                label: 'Transaction Type',
+                value: 'Electricity bill',
+              ),
+              GtPdfReceiptEntry(
+                label: 'Message',
+                value: 'Prepaid electricity top-up',
+              ),
+              GtPdfReceiptEntry(
+                label: 'Reference',
+                value: 'BIL-20261010-7F3A92C1',
+              ),
+              GtPdfReceiptEntry(
+                label: 'Token',
+                value: '4821-0937-5562-1048-7735',
+              ),
+              GtPdfReceiptEntry(label: 'Token Units', value: '68.4 kWh'),
+              GtPdfReceiptEntry(
+                label: 'Session ID',
+                value: '000013261010094112345678901234',
+              ),
+              GtPdfReceiptEntry(label: 'Fee', value: '\u20a6100.00'),
+            ],
+          ),
+          GtPdfReceiptSection(
+            title: 'Sender Details',
+            heading: 'OLALEKAN OMOLUABI',
+            entries: [
+              GtPdfReceiptEntry(label: 'Account number', value: '******5678'),
+              GtPdfReceiptEntry(label: 'Bank Name', value: 'STERLING BANK'),
+            ],
+          ),
+          GtPdfReceiptSection(
+            title: 'Recipient Details',
+            heading: 'IKEJA ELECTRIC',
+            entries: [
+              GtPdfReceiptEntry(label: 'Meter Number', value: '45012345678'),
+              GtPdfReceiptEntry(label: 'Biller', value: 'IKEJA ELECTRIC DISCO'),
+            ],
+          ),
+        ],
+      );
+
+      final document = const GtPdfReceiptBuilder().build(bill);
       await document.save();
 
       expect(document.document.pdfPageList.pages, hasLength(1));

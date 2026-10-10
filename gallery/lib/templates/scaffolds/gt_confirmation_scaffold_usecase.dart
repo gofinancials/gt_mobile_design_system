@@ -27,6 +27,8 @@ const _disclaimer =
 
 const _note = "Please reach out to support for more information.";
 
+const _qrData = "TRX24072983910527NGN";
+
 List<GtConfirmationSection> _getSections(String preset, BuildContext context) {
   final reference = GtReceiptTileData(
     label: "Reference",
@@ -144,13 +146,7 @@ GtConfirmationBody _buildConfiguredConfirmationBody({
     footer: GtConfirmationFooter(
       disclaimer: showDisclaimer ? _disclaimer : null,
       note: showFooterNote ? _note : null,
-      // The design system ships no QR asset, so the brand mark stands in for
-      // the code a real receipt would carry.
-      trailing: showFooterTrailing
-          ? const AppImageData(
-              "https://images.unsplash.com/vector-1784356508877-c80e59b18c24?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            )
-          : null,
+      qrData: showFooterTrailing ? _qrData : null,
       trailingLabel: "Receipt QR code",
     ),
   );
@@ -311,9 +307,7 @@ class _ConfirmationKnobs {
       footer: GtPdfReceiptFooter(
         disclaimer: showDisclaimer ? _disclaimer : null,
         note: showFooterNote ? _note : null,
-        qrData: showFooterTrailing
-            ? 'https://sterling.ng/receipts/TRX24072983910527NGN'
-            : null,
+        qrData: showFooterTrailing ? _qrData : null,
       ),
     );
   }
@@ -429,7 +423,7 @@ showDraggableSheet(
         footer: const GtConfirmationFooter(
           disclaimer: "Your transfer has been processed successfully...",
           note: "Please reach out to support for more information.",
-          trailing: AppImageData("https://images.unsplash.com/vector-1784356508877-c80e59b18c24?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
+          qrData: "TRX24072983910527NGN",
         ),
       ),
     );
@@ -456,7 +450,7 @@ class _ConfirmationBodyInlinePreview extends StatelessWidget {
           'Organism widget containing a transaction status pill, an optional '
           'stamp, the amount, a date and time row, one card per titled section '
           'of label/value rows, and an optional footer carrying the fine '
-          'print, a closing note and a trailing image such as a QR code. '
+          'print, a closing note and a QR code painted from qrData. '
           'Requires at least one section.',
       code:
           '''
@@ -493,7 +487,7 @@ GtConfirmationBody(
   footer: const GtConfirmationFooter(
     ${knobs.showDisclaimer ? 'disclaimer: "Your transfer has been processed successfully...",' : ''}
     ${knobs.showFooterNote ? 'note: "Please reach out to support for more information.",' : ''}
-    ${knobs.showFooterTrailing ? 'trailing: AppImageData(GtVectors.logo),' : ''}
+    ${knobs.showFooterTrailing ? 'qrData: "TRX24072983910527NGN",' : ''}
   ),
 )''',
       child: GtSizedBox(height: 650, child: knobs.buildBody(context)),
