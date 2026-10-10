@@ -90,10 +90,13 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
       color: Colors.transparent,
       child: Table(
         defaultVerticalAlignment: .middle,
+        // The actions are pinned to 32 dp, so their columns are too: the title
+        // takes everything between them and, the sides being equal, stays
+        // centred on the screen.
         columnWidths: const {
-          0: FlexColumnWidth(4),
-          1: FlexColumnWidth(10),
-          2: FlexColumnWidth(4),
+          0: FixedColumnWidth(32),
+          1: FlexColumnWidth(),
+          2: FixedColumnWidth(32),
         },
         children: [
           TableRow(

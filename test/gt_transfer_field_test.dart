@@ -167,4 +167,99 @@ void main() {
       }
     });
   });
+
+  group('GtTransferCategoryField controller', () {
+    final stored = GtTransactionCategory(
+      label: "Bills",
+      image: AppImageData(GtVectors.dashedPlaceholder),
+    );
+    final other = GtTransactionCategory(
+      label: "Gift",
+      image: AppImageData(GtVectors.dashedPlaceholder),
+    );
+
+    /// Mounts [field], or an empty box when it is null.
+    Future<void> mount(WidgetTester tester, Widget? field) {
+      return tester.pumpWidget(
+        GtThemeProvider(
+          theme: kPersonalTheme,
+          child: MaterialApp(home: Scaffold(body: field ?? const SizedBox())),
+        ),
+      );
+    }
+
+    /// The image the category field is showing.
+    AppImageData? shownImage(WidgetTester tester) {
+      final image = find.descendant(
+        of: find.byType(GtTransferCategoryField),
+        matching: find.byType(GtImage),
+      );
+      return tester.widget<GtImage>(image).image;
+    }
+
+    testWidgets('shows the category a supplied controller is seeded with', (
+      tester,
+    ) async {
+      final controller = GtTransactionCategoryController(
+        stored,
+        categories: [stored, other],
+      );
+      addTearDown(controller.dispose);
+
+      await mount(tester, GtTransferCategoryField(controller: controller));
+
+      expect(shownImage(tester), same(stored.image));
+    });
+
+    testWidgets('keeps a seeded category when the field fills in categories', (
+      tester,
+    ) async {
+      final controller = GtTransactionCategoryController(
+        stored,
+        categories: [],
+      );
+      addTearDown(controller.dispose);
+
+      await mount(tester, GtTransferCategoryField(controller: controller));
+      await tester.pump();
+
+      expect(controller.categories, isNotEmpty);
+      expect(controller.value, stored);
+    });
+
+    testWidgets('selects the first default when a controller has neither', (
+      tester,
+    ) async {
+      final controller = GtTransactionCategoryController(null, categories: []);
+      addTearDown(controller.dispose);
+
+      await mount(tester, GtTransferCategoryField(controller: controller));
+      await tester.pump();
+
+      expect(controller.value, controller.categories.first);
+    });
+
+    testWidgets('leaves a supplied controller for its owner to dispose', (
+      tester,
+    ) async {
+      final controller = GtTransactionCategoryController(
+        stored,
+        categories: [stored, other],
+      );
+
+      await mount(tester, GtTransferCategoryField(controller: controller));
+      await mount(tester, null);
+
+      expect(controller.dispose, returnsNormally);
+    });
+
+    testWidgets('a field without a controller cleans up its own', (
+      tester,
+    ) async {
+      await mount(tester, const GtTransferCategoryField());
+      await mount(tester, null);
+
+      expect(tester.takeException(), isNull);
+    });
+  });
 }

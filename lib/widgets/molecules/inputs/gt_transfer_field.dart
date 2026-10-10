@@ -17,6 +17,10 @@ class GtTransferField extends GtStatefulWidget {
   final GtInputController noteController;
 
   /// The controller that manages the category of the transfer.
+  ///
+  /// Seed it with a stored category to show that category when the field
+  /// opens. The caller owns it and disposes it; when null, the category field
+  /// creates and disposes its own.
   final GtTransactionCategoryController? categoryController;
 
   /// The hint text displayed inside the note input field.
@@ -246,6 +250,10 @@ class GtFxTransferField extends GtStatefulWidget {
   final GtInputController noteController;
 
   /// The controller that manages the category of the transfer.
+  ///
+  /// Seed it with a stored category to show that category when the field
+  /// opens. The caller owns it and disposes it; when null, the category field
+  /// creates and disposes its own.
   final GtTransactionCategoryController? categoryController;
 
   /// The hint text displayed inside the note input field.
@@ -599,6 +607,10 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
 /// A dropdown widget for selecting a transaction category.
 class GtTransferCategoryField extends GtStatefulWidget {
   /// The controller that manages the category of the transfer.
+  ///
+  /// Seed it with a stored category to show that category when the field
+  /// opens. The caller owns it and disposes it; when null, the field creates
+  /// and disposes its own.
   final GtTransactionCategoryController? controller;
 
   /// Callback invoked whenever the category changes.
@@ -635,13 +647,14 @@ class GtTransferCategoryField extends GtStatefulWidget {
 /// The state for [GtTransferCategoryField].
 class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     with GtBottomSheetMixin, GtTransactionCategoryMixin {
-  /// The category controller, created locally if none is given.
+  /// The category controller, either [GtTransferCategoryField.controller] or
+  /// one this state created and disposes.
   late final GtTransactionCategoryController controller;
 
   @override
   void initState() {
     super.initState();
-    final defaultCtrl = GtTransactionCategoryController(
+    late final defaultCtrl = GtTransactionCategoryController(
       defaultInputCategories.first,
       categories: defaultInputCategories,
     );
@@ -650,15 +663,16 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     if (!controller.categories.hasValue) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         controller.categories = defaultInputCategories;
+        if (controller.value == null) {
+          controller.select(defaultInputCategories.first);
+        }
       });
     }
   }
 
   @override
   void dispose() {
-    if (widget.controller != null) {
-      controller.dispose();
-    }
+    if (widget.controller == null) controller.dispose();
     super.dispose();
   }
 
