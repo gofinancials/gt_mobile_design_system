@@ -152,8 +152,9 @@ class GtDuotoneScreen extends GtStatelessWidget {
                     description,
                     style: GtTextStyleOverrides.resolve(
                       descriptionStyle,
-                      context.textStyles.subHeadS(
+                      context.textStyles.labelS(
                         color: context.palette.text.darkerSub,
+                        weight: .w500,
                       ),
                       descriptionColor,
                     ),

@@ -14,7 +14,9 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///
 /// Example usage:
 /// ```dart
-/// final exporter = GtPdfInvoiceExporter.fromPalette(context.palette);
+/// final exporter = GtPdfInvoiceExporter.fromPalette(
+///   context.themeData.lightPalette,
+/// );
 ///
 /// await exporter.share(context, data);
 /// final result = await exporter.save(data);
@@ -30,8 +32,12 @@ class GtPdfInvoiceExporter {
   /// otherwise the design system's light theme is used.
   const GtPdfInvoiceExporter({this.builder = const GtPdfInvoiceBuilder()});
 
-  /// Creates an exporter whose documents are themed from the live app
-  /// [palette], so an exported invoice matches the screen it came from.
+  /// Creates an exporter whose documents are themed from [palette].
+  ///
+  /// The page takes the palette's own background, so pass the brand's light
+  /// palette (`context.themeData.lightPalette`) for a white document in the
+  /// brand's colours. Passing the live `context.palette` makes the invoice
+  /// follow the app into dark mode, and should only be done on purpose.
   GtPdfInvoiceExporter.fromPalette(GtPalette palette)
     : builder = GtPdfInvoiceBuilder(
         theme: GtPdfReceiptTheme.fromPalette(palette),

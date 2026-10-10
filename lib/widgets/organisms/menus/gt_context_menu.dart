@@ -222,7 +222,8 @@ class GtContextMenuTile<T> extends GtStatelessWidget {
             Expanded(
               child: GtText(
                 item.label.capitalise(true),
-                style: item.labelStyle ?? context.textStyles.subHeadS(),
+                style:
+                    item.labelStyle ?? context.textStyles.labelS(weight: .w500),
                 maxLines: 1,
                 overflow: .ellipsis,
               ),

@@ -297,7 +297,7 @@ class _TransferDetailHeader extends GtStatelessWidget {
           children: [
             GtText(
               recipient.title,
-              style: context.textStyles.subHeadS(),
+              style: context.textStyles.labelS(weight: .w600),
               textAlign: .center,
               key: const Key('transfer-detail-recipient'),
             ),

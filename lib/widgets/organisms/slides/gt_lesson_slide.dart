@@ -304,7 +304,7 @@ class GtLessonSlideTitle extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final styles = context.textStyles;
     final titleStyle = styles.h5(color: color);
-    final subStyle = styles.subHeadS(color: color);
+    final subStyle = styles.labelS(color: color, weight: .w500);
 
     return Padding(
       padding: context.insets.defaultHorizontalInsets,

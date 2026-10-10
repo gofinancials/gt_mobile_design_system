@@ -122,7 +122,7 @@ class GtAvatar extends GtStatelessWidget {
     final computedSize = size ?? defaultSize;
     final computedTagSize = tagSize ?? computedSize * 0.4;
     final hasAvatar = avatar != null && avatar.hasValidData;
-    final style = context.textStyles.subHeadS(
+    final style = context.textStyles.labelS(
       color: initialsColor ?? context.palette.primary.base,
       weight: .w700,
     );

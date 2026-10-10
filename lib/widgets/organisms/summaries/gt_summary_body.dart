@@ -113,6 +113,8 @@ class GtSummaryBody extends GtStatelessWidget {
   /// An optional heading rendered above the [description].
   ///
   /// Uppercased. Supply this only for the headline layout; see the class docs.
+  /// When null, the title of an enclosing [GtSummaryTitleScope] is used, which
+  /// is how [GtSummaryScaffold] supplies it.
   final String? title;
 
   /// Optional supporting copy rendered above the cards.
@@ -164,12 +166,14 @@ class GtSummaryBody extends GtStatelessWidget {
     assert(sections.hasValue, 'GtSummaryBody requires at least one card');
     assert(sections.every(_isPopulated), 'Every summary card requires content');
 
+    final headline = title ?? GtSummaryTitleScope.maybeOf(context);
+
     return ListView(
       physics: physics ?? const ClampingScrollPhysics(),
       controller: controller,
       padding: context.insets.allDp(16.px),
       children: [
-        if (title case String heading when heading.hasValue) ...[
+        if (headline case String heading when heading.hasValue) ...[
           GtText(
             heading.upper,
             key: const Key('summary-title'),

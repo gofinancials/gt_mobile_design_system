@@ -19,7 +19,7 @@ dependencies:
   gt_mobile_foundation:
     git:
       url: https://github.com/gofinancials/gt_mobile_foundation.git
-      ref: v0.0.67
+      ref: v0.0.70
   pin_code_fields: ^9.3.0
   styled_text:
     git:
@@ -31,6 +31,7 @@ dependencies:
   vector_graphics_compiler: ^1.1.19
   provider: ^6.1.5+1
   pdf: ^3.12.0
+  barcode: ^2.2.9
 
 dev_dependencies:
   flutter_test:

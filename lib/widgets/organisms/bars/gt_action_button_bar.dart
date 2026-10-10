@@ -118,8 +118,8 @@ class GtActionButtonBar extends GtStatelessWidget {
   ///
   /// Its tile — [GtActionButton.size], or [GtActionButton.minTapTargetSize]
   /// when that is null — must be no wider than the slot. Its caption, set in
-  /// [GtActionButton.labelStyle] or else [GtTextStyles.subHeadXs] at the
-  /// ambient text scale, must wrap into the slot within [_maxCaptionLines]
+  /// [GtActionButton.labelStyle] or else [GtTextStyles.bodyXs] at weight 500
+  /// and the ambient text scale, must wrap into the slot within [_maxCaptionLines]
   /// lines without breaking its longest word.
   ///
   /// *Note: the caption fallbacks mirror [GtActionButton]'s own, so keep the
@@ -133,7 +133,7 @@ class GtActionButtonBar extends GtStatelessWidget {
       final painter = TextPainter(
         text: TextSpan(
           text: label,
-          style: button.labelStyle ?? context.textStyles.subHeadXs(),
+          style: button.labelStyle ?? context.textStyles.bodyXs(weight: .w500),
         ),
         textDirection: Directionality.of(context),
         textScaler: MediaQuery.textScalerOf(context),

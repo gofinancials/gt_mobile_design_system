@@ -5,6 +5,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 const _viewportHeight = 480.0;
 const _topKey = Key('top');
 const _bottomKey = Key('bottom');
+const _navBarInset = 48.0;
 
 /// Hosts the body at a known height, so every assertion about filling the
 /// viewport is made against a number the test set.
@@ -39,6 +40,19 @@ Widget _formBody({double headerHeight = 40}) {
       const SizedBox(key: _bottomKey, height: 48),
     ],
   );
+}
+
+/// Puts a system navigation bar of [_navBarInset] under the test view, at a
+/// device pixel ratio of 1 so the physical and logical insets agree.
+void _fakeNavBar(WidgetTester tester) {
+  tester.view.devicePixelRatio = 1;
+  tester.view.padding = const FakeViewPadding(bottom: _navBarInset);
+  addTearDown(tester.view.reset);
+}
+
+/// Reads the bottom [MediaQuery] padding the body's child is handed.
+double _childBottomPadding(WidgetTester tester) {
+  return MediaQuery.paddingOf(tester.element(find.byKey(_bottomKey))).bottom;
 }
 
 /// Finds [type] inside the body under test, so an unrelated widget of the same
@@ -251,6 +265,147 @@ void main() {
         reason: 'fillViewport: $fillViewport',
       );
     }
+  });
+
+  testWidgets('a vertical body clears the system navigation bar', (
+    tester,
+  ) async {
+    _fakeNavBar(tester);
+
+    await tester.pumpWidget(
+      const _ScrollableBodyTestApp(
+        child: GtScrollableBody(child: SizedBox(key: _bottomKey, height: 80)),
+      ),
+    );
+
+    final insets = tester
+        .element(find.byType(GtScrollableBody))
+        .insets
+        .defaultAllInsets;
+    final scrollView = tester.widget<SingleChildScrollView>(
+      find.byType(SingleChildScrollView),
+    );
+
+    expect(
+      scrollView.padding,
+      insets.add(const EdgeInsets.only(bottom: _navBarInset)),
+    );
+    expect(_childBottomPadding(tester), 0);
+  });
+
+  testWidgets('a caller padding still clears the system navigation bar', (
+    tester,
+  ) async {
+    _fakeNavBar(tester);
+
+    await tester.pumpWidget(
+      const _ScrollableBodyTestApp(
+        child: GtScrollableBody(
+          padding: EdgeInsets.zero,
+          child: SizedBox(key: _bottomKey, height: 80),
+        ),
+      ),
+    );
+
+    expect(
+      tester
+          .widget<SingleChildScrollView>(find.byType(SingleChildScrollView))
+          .padding,
+      const EdgeInsets.only(bottom: _navBarInset),
+    );
+  });
+
+  testWidgets('a fill-viewport body ends above the system navigation bar', (
+    tester,
+  ) async {
+    _fakeNavBar(tester);
+    final controller = ScrollController();
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      _ScrollableBodyTestApp(
+        child: GtScrollableBody(
+          controller: controller,
+          fillViewport: true,
+          child: _formBody(),
+        ),
+      ),
+    );
+
+    final insets = tester
+        .element(find.byType(GtScrollableBody))
+        .insets
+        .defaultAllInsets;
+    final viewportTop = tester.getTopLeft(find.byType(GtScrollableBody)).dy;
+
+    expect(controller.position.maxScrollExtent, 0);
+    expect(
+      tester.getBottomLeft(find.byKey(_bottomKey)).dy,
+      moreOrLessEquals(
+        viewportTop + _viewportHeight - insets.bottom - _navBarInset,
+      ),
+    );
+    expect(_childBottomPadding(tester), 0);
+  });
+
+  testWidgets('a horizontal strip leaves the system navigation bar alone', (
+    tester,
+  ) async {
+    _fakeNavBar(tester);
+
+    await tester.pumpWidget(
+      const _ScrollableBodyTestApp(
+        child: GtScrollableBody(
+          scrollDirection: Axis.horizontal,
+          child: SizedBox(key: _bottomKey, width: 80),
+        ),
+      ),
+    );
+
+    final insets = tester
+        .element(find.byType(GtScrollableBody))
+        .insets
+        .defaultAllInsets;
+
+    expect(
+      tester
+          .widget<SingleChildScrollView>(find.byType(SingleChildScrollView))
+          .padding,
+      insets,
+    );
+    expect(_childBottomPadding(tester), _navBarInset);
+  });
+
+  testWidgets('a body above a bottom navigation bar keeps its own padding', (
+    tester,
+  ) async {
+    _fakeNavBar(tester);
+
+    await tester.pumpWidget(
+      GtThemeProvider(
+        theme: kPersonalTheme,
+        child: const MaterialApp(
+          home: Scaffold(
+            body: GtScrollableBody(
+              child: SizedBox(key: _bottomKey, height: 80),
+            ),
+            bottomNavigationBar: SizedBox(height: 64),
+          ),
+        ),
+      ),
+    );
+
+    final insets = tester
+        .element(find.byType(GtScrollableBody))
+        .insets
+        .defaultAllInsets;
+
+    expect(
+      tester
+          .widget<SingleChildScrollView>(find.byType(SingleChildScrollView))
+          .padding,
+      insets,
+    );
   });
 
   test('fillViewport asserts against a horizontal scrollDirection', () {

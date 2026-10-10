@@ -134,12 +134,12 @@ String gtPdfSafeText(String value) {
 /// the [theme]. Delivering the finished document to the user — sharing it,
 /// saving it — is [GtPdfReceiptExporter]'s job.
 ///
-/// Spacing is tuned so an ordinary transfer receipt — a details block plus a
-/// sender and a recipient, closed by a footer — lands on a single page, with
-/// one more grid row of headroom before it spills. Longer receipts
-/// still flow onto as many pages as they need: the document is laid out with
-/// `MultiPage`, so a section that will not fit breaks across the page boundary
-/// rather than being clipped.
+/// Spacing is tuned so an ordinary receipt — a details grid of up to ten
+/// entries plus a sender and a recipient, closed by a footer — lands on a
+/// single A4 page, with room left for a value that wraps onto a second line.
+/// Longer receipts still flow onto as many pages as they need: the document is
+/// laid out with `MultiPage`, so a section that will not fit breaks across the
+/// page boundary rather than being clipped.
 ///
 /// Example usage:
 /// ```dart
@@ -163,7 +163,7 @@ class GtPdfReceiptBuilder {
   static const _sectionHeadingGap = 14.0;
 
   /// The gap between the last entry of a section and the next hairline.
-  static const _sectionBottomGap = 40.0;
+  static const _sectionBottomGap = 32.0;
 
   /// The gap between an entry label and its value.
   static const _entryGap = 5.0;
@@ -221,7 +221,8 @@ class GtPdfReceiptBuilder {
         build: (_) => [
           _header(data),
           pw.SizedBox(height: _headerGap),
-          for (final section in data.sections) ..._section(section),
+          for (final (index, section) in data.sections.indexed)
+            ..._section(section, last: index == data.sections.length - 1),
         ],
       ),
     );
@@ -291,7 +292,12 @@ class GtPdfReceiptBuilder {
 
   /// A titled block, preceded by the hairline that separates it from whatever
   /// came before.
-  List<pw.Widget> _section(GtPdfReceiptSection section) {
+  ///
+  /// The [last] section drops the gap that would lead into the next hairline:
+  /// there is none, and empty space at the foot of the document must never be
+  /// what pushes `MultiPage` onto a page of its own, repeating the footer
+  /// beneath nothing.
+  List<pw.Widget> _section(GtPdfReceiptSection section, {required bool last}) {
     return [
       pw.Divider(color: theme.divider, thickness: 0.6, height: 0.6),
       pw.SizedBox(height: _sectionTopGap),
@@ -304,7 +310,7 @@ class GtPdfReceiptBuilder {
         .split => _splitSection(section),
         .grid => _gridSection(section),
       },
-      pw.SizedBox(height: _sectionBottomGap),
+      if (!last) pw.SizedBox(height: _sectionBottomGap),
     ];
   }
 

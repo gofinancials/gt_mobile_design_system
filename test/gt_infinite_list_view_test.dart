@@ -49,6 +49,79 @@ Widget _rows(ScrollController controller, {int count = 40}) {
   );
 }
 
+/// A history that appends a page of [pageSize] rows on every request and
+/// nudges once it has, as a consumer would.
+///
+/// Every page requested is recorded in [requested].
+class _PagedHistory extends StatefulWidget {
+  final ScrollController controller;
+  final List<int> requested;
+  final bool sliver;
+
+  const _PagedHistory({
+    required this.controller,
+    required this.requested,
+    this.sliver = false,
+  });
+
+  static const pageSize = 20;
+  static const pages = 20;
+  static const rowHeight = 60.0;
+
+  @override
+  State<_PagedHistory> createState() => _PagedHistoryState();
+}
+
+class _PagedHistoryState extends State<_PagedHistory> {
+  int _page = 1;
+
+  Future<void> _next(OnPressed nudge) async {
+    widget.requested.add(_page + 1);
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    if (!mounted) return;
+    setState(() => _page++);
+    nudge();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final data = _data(
+      count: _page * _PagedHistory.pageSize,
+      page: _page,
+      pages: _PagedHistory.pages,
+    );
+    final count = data.data.length;
+    Widget row(BuildContext context, int index) {
+      return GtSizedBox(height: _PagedHistory.rowHeight);
+    }
+
+    if (widget.sliver) {
+      return CustomScrollView(
+        controller: widget.controller,
+        slivers: [
+          GtInfiniteListSliver<String>(
+            data: data,
+            onScrollEnd: _next,
+            child: SliverList.builder(itemCount: count, itemBuilder: row),
+          ),
+        ],
+      );
+    }
+
+    return GtInfiniteListView<String>(
+      data: data,
+      controller: widget.controller,
+      onRefresh: () async {},
+      onScrollEnd: _next,
+      child: ListView.builder(
+        controller: widget.controller,
+        itemCount: count,
+        itemBuilder: row,
+      ),
+    );
+  }
+}
+
 void main() {
   testWidgets('GtInfiniteListView requests a page at the end of the extent', (
     tester,
@@ -370,4 +443,48 @@ void main() {
       findsOneWidget,
     );
   });
+  for (final sliver in [false, true]) {
+    final name = sliver ? 'GtInfiniteListSliver' : 'GtInfiniteListView';
+
+    testWidgets('$name nudges without paging on by itself', (tester) async {
+      final controller = ScrollController();
+      addTearDown(controller.dispose);
+      final requested = <int>[];
+
+      await tester.pumpWidget(
+        _ListTestApp(
+          child: _PagedHistory(
+            controller: controller,
+            requested: requested,
+            sliver: sliver,
+          ),
+        ),
+      );
+
+      controller.jumpTo(controller.position.maxScrollExtent);
+      await tester.pump();
+      expect(requested, [2]);
+
+      // Let page two land and the nudge play out.
+      await tester.pump(const Duration(milliseconds: 200));
+      await tester.pump();
+      final settled = controller.offset;
+      await tester.pumpAndSettle();
+
+      // The nudge slid the new page into view...
+      expect(controller.offset, greaterThan(settled));
+      // ...without reaching the threshold that would ask for page three.
+      final position = controller.position;
+      expect(
+        position.maxScrollExtent - position.pixels,
+        greaterThan(kGtScrollEndThreshold),
+      );
+
+      // Nobody touches the screen for a while.
+      await tester.pump(const Duration(seconds: 10));
+      await tester.pumpAndSettle();
+
+      expect(requested, [2]);
+    });
+  }
 }

@@ -264,7 +264,9 @@ class GtSelectionPill<T> extends GtTabPill<T> {
         bgColor: bgColor,
         borderStyle: .none,
         borderRadius: context.borderRadiusMd,
-        textStyle: textStyle ?? context.textStyles.subHeadS(color: textColor),
+        textStyle:
+            textStyle ??
+            context.textStyles.labelS(color: textColor, weight: .w500),
         icon: iconWidget,
         padding: context.insets.symmetricDp(vertical: 4.px, horizontal: 12.px),
         trailing: trailingWidget,

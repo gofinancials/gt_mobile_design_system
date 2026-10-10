@@ -711,7 +711,11 @@ class _FrozenCardOverlay extends GtStatelessWidget {
             "frozen".ctr(),
             style: GtTextStyleOverrides.resolve(
               style,
-              context.textStyles.subHeadXs(color: color, heightPx: lineHeight),
+              context.textStyles.bodyXs(
+                color: color,
+                heightPx: lineHeight,
+                weight: .w500,
+              ),
               textColor,
             ),
             textAlign: .center,

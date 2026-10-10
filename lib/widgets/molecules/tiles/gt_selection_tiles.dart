@@ -49,7 +49,7 @@ class GtMenuListTile<T> extends StatelessWidget {
             Expanded(
               child: GtText(
                 text,
-                style: titleStyle ?? context.textStyles.subHeadS(),
+                style: titleStyle ?? context.textStyles.labelS(weight: .w600),
               ),
             ),
             GtIcon.withColor(
@@ -210,8 +210,9 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
   Widget build(BuildContext context) {
     final textStyles = context.textStyles;
     TextStyle textStyle = textStyles.h7();
-    TextStyle descriptionStyle = textStyles.subHeadS(
+    TextStyle descriptionStyle = textStyles.labelS(
       color: context.palette.text.sub,
+      weight: .w500,
     );
 
     Widget child = Row(
@@ -330,7 +331,7 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
   @override
   Widget build(BuildContext context) {
     final textStyles = context.textStyles;
-    TextStyle textStyle = textStyles.subHeadM();
+    TextStyle textStyle = textStyles.labelM(weight: .w600);
     TextStyle descriptionStyle = textStyles.bodyS(
       color: context.palette.text.sub,
     );
