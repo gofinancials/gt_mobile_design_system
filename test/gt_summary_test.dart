@@ -511,6 +511,75 @@ void main() {
       expect(find.text('SUMMARY'), findsOneWidget);
     });
 
+    testWidgets('the headline style keeps every field of the given body', (
+      tester,
+    ) async {
+      const labelStyle = TextStyle(fontSize: 13);
+      const valueStyle = TextStyle(fontSize: 15);
+      const sectionTitleStyle = TextStyle(fontSize: 11);
+      const amountTextStyle = TextStyle(fontSize: 28);
+      const cardPadding = EdgeInsets.all(12);
+
+      GtSummaryScaffold scaffold(GtSummaryTitleStyle titleStyle) {
+        return GtSummaryScaffold(
+          title: 'Summary',
+          titleStyle: titleStyle,
+          actionLabel: 'Confirm',
+          onAction: () {},
+          body: const GtSummaryBody(
+            amount: '₦20,000.00',
+            sections: transferSections,
+            description: 'Check the details below.',
+            rowSpacing: 24,
+            sectionHeaderSpacing: 8,
+            labelStyle: labelStyle,
+            labelColor: Colors.red,
+            valueStyle: valueStyle,
+            valueColor: Colors.green,
+            sectionTitleStyle: sectionTitleStyle,
+            sectionTitleColor: Colors.blue,
+            amountTextStyle: amountTextStyle,
+            amountColor: Colors.orange,
+            cardBackgroundColor: Colors.yellow,
+            cardPadding: cardPadding,
+            cardSpacing: 16,
+          ),
+        );
+      }
+
+      double rowGap() =>
+          tester.getTopLeft(find.text('From')).dy -
+          tester.getTopLeft(find.text('Transaction Fee')).dy;
+
+      await tester.pumpWidget(buildTestWidget(scaffold(.appBar)));
+      await tester.pumpAndSettle();
+      final appBarGap = rowGap();
+
+      await tester.pumpWidget(buildTestWidget(scaffold(.headline)));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('summary-title')), findsOneWidget);
+
+      final body = tester.widget<GtSummaryBody>(find.byType(GtSummaryBody));
+      expect(body.description, 'Check the details below.');
+      expect(body.rowSpacing, 24);
+      expect(body.sectionHeaderSpacing, 8);
+      expect(body.labelStyle, labelStyle);
+      expect(body.labelColor, Colors.red);
+      expect(body.valueStyle, valueStyle);
+      expect(body.valueColor, Colors.green);
+      expect(body.sectionTitleStyle, sectionTitleStyle);
+      expect(body.sectionTitleColor, Colors.blue);
+      expect(body.amountTextStyle, amountTextStyle);
+      expect(body.amountColor, Colors.orange);
+      expect(body.cardBackgroundColor, Colors.yellow);
+      expect(body.cardPadding, cardPadding);
+      expect(body.cardSpacing, 16);
+
+      // Moving the title must not change how the rows are spaced.
+      expect(rowGap(), appBarGap);
+    });
+
     testWidgets('the back chevron pops the route by default', (tester) async {
       await tester.pumpWidget(
         buildTestWidget(

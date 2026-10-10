@@ -159,19 +159,10 @@ class GtSummaryScaffold extends GtStatelessWidget {
       );
     }
 
-    Widget headlineBody = GtSummaryBody(
-      key: body.key,
-      amount: body.amount,
-      sections: body.sections,
-      controller: body.controller,
-      physics: body.physics,
-      amountStyle: body.amountStyle,
-      amountCaption: body.amountCaption,
-      title: title,
-      description: body.description,
-    );
-
-    Widget content = titleStyle.isHeadline ? headlineBody : body;
+    Widget content = body;
+    if (titleStyle.isHeadline) {
+      content = GtSummaryTitleScope(title: title, child: content);
+    }
     if (isLoading) {
       content = GtSkeleton(
         semanticsLabel: loadingSemanticsLabel,
