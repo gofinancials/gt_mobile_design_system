@@ -14,8 +14,19 @@ PdfColor gtPdfColorOf(Color color) => PdfColor.fromInt(color.toARGB32());
 /// [GtPdfInvoiceBuilder].
 ///
 /// Kept separate from the receipt content so the same data can be rendered
-/// against a light default, an institution's own colours, or the live app
-/// palette via [GtPdfReceiptTheme.fromPalette].
+/// against a light default, an institution's own colours, or an app palette
+/// via [GtPdfReceiptTheme.fromPalette].
+///
+/// Documents are printed, emailed and opened in readers that ignore the app's
+/// appearance, so they are white with dark text unless the caller opts out.
+/// To keep the brand without the mode, theme from the brand's light palette:
+///
+/// ```dart
+/// GtPdfReceiptTheme.fromPalette(context.themeData.lightPalette);
+/// ```
+///
+/// Passing the live `context.palette` instead is the explicit way to make a
+/// document follow dark mode.
 ///
 /// Typefaces are deliberately not configurable. Documents use the `pdf`
 /// package's own default family, which is embedded in every reader and needs no
@@ -117,8 +128,13 @@ class GtPdfReceiptTheme {
   /// The default light theme, matching the design system's receipt spec.
   const GtPdfReceiptTheme.light() : this();
 
-  /// Derives a theme from the live app [palette] so an exported receipt matches
-  /// the screen it was exported from.
+  /// Derives a theme from [palette].
+  ///
+  /// Every colour comes from the palette as given, page included, so a dark
+  /// palette yields a dark document. Pass the brand's light palette
+  /// (`context.themeData.lightPalette`) for the usual white page in the
+  /// brand's colours, and the live `context.palette` only when the document
+  /// should follow the app into dark mode.
   ///
   /// Only colour is taken from the palette; sizes and page geometry keep their
   /// defaults unless overridden.

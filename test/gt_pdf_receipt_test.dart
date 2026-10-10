@@ -476,6 +476,32 @@ void main() {
       expect(theme.pdfTheme.defaultTextStyle.color, theme.textSub);
     });
 
+    test('defaults documents to a white page with dark text', () {
+      for (final theme in [
+        const GtPdfReceiptExporter().builder.theme,
+        const GtPdfInvoiceExporter().builder.theme,
+      ]) {
+        expect(theme.pageColor, PdfColors.white);
+        expect(theme.textStrong.luminance, lessThan(0.1));
+      }
+    });
+
+    test('keeps a white page when themed from a brand light palette', () {
+      final palette = kFlexTheme.lightPalette;
+      final theme = GtPdfReceiptTheme.fromPalette(palette);
+
+      expect(theme.pageColor.luminance, greaterThan(0.9));
+      expect(theme.textStrong.luminance, lessThan(0.1));
+      expect(theme.brand, gtPdfColorOf(palette.primary.base));
+    });
+
+    test('goes dark only when handed a dark palette', () {
+      final theme = GtPdfReceiptTheme.fromPalette(kFlexTheme.darkPalette);
+
+      expect(theme.pageColor.luminance, lessThan(0.1));
+      expect(theme.textStrong.luminance, greaterThan(0.5));
+    });
+
     test('keeps unspecified fields when copied', () {
       const theme = GtPdfReceiptTheme.light();
 

@@ -61,7 +61,7 @@ class _PdfReceiptKnobs {
   final bool showBrandMark;
   final bool showFooter;
   final bool showQr;
-  final bool themeFromPalette;
+  final bool followAppTheme;
   final bool showPreview;
 
   const _PdfReceiptKnobs({
@@ -71,7 +71,7 @@ class _PdfReceiptKnobs {
     required this.showBrandMark,
     required this.showFooter,
     required this.showQr,
-    required this.themeFromPalette,
+    required this.followAppTheme,
     required this.showPreview,
   });
 
@@ -95,8 +95,8 @@ class _PdfReceiptKnobs {
         initialValue: true,
       ),
       showQr: context.knobs.boolean(label: 'Show QR Code', initialValue: true),
-      themeFromPalette: context.knobs.boolean(
-        label: 'Theme From App Palette',
+      followAppTheme: context.knobs.boolean(
+        label: 'Follow App Theme',
         initialValue: false,
       ),
       showPreview: context.knobs.boolean(
@@ -133,9 +133,13 @@ class _PdfReceiptKnobs {
     );
   }
 
+  GtPalette paletteOf(BuildContext context) {
+    if (followAppTheme) return context.palette;
+    return context.themeData.lightPalette;
+  }
+
   GtPdfReceiptExporter buildExporter(BuildContext context) {
-    if (!themeFromPalette) return const GtPdfReceiptExporter();
-    return GtPdfReceiptExporter.fromPalette(context.palette);
+    return GtPdfReceiptExporter.fromPalette(paletteOf(context));
   }
 
   Object get previewKey => (
@@ -145,7 +149,7 @@ class _PdfReceiptKnobs {
     showBrandMark,
     showFooter,
     showQr,
-    themeFromPalette,
+    followAppTheme,
   );
 }
 
@@ -216,7 +220,9 @@ class _PdfReceiptExportPreviewState extends State<_PdfReceiptExportPreview> {
           'to the device. Sharing goes through AppSharePlugin and downloading '
           'through AppFilePlugin, so the suite adds no plugins of its own. '
           'Layout lives in GtPdfReceiptBuilder and styling in '
-          'GtPdfReceiptTheme, which can be derived from the live app palette. '
+          'GtPdfReceiptTheme. Receipts are white with dark text in the '
+          'brand\'s light palette by default; Follow App Theme takes the live '
+          'palette instead, so the page goes dark with the app. '
           'Documents use the PDF standard font family rather than the app '
           'typeface, so they render identically in every reader — at the cost '
           'of being Latin-1 only. The page below is the real document, '
@@ -224,7 +230,9 @@ class _PdfReceiptExportPreviewState extends State<_PdfReceiptExportPreview> {
           'they produce; the suite itself ships no PDF viewer.',
       code:
           '''
-const exporter = GtPdfReceiptExporter();
+final exporter = GtPdfReceiptExporter.fromPalette(
+  ${knobs.followAppTheme ? 'context.palette' : 'context.themeData.lightPalette'},
+);
 
 const data = GtPdfReceiptData(
   title: "${knobs.title}",
@@ -269,10 +277,7 @@ final bytes = await exporter.render(data);''',
           if (knobs.showPreview) ...[
             GalleryPdfPreview(
               render: () => exporter.render(data),
-              cacheKey: (
-                knobs.previewKey,
-                knobs.themeFromPalette ? context.palette : null,
-              ),
+              cacheKey: (knobs.previewKey, knobs.paletteOf(context)),
               height: 800,
               fileName: data.resolvedFileName,
             ),

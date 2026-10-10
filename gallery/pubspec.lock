@@ -689,8 +689,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.0.69"
-      resolved-ref: e5e2dcd34f11eadbf6face2d7adf07709d0cf14b
+      ref: "v0.0.70"
+      resolved-ref: "4f68ea0a12fb14744ffcc67a06a8b8664aa95682"
       url: "https://github.com/gofinancials/gt_mobile_foundation.git"
     source: git
     version: "0.0.1"
