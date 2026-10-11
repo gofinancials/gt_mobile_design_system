@@ -2,22 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:gallery/lib.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
+import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'GtTransferField', type: GtTransferField)
 Widget playgroundGtTransferFieldUseCase(BuildContext context) {
+  final imageType = context.knobs.object.dropdown(
+    label: 'Source drawn as',
+    options: GtTransferParticipantImageType.values,
+    initialOption: GtTransferParticipantImageType.image,
+    labelBuilder: (value) => value.name,
+  );
+  final imageFails = context.knobs.boolean(
+    label: 'Source image fails',
+    initialValue: false,
+  );
+  final passErrorImage = context.knobs.boolean(
+    label: 'Pass errorImage',
+    initialValue: true,
+  );
+
+  final sourceImage = imageFails
+      ? GalleryBrokenImages.url
+      : GtNetworkImages.savings;
+  final sourceImageCode = imageFails
+      ? "'${GalleryBrokenImages.url}'"
+      : 'GtNetworkImages.savings';
+
   return GtWidgetDocPage(
     title: 'GtTransferField',
-    description: 'Documentation for GtTransferField',
-    code: '''
+    description:
+        'Moves money between two participants. When a participant\'s image '
+        'fails, its leg draws errorImage at the same size. Without one, an '
+        'avatar leg falls back to the initials and an image leg to an empty '
+        'space. Turn on "Source image fails" to see this.',
+    code:
+        '''
 GtTransferField(
   amountController: GtInputController(),
   noteController: GtInputController(),
   firstParticipant: GtTransferParticipantData(
     label: "from",
-    image: AppImageData(GtNetworkImages.savings),
+    image: AppImageData($sourceImageCode),
+    imageType: .${imageType.name},${passErrorImage ? '\n    errorImage: AppImageData(GtAssetImages.avatar),' : ''}
     validate: true,
-    name: "My Account",
+    name: "Holiday Stash",
   ),
   secondParticipant: GtTransferParticipantData(
     label: "to",
@@ -33,9 +62,13 @@ GtTransferField(
       noteController: GtInputController(),
       firstParticipant: GtTransferParticipantData(
         label: "from",
-        image: AppImageData(GtNetworkImages.savings),
+        image: AppImageData(sourceImage),
+        imageType: imageType,
+        errorImage: passErrorImage
+            ? const AppImageData(GtAssetImages.avatar)
+            : null,
         validate: true,
-        name: "My Account",
+        name: "Holiday Stash",
       ),
       secondParticipant: GtTransferParticipantData(
         label: "to",

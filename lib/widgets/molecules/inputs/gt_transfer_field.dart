@@ -557,8 +557,18 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
     final titleStyle = style.title2xs(color: palette.text.disabled);
     final hasFooter = footerSuffix.hasValue && balance.hasValue;
     Widget? tag;
+    Widget? errorWidget;
 
     if (data.tag != null) tag = GtImage(image: data.tag!, isDecorative: true);
+
+    if (data.errorImage case AppImageData fallback) {
+      errorWidget = GtImage(
+        image: fallback,
+        width: imageSize,
+        height: imageSize,
+        isDecorative: true,
+      );
+    }
 
     return GtInkWell(
       role: .button,
@@ -579,12 +589,14 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
             width: imageSize,
             height: imageSize,
             isDecorative: true,
+            errorWidget: errorWidget,
           ),
           _ => GtAvatar(
             avatar: data.image,
             size: imageSize,
             initials: data.name.initials,
             tag: tag,
+            errorWidget: errorWidget,
           ),
         },
         subtitle: switch ((balance.hasValue, footerSuffix.hasValue)) {

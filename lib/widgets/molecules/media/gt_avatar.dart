@@ -79,6 +79,16 @@ class GtAvatar extends GtStatelessWidget {
   /// read. Set it to `true` where nothing meaningful sits behind the image.
   final bool showLoadingIndicator;
 
+  /// An optional widget to display if the [avatar] image fails to load.
+  ///
+  /// Drawn in the image's place, clipped to the avatar's shape and laid over
+  /// the [initials].
+  ///
+  /// If null, a failed avatar shows what an empty one would: the [initials]
+  /// when they are set, otherwise the placeholder asset on a user avatar, and
+  /// otherwise the bare background.
+  final Widget? errorWidget;
+
   /// The text style of the [initials].
   ///
   /// Replaces the default outright rather than merging with it, so it also
@@ -105,6 +115,7 @@ class GtAvatar extends GtStatelessWidget {
     this.initials,
     this.isUserAvatar = false,
     this.showLoadingIndicator = false,
+    this.errorWidget,
     this.tag,
     this.tagSize,
     this.showBorder = false,
@@ -139,6 +150,20 @@ class GtAvatar extends GtStatelessWidget {
     // is nothing else to show.
     if (!hasAvatar && !initials.hasValue && isUserAvatar) {
       image = AppImageData(GtAssetImages.avatar);
+    }
+
+    // A failed avatar falls back to what an empty one draws. The initials are
+    // already painted underneath, so only the placeholder asset needs drawing.
+    Widget? fallback = errorWidget;
+
+    if (fallback == null && hasAvatar && !initials.hasValue && isUserAvatar) {
+      fallback = GtImage(
+        image: AppImageData(GtAssetImages.avatar),
+        fit: fit ?? .cover,
+        width: computedSize,
+        height: computedSize,
+        isDecorative: true,
+      );
     }
 
     if (showBorder) {
@@ -189,6 +214,7 @@ class GtAvatar extends GtStatelessWidget {
                   height: computedSize,
                   isDecorative: true,
                   showLoadingIndicator: showLoadingIndicator,
+                  errorWidget: fallback,
                 ),
               ),
             ),

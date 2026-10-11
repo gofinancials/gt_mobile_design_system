@@ -57,8 +57,9 @@ class GtPdfInvoiceBuilder {
   /// The width of the invoice detail labels.
   static const _detailLabelWidth = 140.0;
 
-  /// The width of each party column but the account's.
-  static const _partyWidth = 138.0;
+  /// The width of each party column but the account's, wide enough to keep
+  /// an ordinary email address on one line in the document typeface.
+  static const _partyWidth = 150.0;
 
   /// The width of the items table's description column.
   static const _descriptionWidth = 139.0;
@@ -76,8 +77,11 @@ class GtPdfInvoiceBuilder {
   /// blank line between blocks of a party.
   static const _lineHeight = 14.0;
 
-  /// Builds the document without serialising it.
-  pw.Document build(GtPdfInvoiceData data) {
+  /// Builds the document without serialising it, set in [typeface].
+  ///
+  /// Pass the faces from [GtPdfTypeface.load] to match the design; without
+  /// them the document falls back to the `pdf` package's default family.
+  pw.Document build(GtPdfInvoiceData data, {GtPdfTypeface? typeface}) {
     assert(data.items.hasValue, 'GtPdfInvoiceData requires at least one item');
 
     final document = pw.Document(title: gtPdfSafeText(data.title));
@@ -87,7 +91,7 @@ class GtPdfInvoiceBuilder {
         pageTheme: pw.PageTheme(
           pageFormat: theme.pageFormat,
           margin: const pw.EdgeInsets.only(top: _gutter),
-          theme: theme.pdfTheme,
+          theme: theme.pdfTheme(typeface),
           buildBackground: (_) => pw.FullPage(
             ignoreMargins: true,
             child: pw.Container(color: theme.pageColor),
@@ -114,8 +118,12 @@ class GtPdfInvoiceBuilder {
     return document;
   }
 
-  /// Builds the document and serialises it to bytes ready for export.
-  Future<Uint8List> render(GtPdfInvoiceData data) => build(data).save();
+  /// Builds the document in the design system's [GtPdfTypeface] and
+  /// serialises it to bytes ready for export.
+  Future<Uint8List> render(GtPdfInvoiceData data) async {
+    final typeface = await GtPdfTypeface.load();
+    return build(data, typeface: typeface).save();
+  }
 
   /// Insets [child] from the page's side edges.
   ///

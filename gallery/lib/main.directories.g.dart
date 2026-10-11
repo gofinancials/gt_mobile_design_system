@@ -33,6 +33,8 @@ import 'package:gallery/atoms/media/gt_file_image_usecase.dart'
     as _gallery_atoms_media_gt_file_image_usecase;
 import 'package:gallery/atoms/media/gt_icons.dart'
     as _gallery_atoms_media_gt_icons;
+import 'package:gallery/atoms/media/gt_image_error_fallback_usecase.dart'
+    as _gallery_atoms_media_gt_image_error_fallback_usecase;
 import 'package:gallery/atoms/media/gt_images.dart'
     as _gallery_atoms_media_gt_images;
 import 'package:gallery/atoms/media/gt_media_gallery_usecase.dart'
@@ -629,6 +631,12 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'Central Media Gallery',
                     builder: _gallery_atoms_media_gt_media_gallery_usecase
                         .centralMediaGalleryUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Error fallbacks',
+                    builder:
+                        _gallery_atoms_media_gt_image_error_fallback_usecase
+                            .playgroundImageErrorFallbackUseCase,
                   ),
                   _widgetbook.WidgetbookUseCase(
                     name: 'Images',

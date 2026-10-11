@@ -53,8 +53,66 @@ const _recipientDetails = GtPdfReceiptSection(
   ],
 );
 
+const _facilityDetails = GtPdfReceiptSection(
+  title: "Facility Details",
+  entries: [
+    GtPdfReceiptEntry(label: "Overdraft Limit", value: "500,000.00 NGN"),
+    GtPdfReceiptEntry(label: "Interest Rate", value: "3.5% monthly"),
+    GtPdfReceiptEntry(label: "Tenor", value: "30 days"),
+    GtPdfReceiptEntry(label: "Account number", value: "******5678"),
+  ],
+);
+
+const _agreementLetter = GtPdfReceiptProse(
+  title: "Agreement",
+  paragraphs: [
+    "Dear Olalekan,",
+    "This Overdraft Agreement (\"Agreement\") sets out the terms and "
+        "conditions under which Sterling Bank provides you with an overdraft "
+        "facility on your account. Please read it carefully before accepting.",
+  ],
+);
+
+const _clauses = [
+  GtPdfReceiptProse(
+    heading: "1. Overdraft Facility",
+    paragraphs: [
+      "1.1 The Overdraft allows you to spend or transact beyond your "
+          "available balance, up to the approved limit, subject to the terms "
+          "of this Agreement.",
+      "1.2 The approved limit is set out in the facility details above and "
+          "may be reviewed by us from time to time.",
+    ],
+  ),
+  GtPdfReceiptProse(
+    heading: "2. Fees, Interest, and Charges",
+    paragraphs: [
+      "2.1 You agree to pay all applicable fees, interest, and charges "
+          "associated with the Overdraft. Interest accrues daily on the "
+          "outstanding balance and is charged monthly to your account.",
+    ],
+  ),
+  GtPdfReceiptProse(
+    heading: "3. Repayment",
+    paragraphs: [
+      "3.1 Any funds credited to your account may be applied automatically "
+          "towards repaying the outstanding Overdraft balance.",
+    ],
+  ),
+];
+
+enum _PdfDocumentKind {
+  receipt("Transfer Confirmation"),
+  agreement("Overdraft Agreement");
+
+  const _PdfDocumentKind(this.title);
+
+  final String title;
+}
+
 /// The knobs describing the receipt handed to the exporter.
 class _PdfReceiptKnobs {
+  final _PdfDocumentKind kind;
   final String title;
   final String issuedOn;
   final String fileName;
@@ -65,6 +123,7 @@ class _PdfReceiptKnobs {
   final bool showPreview;
 
   const _PdfReceiptKnobs({
+    required this.kind,
     required this.title,
     required this.issuedOn,
     required this.fileName,
@@ -76,10 +135,18 @@ class _PdfReceiptKnobs {
   });
 
   factory _PdfReceiptKnobs.of(BuildContext context) {
+    final kind = context.knobs.object.dropdown(
+      label: 'Document',
+      options: _PdfDocumentKind.values,
+      initialOption: _PdfDocumentKind.receipt,
+      labelBuilder: (kind) => kind.name,
+    );
+
     return _PdfReceiptKnobs(
+      kind: kind,
       title: context.knobs.string(
         label: 'Document Title',
-        initialValue: 'Transfer Confirmation',
+        initialValue: kind.title,
       ),
       issuedOn: context.knobs.string(
         label: 'Issued On',
@@ -113,7 +180,10 @@ class _PdfReceiptKnobs {
       issuedOnLabel: 'Issued on:',
       fileName: fileName.hasValue ? fileName : null,
       showBrandMark: showBrandMark,
-      sections: const [_transferDetails, _senderDetails, _recipientDetails],
+      sections: switch (kind) {
+        .receipt => const [_transferDetails, _senderDetails, _recipientDetails],
+        .agreement => const [_facilityDetails, _agreementLetter, ..._clauses],
+      },
       footer: showFooter
           ? GtPdfReceiptFooter(
               title: "Sterling Bank Address",
@@ -143,6 +213,7 @@ class _PdfReceiptKnobs {
   }
 
   Object get previewKey => (
+    kind,
     title,
     issuedOn,
     fileName,
@@ -173,9 +244,8 @@ class _PdfReceiptExportPreviewState extends State<_PdfReceiptExportPreview> {
 
   /// Runs [action] with the busy flag raised, reporting failures as a toast.
   ///
-  /// Export can genuinely fail — a cancelled save dialog, or content outside
-  /// the Latin-1 range the standard PDF fonts cover — so nothing here is
-  /// assumed to succeed.
+  /// Export can genuinely fail — a cancelled save dialog, or a write the
+  /// platform refuses — so nothing here is assumed to succeed.
   Future<void> _run(Future<String> Function() action) async {
     if (_busy) return;
     setState(() => _busy = true);
@@ -223,9 +293,13 @@ class _PdfReceiptExportPreviewState extends State<_PdfReceiptExportPreview> {
           'GtPdfReceiptTheme. Receipts are white with dark text in the '
           'brand\'s light palette by default; Follow App Theme takes the live '
           'palette instead, so the page goes dark with the app. '
-          'Documents use the PDF standard font family rather than the app '
-          'typeface, so they render identically in every reader — at the cost '
-          'of being Latin-1 only. The page below is the real document, '
+          'Documents are set in the design system\'s Open Runde, embedded in '
+          'the file, at the weights the design specifies: semibold for the '
+          'title, medium for everything else. Text is limited to Latin-1, '
+          'with currency signs written as codes. Entry sections and '
+          'GtPdfReceiptProse running text mix freely, so the Agreement '
+          'document opens with its facility details and continues in clauses '
+          'set at a reading size. The page below is the real document, '
           'rasterised by the gallery so the knobs can be read against what '
           'they produce; the suite itself ships no PDF viewer.',
       code:
@@ -252,7 +326,15 @@ const data = GtPdfReceiptData(
         GtPdfReceiptEntry(label: "Account number", value: "******5678"),
         GtPdfReceiptEntry(label: "Bank Name", value: "STERLING BANK"),
       ],
-    ),
+    ),${knobs.kind == _PdfDocumentKind.agreement ? '''
+    // Running text sits alongside entry sections.
+    GtPdfReceiptProse(
+      heading: "1. Overdraft Facility",
+      paragraphs: [
+        "1.1 The Overdraft allows you to spend beyond your balance...",
+        "1.2 The approved limit is set out in the facility details above...",
+      ],
+    ),''' : ''}
   ],${knobs.showFooter ? '''
   footer: GtPdfReceiptFooter(
     title: "Sterling Bank Address",

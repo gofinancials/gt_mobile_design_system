@@ -9,6 +9,14 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  late GtPdfTypeface typeface;
+
+  setUpAll(() async {
+    typeface = await GtPdfTypeface.load();
+  });
+
   const data = GtPdfReceiptData(
     title: 'Transfer Confirmation',
     issuedOn: '03.10.2025',
@@ -220,13 +228,34 @@ void main() {
     });
 
     test('resolves the section layout from the presence of a heading', () {
+      final sections = data.sections.whereType<GtPdfReceiptSection>();
+
+      expect(sections.first.resolvedLayout, GtPdfReceiptSectionLayout.grid);
+      expect(sections.last.resolvedLayout, GtPdfReceiptSectionLayout.split);
+    });
+
+    test('compares prose by its title, heading and paragraphs', () {
+      const prose = GtPdfReceiptProse(
+        heading: '1. Overdraft Facility',
+        paragraphs: ['1.1 The Overdraft allows you to spend.'],
+      );
+
       expect(
-        data.sections.first.resolvedLayout,
-        GtPdfReceiptSectionLayout.grid,
+        prose,
+        const GtPdfReceiptProse(
+          heading: '1. Overdraft Facility',
+          paragraphs: ['1.1 The Overdraft allows you to spend.'],
+        ),
       );
       expect(
-        data.sections.last.resolvedLayout,
-        GtPdfReceiptSectionLayout.split,
+        prose,
+        isNot(
+          const GtPdfReceiptProse(
+            title: 'Terms',
+            heading: '1. Overdraft Facility',
+            paragraphs: ['1.1 The Overdraft allows you to spend.'],
+          ),
+        ),
       );
     });
 
@@ -265,6 +294,26 @@ void main() {
       expect(bytes, isNotEmpty);
       expect(looksLikePdf(bytes), isTrue);
     });
+
+    test('sets a rendered receipt in Open Runde', () async {
+      final bytes = await const GtPdfReceiptBuilder().render(data);
+      final source = latin1.decode(bytes);
+
+      expect(source, contains('/BaseFont/OpenRunde-Medium'));
+      expect(source, contains('/BaseFont/OpenRunde-Semibold'));
+      expect(source, isNot(contains('/BaseFont/Helvetica')));
+    });
+
+    test(
+      'falls back to the package default family without a typeface',
+      () async {
+        final bytes = await const GtPdfReceiptBuilder().build(data).save();
+        final source = latin1.decode(bytes);
+
+        expect(source, contains('/BaseFont/Helvetica'));
+        expect(source, isNot(contains('OpenRunde')));
+      },
+    );
 
     test('renders a receipt carrying characters the font cannot set', () async {
       const unsettable = GtPdfReceiptData(
@@ -305,7 +354,10 @@ void main() {
     });
 
     test('lays the reference receipt out on a single page', () async {
-      final document = const GtPdfReceiptBuilder().build(reference);
+      final document = const GtPdfReceiptBuilder().build(
+        reference,
+        typeface: typeface,
+      );
       await document.save();
 
       expect(document.document.pdfPageList.pages, hasLength(1));
@@ -316,6 +368,7 @@ void main() {
       // the two columns — still fit, so the layout is not scraping the page
       // boundary. Those rows are the whole of the margin: a fifth entry
       // starts the next row and spills onto a second page.
+      final details = reference.sections.first as GtPdfReceiptSection;
       final padded = GtPdfReceiptData(
         title: reference.title,
         issuedOn: reference.issuedOn,
@@ -323,9 +376,9 @@ void main() {
         footer: reference.footer,
         sections: [
           GtPdfReceiptSection(
-            title: reference.sections.first.title,
+            title: details.title,
             entries: [
-              ...reference.sections.first.entries,
+              ...details.entries,
               for (var extra = 0; extra < 4; extra++)
                 GtPdfReceiptEntry(label: 'Extra $extra', value: 'Value $extra'),
             ],
@@ -334,7 +387,10 @@ void main() {
         ],
       );
 
-      final document = const GtPdfReceiptBuilder().build(padded);
+      final document = const GtPdfReceiptBuilder().build(
+        padded,
+        typeface: typeface,
+      );
       await document.save();
 
       expect(document.document.pdfPageList.pages, hasLength(1));
@@ -402,7 +458,10 @@ void main() {
         ],
       );
 
-      final document = const GtPdfReceiptBuilder().build(bill);
+      final document = const GtPdfReceiptBuilder().build(
+        bill,
+        typeface: typeface,
+      );
       await document.save();
 
       expect(document.document.pdfPageList.pages, hasLength(1));
@@ -426,7 +485,10 @@ void main() {
         ],
       );
 
-      final document = const GtPdfReceiptBuilder().build(long);
+      final document = const GtPdfReceiptBuilder().build(
+        long,
+        typeface: typeface,
+      );
       await document.save();
 
       expect(document.document.pdfPageList.pages.length, greaterThan(1));
@@ -468,6 +530,78 @@ void main() {
 
       expect(
         () => const GtPdfReceiptBuilder().build(zeroColumns),
+        throwsA(isA<AssertionError>()),
+      );
+    });
+
+    test('renders an agreement mixing entries and running text', () async {
+      const agreement = GtPdfReceiptData(
+        title: 'Overdraft Agreement',
+        issuedOn: '10.10.2026',
+        issuedOnLabel: 'Issued on:',
+        sections: [
+          GtPdfReceiptSection(
+            title: 'Facility Details',
+            entries: [
+              GtPdfReceiptEntry(label: 'Limit', value: '\u20a6500,000.00'),
+              GtPdfReceiptEntry(label: 'Tenor', value: '30 days'),
+            ],
+          ),
+          GtPdfReceiptProse(
+            title: 'Agreement',
+            paragraphs: [
+              'Dear Olalekan,',
+              'This Overdraft Agreement sets out the terms of your facility.',
+            ],
+          ),
+          GtPdfReceiptProse(
+            heading: '1. Overdraft Facility',
+            paragraphs: ['1.1 The Overdraft allows you to spend.'],
+          ),
+        ],
+      );
+
+      final bytes = await const GtPdfReceiptBuilder().render(agreement);
+
+      expect(looksLikePdf(bytes), isTrue);
+    });
+
+    test('breaks running text across pages', () async {
+      const clause =
+          'The Overdraft allows you to spend or transact beyond your '
+          'available balance, up to the approved limit, subject to the terms '
+          'of this Agreement. Interest accrues daily on the outstanding '
+          'balance and is charged monthly to your account.';
+      final agreement = GtPdfReceiptData(
+        title: 'Overdraft Agreement',
+        sections: [
+          for (var index = 1; index <= 9; index++)
+            GtPdfReceiptProse(
+              heading: '$index. Clause',
+              paragraphs: ['$index.1 $clause', '$index.2 $clause $clause'],
+            ),
+          // A single paragraph longer than a page must split, not throw.
+          GtPdfReceiptProse(paragraphs: [List.filled(60, clause).join(' ')]),
+        ],
+      );
+
+      final document = const GtPdfReceiptBuilder().build(
+        agreement,
+        typeface: typeface,
+      );
+      await document.save();
+
+      expect(document.document.pdfPageList.pages.length, greaterThan(2));
+    });
+
+    test('asserts that running text has at least one paragraph', () {
+      const empty = GtPdfReceiptData(
+        title: 'Agreement',
+        sections: [GtPdfReceiptProse(heading: 'Terms', paragraphs: [])],
+      );
+
+      expect(
+        () => const GtPdfReceiptBuilder().build(empty),
         throwsA(isA<AssertionError>()),
       );
     });
@@ -523,25 +657,70 @@ void main() {
       );
     });
 
-    test('inherits the package default font family', () {
+    test('sets copy in the medium face and bold text in the semibold', () {
       const theme = GtPdfReceiptTheme.light();
-      final base = pw.ThemeData.base();
+      final style = theme.pdfTheme(typeface).defaultTextStyle;
 
-      // No typeface is specified anywhere, so text falls through to the
-      // package default rather than to an app font.
+      expect(style.fontNormal, typeface.medium);
+      expect(style.fontBold, typeface.semibold);
       expect(
-        theme.pdfTheme.defaultTextStyle.font?.fontName,
-        base.defaultTextStyle.font?.fontName,
+        style.copyWith(fontWeight: pw.FontWeight.bold).font,
+        typeface.semibold,
       );
-      expect(theme.titleStyle.font, isNull);
-      expect(theme.valueStyle.font, isNull);
+    });
+
+    test('falls back to the package default family without a typeface', () {
+      const theme = GtPdfReceiptTheme.light();
+      final style = theme.pdfTheme().defaultTextStyle;
+
+      expect(style.font?.fontName, pw.Font.helvetica().fontName);
+      expect(style.fontBold?.fontName, pw.Font.helveticaBold().fontName);
+    });
+
+    test('leaves the face to the document theme', () {
+      const theme = GtPdfReceiptTheme.light();
+
+      // Styles carry weight, never a face, so they follow whichever typeface
+      // the document was built with.
+      expect(theme.titleStyle.fontNormal, isNull);
+      expect(theme.valueStyle.fontNormal, isNull);
+      expect(theme.bodyStyle.fontNormal, isNull);
+    });
+
+    test('sets the title semibold and everything else medium', () {
+      const theme = GtPdfReceiptTheme.light();
+
+      expect(theme.titleStyle.fontWeight, pw.FontWeight.bold);
+      expect(theme.footerTitleStyle.fontWeight, pw.FontWeight.bold);
+      for (final style in [
+        theme.subtitleStyle,
+        theme.sectionTitleStyle,
+        theme.headingStyle,
+        theme.labelStyle,
+        theme.valueStyle,
+        theme.bodyStyle,
+        theme.bodyHeadingStyle,
+        theme.footnoteStyle,
+      ]) {
+        expect(style.fontWeight, isNot(pw.FontWeight.bold));
+      }
+    });
+
+    test('sets running text above the size of entry values', () {
+      const theme = GtPdfReceiptTheme.light();
+
+      expect(theme.bodyStyle.fontSize, theme.bodySize);
+      expect(theme.bodySize, greaterThan(theme.valueSize));
+      expect(theme.bodyHeadingStyle.fontSize, theme.bodySize);
+      expect(theme.bodyHeadingStyle.color, theme.textStrong);
     });
 
     test('overrides only size and colour on the default text style', () {
       const theme = GtPdfReceiptTheme.light();
+      final style = theme.pdfTheme(typeface).defaultTextStyle;
 
-      expect(theme.pdfTheme.defaultTextStyle.fontSize, theme.valueSize);
-      expect(theme.pdfTheme.defaultTextStyle.color, theme.textSub);
+      expect(style.fontSize, theme.valueSize);
+      expect(style.color, theme.textSub);
     });
 
     test('defaults documents to a white page with dark text', () {
@@ -573,9 +752,10 @@ void main() {
     test('keeps unspecified fields when copied', () {
       const theme = GtPdfReceiptTheme.light();
 
-      final copy = theme.copyWith(titleSize: 30);
+      final copy = theme.copyWith(titleSize: 30, bodySize: 11);
 
       expect(copy.titleSize, 30);
+      expect(copy.bodySize, 11);
       expect(copy.brand, theme.brand);
       expect(copy.pageFormat, theme.pageFormat);
     });
