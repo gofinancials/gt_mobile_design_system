@@ -687,16 +687,20 @@ void main() {
       expect(theme.bodyStyle.fontNormal, isNull);
     });
 
-    test('sets the title semibold and everything else medium', () {
+    test('sets the title, labels and headings semibold, the rest medium', () {
       const theme = GtPdfReceiptTheme.light();
 
-      expect(theme.titleStyle.fontWeight, pw.FontWeight.bold);
-      expect(theme.footerTitleStyle.fontWeight, pw.FontWeight.bold);
+      for (final style in [
+        theme.titleStyle,
+        theme.footerTitleStyle,
+        theme.headingStyle,
+        theme.labelStyle,
+      ]) {
+        expect(style.fontWeight, pw.FontWeight.bold);
+      }
       for (final style in [
         theme.subtitleStyle,
         theme.sectionTitleStyle,
-        theme.headingStyle,
-        theme.labelStyle,
         theme.valueStyle,
         theme.bodyStyle,
         theme.bodyHeadingStyle,

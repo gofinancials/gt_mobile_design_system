@@ -13,8 +13,9 @@ PdfColor gtPdfColorOf(Color color) => PdfColor.fromInt(color.toARGB32());
 /// The faces a document is typeset in.
 ///
 /// Documents follow the design system's Open Runde, in the two weights the
-/// document specs use: [medium] for running copy, labels and values, and
-/// [semibold] for the title and other emphasised lead-ins. Text styled
+/// document specs use: [medium] for running copy and values, and [semibold]
+/// for the title, entry labels, headings and other emphasised lead-ins. Text
+/// styled
 /// `pw.FontWeight.bold` is set in [semibold]; everything else in [medium].
 ///
 /// The app's own font files are CFF-flavoured OpenType, which the `pdf`
@@ -180,7 +181,7 @@ class GtPdfReceiptTheme {
     this.sectionTitleSize = 12,
     this.headingSize = 10,
     this.labelSize = 10,
-    this.valueSize = 8,
+    this.valueSize = 9,
     this.bodySize = 10,
     this.footerSize = 8,
     this.footnoteSize = 8,
@@ -261,13 +262,21 @@ class GtPdfReceiptTheme {
   pw.TextStyle get sectionTitleStyle =>
       pw.TextStyle(fontSize: sectionTitleSize, color: textSoft);
 
-  /// The style of the emphasised heading inside a split section.
-  pw.TextStyle get headingStyle =>
-      pw.TextStyle(fontSize: headingSize, color: textStrong);
+  /// The style of the emphasised heading inside a split section, such as a
+  /// party name, set bold so it stands apart from the entries beside it.
+  pw.TextStyle get headingStyle => pw.TextStyle(
+    fontSize: headingSize,
+    color: textStrong,
+    fontWeight: pw.FontWeight.bold,
+  );
 
-  /// The style of entry labels.
-  pw.TextStyle get labelStyle =>
-      pw.TextStyle(fontSize: labelSize, color: textStrong);
+  /// The style of entry labels, set bold so each label reads apart from its
+  /// value at a glance.
+  pw.TextStyle get labelStyle => pw.TextStyle(
+    fontSize: labelSize,
+    color: textStrong,
+    fontWeight: pw.FontWeight.bold,
+  );
 
   /// The style of entry values.
   pw.TextStyle get valueStyle =>

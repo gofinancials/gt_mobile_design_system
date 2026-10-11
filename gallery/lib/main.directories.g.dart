@@ -249,6 +249,8 @@ import 'package:gallery/organisms/grids/gt_keypad_grid_usecase.dart'
     as _gallery_organisms_grids_gt_keypad_grid_usecase;
 import 'package:gallery/organisms/headers/gt_page_header.dart'
     as _gallery_organisms_headers_gt_page_header;
+import 'package:gallery/organisms/headers/gt_profile_header_usecase.dart'
+    as _gallery_organisms_headers_gt_profile_header_usecase;
 import 'package:gallery/organisms/headers/gt_section_header_usecase.dart'
     as _gallery_organisms_headers_gt_section_header_usecase;
 import 'package:gallery/organisms/headers/gt_transaction_group_header_usecase.dart'
@@ -2097,6 +2099,34 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtPageHeader.rich',
                     builder: _gallery_organisms_headers_gt_page_header
                         .playgroundGtPageHeaderRichUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtProfileHeader',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtProfileHeader',
+                    builder:
+                        _gallery_organisms_headers_gt_profile_header_usecase
+                            .playgroundGtProfileHeaderUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtProfileHeader with tag',
+                    builder:
+                        _gallery_organisms_headers_gt_profile_header_usecase
+                            .playgroundGtProfileHeaderTagUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtProfileHeroHeader',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtProfileHeroHeader',
+                    builder:
+                        _gallery_organisms_headers_gt_profile_header_usecase
+                            .playgroundGtProfileHeroHeaderUseCase,
                   ),
                 ],
               ),
