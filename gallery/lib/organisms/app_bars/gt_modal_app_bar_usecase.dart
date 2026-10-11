@@ -15,6 +15,13 @@ Widget playgroundGtModalAppBarUseCase(BuildContext context) {
     options: ['standard', 'withLeadingTitleimage', 'extended', 'title'],
     initialOption: 'standard',
   );
+  final titleMiddleEllipsis = context.knobs.boolean(
+    label: 'Title Middle Ellipsis',
+    initialValue: false,
+  );
+  final middleCode = titleMiddleEllipsis
+      ? '\n  titleMiddleEllipsis: true,'
+      : '';
 
   PreferredSizeWidget appBar;
   String modeCode;
@@ -24,11 +31,15 @@ Widget playgroundGtModalAppBarUseCase(BuildContext context) {
       initialValue: true,
     );
     final action = showAction ? GtCancelButton() : null;
-    appBar = GtModalAppBar.title(title: title, action: action);
+    appBar = GtModalAppBar.title(
+      title: title,
+      action: action,
+      titleMiddleEllipsis: titleMiddleEllipsis,
+    );
     modeCode =
         '''GtModalAppBar.title(
   title: "$title",
-  action: ${showAction ? 'GtCancelButton()' : 'null'},
+  action: ${showAction ? 'GtCancelButton()' : 'null'},$middleCode
 )''';
   } else if (mode == 'extended') {
     final displayTitle = context.knobs.boolean(
@@ -39,11 +50,12 @@ Widget playgroundGtModalAppBarUseCase(BuildContext context) {
       title: title,
       action: GtIconButton(icon: GtIcons.spark, onPressed: () {}),
       style: displayTitle ? context.textStyles.h5(heightPx: 24) : null,
+      titleMiddleEllipsis: titleMiddleEllipsis,
     );
     modeCode =
         '''GtModalAppBar.extended(
   title: "$title",
-  action: GtIconButton(icon: GtIcons.spark, onPressed: () {}),${displayTitle ? '\n  style: context.textStyles.h5(heightPx: 24),' : ''}
+  action: GtIconButton(icon: GtIcons.spark, onPressed: () {}),${displayTitle ? '\n  style: context.textStyles.h5(heightPx: 24),' : ''}$middleCode
 )''';
   } else if (mode == 'withLeadingTitleimage') {
     appBar = GtModalAppBar.withLeadingTitleimage(
@@ -53,6 +65,7 @@ Widget playgroundGtModalAppBarUseCase(BuildContext context) {
         height: 24,
         width: 24,
       ),
+      titleMiddleEllipsis: titleMiddleEllipsis,
     );
     modeCode =
         '''GtModalAppBar.withLeadingTitleimage(
@@ -61,13 +74,16 @@ Widget playgroundGtModalAppBarUseCase(BuildContext context) {
     "https://res.cloudinary.com/jesse-dirisu/image/upload/v1530348058/samples/cloudinary-icon.png",
     height: 24,
     width: 24,
-  ),
+  ),$middleCode
 )''';
   } else {
-    appBar = GtModalAppBar(title: title);
+    appBar = GtModalAppBar(
+      title: title,
+      titleMiddleEllipsis: titleMiddleEllipsis,
+    );
     modeCode =
         '''GtModalAppBar(
-  title: "$title",
+  title: "$title",$middleCode
 )''';
   }
 

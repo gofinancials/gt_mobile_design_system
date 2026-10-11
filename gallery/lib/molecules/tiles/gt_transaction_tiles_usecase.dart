@@ -166,6 +166,10 @@ Widget playgroundGtTransactionParticipantListTileUseCase(BuildContext context) {
     label: 'Superscript',
     initialValue: 'TO',
   );
+  final titleMiddleEllipsis = context.knobs.boolean(
+    label: 'Title Middle Ellipsis',
+    initialValue: false,
+  );
 
   return GtWidgetDocPage(
     title: 'GtTransactionParticipantListTile',
@@ -178,7 +182,7 @@ GtTransactionParticipantListTile(
   subtitle: "$subtitle",
   superscript: "$superscript",
   leading: GtAvatar(initials: "AL"),
-  trailing: GtIcon(GtIcons.chevronRight),
+  trailing: GtIcon(GtIcons.chevronRight),${titleMiddleEllipsis ? '\n  titleMiddleEllipsis: true,' : ''}
 )''',
     child: Center(
       child: GtCard(
@@ -190,6 +194,7 @@ GtTransactionParticipantListTile(
           superscript: superscript.isEmpty ? null : superscript,
           leading: const GtAvatar(initials: "AL"),
           trailing: const GtIcon(GtIcons.chevronRight),
+          titleMiddleEllipsis: titleMiddleEllipsis,
         ),
       ),
     ),

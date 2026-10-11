@@ -13,12 +13,21 @@ class GtTitleAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// Whether the app bar should automatically add a trailing cancel button if none is provided and the route can pop.
   final bool implyTrailing;
 
+  /// Whether a title too long for its space is shortened from the middle,
+  /// keeping its head and tail, rather than clipped at its end. Defaults to
+  /// false.
+  ///
+  /// Set it for titles whose end tells screens apart, such as a recipient's
+  /// name followed by their account number. See [GtText.middleEllipsis].
+  final bool titleMiddleEllipsis;
+
   /// Creates a [GtTitleAppBar].
   const GtTitleAppBar({
     required this.title,
     this.trailing,
     super.key,
     this.implyTrailing = true,
+    this.titleMiddleEllipsis = false,
   }) : assert(title.length > 0);
 
   bool get _hasTrailing => trailing?.hasValue ?? false;
@@ -47,6 +56,7 @@ class GtTitleAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 title.upper,
                 style: context.textStyles.h5(),
                 maxLines: 1,
+                middleEllipsis: titleMiddleEllipsis,
                 headingLevel: 1,
               ),
             ),

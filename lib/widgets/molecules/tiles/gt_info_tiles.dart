@@ -816,6 +816,15 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   /// Defaults to false.
   final bool fitColumnsToContent;
 
+  /// Whether a [value] too long for its column is shortened from the middle,
+  /// keeping its head and tail, rather than from the end. Defaults to false.
+  ///
+  /// Set it for values whose end carries their meaning, such as an account
+  /// number or an IBAN. See [GtText.middleEllipsis]. Like the end ellipsis,
+  /// it has no effect under [fitColumnsToContent], where the value column is
+  /// not width-constrained.
+  final bool valueMiddleEllipsis;
+
   /// Creates a [GtDoubleColumnListTile].
   const GtDoubleColumnListTile(
     this.label, {
@@ -832,6 +841,7 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     this.labelTextStyle,
     this.padding,
     this.fitColumnsToContent = false,
+    this.valueMiddleEllipsis = false,
   }) : assert(
          highlightValue || (valueTextStyle == null && labelTextStyle == null),
          'valueTextStyle and labelTextStyle must be null if highlightValue is false',
@@ -880,6 +890,7 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
             textAlign: TextAlign.end,
             overflow: .ellipsis,
             maxLines: valueMaxLines,
+            middleEllipsis: valueMiddleEllipsis,
           ),
         ),
         ?valueSuffix,

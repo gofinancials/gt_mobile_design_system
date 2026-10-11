@@ -141,6 +141,7 @@ class _GtSummaryColumnsTile extends GtStatelessWidget {
         valueColor,
       ),
       valueMaxLines: 1,
+      valueMiddleEllipsis: tile.middleEllipsis,
     );
   }
 }

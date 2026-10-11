@@ -21,6 +21,11 @@ Widget playgroundGtTransferFieldUseCase(BuildContext context) {
     label: 'Pass errorImage',
     initialValue: true,
   );
+  final middleEllipsis = context.knobs.boolean(
+    label: 'Middle Ellipsis',
+    initialValue: false,
+  );
+  final middleCode = middleEllipsis ? '\n    middleEllipsis: true,' : '';
 
   final sourceImage = imageFails
       ? GalleryBrokenImages.url
@@ -46,13 +51,13 @@ GtTransferField(
     image: AppImageData($sourceImageCode),
     imageType: .${imageType.name},${passErrorImage ? '\n    errorImage: AppImageData(GtAssetImages.avatar),' : ''}
     validate: true,
-    name: "Holiday Stash",
+    name: "Holiday Stash",$middleCode
   ),
   secondParticipant: GtTransferParticipantData(
     label: "to",
     image: AppImageData(GtNetworkImages.sampleAvatar1),
     validate: false,
-    name: "Savings Account",
+    name: "Savings Account",$middleCode
   ),
   noteHint: "What is this for?",
 )
@@ -69,12 +74,14 @@ GtTransferField(
             : null,
         validate: true,
         name: "Holiday Stash",
+        middleEllipsis: middleEllipsis,
       ),
       secondParticipant: GtTransferParticipantData(
         label: "to",
         image: AppImageData(GtNetworkImages.sampleAvatar1),
         validate: false,
         name: "Savings Account",
+        middleEllipsis: middleEllipsis,
       ),
       noteHint: "What is this for?",
     ),
@@ -86,9 +93,18 @@ GtInputController target = GtInputController();
 
 @widgetbook.UseCase(name: 'GtFxTransferField', type: GtFxTransferField)
 Widget playgroundGtFxTransferFieldUseCase(BuildContext context) {
+  final middleEllipsis = context.knobs.boolean(
+    label: 'Middle Ellipsis',
+    initialValue: false,
+  );
+  final middleCode = middleEllipsis ? '\n    middleEllipsis: true,' : '';
+
   return GtWidgetDocPage(
     title: 'GtFxTransferField',
-    description: 'Documentation for GtFxTransferField',
+    description:
+        'Moves money between two currencies. The source account\'s name ends '
+        'in its number, which an end ellipsis cuts off in the narrow swap '
+        'layout; turn on "Middle Ellipsis" to keep it.',
     code:
         '''
 GtFxTransferField(
@@ -124,7 +140,7 @@ GtFxTransferField(
     validate: true,
     name: "usd account · 1020293939",
     balance: 200015,
-    currency: AppStrings.dollar,
+    currency: AppStrings.dollar,$middleCode
   ),
   secondParticipant: GtTransferParticipantData(
     label: "to",
@@ -185,6 +201,7 @@ GtFxTransferField(
         name: "usd account · 1020293939",
         balance: 200015,
         currency: AppStrings.dollar,
+        middleEllipsis: middleEllipsis,
       ),
       secondParticipant: GtTransferParticipantData(
         label: "to",

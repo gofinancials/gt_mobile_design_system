@@ -15,6 +15,10 @@ Widget playgroundGtTitleAppBarUseCase(BuildContext context) {
     label: 'Custom Trailing Actions',
     initialValue: false,
   );
+  final titleMiddleEllipsis = context.knobs.boolean(
+    label: 'Title Middle Ellipsis',
+    initialValue: false,
+  );
 
   return GtWidgetDocPage(
     title: 'GtTitleAppBar',
@@ -24,7 +28,7 @@ Widget playgroundGtTitleAppBarUseCase(BuildContext context) {
         '''
 GtTitleAppBar(
   title: "$title",
-  implyTrailing: $implyTrailing,
+  implyTrailing: $implyTrailing,${titleMiddleEllipsis ? '\n  titleMiddleEllipsis: true,' : ''}
   ${hasTrailing ? '''trailing: GtOptionalWidgetPair(
     head: GtIconButton(icon: GtIcons.spark, onPressed: () {}),
     tail: GtIconButton(icon: GtIcons.bell, onPressed: () {}),
@@ -33,6 +37,7 @@ GtTitleAppBar(
     child: GtTitleAppBar(
       title: title,
       implyTrailing: implyTrailing,
+      titleMiddleEllipsis: titleMiddleEllipsis,
       trailing: hasTrailing
           ? GtOptionalWidgetPair(
               head: GtIconButton(icon: GtIcons.spark, onPressed: () {}),

@@ -56,6 +56,13 @@ class GtTransferParticipantData<T> extends AppEquatable {
   /// Called when the leg is tapped, typically to pick a different participant.
   final OnPressed? onTap;
 
+  /// Whether a title too long for the leg is shortened from the middle,
+  /// keeping its head and tail, rather than from the end. Defaults to false.
+  ///
+  /// Set it when the [name] ends in what tells participants apart, such as an
+  /// account number. See [GtText.middleEllipsis].
+  final bool middleEllipsis;
+
   /// Creates a [GtTransferParticipantData].
   const GtTransferParticipantData({
     this.name,
@@ -69,6 +76,7 @@ class GtTransferParticipantData<T> extends AppEquatable {
     this.errorImage,
     this.tag,
     this.onTap,
+    this.middleEllipsis = false,
   });
 
   /// Creates a leg with no participant chosen yet, drawn as a dashed
@@ -88,8 +96,8 @@ class GtTransferParticipantData<T> extends AppEquatable {
 
   /// Returns a copy of this data with the given fields replaced.
   ///
-  /// Every field is carried over unless replaced, including [tag] and
-  /// [onTap].
+  /// Every field is carried over unless replaced, including [tag],
+  /// [onTap] and [middleEllipsis].
   GtTransferParticipantData<T> copyWith({
     String? name,
     double? balance,
@@ -103,6 +111,7 @@ class GtTransferParticipantData<T> extends AppEquatable {
     String? currency,
     bool? validate,
     OnPressed? onTap,
+    bool? middleEllipsis,
   }) {
     return GtTransferParticipantData<T>(
       name: name ?? this.name,
@@ -116,6 +125,7 @@ class GtTransferParticipantData<T> extends AppEquatable {
       currency: currency ?? this.currency,
       validate: validate ?? this.validate,
       onTap: onTap ?? this.onTap,
+      middleEllipsis: middleEllipsis ?? this.middleEllipsis,
     );
   }
 
@@ -140,5 +150,6 @@ class GtTransferParticipantData<T> extends AppEquatable {
     imageType,
     currency,
     validate,
+    middleEllipsis,
   ];
 }

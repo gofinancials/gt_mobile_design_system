@@ -764,6 +764,11 @@ final directories = <_widgetbook.WidgetbookNode>[
                     builder: _gallery_atoms_typography_gt_text
                         .playgroundGtTextUseCase,
                   ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Middle ellipsis',
+                    builder: _gallery_atoms_typography_gt_text
+                        .playgroundGtTextMiddleEllipsisUseCase,
+                  ),
                 ],
               ),
             ],

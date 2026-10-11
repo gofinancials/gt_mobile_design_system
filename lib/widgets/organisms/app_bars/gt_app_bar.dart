@@ -57,6 +57,14 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// The size of the back button.
   final GtBackButtonSize backButtonSize;
 
+  /// Whether a title too long for its two lines is shortened from the middle,
+  /// keeping its head and tail, rather than clipped at the end of its second
+  /// line. Defaults to false.
+  ///
+  /// Set it for titles whose end tells screens apart, such as a recipient's
+  /// name followed by their account number. See [GtText.middleEllipsis].
+  final bool titleMiddleEllipsis;
+
   /// Creates a [GtAppBar].
   const GtAppBar({
     this.leading,
@@ -68,6 +76,7 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     this.backButtonSize = .large,
     this.heroTag,
     this.titleColor,
+    this.titleMiddleEllipsis = false,
   });
 
   bool get _hasLeading => leading != null;
@@ -110,6 +119,7 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 style: titleSize.getStyle(context, color: titleColor),
                 textAlign: .center,
                 maxLines: 2,
+                middleEllipsis: titleMiddleEllipsis,
                 // The screen's own title, and the anchor a screen reader user
                 // jumps to when moving by heading.
                 headingLevel: 1,

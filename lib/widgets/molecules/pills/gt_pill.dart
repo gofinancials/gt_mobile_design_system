@@ -289,6 +289,7 @@ class _GtPillContent extends GtStatelessWidget {
             maxLines: 1,
             overflow: .ellipsis,
             semanticsLabel: semanticsLabel,
+            middleEllipsis: true,
             style: textStyle,
           ),
         ),

@@ -611,6 +611,7 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
         },
         subStyle: footerStyle,
         maxLines: maxLines,
+        titleMiddleEllipsis: data.middleEllipsis,
       ),
     );
   }

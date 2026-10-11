@@ -118,9 +118,10 @@ class GtActionButtonBar extends GtStatelessWidget {
   ///
   /// Its tile — [GtActionButton.size], or [GtActionButton.minTapTargetSize]
   /// when that is null — must be no wider than the slot. Its caption, set in
-  /// [GtActionButton.labelStyle] or else [GtTextStyles.bodyXs] at weight 500
-  /// and the ambient text scale, must wrap into the slot within [_maxCaptionLines]
-  /// lines without breaking its longest word.
+  /// [GtActionButton.labelStyle] or else [GtTextStyles.bodyXs] at weight 500,
+  /// and measured by [GtTextFit.of] as the caption's [Text] would draw it,
+  /// must wrap into the slot within [_maxCaptionLines] lines without breaking
+  /// its longest word.
   ///
   /// *Note: the caption fallbacks mirror [GtActionButton]'s own, so keep the
   /// two in step. A mismatch only misjudges which layout to pick: the fitted
@@ -130,21 +131,13 @@ class GtActionButtonBar extends GtStatelessWidget {
     if (tile > slot) return false;
 
     if (button.label case String label) {
-      final painter = TextPainter(
-        text: TextSpan(
-          text: label,
-          style: button.labelStyle ?? context.textStyles.bodyXs(weight: .w500),
-        ),
-        textDirection: Directionality.of(context),
-        textScaler: MediaQuery.textScalerOf(context),
+      final fit = GtTextFit.of(
+        context,
+        style: button.labelStyle ?? context.textStyles.bodyXs(weight: .w500),
         maxLines: _maxCaptionLines,
-      )..layout();
-      // Read before narrowing: once a word has to break to fit the width, the
-      // engine reports the width of its fragments rather than of the word.
-      final longestWord = painter.minIntrinsicWidth;
-      painter.layout(maxWidth: slot);
-      final fits = longestWord <= slot && !painter.didExceedMaxLines;
-      painter.dispose();
+      );
+      final fits = fit.fits(label, slot, wholeWords: true);
+      fit.dispose();
       return fits;
     }
 

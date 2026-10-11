@@ -554,6 +554,14 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// Optional horizontal spacing override.
   final double? horizontalSpacing;
 
+  /// Whether a [title] too long for its space is shortened from the middle,
+  /// keeping its head and tail, rather than from the end. Defaults to false.
+  ///
+  /// Set it for titles whose end carries their meaning, such as an account
+  /// name followed by its number. See [GtText.middleEllipsis]. With a null
+  /// [maxLines] the title is then held to one line.
+  final bool titleMiddleEllipsis;
+
   /// Creates a [GtTransactionParticipantListTile].
   const GtTransactionParticipantListTile(
     this.title, {
@@ -569,6 +577,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
     this.maxLines,
     this.subSpacer,
     this.horizontalSpacing,
+    this.titleMiddleEllipsis = false,
   });
 
   @override
@@ -603,6 +612,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
                 style: titleStyle ?? style.buttonS(),
                 maxLines: maxLines,
                 overflow: maxLines != null ? .ellipsis : null,
+                middleEllipsis: titleMiddleEllipsis,
               ),
               if (subtitle.hasValue) ...[
                 subSpacer ?? const GtGap.ySm(),
