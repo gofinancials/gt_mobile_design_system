@@ -62,6 +62,10 @@ class GtTextField<T> extends GtStatefulWidget {
   final int? maxLines;
 
   /// The minimum number of lines the text field should occupy.
+  ///
+  /// Always 1 on the default constructor. [GtTextField.multiline] takes it, so
+  /// a note box can open several lines tall before anything is typed; the
+  /// height then follows the text style and the customer's text scale.
   final int? minLines;
 
   /// The maximum number of characters the text field can accept.
@@ -123,7 +127,9 @@ class GtTextField<T> extends GtStatefulWidget {
 
   /// Creates a [GtTextField] optimized for multiline input.
   ///
-  /// Sets the [keyboardType] to [TextInputType.multiline] and defaults to 1 minimum line.
+  /// Sets the [keyboardType] to [TextInputType.multiline]. The field opens
+  /// [minLines] tall, one line by default, and grows with the text up to
+  /// [maxLines], or without limit when that is null.
   const GtTextField.multiline({
     super.key,
     this.semanticsLabel,
@@ -149,9 +155,14 @@ class GtTextField<T> extends GtStatefulWidget {
     this.autofillHints,
     this.shakeController,
     this.maxLines,
+    int this.minLines = 1,
     this.autovalidateMode = AutovalidateMode.disabled,
   }) : keyboardType = TextInputType.multiline,
-       minLines = 1;
+       assert(minLines > 0, 'minLines must be at least 1'),
+       assert(
+         maxLines == null || maxLines >= minLines,
+         'maxLines must not be less than minLines',
+       );
 
   @override
   State<GtTextField> createState() => _GtTextFieldState();

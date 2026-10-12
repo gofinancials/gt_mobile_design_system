@@ -36,6 +36,10 @@ class GtEmptyState extends GtStatelessWidget {
   /// The callback to execute when the call-to-action button is pressed.
   final OnPressed? onActionPressed;
 
+  /// An optional icon drawn before [actionText] on the call-to-action button,
+  /// such as a plus on a "New invoice" action.
+  final IconData? actionLeading;
+
   /// The visual variant of the call-to-action button.
   final GtButtonVariant? buttonVariant;
 
@@ -68,6 +72,7 @@ class GtEmptyState extends GtStatelessWidget {
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
     this.actionText,
     this.onActionPressed,
+    this.actionLeading,
     this.buttonVariant,
     this.alignment,
     this.titleCase = .upper,
@@ -90,6 +95,7 @@ class GtEmptyState extends GtStatelessWidget {
       alignment: alignment ?? .center,
       gapToDescription: gapToSubtitle,
       actionText: actionText,
+      actionLeading: actionLeading,
       onActionPressed: onActionPressed,
       actionVariant: buttonVariant,
       actionSize: .xsmall,
