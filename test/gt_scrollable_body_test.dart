@@ -408,6 +408,51 @@ void main() {
     );
   });
 
+  testWidgets('a focused field keeps the keyboard up as the inset moves', (
+    tester,
+  ) async {
+    _fakeNavBar(tester);
+    tester.view.viewPadding = const FakeViewPadding(bottom: _navBarInset);
+
+    for (final fillViewport in [false, true]) {
+      await tester.pumpWidget(
+        GtThemeProvider(
+          theme: kPersonalTheme,
+          child: MaterialApp(
+            home: Scaffold(
+              body: GtScrollableBody(
+                fillViewport: fillViewport,
+                child: const GtTextField(label: 'Invoice note'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byType(EditableText));
+      await tester.pump();
+      expect(tester.testTextInput.isVisible, isTrue);
+
+      // As the keyboard opens, Flutter moves the bottom padding into the view
+      // insets. A child remounted by that loses its input connection while
+      // its focus node keeps focus, so the keyboard drops straight back.
+      tester.view.viewInsets = const FakeViewPadding(bottom: 300);
+      tester.view.padding = FakeViewPadding.zero;
+      await tester.pumpAndSettle();
+
+      expect(
+        tester.testTextInput.isVisible,
+        isTrue,
+        reason: 'fillViewport: $fillViewport',
+      );
+
+      // Back to a closed keyboard over the navigation bar for the next pass.
+      await tester.pumpWidget(const SizedBox());
+      tester.view.viewInsets = FakeViewPadding.zero;
+      tester.view.padding = const FakeViewPadding(bottom: _navBarInset);
+    }
+  });
+
   test('fillViewport asserts against a horizontal scrollDirection', () {
     expect(
       () => GtScrollableBody(

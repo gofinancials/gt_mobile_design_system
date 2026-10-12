@@ -159,29 +159,28 @@ class GtScrollableBody extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    EdgeInsetsGeometry insets = padding ?? context.insets.defaultAllInsets;
-    Widget content = child;
+    final insets = padding ?? context.insets.defaultAllInsets;
+    EdgeInsets deviceInset = .zero;
 
-    double deviceInset = 0;
     if (scrollDirection == .vertical) {
-      deviceInset = context.mediaQueryData.bottomPadding;
-    }
-    if (deviceInset > 0) {
       // Device pixels, so a raw EdgeInsets: GtInsets would scale them as dp.
-      insets = insets.add(EdgeInsets.only(bottom: deviceInset));
-      content = MediaQuery.removePadding(
-        context: context,
-        removeBottom: true,
-        child: content,
-      );
+      deviceInset = .only(bottom: context.mediaQueryData.bottomPadding);
     }
+    // Always wrapped, even when there is no padding to remove: a wrapper that
+    // came and went with the inset would remount the child as the keyboard
+    // opens, closing a focused field's input connection.
+    final content = MediaQuery.removePadding(
+      context: context,
+      removeBottom: scrollDirection == .vertical,
+      child: child,
+    );
 
     if (!fillViewport) {
       return SingleChildScrollView(
         scrollDirection: scrollDirection,
         controller: controller,
         physics: physics,
-        padding: insets,
+        padding: insets.add(deviceInset),
         clipBehavior: clipBehavior,
         child: content,
       );
@@ -206,7 +205,7 @@ class GtScrollableBody extends GtStatelessWidget {
             // then part of the height being filled, so a short body measures
             // exactly one viewport and does not scroll by its own gutter.
             child: IntrinsicHeight(
-              child: Padding(padding: insets, child: content),
+              child: Padding(padding: insets.add(deviceInset), child: content),
             ),
           ),
         );
