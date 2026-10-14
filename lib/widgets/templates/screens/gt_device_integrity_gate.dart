@@ -53,7 +53,8 @@ class GtDeviceIntegrityGate extends GtStatefulWidget {
 }
 
 class _GtDeviceIntegrityGateState extends State<GtDeviceIntegrityGate> {
-  AppDeviceIntegrityVerdict? _verdict;
+  /// Null until the first check answers.
+  final ValueNotifier<AppDeviceIntegrityVerdict?> _verdict = .new(null);
 
   @override
   void initState() {
@@ -67,41 +68,52 @@ class _GtDeviceIntegrityGateState extends State<GtDeviceIntegrityGate> {
     if (oldWidget.enforced != widget.enforced) _check();
   }
 
+  @override
+  void dispose() {
+    _verdict.dispose();
+    super.dispose();
+  }
+
   Future<void> _check() async {
     final verdict = await widget.service.evaluate(enforced: widget.enforced);
     if (!mounted) return;
-    setState(() => _verdict = verdict);
+    _verdict.value = verdict;
   }
 
   @override
   Widget build(BuildContext context) {
-    final checked = _verdict != null;
-    final blocked = _verdict?.isBlocked ?? false;
+    return GenericListener<AppDeviceIntegrityVerdict?>(
+      valueListenable: _verdict,
+      builder: (verdict) {
+        final checked = verdict != null;
+        final blocked = verdict?.isBlocked ?? false;
 
-    return Stack(
-      fit: .expand,
-      children: [
-        Offstage(
-          offstage: !checked,
-          child: blocked ? const SizedBox.shrink() : widget.child,
-        ),
-        if (!checked)
-          const Scaffold(body: Center(child: GtSpinner()))
-        else if (blocked)
-          Scaffold(
-            body: SafeArea(
-              child: Padding(
-                padding: context.insets.defaultHorizontalInsets,
-                child: GtStatusState.error(
-                  title: widget.blockedTitle,
-                  subtitle: widget.blockedSubtitle,
-                  actionLabel: widget.exitLabel,
-                  onActionPressed: widget.onExit,
+        return Stack(
+          fit: .expand,
+          children: [
+            Offstage(
+              offstage: !checked,
+              child: blocked ? const SizedBox.shrink() : widget.child,
+            ),
+            if (!checked)
+              const Scaffold(body: Center(child: GtSpinner()))
+            else if (blocked)
+              Scaffold(
+                body: SafeArea(
+                  child: Padding(
+                    padding: context.insets.defaultHorizontalInsets,
+                    child: GtStatusState.error(
+                      title: widget.blockedTitle,
+                      subtitle: widget.blockedSubtitle,
+                      actionLabel: widget.exitLabel,
+                      onActionPressed: widget.onExit,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
