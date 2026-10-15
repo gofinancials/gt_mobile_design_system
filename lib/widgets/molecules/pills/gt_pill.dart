@@ -121,7 +121,7 @@ class GtPill extends GtStatelessWidget {
   final Widget? trailing;
 
   /// The internal padding of the pill. Defaults to 4 pixels on all sides if not provided.
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// The fill or background color of the pill's container.
   final Color bgColor;

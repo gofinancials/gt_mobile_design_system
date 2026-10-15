@@ -94,6 +94,83 @@ void main() {
     expect(find.byType(GtPill), findsOneWidget);
   });
 
+  group('GtButtonPill styling', () {
+    const red = Color(0xFFFF0000);
+    const blue = Color(0xFF0000FF);
+
+    TextStyle labelStyleOf(WidgetTester tester) =>
+        tester.widget<GtText>(find.byType(GtText)).style!;
+
+    EdgeInsetsGeometry paddingOf(WidgetTester tester) => tester
+        .widget<AnimatedContainer>(find.byType(AnimatedContainer))
+        .padding!;
+
+    testWidgets('defaults to buttonXs in the variant colour', (tester) async {
+      await tester.pumpWidget(
+        const _PillTestApp(
+          child: GtButtonPill(text: 'Add', variant: .primary),
+        ),
+      );
+      final context = tester.element(find.byType(GtButtonPill));
+      final style = labelStyleOf(tester);
+
+      expect(style.fontSize, context.textStyles.buttonXs().fontSize);
+      expect(style.color, GtPillVariant.primary.getTextColor(context.palette));
+    });
+
+    testWidgets('a custom style takes the variant colour', (tester) async {
+      await tester.pumpWidget(
+        _PillTestApp(
+          child: Builder(
+            builder: (context) => GtButtonPill(
+              text: 'Add',
+              variant: .primary,
+              textStyle: context.textStyles.button2s(),
+            ),
+          ),
+        ),
+      );
+      final context = tester.element(find.byType(GtButtonPill));
+      final style = labelStyleOf(tester);
+
+      expect(style.fontSize, context.textStyles.button2s().fontSize);
+      expect(style.color, GtPillVariant.primary.getTextColor(context.palette));
+    });
+
+    testWidgets('textColor overrides the style colour', (tester) async {
+      await tester.pumpWidget(
+        const _PillTestApp(
+          child: GtButtonPill(
+            text: 'Add',
+            icon: Icons.add,
+            textStyle: TextStyle(color: red),
+            textColor: blue,
+          ),
+        ),
+      );
+
+      expect(labelStyleOf(tester).color, blue);
+      expect(tester.widget<Icon>(find.byType(Icon)).color, blue);
+    });
+
+    testWidgets('padding overrides the size padding', (tester) async {
+      const padding = EdgeInsets.symmetric(horizontal: 6, vertical: 4);
+
+      await tester.pumpWidget(
+        const _PillTestApp(child: GtButtonPill(text: 'Add')),
+      );
+      final context = tester.element(find.byType(GtButtonPill));
+      expect(paddingOf(tester), context.insets.allDp(6.px));
+
+      await tester.pumpWidget(
+        const _PillTestApp(
+          child: GtButtonPill(text: 'Add', padding: padding),
+        ),
+      );
+      expect(paddingOf(tester), padding);
+    });
+  });
+
   testWidgets('pill supports a custom semantic label', (tester) async {
     await tester.pumpWidget(
       const _PillTestApp(
