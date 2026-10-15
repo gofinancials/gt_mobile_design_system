@@ -56,6 +56,94 @@ void main() {
     );
   }
 
+  // Personal's page frames: a 44 status bar, then the 32 header row at y 68.
+  Future<void> pumpRoutedBar(
+    WidgetTester tester,
+    PreferredSizeWidget bar,
+  ) async {
+    tester.view.physicalSize = const Size(375, 812);
+    tester.view.devicePixelRatio = 1;
+    tester.view.padding = const FakeViewPadding(top: 44);
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(
+      GtThemeProvider(
+        theme: kPersonalTheme,
+        child: MaterialApp(
+          home: Scaffold(
+            appBar: bar,
+            body: const SizedBox.expand(key: Key('body')),
+          ),
+        ),
+      ),
+    );
+  }
+
+  group('primary app bars', () {
+    final bars = <String, PreferredSizeWidget Function()>{
+      'GtAppBar': () => const GtAppBar(title: 'TRANSFER'),
+      'GtTitleAppBar': () => const GtTitleAppBar(title: 'TRANSFER'),
+      'GtActionAppBar': () =>
+          GtActionAppBar(leading: GtBackButton(size: .large)),
+    };
+
+    for (final MapEntry(key: name, value: bar) in bars.entries) {
+      testWidgets('$name sets its row 24 below the status bar', (tester) async {
+        await pumpRoutedBar(tester, bar());
+
+        final row = tester.getRect(
+          find
+              .descendant(
+                of: find.byType(Container),
+                matching: find.byWidgetPredicate((w) => w is Table || w is Row),
+              )
+              .first,
+        );
+        expect(row.top, 68);
+        expect(tester.getTopLeft(find.byKey(const Key('body'))).dy, row.bottom);
+      });
+    }
+
+    testWidgets('a two-line title stays inside the bar, above the body', (
+      tester,
+    ) async {
+      await pumpRoutedBar(
+        tester,
+        const GtAppBar(title: 'INTERNATIONAL TRANSFER', titleSize: .large),
+      );
+
+      final title = tester.getRect(find.text('INTERNATIONAL TRANSFER'));
+      expect(title.height, 64);
+      expect(title.top, 68);
+      expect(title.bottom, tester.getRect(find.byType(GtAppBar)).bottom);
+      expect(tester.getTopLeft(find.byKey(const Key('body'))).dy, title.bottom);
+    });
+
+    testWidgets('a non-primary bar ignores the status bar and adds no gap', (
+      tester,
+    ) async {
+      await pumpRoutedBar(
+        tester,
+        const GtAppBar(title: 'TRANSFER', primary: false),
+      );
+
+      expect(tester.getRect(find.byType(Table)).top, 0);
+    });
+
+    testWidgets('padding replaces the gap but still clears the status bar', (
+      tester,
+    ) async {
+      await pumpRoutedBar(
+        tester,
+        const GtAppBar(title: 'TRANSFER', padding: EdgeInsets.all(8)),
+      );
+
+      final row = tester.getRect(find.byType(Table));
+      expect(row.top, 44 + 8);
+      expect(row.left, 8);
+    });
+  });
+
   group('GtAppBar', () {
     // Figma's header-nav gives the title everything between two 32-dp
     // actions on a 375-pt screen: 375 - 2 * 16 - 2 * 32.

@@ -377,6 +377,7 @@ class GtWheelScrollModal extends GtStatelessWidget {
     if (title.hasValue) {
       header = GtTitleAppBar(
         title: title.value,
+        primary: false,
         trailing: GtOptionalWidgetPair(tail: GtCancelButton()),
       );
     }
