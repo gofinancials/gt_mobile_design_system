@@ -86,6 +86,9 @@ class GtVectorIllustrations {
   /// Path to the flexAccount SVG.
   static const flexAccount = "$_basePath/flex_account.svg";
 
+  /// Path to the flexWelcome SVG: two shopfronts facing each other.
+  static const flexWelcome = "$_basePath/flex_welcome.svg";
+
   /// Path to the fuel SVG.
   static const fuel = "$_basePath/fuel.svg";
 
@@ -308,6 +311,7 @@ class GtVectorIllustrations {
     (label: 'bolt', value: bolt),
     (label: 'file', value: file),
     (label: 'flexAccount', value: flexAccount),
+    (label: 'flexWelcome', value: flexWelcome),
     (label: 'fuel', value: fuel),
     (label: 'gift', value: gift),
     (label: 'grow', value: grow),

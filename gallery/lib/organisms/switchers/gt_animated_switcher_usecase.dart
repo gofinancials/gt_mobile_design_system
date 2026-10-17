@@ -16,6 +16,10 @@ Widget playgroundGtAnimatedSwitcherUseCase(BuildContext context) {
     min: 0,
     max: 1,
   );
+  final crossFade = context.knobs.boolean(
+    label: 'Cross Fade',
+    initialValue: true,
+  );
 
   return GtWidgetDocPage(
     title: 'GtAnimatedSwitcher',
@@ -25,7 +29,8 @@ Widget playgroundGtAnimatedSwitcherUseCase(BuildContext context) {
       duration: 400,
       beginScale: beginScale,
       switchInCurve: GtSpringCurves.gentle,
-      switchOutCurve: Curves.easeOutCubic,
+      switchOutCurve: Curves.easeInCubic,
+      crossFade: crossFade,
       child: showAlt
           ? GtCard(
               key: const ValueKey('alt'),

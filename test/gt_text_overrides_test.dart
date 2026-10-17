@@ -145,11 +145,18 @@ void main() {
       );
 
       final title = tester.widget<Text>(find.text('YOUR CARD'));
-      final subtitle = tester.widget<Text>(find.text('Spend Anywhere'));
+      final subtitle = tester.widget<Text>(find.text('Spend anywhere'));
       expect(title.textAlign, TextAlign.center);
       expect(title.style!.fontSize, 19);
       expect(subtitle.textAlign, TextAlign.center);
       expect(subtitle.style!.fontSize, 16);
+    });
+
+    testWidgets('keeps the subtitle in the casing it is given', (tester) async {
+      await tester.pumpWidget(screen());
+
+      expect(find.text('Spend anywhere'), findsOneWidget);
+      expect(find.text('Spend Anywhere'), findsNothing);
     });
 
     testWidgets('paints the background image behind the content', (
@@ -177,7 +184,7 @@ void main() {
 
       final context = tester.element(find.text('YOUR CARD'));
       final gap =
-          tester.getTopLeft(find.text('Spend Anywhere')).dy -
+          tester.getTopLeft(find.text('Spend anywhere')).dy -
           tester.getBottomLeft(find.text('YOUR CARD')).dy;
       expect(gap, context.dp(12.px));
     });

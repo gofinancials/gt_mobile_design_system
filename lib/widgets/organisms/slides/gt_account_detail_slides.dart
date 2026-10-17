@@ -86,8 +86,8 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
 
   /// Overrides the style of the selected account's [GtAccountData.subTitle].
   ///
-  /// Defaults to [GtTextStyles.subHeadXs]. The line is centred, capped at one
-  /// line, and left out entirely for accounts without a subtitle.
+  /// Defaults to [GtTextStyles.bodyXs] at weight 500, Figma Body/S. The line
+  /// is centred, capped at one line, and left out entirely for accounts without a subtitle.
   final TextStyle? subtitleStyle;
 
   /// Builds the caption shown on the account pill for the selected account.
@@ -130,10 +130,11 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
 
   /// Replaces the account pill's text style outright.
   ///
-  /// Defaults to [GtTextStyles.subHeadXs] at a 12px line height, tinted with
-  /// the resolved [accountPillTextColor]. Because [GtAccountCopyPill.style]
-  /// replaces rather than merges, a style passed here must carry its own
-  /// colour — [accountPillTextColor] then reaches only the copy icon.
+  /// Defaults to [GtTextStyles.bodyXs] at weight 500 and a 12px line height,
+  /// tinted with the resolved [accountPillTextColor]. Because
+  /// [GtAccountCopyPill.style] replaces rather than merges, a style passed
+  /// here must carry its own colour — [accountPillTextColor] then reaches only
+  /// the copy icon.
   final TextStyle? accountPillStyle;
 
   /// Whether the account pill draws its copy icon.
@@ -212,9 +213,10 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
     };
     final pillColor = context.palette.primary.alpha10;
     final pillTextColor = accountPillTextColor ?? textColor;
-    final pillStyle = context.textStyles.subHeadXs(
+    final pillStyle = context.textStyles.bodyXs(
       color: pillTextColor,
       heightPx: 12,
+      weight: .w500,
     );
 
     return ListenableBuilder(
@@ -295,7 +297,9 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
                       subTitle,
                       textAlign: .center,
                       maxLines: 1,
-                      style: subtitleStyle ?? context.textStyles.subHeadXs(),
+                      style:
+                          subtitleStyle ??
+                          context.textStyles.bodyXs(weight: .w500),
                     ),
                     const GtGap.yLg(),
                   ],

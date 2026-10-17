@@ -326,6 +326,7 @@ class _GtCalendarModalState extends State<GtCalendarModal> {
           children: [
             GtTitleAppBar(
               title: widget.title,
+              primary: false,
               trailing: GtOptionalWidgetPair(tail: GtCancelButton()),
             ),
             GtCalendar(

@@ -82,7 +82,7 @@ class GtBillCard extends GtStatelessWidget {
       name,
       style: GtTextStyleOverrides.resolve(
         nameStyle,
-        context.textStyles.subHeadS(),
+        context.textStyles.labelS(weight: .w600),
         nameColor,
       ),
     );

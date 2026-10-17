@@ -34,6 +34,7 @@ class RequireImageSemantics extends DartLintRule {
     'GtMemoryImage',
     'GtFileImage',
     'GtSvg',
+    'GtQrCode',
   };
 
   /// Restricted to shipped UI.

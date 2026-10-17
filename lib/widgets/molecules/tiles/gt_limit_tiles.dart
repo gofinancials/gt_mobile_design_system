@@ -50,7 +50,10 @@ class GtLimitInfoListTile extends GtStatelessWidget {
                     labelStyle ??
                     context.textStyles.bodyXs(color: context.palette.text.sub),
               ),
-              GtText(value, style: valueStyle ?? context.textStyles.subHeadM()),
+              GtText(
+                value,
+                style: valueStyle ?? context.textStyles.labelM(weight: .w500),
+              ),
             ],
           ),
         ),
@@ -137,7 +140,7 @@ class GtLimitEditListTile extends GtStatelessWidget {
         ],
         recognizer: TapGestureRecognizer()..onTap = onTapInfo,
       ),
-      style: categoryStyle ?? context.textStyles.subHeadM(),
+      style: categoryStyle ?? context.textStyles.labelM(weight: .w600),
     );
 
     if (context.inSkeleton) {

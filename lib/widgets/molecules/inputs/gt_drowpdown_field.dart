@@ -14,6 +14,7 @@ typedef ValueBuilder3<T, K, O> = Widget Function(T value, K value2, O value3);
 ///
 /// [GtDropdownField] allows users to select an item from a provided list of [options].
 /// When tapped, it opens a draggable bottom sheet containing a search field and the list of items.
+/// Set [showSearch] to false for a short list that needs no search field.
 class GtDropdownField<T> extends GtStatefulWidget {
   /// The controller used to read and manipulate the input text.
   final GtDropdownInputController<T>? controller;
@@ -92,6 +93,13 @@ class GtDropdownField<T> extends GtStatefulWidget {
   /// A semantic label for the dropdown button.
   final String? dropdownSemanticLabel;
 
+  /// Whether the sheet shows a search field above the options.
+  ///
+  /// Defaults to true. Pass false for a short, fixed choice, such as three
+  /// dates or a handful of tax rates, that a customer reads at a glance. A
+  /// sheet without a [sheetTitle] keeps its cancel button either way.
+  final bool showSearch;
+
   /// Creates a dropdown field with the provided [options].
   const GtDropdownField({
     super.key,
@@ -117,6 +125,7 @@ class GtDropdownField<T> extends GtStatefulWidget {
     this.loadingWidget,
     this.errorWidget,
     this.dropdownSemanticLabel,
+    this.showSearch = true,
   }) : assert(
          optionBuilder == null || optionsBuilder == null,
          'Cannot provide both optionBuilder and optionsBuilder.',
@@ -170,6 +179,7 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
         emptyWidget: widget.emptyWidget,
         loadingWidget: widget.loadingWidget,
         errorWidget: widget.errorWidget,
+        showSearch: widget.showSearch,
       ),
     );
   }
@@ -210,7 +220,8 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
 /// A bottom sheet modal that presents a list of selectable options for a dropdown field.
 ///
 /// This widget is typically used within a bottom sheet to provide a dedicated
-/// interface for selecting an item from a list, including a search filter.
+/// interface for selecting an item from a list, including a search filter
+/// unless [showSearch] is false.
 class GtDropDownModal<T> extends GtStatefulWidget {
   /// The scroll controller used for the modal's scrollable view.
   final ScrollController scrollController;
@@ -253,6 +264,12 @@ class GtDropDownModal<T> extends GtStatefulWidget {
   /// The vertical spacing applied between individual options in the dropdown list.
   final GtGap gap;
 
+  /// Whether a search field is shown above the options.
+  ///
+  /// Defaults to true. When false, a modal without a [title] still shows its
+  /// cancel button, on its own in the search field's place.
+  final bool showSearch;
+
   /// Creates a [GtDropDownModal].
   const GtDropDownModal(
     this.scrollController, {
@@ -268,6 +285,7 @@ class GtDropDownModal<T> extends GtStatefulWidget {
     required this.debounceTime,
     required this.autoFocus,
     this.gap = const GtGap.yLg(),
+    this.showSearch = true,
   });
 
   @override
@@ -313,6 +331,10 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
     return options;
   }
 
+  /// Whether the row above the options is drawn: for the search field, or
+  /// for the cancel button a modal without a title has nowhere else to put.
+  bool get _showsSearchRow => widget.showSearch || !widget.title.hasValue;
+
   /// Narrows [presentedOptions] to those matching [query] after a debounce.
   void _filterOptions(String? query) {
     debouncer.abort();
@@ -337,21 +359,23 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
               const GtGap.ySectionSm(),
             ] else
               const GtGap.ySectionSm(),
-            if (hasData)
+            if (hasData && _showsSearchRow)
               Padding(
                 padding: context.insets.defaultHorizontalInsets,
                 child: Row(
+                  mainAxisAlignment: .end,
                   crossAxisAlignment: .center,
                   spacing: context.spacingMd,
                   children: [
-                    Expanded(
-                      child: GtSearchField(
-                        onChange: _filterOptions,
-                        autoFocus: widget.autoFocus,
-                        decoration: context.inputStyles
-                            .smWhiteSearchDecoration(),
+                    if (widget.showSearch)
+                      Expanded(
+                        child: GtSearchField(
+                          onChange: _filterOptions,
+                          autoFocus: widget.autoFocus,
+                          decoration: context.inputStyles
+                              .smWhiteSearchDecoration(),
+                        ),
                       ),
-                    ),
                     if (!widget.title.hasValue) GtCancelButton(size: .medium),
                   ],
                 ),

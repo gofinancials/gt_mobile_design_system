@@ -180,8 +180,11 @@ class _ReceiptMessage extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = context.textStyles.subHeadXs(color: context.palette.text.sub);
-    final subStyle = context.textStyles.subHeadS();
+    final style = context.textStyles.bodyXs(
+      color: context.palette.text.sub,
+      weight: .w500,
+    );
+    final subStyle = context.textStyles.labelS(weight: .w500);
     return Column(
       spacing: context.spacingBase,
       mainAxisSize: .min,

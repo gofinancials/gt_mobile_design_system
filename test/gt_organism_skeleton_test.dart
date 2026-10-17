@@ -53,6 +53,8 @@ void main() {
   final cardSkeletons = <String, Widget Function()>{
     'GtSectionHeader': () => GtSectionHeader.skeleton(),
     'GtTransactionGroupHeader': () => GtTransactionGroupHeader.skeleton(),
+    'GtProfileHeader': () => GtProfileHeader.skeleton(),
+    'GtProfileHeroHeader': () => GtProfileHeroHeader.skeleton(),
     'GtInboxCard': () => GtInboxCard.skeleton(),
     'GtBillCard': () => GtBillCard.skeleton(),
     'GtBillCard.tile': GtBillCard.tileSkeleton,

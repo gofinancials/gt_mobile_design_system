@@ -1,6 +1,11 @@
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:vector_graphics/vector_graphics_compat.dart';
+import 'package:vector_graphics_compiler/vector_graphics_compiler.dart'
+    show encodeSvg;
 
 /// A widget for efficiently rendering scalable vector graphics (SVGs).
 ///
@@ -11,7 +16,7 @@ import 'package:vector_graphics/vector_graphics_compat.dart';
 /// semantically colored icon via [GtSvg.asIcon].
 ///
 /// Inside an enabled [GtSkeleton] it is painted as a [GtBone] block.
-class GtSvg extends GtStatelessWidget {
+class GtSvg extends GtStatefulWidget {
   /// The path to the vector graphic asset.
   final String path;
 
@@ -35,6 +40,12 @@ class GtSvg extends GtStatelessWidget {
   ///
   /// Defaults to a [GtImageShimmer] at [width] and [height].
   final WidgetBuilder? placeholderBuilder;
+
+  /// An optional widget to display if the graphic fails to load.
+  ///
+  /// If null, an empty [SizedBox] of [width] by [height] is rendered, so a
+  /// failed graphic stops signalling that it is still loading.
+  final Widget? errorWidget;
 
   /// A semantic label for the graphic, used by screen readers and accessibility tools.
   final String? semanticsLabel;
@@ -67,6 +78,7 @@ class GtSvg extends GtStatelessWidget {
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
     this.placeholderBuilder,
+    this.errorWidget,
     this.color,
     this.semanticsLabel,
     this.isDecorative = false,
@@ -85,6 +97,7 @@ class GtSvg extends GtStatelessWidget {
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
     this.placeholderBuilder,
+    this.errorWidget,
     this.variant,
     this.package,
     this.semanticsLabel,
@@ -109,24 +122,78 @@ class GtSvg extends GtStatelessWidget {
   }
 
   @override
+  State<GtSvg> createState() => _GtSvgState();
+}
+
+class _GtSvgState extends State<GtSvg> {
+  late _SafeBytesLoader _loader = _createLoader();
+  final _hasError = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    _hasError.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(GtSvg oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.path == widget.path && oldWidget.package == widget.package) {
+      return;
+    }
+    _loader = _createLoader();
+    _hasError.value = false;
+  }
+
+  _SafeBytesLoader _createLoader() {
+    return _SafeBytesLoader(
+      widget.path.vectorBytes(widget.package),
+      onError: _showError,
+    );
+  }
+
+  void _showError() {
+    // A loader can throw before it first awaits, while the graphic is still
+    // building, so the rebuild waits until that build is done.
+    scheduleMicrotask(() {
+      if (!mounted) return;
+      _hasError.value = true;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final errorBox = SizedBox(width: widget.width, height: widget.height);
+
     // The public `VectorGraphic` constructor forces the raster strategy, which
     // caches a bitmap and rescales it with bilinear filtering, leaving edges
     // jagged whenever the graphic is drawn at another size or under a scaling
     // transform. The picture strategy replays the vector commands instead.
-    Widget graphic = createCompatVectorGraphic(
-      strategy: RenderingStrategy.picture,
-      loader: path.vectorBytes(package),
-      width: width,
-      height: height,
-      fit: fit,
-      alignment: alignment,
-      placeholderBuilder:
-          placeholderBuilder ??
-          (_) => GtImageShimmer(width: width, height: height),
-      semanticsLabel: semanticsLabel,
-      clipBehavior: Clip.antiAlias,
-      colorFilter: _getColor(context),
+    Widget graphic = BoolListener(
+      valueListenable: _hasError,
+      builder: (hasError) => switch (hasError) {
+        true => widget.errorWidget ?? errorBox,
+        false => createCompatVectorGraphic(
+          strategy: RenderingStrategy.picture,
+          loader: _loader,
+          width: widget.width,
+          height: widget.height,
+          fit: widget.fit,
+          alignment: widget.alignment,
+          placeholderBuilder: (context) {
+            if (widget.placeholderBuilder != null) {
+              return widget.placeholderBuilder!(context);
+            }
+            return GtImageShimmer(width: widget.width, height: widget.height);
+          },
+          // Loading cannot fail, but compiled bytes that do not decode still
+          // reach this, and without it the placeholder would never resolve.
+          errorBuilder: (_, _, _) => widget.errorWidget ?? errorBox,
+          semanticsLabel: widget.semanticsLabel,
+          clipBehavior: Clip.antiAlias,
+          colorFilter: widget._getColor(context),
+        ),
+      },
     );
 
     if (context.inSkeleton) {
@@ -135,10 +202,47 @@ class GtSvg extends GtStatelessWidget {
 
     // An unlabelled graphic is decoration as far as the user is concerned;
     // announcing it as an anonymous image only adds a stop with no payload.
-    if (isDecorative || semanticsLabel == null) {
+    if (widget.isDecorative || widget.semanticsLabel == null) {
       return ExcludeSemantics(child: graphic);
     }
 
     return graphic;
+  }
+}
+
+/// Wraps a [BytesLoader] so that a failed load is reported to [onError]
+/// rather than thrown.
+///
+/// `vector_graphics` drops a future it chains onto every load, so a load that
+/// throws surfaces as an uncaught error even when its error builder handles
+/// it. This loader resolves to an empty graphic instead.
+///
+/// It keeps the default [cacheKey] of the loader itself, so each [GtSvg] runs
+/// its own load. Sharing a key would hand one pending load to every widget
+/// showing the same graphic, and only the first would hear of a failure.
+class _SafeBytesLoader extends BytesLoader {
+  final BytesLoader inner;
+  final VoidCallback onError;
+
+  const _SafeBytesLoader(this.inner, {required this.onError});
+
+  static final _emptyGraphic = encodeSvg(
+    xml: '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>',
+    debugName: 'GtSvg failed load',
+    // The optimizers need native path ops, which only the build-time compiler
+    // initialises.
+    enableClippingOptimizer: false,
+    enableMaskingOptimizer: false,
+    enableOverdrawOptimizer: false,
+  ).buffer.asByteData();
+
+  @override
+  Future<ByteData> loadBytes(BuildContext? context) async {
+    try {
+      return await inner.loadBytes(context);
+    } catch (_) {
+      onError();
+      return _emptyGraphic;
+    }
   }
 }

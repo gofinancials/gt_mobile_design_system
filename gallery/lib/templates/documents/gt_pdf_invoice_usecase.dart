@@ -46,7 +46,7 @@ class _PdfInvoiceKnobs {
   final bool showNote;
   final bool showPayment;
   final bool showPoweredBy;
-  final bool themeFromPalette;
+  final bool followAppTheme;
   final bool showPreview;
 
   const _PdfInvoiceKnobs({
@@ -58,7 +58,7 @@ class _PdfInvoiceKnobs {
     required this.showNote,
     required this.showPayment,
     required this.showPoweredBy,
-    required this.themeFromPalette,
+    required this.followAppTheme,
     required this.showPreview,
   });
 
@@ -92,9 +92,9 @@ class _PdfInvoiceKnobs {
         label: 'Show Powered By',
         initialValue: true,
       ),
-      themeFromPalette: context.knobs.boolean(
-        label: 'Theme From App Palette',
-        initialValue: true,
+      followAppTheme: context.knobs.boolean(
+        label: 'Follow App Theme',
+        initialValue: false,
       ),
       showPreview: context.knobs.boolean(
         label: 'Show Preview',
@@ -153,9 +153,13 @@ class _PdfInvoiceKnobs {
     );
   }
 
+  GtPalette paletteOf(BuildContext context) {
+    if (followAppTheme) return context.palette;
+    return context.themeData.lightPalette;
+  }
+
   GtPdfInvoiceExporter buildExporter(BuildContext context) {
-    if (!themeFromPalette) return const GtPdfInvoiceExporter();
-    return GtPdfInvoiceExporter.fromPalette(context.palette);
+    return GtPdfInvoiceExporter.fromPalette(paletteOf(context));
   }
 
   Object get previewKey => (
@@ -167,7 +171,7 @@ class _PdfInvoiceKnobs {
     showNote,
     showPayment,
     showPoweredBy,
-    themeFromPalette,
+    followAppTheme,
   );
 }
 
@@ -230,8 +234,11 @@ class _PdfInvoiceExportPreviewState extends State<_PdfInvoiceExportPreview> {
   @override
   Widget build(BuildContext context) {
     final knobs = _PdfInvoiceKnobs.of(context);
-    final palette = context.palette;
+    final palette = knobs.paletteOf(context);
     final exporter = knobs.buildExporter(context);
+    final paletteCode = knobs.followAppTheme
+        ? 'context.palette'
+        : 'context.themeData.lightPalette';
 
     Future<GtPdfInvoiceData> data() async {
       final avatar = knobs.showAvatar ? await _avatar() : null;
@@ -248,17 +255,20 @@ class _PdfInvoiceExportPreviewState extends State<_PdfInvoiceExportPreview> {
           'amount is printed exactly as the app formatted it. The tax rate '
           'column only appears when an item carries a rate, and a long items '
           'table breaks between rows onto further pages. The issuer\'s note, '
-          'such as a thank-you or their terms, is set beneath the totals.',
+          'such as a thank-you or their terms, is set beneath the totals. '
+          'Invoices are white with dark text in the brand\'s light palette '
+          'by default; Follow App Theme themes the page and the pill from '
+          'the live palette instead, so they go dark with the app.',
       code:
           '''
-final exporter = GtPdfInvoiceExporter.fromPalette(context.palette);
+final exporter = GtPdfInvoiceExporter.fromPalette($paletteCode);
 
 final data = GtPdfInvoiceData(
   number: "${knobs.number}",
   status: GtPdfInvoiceStatus.fromVariant(
     label: "${knobs.isPaid ? 'Paid' : 'Pending'}",
     variant: ${knobs.isPaid ? '.success' : '.away'},
-    palette: context.palette,
+    palette: $paletteCode,
   ),
   avatar: avatarBytes,
   details: const [

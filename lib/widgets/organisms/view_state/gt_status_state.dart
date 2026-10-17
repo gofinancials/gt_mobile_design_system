@@ -22,6 +22,12 @@ enum GtStatusStateVariant {
 // Status screen
 // -----------------------------------------------------------------------------
 
+/// A status screen: an illustration, a title, a subtitle and an optional
+/// action, for the outcome of an operation or a state with nothing to show.
+///
+/// [GtStatusState.success] and [GtStatusState.error] resolve their own
+/// illustration from [variant]; [GtStatusState.custom] takes one. All of them
+/// lay out through [GtViewStateWidget].
 class GtStatusState extends GtStatelessWidget {
   /// Success, error, or custom state — controls icon resolution behavior.
   final GtStatusStateVariant variant;
@@ -49,6 +55,10 @@ class GtStatusState extends GtStatelessWidget {
 
   /// Invoked when the footer button is pressed.
   final OnPressed? onActionPressed;
+
+  /// An optional icon drawn before [actionLabel] on the footer button, such
+  /// as the plus on an empty list's "New invoice" action.
+  final IconData? actionLeading;
 
   /// Optional variant for the footer button; defaults to [GtButtonVariant.primary].
   final GtButtonVariant actionVariant;
@@ -107,6 +117,7 @@ class GtStatusState extends GtStatelessWidget {
     this.graphic,
     this.actionLabel,
     this.onActionPressed,
+    this.actionLeading,
     this.actionVariant = .primary,
     this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
@@ -136,6 +147,7 @@ class GtStatusState extends GtStatelessWidget {
     this.graphic,
     this.actionLabel,
     this.onActionPressed,
+    this.actionLeading,
     this.actionVariant = .primary,
     this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
@@ -162,6 +174,7 @@ class GtStatusState extends GtStatelessWidget {
     this.graphic,
     this.actionLabel,
     this.onActionPressed,
+    this.actionLeading,
     this.actionVariant = .primary,
     this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
@@ -191,6 +204,7 @@ class GtStatusState extends GtStatelessWidget {
     this.graphic,
     this.actionLabel,
     this.onActionPressed,
+    this.actionLeading,
     this.actionVariant = .primary,
     this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
@@ -234,6 +248,7 @@ class GtStatusState extends GtStatelessWidget {
       graphic: graphic,
       iconSize: iconSize,
       actionText: actionLabel,
+      actionLeading: actionLeading,
       onActionPressed: onActionPressed,
       actionVariant: actionVariant,
       actionSize: actionSize,

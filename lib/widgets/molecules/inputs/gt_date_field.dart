@@ -45,8 +45,18 @@ class GtDateField extends GtStatefulWidget {
   /// The action to perform when the keyboard's "done" or "next" button is pressed.
   final TextInputAction? action;
 
-  /// Callback fired when the selected value changes.
-  final OnChanged<DateTime?>? onChanged;
+  /// Called when the value the field displays changes.
+  ///
+  /// The field built with the default constructor reports a change to
+  /// [GtCalendarValue.day]. The field built with [GtDateField.range] reports a
+  /// change to [GtCalendarValue.range] and ignores a change to the day alone,
+  /// such as the month or year picked from the calendar header. After the
+  /// first tap of a range the value holds a one-day range, matching the text
+  /// the field shows, until the end date is picked.
+  ///
+  /// This also fires when the [controller]'s value is set from outside the
+  /// field.
+  final OnChanged<GtCalendarValue?>? onChanged;
 
   /// The current selection mode of the field.
   final GtCalendarSelectionMode _selectionMode;
@@ -100,12 +110,17 @@ class GtDateField extends GtStatefulWidget {
   bool get isDay => _selectionMode == GtCalendarSelectionMode.day;
 }
 
+/// The state for a [GtDateField] that keeps its text in step with the
+/// calendar selection and reports changes through [GtDateField.onChanged].
 class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
   /// The controller for the visible text field that displays the formatted date.
   late GtInputController _localCtrl;
 
   /// The controller that manages the underlying calendar selection state.
   late GtCalendarController _calendarController;
+
+  /// The [_fieldValue] last reported through [GtDateField.onChanged].
+  Object? _reportedValue;
 
   @override
   void initState() {
@@ -114,6 +129,7 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
         widget.controller ?? GtCalendarController(GtCalendarValue());
 
     _localCtrl = GtInputController(text: _formattedValue);
+    _reportedValue = _fieldValue;
 
     _calendarController.addListener(_setLocalValue);
     widget.focusNode?.addListener(_onFocusChange);
@@ -121,6 +137,24 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
     if (widget.autoFocus) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _showPicker());
     }
+  }
+
+  @override
+  void didUpdateWidget(GtDateField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.focusNode != widget.focusNode) {
+      oldWidget.focusNode?.removeListener(_onFocusChange);
+      widget.focusNode?.addListener(_onFocusChange);
+    }
+  }
+
+  @override
+  void dispose() {
+    _calendarController.removeListener(_setLocalValue);
+    widget.focusNode?.removeListener(_onFocusChange);
+    if (widget.controller == null) _calendarController.dispose();
+    _localCtrl.dispose();
+    super.dispose();
   }
 
   /// Handles focus changes to automatically open the calendar picker.
@@ -138,11 +172,24 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
     return val ?? "";
   }
 
-  /// Synchronizes the text field with the underlying calendar controller's value.
-  void _setLocalValue() {
-    _localCtrl.text = _formattedValue;
+  /// The part of the calendar value the field displays: the day, or the range
+  /// for a [GtDateField.range].
+  Object? get _fieldValue {
+    return widget.isDay ? _calendarController.day : _calendarController.range;
   }
 
+  /// Synchronizes the text field with the underlying calendar controller's
+  /// value and reports a change to [_fieldValue] through
+  /// [GtDateField.onChanged].
+  void _setLocalValue() {
+    _localCtrl.text = _formattedValue;
+    final value = _fieldValue;
+    if (value == _reportedValue) return;
+    _reportedValue = value;
+    widget.onChanged?.call(_calendarController.value);
+  }
+
+  /// Closes the calendar sheet after a short delay so the pick is visible.
   void _pop(BuildContext context) {
     AppDebouncer(500.milliseconds).run(context.pop);
   }
@@ -166,6 +213,8 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
     );
   }
 
+  /// The hint shown when neither [GtDateField.hintText] nor
+  /// [GtDateField.label] is set.
   String get defaultHint => switch (widget._selectionMode) {
     .range => "DD-MM-YYYY - DD-MM-YYYY",
     _ => "DD-MM-YYYY",

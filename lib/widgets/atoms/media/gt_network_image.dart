@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +56,10 @@ class GtNetworkImage extends GtStatelessWidget {
   final Alignment alignment;
 
   /// An optional widget to display if the image fails to load.
-  /// If null, an empty [SizedBox] is rendered.
+  ///
+  /// Covers every source this widget handles: a failed download, an SVG that
+  /// cannot be fetched or compiled, and a base64 data URI that cannot be
+  /// decoded. If null, an empty [SizedBox] of [width] by [height] stands in.
   final Widget? errorWidget;
 
   /// A description of what this image conveys, for screen readers.
@@ -98,12 +102,19 @@ class GtNetworkImage extends GtStatelessWidget {
 
           if (imageUrl.startsWith("data:")) {
             final base64String = imageUrl.replaceAll("data:", "");
+            final Uint8List bytes;
+            try {
+              bytes = base64Decode(base64String);
+            } on FormatException {
+              return _annotate(context, _errorBox);
+            }
             return GtMemoryImage(
-              base64Decode(base64String),
+              bytes,
               height: height,
               width: width,
               alignment: alignment,
               fit: fit,
+              errorWidget: errorWidget,
               semanticsLabel: semanticsLabel,
               isDecorative: isDecorative,
             );
@@ -117,21 +128,20 @@ class GtNetworkImage extends GtStatelessWidget {
               alignment: alignment,
               fit: fit ?? BoxFit.contain,
               color: color,
+              errorWidget: errorWidget,
               semanticsLabel: semanticsLabel,
               isDecorative: isDecorative,
             );
           }
 
-          Widget image = CachedNetworkImage(
+          final image = CachedNetworkImage(
             imageUrl: imageUrl,
             height: height,
             width: width,
             alignment: alignment,
             fit: fit,
             color: color,
-            errorWidget: (_, message, data) {
-              return errorWidget ?? SizedBox(height: height, width: width);
-            },
+            errorWidget: (_, _, _) => _errorBox,
             placeholder: (context, _) {
               if (placeHolderPath == null) {
                 if (!showLoadingIndicator) {
@@ -151,21 +161,32 @@ class GtNetworkImage extends GtStatelessWidget {
             },
           );
 
-          if (context.inSkeleton) {
-            image = GtBone(child: image);
-          }
-
-          // CachedNetworkImage exposes no semantics parameters of its own, so
-          // the annotation has to be applied from outside. An unlabelled image
-          // is decoration as far as the user is concerned; announcing it as an
-          // anonymous image only adds a stop with no payload.
-          if (isDecorative || semanticsLabel == null) {
-            return ExcludeSemantics(child: image);
-          }
-
-          return GtSemantics(role: .image, label: semanticsLabel, child: image);
+          return _annotate(context, image);
         },
       ),
     );
+  }
+
+  /// What stands in for an image that fails: [errorWidget], or an empty box
+  /// holding the image's place.
+  Widget get _errorBox => errorWidget ?? SizedBox(height: height, width: width);
+
+  /// Wraps [image] in the skeleton bone and semantics the other image atoms
+  /// apply themselves, for children that cannot: [CachedNetworkImage], and
+  /// the [_errorBox] drawn when a data URI cannot be decoded.
+  Widget _annotate(BuildContext context, Widget image) {
+    if (context.inSkeleton) {
+      image = GtBone(child: image);
+    }
+
+    // CachedNetworkImage exposes no semantics parameters of its own, so
+    // the annotation has to be applied from outside. An unlabelled image
+    // is decoration as far as the user is concerned; announcing it as an
+    // anonymous image only adds a stop with no payload.
+    if (isDecorative || semanticsLabel == null) {
+      return ExcludeSemantics(child: image);
+    }
+
+    return GtSemantics(role: .image, label: semanticsLabel, child: image);
   }
 }

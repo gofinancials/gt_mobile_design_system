@@ -26,7 +26,7 @@ class GtTransactionLeading extends GtStatelessWidget {
 
   /// Optional custom style override for the initials.
   ///
-  /// Defaults to [GtTextStyles.subHeadXs] at weight 700.
+  /// Defaults to [GtTextStyles.bodyXs] at weight 700.
   final TextStyle? style;
 
   /// Optional background gradient override.
@@ -92,7 +92,7 @@ class GtTransactionLeading extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = context.textStyles.subHeadXs(weight: .w700, heightPx: 19);
+    final textStyle = context.textStyles.bodyXs(weight: .w700, heightPx: 19);
 
     Widget badge = Container(
       width: size,
@@ -453,7 +453,7 @@ class GtPaymentListTile extends GtStatelessWidget {
                           title,
                           style: GtTextStyleOverrides.resolve(
                             nameStyle,
-                            style.subHeadS(),
+                            style.labelS(weight: .w500),
                             nameColor,
                           ),
                           maxLines: 1,
@@ -479,7 +479,7 @@ class GtPaymentListTile extends GtStatelessWidget {
                           amount,
                           style: GtTextStyleOverrides.resolve(
                             amountStyle,
-                            style.subHeadM(weight: .w600),
+                            style.labelM(weight: .w600),
                             amountColor,
                           ),
                           textAlign: .end,
@@ -554,6 +554,14 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// Optional horizontal spacing override.
   final double? horizontalSpacing;
 
+  /// Whether a [title] too long for its space is shortened from the middle,
+  /// keeping its head and tail, rather than from the end. Defaults to false.
+  ///
+  /// Set it for titles whose end carries their meaning, such as an account
+  /// name followed by its number. See [GtText.middleEllipsis]. With a null
+  /// [maxLines] the title is then held to one line.
+  final bool titleMiddleEllipsis;
+
   /// Creates a [GtTransactionParticipantListTile].
   const GtTransactionParticipantListTile(
     this.title, {
@@ -569,6 +577,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
     this.maxLines,
     this.subSpacer,
     this.horizontalSpacing,
+    this.titleMiddleEllipsis = false,
   });
 
   @override
@@ -603,6 +612,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
                 style: titleStyle ?? style.buttonS(),
                 maxLines: maxLines,
                 overflow: maxLines != null ? .ellipsis : null,
+                middleEllipsis: titleMiddleEllipsis,
               ),
               if (subtitle.hasValue) ...[
                 subSpacer ?? const GtGap.ySm(),

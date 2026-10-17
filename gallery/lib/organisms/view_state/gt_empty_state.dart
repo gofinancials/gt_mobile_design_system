@@ -32,6 +32,10 @@ Widget playgroundGtEmptyStateUseCase(BuildContext context) {
     label: 'Use Custom Graphic',
     initialValue: false,
   );
+  final showLeading = context.knobs.boolean(
+    label: 'Action Leading Icon',
+    initialValue: false,
+  );
   final actionText = context.knobs.string(
     label: 'Action Text',
     initialValue: 'Add Beneficiary',
@@ -54,6 +58,7 @@ GtEmptyState(
   title: "$title",
   subtitle: "$subtitle",
   ${hasAction ? 'actionText: "$actionText",' : ''}
+  ${hasAction && showLeading ? 'actionLeading: GtIcons.plus,' : ''}
   ${hasAction ? 'buttonVariant: GtButtonVariant.${buttonVariant.name},' : ''}
   ${hasAction ? 'onActionPressed: () {},' : ''}
 )''',
@@ -66,6 +71,7 @@ GtEmptyState(
         title: title,
         subtitle: subtitle,
         actionText: hasAction ? actionText : null,
+        actionLeading: showLeading ? GtIcons.plus : null,
         onActionPressed: hasAction ? () {} : null,
         buttonVariant: buttonVariant,
       ),
