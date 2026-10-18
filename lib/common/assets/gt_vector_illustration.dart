@@ -1,10 +1,22 @@
+import 'package:flutter/widgets.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
+import 'package:gt_mobile_ui/gt_mobile_ui.dart';
+
 /// A utility class that holds the paths to all vector illustrations (SVGs) used in the application.
 ///
 /// This class centralizes asset paths to prevent typos and make them easily accessible
 /// throughout the app.
+///
+/// Every illustration except [fx] also has a red variant for red-styled
+/// palettes. Pass a path through [GtIllustrationExtension.adapt] to get the
+/// variant that suits the active [GtPalette].
 class GtVectorIllustrations {
+  /// The directory holding the original illustrations.
   static const _basePath =
       "packages/gt_mobile_ui/assets/images/vector/illustrations";
+
+  /// The directory holding the red variants, named like their originals.
+  static const _redBasePath = "$_basePath/red";
 
   // region ILLUSTRATIONS
 
@@ -13,6 +25,9 @@ class GtVectorIllustrations {
 
   /// Path to the authentication SVG.
   static const authentication = "$_basePath/authentication.svg";
+
+  /// Path to the basket SVG: a shopping basket full of groceries.
+  static const basket = "$_basePath/basket.svg";
 
   /// Path to the bin SVG.
   static const bin = "$_basePath/bin.svg";
@@ -40,6 +55,9 @@ class GtVectorIllustrations {
 
   /// Path to the coins SVG.
   static const coins = "$_basePath/coins.svg";
+
+  /// Path to the movies SVG: a tub of popcorn.
+  static const movies = "$_basePath/movies.svg";
 
   /// Path to the moneyPhone SVG.
   static const moneyPhone = "$_basePath/current_account.svg";
@@ -101,6 +119,9 @@ class GtVectorIllustrations {
   /// Path to the house SVG.
   static const house = "$_basePath/house.svg";
 
+  /// Path to the information SVG: a pair of binoculars.
+  static const information = "$_basePath/information.svg";
+
   /// Path to the identification SVG.
   static const identification = "$_basePath/identification.svg";
 
@@ -109,6 +130,9 @@ class GtVectorIllustrations {
 
   /// Path to the leisure SVG.
   static const leisure = "$_basePath/leisure.svg";
+
+  /// Path to the loan SVG: two stacks of banded notes.
+  static const loan = "$_basePath/loan.svg";
 
   /// Path to the location SVG.
   static const location = "$_basePath/location.svg";
@@ -271,15 +295,16 @@ class GtVectorIllustrations {
   /// Path to the fx SVG.
   static const fx = "$_basePath/fx.svg";
 
-  /// Path to the fx SVG.
+  /// Path to the alternative announcement SVG.
   static const announcement2 = "$_basePath/announcement_2.svg";
 
-  /// Path to the fx SVG.
+  /// Path to the overdraft SVG.
   static const overdraft = "$_basePath/overdraft.svg";
 
-  /// Path to the fx SVG.
+  /// Path to the savings SVG.
   static const savings = "$_basePath/savings.svg";
 
+  /// Path to the secureCard SVG.
   static const secureCard = "$_basePath/secure_card.svg";
 
   /// A list containing all available vector illustration SVG paths.
@@ -287,6 +312,7 @@ class GtVectorIllustrations {
     (label: 'announcement', value: announcement),
     (label: 'announcement alt', value: announcement2),
     (label: 'authentication', value: authentication),
+    (label: 'basket', value: basket),
     (label: 'bin', value: bin),
     (label: 'building', value: building),
     (label: 'business', value: business),
@@ -297,6 +323,7 @@ class GtVectorIllustrations {
     (label: 'chat', value: chat),
     (label: 'coins', value: coins),
     (label: 'moneyPhone', value: moneyPhone),
+    (label: 'movies', value: movies),
     (label: 'overdraft', value: overdraft),
     (label: 'dataAnalytics', value: dataAnalytics),
     (label: 'date', value: date),
@@ -317,8 +344,10 @@ class GtVectorIllustrations {
     (label: 'grow', value: grow),
     (label: 'house', value: house),
     (label: 'identification', value: identification),
+    (label: 'information', value: information),
     (label: 'kids', value: kids),
     (label: 'leisure', value: leisure),
+    (label: 'loan', value: loan),
     (label: 'location', value: location),
     (label: 'mail', value: mail),
     (label: 'mailbox', value: mailbox),
@@ -375,4 +404,149 @@ class GtVectorIllustrations {
     (label: 'secureCard', value: secureCard),
     (label: 'fx', value: fx),
   ];
+
+  /// The illustrations that have a red variant under [_redBasePath].
+  ///
+  /// An illustration added without one must stay out of this set, or red
+  /// palettes would load a missing asset.
+  static const _redVariants = {
+    announcement,
+    authentication,
+    basket,
+    bin,
+    building,
+    business,
+    camera,
+    cash,
+    celebration,
+    chart,
+    chat,
+    coins,
+    movies,
+    moneyPhone,
+    dataAnalytics,
+    date,
+    debitCards,
+    details,
+    device,
+    disconnected,
+    empty,
+    emptyCabinet,
+    emptyState,
+    exclamation,
+    failed,
+    bolt,
+    file,
+    flexAccount,
+    flexWelcome,
+    fuel,
+    gift,
+    grow,
+    house,
+    information,
+    identification,
+    kids,
+    leisure,
+    loan,
+    location,
+    mail,
+    mailbox,
+    maintenance,
+    mobilePhones,
+    notFound,
+    notifications,
+    pair,
+    percentage,
+    politics,
+    profile2,
+    profile3,
+    profile4,
+    profileCheck,
+    referral,
+    search,
+    security,
+    selfie,
+    serviceStatus,
+    settings,
+    sheild,
+    sheild2,
+    shopping,
+    signature,
+    success,
+    target,
+    tax,
+    time,
+    time2,
+    unauthorizedDevice,
+    vault,
+    verification,
+    wallet,
+    cashCat,
+    charityCat,
+    debitCardsCat,
+    detailsCat,
+    educationCat,
+    emergencyCat,
+    familyCat,
+    fitnessCat,
+    foodCat,
+    giftCat,
+    healthCat,
+    holidayCat,
+    houseCat,
+    payrollCat,
+    savingsCat,
+    shoppingCat,
+    transferCat,
+    transportCat,
+    walletCat,
+    announcement2,
+    overdraft,
+    savings,
+    secureCard,
+  };
+}
+
+/// Adapts an illustration path from [GtVectorIllustrations] to the palette in
+/// scope.
+extension GtIllustrationExtension on String {
+  /// This illustration in the variant that suits the palette of [context].
+  ///
+  /// Under a palette with [GtPalette.usesRedIllustration] set, an illustration
+  /// that has a red variant becomes that variant. Any other path, such as an
+  /// icon, a network URL or an illustration without a red variant, is
+  /// returned unchanged.
+  String adapt(BuildContext context) {
+    if (!context.palette.usesRedIllustration) return this;
+    if (!GtVectorIllustrations._redVariants.contains(this)) return this;
+    return replaceFirst(
+      GtVectorIllustrations._basePath,
+      GtVectorIllustrations._redBasePath,
+    );
+  }
+}
+
+/// Adapts an [AppImageData] that holds an illustration path to the palette in
+/// scope.
+extension GtIllustrationImageExtension<T> on AppImageData<T> {
+  /// This image with its illustration in the variant that suits the palette of
+  /// [context], as [GtIllustrationExtension.adapt] picks it.
+  ///
+  /// Images that hold anything other than an illustration path, such as a
+  /// URL, bytes or an icon, are returned unchanged.
+  AppImageData<T> adapt(BuildContext context) {
+    final data = imageData;
+    if (data is! String) return this;
+
+    final path = data.adapt(context);
+    if (path == data) return this;
+
+    return AppImageData(
+      path as T,
+      name: name,
+      id: id,
+      createdAt: createdAt,
+      contentType: contentType,
+    );
+  }
 }

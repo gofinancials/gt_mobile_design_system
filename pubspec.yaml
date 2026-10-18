@@ -57,6 +57,9 @@ flutter:
     - path: assets/images/vector/illustrations/
       transformers:
         - package: vector_graphics_compiler
+    - path: assets/images/vector/illustrations/red/
+      transformers:
+        - package: vector_graphics_compiler
   fonts:
     - family: Runde
       fonts:

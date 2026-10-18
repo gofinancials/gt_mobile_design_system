@@ -16,7 +16,7 @@ Widget buildGtDuotoneScreenDoc(BuildContext context) {
 GtDuotoneScreen(
   title: "saving smart",
   description: "Why saving matters and how to build good habits.",
-  illustration: AppImageData.asset(GtVectorIllustrations.grow),
+  illustration: AppImageData.asset(GtVectorIllustrations.grow.adapt(context)),
   buttonText: "get started",
   onTap: () => handleGetStarted(),
   variant: GtCardVariant.featured,
@@ -88,7 +88,7 @@ Widget buildGtDuotoneScreenUsecase(BuildContext context) {
   return GtDuotoneScreen(
     title: title,
     description: description,
-    illustration: illustration.$2,
+    illustration: illustration.$2.adapt(context),
     buttonText: buttonText,
     onTap: showToast,
     variant: variant,

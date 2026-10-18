@@ -125,8 +125,12 @@ class GtSvg extends GtStatefulWidget {
   State<GtSvg> createState() => _GtSvgState();
 }
 
+/// The state of a [GtSvg], which owns the loader for its graphic.
 class _GtSvgState extends State<GtSvg> {
+  /// The loader for the graphic at [GtSvg.path].
   late _SafeBytesLoader _loader = _createLoader();
+
+  /// Whether the graphic failed to load.
   final _hasError = ValueNotifier(false);
 
   @override
@@ -145,6 +149,7 @@ class _GtSvgState extends State<GtSvg> {
     _hasError.value = false;
   }
 
+  /// Creates a loader for [GtSvg.path] that reports failures to [_showError].
   _SafeBytesLoader _createLoader() {
     return _SafeBytesLoader(
       widget.path.vectorBytes(widget.package),
@@ -152,6 +157,7 @@ class _GtSvgState extends State<GtSvg> {
     );
   }
 
+  /// Swaps the graphic for the error widget once a load has failed.
   void _showError() {
     // A loader can throw before it first awaits, while the graphic is still
     // building, so the rebuild waits until that build is done.
@@ -221,11 +227,16 @@ class _GtSvgState extends State<GtSvg> {
 /// its own load. Sharing a key would hand one pending load to every widget
 /// showing the same graphic, and only the first would hear of a failure.
 class _SafeBytesLoader extends BytesLoader {
+  /// The loader that reads the graphic.
   final BytesLoader inner;
+
+  /// Called when [inner] fails to load.
   final VoidCallback onError;
 
+  /// Creates a [_SafeBytesLoader] around [inner].
   const _SafeBytesLoader(this.inner, {required this.onError});
 
+  /// A blank graphic, returned in place of one that failed to load.
   static final _emptyGraphic = encodeSvg(
     xml: '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>',
     debugName: 'GtSvg failed load',

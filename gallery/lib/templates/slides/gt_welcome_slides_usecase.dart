@@ -11,14 +11,14 @@ List<GtSlideData> getPersonalAppSlides(BuildContext context) {
     GtSlideData(
       title: "And more...",
       subtitle: "Buy, sell, save or schedule with peace of mind",
-      image: AppImageData.asset(GtVectorIllustrations.date),
+      image: AppImageData.asset(GtVectorIllustrations.date.adapt(context)),
       backgroundColor: palette.success.darker,
       textColor: palette.staticColors.white,
     ),
     GtSlideData(
       title: "BLAZING FAST",
       subtitle: "Pay someone, buy something, or sort your bills",
-      image: AppImageData.asset(GtVectorIllustrations.bolt),
+      image: AppImageData.asset(GtVectorIllustrations.bolt.adapt(context)),
       backgroundColor: palette.primary.base,
       textColor: palette.staticColors.white,
     ),
@@ -37,7 +37,7 @@ GtWelcomeSlides(
     GtSlideData(
       title: "Blazing Fast",
       subtitle: "Pay someone, buy something, or sort your bills",
-      image: AppImageData.asset(GtVectorIllustrations.bolt),
+      image: AppImageData.asset(GtVectorIllustrations.bolt.adapt(context)),
       backgroundColor: palette.primary.base,
       textColor: palette.staticColors.white,
     ),

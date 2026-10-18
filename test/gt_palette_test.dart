@@ -416,6 +416,51 @@ void main() {
       final palette = PersonalLightPalette();
       expect(palette.copyWith(), same(palette));
     });
+
+    test('usesRedIllustration defaults to false', () {
+      expect(PersonalLightPalette().usesRedIllustration, isFalse);
+      expect(PersonalDarkPalette().usesRedIllustration, isFalse);
+    });
+
+    test('lerp switches usesRedIllustration at the midpoint', () {
+      final personal = PersonalLightPalette();
+      final pro = SterlingProLightPalette();
+
+      final before = personal.lerp(pro, 0.4) as GtPalette;
+      final after = personal.lerp(pro, 0.5) as GtPalette;
+      expect(before.usesRedIllustration, isFalse);
+      expect(after.usesRedIllustration, isTrue);
+    });
+
+    test('usesRedIllustration takes part in equality', () {
+      final plain = PersonalLightPalette();
+      final redPersonal = GtPalette(
+        primary: plain.primary,
+        coverColors: plain.coverColors,
+        staticColors: plain.staticColors,
+        cardColors: plain.cardColors,
+        bg: plain.bg,
+        fill: plain.fill,
+        text: plain.text,
+        stroke: plain.stroke,
+        icon: plain.icon,
+        faded: plain.faded,
+        information: plain.information,
+        warning: plain.warning,
+        error: plain.error,
+        success: plain.success,
+        away: plain.away,
+        feature: plain.feature,
+        verified: plain.verified,
+        highlighted: plain.highlighted,
+        stable: plain.stable,
+        infoAlt: plain.infoAlt,
+        usesRedIllustration: true,
+      );
+
+      expect(redPersonal, isNot(equals(plain)));
+      expect(redPersonal.hashCode, isNot(equals(plain.hashCode)));
+    });
   });
 
   group('App Flavor Palettes', () {
@@ -468,6 +513,8 @@ void main() {
       expect(dark.primary.base, GtColors.maroon600.value);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
+      expect(light.usesRedIllustration, isTrue);
+      expect(dark.usesRedIllustration, isTrue);
     });
   });
 

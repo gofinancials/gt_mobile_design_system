@@ -775,7 +775,7 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
                 mainAxisSize: .min,
                 children: [
                   GtImage(
-                    image: category.image,
+                    image: category.image.adapt(context),
                     width: size,
                     height: size,
                     isDecorative: true,

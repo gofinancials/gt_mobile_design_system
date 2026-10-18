@@ -230,11 +230,12 @@ class GtStatusState extends GtStatelessWidget {
   /// Resolves the status illustration shown above the titles.
   ///
   /// Uses [statusIcon] when provided, otherwise falls back to
-  /// the default asset mapped from [variant].
-  AppImageData? get _statusIcon {
+  /// the default asset mapped from [variant], adapted to the palette of
+  /// [context].
+  AppImageData? _statusIcon(BuildContext context) {
     return switch (variant) {
-      .success => AppImageData(GtVectorIllustrations.success),
-      .error => AppImageData(GtVectorIllustrations.failed),
+      .success => AppImageData(GtVectorIllustrations.success.adapt(context)),
+      .error => AppImageData(GtVectorIllustrations.failed.adapt(context)),
       .custom => statusIcon,
     };
   }
@@ -244,7 +245,7 @@ class GtStatusState extends GtStatelessWidget {
     return GtViewStateWidget(
       title: title,
       description: subtitle,
-      icon: _statusIcon,
+      icon: _statusIcon(context),
       graphic: graphic,
       iconSize: iconSize,
       actionText: actionLabel,

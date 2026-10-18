@@ -1,6 +1,11 @@
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+/// The light mode palette for the Sterling Pro brand.
+///
+/// Built on maroon brand colors, it draws illustrations in their red
+/// variants.
 final class SterlingProLightPalette extends GtLightPalette {
+  /// Creates a [SterlingProLightPalette].
   SterlingProLightPalette()
     : super(
         primary: GtPaletteBrandColors(
@@ -15,5 +20,6 @@ final class SterlingProLightPalette extends GtLightPalette {
           dark: GtColors.maroon800.value,
           light: GtColors.neutral0.value,
         ),
+        usesRedIllustration: true,
       );
 }

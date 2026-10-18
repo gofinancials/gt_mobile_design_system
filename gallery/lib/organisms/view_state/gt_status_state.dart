@@ -89,7 +89,7 @@ $leadingCode  onActionPressed: () {},
       subtitle: subtitle,
       icon: useCustomGraphic
           ? null
-          : AppImageData(GtVectorIllustrations.maintenance),
+          : AppImageData(GtVectorIllustrations.maintenance.adapt(context)),
       graphic: graphic,
       actionSize: .small,
       actionAlignment: .center,
@@ -101,7 +101,7 @@ $leadingCode  onActionPressed: () {},
         '''GtStatusState.custom(
   title: "$title",
   subtitle: "$subtitle",
-  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData(GtVectorIllustrations.maintenance),'}
+  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData(GtVectorIllustrations.maintenance.adapt(context)),'}
   actionSize: .small,
   actionAlignment: .center,
   actionLabel: "$actionLabel",

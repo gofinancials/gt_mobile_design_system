@@ -54,7 +54,7 @@ Widget playgroundGtEmptyStateUseCase(BuildContext context) {
     code:
         '''
 GtEmptyState(
-  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData("$illustration"),'}
+  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData("$illustration".adapt(context)),'}
   title: "$title",
   subtitle: "$subtitle",
   ${hasAction ? 'actionText: "$actionText",' : ''}
@@ -66,7 +66,7 @@ GtEmptyState(
       padding: context.insets.allDp(16.px),
       variant: GtCardVariant.normal,
       child: GtEmptyState(
-        icon: AppImageData(illustration),
+        icon: AppImageData(illustration.adapt(context)),
         graphic: useCustomGraphic ? const GtSpinner(size: 64) : null,
         title: title,
         subtitle: subtitle,
