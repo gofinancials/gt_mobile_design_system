@@ -241,12 +241,6 @@ class GtVectorIllustrations {
   /// Path to the charityCat SVG.
   static const charityCat = "$_basePath/charity_cat.svg";
 
-  /// Path to the debitCardsCat SVG.
-  static const debitCardsCat = "$_basePath/debit_cards_cat.svg";
-
-  /// Path to the detailsCat SVG.
-  static const detailsCat = "$_basePath/details_cat.svg";
-
   /// Path to the educationCat SVG.
   static const educationCat = "$_basePath/education_cat.svg";
 
@@ -270,9 +264,6 @@ class GtVectorIllustrations {
 
   /// Path to the holidayCat SVG.
   static const holidayCat = "$_basePath/holiday_cat.svg";
-
-  /// Path to the houseCat SVG.
-  static const houseCat = "$_basePath/house_cat.svg";
 
   /// Path to the payrollCat SVG.
   static const payrollCat = "$_basePath/payroll_cat.svg";
@@ -384,8 +375,6 @@ class GtVectorIllustrations {
     (label: 'wallet', value: wallet),
     (label: 'cashCat', value: cashCat),
     (label: 'charityCat', value: charityCat),
-    (label: 'debitCardsCat', value: debitCardsCat),
-    (label: 'detailsCat', value: detailsCat),
     (label: 'educationCat', value: educationCat),
     (label: 'emergencyCat', value: emergencyCat),
     (label: 'familyCat', value: familyCat),
@@ -394,7 +383,6 @@ class GtVectorIllustrations {
     (label: 'giftCat', value: giftCat),
     (label: 'healthCat', value: healthCat),
     (label: 'holidayCat', value: holidayCat),
-    (label: 'houseCat', value: houseCat),
     (label: 'payrollCat', value: payrollCat),
     (label: 'savingsCat', value: savingsCat),
     (label: 'shoppingCat', value: shoppingCat),
@@ -483,8 +471,6 @@ class GtVectorIllustrations {
     wallet,
     cashCat,
     charityCat,
-    debitCardsCat,
-    detailsCat,
     educationCat,
     emergencyCat,
     familyCat,
@@ -493,7 +479,6 @@ class GtVectorIllustrations {
     giftCat,
     healthCat,
     holidayCat,
-    houseCat,
     payrollCat,
     savingsCat,
     shoppingCat,
