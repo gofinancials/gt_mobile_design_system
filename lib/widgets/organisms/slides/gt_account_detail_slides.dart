@@ -6,7 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// selected account's details beneath it.
 ///
 /// From top to bottom it draws [GtScaledDots] — only once there is more than
-/// one account — then a fixed 76dp [PageView] of balances, the selected
+/// one account — then a 65dp [PageView] of balances, 8dp clear above and
+/// below, as the Personal Home's balance frame is drawn; then the selected
 /// account's [GtAccountData.subTitle] when it has one, a [GtAccountCopyPill]
 /// captioned with the account's type and number, and finally [actions],
 /// separated from the rest by the section spacing.
@@ -22,7 +23,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// undone through the `accountPill*` fields. Whatever the caption shows,
 /// tapping the pill copies the bare [GtAccountData.accountNumber].
 ///
-/// With an empty [controller] only the empty 76dp row and [actions] render;
+/// With an empty [controller] only the empty 81dp row and [actions] render;
 /// the subtitle and the pill need a selected account.
 ///
 /// Inside an enabled [GtSkeleton] an empty [controller] instead draws one
@@ -261,8 +262,11 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
                     ),
                   Padding(
                     padding: context.insets.symmetricDp(vertical: 8.px),
+                    // 65: the balance frame's height in the Personal Home
+                    // (`33590:137472`). The 48 line of an H3 centres in it,
+                    // about 8 inside its top, where the frame sets the text.
                     child: GtSizedBox(
-                      height: 48,
+                      height: 65,
                       key: Key("accounts-slider-${balances.length}"),
                       child: PageView(
                         controller: controller.pageController,

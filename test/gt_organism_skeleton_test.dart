@@ -418,6 +418,11 @@ void main() {
       expect(find.byType(GtBalanceText), findsOneWidget);
       expect(find.byType(GtAccountCopyPill), findsOneWidget);
       expect(find.byType(GtBone), findsWidgets);
+
+      // The balance row is the Personal Home's 65 frame, not a bare H3 line.
+      final row = tester.getSize(find.byKey(const Key('accounts-slider-1')));
+      final context = tester.element(find.byType(GtAccountDetailSlides<int>));
+      expect(row.height, closeTo(context.dp(65.px), 0.5));
     });
 
     testWidgets('a loading home app bar bones only its avatar', (tester) async {
