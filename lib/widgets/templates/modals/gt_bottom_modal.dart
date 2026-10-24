@@ -318,7 +318,10 @@ class _GtModalBody extends GtStatelessWidget {
     final resolvedDescription = progress ?? description;
 
     if (progress.hasValue) {
-      subStyle = context.textStyles.subHeadXs(color: palette.text.sub);
+      subStyle = context.textStyles.bodyXs(
+        color: palette.text.sub,
+        weight: .w500,
+      );
     }
 
     return SafeArea(
@@ -464,13 +467,13 @@ class _GtBottomModalIconWidget extends StatelessWidget {
     return switch (phase) {
       .loading => GtSpinner(size: size),
       .success => GtSvg(
-        GtVectorIllustrations.success,
+        GtVectorIllustrations.success.adapt(context),
         width: size,
         height: size,
         isDecorative: true,
       ),
       .error => GtSvg(
-        GtVectorIllustrations.failed,
+        GtVectorIllustrations.failed.adapt(context),
         width: size,
         height: size,
         isDecorative: true,

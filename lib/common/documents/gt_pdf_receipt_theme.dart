@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/widgets.dart' show Color;
 import 'package:gt_mobile_ui/documents.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -9,21 +10,93 @@ import 'package:pdf/widgets.dart' as pw;
 /// Alpha is preserved, so translucent design tokens survive the crossing.
 PdfColor gtPdfColorOf(Color color) => PdfColor.fromInt(color.toARGB32());
 
+/// The faces a document is typeset in.
+///
+/// Documents follow the design system's Open Runde, in the two weights the
+/// document specs use: [medium] for running copy and values, and [semibold]
+/// for the title, entry labels, headings and other emphasised lead-ins. Text
+/// styled
+/// `pw.FontWeight.bold` is set in [semibold]; everything else in [medium].
+///
+/// The app's own font files are CFF-flavoured OpenType, which the `pdf`
+/// package cannot embed, so the package ships TrueType builds of these two
+/// weights for documents alone, cut down to the Latin-1 range
+/// [gtPdfSafeText] already confines document text to. Each embeds as a
+/// subset of the glyphs a document actually uses.
+///
+/// [GtPdfReceiptBuilder.render] and [GtPdfInvoiceBuilder.render] load the
+/// faces themselves; [load] is only needed to pass them to `build`.
+///
+/// Example usage:
+/// ```dart
+/// final typeface = await GtPdfTypeface.load();
+/// final document = const GtPdfReceiptBuilder().build(data, typeface: typeface);
+/// ```
+class GtPdfTypeface {
+  /// The face for running copy, labels and values.
+  final pw.Font medium;
+
+  /// The face for the title and emphasised lead-ins.
+  final pw.Font semibold;
+
+  /// Creates a [GtPdfTypeface].
+  const GtPdfTypeface({required this.medium, required this.semibold});
+
+  static const _path = 'packages/gt_mobile_ui/assets/fonts';
+
+  static Future<GtPdfTypeface>? _openRunde;
+
+  /// Loads the design system's Open Runde faces.
+  ///
+  /// The faces are read from the package's assets once and reused by every
+  /// document after; a failed read is not cached, so the next call retries.
+  static Future<GtPdfTypeface> load() => _openRunde ??= _loadOpenRunde();
+
+  static Future<GtPdfTypeface> _loadOpenRunde() async {
+    try {
+      final medium = await rootBundle.load('$_path/OpenRunde-Medium.ttf');
+      final semibold = await rootBundle.load('$_path/OpenRunde-Semibold.ttf');
+
+      return GtPdfTypeface(
+        medium: pw.Font.ttf(medium),
+        semibold: pw.Font.ttf(semibold),
+      );
+    } catch (_) {
+      _openRunde = null;
+      rethrow;
+    }
+  }
+}
+
 /// The typography, colour and page geometry applied to a
 /// [GtPdfReceiptData] by [GtPdfReceiptBuilder], and to a [GtPdfInvoiceData] by
 /// [GtPdfInvoiceBuilder].
 ///
 /// Kept separate from the receipt content so the same data can be rendered
-/// against a light default, an institution's own colours, or the live app
-/// palette via [GtPdfReceiptTheme.fromPalette].
+/// against a light default, an institution's own colours, or an app palette
+/// via [GtPdfReceiptTheme.fromPalette].
 ///
-/// Typefaces are deliberately not configurable. Documents use the `pdf`
-/// package's own default family, which is embedded in every reader and needs no
-/// assets or async loading; the app's brand faces stay on screen where they
-/// belong. That family is Latin-1 only, so content outside that range — a naira
-/// sign, a curly quote pasted into a narration — cannot be rendered; callers do
-/// not have to guard against that themselves, because [GtPdfReceiptBuilder]
-/// runs every string it renders through [gtPdfSafeText] first.
+/// Documents are printed, emailed and opened in readers that ignore the app's
+/// appearance, so they are white with dark text unless the caller opts out.
+/// To keep the brand without the mode, theme from the brand's light palette:
+///
+/// ```dart
+/// GtPdfReceiptTheme.fromPalette(context.themeData.lightPalette);
+/// ```
+///
+/// Passing the live `context.palette` instead is the explicit way to make a
+/// document follow dark mode.
+///
+/// Typefaces are deliberately not part of the theme. Documents are set in the
+/// design system's Open Runde — see [GtPdfTypeface] — at the weights the
+/// design specifies, so a document carries the same hierarchy as the screen
+/// it was exported from. A document built without a [GtPdfTypeface] falls
+/// back to the `pdf` package's default family, which every reader carries.
+/// Either way only Latin-1 is set, so content outside that range — a naira
+/// sign, a curly quote pasted into a narration — is never rendered as is;
+/// callers do not have to guard against that themselves, because
+/// [GtPdfReceiptBuilder] runs every string it renders through [gtPdfSafeText]
+/// first.
 class GtPdfReceiptTheme {
   /// The page background.
   final PdfColor pageColor;
@@ -71,6 +144,9 @@ class GtPdfReceiptTheme {
   /// The size of entry values.
   final double valueSize;
 
+  /// The reading size of running text, such as the clauses of an agreement.
+  final double bodySize;
+
   /// The size of footer contact copy.
   final double footerSize;
 
@@ -105,7 +181,8 @@ class GtPdfReceiptTheme {
     this.sectionTitleSize = 12,
     this.headingSize = 10,
     this.labelSize = 10,
-    this.valueSize = 8,
+    this.valueSize = 9,
+    this.bodySize = 10,
     this.footerSize = 8,
     this.footnoteSize = 8,
     this.pageFormat = PdfPageFormat.a4,
@@ -117,8 +194,13 @@ class GtPdfReceiptTheme {
   /// The default light theme, matching the design system's receipt spec.
   const GtPdfReceiptTheme.light() : this();
 
-  /// Derives a theme from the live app [palette] so an exported receipt matches
-  /// the screen it was exported from.
+  /// Derives a theme from [palette].
+  ///
+  /// Every colour comes from the palette as given, page included, so a dark
+  /// palette yields a dark document. Pass the brand's light palette
+  /// (`context.themeData.lightPalette`) for the usual white page in the
+  /// brand's colours, and the live `context.palette` only when the document
+  /// should follow the app into dark mode.
   ///
   /// Only colour is taken from the palette; sizes and page geometry keep their
   /// defaults unless overridden.
@@ -140,25 +222,30 @@ class GtPdfReceiptTheme {
     );
   }
 
-  /// The base `pdf` theme used for the document.
+  /// The base `pdf` theme used for the document, set in [typeface].
   ///
-  /// Built from the package default so every widget inherits the standard
-  /// family, with only size and colour overridden.
-  pw.ThemeData get pdfTheme {
+  /// Every widget inherits [GtPdfTypeface.medium], and text styled
+  /// `pw.FontWeight.bold` takes [GtPdfTypeface.semibold]. Without a
+  /// [typeface] the package's default family stands in, in its regular and
+  /// bold cuts.
+  pw.ThemeData pdfTheme([GtPdfTypeface? typeface]) {
     return pw.ThemeData.base().copyWith(
       defaultTextStyle: pw.TextStyle(
         fontSize: valueSize,
         color: textSub,
         lineSpacing: 1.5,
-        font: pw.Font.helvetica(),
-        fontBold: pw.Font.helveticaBold(),
+        fontNormal: typeface?.medium ?? pw.Font.helvetica(),
+        fontBold: typeface?.semibold ?? pw.Font.helveticaBold(),
       ),
     );
   }
 
   /// The style of the document title.
-  pw.TextStyle get titleStyle =>
-      pw.TextStyle(fontSize: titleSize, color: textStrong);
+  pw.TextStyle get titleStyle => pw.TextStyle(
+    fontSize: titleSize,
+    color: textStrong,
+    fontWeight: pw.FontWeight.bold,
+  );
 
   /// The style of the "Issued on" label.
   pw.TextStyle get subtitleLabelStyle =>
@@ -172,26 +259,36 @@ class GtPdfReceiptTheme {
   );
 
   /// The style of uppercased section headings.
-  pw.TextStyle get sectionTitleStyle => pw.TextStyle(
-    fontSize: sectionTitleSize,
-    color: textSoft,
-    letterSpacing: 0.6,
-  );
+  pw.TextStyle get sectionTitleStyle =>
+      pw.TextStyle(fontSize: sectionTitleSize, color: textSoft);
 
-  /// The style of the emphasised heading inside a split section.
+  /// The style of the emphasised heading inside a split section, such as a
+  /// party name, set bold so it stands apart from the entries beside it.
   pw.TextStyle get headingStyle => pw.TextStyle(
     fontSize: headingSize,
     color: textStrong,
-    letterSpacing: 0.4,
+    fontWeight: pw.FontWeight.bold,
   );
 
-  /// The style of entry labels.
-  pw.TextStyle get labelStyle =>
-      pw.TextStyle(fontSize: labelSize, color: textStrong);
+  /// The style of entry labels, set bold so each label reads apart from its
+  /// value at a glance.
+  pw.TextStyle get labelStyle => pw.TextStyle(
+    fontSize: labelSize,
+    color: textStrong,
+    fontWeight: pw.FontWeight.bold,
+  );
 
   /// The style of entry values.
   pw.TextStyle get valueStyle =>
       pw.TextStyle(fontSize: valueSize, color: textSub);
+
+  /// The style of running text.
+  pw.TextStyle get bodyStyle =>
+      pw.TextStyle(fontSize: bodySize, color: textSub, lineSpacing: 2.5);
+
+  /// The style of the heading leading a run of [bodyStyle] text, such as a
+  /// clause title, set apart by colour alone as the agreement screens do.
+  pw.TextStyle get bodyHeadingStyle => bodyStyle.copyWith(color: textStrong);
 
   /// The style of the footer's bold lead-in.
   pw.TextStyle get footerTitleStyle => pw.TextStyle(
@@ -229,6 +326,7 @@ class GtPdfReceiptTheme {
     double? headingSize,
     double? labelSize,
     double? valueSize,
+    double? bodySize,
     double? footerSize,
     double? footnoteSize,
     PdfPageFormat? pageFormat,
@@ -252,6 +350,7 @@ class GtPdfReceiptTheme {
       headingSize: headingSize ?? this.headingSize,
       labelSize: labelSize ?? this.labelSize,
       valueSize: valueSize ?? this.valueSize,
+      bodySize: bodySize ?? this.bodySize,
       footerSize: footerSize ?? this.footerSize,
       footnoteSize: footnoteSize ?? this.footnoteSize,
       pageFormat: pageFormat ?? this.pageFormat,

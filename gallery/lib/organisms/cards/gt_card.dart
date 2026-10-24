@@ -182,7 +182,7 @@ Widget buildGtCardUseCase(BuildContext context) {
                 title: "POS Dispute Update",
                 subtitle: "We have an update on your disputed POS transaction.",
                 trailing: GtSvg(
-                  GtVectorIllustrations.serviceStatus,
+                  GtVectorIllustrations.serviceStatus.adapt(context),
                   width: 80,
                   height: 80,
                   alignment: .topRight,
@@ -202,7 +202,7 @@ Widget buildGtCardUseCase(BuildContext context) {
                 title: "Nearly there",
                 subtitle:
                     "Your fixed savings plan matures in 7 days with ₦45,000 earned. Tap to renew now and keep the streak alive.",
-                icon: GtSvg(GtVectorIllustrations.fuel),
+                icon: GtSvg(GtVectorIllustrations.fuel.adapt(context)),
                 onClose: () {},
                 variant: alertVariant,
               ),
@@ -215,7 +215,7 @@ Widget buildGtCardUseCase(BuildContext context) {
                 title: "UPGRADE FOLA'S ACCOUNT",
                 subtitle:
                     "You're 18 now! Time to upgrade your account and unlock more features built for you.",
-                icon: GtSvg(GtVectorIllustrations.referral),
+                icon: GtSvg(GtVectorIllustrations.referral.adapt(context)),
                 onClose: () {},
                 variant: alertVariant,
                 actionText: "GET STARTED",
@@ -448,15 +448,24 @@ Widget buildGtCardUseCase(BuildContext context) {
                   children: [
                     GtBillCard.tile(
                       name: "Airtime",
-                      icon: GtSvg(GtVectorIllustrations.building, width: 34),
+                      icon: GtSvg(
+                        GtVectorIllustrations.building.adapt(context),
+                        width: 34,
+                      ),
                     ),
                     GtBillCard.tile(
                       name: "Data & Internet",
-                      icon: GtSvg(GtVectorIllustrations.house, width: 34),
+                      icon: GtSvg(
+                        GtVectorIllustrations.house.adapt(context),
+                        width: 34,
+                      ),
                     ),
                     GtBillCard.tile(
                       name: "Cable TV",
-                      icon: GtSvg(GtVectorIllustrations.bin, width: 34),
+                      icon: GtSvg(
+                        GtVectorIllustrations.bin.adapt(context),
+                        width: 34,
+                      ),
                     ),
                   ],
                 ),
@@ -469,19 +478,31 @@ Widget buildGtCardUseCase(BuildContext context) {
             children: [
               GtBillCard(
                 name: "Airtime",
-                icon: GtSvg(GtVectorIllustrations.building, width: 24),
+                icon: GtSvg(
+                  GtVectorIllustrations.building.adapt(context),
+                  width: 24,
+                ),
               ),
               GtBillCard(
                 name: "Data & Internet",
-                icon: GtSvg(GtVectorIllustrations.house, width: 24),
+                icon: GtSvg(
+                  GtVectorIllustrations.house.adapt(context),
+                  width: 24,
+                ),
               ),
               GtBillCard(
                 name: "Cable TV",
-                icon: GtSvg(GtVectorIllustrations.bin, width: 24),
+                icon: GtSvg(
+                  GtVectorIllustrations.bin.adapt(context),
+                  width: 24,
+                ),
               ),
               GtBillCard(
                 name: "Electricity",
-                icon: GtSvg(GtVectorIllustrations.authentication, width: 24),
+                icon: GtSvg(
+                  GtVectorIllustrations.authentication.adapt(context),
+                  width: 24,
+                ),
               ),
             ],
           ),

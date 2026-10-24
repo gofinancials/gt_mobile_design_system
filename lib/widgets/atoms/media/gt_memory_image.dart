@@ -27,6 +27,11 @@ class GtMemoryImage extends GtStatelessWidget {
   /// An optional color filter to apply to the image.
   final Color? color;
 
+  /// An optional widget to display if the image fails to load or decode.
+  ///
+  /// If null, an empty [SizedBox] of [width] by [height] stands in.
+  final Widget? errorWidget;
+
   /// A description of what this image conveys, for screen readers.
   ///
   /// Supply this whenever the image carries information the surrounding text
@@ -51,6 +56,7 @@ class GtMemoryImage extends GtStatelessWidget {
     this.width,
     this.height,
     this.color,
+    this.errorWidget,
     this.semanticsLabel,
     this.isDecorative = false,
   });
@@ -64,6 +70,9 @@ class GtMemoryImage extends GtStatelessWidget {
       width: width,
       height: height,
       color: color,
+      errorBuilder: (_, _, _) {
+        return errorWidget ?? SizedBox(width: width, height: height);
+      },
       semanticLabel: semanticsLabel,
       // Image defaults to contributing an "image" node even with no label.
       // Excluding unlabelled images keeps them from becoming empty stops.

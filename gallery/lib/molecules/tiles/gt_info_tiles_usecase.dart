@@ -486,6 +486,10 @@ Widget playgroundGtDoubleColumnListTileUseCase(BuildContext context) {
     label: 'Highlight Value',
     initialValue: true,
   );
+  final valueMiddleEllipsis = context.knobs.boolean(
+    label: 'Value Middle Ellipsis',
+    initialValue: false,
+  );
 
   return GtWidgetDocPage(
     title: 'GtDoubleColumnListTile',
@@ -496,7 +500,7 @@ Widget playgroundGtDoubleColumnListTileUseCase(BuildContext context) {
 GtDoubleColumnListTile(
   "$label",
   value: "$value",
-  highlightValue: $highlightValue,
+  highlightValue: $highlightValue,${valueMiddleEllipsis ? '\n  valueMiddleEllipsis: true,' : ''}
 )''',
     child: Center(
       child: GtCard(
@@ -506,6 +510,7 @@ GtDoubleColumnListTile(
           label,
           value: value,
           highlightValue: highlightValue,
+          valueMiddleEllipsis: valueMiddleEllipsis,
         ),
       ),
     ),

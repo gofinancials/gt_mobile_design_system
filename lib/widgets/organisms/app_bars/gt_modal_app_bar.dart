@@ -19,10 +19,21 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// does not shift the centered title.
   final Widget? leading;
 
+  /// Whether a title too long for its space is shortened from the middle,
+  /// keeping its head and tail, rather than from the end. Defaults to false.
+  ///
+  /// Set it for titles whose end tells screens apart, such as a recipient's
+  /// name followed by their account number. See [GtText.middleEllipsis].
+  final bool titleMiddleEllipsis;
+
   /// Creates a standard [GtModalAppBar] with an optional [title].
-  const GtModalAppBar({String? title, this.leading, super.key})
-    : _title = title,
-      _titleLeading = null;
+  const GtModalAppBar({
+    String? title,
+    this.leading,
+    this.titleMiddleEllipsis = false,
+    super.key,
+  }) : _title = title,
+       _titleLeading = null;
 
   /// Creates a [GtModalAppBar] featuring both a [title] and a leading widget
   /// specifically for the title (e.g., an icon or avatar).
@@ -30,6 +41,7 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     required String title,
     required Widget titleLeading,
     this.leading,
+    this.titleMiddleEllipsis = false,
     super.key,
   }) : _titleLeading = titleLeading,
        _title = title;
@@ -43,6 +55,7 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     required String title,
     required Widget? action,
     TextStyle? style,
+    bool titleMiddleEllipsis,
     Key? key,
   }) = _GtExtendedModalAppBar;
 
@@ -52,6 +65,7 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     required Widget? action,
     TextStyle? style,
     GtTextCase? titleCase,
+    bool titleMiddleEllipsis,
     Key? key,
     double? horizontalSpacing,
   }) = _GtTitleModalAppBar;
@@ -87,6 +101,7 @@ class GtModalAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                         style: context.textStyles.h6(),
                         textAlign: .center,
                         maxLines: 1,
+                        middleEllipsis: titleMiddleEllipsis,
                         // Level 1 within the modal's own route scope.
                         headingLevel: 1,
                         overflow: .ellipsis,
@@ -127,6 +142,7 @@ class _GtExtendedModalAppBar extends GtModalAppBar {
     required this.title,
     this.action,
     this.style,
+    super.titleMiddleEllipsis,
   });
 
   @override
@@ -152,6 +168,7 @@ class _GtExtendedModalAppBar extends GtModalAppBar {
                   maxLines: 1,
                   style: style ?? context.textStyles.button(),
                   overflow: .ellipsis,
+                  middleEllipsis: titleMiddleEllipsis,
                   headingLevel: 1,
                 ),
                 Align(alignment: .centerRight, child: action),
@@ -191,6 +208,7 @@ class _GtTitleModalAppBar extends GtModalAppBar {
     this.style,
     this.titleCase,
     this.horizontalSpacing,
+    super.titleMiddleEllipsis,
   });
 
   @override
@@ -218,6 +236,7 @@ class _GtTitleModalAppBar extends GtModalAppBar {
                 maxLines: 1,
                 style: style ?? context.textStyles.button(),
                 overflow: .ellipsis,
+                middleEllipsis: titleMiddleEllipsis,
                 headingLevel: 1,
               ),
             ),

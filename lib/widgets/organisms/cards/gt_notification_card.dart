@@ -25,12 +25,13 @@ enum GtNotificationVariant {
     info => .info,
   };
 
-  /// The illustration shown for this kind of notification.
-  String get illustration => switch (this) {
-    .success => GtVectorIllustrations.success,
-    .error => GtVectorIllustrations.failed,
-    .warning => GtVectorIllustrations.serviceStatus,
-    .info => GtVectorIllustrations.exclamation,
+  /// The illustration shown for this kind of notification, adapted to the
+  /// palette of [context].
+  String illustration(BuildContext context) => switch (this) {
+    .success => GtVectorIllustrations.success.adapt(context),
+    .error => GtVectorIllustrations.failed.adapt(context),
+    .warning => GtVectorIllustrations.serviceStatus.adapt(context),
+    .info => GtVectorIllustrations.exclamation.adapt(context),
   };
 }
 
@@ -123,7 +124,7 @@ class GtNotificationCard extends GtStatelessWidget {
         spacing: horizontalSpacing ?? context.spacingBase,
         children: [
           GtSvg(
-            variant.illustration,
+            variant.illustration(context),
             width: 40,
             height: 40,
             alignment: .topLeft,

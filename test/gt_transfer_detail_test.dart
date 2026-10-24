@@ -67,10 +67,11 @@ void main() {
     String currency = AppStrings.naira,
     bool isCredit = false,
     String? amountSemanticsLabel,
+    num amount = 20000,
   }) {
     return GtTransferDetailBody(
       recipient: recipient,
-      amount: 20000,
+      amount: amount,
       currency: currency,
       isCredit: isCredit,
       amountSemanticsLabel: amountSemanticsLabel,
@@ -150,6 +151,18 @@ void main() {
 
       const hidden = GtBalanceText(amount: 20000, sign: '+', hidden: true);
       expect(hidden.semanticLabel, isNot(contains('+')));
+    });
+
+    testWidgets('draws a negative amount by its size; isCredit signs it', (
+      tester,
+    ) async {
+      await tester.pumpWidget(buildTestWidget(buildBody(amount: -20000)));
+
+      final amount = tester.widget<GtBalanceText>(
+        find.byKey(const Key('transfer-detail-amount')),
+      );
+      expect(amount.amtDisplay, '20,000.00');
+      expect(amount.sign, isNull);
     });
 
     testWidgets('renders a custom currency', (tester) async {

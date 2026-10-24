@@ -132,15 +132,16 @@ class _GtSummaryColumnsTile extends GtStatelessWidget {
       valueSuffix: suffix,
       labelTextStyle: GtTextStyleOverrides.resolve(
         labelStyle,
-        styles.subHeadXs(color: context.palette.text.sub),
+        styles.bodyXs(color: context.palette.text.sub, weight: .w500),
         labelColor,
       ),
       valueTextStyle: GtTextStyleOverrides.resolve(
         valueStyle,
-        styles.subHeadS(color: tile.valueColor),
+        styles.labelS(color: tile.valueColor, weight: .w500),
         valueColor,
       ),
       valueMaxLines: 1,
+      valueMiddleEllipsis: tile.middleEllipsis,
     );
   }
 }
@@ -209,7 +210,7 @@ class _GtSummaryStackedTile extends GtStatelessWidget {
       ),
       textStyle: GtTextStyleOverrides.resolve(
         valueStyle,
-        context.textStyles.subHeadM(color: tile.valueColor),
+        context.textStyles.labelM(color: tile.valueColor, weight: .w500),
         valueColor,
       ),
     );

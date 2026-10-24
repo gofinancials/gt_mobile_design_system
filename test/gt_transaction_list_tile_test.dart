@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 void main() {
@@ -110,5 +111,21 @@ void main() {
     ]) {
       expect(tester.widget<Text>(text).style, override);
     }
+  });
+
+  testWidgets('draws a negative debit by its size, unsigned', (tester) async {
+    await tester.pumpWidget(
+      buildTestWidget(
+        const GtTransactionListTile(
+          'Netflix',
+          subtitle: 'Card payment',
+          amount: -1500,
+          isDebit: true,
+        ),
+      ),
+    );
+
+    expect(find.text('${AppStrings.naira}1,500.00'), findsOneWidget);
+    expect(find.textContaining('-'), findsNothing);
   });
 }

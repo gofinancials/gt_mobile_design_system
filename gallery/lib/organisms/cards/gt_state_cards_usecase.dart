@@ -92,7 +92,7 @@ Widget playgroundGtEmptyStateCardUseCase(BuildContext context) {
   if (mode == 'image') {
     cardWidget = GtEmptyStateCard.image(
       image: GtSvg(
-        selectedIllustration.path,
+        selectedIllustration.path.adapt(context),
         width: imageSize.px,
         height: imageSize.px,
       ),
@@ -105,7 +105,7 @@ Widget playgroundGtEmptyStateCardUseCase(BuildContext context) {
         '''
 GtEmptyStateCard.image(
   image: GtSvg(
-    GtVectorIllustrations.${selectedIllustration.name},
+    GtVectorIllustrations.${selectedIllustration.name}.adapt(context),
     width: ${imageSize.toInt()},
     height: ${imageSize.toInt()},
   ),

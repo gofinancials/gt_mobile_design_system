@@ -227,6 +227,10 @@ class _SummaryTilePreview extends StatelessWidget {
       label: 'Interactive',
       initialValue: false,
     );
+    final middleEllipsis = context.knobs.boolean(
+      label: 'Middle Ellipsis (columns only)',
+      initialValue: false,
+    );
 
     final tile = GtSummaryTileData(
       label: label,
@@ -234,6 +238,7 @@ class _SummaryTilePreview extends StatelessWidget {
       leading: showLeading ? _bankLogo : null,
       trailing: showTrailing ? _categoryGlyph : null,
       valueColor: tintValue ? context.palette.success.base : null,
+      middleEllipsis: middleEllipsis,
       onTap: interactive
           ? () => GtToast.of(context).show("$label tapped")
           : null,
@@ -264,6 +269,7 @@ GtSummaryTile(
     ${showLeading ? 'leading: AppImageData(GtVectors.logo),' : ''}
     ${showTrailing ? 'trailing: AppImageData(GtNetworkImages.transfer),' : ''}
     ${tintValue ? 'valueColor: context.palette.success.base,' : ''}
+    ${middleEllipsis ? 'middleEllipsis: true,' : ''}
   ),
   layout: GtSummaryTileLayout.${layout.name},
 )''',

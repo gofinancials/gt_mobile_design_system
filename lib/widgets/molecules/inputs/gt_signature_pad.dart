@@ -382,7 +382,7 @@ class _Placeholder extends GtStatelessWidget {
           children: [
             GtText(
               widget.title,
-              style: context.textStyles.subHeadS(
+              style: context.textStyles.labelS(
                 color: context.palette.text.strong,
                 weight: FontWeight.w600,
               ),
@@ -392,8 +392,9 @@ class _Placeholder extends GtStatelessWidget {
             const GtGap.yXs(),
             GtText(
               widget.subtitle,
-              style: context.textStyles.subHeadXs(
+              style: context.textStyles.bodyXs(
                 color: context.palette.text.darkerSub,
+                weight: .w500,
               ),
               textAlign: TextAlign.center,
             ),

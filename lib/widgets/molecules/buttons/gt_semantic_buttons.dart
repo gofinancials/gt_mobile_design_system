@@ -219,7 +219,7 @@ class GtActionButton extends GtStatelessWidget {
 
   /// An optional text style to override the default [label] style.
   ///
-  /// Defaults to [GtTextStyles.subHeadXs].
+  /// Defaults to [GtTextStyles.bodyXs] at weight 500, Figma Body/S.
   final TextStyle? labelStyle;
 
   @override
@@ -270,7 +270,7 @@ class GtActionButton extends GtStatelessWidget {
             if (label case String label)
               GtText(
                 label,
-                style: labelStyle ?? context.textStyles.subHeadXs(),
+                style: labelStyle ?? context.textStyles.bodyXs(weight: .w500),
                 textAlign: .center,
                 maxLines: 2,
                 overflow: .ellipsis,
@@ -398,7 +398,7 @@ class GtQuestionTextButton extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final questionColor = context.palette.text.darkerSub;
-    final defaultStyle = context.textStyles.subHeadS();
+    final defaultStyle = context.textStyles.labelS(weight: .w500);
     final defaultQuesStyle = defaultStyle.copyWith(color: questionColor);
 
     Widget text = Text.rich(

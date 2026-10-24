@@ -74,7 +74,7 @@ class GtIndicatorTile extends GtStatelessWidget {
 
     final text = GtText(
       title,
-      style: titleStyle ?? context.textStyles.subHeadS(),
+      style: titleStyle ?? context.textStyles.labelS(weight: .w600),
       maxLines: 1,
       textAlign: TextAlign.start,
     );

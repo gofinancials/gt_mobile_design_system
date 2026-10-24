@@ -6,7 +6,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// selected account's details beneath it.
 ///
 /// From top to bottom it draws [GtScaledDots] — only once there is more than
-/// one account — then a fixed 76dp [PageView] of balances, the selected
+/// one account — then a 65dp [PageView] of balances, 8dp clear above and
+/// below, as the Personal Home's balance frame is drawn; then the selected
 /// account's [GtAccountData.subTitle] when it has one, a [GtAccountCopyPill]
 /// captioned with the account's type and number, and finally [actions],
 /// separated from the rest by the section spacing.
@@ -22,7 +23,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// undone through the `accountPill*` fields. Whatever the caption shows,
 /// tapping the pill copies the bare [GtAccountData.accountNumber].
 ///
-/// With an empty [controller] only the empty 76dp row and [actions] render;
+/// With an empty [controller] only the empty 81dp row and [actions] render;
 /// the subtitle and the pill need a selected account.
 ///
 /// Inside an enabled [GtSkeleton] an empty [controller] instead draws one
@@ -86,8 +87,8 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
 
   /// Overrides the style of the selected account's [GtAccountData.subTitle].
   ///
-  /// Defaults to [GtTextStyles.subHeadXs]. The line is centred, capped at one
-  /// line, and left out entirely for accounts without a subtitle.
+  /// Defaults to [GtTextStyles.bodyXs] at weight 500, Figma Body/S. The line
+  /// is centred, capped at one line, and left out entirely for accounts without a subtitle.
   final TextStyle? subtitleStyle;
 
   /// Builds the caption shown on the account pill for the selected account.
@@ -130,10 +131,11 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
 
   /// Replaces the account pill's text style outright.
   ///
-  /// Defaults to [GtTextStyles.subHeadXs] at a 12px line height, tinted with
-  /// the resolved [accountPillTextColor]. Because [GtAccountCopyPill.style]
-  /// replaces rather than merges, a style passed here must carry its own
-  /// colour — [accountPillTextColor] then reaches only the copy icon.
+  /// Defaults to [GtTextStyles.bodyXs] at weight 500 and a 12px line height,
+  /// tinted with the resolved [accountPillTextColor]. Because
+  /// [GtAccountCopyPill.style] replaces rather than merges, a style passed
+  /// here must carry its own colour — [accountPillTextColor] then reaches only
+  /// the copy icon.
   final TextStyle? accountPillStyle;
 
   /// Whether the account pill draws its copy icon.
@@ -212,9 +214,10 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
     };
     final pillColor = context.palette.primary.alpha10;
     final pillTextColor = accountPillTextColor ?? textColor;
-    final pillStyle = context.textStyles.subHeadXs(
+    final pillStyle = context.textStyles.bodyXs(
       color: pillTextColor,
       heightPx: 12,
+      weight: .w500,
     );
 
     return ListenableBuilder(
@@ -259,8 +262,11 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
                     ),
                   Padding(
                     padding: context.insets.symmetricDp(vertical: 8.px),
+                    // 65: the balance frame's height in the Personal Home
+                    // (`33590:137472`). The 48 line of an H3 centres in it,
+                    // about 8 inside its top, where the frame sets the text.
                     child: GtSizedBox(
-                      height: 48,
+                      height: 65,
                       key: Key("accounts-slider-${balances.length}"),
                       child: PageView(
                         controller: controller.pageController,
@@ -295,7 +301,9 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
                       subTitle,
                       textAlign: .center,
                       maxLines: 1,
-                      style: subtitleStyle ?? context.textStyles.subHeadXs(),
+                      style:
+                          subtitleStyle ??
+                          context.textStyles.bodyXs(weight: .w500),
                     ),
                     const GtGap.yLg(),
                   ],

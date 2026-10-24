@@ -37,7 +37,7 @@ Widget playgroundGtViewStateWidgetUseCase(BuildContext context) {
 GtViewStateWidget(
   title: "$title",
   description: "$description",
-  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData(GtVectorIllustrations.disconnected),'}
+  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData(GtVectorIllustrations.disconnected.adapt(context)),'}
   ${hasAction ? 'actionText: "$actionText",' : ''}
   ${hasAction ? 'onActionPressed: () {},' : ''}
 )''',
@@ -48,7 +48,7 @@ GtViewStateWidget(
         child: GtViewStateWidget(
           title: title,
           description: description.isEmpty ? null : description,
-          icon: AppImageData(GtVectorIllustrations.disconnected),
+          icon: AppImageData(GtVectorIllustrations.disconnected.adapt(context)),
           graphic: useCustomGraphic ? const GtSpinner(size: 64) : null,
           actionAlignment: .center,
           actionText: hasAction && actionText.isNotEmpty ? actionText : null,

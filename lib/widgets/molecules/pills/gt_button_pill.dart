@@ -29,7 +29,30 @@ class GtButtonPill extends GtStatelessWidget {
   final bool showShadow;
 
   /// The overall size configuration of the button pill.
+  ///
+  /// Sets the default padding: 6 all round for [GtPillSize.normal], 8 for
+  /// [GtPillSize.larger]. [padding] overrides it.
   final GtPillSize size;
+
+  /// Overrides the padding that [size] would otherwise set.
+  ///
+  /// Taken as given, so build it with `context.insets` to keep it scaled to
+  /// the device — e.g. `context.insets.symmetricDp(horizontal: 6.px,
+  /// vertical: 4.px)`.
+  final EdgeInsetsGeometry? padding;
+
+  /// Replaces the label style, which defaults to [GtTextStyles.buttonXs].
+  ///
+  /// Only its size, weight and other non-colour properties are used. Its
+  /// colour is always replaced by [textColor], or by the [variant]'s text
+  /// colour when [textColor] is `null` — so `context.textStyles.button2s()`
+  /// can be passed as is.
+  final TextStyle? textStyle;
+
+  /// Overrides the [variant]'s text colour for the label and the icons.
+  ///
+  /// Also wins over any colour carried by [textStyle].
+  final Color? textColor;
 
   /// An alternative accessibility label for the button.
   final String? semanticsLabel;
@@ -48,6 +71,9 @@ class GtButtonPill extends GtStatelessWidget {
     this.onTap,
     this.showShadow = false,
     this.size = .normal,
+    this.padding,
+    this.textStyle,
+    this.textColor,
     this.semanticsLabel,
     this.semanticHint,
   });
@@ -55,21 +81,26 @@ class GtButtonPill extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final textColor = variant.getTextColor(palette);
+    final txtColor = textColor ?? variant.getTextColor(palette);
     final bgColor = variant.getBgColor(palette);
+    final labelStyle = GtTextStyleOverrides.resolve(
+      textStyle,
+      context.textStyles.buttonXs(color: txtColor),
+      txtColor,
+    );
 
     Widget? iconWidget;
     Widget? trailingWidget;
 
     if (icon != null) {
-      iconWidget = GtIcon.withColor(icon!, color: textColor, size: 14);
+      iconWidget = GtIcon.withColor(icon!, color: txtColor, size: 14);
     }
 
     if (trailing != null) {
-      trailingWidget = GtIcon.withColor(trailing!, color: textColor, size: 14);
+      trailingWidget = GtIcon.withColor(trailing!, color: txtColor, size: 14);
     }
 
-    final padding = switch (size) {
+    final paddingPx = switch (size) {
       .larger => 8.px,
       _ => 6.px,
     };
@@ -79,8 +110,9 @@ class GtButtonPill extends GtStatelessWidget {
       bgColor: bgColor,
       borderColor: bgColor,
       icon: iconWidget,
-      textColor: textColor,
-      padding: context.insets.allDp(padding),
+      textColor: txtColor,
+      textStyle: labelStyle,
+      padding: padding ?? context.insets.allDp(paddingPx),
       trailing: trailingWidget,
       alignment: alignment,
       showShadow: showShadow,
