@@ -232,12 +232,16 @@ class GtTransactionListTile extends GtStatelessWidget {
 
   /// The amount as drawn: masked when [maskAmount] is set, shortened past a
   /// hundred million, and signed with `+` for a credit.
+  ///
+  /// [isDebit] carries the direction, so a negative [amount] is drawn by its
+  /// size: the formatter keeps a minus sign since Foundation v0.0.73.
   String get _formattedAmount {
-    if (maskAmount) return '*' * ("$amount".length).clamp(4, 10);
-    final bool isLong = amount >= 100_000_000;
+    final size = amount.abs();
+    if (maskAmount) return '*' * ("$size".length).clamp(4, 10);
+    final bool isLong = size >= 100_000_000;
     final formatted = isLong
-        ? amount.asCurrencyShort(currency)
-        : amount.asCurrency(currency);
+        ? size.asCurrencyShort(currency)
+        : size.asCurrency(currency);
     if (!isDebit) return "+$formatted";
     return formatted;
   }

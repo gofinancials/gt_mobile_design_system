@@ -112,8 +112,9 @@ class GtLimitEditListTile extends GtStatelessWidget {
   /// for the progress bar.
   double get _fraction => min((value / max), 1);
 
-  /// Calculates the remaining available amount of the limit.
-  num get _remainder => max - value;
+  /// Calculates the remaining available amount of the limit, never below zero:
+  /// the formatter keeps a minus sign since Foundation v0.0.73.
+  num get _remainder => (max - value).clamp(0, double.infinity);
 
   /// The localized, currency-formatted string of the current utilized value.
   String get _formattedValue => AppTextFormatter.formatCurrency(value);

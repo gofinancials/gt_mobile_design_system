@@ -253,7 +253,7 @@ class _TransferDetailHeader extends GtStatelessWidget {
   /// The label announced for [amount]: [amountSemanticsLabel] when supplied,
   /// otherwise the `transferAmountIs` translation.
   String get amountLabel {
-    final display = AppTextFormatter.formatCurrency(amount, symbol: '');
+    final display = AppTextFormatter.formatCurrency(amount.abs(), symbol: '');
     return amountSemanticsLabel ??
         'transferAmountIs'.tr({
           'amount': '${sign ?? ''}$display',
@@ -303,7 +303,9 @@ class _TransferDetailHeader extends GtStatelessWidget {
             ),
             GtBalanceText(
               key: const Key('transfer-detail-amount'),
-              amount: amount,
+              // [isCredit] carries the direction; the formatter keeps a minus
+              // sign since Foundation v0.0.73.
+              amount: amount.abs(),
               currencySymbol: currency,
               sign: sign,
               showVisibilityIcon: false,

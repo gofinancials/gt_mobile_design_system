@@ -48,6 +48,9 @@ class GtBalanceText extends GtStatelessWidget {
 
   /// An optional sign, such as `+` for a credit, prefixed to [currencySymbol].
   ///
+  /// A negative [amount] with no sign of its own takes `-`, so an overdrawn
+  /// balance reads `-₦ 22,096.06` rather than `₦ -22,096.06`.
+  ///
   /// The sign becomes part of the computed symbol, so it is drawn in
   /// [currencyStyle] alongside the glyph, and it prefixes the amount in the
   /// default semantics label. It is omitted while [hidden] is `true`, so a
@@ -179,13 +182,21 @@ class GtBalanceText extends GtStatelessWidget {
     this.iconColor,
   });
 
-  /// The amount as rendered: eight asterisks while [hidden], otherwise
-  /// [amount] formatted without a currency symbol.
+  /// The amount as rendered: eight asterisks while [hidden], otherwise the
+  /// size of [amount] formatted without a currency symbol. Its sign is drawn
+  /// ahead of the symbol instead.
   ///
   /// Exposed so callers can measure or reuse the exact string on screen.
   String get amtDisplay {
     if (hidden) return "********";
-    return AppTextFormatter.formatCurrency(amount, symbol: '');
+    return AppTextFormatter.formatCurrency(amount?.abs(), symbol: '');
+  }
+
+  /// [sign], or `-` for a negative [amount] that names none.
+  String? get _sign {
+    if (sign case String value) return value;
+    if ((amount ?? 0) < 0) return '-';
+    return null;
   }
 
   /// The label handed to the accessibility tree.
@@ -197,14 +208,14 @@ class GtBalanceText extends GtStatelessWidget {
       return hiddenSemanticsLabel ?? 'Balance is hidden';
     }
     return semanticsLabel ??
-        'Balance is ${sign ?? ''}$amtDisplay $currencySymbol';
+        'Balance is ${_sign ?? ''}$amtDisplay $currencySymbol';
   }
 
-  /// The symbol as drawn: [sign] prefixed to [currencySymbol], or the bare
-  /// [currencySymbol] while [hidden] or when no [sign] is set.
+  /// The symbol as drawn: the sign (see [sign]) prefixed to [currencySymbol],
+  /// or the bare [currencySymbol] while [hidden] or when there is no sign.
   String get _computedSymbol {
     if (hidden) return currencySymbol;
-    if (sign case String value) return '$value$currencySymbol';
+    if (_sign case String value) return '$value$currencySymbol';
     return currencySymbol;
   }
 
@@ -264,7 +275,7 @@ class GtBalanceText extends GtStatelessWidget {
 
     if (animateChanges && !hidden) {
       child = _GtAnimatedBalanceText(
-        amount: amount!,
+        amount: amount!.abs(),
         computedSymbol: _computedSymbol,
         currencyStyle: symbolStyle,
         amountStyle: amtStyle,
