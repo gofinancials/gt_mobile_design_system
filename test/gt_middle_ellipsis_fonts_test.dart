@@ -79,7 +79,7 @@ void main() {
   testWidgets('a cut in the real typography never overflows', (tester) async {
     await tester.runAsync(() async {
       await _loadRunde();
-      await _load('Youth', ['Youth-Medium.otf', 'Youth-Bold.otf']);
+      await _load('Momo', ['Momo-Medium.otf', 'Momo-Bold.otf']);
     });
 
     late List<TextStyle> styles;

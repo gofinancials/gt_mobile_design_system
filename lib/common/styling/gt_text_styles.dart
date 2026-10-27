@@ -68,7 +68,7 @@ class GtTextStyles {
   }
 
   // ---------------------------------------------------------------------------
-  // DISPLAY (d prefix) | Youth
+  // DISPLAY (d prefix) | Momo, Bold (700)
   // ---------------------------------------------------------------------------
 
   /// Generates the Display 1 (D1) text style.
@@ -148,7 +148,7 @@ class GtTextStyles {
 
   /// Generates the Display 3.5 (D3.5) text style, Figma's Display/M.
   ///
-  /// Youth 40px on a 40px line. It sits between [d3] and [d4]. Unlike [h3],
+  /// Momo 40px on a 40px line. It sits between [d3] and [d4]. Unlike [h3],
   /// which shares its size, it carries no tracking.
   TextStyle d3_5({
     double? heightPx,
@@ -200,7 +200,7 @@ class GtTextStyles {
   }
 
   // ---------------------------------------------------------------------------
-  // TITLES (h prefix) | H1: Youth, H2-H6: Readex Pro
+  // TITLES (h prefix) | H1: Momo, H2-H6: Readex Pro
   // ---------------------------------------------------------------------------
 
   /// Generates the welcome screen title text style.

@@ -70,11 +70,9 @@ flutter:
           weight: 600
         - asset: assets/fonts/OpenRunde-Bold.otf
           weight: 700
-    - family: Youth
+    - family: Momo
       fonts:
-        - asset: assets/fonts/Youth-Bold.otf
-          weight: 700
-        - asset: assets/fonts/Youth-Medium.otf
+        - asset: assets/fonts/MomoTrustDisplay-Regular.otf
     - family: GtIconFont
       fonts:
         - asset: assets/fonts/GtIconFont.otf

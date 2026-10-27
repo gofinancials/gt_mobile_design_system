@@ -7,8 +7,8 @@ class GtFonts {
   /// The font family for our icons.
   static const String icon = 'GtIconFont';
 
-  /// The 'Youth' font family.
-  static const String _youth = 'Youth';
+  /// The 'Momo' font family.
+  static const String _momo = 'Momo';
 
   /// The 'Open Runde' font family.
   static const String _runde = 'Runde';
@@ -21,13 +21,13 @@ class GtFonts {
 
   /// Creates a new [GtFonts] configuration.
   ///
-  /// Defaults to [readex] for titles, [youth] for displays, and [inter] for body text.
-  const GtFonts({this.title = _youth, this.body = _runde});
+  /// Defaults to [momo] for titles and displays, and [runde] for body text.
+  const GtFonts({this.title = _momo, this.body = _runde});
 
   /// A list containing all available font families.
   static List<({String label, String value})> get all => [
     (label: 'icon', value: icon),
-    (label: 'youth', value: _youth),
+    (label: 'youth', value: _momo),
     (label: 'open-runde', value: _runde),
   ];
 }

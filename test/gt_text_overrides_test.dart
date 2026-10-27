@@ -269,7 +269,7 @@ void main() {
   });
 
   group('GtTextStyles.d3_5', () {
-    testWidgets('sets Youth 40 on a 40 line with no tracking', (tester) async {
+    testWidgets('sets Momo 40 on a 40 line with no tracking', (tester) async {
       await tester.pumpWidget(app(const SizedBox()));
 
       final context = tester.element(find.byType(SizedBox));
