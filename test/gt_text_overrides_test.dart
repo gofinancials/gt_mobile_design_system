@@ -276,18 +276,21 @@ void main() {
 
       final context = tester.element(find.byType(SizedBox));
       final style = context.textStyles.d3_5();
-      expect(style.fontSize, closeTo(34.4, 1e-9));
+      expect(style.fontSize, closeTo(36.8, 1e-9));
       expect(style.fontSize! * style.height!, closeTo(40, 1e-9));
       expect(style.letterSpacing, 0);
     });
 
-    testWidgets('leaves non-display Momo styles at their own size', (
+    testWidgets('scales Momo buttons too, but leaves Open Runde alone', (
       tester,
     ) async {
       await tester.pumpWidget(app(const SizedBox()));
 
       final context = tester.element(find.byType(SizedBox));
-      expect(context.textStyles.button().fontSize, 18);
+      final textStyles = context.textStyles;
+      expect(textStyles.button().fontSize, closeTo(16.56, 1e-9));
+      expect(textStyles.button(family: context.fonts.body).fontSize, 18);
+      expect(textStyles.bodyM().fontSize, 16);
     });
   });
 

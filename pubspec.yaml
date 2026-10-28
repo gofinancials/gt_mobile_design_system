@@ -72,13 +72,26 @@ flutter:
           weight: 700
     # Momo Trust Display lacks most currency symbols, so ₦ ₩ ₪ ₱ ₲ ₴ ₵ ₹ ₺ ₽ ₿
     # are copied in from GoTech Display Black (the weight closest to Momo's
-    # stems), scaled from its 720 cap height to Momo's 750. Momo's own glyphs
-    # are untouched, and the name table version reads "adds GoTech Display
-    # Black currency symbols". The original file: git show
+    # stems), scaled from its 720 cap height to Momo's 750.
+    # Momo also draws capitals and digits larger than Youth at the same font
+    # size (cap height 0.750em vs 0.700em), so the whole file, currency
+    # symbols included, is then scaled by 0.933 with fontTools' scale_upem
+    # (unitsPerEm kept at 1000) to render at Youth's cap height. Its name
+    # table version reads "adds GoTech Display Black currency symbols; scaled
+    # 0.933 to Youth cap height".
+    # Momo's stems were also ~7% heavier than Youth Bold's, so every outline
+    # is finally inset by 5 font units with skia-pathops (stroke the outline,
+    # subtract it, miter joins) and stretched back to the baseline and the
+    # 700 cap height. Vertical stems are then 0.221 of the cap height, as in
+    # Youth Bold; advances are unchanged. The original file: git show
     # bd3bf6b8:assets/fonts/MomoTrustDisplay-Regular.otf
+    # Momo has a single, already heavy weight. It is registered at 700, like
+    # Youth-Bold was, because the styles ask for bold and a face registered
+    # at 400 would be faux-bolded, thickening and widening every glyph.
     - family: Momo
       fonts:
         - asset: assets/fonts/MomoTrustDisplay-Regular.otf
+          weight: 700
     - family: GtIconFont
       fonts:
         - asset: assets/fonts/GtIconFont.otf

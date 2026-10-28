@@ -10,9 +10,10 @@ class GtFonts {
   /// The 'Momo' font family.
   ///
   /// The bundled Momo Trust Display carries currency symbols copied in from
-  /// GoTech Display, such as ₦; see the note on the font asset in
-  /// `pubspec.yaml`. Its display and heading sizes are scaled down in
-  /// [GtTextStyles.buildStyle] to make up for Momo drawing larger than Youth.
+  /// GoTech Display, such as ₦, and is scaled to Youth's cap height; see the
+  /// note on the font asset in `pubspec.yaml`. Every size set in this family
+  /// is scaled down again in [GtTextStyles.buildStyle], where Momo's wider
+  /// uppercase and digits take up Youth's width.
   static const String _momo = 'Momo';
 
   /// The 'Open Runde' font family.
