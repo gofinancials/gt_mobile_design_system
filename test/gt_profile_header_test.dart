@@ -43,8 +43,14 @@ void main() {
       expect(avatar.size, context.dp(48.px));
       expect(
         avatar.initialsStyle,
-        context.textStyles.h5(color: palette.primary.darker),
+        context.textStyles.avatar(
+          size: 24,
+          heightPx: 32,
+          weight: .w700,
+          color: palette.primary.darker,
+        ),
       );
+      expect(avatar.initialsStyle!.fontFamily, contains(context.fonts.body));
       expect(find.byType(GtPill), findsNothing);
     });
 

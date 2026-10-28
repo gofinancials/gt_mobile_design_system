@@ -8,6 +8,11 @@ class GtFonts {
   static const String icon = 'GtIconFont';
 
   /// The 'Momo' font family.
+  ///
+  /// The bundled Momo Trust Display carries currency symbols copied in from
+  /// GoTech Display, such as ₦; see the note on the font asset in
+  /// `pubspec.yaml`. Its display and heading sizes are scaled down in
+  /// [GtTextStyles.buildStyle] to make up for Momo drawing larger than Youth.
   static const String _momo = 'Momo';
 
   /// The 'Open Runde' font family.

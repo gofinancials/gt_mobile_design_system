@@ -269,14 +269,25 @@ void main() {
   });
 
   group('GtTextStyles.d3_5', () {
-    testWidgets('sets Momo 40 on a 40 line with no tracking', (tester) async {
+    testWidgets('scales Momo 40 down on a 40 line with no tracking', (
+      tester,
+    ) async {
       await tester.pumpWidget(app(const SizedBox()));
 
       final context = tester.element(find.byType(SizedBox));
       final style = context.textStyles.d3_5();
-      expect(style.fontSize, 40);
-      expect(style.height, 1);
+      expect(style.fontSize, closeTo(34.4, 1e-9));
+      expect(style.fontSize! * style.height!, closeTo(40, 1e-9));
       expect(style.letterSpacing, 0);
+    });
+
+    testWidgets('leaves non-display Momo styles at their own size', (
+      tester,
+    ) async {
+      await tester.pumpWidget(app(const SizedBox()));
+
+      final context = tester.element(find.byType(SizedBox));
+      expect(context.textStyles.button().fontSize, 18);
     });
   });
 

@@ -33,15 +33,27 @@ class GtTextStyles {
   // into Flutter's native coordinate system.
   // ---------------------------------------------------------------------------
 
+  /// The factor display and heading sizes are scaled by in [buildStyle].
+  ///
+  /// Those sizes were set for Youth. Momo, which replaced it, draws capitals
+  /// and digits 7% taller and about 16% wider at the same size, so they render
+  /// at 86% of their declared size, where Momo's uppercase and digits take up
+  /// Youth's width. The declared sizes are still the Youth ones, so setting
+  /// this to 1 restores them exactly.
+  static const double _youthDisplayScale = 0.86;
+
   /// Builds a [TextStyle] from Figma's type tokens.
   ///
   /// [heightPx] is the line height in logical pixels and [widthPct] the
-  /// tracking as a percentage of [size].
+  /// tracking as a percentage of [size]. When [isDisplay] is true, [size] is
+  /// a Youth-era display or heading size and is scaled down to suit Momo;
+  /// [heightPx] is kept as given.
   TextStyle buildStyle({
     required String family,
     required double size,
     required double heightPx,
     required double widthPct,
+    bool isDisplay = false,
     TextDecoration? decoration,
     FontWeight? weight,
     Color? color,
@@ -51,11 +63,12 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     final computedColor = color ?? context.palette.text.strong;
+    final computedSize = isDisplay ? size * _youthDisplayScale : size;
     return TextStyle(
       fontFamily: family,
-      fontSize: size,
-      height: heightPx / size,
-      letterSpacing: size * (widthPct / 100),
+      fontSize: computedSize,
+      height: heightPx / computedSize,
+      letterSpacing: computedSize * (widthPct / 100),
       fontWeight: weight ?? .normal,
       color: computedColor,
       decoration: decoration,
@@ -83,6 +96,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 64,
       heightPx: heightPx ?? 72,
       widthPct: -2.0,
@@ -108,6 +122,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 56,
       heightPx: heightPx ?? 64,
       widthPct: -0.5,
@@ -133,6 +148,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 48,
       heightPx: heightPx ?? 50,
       widthPct: 0.0,
@@ -148,8 +164,9 @@ class GtTextStyles {
 
   /// Generates the Display 3.5 (D3.5) text style, Figma's Display/M.
   ///
-  /// Momo 40px on a 40px line. It sits between [d3] and [d4]. Unlike [h3],
-  /// which shares its size, it carries no tracking.
+  /// Momo 40px on a 40px line, drawn smaller by the display scale in
+  /// [buildStyle]. It sits between [d3] and [d4]. Unlike [h3], which shares
+  /// its size, it carries no tracking.
   TextStyle d3_5({
     double? heightPx,
     Color? color,
@@ -161,6 +178,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 40,
       heightPx: heightPx ?? 40,
       widthPct: 0.0,
@@ -186,6 +204,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 32,
       heightPx: heightPx ?? 40,
       widthPct: 0.0,
@@ -215,6 +234,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 60,
       heightPx: heightPx ?? 52,
       widthPct: -1.0,
@@ -240,6 +260,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 56,
       heightPx: heightPx ?? 64,
       widthPct: -1.0,
@@ -265,6 +286,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 48,
       heightPx: heightPx ?? 56,
       widthPct: -1.0,
@@ -290,6 +312,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 40,
       heightPx: heightPx ?? 48,
       widthPct: -1.0,
@@ -315,6 +338,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 32,
       heightPx: heightPx ?? 40,
       widthPct: -0.5,
@@ -340,6 +364,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 24,
       heightPx: heightPx ?? 32,
       widthPct: 0.0,
@@ -365,6 +390,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 20,
       heightPx: heightPx ?? 28,
       widthPct: 0.0,
@@ -390,6 +416,7 @@ class GtTextStyles {
   }) {
     return buildStyle(
       family: fonts.title,
+      isDisplay: true,
       size: 16,
       heightPx: heightPx ?? 20,
       widthPct: 0.0,
@@ -403,7 +430,9 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the avatar text style
+  /// Generates the avatar text style, for initials drawn inside an avatar.
+  ///
+  /// Uses [GtFonts.body], Open Runde, unless [family] says otherwise.
   TextStyle avatar({
     String? family,
     double? heightPx,
@@ -418,7 +447,7 @@ class GtTextStyles {
     required double size,
   }) {
     return buildStyle(
-      family: family ?? fonts.title,
+      family: family ?? fonts.body,
       size: size,
       heightPx: heightPx ?? size * 1.25,
       overflow: overflow,

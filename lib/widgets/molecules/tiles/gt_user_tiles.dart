@@ -277,7 +277,12 @@ class GtStakeHolderListTile extends GtStatelessWidget {
             child: Center(
               child: GtText(
                 initials.upper,
-                style: context.textStyles.h7(color: palette.primary.base),
+                style: context.textStyles.avatar(
+                  size: 16,
+                  heightPx: 20,
+                  weight: .w700,
+                  color: palette.primary.base,
+                ),
               ),
             ),
           ),
@@ -393,7 +398,12 @@ class GtStakeHolderStatusListTile extends GtStatelessWidget {
                 child: Center(
                   child: GtText(
                     initials.upper,
-                    style: context.textStyles.h7(color: palette.primary.base),
+                    style: context.textStyles.avatar(
+                      size: 16,
+                      heightPx: 20,
+                      weight: .w700,
+                      color: palette.primary.base,
+                    ),
                   ),
                 ),
               ),

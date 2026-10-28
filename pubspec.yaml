@@ -70,6 +70,12 @@ flutter:
           weight: 600
         - asset: assets/fonts/OpenRunde-Bold.otf
           weight: 700
+    # Momo Trust Display lacks most currency symbols, so ₦ ₩ ₪ ₱ ₲ ₴ ₵ ₹ ₺ ₽ ₿
+    # are copied in from GoTech Display Black (the weight closest to Momo's
+    # stems), scaled from its 720 cap height to Momo's 750. Momo's own glyphs
+    # are untouched, and the name table version reads "adds GoTech Display
+    # Black currency symbols". The original file: git show
+    # bd3bf6b8:assets/fonts/MomoTrustDisplay-Regular.otf
     - family: Momo
       fonts:
         - asset: assets/fonts/MomoTrustDisplay-Regular.otf

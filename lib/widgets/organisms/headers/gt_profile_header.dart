@@ -109,7 +109,12 @@ class GtProfileHeader extends GtStatelessWidget {
           avatar: avatar,
           size: context.dp(48.px),
           initials: _initials,
-          initialsStyle: context.textStyles.h5(color: palette.primary.darker),
+          initialsStyle: context.textStyles.avatar(
+            size: 24,
+            heightPx: 32,
+            weight: .w700,
+            color: palette.primary.darker,
+          ),
           onPressed: onClickAvatar,
           semanticsLabel: avatarSemanticsLabel,
         ),
@@ -300,10 +305,12 @@ class _GtProfileAccountPill extends GtStatelessWidget {
         size: context.dp(32.px),
         initials: initials,
         gradient: context.gradients.ghostGradient,
-        initialsStyle: context.textStyles.button2s(
-          color: color,
+        initialsStyle: context.textStyles.avatar(
+          size: 12,
           heightPx: 16,
           widthPct: 5,
+          weight: .w700,
+          color: color,
         ),
       ),
       trailing: chevron,
