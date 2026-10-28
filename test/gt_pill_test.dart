@@ -5,15 +5,20 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 class _PillTestApp extends GtStatelessWidget {
   final Widget child;
   final bool disableAnimations;
+  final ThemeData? theme;
 
-  const _PillTestApp({required this.child, this.disableAnimations = false});
+  const _PillTestApp({
+    required this.child,
+    this.disableAnimations = false,
+    this.theme,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GtThemeProvider(
       theme: kPersonalTheme,
       child: MaterialApp(
-        theme: kPersonalTheme.materialLight,
+        theme: theme ?? kPersonalTheme.materialLight,
         home: MediaQuery(
           data: MediaQueryData(disableAnimations: disableAnimations),
           child: Scaffold(body: Center(child: child)),
@@ -185,6 +190,73 @@ void main() {
       find.bySemanticsLabel('Identity verification complete'),
       findsOneWidget,
     );
+  });
+
+  group('GtAccountCopyPill product colours', () {
+    BoxDecoration decorationOf(WidgetTester tester) {
+      final container = tester.widget<Container>(
+        find
+            .descendant(
+              of: find.byType(GtAccountCopyPill),
+              matching: find.byType(Container),
+            )
+            .first,
+      );
+      return container.decoration! as BoxDecoration;
+    }
+
+    Color textColorOf(WidgetTester tester) =>
+        tester.widget<GtText>(find.byType(GtText)).style!.color!;
+
+    testWidgets('Pro keeps its maroon in dark mode', (tester) async {
+      await tester.pumpWidget(
+        _PillTestApp(
+          theme: kProTheme.materialDark,
+          child: const GtAccountCopyPill('0123456789', variant: .proTrailing),
+        ),
+      );
+      final decoration = decorationOf(tester);
+
+      expect(textColorOf(tester), GtColors.maroon700.value);
+      expect(decoration.color, GtColors.maroonAlpha8.value);
+      expect(decoration.boxShadow!.map((shadow) => shadow.color), [
+        GtColors.maroonAlpha3.value,
+        GtColors.maroonAlpha15.value,
+      ]);
+    });
+
+    for (final (mode, theme) in [
+      ('light', kPersonalTheme.materialLight),
+      ('dark', kPersonalTheme.materialDark),
+    ]) {
+      testWidgets('every variant takes its light tokens in $mode mode', (
+        tester,
+      ) async {
+        const raw = GtPaletteRawColors.light();
+
+        for (final variant in GtAccountCopyPillVariant.values) {
+          await tester.pumpWidget(
+            _PillTestApp(
+              theme: theme,
+              child: GtAccountCopyPill('0123456789', variant: variant),
+            ),
+          );
+          final decoration = decorationOf(tester);
+
+          expect(
+            textColorOf(tester),
+            variant.textColor(raw),
+            reason: '$variant',
+          );
+          expect(decoration.color, variant.bgColor(raw), reason: '$variant');
+          expect(
+            decoration.boxShadow,
+            variant.shadows(raw),
+            reason: '$variant',
+          );
+        }
+      });
+    }
   });
 
   group('GtPill border', () {

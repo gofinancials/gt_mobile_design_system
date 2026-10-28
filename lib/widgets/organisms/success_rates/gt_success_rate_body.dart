@@ -383,6 +383,8 @@ class _SuccessRateRow extends GtStatelessWidget {
         GtSuccessRateTile(
           text: entry.name,
           successRate: entry.rate,
+          isLoading: entry.isLoading,
+          loadingSemanticsLabel: entry.loadingSemanticsLabel,
           leading: switch (entry.logo) {
             AppImageData logo => GtImage(
               image: logo,

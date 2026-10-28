@@ -553,10 +553,17 @@ Widget playgroundGtSuccessRateTileUseCase(BuildContext context) {
     min: 0.0,
     max: 1.0,
   );
+  final rateState = context.knobs.object.dropdown<String>(
+    label: 'Rate State',
+    options: ['Known', 'Unavailable', 'Loading'],
+    initialOption: 'Known',
+  );
   final asCard = context.knobs.boolean(
     label: 'Wrap in Card',
     initialValue: true,
   );
+  final rate = rateState == 'Known' ? successRate : null;
+  final isLoading = rateState == 'Loading';
 
   final widget = GtSuccessRateTile(
     leading: const GtImage(
@@ -565,13 +572,15 @@ Widget playgroundGtSuccessRateTileUseCase(BuildContext context) {
       height: 24,
     ),
     text: text,
-    successRate: successRate,
+    successRate: rate,
+    isLoading: isLoading,
+    loadingSemanticsLabel: 'Loading rate',
   );
 
   return GtWidgetDocPage(
     title: 'GtSuccessRateTile',
     description:
-        'Displays service/bank names alongside semantic success rate percentage pills (stable for ≥90%, away for ≥80%, warning for ≥70%, error below 70%).',
+        'Displays service/bank names alongside semantic success rate percentage pills (stable for ≥90%, away for ≥80%, warning for ≥70%, error below 70%). A null rate reads a neutral "N/A" pill, and isLoading draws the pill as a skeleton.',
     code:
         '''
 GtSuccessRateTile(
@@ -580,7 +589,7 @@ GtSuccessRateTile(
     size: 32,
   ),
   text: "$text",
-  successRate: $successRate,
+  successRate: $rate,${isLoading ? '\n  isLoading: true,' : ''}
 )''',
     child: Center(
       child: asCard

@@ -981,6 +981,10 @@ class GtSimpleInfoTile extends GtStatelessWidget {
 /// Dynamically formats the [successRate] percentage (0.0 to 1.0) and applies semantic color
 /// variants (stable for >= 90%, away for >= 80%, warning for >= 70%, and error below 70%).
 ///
+/// A null [successRate] draws a neutral pill reading [unavailableText], so an
+/// institution with no known rate keeps its row. While [isLoading] is set the
+/// pill is drawn as a skeleton and the [leading] and [text] stay real.
+///
 /// {@category molecules}
 /// {@category tiles}
 class GtSuccessRateTile extends GtStatelessWidget {
@@ -1011,15 +1015,33 @@ class GtSuccessRateTile extends GtStatelessWidget {
   /// The informational text content, typically the bank or service name.
   final String text;
 
-  /// The success rate of the transaction as a decimal between 0.0 and 1.0.
-  final double successRate;
+  /// The success rate of the transaction as a decimal between 0.0 and 1.0, or
+  /// null when no rate is available.
+  final double? successRate;
+
+  /// The label of the pill when [successRate] is null.
+  ///
+  /// If null, defaults to localized `"notAvailable"`.
+  final String? unavailableText;
+
+  /// Whether the rate is still being fetched, drawing the pill as a skeleton.
+  /// Defaults to false.
+  final bool isLoading;
+
+  /// What is announced while [isLoading] is set, such as "Loading rate".
+  ///
+  /// See [GtSkeleton.semanticsLabel].
+  final String? loadingSemanticsLabel;
 
   /// Creates a [GtSuccessRateTile].
   const GtSuccessRateTile({
     super.key,
     required this.leading,
     required this.text,
-    required this.successRate,
+    this.successRate,
+    this.unavailableText,
+    this.isLoading = false,
+    this.loadingSemanticsLabel,
     this.textStyle,
     this.textColor,
     this.horizontalSpacing,
@@ -1035,18 +1057,43 @@ class GtSuccessRateTile extends GtStatelessWidget {
     final style = context.textStyles;
 
     GtPillVariant variant = switch (successRate) {
+      null => .neutral,
       >= .9 => .stable,
       >= .8 => .away,
       >= .7 => .warning,
       _ => .error,
     };
-    final percentage = (100 * successRate.clamp(0, 1)).round();
+    final label = switch (successRate) {
+      double rate => "${(100 * rate.clamp(0, 1)).round()}%",
+      null => unavailableText ?? "notAvailable".utr(),
+    };
     final textColor = switch (variant) {
+      .neutral => palette.text.sub,
       .stable => palette.stable.dark,
       .away => palette.away.dark,
       .warning => palette.warning.dark,
       _ => palette.error.dark,
     };
+
+    Widget pill = GtPill(
+      text: label,
+      variant: variant,
+      bgColor: percentageBackgroundColor ?? variant.getBgColor(context.palette),
+      textColor: percentageColor ?? textColor,
+      textStyle: GtTextStyleOverrides.resolve(
+        percentageStyle,
+        style.ratePill(color: textColor),
+        percentageColor,
+      ),
+      borderRadius: context.borderRadius4Xl,
+      padding:
+          percentagePadding?.resolve(Directionality.of(context)) ??
+          context.insets.symmetricDp(vertical: 4.px, horizontal: 8.px),
+      alignment: .centerRight,
+    );
+    if (isLoading) {
+      pill = GtSkeleton(semanticsLabel: loadingSemanticsLabel, child: pill);
+    }
 
     return Row(
       spacing: horizontalSpacing ?? context.spacingBase,
@@ -1064,23 +1111,7 @@ class GtSuccessRateTile extends GtStatelessWidget {
             overflow: .ellipsis,
           ),
         ),
-        GtPill(
-          text: "$percentage%",
-          variant: variant,
-          bgColor:
-              percentageBackgroundColor ?? variant.getBgColor(context.palette),
-          textColor: percentageColor ?? textColor,
-          textStyle: GtTextStyleOverrides.resolve(
-            percentageStyle,
-            style.ratePill(color: textColor),
-            percentageColor,
-          ),
-          borderRadius: context.borderRadius4Xl,
-          padding:
-              percentagePadding?.resolve(Directionality.of(context)) ??
-              context.insets.symmetricDp(vertical: 4.px, horizontal: 8.px),
-          alignment: .centerRight,
-        ),
+        pill,
       ],
     );
   }

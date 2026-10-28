@@ -212,6 +212,10 @@ class GtCopyPill extends GtStatelessWidget {
 ///
 /// Variants without the `Trailing` suffix place the copy icon before the
 /// account number. Their `Trailing` counterparts place it after the number.
+///
+/// The resolvers read product primitives that have no dark values, so pass
+/// them [GtPaletteRawColors.light] in both modes, as [GtAccountCopyPill] does.
+/// A dark [GtPaletteRawColors] returns the inverted colors.
 enum GtAccountCopyPillVariant {
   /// Personal-account colors with a trailing copy icon.
   personalTrailing,
@@ -319,6 +323,10 @@ enum GtAccountCopyPillVariant {
 /// The selected [variant] controls the colors, the shadow, and whether the copy
 /// icon sits before or after the text. The whole pill is a button-sized tap
 /// target that writes [accountNumber] to the clipboard.
+///
+/// The [variant]'s colors are the product's own and stay the same in light and
+/// dark mode: the pill resolves them from [GtPaletteRawColors.light] rather
+/// than the active palette's [GtPalette.raw].
 ///
 /// **What is shown and what is copied are separate.** [accountNumber] is always
 /// what lands on the clipboard; [label] only changes what is drawn. Surfaces
@@ -441,10 +449,12 @@ class GtAccountCopyPill extends GtStatelessWidget {
   Widget build(BuildContext context) {
     Widget? leading, trailing;
 
-    final palette = context.palette;
-    final txtColor = textColor ?? variant.textColor(palette.raw);
-    final bgColor = backgroundColor ?? variant.bgColor(palette.raw);
-    final shadows = showShadow ? variant.shadows(palette.raw) : null;
+    // The product primitives have no dark values, so `palette.raw` would
+    // invert them in dark mode. Resolve them from the light tokens instead.
+    const raw = GtPaletteRawColors.light();
+    final txtColor = textColor ?? variant.textColor(raw);
+    final bgColor = backgroundColor ?? variant.bgColor(raw);
+    final shadows = showShadow ? variant.shadows(raw) : null;
 
     final icon = GtIcon.withColor(
       GtIcons.copyFilled,

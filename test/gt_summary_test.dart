@@ -415,6 +415,74 @@ void main() {
       expect(find.byType(GtSuccessRateTile), findsOneWidget);
     });
 
+    testWidgets('draws the row of a bank with no rate, reading N/A', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          const GtSummaryRatesCard(
+            GtSummaryRatesSection(
+              description: 'Success rates in the last 30 minutes',
+              rates: [GtSuccessRateData(name: 'Unity Bank')],
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Unity Bank'), findsOneWidget);
+      expect(find.text('notAvailable'.utr()), findsOneWidget);
+    });
+
+    testWidgets('passes a rate\'s loading state to its tile', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          const GtSummaryRatesCard(
+            GtSummaryRatesSection(
+              description: 'Success rates in the last 30 minutes',
+              rates: [
+                GtSuccessRateData(
+                  name: 'Sterling Bank',
+                  isLoading: true,
+                  loadingSemanticsLabel: 'Loading rate',
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      final tile = tester.widget<GtSuccessRateTile>(
+        find.byType(GtSuccessRateTile),
+      );
+      expect(tile.isLoading, isTrue);
+      expect(tile.loadingSemanticsLabel, 'Loading rate');
+      expect(find.byType(GtSkeleton), findsOneWidget);
+    });
+
+    testWidgets('a summary keeps the card of a bank with no rate', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          const GtSummaryBody(
+            amount: '₦20,000.00',
+            sections: [
+              GtSummaryRatesSection(
+                description: 'Success rates in the last 30 minutes',
+                rates: [GtSuccessRateData(name: 'Unity Bank')],
+              ),
+            ],
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(GtSummaryRatesCard), findsOneWidget);
+      expect(find.text('Unity Bank'), findsOneWidget);
+    });
+
     testWidgets('needs both a label and a handler to show its action', (
       tester,
     ) async {
