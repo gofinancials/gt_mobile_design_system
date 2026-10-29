@@ -540,6 +540,164 @@ void main() {
       expect(modal, findsNothing);
     }, variant: bothPlatforms);
 
+    /// Pushes a full-screen route over everything, as an app's
+    /// re-authentication lock does, and hands back the route to pop.
+    Route<void> pushLock(_HostState host) {
+      final lock = MaterialPageRoute<void>(
+        builder: (_) => const Scaffold(body: Text('lock')),
+      );
+      unawaited(Navigator.of(host.context, rootNavigator: true).push(lock));
+      return lock;
+    }
+
+    testWidgets('holds a success that lands under a covering route until it '
+        'is popped', (tester) async {
+      final host = await pumpHost(tester);
+      final gate = Completer<TaskResponse<String>>();
+      String? received;
+      var hostWasCurrentAtCallback = false;
+
+      final run = GtTaskRunner.run<String>(
+        host.context,
+        loadingTitle: 'Processing',
+        completeDelay: Duration.zero,
+        task: (_) => gate.future,
+        onSuccess: (data) {
+          received = data;
+          hostWasCurrentAtCallback =
+              ModalRoute.of(host.context)?.isCurrent ?? false;
+        },
+      );
+      await pumpFrames(tester);
+
+      final lock = pushLock(host);
+      await pumpFrames(tester);
+
+      gate.complete(TaskSuccess<String>(data: 'opened'));
+      await pumpFrames(tester);
+
+      // The modal went from under the lock, and the outcome waits for the
+      // screen the customer will come back to.
+      expect(find.text('lock'), findsOneWidget);
+      expect(modal, findsNothing);
+      expect(received, isNull);
+
+      lock.navigator!.removeRoute(lock);
+      final result = await pumpUntil(tester, run);
+      await pumpFrames(tester);
+
+      expect(received, 'opened');
+      expect(hostWasCurrentAtCallback, isTrue);
+      expect(result, isA<TaskSuccess<String>>());
+    }, variant: bothPlatforms);
+
+    testWidgets(
+      'holds a kept-open failure that lands under a covering route',
+      (tester) async {
+        final host = await pumpHost(tester);
+        final gate = Completer<TaskResponse<String>>();
+        late final GtBottomModalController<String> held;
+        TaskError? error;
+
+        final run = GtTaskRunner.run<String>(
+          host.context,
+          loadingTitle: 'Processing',
+          completeDelay: Duration.zero,
+          keepOpenOnFailure: true,
+          task: (controller) {
+            held = controller;
+            return gate.future;
+          },
+          onSuccess: (_) => fail('should not succeed'),
+          onError: (value) => error = value,
+        );
+        await pumpFrames(tester);
+
+        final lock = pushLock(host);
+        await pumpFrames(tester);
+
+        gate.complete(
+          TaskFailure<String>(error: const TaskError(message: 'Declined')),
+        );
+        await pumpFrames(tester);
+        expect(error, isNull);
+
+        // Back on the modal still showing the refusal, the form underneath hears
+        // of it too.
+        lock.navigator!.removeRoute(lock);
+        await pumpFrames(tester);
+        expect(modal, findsOneWidget);
+        expect(error?.message, 'Declined');
+
+        await pumpUntil(tester, held.dismiss());
+        await pumpUntil(tester, run);
+      },
+      variant: bothPlatforms,
+    );
+
+    testWidgets(
+      'drops a held outcome once its screen leaves the navigator',
+      (tester) async {
+        final host = await pumpHost(tester);
+        final gate = Completer<TaskResponse<String>>();
+
+        final run = GtTaskRunner.run<String>(
+          host.context,
+          loadingTitle: 'Processing',
+          completeDelay: Duration.zero,
+          task: (_) => gate.future,
+          onSuccess: (_) => fail('the screen is gone'),
+        );
+        await pumpFrames(tester);
+
+        pushLock(host);
+        await pumpFrames(tester);
+
+        gate.complete(TaskSuccess<String>(data: 'late'));
+        await pumpFrames(tester);
+
+        // The screen that started the task is removed while still covered, so
+        // there is nowhere left to report to.
+        final owner = ModalRoute.of(host.context)!;
+        owner.navigator!.removeRoute(owner);
+        final result = await pumpUntil(tester, run);
+        await pumpFrames(tester);
+
+        expect(result, isA<TaskSuccess<String>>());
+        expect(find.text('lock'), findsOneWidget);
+      },
+      variant: bothPlatforms,
+    );
+
+    testWidgets(
+      'reports under a covering route when not only when visible',
+      (tester) async {
+        final host = await pumpHost(tester);
+        final gate = Completer<TaskResponse<String>>();
+        String? received;
+
+        final run = GtTaskRunner.run<String>(
+          host.context,
+          loadingTitle: 'Processing',
+          completeDelay: Duration.zero,
+          onlyWhenVisible: false,
+          task: (_) => gate.future,
+          onSuccess: (data) => received = data,
+        );
+        await pumpFrames(tester);
+
+        pushLock(host);
+        await pumpFrames(tester);
+
+        gate.complete(TaskSuccess<String>(data: 'opened'));
+        await pumpUntil(tester, run);
+
+        expect(received, 'opened');
+        expect(find.text('lock'), findsOneWidget);
+      },
+      variant: bothPlatforms,
+    );
+
     testWidgets('reports a thrown task as a failure', (tester) async {
       final host = await pumpHost(tester);
       TaskError? error;
