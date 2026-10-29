@@ -262,4 +262,124 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   });
+
+  group('note enablement', () {
+    Future<void> pump(WidgetTester tester, Widget field) {
+      return tester.pumpWidget(
+        GtThemeProvider(
+          theme: kPersonalTheme,
+          child: MaterialApp(
+            home: Scaffold(body: SingleChildScrollView(child: field)),
+          ),
+        ),
+      );
+    }
+
+    /// Whether the [TextField] showing [hint] or [text] is enabled.
+    bool enabledFor(WidgetTester tester, String hint) {
+      final field = tester.widget<TextField>(
+        find.ancestor(of: find.text(hint), matching: find.byType(TextField)),
+      );
+      return field.enabled ?? true;
+    }
+
+    GtTransferField transferField({required bool isEnabled, bool? note}) {
+      return GtTransferField(
+        amountController: GtInputController(),
+        noteController: GtInputController(),
+        firstParticipant: sender,
+        secondParticipant: recipient,
+        noteHint: "Note",
+        isEnabled: isEnabled,
+        isNoteEnabled: note,
+      );
+    }
+
+    GtFxTransferField fxTransferField({required bool isEnabled, bool? note}) {
+      return GtFxTransferField(
+        sourceAmountController: GtInputController(),
+        targetAmountController: GtInputController(),
+        noteController: GtInputController(),
+        firstParticipant: sender,
+        secondParticipant: recipient,
+        noteHint: "Note",
+        isEnabled: isEnabled,
+        isNoteEnabled: note,
+      );
+    }
+
+    testWidgets('GtTransferField note follows isEnabled by default', (
+      tester,
+    ) async {
+      await pump(tester, transferField(isEnabled: false));
+
+      expect(enabledFor(tester, "0.00"), isFalse);
+      expect(enabledFor(tester, "Note"), isFalse);
+    });
+
+    testWidgets('GtTransferField keeps the note editable on a locked amount', (
+      tester,
+    ) async {
+      await pump(tester, transferField(isEnabled: false, note: true));
+
+      expect(enabledFor(tester, "0.00"), isFalse);
+      expect(enabledFor(tester, "Note"), isTrue);
+    });
+
+    testWidgets('GtFxTransferField keeps the note editable on locked amounts', (
+      tester,
+    ) async {
+      await pump(tester, fxTransferField(isEnabled: false, note: true));
+
+      final amounts = find.ancestor(
+        of: find.text("0.00"),
+        matching: find.byType(TextField),
+      );
+      expect(amounts, findsNWidgets(2));
+      for (final amount in tester.widgetList<TextField>(amounts)) {
+        expect(amount.enabled, isFalse);
+      }
+      expect(enabledFor(tester, "Note"), isTrue);
+    });
+  });
+
+  group('obscured balance', () {
+    final hidden = sender.copyWith(obscureBalance: true);
+
+    test('formattedBalance masks the figure but keeps the balance', () {
+      expect(hidden.formattedBalance, contains('*****'));
+      expect(hidden.formattedBalance, isNot(contains('5,000')));
+      expect(hidden.balance, 5000);
+    });
+
+    testWidgets('the leg shows the mask in place of the balance', (
+      tester,
+    ) async {
+      await validate(tester, transferField("1,000", from: hidden));
+
+      expect(find.textContaining('*****'), findsOneWidget);
+      expect(find.textContaining('5,000'), findsNothing);
+    });
+
+    testWidgets('the amount is still checked against the real balance', (
+      tester,
+    ) async {
+      expect(
+        await validate(tester, transferField("1,000", from: hidden)),
+        isTrue,
+      );
+      expect(
+        await validate(tester, transferField("6,000", from: hidden, min: 100)),
+        isFalse,
+      );
+      expect(
+        await validate(tester, transferField("50", from: hidden, min: 100)),
+        isFalse,
+      );
+      expect(
+        await validate(tester, fxTransferField("6,000", from: hidden)),
+        isFalse,
+      );
+    });
+  });
 }

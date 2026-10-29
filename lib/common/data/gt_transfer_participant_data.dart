@@ -22,7 +22,18 @@ class GtTransferParticipantData<T> extends AppEquatable {
   final String currency;
 
   /// The participant's balance, shown beneath the title.
+  ///
+  /// It stays the real figure while [obscureBalance] is set, since the amount
+  /// is still checked against it.
   final double? balance;
+
+  /// Whether [formattedBalance] shows a mask in place of the [balance].
+  /// Defaults to false.
+  ///
+  /// Set it when the customer has hidden their balances. Only the display is
+  /// masked; [balance] still validates the amount entered, and the amount's
+  /// error no longer quotes the balance as a maximum.
+  final bool obscureBalance;
 
   /// A short role for the leg, such as "From" or "To".
   final String label;
@@ -77,6 +88,7 @@ class GtTransferParticipantData<T> extends AppEquatable {
     this.tag,
     this.onTap,
     this.middleEllipsis = false,
+    this.obscureBalance = false,
   });
 
   /// Creates a leg with no participant chosen yet, drawn as a dashed
@@ -97,7 +109,7 @@ class GtTransferParticipantData<T> extends AppEquatable {
   /// Returns a copy of this data with the given fields replaced.
   ///
   /// Every field is carried over unless replaced, including [tag],
-  /// [onTap] and [middleEllipsis].
+  /// [onTap], [middleEllipsis] and [obscureBalance].
   GtTransferParticipantData<T> copyWith({
     String? name,
     double? balance,
@@ -112,6 +124,7 @@ class GtTransferParticipantData<T> extends AppEquatable {
     bool? validate,
     OnPressed? onTap,
     bool? middleEllipsis,
+    bool? obscureBalance,
   }) {
     return GtTransferParticipantData<T>(
       name: name ?? this.name,
@@ -126,16 +139,24 @@ class GtTransferParticipantData<T> extends AppEquatable {
       validate: validate ?? this.validate,
       onTap: onTap ?? this.onTap,
       middleEllipsis: middleEllipsis ?? this.middleEllipsis,
+      obscureBalance: obscureBalance ?? this.obscureBalance,
     );
   }
 
   /// The [balance] formatted in [currency] behind a localised prefix, or null
   /// when there is no balance to report and [validate] is off.
+  ///
+  /// While [obscureBalance] is set, the figure is replaced by a mask.
   String? get formattedBalance {
     if (balance == null && !validate) return null;
     final prefix = "balance".ctr();
 
-    return "$prefix ${(balance ?? 0).asCurrency(currency)}";
+    String amount = (balance ?? 0).asCurrency(currency);
+    if (obscureBalance) {
+      amount = AppTextFormatter.maskedCurrency(balance, symbol: currency);
+    }
+
+    return "$prefix $amount";
   }
 
   @override
@@ -151,5 +172,6 @@ class GtTransferParticipantData<T> extends AppEquatable {
     currency,
     validate,
     middleEllipsis,
+    obscureBalance,
   ];
 }

@@ -36,7 +36,15 @@ class GtTransferField extends GtStatefulWidget {
   final OnChanged<GtTransactionCategory?>? onCategoryChanged;
 
   /// Whether the transfer field is interactive and can be modified. Defaults to true.
+  ///
+  /// This covers the amount and, unless [isNoteEnabled] is set, the note.
   final bool isEnabled;
+
+  /// Whether the note input is interactive and can be modified.
+  ///
+  /// Set it to keep the note editable while [isEnabled] locks the amount,
+  /// such as on a fixed price. When null, the note follows [isEnabled].
+  final bool? isNoteEnabled;
 
   /// The minimum allowable amount for the transfer.
   final num? min;
@@ -70,6 +78,7 @@ class GtTransferField extends GtStatefulWidget {
     this.onNoteChanged,
     this.onCategoryChanged,
     this.isEnabled = true,
+    this.isNoteEnabled,
     this.max,
     this.min,
     this.middleIcon,
@@ -99,6 +108,14 @@ class _GtTransferFieldState extends State<GtTransferField> {
         widget.secondParticipant.validate;
   }
 
+  /// Whether the participant being validated masks its balance.
+  bool get isBalanceObscured {
+    final first = widget.firstParticipant;
+    final second = widget.secondParticipant;
+    if (second.validate) return second.obscureBalance;
+    return first.validate && first.obscureBalance;
+  }
+
   @override
   Widget build(BuildContext context) {
     final first = widget.firstParticipant;
@@ -113,6 +130,12 @@ class _GtTransferFieldState extends State<GtTransferField> {
       initialValue: widget.amountController.controller,
       validator: (text) {
         if (!isValidated) return null;
+        if (widget.max == null && isBalanceObscured) {
+          // The balance is the ceiling here. Checking it on its own reports
+          // insufficient funds rather than quoting the masked balance.
+          return AppValidators.balanceValidator(text?.text, balance: balance) ??
+              AppValidators.amountValidator(text?.text, minAmount: widget.min);
+        }
         if (widget.min != null || widget.max != null) {
           return AppValidators.amountValidator(
             text?.text,
@@ -226,7 +249,7 @@ class _GtTransferFieldState extends State<GtTransferField> {
               leading: GtTextField(
                 controller: widget.noteController,
                 hintText: widget.noteHint,
-                isEnabled: widget.isEnabled,
+                isEnabled: widget.isNoteEnabled ?? widget.isEnabled,
                 decoration: context.inputStyles.plainDecoration(),
                 onChanged: widget.onNoteChanged,
               ),
@@ -272,7 +295,15 @@ class GtFxTransferField extends GtStatefulWidget {
   final OnChanged<GtTransactionCategory?>? onCategoryChanged;
 
   /// Whether the transfer field is interactive and can be modified. Defaults to true.
+  ///
+  /// This covers the amount and, unless [isNoteEnabled] is set, the note.
   final bool isEnabled;
+
+  /// Whether the note input is interactive and can be modified.
+  ///
+  /// Set it to keep the note editable while [isEnabled] locks the amount,
+  /// such as on a fixed price. When null, the note follows [isEnabled].
+  final bool? isNoteEnabled;
 
   /// The minimum allowable amount for the transfer.
   final num? min;
@@ -311,6 +342,7 @@ class GtFxTransferField extends GtStatefulWidget {
     this.onTargetAmountChanged,
     this.onNoteChanged,
     this.isEnabled = true,
+    this.isNoteEnabled,
     this.max,
     this.min,
     this.middleIcon,
@@ -341,6 +373,14 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
         widget.secondParticipant.validate;
   }
 
+  /// Whether the participant being validated masks its balance.
+  bool get isBalanceObscured {
+    final first = widget.firstParticipant;
+    final second = widget.secondParticipant;
+    if (second.validate) return second.obscureBalance;
+    return first.validate && first.obscureBalance;
+  }
+
   @override
   Widget build(BuildContext context) {
     final first = widget.firstParticipant;
@@ -355,6 +395,12 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
       initialValue: widget.sourceAmountController.controller,
       validator: (text) {
         if (!isValidated) return null;
+        if (widget.max == null && isBalanceObscured) {
+          // The balance is the ceiling here. Checking it on its own reports
+          // insufficient funds rather than quoting the masked balance.
+          return AppValidators.balanceValidator(text?.text, balance: balance) ??
+              AppValidators.amountValidator(text?.text, minAmount: widget.min);
+        }
         if (widget.min != null || widget.max != null) {
           return AppValidators.amountValidator(
             text?.text,
@@ -509,7 +555,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
               leading: GtTextField(
                 controller: widget.noteController,
                 hintText: widget.noteHint,
-                isEnabled: widget.isEnabled,
+                isEnabled: widget.isNoteEnabled ?? widget.isEnabled,
                 decoration: context.inputStyles.plainDecoration(),
                 onChanged: widget.onNoteChanged,
               ),

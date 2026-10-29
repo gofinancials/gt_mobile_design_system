@@ -26,6 +26,23 @@ Widget playgroundGtTransferFieldUseCase(BuildContext context) {
     initialValue: false,
   );
   final middleCode = middleEllipsis ? '\n    middleEllipsis: true,' : '';
+  final isEnabled = context.knobs.boolean(
+    label: 'Amount enabled',
+    initialValue: true,
+  );
+  final isNoteEnabled = context.knobs.boolean(
+    label: 'Note enabled',
+    initialValue: true,
+  );
+  final obscureBalance = context.knobs.boolean(
+    label: 'Obscure balance',
+    initialValue: false,
+  );
+  final obscureCode = obscureBalance ? '\n    obscureBalance: true,' : '';
+  final enabledCode = [
+    if (!isEnabled) '\n  isEnabled: false,',
+    if (isNoteEnabled != isEnabled) '\n  isNoteEnabled: $isNoteEnabled,',
+  ].join();
 
   final sourceImage = imageFails
       ? GalleryBrokenImages.url
@@ -51,7 +68,8 @@ GtTransferField(
     image: AppImageData($sourceImageCode),
     imageType: .${imageType.name},${passErrorImage ? '\n    errorImage: AppImageData(GtAssetImages.avatar),' : ''}
     validate: true,
-    name: "Holiday Stash",$middleCode
+    balance: 250000,
+    name: "Holiday Stash",$middleCode$obscureCode
   ),
   secondParticipant: GtTransferParticipantData(
     label: "to",
@@ -59,7 +77,7 @@ GtTransferField(
     validate: false,
     name: "Savings Account",$middleCode
   ),
-  noteHint: "What is this for?",
+  noteHint: "What is this for?",$enabledCode
 )
 ''',
     child: GtTransferField(
@@ -73,8 +91,10 @@ GtTransferField(
             ? const AppImageData(GtAssetImages.avatar)
             : null,
         validate: true,
+        balance: 250000,
         name: "Holiday Stash",
         middleEllipsis: middleEllipsis,
+        obscureBalance: obscureBalance,
       ),
       secondParticipant: GtTransferParticipantData(
         label: "to",
@@ -84,6 +104,8 @@ GtTransferField(
         middleEllipsis: middleEllipsis,
       ),
       noteHint: "What is this for?",
+      isEnabled: isEnabled,
+      isNoteEnabled: isNoteEnabled,
     ),
   );
 }
@@ -98,6 +120,18 @@ Widget playgroundGtFxTransferFieldUseCase(BuildContext context) {
     initialValue: false,
   );
   final middleCode = middleEllipsis ? '\n    middleEllipsis: true,' : '';
+  final isEnabled = context.knobs.boolean(
+    label: 'Amount enabled',
+    initialValue: true,
+  );
+  final isNoteEnabled = context.knobs.boolean(
+    label: 'Note enabled',
+    initialValue: true,
+  );
+  final enabledCode = [
+    if (!isEnabled) '\n  isEnabled: false,',
+    if (isNoteEnabled != isEnabled) '\n  isNoteEnabled: $isNoteEnabled,',
+  ].join();
 
   return GtWidgetDocPage(
     title: 'GtFxTransferField',
@@ -150,7 +184,7 @@ GtFxTransferField(
     balance: 1000000000,
     currency: AppStrings.naira,
   ),
-  noteHint: "Add a note (optional)",
+  noteHint: "Add a note (optional)",$enabledCode
   child: Text.rich(
     TextSpan(
       text: "Live exchange rate: ",
@@ -212,6 +246,8 @@ GtFxTransferField(
         currency: AppStrings.naira,
       ),
       noteHint: "Add a note (optional)",
+      isEnabled: isEnabled,
+      isNoteEnabled: isNoteEnabled,
       child: Text.rich(
         TextSpan(
           text: "Live exchange rate: ",

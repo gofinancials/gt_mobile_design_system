@@ -25,7 +25,18 @@ class GtGoalProgressListTile extends GtStatelessWidget {
   final Color? trackColor;
 
   /// The current accumulated or utilized amount towards the goal.
+  ///
+  /// It stays the real figure while [obscureBalance] is set, since the
+  /// progress bar is drawn from it.
   final num currentAmount;
+
+  /// Whether the summary masks [currentAmount]. Defaults to false.
+  ///
+  /// Set it when the customer has hidden their balances. The amount is shown
+  /// as a mask and the percentage is left out, since with [goalAmount] it
+  /// would give the amount away. The progress bar still draws the real
+  /// fraction.
+  final bool obscureBalance;
 
   /// The target or maximum amount for this goal.
   final num goalAmount;
@@ -77,6 +88,7 @@ class GtGoalProgressListTile extends GtStatelessWidget {
     this.trackColor,
     this.buttonVariant = .primary,
     this.buttonTextColor,
+    this.obscureBalance = false,
   });
 
   /// Creates a skeleton of this tile, standing in for a goal that is still
@@ -95,8 +107,12 @@ class GtGoalProgressListTile extends GtStatelessWidget {
   /// for the progress bar.
   double get _fraction => min((currentAmount / goalAmount), 1);
 
-  /// The localized, currency-formatted string of the current utilized value.
+  /// The localized, currency-formatted string of the current utilized value,
+  /// or a mask while [obscureBalance] is set.
   String get _formattedValue {
+    if (obscureBalance) {
+      return AppTextFormatter.maskedCurrency(currentAmount, symbol: currency);
+    }
     return AppTextFormatter.formatCurrency(currentAmount, symbol: currency);
   }
 
@@ -115,7 +131,8 @@ class GtGoalProgressListTile extends GtStatelessWidget {
         children: [
           TextSpan(text: " ${"of".tr()} "),
           TextSpan(text: _formattedGoal),
-          TextSpan(text: " ${AppStrings.dotSeparator} $percentage%"),
+          if (!obscureBalance)
+            TextSpan(text: " ${AppStrings.dotSeparator} $percentage%"),
         ],
       ),
       style: GtTextStyleOverrides.resolve(
