@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 const _options = [
@@ -44,6 +45,27 @@ Future<void> _openSheet(
   await tester.pumpAndSettle();
 }
 
+/// Pumps a dropdown field over [options] and opens its sheet.
+Future<void> _openSheetWith(
+  WidgetTester tester,
+  OptionsHolder<String> options, {
+  Widget? emptyWidget,
+}) async {
+  await tester.pumpWidget(
+    _DropdownTestApp(
+      child: GtDropdownField<String>(
+        label: 'Invoice date',
+        options: options,
+        sheetTitle: 'Invoice date',
+        emptyWidget: emptyWidget,
+        debounceTime: 100.milliseconds,
+      ),
+    ),
+  );
+  await tester.tap(find.byType(GtDropdownField<String>));
+  await tester.pumpAndSettle();
+}
+
 void main() {
   testWidgets('the sheet shows a search field by default', (tester) async {
     await _openSheet(tester, showSearch: true, sheetTitle: 'Invoice date');
@@ -80,5 +102,55 @@ void main() {
 
       await tester.pumpWidget(const SizedBox());
     }
+  });
+
+  testWidgets('a search that matches nothing keeps the search field', (
+    tester,
+  ) async {
+    await _openSheetWith(tester, _options);
+
+    await tester.enterText(
+      find.descendant(
+        of: find.byType(GtSearchField),
+        matching: find.byType(TextField),
+      ),
+      'xyz',
+    );
+    await tester.pumpAndSettle(200.milliseconds);
+
+    expect(find.byType(GtSearchField), findsOneWidget);
+    expect(find.byType(GtEmptyStateCard), findsOneWidget);
+    expect(find.text('noResults'), findsOneWidget);
+    for (final option in _options) {
+      expect(find.text(option.label!), findsNothing);
+    }
+  });
+
+  testWidgets('empty options show the default empty state', (tester) async {
+    final cases = <String, OptionsHolder<String>>{
+      'list': <GtDropdownData<String>>[],
+      'future': Future.value(<GtDropdownData<String>>[]),
+    };
+
+    for (final MapEntry(:key, :value) in cases.entries) {
+      await _openSheetWith(tester, value);
+
+      expect(find.byType(GtEmptyStateCard), findsOneWidget, reason: key);
+      expect(find.text('noData'), findsOneWidget, reason: key);
+      expect(find.byType(GtSearchField), findsNothing, reason: key);
+
+      await tester.pumpWidget(const SizedBox());
+    }
+  });
+
+  testWidgets('empty options show the given emptyWidget', (tester) async {
+    await _openSheetWith(
+      tester,
+      Future.value(<GtDropdownData<String>>[]),
+      emptyWidget: const Text('No branches'),
+    );
+
+    expect(find.text('No branches'), findsOneWidget);
+    expect(find.byType(GtEmptyStateCard), findsNothing);
   });
 }

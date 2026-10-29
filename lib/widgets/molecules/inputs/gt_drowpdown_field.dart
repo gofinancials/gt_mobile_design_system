@@ -15,6 +15,9 @@ typedef ValueBuilder3<T, K, O> = Widget Function(T value, K value2, O value3);
 /// [GtDropdownField] allows users to select an item from a provided list of [options].
 /// When tapped, it opens a draggable bottom sheet containing a search field and the list of items.
 /// Set [showSearch] to false for a short list that needs no search field.
+///
+/// A search that matches nothing shows a "no results" card under the search
+/// field, and options that resolve to an empty list show [emptyWidget].
 class GtDropdownField<T> extends GtStatefulWidget {
   /// The controller used to read and manipulate the input text.
   final GtDropdownInputController<T>? controller;
@@ -36,7 +39,10 @@ class GtDropdownField<T> extends GtStatefulWidget {
   /// An optional builder to customize the appearance of individual option items in the list.
   final ValueBuilder2<GtDropdownData, GtDropdownInputController>? optionBuilder;
 
-  /// An optional widget to display when there are no options.
+  /// An optional widget to display when [options] resolve to an empty list.
+  ///
+  /// Defaults to a [GtEmptyStateCard] reading the `noData` translation. It is
+  /// also shown when loading the options fails and no [errorWidget] is given.
   final Widget? emptyWidget;
 
   /// An optional widget to display while loading options.
@@ -46,6 +52,10 @@ class GtDropdownField<T> extends GtStatefulWidget {
   final Widget? errorWidget;
 
   /// An optional builder to entirely customize the list view of the dropdown options.
+  ///
+  /// It is only called with options to show: an empty list shows
+  /// [emptyWidget], and a search that matches nothing shows a "no results"
+  /// card.
   final ValueBuilder3<
     List<GtDropdownData>,
     GtDropdownInputController,
@@ -222,6 +232,10 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
 /// This widget is typically used within a bottom sheet to provide a dedicated
 /// interface for selecting an item from a list, including a search filter
 /// unless [showSearch] is false.
+///
+/// A search that matches nothing shows a [GtEmptyStateCard] reading the
+/// `noResults` translation under the search field, which stays so the
+/// customer can correct the query.
 class GtDropDownModal<T> extends GtStatefulWidget {
   /// The scroll controller used for the modal's scrollable view.
   final ScrollController scrollController;
@@ -238,7 +252,10 @@ class GtDropDownModal<T> extends GtStatefulWidget {
   /// The list of options to display, or a future resolving to it.
   final OptionsHolder<T> options;
 
-  /// An optional widget to display when there are no options.
+  /// An optional widget to display when [options] resolve to an empty list.
+  ///
+  /// Defaults to a [GtEmptyStateCard] reading the `noData` translation. It is
+  /// also shown when loading the options fails and no [errorWidget] is given.
   final Widget? emptyWidget;
 
   /// An optional widget to display while loading options.
@@ -254,6 +271,8 @@ class GtDropDownModal<T> extends GtStatefulWidget {
   final ValueBuilder2<GtDropdownData<T>, GtDropdownInputController>? builder;
 
   /// An optional builder to completely override the list rendering.
+  ///
+  /// It is only called with options to show; see [emptyWidget].
   final ValueBuilder3<
     List<GtDropdownData>,
     GtDropdownInputController,
@@ -331,9 +350,13 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
     return options;
   }
 
+  /// Whether the search field is drawn: there is nothing to search when the
+  /// options resolved to an empty list.
+  bool get _showsSearchField => widget.showSearch && options.hasValue;
+
   /// Whether the row above the options is drawn: for the search field, or
   /// for the cancel button a modal without a title has nowhere else to put.
-  bool get _showsSearchRow => widget.showSearch || !widget.title.hasValue;
+  bool get _showsSearchRow => _showsSearchField || !widget.title.hasValue;
 
   /// Narrows [presentedOptions] to those matching [query] after a debounce.
   void _filterOptions(String? query) {
@@ -348,8 +371,9 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
     return FutureBuilder<List<GtDropdownData<T>>>(
       future: _optionsFuture,
       builder: (context, task) {
-        final hasData = task.hasData || options.hasValue;
-        final isLoading = !hasData && task.isLoading;
+        // A resolved empty list still counts as loaded, so it is told apart
+        // by [options] below rather than by the snapshot's data.
+        final isLoading = task.isLoading;
 
         return Column(
           crossAxisAlignment: .stretch,
@@ -359,7 +383,7 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
               const GtGap.ySectionSm(),
             ] else
               const GtGap.ySectionSm(),
-            if (hasData && _showsSearchRow)
+            if (!isLoading && _showsSearchRow)
               Padding(
                 padding: context.insets.defaultHorizontalInsets,
                 child: Row(
@@ -367,7 +391,7 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
                   crossAxisAlignment: .center,
                   spacing: context.spacingMd,
                   children: [
-                    if (widget.showSearch)
+                    if (_showsSearchField)
                       Expanded(
                         child: GtSearchField(
                           onChange: _filterOptions,
@@ -397,8 +421,21 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
                     return widget.errorWidget!;
                   }
 
-                  if (!hasData && widget.emptyWidget != null) {
-                    return widget.emptyWidget!;
+                  if (this.options.isEmpty) {
+                    return widget.emptyWidget ??
+                        _GtDropDownModalEmptyState(
+                          widget.scrollController,
+                          icon: GtIcons.file,
+                          description: 'noData'.tr(),
+                        );
+                  }
+
+                  if (options.isEmpty) {
+                    return _GtDropDownModalEmptyState(
+                      widget.scrollController,
+                      icon: GtIcons.search,
+                      description: 'noResults'.tr(),
+                    );
                   }
 
                   if (widget.listBuilder != null) {
@@ -453,6 +490,37 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
           ],
         );
       },
+    );
+  }
+}
+
+/// A [GtEmptyStateCard] at the top of a [GtDropDownModal]'s options area.
+///
+/// It sits in a list on the modal's [scrollController], padded like the
+/// options, so the sheet still drags and the card stays above the keyboard.
+class _GtDropDownModalEmptyState extends GtStatelessWidget {
+  /// The scroll controller of the sheet the modal is in.
+  final ScrollController scrollController;
+
+  /// The icon shown above [description].
+  final IconData icon;
+
+  /// The text explaining why there are no options.
+  final String description;
+
+  /// Creates a [_GtDropDownModalEmptyState].
+  const _GtDropDownModalEmptyState(
+    this.scrollController, {
+    required this.icon,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: context.insets.allDp(16.px),
+      controller: scrollController,
+      children: [GtEmptyStateCard(icon: icon, description: description)],
     );
   }
 }

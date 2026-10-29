@@ -105,6 +105,11 @@ mixin GtBottomModalMixin {
   /// the navigator — needs the [Route] itself. Reading it here is exact, where
   /// guessing at the top of a route observer's stack is not. Builders re-run,
   /// so [onRoute] may be called more than once with the same route.
+  ///
+  /// Focus is reset before the push. Flutter keeps a text field's focus under
+  /// a modal and hands it back when the route pops, so a modal opened from
+  /// anything but a DS button (which resets focus on press) would have the
+  /// keyboard rise over it, or over the form once it closes.
   Future<T?> _showModal<T>(
     BuildContext context, {
     required Widget modal,
@@ -112,6 +117,7 @@ mixin GtBottomModalMixin {
     OnChanged<Route<dynamic>>? onRoute,
   }) {
     GtOverlay.closeCurrentOverlays();
+    context.resetFocus();
 
     if (!context.isMobile) {
       // On iOS and macOS [showAdaptiveDialog] pushes a `CupertinoDialogRoute`,
