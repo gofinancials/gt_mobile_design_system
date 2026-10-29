@@ -124,6 +124,38 @@ void main() {
     );
 
     testWidgets(
+      'a second sheet opened from the screen keeps the focus on top',
+      (tester) async {
+        final host = await pumpFocusedHost(tester);
+
+        // Two sheets in a row from the same screen, as a transfer summary
+        // does: the second is opened from a context beneath the first.
+        unawaited(host.showSheet<void>(host.context, child: const Text('one')));
+        await tester.pumpAndSettle();
+        unawaited(host.showSheet<void>(host.context, child: const Text('two')));
+        await tester.pumpAndSettle();
+        expectKeyboardDown(tester);
+
+        Route<dynamic>? focusedRoute() {
+          final focus = FocusManager.instance.primaryFocus?.context;
+          return focus == null ? null : ModalRoute.of(focus);
+        }
+
+        final screen = ModalRoute.of(host.context);
+        final two = ModalRoute.of(tester.element(find.text('two')));
+        expect(focusedRoute(), isNot(screen));
+        expect(focusedRoute(), two);
+
+        Navigator.of(host.context, rootNavigator: true).pop();
+        await tester.pumpAndSettle();
+        final one = ModalRoute.of(tester.element(find.text('one')));
+        expect(focusedRoute(), one);
+        expectKeyboardDown(tester);
+      },
+      variant: bothPlatforms,
+    );
+
+    testWidgets(
       'a task modal drops the focus and does not hand it back',
       (tester) async {
         final controller = GtBottomModalController<String>(
