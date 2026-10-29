@@ -22,7 +22,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// rendered.
 ///
 /// Like [GtReceiptBody], it reserves trailing space for the floating bottom
-/// bar of [GtTransferDetailScaffold]. The [amount] is formatted by
+/// bar of [GtTransferDetailScaffold], unless an enclosing
+/// [GtReceiptBottomBarScope] reports that no bar is drawn. The [amount] is formatted by
 /// [GtBalanceText]; timestamps and row values are never formatted here, so
 /// callers pass presentation-ready strings for those.
 ///
@@ -150,6 +151,7 @@ class GtTransferDetailBody extends GtStatelessWidget {
     );
 
     final cardRadius = context.borderRadiusXl;
+    final hasBottomBar = GtReceiptBottomBarScope.maybeOf(context) ?? true;
 
     return ListView(
       physics: physics ?? const ClampingScrollPhysics(),
@@ -214,7 +216,10 @@ class GtTransferDetailBody extends GtStatelessWidget {
           const GtGap.yLg(),
         ],
         ?footer,
-        const GtGap.ySection4xl(),
+        if (hasBottomBar)
+          const GtGap.ySection4xl(key: Key('transfer-detail-bottom-bar-space'))
+        else
+          SizedBox(height: MediaQuery.paddingOf(context).bottom),
       ],
     );
   }

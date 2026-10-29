@@ -453,6 +453,8 @@ void main() {
     Widget buildScaffold({
       VoidCallback? onClose,
       VoidCallback? onReportProblem,
+      bool showReportProblem = true,
+      bool isButtonDisabled = false,
       OnPressed? onDownload,
     }) {
       return GtThemeProvider(
@@ -460,7 +462,10 @@ void main() {
         child: MaterialApp(
           home: GtTransferDetailScaffold(
             onClose: onClose ?? () {},
-            onReportProblem: onReportProblem ?? () {},
+            onReportProblem: showReportProblem
+                ? onReportProblem ?? () {}
+                : null,
+            isButtonDisabled: isButtonDisabled,
             onDownload: onDownload,
             buttonText: 'Report a problem',
             body: buildBody(),
@@ -501,6 +506,42 @@ void main() {
       expect(reports, 1);
     });
 
+    testWidgets('reserves space for the bottom bar beneath the body', (
+      tester,
+    ) async {
+      await tester.pumpWidget(buildScaffold());
+
+      expect(
+        find.byKey(const Key('transfer-detail-bottom-bar-space')),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('draws no bottom bar or space when onReportProblem is null', (
+      tester,
+    ) async {
+      await tester.pumpWidget(buildScaffold(showReportProblem: false));
+
+      expect(find.byType(GtButtonBottomNavBar), findsNothing);
+      expect(
+        find.byKey(const Key('transfer-detail-bottom-bar-space')),
+        findsNothing,
+      );
+    });
+
+    testWidgets('ignores taps on a disabled bottom action', (tester) async {
+      var reports = 0;
+      await tester.pumpWidget(
+        buildScaffold(onReportProblem: () => reports++, isButtonDisabled: true),
+      );
+
+      expect(reportButton(), findsOneWidget);
+
+      await tapAndSettle(tester, reportButton());
+
+      expect(reports, 0);
+    });
+
     testWidgets('renders the download action only when onDownload is set', (
       tester,
     ) async {
@@ -516,6 +557,82 @@ void main() {
       await tapAndSettle(tester, find.byIcon(GtIcons.download));
 
       expect(downloads, 1);
+    });
+  });
+
+  group('GtReceiptScaffold', () {
+    Widget buildScaffold({
+      VoidCallback? onReportProblem,
+      bool showReportProblem = true,
+      bool isButtonDisabled = false,
+    }) {
+      return GtThemeProvider(
+        theme: kPersonalTheme,
+        child: MaterialApp(
+          home: GtReceiptScaffold(
+            onClose: () {},
+            onReportProblem: showReportProblem
+                ? onReportProblem ?? () {}
+                : null,
+            isButtonDisabled: isButtonDisabled,
+            buttonText: 'Report a problem',
+            body: const GtReceiptBody(
+              amount: '20,000.00',
+              status: GtReceiptStatusData(status: GtReceiptStatus.success),
+              from: recipient,
+              to: recipient,
+              details: GtReceiptDetails(
+                tiles: [
+                  GtReceiptTileData(
+                    label: 'Reference',
+                    value: 'TRX24072983910527NGN',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    Finder reportButton() {
+      return find.descendant(
+        of: find.byType(GtButtonBottomNavBar),
+        matching: find.byType(GtRaisedButton),
+      );
+    }
+
+    testWidgets('routes the bottom action to onReportProblem', (tester) async {
+      var reports = 0;
+      await tester.pumpWidget(buildScaffold(onReportProblem: () => reports++));
+
+      expect(find.byKey(const Key('receipt-bottom-bar-space')), findsOneWidget);
+
+      await tapAndSettle(tester, reportButton());
+
+      expect(reports, 1);
+    });
+
+    testWidgets('draws no bottom bar or space when onReportProblem is null', (
+      tester,
+    ) async {
+      await tester.pumpWidget(buildScaffold(showReportProblem: false));
+
+      expect(find.byType(GtButtonBottomNavBar), findsNothing);
+      expect(find.byKey(const Key('receipt-bottom-bar-space')), findsNothing);
+    });
+
+    testWidgets('ignores taps on a disabled bottom action', (tester) async {
+      var reports = 0;
+      await tester.pumpWidget(
+        buildScaffold(onReportProblem: () => reports++, isButtonDisabled: true),
+      );
+
+      expect(reportButton(), findsOneWidget);
+
+      await tapAndSettle(tester, reportButton());
+
+      expect(reports, 0);
     });
   });
 }
