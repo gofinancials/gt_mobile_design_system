@@ -100,6 +100,7 @@ enum GtColors {
   green925(ColorSet(0xFF155653)),
   green900(ColorSet(0xFF16643B)),
   green800(ColorSet(0xFF1A7544)),
+  green750(ColorSet(0xFF16834A)),
   green700(ColorSet(0xFF178C4E)),
   green600(ColorSet(0xFF1DAF61)),
   green500(ColorSet(0xFF1FC16B)),

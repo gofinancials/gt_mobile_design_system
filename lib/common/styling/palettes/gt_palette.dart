@@ -312,6 +312,33 @@ class GtPaletteBgColors {
     required this.sky,
   });
 
+  /// Returns a copy of these backgrounds with the given colors replaced.
+  GtPaletteBgColors copyWith({
+    Color? strong,
+    Color? surface,
+    Color? sub,
+    Color? soft,
+    Color? weak,
+    Color? weaker,
+    Color? white,
+    Color? warm,
+    Color? neutralWarm50,
+    Color? sky,
+  }) {
+    return GtPaletteBgColors(
+      strong: strong ?? this.strong,
+      surface: surface ?? this.surface,
+      sub: sub ?? this.sub,
+      soft: soft ?? this.soft,
+      weak: weak ?? this.weak,
+      weaker: weaker ?? this.weaker,
+      white: white ?? this.white,
+      warm: warm ?? this.warm,
+      neutralWarm50: neutralWarm50 ?? this.neutralWarm50,
+      sky: sky ?? this.sky,
+    );
+  }
+
   /// Every background color in this group.
   List<Color> get all => [
     strong,
@@ -882,6 +909,9 @@ class GtPaletteRawColors {
 
   /// The green 800 tone, resolved for this palette's mode.
   Color get green800 => _resolve(GtColors.green800);
+
+  /// The green 750 tone, resolved for this palette's mode.
+  Color get green750 => _resolve(GtColors.green750);
 
   /// The green 700 tone, resolved for this palette's mode.
   Color get green700 => _resolve(GtColors.green700);
@@ -1885,6 +1915,23 @@ base class GtLightPalette extends GtPalette {
 
 /// Base class for Dark mode palettes providing standard default color definitions.
 base class GtDarkPalette extends GtPalette {
+  /// The standard dark mode backgrounds, used for [bg] when none is given.
+  ///
+  /// A palette that changes only a few of them can start from these with
+  /// [GtPaletteBgColors.copyWith].
+  static final defaultBg = GtPaletteBgColors(
+    strong: GtColors.neutral950.dark,
+    surface: GtColors.neutral800.dark,
+    sub: GtColors.neutral300.dark,
+    soft: GtColors.neutral200.dark,
+    weak: GtColors.neutral50.dark,
+    white: GtColors.neutral0.dark,
+    warm: GtColors.yellow25.dark,
+    neutralWarm50: GtColors.neutralWarm50.dark,
+    weaker: GtColors.neutral25.dark,
+    sky: GtColors.neutral200.dark,
+  );
+
   /// Creates a [GtDarkPalette] from [primary] and [coverColors].
   ///
   /// Every other group not given falls back to the standard dark mode colors.
@@ -1929,20 +1976,7 @@ base class GtDarkPalette extends GtPalette {
                worldStop2: GtColors.neutral800.value,
                worldStop3: GtColors.night.value,
              ),
-         bg:
-             bg ??
-             GtPaletteBgColors(
-               strong: GtColors.neutral950.dark,
-               surface: GtColors.neutral800.dark,
-               sub: GtColors.neutral300.dark,
-               soft: GtColors.neutral200.dark,
-               weak: GtColors.neutral50.dark,
-               white: GtColors.neutral0.dark,
-               warm: GtColors.yellow25.dark,
-               neutralWarm50: GtColors.neutralWarm50.dark,
-               weaker: GtColors.neutral25.dark,
-               sky: GtColors.neutral200.dark,
-             ),
+         bg: bg ?? defaultBg,
          fill:
              fill ??
              GtPaletteBgColors(

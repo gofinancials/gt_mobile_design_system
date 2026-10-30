@@ -405,6 +405,7 @@ List<_PaletteCategory> _buildCategories(GtPalette p) => [
       _NamedColor(label: 'green925', color: (p) => p.raw.green925),
       _NamedColor(label: 'green900', color: (p) => p.raw.green900),
       _NamedColor(label: 'green800', color: (p) => p.raw.green800),
+      _NamedColor(label: 'green750', color: (p) => p.raw.green750),
       _NamedColor(label: 'green700', color: (p) => p.raw.green700),
       _NamedColor(label: 'green600', color: (p) => p.raw.green600),
       _NamedColor(label: 'green500', color: (p) => p.raw.green500),

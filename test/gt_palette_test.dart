@@ -186,6 +186,15 @@ void main() {
       expect(bg.hashCode, equals(same.hashCode));
       expect(GtPaletteBgColors.lerp(bg, same, 0.5).surface, bg.surface);
     });
+
+    test('copyWith replaces only the given colors', () {
+      final copy = bg.copyWith(warm: const Color(0xFF111111));
+
+      expect(copy.warm, const Color(0xFF111111));
+      expect(copy.strong, bg.strong);
+      expect(copy.sky, bg.sky);
+      expect(bg.copyWith(), equals(bg));
+    });
   });
 
   group('GtPaletteContentColors & GtPaletteTextColors', () {
@@ -480,7 +489,11 @@ void main() {
       final dark = KidsDarkPalette();
 
       expect(light.primary.base, GtColors.purple600.value);
-      expect(dark.primary.base, GtColors.purple600.value);
+      expect(dark.primary.darker, GtColors.purple700.value);
+      expect(dark.primary.dark, GtColors.purple600.value);
+      expect(dark.primary.base, GtColors.purple500.value);
+      expect(dark.bg.warm, GtColors.neutral0.dark);
+      expect(dark.bg.strong, GtDarkPalette.defaultBg.strong);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
     });
@@ -490,7 +503,11 @@ void main() {
       final dark = FlexDarkPalette();
 
       expect(light.primary.base, GtColors.green600.value);
-      expect(dark.primary.base, GtColors.green600.value);
+      expect(dark.primary.darker, GtColors.green700.value);
+      expect(dark.primary.dark, GtColors.green800.value);
+      expect(dark.primary.base, GtColors.green750.value);
+      expect(dark.bg.warm, GtColors.neutral0.dark);
+      expect(dark.bg.strong, GtDarkPalette.defaultBg.strong);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
     });
@@ -510,7 +527,11 @@ void main() {
       final dark = SterlingProDarkPalette();
 
       expect(light.primary.base, GtColors.maroon600.value);
-      expect(dark.primary.base, GtColors.maroon600.value);
+      expect(dark.primary.darker, GtColors.maroon700.value);
+      expect(dark.primary.dark, GtColors.maroon600.value);
+      expect(dark.primary.base, GtColors.red700.value);
+      expect(dark.bg.warm, GtColors.neutral0.dark);
+      expect(dark.bg.strong, GtDarkPalette.defaultBg.strong);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
       expect(light.usesRedIllustration, isTrue);
