@@ -221,26 +221,34 @@ class _GtBottomModalState extends State<GtBottomModal>
             // reader user that the task finished.
             child: Material(
               type: .transparency,
-              child: Align(
-                alignment: widget.alignment,
-                child: _GtModalBody(
-                  titleSlide: _titleSlide,
-                  titleFade: _titleFade,
-                  successSlide: _successSlide,
-                  successFade: _successFade,
-                  title: controller.title,
-                  icon: _GtBottomModalIconWidget(
-                    controller.phase,
-                    icon: controller.icon,
+              // The same dismiss scrim as the static modal. While the task is
+              // loading the IgnorePointer below swallows the tap, so it only
+              // closes a finished modal, along the path a downward drag takes.
+              child: GestureDetector(
+                behavior: .opaque,
+                onTap: context.pop,
+                excludeFromSemantics: true,
+                child: Align(
+                  alignment: widget.alignment,
+                  child: _GtModalBody(
+                    titleSlide: _titleSlide,
+                    titleFade: _titleFade,
+                    successSlide: _successSlide,
+                    successFade: _successFade,
+                    title: controller.title,
+                    icon: _GtBottomModalIconWidget(
+                      controller.phase,
+                      icon: controller.icon,
+                    ),
+                    description: controller.description,
+                    margin: widget.margin,
+                    // Progress only stands in for the description while the task
+                    // runs; once it completes, the description carries the
+                    // outcome, which on a failure is the error message.
+                    progress: isLoading && controller.hasProgress
+                        ? "${controller.percentage}%"
+                        : null,
                   ),
-                  description: controller.description,
-                  margin: widget.margin,
-                  // Progress only stands in for the description while the task
-                  // runs; once it completes, the description carries the
-                  // outcome, which on a failure is the error message.
-                  progress: isLoading && controller.hasProgress
-                      ? "${controller.percentage}%"
-                      : null,
                 ),
               ),
             ),

@@ -156,33 +156,89 @@ void main() {
       expect(completions, hasLength(1));
     }, variant: bothPlatforms);
 
-    testWidgets('keeps a failed modal open when asked, until dismiss', (
-      tester,
-    ) async {
-      final completions = <TaskResponse<String>>[];
-      final controller = controllerFor(
-        completions: completions,
-        keepOpenOnFailure: true,
-      );
-      addTearDown(controller.dispose);
+    testWidgets(
+      'keeps a failed modal open when asked, until dismiss',
+      (tester) async {
+        final completions = <TaskResponse<String>>[];
+        final controller = controllerFor(
+          completions: completions,
+          keepOpenOnFailure: true,
+        );
+        addTearDown(controller.dispose);
 
-      final host = await pumpHost(tester);
-      unawaited(host.showTaskBottomModal(host.context, controller: controller));
-      await pumpFrames(tester);
+        final host = await pumpHost(tester);
+        unawaited(
+          host.showTaskBottomModal(host.context, controller: controller),
+        );
+        await pumpFrames(tester);
 
-      controller.complete(
-        TaskFailure<String>(error: const TaskError(message: 'Declined')),
-      );
-      await pumpFrames(tester);
+        controller.complete(
+          TaskFailure<String>(error: const TaskError(message: 'Declined')),
+        );
+        await pumpFrames(tester);
 
-      // The failure reached the caller, and the modal it was shown in stayed.
-      expect(completions, hasLength(1));
-      expect(modal, findsOneWidget);
+        // The failure reached the caller, and the modal it was shown in stayed.
+        expect(completions, hasLength(1));
+        expect(modal, findsOneWidget);
 
-      await pumpUntil(tester, controller.dismiss());
-      await pumpFrames(tester);
-      expect(modal, findsNothing);
-    }, variant: bothPlatforms);
+        await pumpUntil(tester, controller.dismiss());
+        await pumpFrames(tester);
+        expect(modal, findsNothing);
+      },
+      variant: bothPlatforms,
+    );
+
+    testWidgets(
+      'ignores a tap on the backdrop while the task is loading',
+      (tester) async {
+        final controller = controllerFor(completions: []);
+        addTearDown(controller.dispose);
+
+        final host = await pumpHost(tester);
+        unawaited(
+          host.showTaskBottomModal(host.context, controller: controller),
+        );
+        await pumpFrames(tester);
+
+        await tester.tapAt(const Offset(187, 100));
+        await pumpFrames(tester);
+
+        expect(modal, findsOneWidget);
+      },
+      variant: bothPlatforms,
+    );
+
+    testWidgets(
+      'closes a kept-open failure on a tap on the backdrop',
+      (tester) async {
+        final completions = <TaskResponse<String>>[];
+        final controller = controllerFor(
+          completions: completions,
+          keepOpenOnFailure: true,
+        );
+        addTearDown(controller.dispose);
+
+        final host = await pumpHost(tester);
+        unawaited(
+          host.showTaskBottomModal(host.context, controller: controller),
+        );
+        await pumpFrames(tester);
+
+        controller.complete(
+          TaskFailure<String>(error: const TaskError(message: 'Declined')),
+        );
+        await pumpFrames(tester);
+        expect(modal, findsOneWidget);
+
+        // A dimmed backdrop reads as "tap to close"; on a finished modal it is.
+        await tester.tapAt(const Offset(187, 100));
+        await pumpFrames(tester);
+
+        expect(modal, findsNothing);
+        expect(completions, hasLength(1));
+      },
+      variant: bothPlatforms,
+    );
 
     testWidgets(
       'holds a failed modal for the completion delay before closing',
@@ -224,43 +280,53 @@ void main() {
       variant: bothPlatforms,
     );
 
-    testWidgets('survives a completion that lands before the first build', (
-      tester,
-    ) async {
-      final completions = <TaskResponse<String>>[];
-      final controller = controllerFor(completions: completions);
-      addTearDown(controller.dispose);
+    testWidgets(
+      'survives a completion that lands before the first build',
+      (tester) async {
+        final completions = <TaskResponse<String>>[];
+        final controller = controllerFor(completions: completions);
+        addTearDown(controller.dispose);
 
-      final host = await pumpHost(tester);
-      // No pump between showing and completing: the route is pushed but its
-      // builder has not run, so the controller has no route handle yet.
-      unawaited(host.showTaskBottomModal(host.context, controller: controller));
-      controller.complete(TaskSuccess<String>(data: 'ok'));
-      await pumpFrames(tester);
+        final host = await pumpHost(tester);
+        // No pump between showing and completing: the route is pushed but its
+        // builder has not run, so the controller has no route handle yet.
+        unawaited(
+          host.showTaskBottomModal(host.context, controller: controller),
+        );
+        controller.complete(TaskSuccess<String>(data: 'ok'));
+        await pumpFrames(tester);
 
-      expect(modal, findsNothing);
-      expect(completions, hasLength(1));
-    }, variant: bothPlatforms);
+        expect(modal, findsNothing);
+        expect(completions, hasLength(1));
+      },
+      variant: bothPlatforms,
+    );
 
-    testWidgets('does not stack a second modal for the same controller', (
-      tester,
-    ) async {
-      final completions = <TaskResponse<String>>[];
-      final controller = controllerFor(completions: completions);
-      addTearDown(controller.dispose);
+    testWidgets(
+      'does not stack a second modal for the same controller',
+      (tester) async {
+        final completions = <TaskResponse<String>>[];
+        final controller = controllerFor(completions: completions);
+        addTearDown(controller.dispose);
 
-      final host = await pumpHost(tester);
-      unawaited(host.showTaskBottomModal(host.context, controller: controller));
-      await pumpFrames(tester);
-      unawaited(host.showTaskBottomModal(host.context, controller: controller));
-      await pumpFrames(tester);
+        final host = await pumpHost(tester);
+        unawaited(
+          host.showTaskBottomModal(host.context, controller: controller),
+        );
+        await pumpFrames(tester);
+        unawaited(
+          host.showTaskBottomModal(host.context, controller: controller),
+        );
+        await pumpFrames(tester);
 
-      expect(modal, findsOneWidget);
+        expect(modal, findsOneWidget);
 
-      controller.complete(TaskSuccess<String>(data: 'ok'));
-      await pumpFrames(tester);
-      expect(modal, findsNothing);
-    }, variant: bothPlatforms);
+        controller.complete(TaskSuccess<String>(data: 'ok'));
+        await pumpFrames(tester);
+        expect(modal, findsNothing);
+      },
+      variant: bothPlatforms,
+    );
 
     testWidgets('fires the completion callback once when the customer drags '
         'the finished modal away first', (tester) async {
@@ -429,42 +495,76 @@ void main() {
       expect(modal, findsNothing);
     }, variant: bothPlatforms);
 
-    testWidgets('reports a failure held on screen by keepOpenOnFailure', (
-      tester,
-    ) async {
-      final host = await pumpHost(tester);
-      TaskError? error;
-      late final GtBottomModalController<String> held;
+    testWidgets(
+      'reports a failure held on screen by keepOpenOnFailure',
+      (tester) async {
+        final host = await pumpHost(tester);
+        TaskError? error;
+        late final GtBottomModalController<String> held;
 
-      final run = GtTaskRunner.run<String>(
-        host.context,
-        loadingTitle: 'Processing',
-        completeDelay: Duration.zero,
-        keepOpenOnFailure: true,
-        task: (controller) async {
-          // The controller handed to the task is the only handle on a modal
-          // the runner keeps open.
-          held = controller;
-          return TaskFailure<String>(
-            error: const TaskError(message: 'Incorrect PIN'),
-          );
-        },
-        onSuccess: (_) => fail('should not succeed'),
-        onError: (value) => error = value,
-      );
+        final run = GtTaskRunner.run<String>(
+          host.context,
+          loadingTitle: 'Processing',
+          completeDelay: Duration.zero,
+          keepOpenOnFailure: true,
+          task: (controller) async {
+            // The controller handed to the task is the only handle on a modal
+            // the runner keeps open.
+            held = controller;
+            return TaskFailure<String>(
+              error: const TaskError(message: 'Incorrect PIN'),
+            );
+          },
+          onSuccess: (_) => fail('should not succeed'),
+          onError: (value) => error = value,
+        );
 
-      await pumpFrames(tester);
-      // The modal is still up, holding the refusal, so the form underneath is
-      // covered — but it is the form that has to mark the rejected input.
-      expect(modal, findsOneWidget);
-      expect(error?.message, 'Incorrect PIN');
+        await pumpFrames(tester);
+        // The modal is still up, holding the refusal, so the form underneath is
+        // covered — but it is the form that has to mark the rejected input.
+        expect(modal, findsOneWidget);
+        expect(error?.message, 'Incorrect PIN');
 
-      await pumpUntil(tester, held.dismiss());
-      await pumpUntil(tester, run);
-      // route.popped resolves before the exit transition clears the widget.
-      await pumpFrames(tester);
-      expect(modal, findsNothing);
-    }, variant: bothPlatforms);
+        await pumpUntil(tester, held.dismiss());
+        await pumpUntil(tester, run);
+        // route.popped resolves before the exit transition clears the widget.
+        await pumpFrames(tester);
+        expect(modal, findsNothing);
+      },
+      variant: bothPlatforms,
+    );
+
+    testWidgets(
+      'settles when the customer taps away a kept-open failure',
+      (tester) async {
+        final host = await pumpHost(tester);
+        TaskError? error;
+
+        final run = GtTaskRunner.run<String>(
+          host.context,
+          loadingTitle: 'Processing',
+          completeDelay: Duration.zero,
+          keepOpenOnFailure: true,
+          task: (_) async => TaskFailure<String>(
+            error: const TaskError(message: 'Missing fields'),
+          ),
+          onSuccess: (_) => fail('should not succeed'),
+          onError: (value) => error = value,
+        );
+
+        await pumpFrames(tester);
+        expect(modal, findsOneWidget);
+
+        await tester.tapAt(const Offset(187, 100));
+        final result = await pumpUntil(tester, run);
+        await pumpFrames(tester);
+
+        expect(result, isA<TaskFailure<String>>());
+        expect(error?.message, 'Missing fields');
+        expect(modal, findsNothing);
+      },
+      variant: bothPlatforms,
+    );
 
     testWidgets('a caller-owned controller takes the modal down with the '
         'screen', (tester) async {
@@ -735,64 +835,75 @@ void main() {
       expect(find.text('45%', findRichText: true), findsOneWidget);
     }, variant: bothPlatforms);
 
-    testWidgets('replaces progress with the error message on a failure', (
-      tester,
-    ) async {
-      final controller = controllerFor(
-        completions: [],
-        keepOpenOnFailure: true,
-      );
-      addTearDown(controller.dispose);
+    testWidgets(
+      'replaces progress with the error message on a failure',
+      (tester) async {
+        final controller = controllerFor(
+          completions: [],
+          keepOpenOnFailure: true,
+        );
+        addTearDown(controller.dispose);
 
-      final host = await pumpHost(tester);
-      unawaited(host.showTaskBottomModal(host.context, controller: controller));
-      await pumpFrames(tester);
+        final host = await pumpHost(tester);
+        unawaited(
+          host.showTaskBottomModal(host.context, controller: controller),
+        );
+        await pumpFrames(tester);
 
-      // The file went up in full before the request failed.
-      controller.progress = 1;
-      controller.complete(
-        TaskFailure<String>(
-          error: const TaskError(message: 'File is larger than 2MB'),
-        ),
-      );
-      await pumpFrames(tester);
+        // The file went up in full before the request failed.
+        controller.progress = 1;
+        controller.complete(
+          TaskFailure<String>(
+            error: const TaskError(message: 'File is larger than 2MB'),
+          ),
+        );
+        await pumpFrames(tester);
 
-      expect(find.text('100%', findRichText: true), findsNothing);
-      expect(
-        find.text('File is larger than 2MB', findRichText: true),
-        findsOneWidget,
-      );
+        expect(find.text('100%', findRichText: true), findsNothing);
+        expect(
+          find.text('File is larger than 2MB', findRichText: true),
+          findsOneWidget,
+        );
 
-      await pumpUntil(tester, controller.dismiss());
-      await pumpFrames(tester);
-    }, variant: bothPlatforms);
+        await pumpUntil(tester, controller.dismiss());
+        await pumpFrames(tester);
+      },
+      variant: bothPlatforms,
+    );
 
-    testWidgets('replaces progress with the description on a success', (
-      tester,
-    ) async {
-      final controller = GtBottomModalController<String>(
-        data: const GtBottomModalData(
-          title: 'Processing',
-          description: 'Signature saved',
-        ),
-        onCompleteDelay: const Duration(seconds: 3),
-      );
-      addTearDown(controller.dispose);
+    testWidgets(
+      'replaces progress with the description on a success',
+      (tester) async {
+        final controller = GtBottomModalController<String>(
+          data: const GtBottomModalData(
+            title: 'Processing',
+            description: 'Signature saved',
+          ),
+          onCompleteDelay: const Duration(seconds: 3),
+        );
+        addTearDown(controller.dispose);
 
-      final host = await pumpHost(tester);
-      unawaited(host.showTaskBottomModal(host.context, controller: controller));
-      await pumpFrames(tester);
+        final host = await pumpHost(tester);
+        unawaited(
+          host.showTaskBottomModal(host.context, controller: controller),
+        );
+        await pumpFrames(tester);
 
-      controller.progress = 1;
-      controller.complete(TaskSuccess<String>(data: 'done'));
-      await pumpFrames(tester);
+        controller.progress = 1;
+        controller.complete(TaskSuccess<String>(data: 'done'));
+        await pumpFrames(tester);
 
-      expect(find.text('100%', findRichText: true), findsNothing);
-      expect(find.text('Signature saved', findRichText: true), findsOneWidget);
+        expect(find.text('100%', findRichText: true), findsNothing);
+        expect(
+          find.text('Signature saved', findRichText: true),
+          findsOneWidget,
+        );
 
-      // Let the completion delay run out so the modal closes itself.
-      await pumpFrames(tester, const Duration(milliseconds: 500), 8);
-      expect(modal, findsNothing);
-    }, variant: bothPlatforms);
+        // Let the completion delay run out so the modal closes itself.
+        await pumpFrames(tester, const Duration(milliseconds: 500), 8);
+        expect(modal, findsNothing);
+      },
+      variant: bothPlatforms,
+    );
   });
 }
