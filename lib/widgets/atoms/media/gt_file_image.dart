@@ -15,9 +15,15 @@ class GtFileImage extends GtStatelessWidget {
   final File? imageFile;
 
   /// The optional width to constrain the image.
+  ///
+  /// With [height], it also sets the size the file is decoded at, so a large
+  /// image costs only the memory of the space it is drawn in. See
+  /// [GtImageDecodeSize].
   final double? width;
 
   /// The optional height to constrain the image.
+  ///
+  /// See [width] for how it sizes the decode.
   final double? height;
 
   /// How the image should be inscribed into the space allocated during layout.
@@ -75,8 +81,11 @@ class GtFileImage extends GtStatelessWidget {
 
     if (imageFile == null) return emptyBox;
 
+    final decode = context.imageDecodeSize(width: width, height: height);
     Widget image = Image.file(
       imageFile!,
+      cacheWidth: decode.width,
+      cacheHeight: decode.height,
       fit: fit,
       alignment: alignment,
       width: width,

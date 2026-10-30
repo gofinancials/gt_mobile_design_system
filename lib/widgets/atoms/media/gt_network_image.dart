@@ -12,6 +12,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// - SVG URLs (ending with ".svg") are routed to [GtSvg].
 /// - Standard image URLs are handled by [CachedNetworkImage] for efficient caching.
 ///
+/// Raster images are decoded at the size they are drawn, not at their full
+/// resolution: from [width] and [height] when given, or else no wider than
+/// the screen. See [GtImageDecodeSize].
+///
 /// Inside an enabled [GtSkeleton] the image is painted as a [GtBone] block.
 class GtNetworkImage extends GtStatelessWidget {
   /// An optional local asset path to display while the network image is loading.
@@ -41,12 +45,19 @@ class GtNetworkImage extends GtStatelessWidget {
   final String imageUrl;
 
   /// The optional width to constrain the image.
+  ///
+  /// With [height], it also sets the size a raster image is decoded at. When
+  /// both are null, the decode is capped at the screen's width instead. Pass
+  /// the drawn size wherever it is known, above all in lists, so the decode
+  /// matches it. See [GtImageDecodeSize].
   final double? width;
 
   /// An optional color filter to apply to the image.
   final Color? color;
 
   /// The optional height to constrain the image.
+  ///
+  /// See [width] for how it sizes the decode.
   final double? height;
 
   /// How the image should be inscribed into the space allocated during layout.
@@ -134,36 +145,42 @@ class GtNetworkImage extends GtStatelessWidget {
             );
           }
 
-          final image = CachedNetworkImage(
-            imageUrl: imageUrl,
-            height: height,
-            width: width,
-            alignment: alignment,
-            fit: fit,
-            color: color,
-            errorWidget: (_, _, _) => _errorBox,
-            placeholder: (context, _) {
-              if (placeHolderPath == null) {
-                if (!showLoadingIndicator) {
-                  return SizedBox(height: height, width: width);
-                }
-                return GtImageShimmer(width: width, height: height);
-              }
-              return GtAssetImage(
-                placeHolderPath!,
-                width: width,
-                height: height,
-                alignment: alignment,
-                // The placeholder stands in for the real image and must not
-                // announce itself alongside it.
-                isDecorative: true,
-              );
-            },
-          );
-
-          return _annotate(context, image);
+          final decode = context.imageDecodeSize(width: width, height: height);
+          return _annotate(context, _cachedImage(decode));
         },
       ),
+    );
+  }
+
+  /// The [CachedNetworkImage] for [imageUrl], decoded at [decode].
+  Widget _cachedImage(GtImageDecodeSize decode) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      height: height,
+      width: width,
+      memCacheWidth: decode.width,
+      memCacheHeight: decode.height,
+      alignment: alignment,
+      fit: fit,
+      color: color,
+      errorWidget: (_, _, _) => _errorBox,
+      placeholder: (context, _) {
+        if (placeHolderPath == null) {
+          if (!showLoadingIndicator) {
+            return SizedBox(height: height, width: width);
+          }
+          return GtImageShimmer(width: width, height: height);
+        }
+        return GtAssetImage(
+          placeHolderPath!,
+          width: width,
+          height: height,
+          alignment: alignment,
+          // The placeholder stands in for the real image and must not
+          // announce itself alongside it.
+          isDecorative: true,
+        );
+      },
     );
   }
 

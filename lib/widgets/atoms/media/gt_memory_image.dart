@@ -13,9 +13,15 @@ class GtMemoryImage extends GtStatelessWidget {
   final Uint8List bytes;
 
   /// The optional width to constrain the image.
+  ///
+  /// With [height], it also sets the size the bytes are decoded at, so a
+  /// large image costs only the memory of the space it is drawn in. See
+  /// [GtImageDecodeSize].
   final double? width;
 
   /// The optional height to constrain the image.
+  ///
+  /// See [width] for how it sizes the decode.
   final double? height;
 
   /// How the image should be inscribed into the space allocated during layout.
@@ -63,8 +69,11 @@ class GtMemoryImage extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final decode = context.imageDecodeSize(width: width, height: height);
     Widget image = Image.memory(
       bytes,
+      cacheWidth: decode.width,
+      cacheHeight: decode.height,
       fit: fit,
       alignment: alignment,
       width: width,
