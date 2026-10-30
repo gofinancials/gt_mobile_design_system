@@ -385,12 +385,17 @@ class _SuccessRateRow extends GtStatelessWidget {
           successRate: entry.rate,
           isLoading: entry.isLoading,
           loadingSemanticsLabel: entry.loadingSemanticsLabel,
+          // A logo that fails to load leaves the initials, not a gap.
           leading: switch (entry.logo) {
             AppImageData logo => GtImage(
               image: logo,
               width: logoSize,
               height: logoSize,
               isDecorative: true,
+              errorWidget: GtAvatar(
+                size: logoSize,
+                initials: entry.name.initials,
+              ),
             ),
             _ => GtAvatar(size: logoSize, initials: entry.name.initials),
           },

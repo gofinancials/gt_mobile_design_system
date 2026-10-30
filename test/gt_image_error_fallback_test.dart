@@ -363,6 +363,41 @@ void main() {
     });
   });
 
+  group('success-rate rows keep their initials when a logo fails', () {
+    const rate = GtSuccessRateData(
+      name: 'Kuda Bank',
+      rate: .9,
+      logo: AppImageData(_url),
+    );
+
+    void expectInitials(Widget fallback) {
+      expect(fallback, isA<GtAvatar>());
+      expect((fallback as GtAvatar).initials, 'KB');
+    }
+
+    testWidgets('in GtSummaryRatesCard', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          const GtSummaryRatesCard(
+            GtSummaryRatesSection(description: 'Rates', rates: [rate]),
+          ),
+        ),
+      );
+
+      expectInitials(_networkErrorWidget(tester));
+    });
+
+    testWidgets('in GtSuccessRateBody', (tester) async {
+      await tester.pumpWidget(
+        _app(const GtSuccessRateBody(rates: [rate], showSearch: false)),
+      );
+      // The body awaits its rates before it lays out a row.
+      await tester.pump();
+
+      expectInitials(_networkErrorWidget(tester));
+    });
+  });
+
   group('GtTransferField participant legs', () {
     const fallbackImage = AppImageData(GtVectors.dashedPlaceholder);
 

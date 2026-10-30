@@ -117,12 +117,17 @@ class GtSummaryRatesCard extends GtStatelessWidget {
               successRate: rate.rate,
               isLoading: rate.isLoading,
               loadingSemanticsLabel: rate.loadingSemanticsLabel,
+              // A logo that fails to load leaves the initials, not a gap.
               leading: switch (rate.logo) {
                 AppImageData logo => GtImage(
                   image: logo,
                   width: logoSize,
                   height: logoSize,
                   isDecorative: true,
+                  errorWidget: GtAvatar(
+                    size: logoSize,
+                    initials: rate.name.initials,
+                  ),
                 ),
                 _ => GtAvatar(size: logoSize, initials: rate.name.initials),
               },
