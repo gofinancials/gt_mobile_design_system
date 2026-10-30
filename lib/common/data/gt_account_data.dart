@@ -114,14 +114,19 @@ class GtAccountDataController<T> extends ChangeNotifier {
   /// Drives the [PageView] that renders the accounts, kept here so the page
   /// position and [activeIndex] cannot drift apart.
   ///
-  /// Created with the constructor's `activeIndex` as its initial page, owned by
-  /// this controller and disposed in [dispose].
+  /// A [PageView] that attaches opens on the current [activeIndex], not the one
+  /// the controller was built with, so an index set before any view attached
+  /// is honoured. It never restores a page from [PageStorage]: the controller,
+  /// not the storage, decides which account is on screen. Owned by this
+  /// controller and disposed in [dispose].
   ///
   /// *Note: a [PageController] may only be attached to one [PageView] at a
   /// time, which ties this controller's lifetime to a single paged view. Two
   /// slide widgets sharing one controller — or an old one still mounted during
   /// a route transition — will trip Flutter's attach assertion.*
-  final PageController pageController;
+  late final PageController pageController = _GtAccountPageController(
+    () => activeIndex,
+  );
 
   /// Creates a [GtAccountDataController] over [accounts], selecting
   /// [activeIndex] (the first account by default).
@@ -133,10 +138,7 @@ class GtAccountDataController<T> extends ChangeNotifier {
     required List<GtAccountData<T>> accounts,
     int activeIndex = 0,
   }) : _accounts = List.of(accounts),
-       _activeIndex = _clampIndex(activeIndex, accounts.length),
-       pageController = PageController(
-         initialPage: _clampIndex(activeIndex, accounts.length),
-       );
+       _activeIndex = _clampIndex(activeIndex, accounts.length);
 
   /// The accounts being switched between, in display order.
   ///
@@ -260,4 +262,25 @@ class GtAccountDataController<T> extends ChangeNotifier {
     pageController.dispose();
     super.dispose();
   }
+}
+
+/// The [PageController] a [GtAccountDataController] owns.
+///
+/// [PageController.initialPage] is fixed when a controller is built, yet it is
+/// what every newly attached [PageView] opens on. Reading it from the account
+/// controller instead means a view attached after the selection moved — a
+/// first attach, or a remount when the account count changes — opens on the
+/// selected account rather than the one selected at construction.
+class _GtAccountPageController extends PageController {
+  /// Reads the account controller's current [GtAccountDataController.activeIndex].
+  final int Function() _activePage;
+
+  /// Creates a [_GtAccountPageController] that opens on [_activePage].
+  ///
+  /// `keepPage` is off so a page saved in [PageStorage] by an earlier view
+  /// cannot override [initialPage].
+  _GtAccountPageController(this._activePage) : super(keepPage: false);
+
+  @override
+  int get initialPage => _activePage();
 }

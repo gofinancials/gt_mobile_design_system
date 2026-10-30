@@ -40,6 +40,10 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
   /// that builds it does. Its [GtAccountDataController.pageController] can
   /// attach to only one [PageView] at a time, so give each mounted slides
   /// widget its own controller.
+  ///
+  /// Passing a different controller remounts the page view, which then opens
+  /// on the new controller's [GtAccountDataController.activeIndex] rather than
+  /// keeping the page the previous controller was on.
   final GtAccountDataController<T> controller;
 
   /// Called when the page in view changes, with the new index and the
@@ -267,7 +271,11 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
                     // about 8 inside its top, where the frame sets the text.
                     child: GtSizedBox(
                       height: 65,
-                      key: Key("accounts-slider-${balances.length}"),
+                      // A new controller must not inherit the page the old
+                      // one was on: Flutter moves the mounted scroll position
+                      // across to it, so the old page would stay on screen
+                      // while activeIndex names another account.
+                      key: ValueKey((controller, balances.length)),
                       child: PageView(
                         controller: controller.pageController,
                         onPageChanged: (value) {

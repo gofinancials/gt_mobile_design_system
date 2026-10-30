@@ -420,7 +420,7 @@ void main() {
       expect(find.byType(GtBone), findsWidgets);
 
       // The balance row is the Personal Home's 65 frame, not a bare H3 line.
-      final row = tester.getSize(find.byKey(const Key('accounts-slider-1')));
+      final row = tester.getSize(find.byKey(ValueKey((controller, 1))));
       final context = tester.element(find.byType(GtAccountDetailSlides<int>));
       expect(row.height, closeTo(context.dp(65.px), 0.5));
     });
