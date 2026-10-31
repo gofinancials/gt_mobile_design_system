@@ -40,8 +40,13 @@ void main() {
   }
 
   /// Mounts a host on a phone-sized view, inside a [GtThemedScope] for
-  /// [kFlexTheme] while the app itself is on [kPersonalTheme].
-  Future<_HostState> pumpHost(WidgetTester tester) async {
+  /// [scope] (Flex by default) while the app itself is on [kPersonalTheme],
+  /// in dark mode when [dark] is set.
+  Future<_HostState> pumpHost(
+    WidgetTester tester, {
+    bool dark = false,
+    GtTheme? scope,
+  }) async {
     tester.view.physicalSize = const Size(375, 812);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
@@ -52,8 +57,10 @@ void main() {
         theme: kPersonalTheme,
         child: MaterialApp(
           theme: kPersonalTheme.materialLight,
+          darkTheme: kPersonalTheme.materialDark,
+          themeMode: dark ? ThemeMode.dark : ThemeMode.light,
           home: GtThemedScope(
-            theme: kFlexTheme,
+            theme: scope ?? kFlexTheme,
             child: Scaffold(body: _Host(onReady: (value) => host = value)),
           ),
         ),
@@ -267,4 +274,92 @@ void main() {
     expect(pdf.style?.fontWeight, FontWeight.w600);
     expect(delete.style?.color, palette.error.base);
   }, variant: allPlatforms);
+
+  testWidgets('sets choices in the brand ink in dark mode, where the base '
+      'tone is too dark to read', (tester) async {
+    final host = await pumpHost(tester, dark: true);
+    await open(
+      tester,
+      host,
+      actions: [
+        GtActionSheetAction(label: 'Export as PDF', onPressed: () {}),
+        GtActionSheetAction(
+          label: 'Delete',
+          isDestructive: true,
+          onPressed: () {},
+        ),
+      ],
+    );
+
+    final context = tester.element(find.byType(GtActionSheet));
+    final palette = Theme.of(context).extension<GtPalette>()!;
+    GtText label(String text) => tester.widget<GtText>(
+      find.ancestor(of: find.text(text), matching: find.byType(GtText)),
+    );
+
+    expect(context.isInDarkMode, isTrue);
+    expect(palette.opPrimaryInk, isNot(palette.primary.base));
+    expect(label('Export as PDF').style?.color, palette.opPrimaryInk);
+    expect(label('Delete').style?.color, palette.error.base);
+  }, variant: allPlatforms);
+
+  testWidgets(
+    'choices clear AA contrast on the dark sheet in every brand',
+    (tester) async {
+      // The native sheet's dark group fill, which CupertinoActionSheet blurs
+      // over the page, approximated as iOS draws it.
+      const cupertinoDarkSheet = Color(0xFF2C2C2E);
+
+      double contrast(Color a, Color b) {
+        final la = a.computeLuminance();
+        final lb = b.computeLuminance();
+        final lighter = la > lb ? la : lb;
+        final darker = la > lb ? lb : la;
+        return (lighter + 0.05) / (darker + 0.05);
+      }
+
+      final brands = {
+        'Personal': kPersonalTheme,
+        'Kids': kKidsTheme,
+        'Flex': kFlexTheme,
+        'Pro': kProTheme,
+        'GoTech': kGoTechTheme,
+      };
+
+      for (final MapEntry(key: brand, value: theme) in brands.entries) {
+        final host = await pumpHost(tester, dark: true, scope: theme);
+        final result = await open(
+          tester,
+          host,
+          actions: [
+            GtActionSheetAction(label: 'Export as PDF', onPressed: () {}),
+          ],
+        );
+
+        final context = tester.element(find.byType(GtActionSheet));
+        final palette = Theme.of(context).extension<GtPalette>()!;
+        final color = tester
+            .widget<GtText>(
+              find.ancestor(
+                of: find.text('Export as PDF'),
+                matching: find.byType(GtText),
+              ),
+            )
+            .style!
+            .color!;
+        final surface = isNative() ? cupertinoDarkSheet : palette.bg.white;
+
+        expect(
+          contrast(color, surface),
+          greaterThanOrEqualTo(4.5),
+          reason: '$brand dark-mode choice on its sheet',
+        );
+
+        await tester.tap(find.byKey(GtActionSheet.cancelKey));
+        await tester.pumpAndSettle();
+        await result;
+      }
+    },
+    variant: allPlatforms,
+  );
 }

@@ -82,10 +82,18 @@ class GtActionSheet extends GtStatelessWidget {
     return action.key ?? ValueKey('gt-action-sheet-action-$index');
   }
 
-  /// The colour a choice's label is set in.
+  /// The colour a choice's label is set in: the error colour for a
+  /// destructive choice, and otherwise the brand.
+  ///
+  /// In light mode the brand is [GtPaletteBrandColors.base], as drawn. In dark
+  /// mode it is [GtPalette.opPrimaryInk]: the dark palettes deepen `base` so
+  /// it can carry white button labels, which leaves it too dark to read as
+  /// text on a dark sheet.
   static Color labelColor(BuildContext context, GtActionSheetAction action) {
     final palette = context.palette;
-    return action.isDestructive ? palette.error.base : palette.primary.base;
+    if (action.isDestructive) return palette.error.base;
+    if (context.isInDarkMode) return palette.opPrimaryInk;
+    return palette.primary.base;
   }
 
   /// The style of a choice's label: 16/22 in [labelColor], heavier for the
