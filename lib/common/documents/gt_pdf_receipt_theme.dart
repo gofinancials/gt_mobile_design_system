@@ -1,4 +1,4 @@
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show ByteData, rootBundle;
 import 'package:flutter/widgets.dart' show Color;
 import 'package:gt_mobile_ui/documents.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -42,9 +42,23 @@ class GtPdfTypeface {
   /// Creates a [GtPdfTypeface].
   const GtPdfTypeface({required this.medium, required this.semibold});
 
+  /// Creates a [GtPdfTypeface] from the font files [loadBytes] reads.
+  ///
+  /// Each call parses fresh faces, so a background isolate can build its own
+  /// from bytes sent to it rather than receiving faces that carry a cache of
+  /// the documents they were last embedded in.
+  factory GtPdfTypeface.fromBytes(GtPdfTypefaceBytes bytes) {
+    return GtPdfTypeface(
+      medium: pw.Font.ttf(bytes.medium),
+      semibold: pw.Font.ttf(bytes.semibold),
+    );
+  }
+
   static const _path = 'packages/gt_mobile_ui/assets/fonts';
 
   static Future<GtPdfTypeface>? _openRunde;
+
+  static Future<GtPdfTypefaceBytes>? _openRundeBytes;
 
   /// Loads the design system's Open Runde faces.
   ///
@@ -52,25 +66,45 @@ class GtPdfTypeface {
   /// document after; a failed read is not cached, so the next call retries.
   static Future<GtPdfTypeface> load() => _openRunde ??= _loadOpenRunde();
 
+  /// Reads the Open Runde font files without parsing them into faces.
+  ///
+  /// For rendering off the main isolate: the asset bundle is only reachable
+  /// from the main isolate, so the bytes are read here and handed to
+  /// [GtPdfTypeface.fromBytes] on the other side. Cached like [load].
+  static Future<GtPdfTypefaceBytes> loadBytes() {
+    return _openRundeBytes ??= _loadOpenRundeBytes();
+  }
+
   static Future<GtPdfTypeface> _loadOpenRunde() async {
     try {
-      final medium = await rootBundle.load('$_path/OpenRunde-Medium.ttf');
-      final semibold = await rootBundle.load('$_path/OpenRunde-Semibold.ttf');
-
-      return GtPdfTypeface(
-        medium: pw.Font.ttf(medium),
-        semibold: pw.Font.ttf(semibold),
-      );
+      return GtPdfTypeface.fromBytes(await loadBytes());
     } catch (_) {
       _openRunde = null;
       rethrow;
     }
   }
+
+  static Future<GtPdfTypefaceBytes> _loadOpenRundeBytes() async {
+    try {
+      return (
+        medium: await rootBundle.load('$_path/OpenRunde-Medium.ttf'),
+        semibold: await rootBundle.load('$_path/OpenRunde-Semibold.ttf'),
+      );
+    } catch (_) {
+      _openRundeBytes = null;
+      rethrow;
+    }
+  }
 }
 
+/// The raw font files behind a [GtPdfTypeface], as [GtPdfTypeface.loadBytes]
+/// reads them.
+typedef GtPdfTypefaceBytes = ({ByteData medium, ByteData semibold});
+
 /// The typography, colour and page geometry applied to a
-/// [GtPdfReceiptData] by [GtPdfReceiptBuilder], and to a [GtPdfInvoiceData] by
-/// [GtPdfInvoiceBuilder].
+/// [GtPdfReceiptData] by [GtPdfReceiptBuilder], to a [GtPdfInvoiceData] by
+/// [GtPdfInvoiceBuilder], and to a [GtPdfStatementData] by
+/// [GtPdfStatementBuilder].
 ///
 /// Kept separate from the receipt content so the same data can be rendered
 /// against a light default, an institution's own colours, or an app palette
@@ -126,6 +160,14 @@ class GtPdfReceiptTheme {
   /// The colour of the cut-out inside the built-in brand mark.
   final PdfColor brandAccent;
 
+  /// The colour of money coming in, such as a statement's credits.
+  final PdfColor success;
+
+  /// The colour of the light rules between table rows, such as a statement's.
+  ///
+  /// Fainter than [divider], which separates whole sections.
+  final PdfColor hairline;
+
   /// The document title size.
   final double titleSize;
 
@@ -176,6 +218,8 @@ class GtPdfReceiptTheme {
     this.band = const PdfColor.fromInt(0xFFF7F7F7),
     this.brand = const PdfColor.fromInt(0xFFCB0828),
     this.brandAccent = PdfColors.white,
+    this.success = const PdfColor.fromInt(0xFF1A7544),
+    this.hairline = const PdfColor.fromInt(0xFFD1D1D1),
     this.titleSize = 16,
     this.subtitleSize = 10,
     this.sectionTitleSize = 12,
@@ -218,6 +262,8 @@ class GtPdfReceiptTheme {
       band: gtPdfColorOf(palette.bg.weak),
       brand: gtPdfColorOf(palette.primary.base),
       brandAccent: gtPdfColorOf(palette.text.white),
+      success: gtPdfColorOf(palette.success.darker),
+      hairline: gtPdfColorOf(palette.stroke.soft),
       pageFormat: pageFormat,
     );
   }
@@ -320,6 +366,8 @@ class GtPdfReceiptTheme {
     PdfColor? band,
     PdfColor? brand,
     PdfColor? brandAccent,
+    PdfColor? success,
+    PdfColor? hairline,
     double? titleSize,
     double? subtitleSize,
     double? sectionTitleSize,
@@ -344,6 +392,8 @@ class GtPdfReceiptTheme {
       band: band ?? this.band,
       brand: brand ?? this.brand,
       brandAccent: brandAccent ?? this.brandAccent,
+      success: success ?? this.success,
+      hairline: hairline ?? this.hairline,
       titleSize: titleSize ?? this.titleSize,
       subtitleSize: subtitleSize ?? this.subtitleSize,
       sectionTitleSize: sectionTitleSize ?? this.sectionTitleSize,

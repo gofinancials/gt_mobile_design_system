@@ -303,6 +303,8 @@ import 'package:gallery/templates/documents/gt_pdf_invoice_usecase.dart'
     as _gallery_templates_documents_gt_pdf_invoice_usecase;
 import 'package:gallery/templates/documents/gt_pdf_receipt_usecase.dart'
     as _gallery_templates_documents_gt_pdf_receipt_usecase;
+import 'package:gallery/templates/documents/gt_pdf_statement_usecase.dart'
+    as _gallery_templates_documents_gt_pdf_statement_usecase;
 import 'package:gallery/templates/forms/gt_form_doc.dart'
     as _gallery_templates_forms_gt_form_doc;
 import 'package:gallery/templates/forms/gt_otp_form_doc.dart'
@@ -423,6 +425,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtPdfReceiptExporter',
                 builder: _gallery_templates_documents_gt_pdf_receipt_usecase
                     .playgroundGtPdfReceiptExporterUseCase,
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookComponent(
+            name: 'GtPdfStatementExporter',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtPdfStatementExporter',
+                builder: _gallery_templates_documents_gt_pdf_statement_usecase
+                    .playgroundGtPdfStatementExporterUseCase,
               ),
             ],
           ),
