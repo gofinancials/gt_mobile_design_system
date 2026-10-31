@@ -1057,8 +1057,14 @@ class GtPaletteRawColors {
   /// The teal 900 tone, resolved for this palette's mode.
   Color get teal900 => _resolve(GtColors.teal900);
 
+  /// The teal 850 tone, resolved for this palette's mode.
+  Color get teal850 => _resolve(GtColors.teal850);
+
   /// The teal 800 tone, resolved for this palette's mode.
   Color get teal800 => _resolve(GtColors.teal800);
+
+  /// The teal 750 tone, resolved for this palette's mode.
+  Color get teal750 => _resolve(GtColors.teal750);
 
   /// The teal 700 tone, resolved for this palette's mode.
   Color get teal700 => _resolve(GtColors.teal700);
@@ -1089,6 +1095,12 @@ class GtPaletteRawColors {
   // ---------------------------------------------------------------------------
   /// The teal blue 800 tone, resolved for this palette's mode.
   Color get tealBlue800 => _resolve(GtColors.tealBlue800);
+
+  /// The teal blue 750 tone, resolved for this palette's mode.
+  Color get tealBlue750 => _resolve(GtColors.tealBlue750);
+
+  /// The teal blue 725 tone, resolved for this palette's mode.
+  Color get tealBlue725 => _resolve(GtColors.tealBlue725);
 
   /// The teal blue 700 tone, resolved for this palette's mode.
   Color get tealBlue700 => _resolve(GtColors.tealBlue700);

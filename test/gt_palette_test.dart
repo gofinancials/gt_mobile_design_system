@@ -479,7 +479,10 @@ void main() {
 
       expect(light.primary.darker, GtColors.tealBlue800.value);
       expect(light.primary.base, GtColors.tealBlue600.value);
-      expect(dark.primary.base, GtColors.tealBlue600.value);
+      expect(dark.primary.darker, GtColors.tealBlue700.value);
+      expect(dark.primary.dark, GtColors.tealBlue750.value);
+      expect(dark.primary.base, GtColors.tealBlue725.value);
+      expect(dark.bg.warm, GtColors.neutral0.dark);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
     });
@@ -517,7 +520,12 @@ void main() {
       final dark = GotechDarkPalette();
 
       expect(light.primary.base, GtColors.teal700.value);
-      expect(dark.primary.base, GtColors.teal700.value);
+      expect(light.primary.alpha24, GtColors.tealAlpha24.value);
+      expect(dark.primary.darker, GtColors.teal800.value);
+      expect(dark.primary.dark, GtColors.teal850.value);
+      expect(dark.primary.base, GtColors.teal750.value);
+      expect(dark.primary.alpha24, GtColors.tealAlpha24.value);
+      expect(dark.bg.warm, GtColors.neutral0.dark);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
     });

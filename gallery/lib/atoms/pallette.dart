@@ -480,7 +480,9 @@ List<_PaletteCategory> _buildCategories(GtPalette p) => [
     colors: [
       _NamedColor(label: 'teal950', color: (p) => p.raw.teal950),
       _NamedColor(label: 'teal900', color: (p) => p.raw.teal900),
+      _NamedColor(label: 'teal850', color: (p) => p.raw.teal850),
       _NamedColor(label: 'teal800', color: (p) => p.raw.teal800),
+      _NamedColor(label: 'teal750', color: (p) => p.raw.teal750),
       _NamedColor(label: 'teal700', color: (p) => p.raw.teal700),
       _NamedColor(label: 'teal600', color: (p) => p.raw.teal600),
       _NamedColor(label: 'teal500', color: (p) => p.raw.teal500),
@@ -497,6 +499,8 @@ List<_PaletteCategory> _buildCategories(GtPalette p) => [
     id: 'raw',
     colors: [
       _NamedColor(label: 'tealBlue800', color: (p) => p.raw.tealBlue800),
+      _NamedColor(label: 'tealBlue750', color: (p) => p.raw.tealBlue750),
+      _NamedColor(label: 'tealBlue725', color: (p) => p.raw.tealBlue725),
       _NamedColor(label: 'tealBlue700', color: (p) => p.raw.tealBlue700),
       _NamedColor(label: 'tealBlue600', color: (p) => p.raw.tealBlue600),
     ],
