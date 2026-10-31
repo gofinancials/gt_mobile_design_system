@@ -15,6 +15,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [GtPaletteBgColors.warm] is the plain dark surface rather than the standard
 /// warm tint, so the dashboard's maroon wash settles into black instead of
 /// blending into a brown band.
+///
+/// Brand text and icons on the page use [GtPaletteBrandColors.ink], red 400,
+/// which reads at 5.5:1 or better on the weak background; the button tone
+/// is too dark to read as text there.
 final class SterlingProDarkPalette extends GtDarkPalette {
   /// Creates a [SterlingProDarkPalette].
   SterlingProDarkPalette()
@@ -26,6 +30,7 @@ final class SterlingProDarkPalette extends GtDarkPalette {
           alpha24: GtColors.maroonAlpha24.value,
           alpha16: GtColors.maroonAlpha16.value,
           alpha10: GtColors.maroonAlpha10.value,
+          ink: GtColors.red400.value,
         ),
         coverColors: GtPaletteCoverColors(
           dark: GtColors.maroon800.dark,

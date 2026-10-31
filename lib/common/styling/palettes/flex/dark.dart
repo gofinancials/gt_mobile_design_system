@@ -13,6 +13,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [GtPaletteBgColors.warm] is the plain dark surface rather than the standard
 /// warm tint, so the dashboard's green wash settles into black instead of
 /// blending into a brown band.
+///
+/// Brand text and icons on the page use [GtPaletteBrandColors.ink], green 600,
+/// which reads at 5.3:1 or better on the weak background; the button tone
+/// is too dark to read as text there.
 final class FlexDarkPalette extends GtDarkPalette {
   /// Creates a [FlexDarkPalette].
   FlexDarkPalette()
@@ -24,6 +28,7 @@ final class FlexDarkPalette extends GtDarkPalette {
           alpha24: GtColors.greenAlpha24.value,
           alpha16: GtColors.greenAlpha16.value,
           alpha10: GtColors.greenAlpha10.value,
+          ink: GtColors.green600.value,
         ),
         coverColors: GtPaletteCoverColors(
           dark: GtColors.green950.dark,

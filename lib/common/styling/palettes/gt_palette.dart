@@ -29,6 +29,15 @@ class GtPaletteBrandColors {
   /// The brand color at 10% opacity, for hover, focus and highlight states.
   final Color alpha10;
 
+  /// The brand tone for text and icons drawn on the page background, such as
+  /// a link-style action or an amount picked out in the brand color.
+  ///
+  /// Set it where the tone that carries white labels, [base], is too dark to
+  /// read as text on the page, as on a dark surface. When null,
+  /// [GtPalette.opPrimaryInk] falls back to a tone chosen for the palette's
+  /// mode.
+  final Color? ink;
+
   /// Creates a [GtPaletteBrandColors].
   const GtPaletteBrandColors({
     required this.dark,
@@ -37,17 +46,46 @@ class GtPaletteBrandColors {
     required this.alpha24,
     required this.alpha16,
     required this.alpha10,
+    this.ink,
   });
 
-  /// Every color in this group, in declaration order.
-  List<Color> get all => [dark, darker, base, alpha24, alpha16, alpha10];
+  /// Every color in this group, in declaration order. [ink] is included only
+  /// when it is set.
+  List<Color> get all => [dark, darker, base, alpha24, alpha16, alpha10, ?ink];
+
+  /// Returns a copy of these colors with the given colors replaced.
+  GtPaletteBrandColors copyWith({
+    Color? dark,
+    Color? darker,
+    Color? base,
+    Color? alpha24,
+    Color? alpha16,
+    Color? alpha10,
+    Color? ink,
+  }) {
+    return GtPaletteBrandColors(
+      dark: dark ?? this.dark,
+      darker: darker ?? this.darker,
+      base: base ?? this.base,
+      alpha24: alpha24 ?? this.alpha24,
+      alpha16: alpha16 ?? this.alpha16,
+      alpha10: alpha10 ?? this.alpha10,
+      ink: ink ?? this.ink,
+    );
+  }
 
   /// Linearly interpolates between [a] and [b] by [t].
+  ///
+  /// When only one side sets [ink], that ink is held rather than faded in
+  /// from transparent.
   static GtPaletteBrandColors lerp(
     GtPaletteBrandColors? a,
     GtPaletteBrandColors? b,
     double t,
   ) {
+    final aInk = a?.ink;
+    final bInk = b?.ink;
+
     return GtPaletteBrandColors(
       dark: Color.lerp(a?.dark, b?.dark, t)!,
       darker: Color.lerp(a?.darker, b?.darker, t)!,
@@ -55,6 +93,7 @@ class GtPaletteBrandColors {
       alpha24: Color.lerp(a?.alpha24, b?.alpha24, t)!,
       alpha16: Color.lerp(a?.alpha16, b?.alpha16, t)!,
       alpha10: Color.lerp(a?.alpha10, b?.alpha10, t)!,
+      ink: Color.lerp(aInk ?? bInk, bInk ?? aInk, t),
     );
   }
 
@@ -69,12 +108,13 @@ class GtPaletteBrandColors {
         other.darker == darker &&
         other.base == base &&
         other.alpha16 == alpha16 &&
-        other.alpha10 == alpha10;
+        other.alpha10 == alpha10 &&
+        other.ink == ink;
   }
 
   /// A hash of the same colors that [operator ==] compares.
   @override
-  int get hashCode => Object.hash(dark, darker, base, alpha16, alpha10);
+  int get hashCode => Object.hash(dark, darker, base, alpha16, alpha10, ink);
 }
 
 /// Colors that remain absolutely constant regardless of the active theme
@@ -1621,8 +1661,17 @@ base class GtPalette extends ThemeExtension<GtPalette> {
   ) {
     if (other is! GtPalette) return this;
 
+    // The blend is a plain GtPalette, which would pick the light fallback for
+    // opPrimaryInk; carrying each side's resolved ink keeps a dark palette's
+    // ink through a theme transition.
+    final primary = GtPaletteBrandColors.lerp(
+      this.primary,
+      other.primary,
+      t,
+    ).copyWith(ink: Color.lerp(opPrimaryInk, other.opPrimaryInk, t));
+
     return GtPalette(
-      primary: GtPaletteBrandColors.lerp(primary, other.primary, t),
+      primary: primary,
       coverColors: GtPaletteCoverColors.lerp(coverColors, other.coverColors, t),
       staticColors: GtPaletteStaticColors.lerp(
         staticColors,
@@ -1688,8 +1737,11 @@ base class GtPalette extends ThemeExtension<GtPalette> {
         other.usesRedIllustration == usesRedIllustration;
   }
 
-  /// Light mode primary ink color
-  Color get opPrimaryInk => primary.darker;
+  /// The brand tone for text and icons drawn on the page background.
+  ///
+  /// This is [GtPaletteBrandColors.ink] when the palette sets one, otherwise
+  /// [GtPaletteBrandColors.darker], which reads on light surfaces.
+  Color get opPrimaryInk => primary.ink ?? primary.darker;
 
   /// A hash of the same values that [operator ==] compares, except
   /// [cardColors].
@@ -2135,7 +2187,12 @@ base class GtDarkPalette extends GtPalette {
   @override
   GtPaletteRawColors get raw => const GtPaletteRawColors.dark();
 
-  /// Dark mode primary ink color
+  /// The brand tone for text and icons drawn on the page background.
+  ///
+  /// This is [GtPaletteBrandColors.ink] when the palette sets one, otherwise
+  /// [GtPaletteBrandColors.base]. A palette whose [GtPaletteBrandColors.base]
+  /// is deep enough to carry white labels should set an ink, since that tone
+  /// is too dark to read as text on the dark surfaces.
   @override
-  Color get opPrimaryInk => primary.base;
+  Color get opPrimaryInk => primary.ink ?? primary.base;
 }

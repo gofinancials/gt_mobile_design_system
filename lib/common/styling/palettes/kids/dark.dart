@@ -11,6 +11,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [GtPaletteBgColors.warm] is the plain dark surface rather than the standard
 /// warm tint, so the dashboard's purple wash settles into black instead of
 /// blending into a brown band.
+///
+/// Brand text and icons on the page use [GtPaletteBrandColors.ink], purple 300,
+/// which reads at 6.1:1 or better on the weak background; the button tone
+/// is too dark to read as text there.
 final class KidsDarkPalette extends GtDarkPalette {
   /// Creates a [KidsDarkPalette].
   KidsDarkPalette()
@@ -22,6 +26,7 @@ final class KidsDarkPalette extends GtDarkPalette {
           alpha24: GtColors.purpleAlpha24.value,
           alpha16: GtColors.purpleAlpha16.value,
           alpha10: GtColors.purpleAlpha10.value,
+          ink: GtColors.purple300.value,
         ),
         coverColors: GtPaletteCoverColors(
           dark: GtColors.purple950.dark,

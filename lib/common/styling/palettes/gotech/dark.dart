@@ -13,6 +13,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// [GtPaletteBgColors.warm] is the plain dark surface rather than the standard
 /// warm tint, so the dashboard's teal wash settles into black instead of
 /// blending into a murky band.
+///
+/// Brand text and icons on the page use [GtPaletteBrandColors.ink], teal 600,
+/// which reads at 5.5:1 or better on the weak background; the button tone
+/// is too dark to read as text there.
 final class GotechDarkPalette extends GtDarkPalette {
   /// Creates a [GotechDarkPalette].
   GotechDarkPalette()
@@ -24,6 +28,7 @@ final class GotechDarkPalette extends GtDarkPalette {
           alpha24: GtColors.tealAlpha24.value,
           alpha16: GtColors.tealAlpha16.value,
           alpha10: GtColors.tealAlpha10.value,
+          ink: GtColors.teal600.value,
         ),
         coverColors: GtPaletteCoverColors(
           dark: GtColors.teal950.dark,

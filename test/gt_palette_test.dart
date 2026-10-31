@@ -48,6 +48,31 @@ void main() {
       final lerped = GtPaletteBrandColors.lerp(brand, other, 0.5);
       expect(lerped.base, Color.lerp(brand.base, other.base, 0.5));
       expect(lerped.dark, Color.lerp(brand.dark, other.dark, 0.5));
+      expect(lerped.ink, isNull);
+    });
+
+    test('holds an ink set on only one side of a lerp', () {
+      final inked = brand.copyWith(ink: const Color(0xFF01CBEA));
+
+      expect(inked.all, hasLength(7));
+      expect(inked, isNot(equals(brand)));
+      expect(
+        GtPaletteBrandColors.lerp(brand, inked, 0.3).ink,
+        isSameColorAs(inked.ink!),
+      );
+      expect(
+        GtPaletteBrandColors.lerp(inked, brand, 0.7).ink,
+        isSameColorAs(inked.ink!),
+      );
+    });
+
+    test('copyWith replaces only the given colors', () {
+      final copy = brand.copyWith(base: const Color(0xFF444444));
+
+      expect(copy.base, const Color(0xFF444444));
+      expect(copy.dark, brand.dark);
+      expect(copy.ink, isNull);
+      expect(brand.copyWith(), equals(brand));
     });
   });
 
@@ -544,6 +569,48 @@ void main() {
       expect(dark.raw.isDark, isTrue);
       expect(light.usesRedIllustration, isTrue);
       expect(dark.usesRedIllustration, isTrue);
+    });
+
+    double contrast(Color a, Color b) {
+      final [hi, lo] = [a.computeLuminance(), b.computeLuminance()]
+        ..sort((x, y) => y.compareTo(x));
+      return (hi + 0.05) / (lo + 0.05);
+    }
+
+    final darkPalettes = <String, GtPalette>{
+      'Personal': PersonalDarkPalette(),
+      'Kids': KidsDarkPalette(),
+      'Flex': FlexDarkPalette(),
+      'GoTech': GotechDarkPalette(),
+      'Sterling Pro': SterlingProDarkPalette(),
+    };
+
+    for (final MapEntry(key: name, value: palette) in darkPalettes.entries) {
+      test('$name dark brand ink reads at AA on the page backgrounds', () {
+        final ink = palette.opPrimaryInk;
+
+        expect(ink, isNot(palette.primary.base));
+        expect(contrast(ink, palette.bg.white), greaterThanOrEqualTo(4.5));
+        expect(contrast(ink, palette.bg.weak), greaterThanOrEqualTo(4.5));
+      });
+    }
+
+    test('light palettes keep the darker tone as brand ink', () {
+      final light = PersonalLightPalette();
+
+      expect(light.primary.ink, isNull);
+      expect(light.opPrimaryInk, light.primary.darker);
+    });
+
+    test('a lerp carries each side\'s brand ink', () {
+      final light = PersonalLightPalette();
+      final dark = PersonalDarkPalette();
+
+      final start = light.lerp(dark, 0) as GtPalette;
+      final end = light.lerp(dark, 1) as GtPalette;
+
+      expect(start.opPrimaryInk, isSameColorAs(light.opPrimaryInk));
+      expect(end.opPrimaryInk, isSameColorAs(dark.opPrimaryInk));
     });
   });
 
