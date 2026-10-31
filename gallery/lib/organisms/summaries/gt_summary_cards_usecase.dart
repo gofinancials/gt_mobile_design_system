@@ -50,6 +50,11 @@ class _SummaryRatesCardPreview extends StatelessWidget {
       min: 0,
       max: 1,
     );
+    final rateState = context.knobs.object.dropdown<String>(
+      label: 'Rate State',
+      options: ['Known', 'Unavailable', 'Loading'],
+      initialOption: 'Known',
+    );
     final showLogo = context.knobs.boolean(
       label: 'Show Logo',
       initialValue: true,
@@ -62,6 +67,9 @@ class _SummaryRatesCardPreview extends StatelessWidget {
       label: 'Action Label',
       initialValue: 'See all bank transfer rates',
     );
+
+    final knownRate = rateState == 'Known' ? rate : null;
+    final isLoading = rateState == 'Loading';
 
     return GtWidgetDocPage(
       title: 'GtSummaryRatesCard',
@@ -81,7 +89,8 @@ GtSummaryRatesCard(
     rates: const [
       GtSuccessRateData(
         name: "$bank",
-        rate: $rate,
+        ${knownRate != null ? 'rate: $knownRate,' : ''}
+        ${isLoading ? 'isLoading: true,' : ''}
         ${showLogo ? 'logo: AppImageData(GtVectors.logo),' : ''}
       ),
     ],
@@ -94,7 +103,9 @@ GtSummaryRatesCard(
           rates: [
             GtSuccessRateData(
               name: bank,
-              rate: rate,
+              rate: knownRate,
+              isLoading: isLoading,
+              loadingSemanticsLabel: 'Loading rate',
               logo: showLogo ? _bankLogo : null,
             ),
           ],
@@ -227,6 +238,10 @@ class _SummaryTilePreview extends StatelessWidget {
       label: 'Interactive',
       initialValue: false,
     );
+    final middleEllipsis = context.knobs.boolean(
+      label: 'Middle Ellipsis (columns only)',
+      initialValue: false,
+    );
 
     final tile = GtSummaryTileData(
       label: label,
@@ -234,6 +249,7 @@ class _SummaryTilePreview extends StatelessWidget {
       leading: showLeading ? _bankLogo : null,
       trailing: showTrailing ? _categoryGlyph : null,
       valueColor: tintValue ? context.palette.success.base : null,
+      middleEllipsis: middleEllipsis,
       onTap: interactive
           ? () => GtToast.of(context).show("$label tapped")
           : null,
@@ -264,6 +280,7 @@ GtSummaryTile(
     ${showLeading ? 'leading: AppImageData(GtVectors.logo),' : ''}
     ${showTrailing ? 'trailing: AppImageData(GtNetworkImages.transfer),' : ''}
     ${tintValue ? 'valueColor: context.palette.success.base,' : ''}
+    ${middleEllipsis ? 'middleEllipsis: true,' : ''}
   ),
   layout: GtSummaryTileLayout.${layout.name},
 )''',

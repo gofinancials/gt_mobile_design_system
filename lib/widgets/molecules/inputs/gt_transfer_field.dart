@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
@@ -18,6 +17,10 @@ class GtTransferField extends GtStatefulWidget {
   final GtInputController noteController;
 
   /// The controller that manages the category of the transfer.
+  ///
+  /// Seed it with a stored category to show that category when the field
+  /// opens. The caller owns it and disposes it; when null, the category field
+  /// creates and disposes its own.
   final GtTransactionCategoryController? categoryController;
 
   /// The hint text displayed inside the note input field.
@@ -33,12 +36,24 @@ class GtTransferField extends GtStatefulWidget {
   final OnChanged<GtTransactionCategory?>? onCategoryChanged;
 
   /// Whether the transfer field is interactive and can be modified. Defaults to true.
+  ///
+  /// This covers the amount and, unless [isNoteEnabled] is set, the note.
   final bool isEnabled;
+
+  /// Whether the note input is interactive and can be modified.
+  ///
+  /// Set it to keep the note editable while [isEnabled] locks the amount,
+  /// such as on a fixed price. When null, the note follows [isEnabled].
+  final bool? isNoteEnabled;
 
   /// The minimum allowable amount for the transfer.
   final num? min;
 
   /// The maximum allowable amount for the transfer.
+  ///
+  /// When set, this is the ceiling even if it is above the validated
+  /// participant's balance, such as a balance plus overdraft headroom. When
+  /// null, the amount is capped at that balance.
   final num? max;
 
   /// The icon to display between the two participants.
@@ -63,6 +78,7 @@ class GtTransferField extends GtStatefulWidget {
     this.onNoteChanged,
     this.onCategoryChanged,
     this.isEnabled = true,
+    this.isNoteEnabled,
     this.max,
     this.min,
     this.middleIcon,
@@ -92,6 +108,14 @@ class _GtTransferFieldState extends State<GtTransferField> {
         widget.secondParticipant.validate;
   }
 
+  /// Whether the participant being validated masks its balance.
+  bool get isBalanceObscured {
+    final first = widget.firstParticipant;
+    final second = widget.secondParticipant;
+    if (second.validate) return second.obscureBalance;
+    return first.validate && first.obscureBalance;
+  }
+
   @override
   Widget build(BuildContext context) {
     final first = widget.firstParticipant;
@@ -106,11 +130,17 @@ class _GtTransferFieldState extends State<GtTransferField> {
       initialValue: widget.amountController.controller,
       validator: (text) {
         if (!isValidated) return null;
+        if (widget.max == null && isBalanceObscured) {
+          // The balance is the ceiling here. Checking it on its own reports
+          // insufficient funds rather than quoting the masked balance.
+          return AppValidators.balanceValidator(text?.text, balance: balance) ??
+              AppValidators.amountValidator(text?.text, minAmount: widget.min);
+        }
         if (widget.min != null || widget.max != null) {
           return AppValidators.amountValidator(
             text?.text,
             minAmount: widget.min,
-            maxAmount: min(balance, widget.max ?? balance),
+            maxAmount: widget.max ?? balance,
           );
         }
         return AppValidators.balanceValidator(
@@ -219,7 +249,7 @@ class _GtTransferFieldState extends State<GtTransferField> {
               leading: GtTextField(
                 controller: widget.noteController,
                 hintText: widget.noteHint,
-                isEnabled: widget.isEnabled,
+                isEnabled: widget.isNoteEnabled ?? widget.isEnabled,
                 decoration: context.inputStyles.plainDecoration(),
                 onChanged: widget.onNoteChanged,
               ),
@@ -243,6 +273,10 @@ class GtFxTransferField extends GtStatefulWidget {
   final GtInputController noteController;
 
   /// The controller that manages the category of the transfer.
+  ///
+  /// Seed it with a stored category to show that category when the field
+  /// opens. The caller owns it and disposes it; when null, the category field
+  /// creates and disposes its own.
   final GtTransactionCategoryController? categoryController;
 
   /// The hint text displayed inside the note input field.
@@ -261,12 +295,24 @@ class GtFxTransferField extends GtStatefulWidget {
   final OnChanged<GtTransactionCategory?>? onCategoryChanged;
 
   /// Whether the transfer field is interactive and can be modified. Defaults to true.
+  ///
+  /// This covers the amount and, unless [isNoteEnabled] is set, the note.
   final bool isEnabled;
+
+  /// Whether the note input is interactive and can be modified.
+  ///
+  /// Set it to keep the note editable while [isEnabled] locks the amount,
+  /// such as on a fixed price. When null, the note follows [isEnabled].
+  final bool? isNoteEnabled;
 
   /// The minimum allowable amount for the transfer.
   final num? min;
 
   /// The maximum allowable amount for the transfer.
+  ///
+  /// When set, this is the ceiling even if it is above the validated
+  /// participant's balance, such as a balance plus overdraft headroom. When
+  /// null, the amount is capped at that balance.
   final num? max;
 
   /// The icon to display between the two participants.
@@ -296,6 +342,7 @@ class GtFxTransferField extends GtStatefulWidget {
     this.onTargetAmountChanged,
     this.onNoteChanged,
     this.isEnabled = true,
+    this.isNoteEnabled,
     this.max,
     this.min,
     this.middleIcon,
@@ -326,6 +373,14 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
         widget.secondParticipant.validate;
   }
 
+  /// Whether the participant being validated masks its balance.
+  bool get isBalanceObscured {
+    final first = widget.firstParticipant;
+    final second = widget.secondParticipant;
+    if (second.validate) return second.obscureBalance;
+    return first.validate && first.obscureBalance;
+  }
+
   @override
   Widget build(BuildContext context) {
     final first = widget.firstParticipant;
@@ -340,11 +395,17 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
       initialValue: widget.sourceAmountController.controller,
       validator: (text) {
         if (!isValidated) return null;
+        if (widget.max == null && isBalanceObscured) {
+          // The balance is the ceiling here. Checking it on its own reports
+          // insufficient funds rather than quoting the masked balance.
+          return AppValidators.balanceValidator(text?.text, balance: balance) ??
+              AppValidators.amountValidator(text?.text, minAmount: widget.min);
+        }
         if (widget.min != null || widget.max != null) {
           return AppValidators.amountValidator(
             text?.text,
             minAmount: widget.min,
-            maxAmount: min(balance, widget.max ?? balance),
+            maxAmount: widget.max ?? balance,
           );
         }
         return AppValidators.balanceValidator(
@@ -494,7 +555,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
               leading: GtTextField(
                 controller: widget.noteController,
                 hintText: widget.noteHint,
-                isEnabled: widget.isEnabled,
+                isEnabled: widget.isNoteEnabled ?? widget.isEnabled,
                 decoration: context.inputStyles.plainDecoration(),
                 onChanged: widget.onNoteChanged,
               ),
@@ -542,8 +603,18 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
     final titleStyle = style.title2xs(color: palette.text.disabled);
     final hasFooter = footerSuffix.hasValue && balance.hasValue;
     Widget? tag;
+    Widget? errorWidget;
 
     if (data.tag != null) tag = GtImage(image: data.tag!, isDecorative: true);
+
+    if (data.errorImage case AppImageData fallback) {
+      errorWidget = GtImage(
+        image: fallback,
+        width: imageSize,
+        height: imageSize,
+        isDecorative: true,
+      );
+    }
 
     return GtInkWell(
       role: .button,
@@ -564,12 +635,14 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
             width: imageSize,
             height: imageSize,
             isDecorative: true,
+            errorWidget: errorWidget,
           ),
           _ => GtAvatar(
             avatar: data.image,
             size: imageSize,
             initials: data.name.initials,
             tag: tag,
+            errorWidget: errorWidget,
           ),
         },
         subtitle: switch ((balance.hasValue, footerSuffix.hasValue)) {
@@ -584,6 +657,7 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
         },
         subStyle: footerStyle,
         maxLines: maxLines,
+        titleMiddleEllipsis: data.middleEllipsis,
       ),
     );
   }
@@ -592,6 +666,10 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
 /// A dropdown widget for selecting a transaction category.
 class GtTransferCategoryField extends GtStatefulWidget {
   /// The controller that manages the category of the transfer.
+  ///
+  /// Seed it with a stored category to show that category when the field
+  /// opens. The caller owns it and disposes it; when null, the field creates
+  /// and disposes its own.
   final GtTransactionCategoryController? controller;
 
   /// Callback invoked whenever the category changes.
@@ -628,13 +706,14 @@ class GtTransferCategoryField extends GtStatefulWidget {
 /// The state for [GtTransferCategoryField].
 class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     with GtBottomSheetMixin, GtTransactionCategoryMixin {
-  /// The category controller, created locally if none is given.
+  /// The category controller, either [GtTransferCategoryField.controller] or
+  /// one this state created and disposes.
   late final GtTransactionCategoryController controller;
 
   @override
   void initState() {
     super.initState();
-    final defaultCtrl = GtTransactionCategoryController(
+    late final defaultCtrl = GtTransactionCategoryController(
       defaultInputCategories.first,
       categories: defaultInputCategories,
     );
@@ -643,15 +722,16 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     if (!controller.categories.hasValue) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         controller.categories = defaultInputCategories;
+        if (controller.value == null) {
+          controller.select(defaultInputCategories.first);
+        }
       });
     }
   }
 
   @override
   void dispose() {
-    if (widget.controller != null) {
-      controller.dispose();
-    }
+    if (widget.controller == null) controller.dispose();
     super.dispose();
   }
 
@@ -741,7 +821,7 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
                 mainAxisSize: .min,
                 children: [
                   GtImage(
-                    image: category.image,
+                    image: category.image.adapt(context),
                     width: size,
                     height: size,
                     isDecorative: true,

@@ -33,10 +33,23 @@ class GtTextStyles {
   // into Flutter's native coordinate system.
   // ---------------------------------------------------------------------------
 
+  /// The factor [buildStyle] scales every [GtFonts.title] (Momo) size by.
+  ///
+  /// The Momo sizes, from the display and heading styles to the buttons,
+  /// were set for Youth. The bundled Momo is already scaled to Youth's cap
+  /// height (see `pubspec.yaml`), but its uppercase and digits are still
+  /// about 8% wider, which overflows titles, amounts and button labels. This
+  /// takes them the rest of the way: 0.933 × 0.92 ≈ 0.86 of the declared
+  /// size, where Momo's uppercase and digits take up Youth's width. The
+  /// declared sizes are still the Youth ones, so setting this to 1 restores
+  /// them. [GtFonts.body] styles are never scaled.
+  static const double _youthWidthScale = 0.92;
+
   /// Builds a [TextStyle] from Figma's type tokens.
   ///
   /// [heightPx] is the line height in logical pixels and [widthPct] the
-  /// tracking as a percentage of [size].
+  /// tracking as a percentage of [size]. A [family] of [GtFonts.title] has
+  /// [size] scaled down to suit Momo, while [heightPx] is kept as given.
   TextStyle buildStyle({
     required String family,
     required double size,
@@ -51,11 +64,12 @@ class GtTextStyles {
     TextOverflow? overflow,
   }) {
     final computedColor = color ?? context.palette.text.strong;
+    final computedSize = family == fonts.title ? size * _youthWidthScale : size;
     return TextStyle(
       fontFamily: family,
-      fontSize: size,
-      height: heightPx / size,
-      letterSpacing: size * (widthPct / 100),
+      fontSize: computedSize,
+      height: heightPx / computedSize,
+      letterSpacing: computedSize * (widthPct / 100),
       fontWeight: weight ?? .normal,
       color: computedColor,
       decoration: decoration,
@@ -68,7 +82,7 @@ class GtTextStyles {
   }
 
   // ---------------------------------------------------------------------------
-  // DISPLAY (d prefix) | Youth
+  // DISPLAY (d prefix) | Momo, Bold (700)
   // ---------------------------------------------------------------------------
 
   /// Generates the Display 1 (D1) text style.
@@ -148,8 +162,9 @@ class GtTextStyles {
 
   /// Generates the Display 3.5 (D3.5) text style, Figma's Display/M.
   ///
-  /// Youth 40px on a 40px line. It sits between [d3] and [d4]. Unlike [h3],
-  /// which shares its size, it carries no tracking.
+  /// Momo 40px on a 40px line, drawn smaller by the Momo scale in
+  /// [buildStyle]. It sits between [d3] and [d4]. Unlike [h3], which shares
+  /// its size, it carries no tracking.
   TextStyle d3_5({
     double? heightPx,
     Color? color,
@@ -200,7 +215,7 @@ class GtTextStyles {
   }
 
   // ---------------------------------------------------------------------------
-  // TITLES (h prefix) | H1: Youth, H2-H6: Readex Pro
+  // TITLES (h prefix) | H1: Momo, H2-H6: Readex Pro
   // ---------------------------------------------------------------------------
 
   /// Generates the welcome screen title text style.
@@ -403,7 +418,9 @@ class GtTextStyles {
     );
   }
 
-  /// Generates the avatar text style
+  /// Generates the avatar text style, for initials drawn inside an avatar.
+  ///
+  /// Uses [GtFonts.body], Open Runde, unless [family] says otherwise.
   TextStyle avatar({
     String? family,
     double? heightPx,
@@ -418,7 +435,7 @@ class GtTextStyles {
     required double size,
   }) {
     return buildStyle(
-      family: family ?? fonts.title,
+      family: family ?? fonts.body,
       size: size,
       heightPx: heightPx ?? size * 1.25,
       overflow: overflow,

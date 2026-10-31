@@ -71,6 +71,16 @@ class GtSummaryTileData extends AppEquatable {
   /// An optional tap handler. When supplied the row becomes interactive.
   final OnPressed? onTap;
 
+  /// Whether a [value] too long for its column is shortened from the middle,
+  /// keeping its head and tail, rather than from the end. Defaults to false.
+  ///
+  /// Set it per row, on values whose end carries their meaning: an IBAN, or a
+  /// source account such as `"Domiciliary Account • 0123456789"`, whose
+  /// account number an end ellipsis would cut off. Leave it off for amounts
+  /// and names. Ignored by [GtSummaryTileLayout.stacked], which wraps its
+  /// value instead of shortening it.
+  final bool middleEllipsis;
+
   /// Creates a [GtSummaryTileData].
   const GtSummaryTileData({
     required this.label,
@@ -80,6 +90,7 @@ class GtSummaryTileData extends AppEquatable {
     this.imageSize,
     this.valueColor,
     this.onTap,
+    this.middleEllipsis = true,
   });
 
   @override
@@ -90,6 +101,7 @@ class GtSummaryTileData extends AppEquatable {
     trailing,
     imageSize,
     valueColor,
+    middleEllipsis,
   ];
 }
 

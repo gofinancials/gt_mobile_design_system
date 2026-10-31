@@ -85,7 +85,7 @@ class GtSectionHeader extends GtStatelessWidget {
 /// - an arbitrary widget, such as a chip or a text button — see
 ///   [GtTransactionGroupHeader.withTrailing].
 ///
-/// Typography follows [GtTextStyles.subHeadXs] and reacts to [highlighted]; the
+/// Typography follows [GtTextStyles.bodyXs] and reacts to [highlighted]; the
 /// title takes the remaining width, so a long title wraps rather than pushing
 /// the trailing content off-screen. The header renders no padding of its own —
 /// wrap it or rely on the padding of the surrounding list.
@@ -154,11 +154,14 @@ class GtTransactionGroupHeader extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final defaultStyle = switch (highlighted) {
-      true => context.textStyles.subHeadXs(
+      true => context.textStyles.bodyXs(
         weight: .w600,
         color: context.palette.text.darkerSub,
       ),
-      false => context.textStyles.subHeadXs(color: context.palette.text.sub),
+      false => context.textStyles.bodyXs(
+        color: context.palette.text.sub,
+        weight: .w500,
+      ),
     };
     Widget? trailing = _trailing;
 

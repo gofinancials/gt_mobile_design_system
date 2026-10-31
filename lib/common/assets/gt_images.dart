@@ -1,3 +1,6 @@
+import 'gt_brand_key.dart';
+import 'gt_brand_logos.dart';
+
 /// A utility class containing constants for remote network image URLs.
 ///
 /// This includes illustrations, category icons, and avatar templates hosted remotely.
@@ -194,6 +197,38 @@ class GtNetworkImages {
 
   /// Image URL for the virtual card background.
   static const String virtualCardBg = '$_baseUrl/virtual_card_bg.webp';
+
+  // Brand logos
+
+  /// The logo of the bank, wallet or finance company named [name], or null
+  /// when gt_images has none.
+  ///
+  /// Names match on [gtBrandKey], so "Kuda MFB", "KUDA MICROFINANCE BANK" and
+  /// "Kuda" find one logo; a bracketed name such as "OPay Digital Services
+  /// Limited (OPay)" is also tried by each part.
+  static String? bankLogo(String name) {
+    for (final part in gtBrandNameParts(name)) {
+      final path = gtBankLogoPaths[gtBrandKey(part)];
+      if (path != null) return '$_baseUrl/brand_logos/$path';
+    }
+    return null;
+  }
+
+  /// The logo of the network, TV, internet or electricity biller named
+  /// [name], or null when gt_images has none.
+  ///
+  /// Billers match on their leading whole words, longest first, because a
+  /// biller list names products as often as companies: "DStv Compact",
+  /// "Ikeja Electric Prepaid", "MTN VTU". "Global Insurance" never matches
+  /// Glo, because "global" is not the word "glo".
+  static String? billerLogo(String name) {
+    final words = gtBrandWords(name);
+    for (var count = words.length; count > 0; count--) {
+      final path = gtBillerLogoPaths[words.take(count).join()];
+      if (path != null) return '$_baseUrl/brand_logos/$path';
+    }
+    return null;
+  }
 
   /// A collection containing all 3D avatar template URLs.
   static List<({String label, String value})> get threeDAvatars => [

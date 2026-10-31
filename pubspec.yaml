@@ -19,7 +19,7 @@ dependencies:
   gt_mobile_foundation:
     git:
       url: https://github.com/gofinancials/gt_mobile_foundation.git
-      ref: v0.0.67
+      ref: v0.0.78
   pin_code_fields: ^9.3.0
   styled_text:
     git:
@@ -31,6 +31,7 @@ dependencies:
   vector_graphics_compiler: ^1.1.19
   provider: ^6.1.5+1
   pdf: ^3.12.0
+  barcode: ^2.2.9
 
 dev_dependencies:
   flutter_test:
@@ -46,12 +47,17 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/fonts/OpenRunde-Medium.ttf
+    - assets/fonts/OpenRunde-Semibold.ttf
     - assets/images/raster/
     - assets/images/vector/
     - path: assets/images/vector/
       transformers:
         - package: vector_graphics_compiler
     - path: assets/images/vector/illustrations/
+      transformers:
+        - package: vector_graphics_compiler
+    - path: assets/images/vector/illustrations/red/
       transformers:
         - package: vector_graphics_compiler
   fonts:
@@ -64,11 +70,28 @@ flutter:
           weight: 600
         - asset: assets/fonts/OpenRunde-Bold.otf
           weight: 700
-    - family: Youth
+    # Momo Trust Display lacks most currency symbols, so ₦ ₩ ₪ ₱ ₲ ₴ ₵ ₹ ₺ ₽ ₿
+    # are copied in from GoTech Display Black (the weight closest to Momo's
+    # stems), scaled from its 720 cap height to Momo's 750.
+    # Momo also draws capitals and digits larger than Youth at the same font
+    # size (cap height 0.750em vs 0.700em), so the whole file, currency
+    # symbols included, is then scaled by 0.933 with fontTools' scale_upem
+    # (unitsPerEm kept at 1000) to render at Youth's cap height. Its name
+    # table version reads "adds GoTech Display Black currency symbols; scaled
+    # 0.933 to Youth cap height".
+    # Momo's stems were also ~7% heavier than Youth Bold's, so every outline
+    # is finally inset by 5 font units with skia-pathops (stroke the outline,
+    # subtract it, miter joins) and stretched back to the baseline and the
+    # 700 cap height. Vertical stems are then 0.221 of the cap height, as in
+    # Youth Bold; advances are unchanged. The original file: git show
+    # bd3bf6b8:assets/fonts/MomoTrustDisplay-Regular.otf
+    # Momo has a single, already heavy weight. It is registered at 700, like
+    # Youth-Bold was, because the styles ask for bold and a face registered
+    # at 400 would be faux-bolded, thickening and widening every glyph.
+    - family: Momo
       fonts:
-        - asset: assets/fonts/Youth-Bold.otf
+        - asset: assets/fonts/MomoTrustDisplay-Regular.otf
           weight: 700
-        - asset: assets/fonts/Youth-Medium.otf
     - family: GtIconFont
       fonts:
         - asset: assets/fonts/GtIconFont.otf

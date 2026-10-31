@@ -70,6 +70,10 @@ class GtViewStateWidget extends GtStatelessWidget {
   /// The text to display on the call-to-action button.
   final String? actionText;
 
+  /// An optional icon drawn before [actionText] on the call-to-action button,
+  /// such as a plus on a "New invoice" action.
+  final IconData? actionLeading;
+
   /// The spacing between the graphic or icon and the title.
   ///
   /// Defaults to `GtGap.yLg()`. Can be customized with a [GtViewStateSpacer].
@@ -140,6 +144,7 @@ class GtViewStateWidget extends GtStatelessWidget {
     this.actionSize,
     this.actionVariant,
     this.actionText,
+    this.actionLeading,
     this.titleCase = .upper,
   }) : assert(
          (onActionPressed == null) == (actionText == null),
@@ -203,6 +208,7 @@ class GtViewStateWidget extends GtStatelessWidget {
             GtRaisedButton(
               onPressed: onActionPressed!,
               text: actionText ?? "",
+              leading: actionLeading,
               variant: actionVariant ?? .primary,
               size: actionSize ?? .xsmall,
               alignment: actionAlignment,

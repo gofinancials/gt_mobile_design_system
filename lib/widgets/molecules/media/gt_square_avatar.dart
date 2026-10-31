@@ -93,6 +93,16 @@ class GtSquareAvatar extends GtStatelessWidget {
   /// read. Set it to `true` where nothing meaningful sits behind the image.
   final bool showLoadingIndicator;
 
+  /// An optional widget to display if the [avatar] image fails to load.
+  ///
+  /// Drawn in the image's place, clipped to the avatar's shape and laid over
+  /// the [initials].
+  ///
+  /// If null, a failed avatar shows what an empty one would: the [initials]
+  /// when they are set, otherwise the user glyph on an [isUserAvatar], and
+  /// otherwise the default avatar artwork.
+  final Widget? errorWidget;
+
   /// The text style of the [initials].
   ///
   /// Replaces the scaled default outright rather than merging with it, so it
@@ -120,6 +130,7 @@ class GtSquareAvatar extends GtStatelessWidget {
     this.semanticsLabel,
     this.isUserAvatar = false,
     this.showLoadingIndicator = false,
+    this.errorWidget,
     this.size,
   });
 
@@ -147,6 +158,30 @@ class GtSquareAvatar extends GtStatelessWidget {
 
     final computedSize = size ?? context.dp(180.px);
     final computedPenSize = editPenSize ?? computedSize * .17;
+    final userGlyph = GtIcon(
+      GtIcons.userSolid,
+      alignment: .center,
+      variant: .strong,
+      size: userIconSize ?? computedSize * .2,
+    );
+
+    // A failed avatar falls back to what an empty one draws. The initials are
+    // already painted underneath, so only the glyph or the artwork needs
+    // drawing, and only when the failed image was the caller's own.
+    Widget? fallback = errorWidget;
+
+    if (fallback == null && hasAvatar && !initials.hasValue) {
+      fallback = switch (isUserAvatar) {
+        true => userGlyph,
+        false => GtImage(
+          image: AppImageData(GtNetworkImages.avatar3d2),
+          fit: fit ?? defaultFit,
+          isDecorative: true,
+          width: computedSize,
+          height: computedSize,
+        ),
+      };
+    }
 
     Gradient? gradient;
     if (showGradient) {
@@ -218,19 +253,13 @@ class GtSquareAvatar extends GtStatelessWidget {
                   width: computedSize,
                   height: computedSize,
                   showLoadingIndicator: showLoadingIndicator,
+                  errorWidget: fallback,
                 ),
               ),
             if (editPen case Widget edit)
               Positioned(top: 0, right: 0, child: edit),
             if (isUserAvatar && (image == null && !initials.hasValue))
-              Positioned.fill(
-                child: GtIcon(
-                  GtIcons.userSolid,
-                  alignment: .center,
-                  variant: .strong,
-                  size: userIconSize ?? computedSize * .2,
-                ),
-              ),
+              Positioned.fill(child: userGlyph),
           ],
         ),
       ),

@@ -7,7 +7,9 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Presents, from top to bottom: the [status] pill, the [amount], an optional
 /// horizontally scrolling row of [actions], a card with the [from] and [to]
 /// participants, the [details] cards, and an optional [footer]. It reserves
-/// trailing space for the floating bottom bar of [GtReceiptScaffold].
+/// trailing space for the floating bottom bar of [GtReceiptScaffold], unless an
+/// enclosing [GtReceiptBottomBarScope] reports that no bar is drawn, in which
+/// case it only clears the system bottom inset.
 class GtReceiptBody extends GtStatelessWidget {
   /// An optional controller for the underlying scroll view, typically the one
   /// handed to you by a draggable sheet builder.
@@ -56,6 +58,7 @@ class GtReceiptBody extends GtStatelessWidget {
     final cardPadding = context.insets.allDp(12.px);
     final sectionMargin = context.insets.symmetricDp(horizontal: 16.px);
     final cardRadius = context.borderRadiusXl;
+    final hasBottomBar = GtReceiptBottomBarScope.maybeOf(context) ?? true;
 
     return ListView(
       physics: physics ?? const ClampingScrollPhysics(),
@@ -163,7 +166,10 @@ class GtReceiptBody extends GtStatelessWidget {
           const GtGap.yBase(),
         ],
         ?footer,
-        const GtGap.ySection4xl(),
+        if (hasBottomBar)
+          const GtGap.ySection4xl(key: Key('receipt-bottom-bar-space'))
+        else
+          SizedBox(height: MediaQuery.paddingOf(context).bottom),
       ],
     );
   }
@@ -180,8 +186,11 @@ class _ReceiptMessage extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = context.textStyles.subHeadXs(color: context.palette.text.sub);
-    final subStyle = context.textStyles.subHeadS();
+    final style = context.textStyles.bodyXs(
+      color: context.palette.text.sub,
+      weight: .w500,
+    );
+    final subStyle = context.textStyles.labelS(weight: .w500);
     return Column(
       spacing: context.spacingBase,
       mainAxisSize: .min,

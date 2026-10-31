@@ -10,6 +10,9 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// always get the same colors. [GtTransactionListTile] falls back to this
 /// badge when it has no leading widget.
 ///
+/// An optional [tag], such as the logo of the counterparty's bank, sits on
+/// the bottom-right edge of the badge, placed and sized as on [GtAvatar].
+///
 /// The badge is announced as an image named by [semanticsLabel]. When it is
 /// [isDecorative], or has no [semanticsLabel], it is left out of the
 /// semantics tree, so screen readers never read the initials out.
@@ -26,7 +29,7 @@ class GtTransactionLeading extends GtStatelessWidget {
 
   /// Optional custom style override for the initials.
   ///
-  /// Defaults to [GtTextStyles.subHeadXs] at weight 700.
+  /// Defaults to [GtTextStyles.bodyXs] at weight 700.
   final TextStyle? style;
 
   /// Optional background gradient override.
@@ -60,6 +63,18 @@ class GtTransactionLeading extends GtStatelessWidget {
   /// visible to readers and to the lint that flags unlabelled graphics.
   final bool isDecorative;
 
+  /// An optional miniature widget overlaid at the bottom-right corner of the
+  /// badge, such as the logo of the counterparty's bank.
+  ///
+  /// It is nudged a tenth of its size past the edge, as on [GtAvatar], and is
+  /// never clipped. It is left out of the semantics tree with the initials,
+  /// so fold anything it conveys, such as the bank's name, into
+  /// [semanticsLabel].
+  final Widget? tag;
+
+  /// The size of the square [tag] overlay. Defaults to 40% of [size].
+  final double? tagSize;
+
   /// Creates a [GtTransactionLeading] showing [initials].
   const GtTransactionLeading(
     this.initials, {
@@ -70,6 +85,8 @@ class GtTransactionLeading extends GtStatelessWidget {
     this.padding,
     this.semanticsLabel,
     this.isDecorative = false,
+    this.tag,
+    this.tagSize,
     super.key,
   });
 
@@ -92,14 +109,15 @@ class GtTransactionLeading extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = context.textStyles.subHeadXs(weight: .w700, heightPx: 19);
+    final textStyle = context.textStyles.bodyXs(weight: .w700, heightPx: 19);
+    final diameter = size ?? context.dp(38);
 
     Widget badge = Container(
       width: size,
       height: size,
       padding: padding,
       alignment: .center,
-      constraints: .tight(.square(size ?? context.dp(38))),
+      constraints: .tight(.square(diameter)),
       decoration: ShapeDecoration(
         shape: CircleBorder(),
         gradient: color == null
@@ -114,6 +132,25 @@ class GtTransactionLeading extends GtStatelessWidget {
         style: style ?? textStyle,
       ),
     );
+
+    if (tag != null) {
+      badge = Stack(
+        children: [
+          badge,
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: FractionalTranslation(
+              translation: const Offset(.1, .1),
+              child: GtSquareConstrainedBox(
+                tagSize ?? diameter * 0.4,
+                child: tag,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
 
     if (context.inSkeleton) {
       badge = GtBone(shape: .circle, child: badge);
@@ -232,12 +269,16 @@ class GtTransactionListTile extends GtStatelessWidget {
 
   /// The amount as drawn: masked when [maskAmount] is set, shortened past a
   /// hundred million, and signed with `+` for a credit.
+  ///
+  /// [isDebit] carries the direction, so a negative [amount] is drawn by its
+  /// size: the formatter keeps a minus sign since Foundation v0.0.73.
   String get _formattedAmount {
-    if (maskAmount) return '*' * ("$amount".length).clamp(4, 10);
-    final bool isLong = amount >= 100_000_000;
+    final size = amount.abs();
+    if (maskAmount) return '*' * ("$size".length).clamp(4, 10);
+    final bool isLong = size >= 100_000_000;
     final formatted = isLong
-        ? amount.asCurrencyShort(currency)
-        : amount.asCurrency(currency);
+        ? size.asCurrencyShort(currency)
+        : size.asCurrency(currency);
     if (!isDebit) return "+$formatted";
     return formatted;
   }
@@ -453,7 +494,7 @@ class GtPaymentListTile extends GtStatelessWidget {
                           title,
                           style: GtTextStyleOverrides.resolve(
                             nameStyle,
-                            style.subHeadS(),
+                            style.labelS(weight: .w500),
                             nameColor,
                           ),
                           maxLines: 1,
@@ -479,7 +520,7 @@ class GtPaymentListTile extends GtStatelessWidget {
                           amount,
                           style: GtTextStyleOverrides.resolve(
                             amountStyle,
-                            style.subHeadM(weight: .w600),
+                            style.labelM(weight: .w600),
                             amountColor,
                           ),
                           textAlign: .end,
@@ -554,6 +595,14 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
   /// Optional horizontal spacing override.
   final double? horizontalSpacing;
 
+  /// Whether a [title] too long for its space is shortened from the middle,
+  /// keeping its head and tail, rather than from the end. Defaults to false.
+  ///
+  /// Set it for titles whose end carries their meaning, such as an account
+  /// name followed by its number. See [GtText.middleEllipsis]. With a null
+  /// [maxLines] the title is then held to one line.
+  final bool titleMiddleEllipsis;
+
   /// Creates a [GtTransactionParticipantListTile].
   const GtTransactionParticipantListTile(
     this.title, {
@@ -569,6 +618,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
     this.maxLines,
     this.subSpacer,
     this.horizontalSpacing,
+    this.titleMiddleEllipsis = false,
   });
 
   @override
@@ -603,6 +653,7 @@ class GtTransactionParticipantListTile extends GtStatelessWidget {
                 style: titleStyle ?? style.buttonS(),
                 maxLines: maxLines,
                 overflow: maxLines != null ? .ellipsis : null,
+                middleEllipsis: titleMiddleEllipsis,
               ),
               if (subtitle.hasValue) ...[
                 subSpacer ?? const GtGap.ySm(),

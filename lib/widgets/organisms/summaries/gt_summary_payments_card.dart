@@ -116,7 +116,7 @@ class GtSummaryPaymentsCard extends GtStatelessWidget {
                 key: const Key('summary-payments-title'),
                 style: GtTextStyleOverrides.resolve(
                   titleStyle,
-                  context.textStyles.subHeadS(weight: .w600),
+                  context.textStyles.labelS(weight: .w600),
                   titleColor,
                 ),
               ),
@@ -126,8 +126,9 @@ class GtSummaryPaymentsCard extends GtStatelessWidget {
                   key: const Key('summary-payments-count'),
                   style: GtTextStyleOverrides.resolve(
                     countStyle,
-                    context.textStyles.subHeadS(
+                    context.textStyles.labelS(
                       color: context.palette.text.sub,
+                      weight: .w500,
                     ),
                     countColor,
                   ),

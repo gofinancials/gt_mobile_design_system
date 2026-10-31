@@ -100,8 +100,13 @@ class GtBottomSheet<T> {
   ///
   /// Adapts automatically between mobile and desktop configurations. Returns a
   /// [Future] that resolves to the value `T` passed when popping the sheet.
+  ///
+  /// Focus is reset before the sheet is pushed, so a text field focused
+  /// beneath it neither raises the keyboard over the sheet nor takes focus
+  /// back when the sheet closes.
   Future<T?> present(BuildContext context) async {
     GtOverlay.closeCurrentOverlays();
+    context.resetFocus();
     if (!context.isMobile) return _presentDesktopSheet(context);
     return _presentMobileSheet(context);
   }

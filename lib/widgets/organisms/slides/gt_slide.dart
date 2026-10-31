@@ -45,7 +45,10 @@ class GtWelcomeSlide extends GtStatelessWidget {
           const GtGap.yMd(),
           GtText(
             slide.subtitle,
-            style: context.textStyles.subHeadM(color: slide.textColor),
+            style: context.textStyles.labelM(
+              color: slide.textColor,
+              weight: .w500,
+            ),
             textAlign: .center,
           ),
         ],

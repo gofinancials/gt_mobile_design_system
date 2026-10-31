@@ -178,11 +178,10 @@ class GtStatusTrackerCompactStep extends GtStatelessWidget {
                   Expanded(
                     child: GtText(
                       data.label,
-                      style: context.textStyles.subHeadXs(
+                      style: context.textStyles.bodyXs(
                         weight: .w600,
                         color: palette.text.darkerSub,
                         heightPx: 12,
-                        widthPct: 0,
                       ),
                       maxLines: 1,
                       overflow: .ellipsis,
@@ -191,10 +190,10 @@ class GtStatusTrackerCompactStep extends GtStatelessWidget {
                   if (data.subtitle.hasValue)
                     GtText(
                       data.subtitle.value,
-                      style: context.textStyles.subHeadXs(
+                      style: context.textStyles.bodyXs(
                         color: subColor,
                         heightPx: 12,
-                        widthPct: 0,
+                        weight: .w500,
                       ),
                       maxLines: 1,
                     ),

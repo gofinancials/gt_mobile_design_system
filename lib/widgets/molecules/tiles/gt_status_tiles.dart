@@ -109,7 +109,7 @@ class GtIllustratedStepTile extends GtStatelessWidget {
                 title,
                 style: GtTextStyleOverrides.resolve(
                   titleStyle,
-                  style.subHeadM(),
+                  style.labelM(weight: .w600),
                   titleColor,
                 ),
               ),
@@ -117,7 +117,7 @@ class GtIllustratedStepTile extends GtStatelessWidget {
                 subtitle,
                 style: GtTextStyleOverrides.resolve(
                   subtitleStyle,
-                  style.subHeadXs(color: textColors.sub),
+                  style.bodyXs(color: textColors.sub, weight: .w500),
                   subtitleColor,
                 ),
               ),

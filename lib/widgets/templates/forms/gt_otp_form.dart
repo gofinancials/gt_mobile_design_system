@@ -195,10 +195,20 @@ class GtCountdownController {
     _subscription = _startCountDownSubscription();
   }
 
+  /// Ends the countdown early and sets [countDown] to 0.
+  ///
+  /// A [GtOtpForm] holding this controller shows its resend button at once,
+  /// such as after a verification error makes the current code useless.
+  /// [startCountDown] starts the countdown again.
+  void stop() {
+    _subscription?.cancel();
+    _subscription = null;
+    countDown.value = 0;
+  }
+
   StreamSubscription<int> _startCountDownSubscription() {
-    return AppHelpers.countDown(
-      seconds > 0 ? seconds - 1 : 0,
-    ).asBroadcastStream().listen((count) {
+    // A single-subscription stream, so cancelling also ends the generator.
+    return AppHelpers.countDown(seconds > 0 ? seconds - 1 : 0).listen((count) {
       countDown.value = count;
     });
   }

@@ -7,9 +7,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Wraps a [GtTransferDetailBody] in a [GtPopScope] and a transparent
 /// [Scaffold], and shares the layout of [GtReceiptScaffold]:
 /// - An action app bar ([GtActionAppBar]) with an optional download icon button ([GtIcons.download]) on the left and a close button ([GtCancelButton]) on the right.
-/// - The body, stacked beneath a floating bottom navigation bar
+/// - The body, stacked beneath an optional floating bottom navigation bar
 ///   ([GtButtonBottomNavBar]) whose action button defaults to
-///   "Report a Problem".
+///   "Report a Problem". The bar is drawn only when [onReportProblem] is set,
+///   and can be drawn disabled with [isButtonDisabled].
 ///
 /// It is designed to be presented modally, typically via
 /// `GtBottomSheetMixin.showDraggableSheet`.
@@ -39,7 +40,18 @@ class GtTransferDetailScaffold extends GtStatelessWidget {
   final GtTransferDetailBody body;
 
   /// Callback executed when the bottom action button (e.g., "Report a Problem") is pressed.
-  final OnPressed onReportProblem;
+  ///
+  /// If null, no bottom bar is drawn and the body drops the trailing space it
+  /// reserves for the bar. To keep the bar visible but inert, set
+  /// [isButtonDisabled] instead.
+  final OnPressed? onReportProblem;
+
+  /// Whether the bottom action button is drawn disabled. Defaults to false.
+  ///
+  /// A disabled button ignores taps and takes the disabled colours, which win
+  /// over [buttonTextColor] and [buttonBackgroundColor]. It has no effect when
+  /// [onReportProblem] is null, since no bar is drawn.
+  final bool isButtonDisabled;
 
   /// Callback executed when the close button in the top action bar is pressed.
   final OnPressed onClose;
@@ -73,10 +85,10 @@ class GtTransferDetailScaffold extends GtStatelessWidget {
   /// Whether the body is drawn as a skeleton of itself while its content
   /// loads. Defaults to false.
   ///
-  /// Only the body is boned; the app bar and the bottom action stay real and
-  /// usable. The body is laid out as given, so while this is set pass it
-  /// placeholder data shaped like the real content. The skeleton absorbs
-  /// touches, so the body does not scroll until it lifts.
+  /// Only the body is boned; the app bar and the bottom action, if any, stay
+  /// real and usable. The body is laid out as given, so while this is set
+  /// pass it placeholder data shaped like the real content. The skeleton
+  /// absorbs touches, so the body does not scroll until it lifts.
   final bool isLoading;
 
   /// What is announced while [isLoading] is set, such as "Loading transfer".
@@ -86,12 +98,13 @@ class GtTransferDetailScaffold extends GtStatelessWidget {
 
   /// Creates a [GtTransferDetailScaffold].
   ///
-  /// The [body], [onClose], and [onReportProblem] parameters are required.
+  /// The [body] and [onClose] parameters are required.
   const GtTransferDetailScaffold({
     super.key,
     required this.body,
     required this.onClose,
-    required this.onReportProblem,
+    this.onReportProblem,
+    this.isButtonDisabled = false,
     this.buttonText,
     this.buttonTextColor,
     this.buttonBackgroundColor,
@@ -123,6 +136,36 @@ class GtTransferDetailScaffold extends GtStatelessWidget {
       );
     }
 
+    Widget? bottomBar;
+    if (onReportProblem case final action?) {
+      bottomBar = GtButtonBottomNavBar(
+        button: GtRaisedButton(
+          onPressed: action,
+          isDisabled: isButtonDisabled,
+          text: buttonText ?? "reportAProblem".utr(),
+          variant: .neutralAlt,
+          alignment: .center,
+          size: .small,
+          textColor: buttonTextColor ?? context.palette.text.white,
+          color: buttonBackgroundColor ?? context.palette.bg.sub,
+        ),
+      );
+    }
+
+    content = GtReceiptBottomBarScope(
+      hasBottomBar: bottomBar != null,
+      child: content,
+    );
+
+    if (bottomBar != null) {
+      content = Stack(
+        children: [
+          Positioned.fill(child: content),
+          Positioned(bottom: 0, left: 0, right: 0, child: bottomBar),
+        ],
+      );
+    }
+
     return GtPopScope(
       canPop: false,
       child: Scaffold(
@@ -132,27 +175,7 @@ class GtTransferDetailScaffold extends GtStatelessWidget {
           leading: leading,
           trailing: GtOptionalWidgetPair(tail: GtCancelButton(onTap: onClose)),
         ),
-        body: Stack(
-          children: [
-            Positioned.fill(child: content),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: GtButtonBottomNavBar(
-                button: GtRaisedButton(
-                  onPressed: onReportProblem,
-                  text: buttonText ?? "reportAProblem".utr(),
-                  variant: .neutralAlt,
-                  alignment: .center,
-                  size: .small,
-                  textColor: buttonTextColor ?? context.palette.text.white,
-                  color: buttonBackgroundColor ?? context.palette.bg.sub,
-                ),
-              ),
-            ),
-          ],
-        ),
+        body: content,
       ),
     );
   }

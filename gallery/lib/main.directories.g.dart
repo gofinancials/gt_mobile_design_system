@@ -33,6 +33,8 @@ import 'package:gallery/atoms/media/gt_file_image_usecase.dart'
     as _gallery_atoms_media_gt_file_image_usecase;
 import 'package:gallery/atoms/media/gt_icons.dart'
     as _gallery_atoms_media_gt_icons;
+import 'package:gallery/atoms/media/gt_image_error_fallback_usecase.dart'
+    as _gallery_atoms_media_gt_image_error_fallback_usecase;
 import 'package:gallery/atoms/media/gt_images.dart'
     as _gallery_atoms_media_gt_images;
 import 'package:gallery/atoms/media/gt_media_gallery_usecase.dart'
@@ -247,6 +249,8 @@ import 'package:gallery/organisms/grids/gt_keypad_grid_usecase.dart'
     as _gallery_organisms_grids_gt_keypad_grid_usecase;
 import 'package:gallery/organisms/headers/gt_page_header.dart'
     as _gallery_organisms_headers_gt_page_header;
+import 'package:gallery/organisms/headers/gt_profile_header_usecase.dart'
+    as _gallery_organisms_headers_gt_profile_header_usecase;
 import 'package:gallery/organisms/headers/gt_section_header_usecase.dart'
     as _gallery_organisms_headers_gt_section_header_usecase;
 import 'package:gallery/organisms/headers/gt_transaction_group_header_usecase.dart'
@@ -299,6 +303,8 @@ import 'package:gallery/templates/documents/gt_pdf_invoice_usecase.dart'
     as _gallery_templates_documents_gt_pdf_invoice_usecase;
 import 'package:gallery/templates/documents/gt_pdf_receipt_usecase.dart'
     as _gallery_templates_documents_gt_pdf_receipt_usecase;
+import 'package:gallery/templates/documents/gt_pdf_statement_usecase.dart'
+    as _gallery_templates_documents_gt_pdf_statement_usecase;
 import 'package:gallery/templates/forms/gt_form_doc.dart'
     as _gallery_templates_forms_gt_form_doc;
 import 'package:gallery/templates/forms/gt_otp_form_doc.dart'
@@ -419,6 +425,16 @@ final directories = <_widgetbook.WidgetbookNode>[
                 name: 'GtPdfReceiptExporter',
                 builder: _gallery_templates_documents_gt_pdf_receipt_usecase
                     .playgroundGtPdfReceiptExporterUseCase,
+              ),
+            ],
+          ),
+          _widgetbook.WidgetbookComponent(
+            name: 'GtPdfStatementExporter',
+            useCases: [
+              _widgetbook.WidgetbookUseCase(
+                name: 'GtPdfStatementExporter',
+                builder: _gallery_templates_documents_gt_pdf_statement_usecase
+                    .playgroundGtPdfStatementExporterUseCase,
               ),
             ],
           ),
@@ -631,6 +647,12 @@ final directories = <_widgetbook.WidgetbookNode>[
                         .centralMediaGalleryUseCase,
                   ),
                   _widgetbook.WidgetbookUseCase(
+                    name: 'Error fallbacks',
+                    builder:
+                        _gallery_atoms_media_gt_image_error_fallback_usecase
+                            .playgroundImageErrorFallbackUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
                     name: 'Images',
                     builder:
                         _gallery_atoms_media_gt_images.playgroundImageUseCase,
@@ -753,6 +775,11 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtText',
                     builder: _gallery_atoms_typography_gt_text
                         .playgroundGtTextUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Middle ellipsis',
+                    builder: _gallery_atoms_typography_gt_text
+                        .playgroundGtTextMiddleEllipsisUseCase,
                   ),
                 ],
               ),
@@ -2089,6 +2116,34 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtPageHeader.rich',
                     builder: _gallery_organisms_headers_gt_page_header
                         .playgroundGtPageHeaderRichUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtProfileHeader',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtProfileHeader',
+                    builder:
+                        _gallery_organisms_headers_gt_profile_header_usecase
+                            .playgroundGtProfileHeaderUseCase,
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtProfileHeader with tag',
+                    builder:
+                        _gallery_organisms_headers_gt_profile_header_usecase
+                            .playgroundGtProfileHeaderTagUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtProfileHeroHeader',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtProfileHeroHeader',
+                    builder:
+                        _gallery_organisms_headers_gt_profile_header_usecase
+                            .playgroundGtProfileHeroHeaderUseCase,
                   ),
                 ],
               ),

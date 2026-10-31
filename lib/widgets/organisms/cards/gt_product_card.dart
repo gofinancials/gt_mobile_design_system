@@ -105,7 +105,7 @@ class GtProductCard extends GtStatelessWidget {
             name,
             style: GtTextStyleOverrides.resolve(
               nameStyle,
-              context.textStyles.subHeadS(),
+              context.textStyles.labelS(weight: .w600),
               nameColor,
             ),
             maxLines: 1,
@@ -188,12 +188,13 @@ class GtProductInfoCard extends GtStatelessWidget {
 
   /// Overrides the style of the [name].
   ///
-  /// Defaults to [GtTextStyles.subHeadS].
+  /// Defaults to [GtTextStyles.labelS] at weight 600, Figma Title/XS.
   final TextStyle? nameStyle;
 
   /// Overrides the style of the [description].
   ///
-  /// Defaults to [GtTextStyles.subHeadXs] in the palette's sub text colour.
+  /// Defaults to [GtTextStyles.bodyXs] at weight 500, Figma Body/S, in the
+  /// palette's sub text colour.
   final TextStyle? descriptionStyle;
 
   /// Overrides the card's background colour.
@@ -255,7 +256,10 @@ class GtProductInfoCard extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final descStyle = context.textStyles.subHeadXs(color: palette.text.sub);
+    final descStyle = context.textStyles.bodyXs(
+      color: palette.text.sub,
+      weight: .w500,
+    );
     final defPadding = context.insets.symmetricDp(
       horizontal: 16.px,
       vertical: 24.px,
@@ -297,7 +301,7 @@ class GtProductInfoCard extends GtStatelessWidget {
                   name,
                   style: GtTextStyleOverrides.resolve(
                     nameStyle,
-                    context.textStyles.subHeadS(),
+                    context.textStyles.labelS(weight: .w600),
                     nameColor,
                   ),
                   maxLines: 1,

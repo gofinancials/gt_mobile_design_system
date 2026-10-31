@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -105,14 +107,24 @@ class _GtPaginationObserver {
 
   /// Slides the new page partly into view once it has been laid out and the
   /// scroll view has come to rest.
+  ///
+  /// The slide is a twentieth of the screen, and it stops short of [threshold]
+  /// from the end of the extent: a nudge that reached the threshold would be a
+  /// downward scroll near the end, which requests the next page, whose nudge
+  /// would request the one after, until the collection ran out with nobody
+  /// touching the screen. A page too short to leave room skips the nudge.
   void _nudge() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final position = positionOf();
       final context = hostContext();
       if (position == null || context == null) return;
       if (position.isScrollingNotifier.value) return;
+      final start = position.pixels;
+      final limit = position.maxScrollExtent - threshold() - 1;
+      final target = math.min(start + context.fractionalHeight(0.05), limit);
+      if (target <= start) return;
       position.animateTo(
-        position.pixels + context.fractionalHeight(5),
+        target,
         duration: 500.milliseconds,
         curve: Curves.decelerate,
       );

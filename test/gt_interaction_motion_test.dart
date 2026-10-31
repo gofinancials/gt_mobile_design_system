@@ -32,13 +32,34 @@ class _AdaptiveSwitcherTestApp extends GtStatelessWidget {
   }
 }
 
+class _SwitcherSwapTestApp extends GtStatelessWidget {
+  final String childKey;
+  final bool crossFade;
+
+  const _SwitcherSwapTestApp({required this.childKey, this.crossFade = true});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: GtAnimatedSwitcher(
+          crossFade: crossFade,
+          child: SizedBox.square(dimension: 24, key: ValueKey(childKey)),
+        ),
+      ),
+    );
+  }
+}
+
 class _BottomNavigationTestApp extends GtStatelessWidget {
   final int currentIndex;
+  final GtBottomNavigationStyle style;
   final bool disableAnimations;
   final bool enableSelectionAnimation;
 
   const _BottomNavigationTestApp({
     required this.currentIndex,
+    this.style = .ios,
     this.disableAnimations = false,
     this.enableSelectionAnimation = true,
   });
@@ -52,7 +73,7 @@ class _BottomNavigationTestApp extends GtStatelessWidget {
           data: MediaQueryData(disableAnimations: disableAnimations),
           child: Scaffold(
             bottomNavigationBar: GtBottomNavigationBar(
-              style: .ios,
+              style: style,
               currentIndex: currentIndex,
               enableSelectionAnimation: enableSelectionAnimation,
               onIndexChanged: (_) {},
@@ -242,6 +263,89 @@ void main() {
       isTrue,
     );
   });
+
+  testWidgets('switchers crossfade the outgoing child by default', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const _SwitcherSwapTestApp(childKey: 'a'));
+    await tester.pumpWidget(const _SwitcherSwapTestApp(childKey: 'b'));
+    await tester.pump(const Duration(milliseconds: 150));
+
+    final outgoing = find.byKey(const ValueKey('a'));
+    expect(outgoing, findsOneWidget);
+    expect(find.byKey(const ValueKey('b')), findsOneWidget);
+    // Nearest ancestors first, so `.first` is the switcher's own transition.
+    final fade = tester.widget<FadeTransition>(
+      find.ancestor(of: outgoing, matching: find.byType(FadeTransition)).first,
+    );
+    expect(fade.opacity.value, lessThan(1));
+  });
+
+  testWidgets('switchers without crossfade drop the outgoing child at once', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const _SwitcherSwapTestApp(childKey: 'a', crossFade: false),
+    );
+    await tester.pumpWidget(
+      const _SwitcherSwapTestApp(childKey: 'b', crossFade: false),
+    );
+
+    final incoming = find.byKey(const ValueKey('b'));
+    expect(find.byKey(const ValueKey('a')), findsNothing);
+    expect(incoming, findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(GtAnimatedSwitcher),
+        matching: find.byType(FadeTransition),
+      ),
+      findsNothing,
+    );
+    final scale = tester.widget<ScaleTransition>(
+      find.ancestor(of: incoming, matching: find.byType(ScaleTransition)).first,
+    );
+    expect(scale.scale.value, 0);
+  });
+
+  for (final style in GtBottomNavigationStyle.values) {
+    testWidgets('${style.name} bottom navigation never shows a tab\'s glyphs '
+        'together', (tester) async {
+      Finder glyph(IconData icon) => find.byWidgetPredicate(
+        (widget) => widget is GtIcon && widget.icon == icon,
+      );
+
+      await tester.pumpWidget(
+        _BottomNavigationTestApp(currentIndex: 0, style: style),
+      );
+      await tester.pumpWidget(
+        _BottomNavigationTestApp(currentIndex: 1, style: style),
+      );
+
+      final frames = GtMotion.normal.inMilliseconds ~/ 16 + 1;
+      for (var frame = 0; frame <= frames; frame++) {
+        expect(glyph(GtIcons.homeFilled), findsNothing);
+        expect(glyph(GtIcons.home), findsOneWidget);
+        expect(glyph(GtIcons.card), findsNothing);
+        expect(glyph(GtIcons.cardFilled), findsOneWidget);
+        await tester.pump(const Duration(milliseconds: 16));
+      }
+
+      // The press-scale spring still plays on the swapped-in glyph.
+      await tester.pumpWidget(
+        _BottomNavigationTestApp(currentIndex: 0, style: style),
+      );
+      await tester.pump(const Duration(milliseconds: 16));
+      final scale = tester.widget<ScaleTransition>(
+        find
+            .ancestor(
+              of: glyph(GtIcons.homeFilled),
+              matching: find.byType(ScaleTransition),
+            )
+            .first,
+      );
+      expect(scale.scale.value, isNot(1));
+    });
+  }
 
   testWidgets('bottom navigation disables selection motion when requested', (
     tester,

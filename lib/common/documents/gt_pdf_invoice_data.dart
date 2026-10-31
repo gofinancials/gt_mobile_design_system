@@ -11,6 +11,11 @@ import 'package:pdf/pdf.dart';
 /// names the state and picks its colours. [GtPdfInvoiceStatus.fromVariant]
 /// takes those colours from a [GtPillVariant], the way the on-screen receipt
 /// pill does, so an exported invoice reads in the same tones as the screen.
+///
+/// Give it the same palette the document is themed from. On the default white
+/// page that is the brand's light palette, `context.themeData.lightPalette`;
+/// a dark palette's tints are drawn for a dark page and wash out on a white
+/// one.
 class GtPdfInvoiceStatus extends AppEquatable {
   /// The state's name, uppercased when rendered.
   final String label;
@@ -316,7 +321,7 @@ class GtPdfInvoiceLabels extends AppEquatable {
 ///   status: GtPdfInvoiceStatus.fromVariant(
 ///     label: 'Pending',
 ///     variant: .away,
-///     palette: context.palette,
+///     palette: context.themeData.lightPalette,
 ///   ),
 ///   details: const [
 ///     GtPdfReceiptEntry(label: 'Issued on:', value: 'December 15, 2025'),

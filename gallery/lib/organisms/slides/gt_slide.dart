@@ -23,7 +23,9 @@ Widget buildGtSectionSlideUsecase(BuildContext context) {
       description: 'Why saving matters and how to build good habits.',
       totalLessons: 10,
       duration: 5.minutes,
-      illustration: AppImageData.asset(GtVectorIllustrations.grow),
+      illustration: AppImageData.asset(
+        GtVectorIllustrations.grow.adapt(context),
+      ),
       variant: .featured,
       onTap: showToast,
     ),
@@ -32,7 +34,9 @@ Widget buildGtSectionSlideUsecase(BuildContext context) {
       description: 'Learn to choose between needs and wants.',
       totalLessons: 8,
       duration: 4.minutes,
-      illustration: AppImageData.asset(GtVectorIllustrations.moneyPhone),
+      illustration: AppImageData.asset(
+        GtVectorIllustrations.moneyPhone.adapt(context),
+      ),
       variant: .verified,
       onTap: showToast,
     ),
@@ -42,7 +46,9 @@ Widget buildGtSectionSlideUsecase(BuildContext context) {
           'Learn to manage your resources effectively, and cope with scarcity.',
       totalLessons: 15,
       duration: 20.minutes,
-      illustration: AppImageData.asset(GtVectorIllustrations.fuel),
+      illustration: AppImageData.asset(
+        GtVectorIllustrations.fuel.adapt(context),
+      ),
       variant: .normal,
       onTap: showToast,
     ),
@@ -55,7 +61,9 @@ Widget buildGtSectionSlideUsecase(BuildContext context) {
       watchedLessons: 5,
       duration: 5.minutes,
       watchedDuration: 4.minutes,
-      illustration: AppImageData.asset(GtVectorIllustrations.security),
+      illustration: AppImageData.asset(
+        GtVectorIllustrations.security.adapt(context),
+      ),
       variant: .warning,
       onTap: showToast,
     ),

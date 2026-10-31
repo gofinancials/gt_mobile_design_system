@@ -27,6 +27,7 @@ const _categoryGlyph = AppImageData(GtNetworkImages.transfer);
 /// The presets, named for the screen each one reproduces.
 const _presets = [
   'Standard Transfer',
+  'International Transfer',
   'Scheduled Transfer',
   'Approval Request',
   'Savings Goal',
@@ -98,8 +99,45 @@ const _bulkSections = [
   ),
 ];
 
-List<GtSummaryCard> _getSections(String preset, BuildContext context) {
+List<GtSummaryCard> _getSections(
+  String preset,
+  BuildContext context, {
+  bool middleEllipsis = false,
+}) {
   return switch (preset) {
+    // The values whose end tells them apart, an IBAN and a source account
+    // ending in its number, are the ones the middle ellipsis is for.
+    'International Transfer' => [
+      GtSummarySection(
+        tiles: [
+          const GtSummaryTileData(
+            label: "Live exchange rate",
+            value: "\$1 = £0.80",
+          ),
+          const GtSummaryTileData(label: "Receiver gets", value: "£80.00"),
+          const GtSummaryTileData(label: "Transaction fee", value: "\$10.75"),
+          GtSummaryTileData(
+            label: "From",
+            value: "Domiciliary Account • 3456789012",
+            middleEllipsis: middleEllipsis,
+          ),
+        ],
+      ),
+      GtSummarySection(
+        tiles: [
+          GtSummaryTileData(
+            label: "Account number",
+            value: "GB29NWBK60161331926819",
+            middleEllipsis: middleEllipsis,
+          ),
+          const GtSummaryTileData(
+            label: "Bank name",
+            value: "Mock International Bank",
+          ),
+          const GtSummaryTileData(label: "Account name", value: "JAMIE SMITH"),
+        ],
+      ),
+    ],
     'Scheduled Transfer' => const [
       GtSummarySection(
         tiles: [
@@ -221,6 +259,7 @@ class _SummaryKnobs {
   final bool isActionDisabled;
   final bool isActionLoading;
   final bool isLoading;
+  final bool middleEllipsis;
 
   const _SummaryKnobs({
     required this.title,
@@ -236,6 +275,7 @@ class _SummaryKnobs {
     required this.isActionDisabled,
     required this.isActionLoading,
     required this.isLoading,
+    required this.middleEllipsis,
   });
 
   factory _SummaryKnobs.of(BuildContext context) {
@@ -270,6 +310,10 @@ class _SummaryKnobs {
         label: 'Sections Preset',
         options: _presets,
         initialOption: 'Standard Transfer',
+      ),
+      middleEllipsis: context.knobs.boolean(
+        label: 'Middle Ellipsis (International Transfer)',
+        initialValue: false,
       ),
       actionLabel: context.knobs.string(
         label: 'Action Label',
@@ -307,7 +351,7 @@ class _SummaryKnobs {
       amountStyle: amountStyle,
       amountCaption: isFeatured ? amountCaption : null,
       description: showDescription ? description : null,
-      sections: _getSections(preset, context),
+      sections: _getSections(preset, context, middleEllipsis: middleEllipsis),
     );
   }
 }
