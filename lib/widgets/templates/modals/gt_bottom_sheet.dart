@@ -8,6 +8,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// Supports standard static sheets as well as draggable/scrollable sheets.
 class GtBottomSheet<T> {
   /// Creates a standard [GtBottomSheet] containing the given [modalWidget].
+  ///
+  /// The sheet is at least [minHeightFraction] of the screen tall, and at
+  /// most [maxHeightFraction]. Pass a [minHeightFraction] of `0` for a sheet
+  /// that is only as tall as its content, such as a short list of choices.
   GtBottomSheet({
     required this.context,
     required this.modalWidget,
@@ -17,10 +21,11 @@ class GtBottomSheet<T> {
     this.canPop = true,
     this.useRootNavigator = true,
     double maxHeightFraction = .9,
+    double minHeightFraction = .3,
     this.floating = false,
   }) : _builder = null,
        maxChildSize = maxHeightFraction,
-       minChildSize = .3,
+       minChildSize = minHeightFraction,
        initialChildSize = .9,
        _isDraggable = false;
 
@@ -63,7 +68,7 @@ class GtBottomSheet<T> {
   /// The maximum fractional size of the sheet relative to the screen height.
   final double maxChildSize;
 
-  /// The minimum fractional size of the draggable sheet relative to the screen height.
+  /// The minimum fractional size of the sheet relative to the screen height.
   final double minChildSize;
 
   /// Whether the user can dismiss the sheet by tapping the scrim background.

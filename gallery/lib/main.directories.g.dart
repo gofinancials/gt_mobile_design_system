@@ -329,6 +329,8 @@ import 'package:gallery/templates/list_views/gt_infinite_list_view_doc.dart'
     as _gallery_templates_list_views_gt_infinite_list_view_doc;
 import 'package:gallery/templates/list_views/gt_infinite_list_view_usecase.dart'
     as _gallery_templates_list_views_gt_infinite_list_view_usecase;
+import 'package:gallery/templates/modals/gt_action_sheet.dart'
+    as _gallery_templates_modals_gt_action_sheet;
 import 'package:gallery/templates/modals/gt_bottom_modal.dart'
     as _gallery_templates_modals_gt_bottom_modal;
 import 'package:gallery/templates/modals/gt_bottom_sheet.dart'
@@ -2742,6 +2744,16 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'modals',
             children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtActionSheet',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtActionSheet',
+                    builder: _gallery_templates_modals_gt_action_sheet
+                        .buildGtActionSheetUsecase,
+                  ),
+                ],
+              ),
               _widgetbook.WidgetbookComponent(
                 name: 'GtBottomModal',
                 useCases: [
