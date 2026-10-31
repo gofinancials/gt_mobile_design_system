@@ -86,7 +86,9 @@ class GtProAppBar extends GtStatelessWidget implements PreferredSizeWidget {
               alignment: .centerLeft,
               initials: fullName.initials,
               gradient: context.gradients.appbarAvatarGradient,
-              initialsColor: context.palette.text.white,
+              // White on the brand fill in both modes. text.white turns near-black
+              // in dark palettes, where it is meant for fills that invert too.
+              initialsColor: context.palette.staticColors.white,
               onPressed: onClickProfile,
             ),
             Expanded(

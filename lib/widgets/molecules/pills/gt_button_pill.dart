@@ -389,15 +389,12 @@ class GtAccountCopyPill extends GtStatelessWidget {
   /// invisible — set this together with [borderStyle] to draw an outline.
   final Color? borderColor;
 
-  /// Overrides the [variant]'s text color.
+  /// Overrides the [variant]'s text and copy-icon color.
   ///
-  /// Ignored by the text once [style] carries a color of its own, since [style]
-  /// replaces the default text style wholesale.
-  ///
-  /// *Note: the copy icon is painted with this field directly rather than the
-  /// color resolved from [variant], so leaving it `null` gives the icon the
-  /// default strong icon color instead of the product color the text uses. Set
-  /// it explicitly, or [showIcon] to `false`, wherever that mismatch shows.*
+  /// Defaults to the [variant]'s product color, resolved from the light
+  /// primitives so it stays the same in dark mode. The copy icon always takes
+  /// the resolved color, but the text ignores it once [style] carries a color
+  /// of its own, since [style] replaces the default text style wholesale.
   final Color? textColor;
 
   /// Replaces the text style outright.
@@ -459,7 +456,7 @@ class GtAccountCopyPill extends GtStatelessWidget {
     final icon = GtIcon.withColor(
       GtIcons.copyFilled,
       size: context.dp(14.px),
-      color: textColor,
+      color: txtColor,
     );
 
     if (variant.isTrailing && showIcon) trailing = icon;

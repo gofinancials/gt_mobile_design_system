@@ -208,6 +208,15 @@ void main() {
     Color textColorOf(WidgetTester tester) =>
         tester.widget<GtText>(find.byType(GtText)).style!.color!;
 
+    Color? iconColorOf(WidgetTester tester) => tester
+        .widget<Icon>(
+          find.descendant(
+            of: find.byType(GtAccountCopyPill),
+            matching: find.byType(Icon),
+          ),
+        )
+        .color;
+
     testWidgets('Pro keeps its maroon in dark mode', (tester) async {
       await tester.pumpWidget(
         _PillTestApp(
@@ -218,6 +227,7 @@ void main() {
       final decoration = decorationOf(tester);
 
       expect(textColorOf(tester), GtColors.maroon700.value);
+      expect(iconColorOf(tester), GtColors.maroon700.value);
       expect(decoration.color, GtColors.maroonAlpha8.value);
       expect(decoration.boxShadow!.map((shadow) => shadow.color), [
         GtColors.maroonAlpha3.value,
@@ -245,6 +255,12 @@ void main() {
 
           expect(
             textColorOf(tester),
+            variant.textColor(raw),
+            reason: '$variant',
+          );
+          // The copy glyph is the same product colour as the number.
+          expect(
+            iconColorOf(tester),
             variant.textColor(raw),
             reason: '$variant',
           );
