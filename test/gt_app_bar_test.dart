@@ -11,7 +11,7 @@ import 'helpers/test_app_config.dart';
 /// they ship with rather than the test font's uniform squares.
 Future<void> loadPackageFonts() async {
   const families = {
-    'Momo': ['MomoTrustDisplay.ttf'],
+    'Momo': ['MomoTrustDisplay-Regular.otf'],
     'Runde': [
       'OpenRunde-Regular.otf',
       'OpenRunde-Medium.otf',
