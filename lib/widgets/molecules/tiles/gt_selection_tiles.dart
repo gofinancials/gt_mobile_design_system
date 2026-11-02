@@ -223,7 +223,7 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
             crossAxisAlignment: .stretch,
             spacing: context.spacingBase,
             children: [
-              GtText(text.upper, style: titleStyle ?? textStyle),
+              GtText(text, style: titleStyle ?? textStyle),
               GtText(
                 description,
                 style: this.descriptionStyle ?? descriptionStyle,
