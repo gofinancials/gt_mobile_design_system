@@ -27,6 +27,7 @@ Widget playgroundGtEmptyStateCardUseCase(BuildContext context) {
     options: ['icon', 'image'],
     initialOption: 'icon',
   );
+  final title = context.knobs.stringOrNull(label: 'Title', initialValue: null);
   final description = context.knobs.string(
     label: 'Description',
     initialValue: 'You currently do not have any team member here',
@@ -40,6 +41,12 @@ Widget playgroundGtEmptyStateCardUseCase(BuildContext context) {
   final spacing = context.knobs.double.slider(
     label: 'Spacing',
     initialValue: 8.0,
+    min: 0.0,
+    max: 32.0,
+  );
+  final footerSpacing = context.knobs.doubleOrNull.slider(
+    label: 'Footer Spacing',
+    initialValue: null,
     min: 0.0,
     max: 32.0,
   );
@@ -96,9 +103,11 @@ Widget playgroundGtEmptyStateCardUseCase(BuildContext context) {
         width: imageSize.px,
         height: imageSize.px,
       ),
+      title: title,
       description: description,
       variant: variant,
       spacing: spacing,
+      footerSpacing: footerSpacing,
       footer: footerWidget,
     );
     codeSnippet =
@@ -109,17 +118,19 @@ GtEmptyStateCard.image(
     width: ${imageSize.toInt()},
     height: ${imageSize.toInt()},
   ),
-  description: "$description",
+${title == null ? '' : '  title: "$title",\n'}  description: "$description",
   variant: GtCardVariant.${variant.name},
-  spacing: ${spacing.toInt()},${hasFooter ? '\n  footer: GtRaisedButton(\n    text: "$footerText",\n    size: .xsmall,\n    onPressed: () {},\n  ),' : ''}
+  spacing: ${spacing.toInt()},${footerSpacing == null ? '' : '\n  footerSpacing: ${footerSpacing.toInt()},'}${hasFooter ? '\n  footer: GtRaisedButton(\n    text: "$footerText",\n    size: .xsmall,\n    onPressed: () {},\n  ),' : ''}
 )''';
   } else {
     cardWidget = GtEmptyStateCard(
       icon: selectedIconItem?.icon,
       iconSize: iconSize,
+      title: title,
       description: description,
       variant: variant,
       spacing: spacing,
+      footerSpacing: footerSpacing,
       footer: footerWidget,
     );
     final iconSnippet = selectedIconItem == null
@@ -130,16 +141,21 @@ GtEmptyStateCard.image(
 GtEmptyStateCard(
   icon: $iconSnippet,
   iconSize: ${iconSize.toInt()},
-  description: "$description",
+${title == null ? '' : '  title: "$title",\n'}  description: "$description",
   variant: GtCardVariant.${variant.name},
-  spacing: ${spacing.toInt()},${hasFooter ? '\n  footer: GtRaisedButton(\n    text: "$footerText",\n    size: .xsmall,\n    onPressed: () {},\n  ),' : ''}
+  spacing: ${spacing.toInt()},${footerSpacing == null ? '' : '\n  footerSpacing: ${footerSpacing.toInt()},'}${hasFooter ? '\n  footer: GtRaisedButton(\n    text: "$footerText",\n    size: .xsmall,\n    onPressed: () {},\n  ),' : ''}
 )''';
   }
 
   return GtWidgetDocPage(
     title: 'GtEmptyStateCard',
     description:
-        'A static card displaying empty state placeholder messages and status icons or illustrations.',
+        'A static card displaying empty state placeholder messages and status '
+        'icons or illustrations. An optional title sits between the icon or '
+        'image and the description, in labelS at weight 600 (titleStyle and '
+        'titleColor override it), 4dp above the description, as in the Flex '
+        'invoicing lists\' "You don\'t have any item" card. footerSpacing '
+        'sets the gap above the footer on its own; it defaults to spacing.',
     code: codeSnippet,
     child: cardWidget,
   );
