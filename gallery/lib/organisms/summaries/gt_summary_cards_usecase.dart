@@ -238,10 +238,24 @@ class _SummaryTilePreview extends StatelessWidget {
       label: 'Interactive',
       initialValue: false,
     );
-    final middleEllipsis = context.knobs.boolean(
-      label: 'Middle Ellipsis (columns only)',
+    final wrapValue = context.knobs.boolean(
+      label: 'Wrap Value (columns only)',
       initialValue: false,
     );
+    final valueOverflow = context.knobs.object.dropdown<TextOverflow>(
+      label: 'Value Overflow (columns only)',
+      options: TextOverflow.values,
+      initialOption: TextOverflow.ellipsis,
+      labelBuilder: (value) => value.name,
+    );
+    // A wrapping value needs the middle ellipsis off, which would otherwise
+    // keep it to one line, and so does any overflow other than the cut.
+    final middleEllipsis =
+        !wrapValue &&
+        context.knobs.boolean(
+          label: 'Middle Ellipsis (columns only)',
+          initialValue: true,
+        );
 
     final tile = GtSummaryTileData(
       label: label,
@@ -250,6 +264,8 @@ class _SummaryTilePreview extends StatelessWidget {
       trailing: showTrailing ? _categoryGlyph : null,
       valueColor: tintValue ? context.palette.success.base : null,
       middleEllipsis: middleEllipsis,
+      valueMaxLines: wrapValue ? null : 1,
+      valueOverflow: valueOverflow,
       onTap: interactive
           ? () => GtToast.of(context).show("$label tapped")
           : null,
@@ -269,7 +285,11 @@ class _SummaryTilePreview extends StatelessWidget {
           'Images bracket the value rather than following it, so a bank logo '
           'leads the name it belongs to while a category glyph trails it. The '
           'stacked layout puts the label above the value for values with no '
-          'room in a right-hand column, and ignores both image slots.',
+          'room in a right-hand column, and ignores both image slots. In the '
+          'columns layout a long value keeps to one line, cut in the middle, '
+          'by default. A value the customer must read in full, such as a '
+          'SWIFT charge, sets valueMaxLines: null to wrap, and valueOverflow '
+          'chooses how a capped value ends; both need middleEllipsis: false.',
       code: isSkeleton
           ? 'GtSummaryTile.skeleton(layout: GtSummaryTileLayout.${layout.name})'
           : '''
@@ -280,7 +300,9 @@ GtSummaryTile(
     ${showLeading ? 'leading: AppImageData(GtVectors.logo),' : ''}
     ${showTrailing ? 'trailing: AppImageData(GtNetworkImages.transfer),' : ''}
     ${tintValue ? 'valueColor: context.palette.success.base,' : ''}
-    ${middleEllipsis ? 'middleEllipsis: true,' : ''}
+    ${middleEllipsis ? '' : 'middleEllipsis: false,'}
+    ${wrapValue ? 'valueMaxLines: null,' : ''}
+    ${valueOverflow == TextOverflow.ellipsis ? '' : 'valueOverflow: TextOverflow.${valueOverflow.name},'}
   ),
   layout: GtSummaryTileLayout.${layout.name},
 )''',

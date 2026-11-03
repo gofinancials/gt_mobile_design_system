@@ -106,7 +106,8 @@ List<GtSummaryCard> _getSections(
 }) {
   return switch (preset) {
     // The values whose end tells them apart, an IBAN and a source account
-    // ending in its number, are the ones the middle ellipsis is for.
+    // ending in its number, are the ones the middle ellipsis is for. The
+    // charges the customer agrees to pay wrap instead, so they read in full.
     'International Transfer' => [
       GtSummarySection(
         tiles: [
@@ -116,6 +117,19 @@ List<GtSummaryCard> _getSections(
           ),
           const GtSummaryTileData(label: "Receiver gets", value: "£80.00"),
           const GtSummaryTileData(label: "Transaction fee", value: "\$10.75"),
+          const GtSummaryTileData(
+            label: "Telex charge",
+            value: "₦6,000 or \$25 or €20 or £15",
+            valueMaxLines: null,
+            middleEllipsis: false,
+          ),
+          const GtSummaryTileData(
+            label: "Offshore charge",
+            value:
+                "\$25 or €20 or £15 or equivalent in NGN at prevailing rates",
+            valueMaxLines: null,
+            middleEllipsis: false,
+          ),
           GtSummaryTileData(
             label: "From",
             value: "Domiciliary Account • 3456789012",

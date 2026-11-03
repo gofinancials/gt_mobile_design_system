@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -217,6 +218,125 @@ void main() {
       expect(find.byType(GtSummaryPaymentsCard), findsOneWidget);
       expect(find.byType(GtSummaryRatesCard), findsOneWidget);
       expect(find.text('Staff Salary'), findsOneWidget);
+    });
+  });
+
+  group('GtSummaryTile long values', () {
+    const charges = '₦6,000 or \$25 or €20 or £15 at the prevailing rates';
+
+    /// Mounts [tile] in a 343 dp row, a 375-point phone less the summary
+    /// card's gutters, under an ambient ellipsis like a card's, and hands back
+    /// the paragraph its value is drawn in.
+    Future<RenderParagraph> pumpRow(
+      WidgetTester tester,
+      GtSummaryTileData tile,
+    ) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          Center(
+            child: DefaultTextStyle.merge(
+              overflow: .ellipsis,
+              child: SizedBox(width: 343, child: GtSummaryTile(tile)),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final value = find.byWidgetPredicate(
+        (widget) => widget is GtText && widget.data == tile.value,
+      );
+      return tester.renderObject<RenderParagraph>(
+        find.descendant(of: value, matching: find.byType(RichText)),
+      );
+    }
+
+    int lines(RenderParagraph paragraph) {
+      return paragraph
+          .getBoxesForSelection(
+            TextSelection(
+              baseOffset: 0,
+              extentOffset: paragraph.text.toPlainText().length,
+            ),
+          )
+          .map((box) => box.top)
+          .toSet()
+          .length;
+    }
+
+    testWidgets('keeps a long value to one line, cut in the middle, by '
+        'default', (tester) async {
+      final paragraph = await pumpRow(
+        tester,
+        const GtSummaryTileData(label: 'Telex Charge', value: charges),
+      );
+
+      expect(paragraph.maxLines, 1);
+      expect(paragraph.text.toPlainText(), isNot(charges));
+      expect(paragraph.text.toPlainText(), contains('…'));
+      expect(lines(paragraph), 1);
+    });
+
+    testWidgets('wraps a value in full when valueMaxLines is null', (
+      tester,
+    ) async {
+      final paragraph = await pumpRow(
+        tester,
+        const GtSummaryTileData(
+          label: 'Telex Charge',
+          value: charges,
+          valueMaxLines: null,
+          middleEllipsis: false,
+        ),
+      );
+
+      expect(paragraph.text.toPlainText(), charges);
+      expect(paragraph.maxLines, isNull);
+      expect(paragraph.didExceedMaxLines, isFalse);
+      expect(lines(paragraph), greaterThan(1));
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('caps a wrapping value at valueMaxLines', (tester) async {
+      final paragraph = await pumpRow(
+        tester,
+        const GtSummaryTileData(
+          label: 'Telex Charge',
+          value: '$charges $charges $charges',
+          valueMaxLines: 2,
+          middleEllipsis: false,
+        ),
+      );
+
+      expect(paragraph.maxLines, 2);
+      expect(paragraph.didExceedMaxLines, isTrue);
+      expect(paragraph.overflow, TextOverflow.ellipsis);
+    });
+
+    testWidgets('ends a long value with valueOverflow', (tester) async {
+      final paragraph = await pumpRow(
+        tester,
+        const GtSummaryTileData(
+          label: 'Offshore Charge',
+          value: charges,
+          middleEllipsis: false,
+          valueOverflow: .fade,
+        ),
+      );
+
+      expect(paragraph.maxLines, 1);
+      expect(paragraph.overflow, TextOverflow.fade);
+    });
+
+    test('a wrapping value needs the middle ellipsis off', () {
+      expect(
+        () => GtSummaryTileData(
+          label: 'Telex Charge',
+          value: charges,
+          valueMaxLines: null,
+        ),
+        throwsAssertionError,
+      );
     });
   });
 

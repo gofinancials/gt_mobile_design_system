@@ -786,8 +786,21 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   ///Maximum number of lines for the label.
   final int labelMaxLines;
 
-  ///Maximum number of lines for the value.
-  final int valueMaxLines;
+  /// Maximum number of lines for the value. Defaults to 2.
+  ///
+  /// Null lets the value wrap over as many lines as it needs, for a value
+  /// that must be read in full, such as a charge the customer agrees to pay.
+  /// [valueMiddleEllipsis] keeps a null value to one line, so a value meant to
+  /// wrap leaves it off.
+  final int? valueMaxLines;
+
+  /// How a [value] longer than [valueMaxLines] ends. Defaults to
+  /// [TextOverflow.ellipsis].
+  ///
+  /// Ignored when [valueMiddleEllipsis] is set, which always shortens from the
+  /// middle; leave that off for any other overflow to apply. Also ignored
+  /// when [valueMaxLines] is null, since a value with no cap never overflows.
+  final TextOverflow valueOverflow;
 
   /// Whether to emphasize the [value] text over the [label].
   ///
@@ -842,6 +855,7 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     this.padding,
     this.fitColumnsToContent = false,
     this.valueMiddleEllipsis = false,
+    this.valueOverflow = .ellipsis,
   }) : assert(
          highlightValue || (valueTextStyle == null && labelTextStyle == null),
          'valueTextStyle and labelTextStyle must be null if highlightValue is false',
@@ -877,6 +891,13 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
       );
     }
 
+    // An ellipsis drops every line after the first that overflows, even with
+    // no cap on the lines, so a value that wraps without one is clipped
+    // instead, which a wrapping value never needs. Leaving it null would let
+    // an ambient DefaultTextStyle bring an ellipsis back.
+    TextOverflow overflow = valueOverflow;
+    if (valueMaxLines == null) overflow = .clip;
+
     final valueChild = Row(
       mainAxisAlignment: .end,
       mainAxisSize: .min,
@@ -888,7 +909,7 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
             value,
             style: valueStyle,
             textAlign: TextAlign.end,
-            overflow: .ellipsis,
+            overflow: overflow,
             maxLines: valueMaxLines,
             middleEllipsis: valueMiddleEllipsis,
           ),

@@ -490,17 +490,31 @@ Widget playgroundGtDoubleColumnListTileUseCase(BuildContext context) {
     label: 'Value Middle Ellipsis',
     initialValue: false,
   );
+  final valueMaxLines = context.knobs.intOrNull.input(
+    label: 'Value Max Lines (empty wraps)',
+    initialValue: 2,
+  );
+  final valueOverflow = context.knobs.object.dropdown<TextOverflow>(
+    label: 'Value Overflow',
+    options: TextOverflow.values,
+    initialOption: TextOverflow.ellipsis,
+    labelBuilder: (value) => value.name,
+  );
 
   return GtWidgetDocPage(
     title: 'GtDoubleColumnListTile',
     description:
-        'A list tile displaying balanced label (left) and value (right) layout.',
+        'A list tile displaying balanced label (left) and value (right) '
+        'layout. The value keeps to two lines with an end ellipsis by '
+        'default; valueMaxLines: null lets it wrap in full, and valueOverflow '
+        'chooses how a capped value ends. A middle ellipsis keeps to one line '
+        'and ignores valueOverflow.',
     code:
         '''
 GtDoubleColumnListTile(
   "$label",
   value: "$value",
-  highlightValue: $highlightValue,${valueMiddleEllipsis ? '\n  valueMiddleEllipsis: true,' : ''}
+  highlightValue: $highlightValue,${valueMiddleEllipsis ? '\n  valueMiddleEllipsis: true,' : ''}${valueMaxLines == 2 ? '' : '\n  valueMaxLines: $valueMaxLines,'}${valueOverflow == TextOverflow.ellipsis ? '' : '\n  valueOverflow: TextOverflow.${valueOverflow.name},'}
 )''',
     child: Center(
       child: GtCard(
@@ -511,6 +525,8 @@ GtDoubleColumnListTile(
           value: value,
           highlightValue: highlightValue,
           valueMiddleEllipsis: valueMiddleEllipsis,
+          valueMaxLines: valueMaxLines,
+          valueOverflow: valueOverflow,
         ),
       ),
     ),

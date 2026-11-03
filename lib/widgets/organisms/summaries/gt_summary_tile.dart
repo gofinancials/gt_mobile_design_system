@@ -140,7 +140,8 @@ class _GtSummaryColumnsTile extends GtStatelessWidget {
         styles.labelS(color: tile.valueColor, weight: .w500),
         valueColor,
       ),
-      valueMaxLines: 1,
+      valueMaxLines: tile.valueMaxLines,
+      valueOverflow: tile.valueOverflow,
       valueMiddleEllipsis: tile.middleEllipsis,
     );
   }

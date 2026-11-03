@@ -72,14 +72,35 @@ class GtSummaryTileData extends AppEquatable {
   final OnPressed? onTap;
 
   /// Whether a [value] too long for its column is shortened from the middle,
-  /// keeping its head and tail, rather than from the end. Defaults to false.
+  /// keeping its head and tail, rather than from the end. Defaults to true.
   ///
-  /// Set it per row, on values whose end carries their meaning: an IBAN, or a
+  /// Keep it on for values whose end carries their meaning: an IBAN, or a
   /// source account such as `"Domiciliary Account • 0123456789"`, whose
-  /// account number an end ellipsis would cut off. Leave it off for amounts
-  /// and names. Ignored by [GtSummaryTileLayout.stacked], which wraps its
-  /// value instead of shortening it.
+  /// account number an end ellipsis would cut off. Turn it off for a row that
+  /// wraps or ends some other way: while it is on, the value keeps to
+  /// [valueMaxLines] lines (one when that is null) and [valueOverflow] is
+  /// ignored. Ignored by [GtSummaryTileLayout.stacked], which wraps its value
+  /// instead of shortening it.
   final bool middleEllipsis;
+
+  /// The most lines the [value] may take in [GtSummaryTileLayout.columns].
+  /// Defaults to 1.
+  ///
+  /// Null lets the value wrap over as many lines as it needs, for a value the
+  /// customer must read in full, such as a SWIFT transfer's charges
+  /// (`"₦6,000 or $25 or €20 or £15"`) or an exchange rate. A wrapping row
+  /// also sets [middleEllipsis] to false, which would otherwise keep it to one
+  /// line. Ignored by [GtSummaryTileLayout.stacked], which always wraps.
+  final int? valueMaxLines;
+
+  /// How a [value] longer than [valueMaxLines] ends in
+  /// [GtSummaryTileLayout.columns]. Defaults to [TextOverflow.ellipsis].
+  ///
+  /// Only applies with [middleEllipsis] set to false, since a middle ellipsis
+  /// always shortens from the middle, and with [valueMaxLines] set, since a
+  /// value with no cap never overflows. Ignored by
+  /// [GtSummaryTileLayout.stacked].
+  final TextOverflow valueOverflow;
 
   /// Creates a [GtSummaryTileData].
   const GtSummaryTileData({
@@ -91,7 +112,13 @@ class GtSummaryTileData extends AppEquatable {
     this.valueColor,
     this.onTap,
     this.middleEllipsis = true,
-  });
+    this.valueMaxLines = 1,
+    this.valueOverflow = .ellipsis,
+  }) : assert(
+         valueMaxLines != null || !middleEllipsis,
+         'A value that wraps (valueMaxLines: null) needs middleEllipsis: false, '
+         'which otherwise keeps it to one line',
+       );
 
   @override
   List<Object?> get props => [
@@ -102,6 +129,8 @@ class GtSummaryTileData extends AppEquatable {
     imageSize,
     valueColor,
     middleEllipsis,
+    valueMaxLines,
+    valueOverflow,
   ];
 }
 
