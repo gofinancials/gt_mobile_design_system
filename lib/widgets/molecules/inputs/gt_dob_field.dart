@@ -5,8 +5,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A Date of Birth input field that provides separate autocomplete inputs
 /// for day, month, and year.
 ///
-/// [GtDobField] ensures users can only select valid dates within the bounds
-/// configured in its [GtDobController].
+/// [GtDobField] offers only the birth years allowed by its [GtDobController],
+/// and its validator rejects a date after today or outside the controller's
+/// [GtDobController.minAge] (inclusive) and [GtDobController.maxAge]
+/// (exclusive), counted in calendar years.
 class GtDobField extends GtStatefulWidget {
   /// The controller used to manage the date selection state.
   final GtDobController? controller;
@@ -120,6 +122,14 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
     _fieldKey.currentState?.notifyChanged(_dobController);
   }
 
+  /// Validates the selected date against the controller's age range.
+  String? _validate(GtDobController? controller) {
+    final date = controller?.dob?.toIso8601String();
+    final minAge = _dobController.minAge;
+    final maxAge = _dobController.maxAge;
+    return AppValidators.dobValidator(date, minAge: minAge, maxAge: maxAge);
+  }
+
   /// Requests focus on [node] after this frame, or clears focus if it is null.
   void _updateFocus([FocusNode? node]) {
     if (node == null) {
@@ -162,13 +172,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
             _dobController.reset();
           },
           initialValue: _dobController,
-          validator: (controller) {
-            final value = controller?.dob;
-            return AppValidators.dobValidator(
-              value?.toIso8601String(),
-              minAge: _dobController.minAge,
-            );
-          },
+          validator: _validate,
         );
       },
       child: Row(

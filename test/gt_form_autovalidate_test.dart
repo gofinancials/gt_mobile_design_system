@@ -284,6 +284,33 @@ void main() {
       expect(dob.dob, isNull);
       expect(hasError(tester), isFalse);
     });
+
+    testWidgets('rejects a date at or over maxAge', (tester) async {
+      final today = DateTime.now();
+      final eighteenYearsAgo = DateTime(today.year - 18, 1, 1);
+      final dob = GtDobController(maxAge: 18, dob: eighteenYearsAgo);
+      addTearDown(dob.dispose);
+      final form = await mount(tester, GtDobField(controller: dob));
+
+      expect(form.currentState!.validate(), isFalse);
+      await tester.pumpAndSettle();
+      expect(find.textContaining("Must be under"), findsOneWidget);
+    });
+
+    testWidgets('accepts a newborn and rejects a future date', (tester) async {
+      final today = DateTime.now();
+      final tomorrow = DateTime(today.year, today.month, today.day + 1);
+      final dob = GtDobController(maxAge: 18, dob: today);
+      addTearDown(dob.dispose);
+      final form = await mount(tester, GtDobField(controller: dob));
+
+      expect(form.currentState!.validate(), isTrue);
+
+      dob.year = tomorrow.year;
+      dob.month = tomorrow.month;
+      dob.day = tomorrow.day;
+      expect(form.currentState!.validate(), isFalse);
+    });
   });
 
   group('GtTransferField', () {
