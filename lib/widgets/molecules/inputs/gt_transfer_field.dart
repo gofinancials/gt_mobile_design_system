@@ -231,6 +231,7 @@ class _GtTransferFieldState extends State<GtTransferField> {
           onChanged: widget.onAmountChanged,
           autofillHints: const [AutofillHints.transactionAmount],
           autoCorrect: false,
+          scaleToFit: true,
         );
 
         return Column(
@@ -585,6 +586,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
           onChanged: widget.onSourceAmountChanged,
           autofillHints: const [AutofillHints.transactionAmount],
           autoCorrect: false,
+          scaleToFit: true,
         );
 
         final targetField = GtTextField(
@@ -599,6 +601,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
           onChanged: widget.onTargetAmountChanged,
           autofillHints: const [AutofillHints.transactionAmount],
           autoCorrect: false,
+          scaleToFit: true,
         );
 
         return Column(

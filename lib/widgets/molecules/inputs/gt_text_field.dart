@@ -103,6 +103,14 @@ class GtTextField<T> extends GtStatefulWidget {
   /// does not produce distracting motion.
   final GtSpringShakeController? shakeController;
 
+  /// Whether the text shrinks to fit the field's width instead of scrolling.
+  ///
+  /// When the value is wider than the input, its font size and letter
+  /// spacing scale down together until it fits, so the whole value, such as
+  /// a large amount, stays in view. A value that fits keeps the decoration's
+  /// text style. Always false on [GtTextField.multiline], whose text wraps.
+  final bool scaleToFit;
+
   /// Creates a standard [GtTextField].
   const GtTextField({
     super.key,
@@ -130,6 +138,7 @@ class GtTextField<T> extends GtStatefulWidget {
     this.autofillHints,
     this.shakeController,
     this.autovalidateMode = AutovalidateMode.disabled,
+    this.scaleToFit = false,
   }) : minLines = 1,
        maxLines = 1;
 
@@ -166,6 +175,7 @@ class GtTextField<T> extends GtStatefulWidget {
     int this.minLines = 1,
     this.autovalidateMode = AutovalidateMode.disabled,
   }) : keyboardType = TextInputType.multiline,
+       scaleToFit = false,
        assert(minLines > 0, 'minLines must be at least 1'),
        assert(
          maxLines == null || maxLines >= minLines,
@@ -316,38 +326,128 @@ class _GtTextFieldState extends State<GtTextField>
             },
           );
         },
-        child: TextField(
-          autocorrect: widget.autoCorrect,
-          autofocus: widget.autoFocus,
-          textDirection: .ltr,
-          showCursor: true,
-          textAlign: widget.textAlign ?? .left,
-          focusNode: _inputFocus,
-          textInputAction: widget.textInputAction ?? .done,
-          textCapitalization: widget.textCapitalization ?? .none,
-          style: style,
-          maxLength: widget.maxLength,
+        child: _GtScaleToFit(
+          isEnabled: widget.scaleToFit,
           controller: _ctrl,
-          enabled: widget.isEnabled,
-          obscureText: widget.obscureText,
-          keyboardType: widget.keyboardType ?? .text,
-          inputFormatters: widget.inputFormatters,
-          maxLines: widget.maxLines,
-          minLines: widget.minLines,
-          scrollPadding: .zero,
-          onChanged: widget.onChanged,
-          autofillHints: widget.autofillHints,
-          decoration: context.inputStyles
-              .inputStyle(hintMaxLines: decoration.hintMaxLines)
-              .copyWith(
-                hintStyle: hintStyle,
-                floatingLabelStyle: hintStyle,
-                hintText: widget.hintText ?? widget.label,
-                counter: const SizedBox.shrink(),
-                enabled: widget.isEnabled,
-              ),
+          style: style,
+          builder: (context, fittedStyle) {
+            return TextField(
+              autocorrect: widget.autoCorrect,
+              autofocus: widget.autoFocus,
+              textDirection: .ltr,
+              showCursor: true,
+              textAlign: widget.textAlign ?? .left,
+              focusNode: _inputFocus,
+              textInputAction: widget.textInputAction ?? .done,
+              textCapitalization: widget.textCapitalization ?? .none,
+              style: fittedStyle,
+              maxLength: widget.maxLength,
+              controller: _ctrl,
+              enabled: widget.isEnabled,
+              obscureText: widget.obscureText,
+              keyboardType: widget.keyboardType ?? .text,
+              inputFormatters: widget.inputFormatters,
+              maxLines: widget.maxLines,
+              minLines: widget.minLines,
+              scrollPadding: .zero,
+              onChanged: widget.onChanged,
+              autofillHints: widget.autofillHints,
+              decoration: context.inputStyles
+                  .inputStyle(hintMaxLines: decoration.hintMaxLines)
+                  .copyWith(
+                    hintStyle: hintStyle,
+                    floatingLabelStyle: hintStyle,
+                    hintText: widget.hintText ?? widget.label,
+                    counter: const SizedBox.shrink(),
+                    enabled: widget.isEnabled,
+                  ),
+            );
+          },
         ),
       ),
+    );
+  }
+}
+
+/// A private widget that shrinks [style] until [controller]'s text fits the
+/// width it is laid out in, then builds the input with that style.
+///
+/// When [isEnabled] is false, [builder] gets [style] unchanged and no layout
+/// or measuring is added.
+class _GtScaleToFit extends GtStatelessWidget {
+  /// The width a [TextField] keeps beside its text for the caret: a 1px gap
+  /// plus the default 2px cursor.
+  static const double _caretMargin = 3;
+
+  /// Whether the text shrinks to fit.
+  final bool isEnabled;
+
+  /// The controller whose text is measured.
+  final TextEditingController controller;
+
+  /// The style the text is drawn in when it fits.
+  final TextStyle style;
+
+  /// Builds the input with the style the text fits in.
+  final Widget Function(BuildContext context, TextStyle style) builder;
+
+  /// Creates a [_GtScaleToFit].
+  const _GtScaleToFit({
+    required this.isEnabled,
+    required this.controller,
+    required this.style,
+    required this.builder,
+  });
+
+  /// [style] scaled down so the text fits [maxWidth], or [style] itself when
+  /// it already fits.
+  ///
+  /// Font size and letter spacing scale together, so the text's width
+  /// scales in step with them.
+  TextStyle _fittedStyle(BuildContext context, double maxWidth) {
+    final fontSize = style.fontSize;
+    if (fontSize == null || !controller.text.hasValue) return style;
+
+    TextStyle measured = style;
+    if (MediaQuery.boldTextOf(context)) {
+      measured = style.merge(const TextStyle(fontWeight: .bold));
+    }
+    final fit = GtTextFit(
+      style: measured,
+      textDirection: .ltr,
+      textScaler: MediaQuery.textScalerOf(context),
+      maxLines: 1,
+    );
+    final width = fit.sizeOf(controller.text).width;
+    fit.dispose();
+
+    final room = maxWidth - _caretMargin;
+    if (width <= room) return style;
+
+    final scale = room / width;
+    return style.copyWith(
+      fontSize: fontSize * scale,
+      letterSpacing: switch (style.letterSpacing) {
+        double spacing => spacing * scale,
+        _ => null,
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isEnabled) return builder(context, style);
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return ListenableBuilder(
+          listenable: controller,
+          builder: (context, _) {
+            final fitted = _fittedStyle(context, constraints.maxWidth);
+            return builder(context, fitted);
+          },
+        );
+      },
     );
   }
 }
