@@ -47,6 +47,14 @@ class GtUrlField extends GtStatefulWidget {
   /// Defaults to a "paste" button that reads a valid URL from the clipboard.
   final Widget? suffix;
 
+  /// When the field is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// Under [AutovalidateMode.onUserInteraction], set here or on the enclosing
+  /// [GtForm], the error shows as the value changes and clears once it is
+  /// valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a new [GtUrlField].
   const GtUrlField({
     super.key,
@@ -62,6 +70,7 @@ class GtUrlField extends GtStatefulWidget {
     this.errorMessage,
     this.emptyMessage,
     this.suffix,
+    this.autovalidateMode = .disabled,
   });
   @override
   State<GtUrlField> createState() => _GtUrlFieldState();
@@ -90,6 +99,7 @@ class _GtUrlFieldState extends State<GtUrlField> {
     );
 
     return GtTextField(
+      autovalidateMode: widget.autovalidateMode,
       isEnabled: widget.isEnabled,
       decoration: widget.decoration,
       helperText: widget.helperText,

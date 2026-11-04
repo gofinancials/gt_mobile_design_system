@@ -23,6 +23,17 @@ class GtDobField extends GtStatefulWidget {
   /// Callback fired when the complete selected date changes.
   final OnChanged<DateTime?>? onChanged;
 
+  /// When the date is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// When this or the enclosing [GtForm] sets a mode other than
+  /// [AutovalidateMode.disabled], every change to the day, month or year
+  /// marks the date as changed for its [Form]. So
+  /// [AutovalidateMode.onUserInteraction] shows the error as the date changes
+  /// and clears it once the date is valid again. Defaults to
+  /// [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a [GtDobField].
   const GtDobField({
     super.key,
@@ -31,6 +42,7 @@ class GtDobField extends GtStatefulWidget {
     this.suffix,
     this.isEnabled = true,
     this.onChanged,
+    this.autovalidateMode = .disabled,
   });
 
   @override
@@ -51,10 +63,23 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
   /// The local controller managing the text input for the year field.
   late final GtInputController _yearCtrl;
 
+  /// The key of the [FormField] that validates the date.
+  final _fieldKey = GlobalKey<FormFieldState<GtDobController>>();
+
+  /// The day, month and year last reported to the [FormField].
+  late (int?, int?, int?) _reportedDate;
+
+  /// The day, month and year selected now.
+  (int?, int?, int?) get _date {
+    return (_dobController.day, _dobController.month, _dobController.year);
+  }
+
   @override
   void initState() {
     super.initState();
     _dobController = widget.controller ?? GtDobController();
+    _reportedDate = _date;
+    _dobController.addListener(_reportChange);
     _dayCtrl = GtInputController(text: "${_dobController.day ?? ''}");
     _monthCtrl = GtInputController(
       text: _dobController.month?.asMonthName ?? '',
@@ -64,6 +89,7 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
 
   @override
   void dispose() {
+    _dobController.removeListener(_reportChange);
     if (widget.controller == null) _dobController.dispose();
     _dayCtrl.dispose();
     _monthCtrl.dispose();
@@ -76,11 +102,22 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller &&
         widget.controller != null) {
+      _dobController.removeListener(_reportChange);
       _dobController = widget.controller!;
+      _reportedDate = _date;
+      _dobController.addListener(_reportChange);
     }
     _dayCtrl.text = _dobController.day?.toString() ?? '';
     _monthCtrl.text = _dobController.month?.asMonthName ?? '';
     _yearCtrl.text = _dobController.year?.toString() ?? '';
+  }
+
+  /// Reports a change of the date to the [FormField], which re-validates it
+  /// under [AutovalidateMode.onUserInteraction].
+  void _reportChange() {
+    if (_date == _reportedDate) return;
+    _reportedDate = _date;
+    _fieldKey.currentState?.notifyChanged(_dobController);
   }
 
   /// Requests focus on [node] after this frame, or clears focus if it is null.
@@ -103,7 +140,9 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
     return ListenableBuilder(
       listenable: _dobController,
       builder: (context, child) {
-        return FormField(
+        return FormField<GtDobController>(
+          key: _fieldKey,
+          autovalidateMode: widget.autovalidateMode,
           builder: (state) {
             return Column(
               spacing: context.spacingBase,
@@ -116,7 +155,12 @@ class _GtDobFieldState extends State<GtDobField> with GtBottomSheetMixin {
               ],
             );
           },
-          onReset: _dobController.reset,
+          onReset: () {
+            // A reset leaves the date untouched, so clearing it is not an
+            // edit to report.
+            _reportedDate = (null, null, null);
+            _dobController.reset();
+          },
           initialValue: _dobController,
           validator: (controller) {
             final value = controller?.dob;

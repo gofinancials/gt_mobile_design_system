@@ -61,6 +61,14 @@ class GtDateField extends GtStatefulWidget {
   /// The current selection mode of the field.
   final GtCalendarSelectionMode _selectionMode;
 
+  /// When the field is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// Under [AutovalidateMode.onUserInteraction], set here or on the enclosing
+  /// [GtForm], the error shows as the value changes and clears once it is
+  /// valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a date field configured for single day selection.
   const GtDateField({
     super.key,
@@ -77,6 +85,7 @@ class GtDateField extends GtStatefulWidget {
     this.calendarTitle,
     this.label,
     this.focusNode,
+    this.autovalidateMode = .disabled,
   }) : _selectionMode = .day;
 
   /// Creates a date field configured for date range selection.
@@ -95,6 +104,7 @@ class GtDateField extends GtStatefulWidget {
     this.calendarTitle,
     this.label,
     this.focusNode,
+    this.autovalidateMode = .disabled,
   }) : _selectionMode = .range;
 
   @override
@@ -232,6 +242,7 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
       },
       child: IgnorePointer(
         child: GtTextField(
+          autovalidateMode: widget.autovalidateMode,
           isEnabled: widget.isEnabled,
           decoration: widget.decoration,
           controller: _localCtrl,

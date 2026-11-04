@@ -110,6 +110,14 @@ class GtDropdownField<T> extends GtStatefulWidget {
   /// sheet without a [sheetTitle] keeps its cancel button either way.
   final bool showSearch;
 
+  /// When the field is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// Under [AutovalidateMode.onUserInteraction], set here or on the enclosing
+  /// [GtForm], the error shows as the value changes and clears once it is
+  /// valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a dropdown field with the provided [options].
   const GtDropdownField({
     super.key,
@@ -136,6 +144,7 @@ class GtDropdownField<T> extends GtStatefulWidget {
     this.errorWidget,
     this.dropdownSemanticLabel,
     this.showSearch = true,
+    this.autovalidateMode = .disabled,
   }) : assert(
          optionBuilder == null || optionsBuilder == null,
          'Cannot provide both optionBuilder and optionsBuilder.',
@@ -208,6 +217,7 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
       },
       child: IgnorePointer(
         child: GtTextField(
+          autovalidateMode: widget.autovalidateMode,
           decoration: widget.decoration,
           isEnabled: widget.isEnabled,
           label: widget.label,

@@ -67,6 +67,14 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
   /// Defaults to 2 seconds.
   final Duration? debounceTime;
 
+  /// When the field is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// Under [AutovalidateMode.onUserInteraction], set here or on the enclosing
+  /// [GtForm], the error shows as the value changes and clears once it is
+  /// valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates an autocomplete field with a static list of [suggestions].
   const GtAutocompleteField({
     super.key,
@@ -86,6 +94,7 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
     this.prefix,
     this.suffix,
     this.debounceTime,
+    this.autovalidateMode = .disabled,
   }) : _suggestions = suggestions,
        _suggestionsBuilder = null;
 
@@ -108,6 +117,7 @@ class GtAutocompleteField<T> extends GtStatefulWidget {
     this.prefix,
     this.suffix,
     this.debounceTime,
+    this.autovalidateMode = .disabled,
   }) : _suggestionsBuilder = builder,
        _suggestions = null;
 
@@ -179,6 +189,7 @@ class _GtAutocompleteFieldState<T> extends State<GtAutocompleteField<T>> {
       textEditingController: controller.controller,
       fieldViewBuilder: (context, ctrl, focusNode, onFieldSubmitted) {
         return GtTextField(
+          autovalidateMode: widget.autovalidateMode,
           decoration: widget.decoration,
           autoCorrect: false,
           isEnabled: widget.isEnabled,

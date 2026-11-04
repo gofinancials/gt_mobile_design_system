@@ -65,6 +65,17 @@ class GtTransferField extends GtStatefulWidget {
   /// The second participant in the transfer.
   final GtTransferParticipantData secondParticipant;
 
+  /// When the amount is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// When this or the enclosing [GtForm] sets a mode other than
+  /// [AutovalidateMode.disabled], every change to the amount marks it as
+  /// changed for its [Form] before [onAmountChanged] runs. So
+  /// [AutovalidateMode.onUserInteraction] shows the error as the amount
+  /// changes and clears it once the amount is valid again. Defaults to
+  /// [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a new [GtTransferField].
   const GtTransferField({
     super.key,
@@ -82,6 +93,7 @@ class GtTransferField extends GtStatefulWidget {
     this.max,
     this.min,
     this.middleIcon,
+    this.autovalidateMode = .disabled,
   });
 
   @override
@@ -90,6 +102,46 @@ class GtTransferField extends GtStatefulWidget {
 
 /// The state for [GtTransferField].
 class _GtTransferFieldState extends State<GtTransferField> {
+  /// The key of the [FormField] that validates the amount.
+  final _fieldKey = GlobalKey<FormFieldState<TextEditingController>>();
+
+  /// The amount last reported to the [FormField].
+  late String _reportedAmount;
+
+  /// The text controller of [GtTransferField.amountController].
+  TextEditingController get _amountCtrl => widget.amountController.controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _reportedAmount = _amountCtrl.text;
+    _amountCtrl.addListener(_reportChange);
+  }
+
+  @override
+  void didUpdateWidget(covariant GtTransferField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final oldCtrl = oldWidget.amountController.controller;
+    if (oldCtrl == _amountCtrl) return;
+    oldCtrl.removeListener(_reportChange);
+    _reportedAmount = _amountCtrl.text;
+    _amountCtrl.addListener(_reportChange);
+  }
+
+  @override
+  void dispose() {
+    _amountCtrl.removeListener(_reportChange);
+    super.dispose();
+  }
+
+  /// Reports an edit of the amount to the [FormField], which re-validates it
+  /// under [AutovalidateMode.onUserInteraction].
+  void _reportChange() {
+    if (_amountCtrl.text == _reportedAmount) return;
+    _reportedAmount = _amountCtrl.text;
+    _fieldKey.currentState?.notifyChanged(_amountCtrl);
+  }
+
   /// The balance of the participant being validated, or zero if neither is.
   double get balance {
     final first = widget.firstParticipant;
@@ -126,8 +178,12 @@ class _GtTransferFieldState extends State<GtTransferField> {
       isDecorative: true,
     );
 
-    return FormField(
-      initialValue: widget.amountController.controller,
+    return FormField<TextEditingController>(
+      key: _fieldKey,
+      initialValue: _amountCtrl,
+      autovalidateMode: widget.autovalidateMode,
+      // The amount field clears itself on a reset, which is not an edit.
+      onReset: () => _reportedAmount = '',
       validator: (text) {
         if (!isValidated) return null;
         if (widget.max == null && isBalanceObscured) {
@@ -327,6 +383,17 @@ class GtFxTransferField extends GtStatefulWidget {
   /// The content to display between the two participants.
   final Widget? child;
 
+  /// When the source amount is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// When this or the enclosing [GtForm] sets a mode other than
+  /// [AutovalidateMode.disabled], every change to either amount marks the
+  /// source amount as changed for its [Form] before [onSourceAmountChanged]
+  /// or [onTargetAmountChanged] runs. So [AutovalidateMode.onUserInteraction]
+  /// shows the error as the amounts change and clears it once the source
+  /// amount is valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a new [GtFxTransferField].
   const GtFxTransferField({
     super.key,
@@ -347,6 +414,7 @@ class GtFxTransferField extends GtStatefulWidget {
     this.min,
     this.middleIcon,
     this.child,
+    this.autovalidateMode = .disabled,
   });
 
   @override
@@ -355,6 +423,75 @@ class GtFxTransferField extends GtStatefulWidget {
 
 /// The state for [GtFxTransferField].
 class _GtFxTransferFieldState extends State<GtFxTransferField> {
+  /// The key of the [FormField] that validates the source amount.
+  final _fieldKey = GlobalKey<FormFieldState<TextEditingController>>();
+
+  /// The source amount last reported to the [FormField].
+  late String _reportedSource;
+
+  /// The target amount last reported to the [FormField].
+  late String _reportedTarget;
+
+  /// The text controller of [GtFxTransferField.sourceAmountController].
+  TextEditingController get _sourceCtrl {
+    return widget.sourceAmountController.controller;
+  }
+
+  /// The text controller of [GtFxTransferField.targetAmountController].
+  TextEditingController get _targetCtrl {
+    return widget.targetAmountController.controller;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _reportedSource = _sourceCtrl.text;
+    _reportedTarget = _targetCtrl.text;
+    _sourceCtrl.addListener(_reportSourceChange);
+    _targetCtrl.addListener(_reportTargetChange);
+  }
+
+  @override
+  void didUpdateWidget(covariant GtFxTransferField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final oldSource = oldWidget.sourceAmountController.controller;
+    final oldTarget = oldWidget.targetAmountController.controller;
+    if (oldSource != _sourceCtrl) {
+      oldSource.removeListener(_reportSourceChange);
+      _reportedSource = _sourceCtrl.text;
+      _sourceCtrl.addListener(_reportSourceChange);
+    }
+    if (oldTarget != _targetCtrl) {
+      oldTarget.removeListener(_reportTargetChange);
+      _reportedTarget = _targetCtrl.text;
+      _targetCtrl.addListener(_reportTargetChange);
+    }
+  }
+
+  @override
+  void dispose() {
+    _sourceCtrl.removeListener(_reportSourceChange);
+    _targetCtrl.removeListener(_reportTargetChange);
+    super.dispose();
+  }
+
+  /// Reports an edit of the source amount to the [FormField], which
+  /// re-validates it under [AutovalidateMode.onUserInteraction].
+  void _reportSourceChange() {
+    if (_sourceCtrl.text == _reportedSource) return;
+    _reportedSource = _sourceCtrl.text;
+    _fieldKey.currentState?.notifyChanged(_sourceCtrl);
+  }
+
+  /// Reports an edit of the target amount to the [FormField], which
+  /// re-validates the source amount it is converted from.
+  void _reportTargetChange() {
+    if (_targetCtrl.text == _reportedTarget) return;
+    _reportedTarget = _targetCtrl.text;
+    // The validator reads the source amount, whichever amount was edited.
+    _fieldKey.currentState?.notifyChanged(_sourceCtrl);
+  }
+
   /// The balance of the participant being validated, or zero if neither is.
   double get balance {
     final first = widget.firstParticipant;
@@ -391,8 +528,15 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
       isDecorative: true,
     );
 
-    return FormField(
-      initialValue: widget.sourceAmountController.controller,
+    return FormField<TextEditingController>(
+      key: _fieldKey,
+      initialValue: _sourceCtrl,
+      autovalidateMode: widget.autovalidateMode,
+      // The amount fields clear themselves on a reset, which is not an edit.
+      onReset: () {
+        _reportedSource = '';
+        _reportedTarget = '';
+      },
       validator: (text) {
         if (!isValidated) return null;
         if (widget.max == null && isBalanceObscured) {

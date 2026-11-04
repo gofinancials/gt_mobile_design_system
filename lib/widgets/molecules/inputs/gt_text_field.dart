@@ -84,6 +84,14 @@ class GtTextField<T> extends GtStatefulWidget {
   final String? semanticsLabel;
 
   /// Used to enable/disable this form field's auto validation and update its error text.
+  ///
+  /// When this or the enclosing [GtForm] sets a mode other than
+  /// [AutovalidateMode.disabled], every change to the text, typed or set on
+  /// [controller], marks the field as changed for its [Form] before
+  /// [onChanged] runs. So [AutovalidateMode.onUserInteraction] shows errors
+  /// as the text changes and clears them once it is valid again. While both
+  /// are disabled, edits are not reported and [GtForm.onChanged] does not
+  /// fire.
   final AutovalidateMode? autovalidateMode;
 
   /// A list of strings that helps the autofill service identify the type of this text input.
@@ -175,10 +183,27 @@ class _GtTextFieldState extends State<GtTextField>
   /// owned by this state.
   late final GtInputController controller;
 
+  /// The key of the [FormField] that validates [controller].
+  final _fieldKey = GlobalKey<FormFieldState<TextEditingController>>();
+
+  /// The text last reported to the [FormField], so cursor and focus changes,
+  /// which also notify [_ctrl], are not reported as edits.
+  late String _reportedText;
+
   @override
   void initState() {
     super.initState();
     controller = widget.controller ?? GtInputController();
+    _reportedText = _ctrl.text;
+    _ctrl.addListener(_reportChange);
+  }
+
+  /// Reports an edit of [_ctrl] to the [FormField], which re-validates it
+  /// under [AutovalidateMode.onUserInteraction].
+  void _reportChange() {
+    if (_ctrl.text == _reportedText) return;
+    _reportedText = _ctrl.text;
+    _fieldKey.currentState?.notifyChanged(_ctrl);
   }
 
   /// The focus node of [controller].
@@ -192,6 +217,7 @@ class _GtTextFieldState extends State<GtTextField>
 
   @override
   void dispose() {
+    _ctrl.removeListener(_reportChange);
     if (widget.controller == null) controller.dispose();
     super.dispose();
   }
@@ -227,6 +253,7 @@ class _GtTextFieldState extends State<GtTextField>
         listenable: Listenable.merge([_ctrl, _inputFocus]),
         builder: (context, child) {
           return FormField<TextEditingController>(
+            key: _fieldKey,
             initialValue: _ctrl,
             validator: (value) {
               return widget.validator?.call(value?.text);
@@ -235,7 +262,12 @@ class _GtTextFieldState extends State<GtTextField>
             onSaved: (newValue) {
               return widget.onFieldSubmitted?.call(newValue?.text);
             },
-            onReset: () => _ctrl.clear(),
+            onReset: () {
+              // A reset leaves the field untouched, so clearing it is not an
+              // edit to report.
+              _reportedText = '';
+              _ctrl.clear();
+            },
             autovalidateMode: widget.autovalidateMode,
             builder: (formState) {
               final decor = resolveDecoration(context, formState);
