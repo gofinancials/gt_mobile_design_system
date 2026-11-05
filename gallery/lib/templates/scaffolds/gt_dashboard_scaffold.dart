@@ -162,7 +162,6 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
               hidden: _hidden,
               onToggleHide: _toggleHidden,
               actions: GtActionButtonBar(
-                padding: context.insets.symmetricDp(horizontal: 26.5.px),
                 buttons: [
                   GtActionButton(
                     icon: GtIcons.circleInfo,

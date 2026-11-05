@@ -8,17 +8,23 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// head of an account screen.
 ///
 /// The bar measures itself with a [LayoutBuilder] and shares the width it has
-/// been given, less [padding] and a [BuildContext.spacingMd] gap between tiles,
-/// out as one equal slot per button. It then picks one of two layouts:
+/// been given, less [padding], out as one equal slot per button. It then picks
+/// one of two layouts:
 /// - **Every button fits its slot** — its tile is no wider than the slot, and
 ///   its caption wraps into the slot within two lines, at the ambient text
-///   scale, without breaking a word. The bar is a plain [Row] that fills its
-///   box, spreading the tiles edge to edge with
-///   [MainAxisAlignment.spaceBetween]. Each button is bounded to its slot, so a
-///   caption wraps rather than pushing the row wider.
+///   scale, without breaking a word. Each button is centred in its own slot,
+///   so the spacing follows from the row's width and the number of buttons:
+///   four sit as the Home quick actions do, four equal items edge to edge;
+///   two or three spread evenly about the centre; one sits in the middle.
+///   Each slot keeps a [BuildContext.spacingXs] inset either side, so the
+///   captions of neighbouring buttons never touch, and a caption wraps within
+///   its slot rather than pushing the row wider.
 /// - **Any button does not** — the row becomes a horizontally scrolling strip
-///   anchored to the leading edge, gapped by [BuildContext.spacingMd], so every
+///   anchored to the leading edge, gapped by [BuildContext.spacingLg], so every
 ///   action stays whole and reachable instead of overflowing.
+///
+/// The fitted layout spaces the buttons itself, so [padding] is for the bar's
+/// own margins, not for spreading the buttons out.
 ///
 /// Either way [padding] is applied around the row, tiles are top-aligned so a
 /// wrapped caption never pushes its tile out of line, and the row is capped at
@@ -58,7 +64,8 @@ class GtActionButtonBar extends GtStatelessWidget {
   /// Padding applied around the row of [buttons], in both layouts.
   ///
   /// Defaults to [EdgeInsets.zero]. Its horizontal inset comes out of the width
-  /// the bar shares among [buttons].
+  /// the bar shares among [buttons]. The buttons are already spaced evenly
+  /// across what is left, so there is no need to pad them apart.
   final EdgeInsetsGeometry padding;
 
   @override
@@ -70,26 +77,39 @@ class GtActionButtonBar extends GtStatelessWidget {
         final width = constraints.maxWidth;
         final shouldScroll = _shouldScroll(context, width);
 
-        List<Widget> children = buttons;
-        if (!shouldScroll) {
-          children = [for (final button in buttons) Flexible(child: button)];
-        }
-
-        Widget child = Row(
-          spacing: context.spacingLg,
-          mainAxisAlignment: shouldScroll ? .start : .spaceBetween,
-          crossAxisAlignment: .start,
-          children: children,
-        );
-
-        if (!shouldScroll) child = Padding(padding: padding, child: child);
-
+        Widget child;
         if (shouldScroll) {
           child = IntrinsicHeight(
             child: SingleChildScrollView(
               scrollDirection: .horizontal,
               padding: padding,
-              child: child,
+              child: Row(
+                spacing: context.spacingLg,
+                crossAxisAlignment: .start,
+                children: buttons,
+              ),
+            ),
+          );
+        } else {
+          // One equal slot per button, each centred in it, so the gaps follow
+          // from the row's width however many buttons there are. The slots
+          // share at most [_maxRowWidth], or a wide box would spread them out.
+          child = ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: _maxRowWidth),
+            child: Padding(
+              padding: padding,
+              child: Row(
+                crossAxisAlignment: .start,
+                children: [
+                  for (final button in buttons)
+                    Expanded(
+                      child: Padding(
+                        padding: .symmetric(horizontal: context.spacingXs),
+                        child: Align(alignment: .topCenter, child: button),
+                      ),
+                    ),
+                ],
+              ),
             ),
           );
         }
@@ -103,13 +123,13 @@ class GtActionButtonBar extends GtStatelessWidget {
 
   /// Whether [buttons] need the scrolling layout to fit a box [width] wide.
   ///
-  /// Caps [width] at [_maxRowWidth], takes off [padding] and the gaps between
-  /// tiles, and shares what is left equally among [buttons]. The row scrolls
-  /// when any button does not fit its share; see [_fitsSlot].
+  /// Caps [width] at [_maxRowWidth], takes off [padding], and shares what is
+  /// left equally among [buttons], less each slot's inset, as the fitted
+  /// layout does. The row scrolls when any button does not fit its share; see
+  /// [_fitsSlot].
   bool _shouldScroll(BuildContext context, double width) {
-    final gaps = context.spacingMd * (buttons.length - 1);
-    final room = math.min(width, _maxRowWidth) - padding.horizontal - gaps;
-    final slot = room / buttons.length;
+    final room = math.min(width, _maxRowWidth) - padding.horizontal;
+    final slot = room / buttons.length - context.spacingXs * 2;
 
     return buttons.any((button) => !_fitsSlot(context, button, slot));
   }
