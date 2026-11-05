@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 void main() {
@@ -11,6 +12,23 @@ void main() {
       ),
     );
   }
+
+  testWidgets('draws an overdrawn balance with the sign before the symbol', (
+    tester,
+  ) async {
+    const balance = GtBalanceText(amount: -22096.06);
+    expect(balance.amtDisplay, '22,096.06');
+    expect(balance.semanticLabel, contains('-22,096.06'));
+
+    await tester.pumpWidget(buildTestWidget(balance));
+    expect(find.text('-${AppStrings.naira} '), findsOneWidget);
+
+    // Masked, the line does not reveal that the account is overdrawn.
+    expect(
+      const GtBalanceText(amount: -22096.06, hidden: true).semanticLabel,
+      isNot(contains('-')),
+    );
+  });
 
   group('GtBalanceText visibility icon', () {
     testWidgets('shows the icon and toggles on tap by default', (tester) async {

@@ -27,7 +27,7 @@ List<GtOnboardingSlideData> getPersonalOnboardingSlides(BuildContext context) {
       title: "SEND & receive payments from abroad.",
       titleTextAlign: .start,
       image: NetworkImage(GtNetworkImages.personalSlide4Bg),
-      contentImage: AppImageData(GtVectorIllustrations.fx),
+      contentImage: AppImageData(GtVectorIllustrations.fx.adapt(context)),
       contentImageSpacer: const GtGap.ySection4xl(),
     ),
   ];

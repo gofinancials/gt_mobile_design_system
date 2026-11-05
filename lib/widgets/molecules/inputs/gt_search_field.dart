@@ -56,6 +56,14 @@ class GtSearchField extends GtStatefulWidget {
   /// An optional semantic label for the search field.
   final String? _actionSemanticsLabel;
 
+  /// When the field is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// Under [AutovalidateMode.onUserInteraction], set here or on the enclosing
+  /// [GtForm], the error shows as the value changes and clears once it is
+  /// valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a standard editable [GtSearchField].
   const GtSearchField({
     super.key,
@@ -74,6 +82,7 @@ class GtSearchField extends GtStatefulWidget {
     OnPressed? onTap,
     bool readonly = false,
     String? heroTag,
+    this.autovalidateMode = .disabled,
   }) : _readonly = readonly,
        _onTap = onTap,
        _actionSemanticsLabel = null,
@@ -99,6 +108,7 @@ class GtSearchField extends GtStatefulWidget {
     required OnPressed onTap,
     String? semanticsLabel,
     String? heroTag,
+    this.autovalidateMode = .disabled,
   }) : _readonly = true,
        autoFocus = false,
        _onTap = onTap,
@@ -150,6 +160,7 @@ class _GtSearchFieldState extends State<GtSearchField> {
       },
     );
     Widget child = GtTextField(
+      autovalidateMode: widget.autovalidateMode,
       isEnabled: widget.isEnabled,
       decoration: widget.decoration ?? context.inputStyles.searchDecoration(),
       helperText: widget.helperText,

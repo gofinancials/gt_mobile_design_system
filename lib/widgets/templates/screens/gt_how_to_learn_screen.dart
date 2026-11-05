@@ -42,7 +42,7 @@ class GtHowToLearnTile extends GtStatelessWidget {
           instruction,
           style: GtTextStyleOverrides.resolve(
             style,
-            context.textStyles.subHeadM(color: color),
+            context.textStyles.labelM(color: color, weight: .w500),
             textColor,
           ),
           textAlign: .center,
@@ -126,8 +126,9 @@ class GtHowToLearnScreen extends GtStatelessWidget {
               GtText(
                 description,
                 textAlign: .center,
-                style: context.textStyles.subHeadM(
+                style: context.textStyles.labelM(
                   color: GtColors.neutral400.value,
+                  weight: .w500,
                 ),
               ),
               GtGap.ySection4xl(),
@@ -143,8 +144,9 @@ class GtHowToLearnScreen extends GtStatelessWidget {
                     padding: context.insets.allDp(16.px),
                     child: GtText(
                       continueText,
-                      style: context.textStyles.subHeadS(
+                      style: context.textStyles.labelS(
                         color: palette.staticColors.white,
+                        weight: .w500,
                       ),
                     ),
                   ),

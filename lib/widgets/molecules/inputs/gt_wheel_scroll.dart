@@ -14,10 +14,24 @@ enum GtWheelScrollSize {
   large,
 }
 
+/// Defines where the selected item of a [GtWheelScroll] sits.
+enum GtWheelScrollAlignment {
+  /// The selected item sits in the middle of three rows, between the items
+  /// before and after it.
+  center,
+
+  /// The selected item sits at the top, above one shorter row showing the
+  /// item after it. The items before it are hidden, so the wheel leaves no
+  /// blank row when it opens on its first item. Suits a compact card, such as
+  /// a year picker under a form field.
+  top,
+}
+
 /// A vertical wheel picker that scrolls through a list of [GtWheelScrollData].
 ///
 /// The selected item sits in a highlighted band at the centre of the wheel
-/// while its neighbours fade out above and below it. Scrolling snaps to an
+/// while its neighbours fade out above and below it. Set [alignment] to
+/// [GtWheelScrollAlignment.top] for a compact wheel with the band at the top. Scrolling snaps to an
 /// item and reports it through [onChanged]. Screen readers step through the
 /// items with the increase and decrease gestures.
 ///
@@ -45,6 +59,9 @@ class GtWheelScroll<T> extends GtStatefulWidget {
   /// The visual scale of the wheel. Defaults to [GtWheelScrollSize.regular].
   final GtWheelScrollSize size;
 
+  /// Where the selected item sits. Defaults to [GtWheelScrollAlignment.center].
+  final GtWheelScrollAlignment alignment;
+
   /// The text style of the selected item.
   ///
   /// Defaults to a style chosen by [size].
@@ -65,7 +82,9 @@ class GtWheelScroll<T> extends GtStatefulWidget {
   ///
   /// It masks the wheel, so only its opacity matters: opaque stops show the
   /// items and transparent stops hide them. Defaults to a vertical fade that
-  /// keeps the middle third fully visible.
+  /// keeps the selected item fully visible: the middle third when [alignment]
+  /// is [GtWheelScrollAlignment.center], the band at the top when it is
+  /// [GtWheelScrollAlignment.top].
   final Gradient? fadeGradient;
 
   /// Whether the wheel responds to scrolling. Defaults to true.
@@ -80,6 +99,7 @@ class GtWheelScroll<T> extends GtStatefulWidget {
     this.label,
     this.semanticsLabel,
     this.size = .regular,
+    this.alignment = .center,
     this.selectedStyle,
     this.itemStyle,
     this.labelStyle,
@@ -160,18 +180,26 @@ class _GtWheelScrollState<T> extends State<GtWheelScroll<T>> {
     final styles = context.textStyles;
     final items = widget.items;
 
-    final itemExtent = switch (widget.size) {
+    final bandExtent = switch (widget.size) {
       .large => context.dp(48.px),
       .regular => context.dp(36.px),
     };
+    double itemExtent = bandExtent;
+    double viewportExtent = bandExtent * 3;
+    if (widget.alignment == .top) {
+      // The row below the band is 28 tall and starts 4 under it.
+      itemExtent = bandExtent / 2 + context.dp(18.px);
+      viewportExtent = bandExtent + context.dp(32.px);
+    }
     final selectedStyle =
         widget.selectedStyle ??
         switch (widget.size) {
-          .large => styles.subHeadM(weight: .w600, color: palette.text.sub),
-          .regular => styles.subHeadS(color: palette.text.sub, weight: .w600),
+          .large => styles.labelM(weight: .w600, color: palette.text.sub),
+          .regular => styles.labelS(color: palette.text.sub, weight: .w600),
         };
     final itemStyle =
-        widget.itemStyle ?? styles.subHeadS(color: palette.text.disabled);
+        widget.itemStyle ??
+        styles.labelS(color: palette.text.disabled, weight: .w500);
     final labelStyle =
         widget.labelStyle ??
         styles.titleS(weight: .w600, color: palette.text.strong);
@@ -184,17 +212,25 @@ class _GtWheelScrollState<T> extends State<GtWheelScroll<T>> {
     final visible = palette.bg.strong;
     final fadeGradient =
         widget.fadeGradient ??
-        LinearGradient(
-          begin: .topCenter,
-          end: .bottomCenter,
-          stops: const [0, 1 / 3, 2 / 3, 1],
-          colors: [
-            visible.setOpacity(0),
-            visible,
-            visible,
-            visible.setOpacity(0),
-          ],
-        );
+        switch (widget.alignment) {
+          .center => LinearGradient(
+            begin: .topCenter,
+            end: .bottomCenter,
+            stops: const [0, 1 / 3, 2 / 3, 1],
+            colors: [
+              visible.setOpacity(0),
+              visible,
+              visible,
+              visible.setOpacity(0),
+            ],
+          ),
+          .top => LinearGradient(
+            begin: .topCenter,
+            end: .bottomCenter,
+            stops: [0, bandExtent / viewportExtent, 1],
+            colors: [visible, visible, visible.setOpacity(0)],
+          ),
+        };
 
     ScrollPhysics physics = const FixedExtentScrollPhysics();
     if (!widget.isEnabled) {
@@ -209,6 +245,48 @@ class _GtWheelScrollState<T> extends State<GtWheelScroll<T>> {
     final next = items.elementAtOrNull(_selectedIndex + 1);
     final canDecrease = widget.isEnabled && previous != null;
     final canIncrease = widget.isEnabled && next != null;
+
+    Widget wheel = ListWheelScrollView.useDelegate(
+      controller: _controller,
+      itemExtent: itemExtent,
+      physics: physics,
+      diameterRatio: 8,
+      onSelectedItemChanged: _onSelectedItemChanged,
+      childDelegate: ListWheelChildBuilderDelegate(
+        childCount: items.length,
+        builder: (context, index) {
+          final isSelected = index == _selectedIndex;
+          return Container(
+            padding: context.insets.symmetricDp(
+              horizontal: isSelected ? 8.px : 0,
+            ),
+            alignment: .center,
+            child: GtText(
+              items[index].label,
+              style: isSelected ? selectedStyle : itemStyle,
+              textAlign: .center,
+              maxLines: 1,
+              overflow: .ellipsis,
+            ),
+          );
+        },
+      ),
+    );
+
+    if (widget.alignment == .top) {
+      wheel = Stack(
+        clipBehavior: .hardEdge,
+        children: [
+          Positioned(
+            top: bandExtent / 2 - itemExtent * 1.5,
+            left: 0,
+            right: 0,
+            height: itemExtent * 3,
+            child: wheel,
+          ),
+        ],
+      );
+    }
 
     return GtDisabledOverlay(
       !widget.isEnabled,
@@ -235,44 +313,22 @@ class _GtWheelScrollState<T> extends State<GtWheelScroll<T>> {
             onIncrease: canIncrease ? () => _scrollBy(1) : null,
             child: ExcludeSemantics(
               child: SizedBox(
-                height: itemExtent * 3,
+                height: viewportExtent,
                 child: Stack(
-                  alignment: .center,
+                  alignment: switch (widget.alignment) {
+                    .center => .center,
+                    .top => .topCenter,
+                  },
                   children: [
                     SizedBox(
                       width: double.infinity,
-                      height: itemExtent,
+                      height: bandExtent,
                       child: DecoratedBox(decoration: selectedDecoration),
                     ),
                     ShaderMask(
                       blendMode: .dstIn,
                       shaderCallback: fadeGradient.createShader,
-                      child: ListWheelScrollView.useDelegate(
-                        controller: _controller,
-                        itemExtent: itemExtent,
-                        physics: physics,
-                        diameterRatio: 8,
-                        onSelectedItemChanged: _onSelectedItemChanged,
-                        childDelegate: ListWheelChildBuilderDelegate(
-                          childCount: items.length,
-                          builder: (context, index) {
-                            final isSelected = index == _selectedIndex;
-                            return Container(
-                              padding: context.insets.symmetricDp(
-                                horizontal: isSelected ? 8.px : 0,
-                              ),
-                              alignment: .center,
-                              child: GtText(
-                                items[index].label,
-                                style: isSelected ? selectedStyle : itemStyle,
-                                textAlign: .center,
-                                maxLines: 1,
-                                overflow: .ellipsis,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                      child: wheel,
                     ),
                   ],
                 ),
@@ -376,6 +432,7 @@ class GtWheelScrollModal extends GtStatelessWidget {
     if (title.hasValue) {
       header = GtTitleAppBar(
         title: title.value,
+        primary: false,
         trailing: GtOptionalWidgetPair(tail: GtCancelButton()),
       );
     }

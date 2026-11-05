@@ -11,7 +11,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 class GtEmptyState extends GtStatelessWidget {
   /// Illustration asset path rendered at the top (e.g. from
   /// [GtVectorIllustrations]).
-  final AppImageData icon;
+  ///
+  /// Defaults to [GtVectorIllustrations.empty], adapted to the palette in
+  /// scope.
+  final AppImageData? icon;
 
   /// An optional custom graphic to display above the title.
   ///
@@ -35,6 +38,10 @@ class GtEmptyState extends GtStatelessWidget {
 
   /// The callback to execute when the call-to-action button is pressed.
   final OnPressed? onActionPressed;
+
+  /// An optional icon drawn before [actionText] on the call-to-action button,
+  /// such as a plus on a "New invoice" action.
+  final IconData? actionLeading;
 
   /// The visual variant of the call-to-action button.
   final GtButtonVariant? buttonVariant;
@@ -61,13 +68,14 @@ class GtEmptyState extends GtStatelessWidget {
   /// Creates a [GtEmptyState] with required icon/title/subtitle content.
   const GtEmptyState({
     super.key,
-    this.icon = const AppImageData(GtVectorIllustrations.empty),
+    this.icon,
     this.graphic,
     required this.title,
     this.subtitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
     this.actionText,
     this.onActionPressed,
+    this.actionLeading,
     this.buttonVariant,
     this.alignment,
     this.titleCase = .upper,
@@ -84,12 +92,13 @@ class GtEmptyState extends GtStatelessWidget {
     return GtViewStateWidget(
       title: title,
       description: subtitle,
-      icon: icon,
+      icon: icon ?? AppImageData(GtVectorIllustrations.empty.adapt(context)),
       graphic: graphic,
       iconSize: iconSize,
       alignment: alignment ?? .center,
       gapToDescription: gapToSubtitle,
       actionText: actionText,
+      actionLeading: actionLeading,
       onActionPressed: onActionPressed,
       actionVariant: buttonVariant,
       actionSize: .xsmall,

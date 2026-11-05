@@ -15,6 +15,7 @@ const _images = [
   ('Texture', GtNetworkImages.avatarTexture1, 'GtNetworkImages.avatarTexture1'),
   ('3D Template', GtNetworkImages.avatar3d1, 'GtNetworkImages.avatar3d1'),
   ('Blank URL', '', "''"),
+  ('Broken URL', GalleryBrokenImages.url, 'GalleryBrokenImages.url'),
   ('None', null, null),
 ];
 
@@ -119,6 +120,10 @@ class _AvatarPlayground extends GtStatelessWidget {
       label: 'Show Loading Indicator',
       initialValue: false,
     );
+    final passErrorWidget = context.knobs.boolean(
+      label: 'Pass errorWidget',
+      initialValue: false,
+    );
     final isInteractive = context.knobs.boolean(
       label: 'Interactive (onPressed)',
       initialValue: false,
@@ -147,7 +152,7 @@ GtAvatar(
   isUserAvatar: $isUserAvatar,
   size: $size,
   fit: BoxFit.${fit.name},
-  showLoadingIndicator: $showLoadingIndicator,
+  showLoadingIndicator: $showLoadingIndicator,${passErrorWidget ? '\n  errorWidget: const GalleryErrorFallback(size: $size),' : ''}
   alignment: ${alignment.$2},
   showBorder: $showBorder,${_colorArg('borderColor', borderColor)}
   forceGradiant: $forceGradiant,${gradient.$3 == null ? '' : '\n  gradient: ${gradient.$3},'}${_colorArg('bgColor', bgColor)}${_colorArg('initialsColor', initialsColor)}${initialsStyle.$3 == null ? '' : '\n  initialsStyle: ${initialsStyle.$3},'}${tag.$3 == null ? '' : '\n  tag: ${tag.$3},'}${tagSize == null ? '' : '\n  tagSize: $tagSize,'}${isInteractive ? '\n  onPressed: () {},\n  semanticsLabel: "$semanticsLabel",' : ''}
@@ -173,6 +178,9 @@ GtAvatar(
               tag: tag.$2,
               tagSize: tagSize,
               showLoadingIndicator: showLoadingIndicator,
+              errorWidget: passErrorWidget
+                  ? GalleryErrorFallback(size: size)
+                  : null,
               onPressed: isInteractive ? () {} : null,
               semanticsLabel: semanticsLabel,
             ),
@@ -205,6 +213,48 @@ GtAvatar(
               ),
               ('Placeholder', GtAvatar(isUserAvatar: true, size: 64)),
               ('Empty', GtAvatar(size: 64)),
+            ],
+          ),
+          const GtGap.ySectionSm(),
+          _Showcase(
+            title: 'When the image fails',
+            caption:
+                'Without an errorWidget a failed image falls back like an '
+                'empty avatar: initials, then the placeholder on a user avatar, '
+                'then the bare gradient.',
+            items: [
+              (
+                'Initials',
+                GtAvatar(
+                  avatar: AppImageData(GalleryBrokenImages.url),
+                  initials: 'JD',
+                  size: 64,
+                ),
+              ),
+              (
+                'User avatar',
+                GtAvatar(
+                  avatar: AppImageData(GalleryBrokenImages.url),
+                  isUserAvatar: true,
+                  size: 64,
+                ),
+              ),
+              (
+                'Neither',
+                GtAvatar(
+                  avatar: AppImageData(GalleryBrokenImages.url),
+                  size: 64,
+                ),
+              ),
+              (
+                'errorWidget',
+                GtAvatar(
+                  avatar: AppImageData(GalleryBrokenImages.url),
+                  initials: 'JD',
+                  size: 64,
+                  errorWidget: GalleryErrorFallback(size: 64),
+                ),
+              ),
             ],
           ),
           const GtGap.ySectionSm(),

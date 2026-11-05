@@ -157,7 +157,7 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
       title: title,
       subtitle: subtitle,
       trailing: GtSvg(
-        GtVectorIllustrations.serviceStatus,
+        GtVectorIllustrations.serviceStatus.adapt(context),
         width: context.dp(80.px),
         height: context.dp(80.px),
         alignment: Alignment.topRight,
@@ -179,7 +179,7 @@ Widget playgroundGtActionCardUseCase(BuildContext context) {
         '''GtActionCard.dismissibleTrailing(
   title: "$title",
   subtitle: "$subtitle",
-  trailing: GtSvg(GtVectorIllustrations.serviceStatus, width: 80, height: 80),
+  trailing: GtSvg(GtVectorIllustrations.serviceStatus.adapt(context), width: 80, height: 80),
   onActionTap: () {},
   actionText: "$actionText",
   variant: GtCardVariant.${variant.name},

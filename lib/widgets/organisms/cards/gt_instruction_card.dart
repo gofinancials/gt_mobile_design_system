@@ -103,7 +103,7 @@ class GtInstructionCard extends GtStatelessWidget {
               title,
               style: GtTextStyleOverrides.resolve(
                 titleStyle,
-                context.textStyles.subHeadS(color: textColor),
+                context.textStyles.labelS(color: textColor, weight: .w600),
                 titleColor,
               ),
               textAlign: .center,

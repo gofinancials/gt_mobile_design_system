@@ -95,4 +95,47 @@ void main() {
     );
     expect(find.byIcon(GtIcons.faceId), findsOneWidget);
   });
+
+  Future<void> pushLockForm(
+    WidgetTester tester, {
+    bool implyLeading = true,
+  }) async {
+    final navigatorKey = GlobalKey<NavigatorState>();
+    await tester.pumpWidget(
+      GtThemeProvider(
+        theme: kPersonalTheme,
+        child: MaterialApp(
+          navigatorKey: navigatorKey,
+          theme: kPersonalTheme.materialLight,
+          home: const SizedBox.shrink(),
+        ),
+      ),
+    );
+
+    final form = GtVirtualKeypadForm.withAvatar(
+      name: 'Ada',
+      maxLength: 4,
+      controller: TextEditingController(),
+      formKey: GlobalKey<FormState>(),
+      initials: 'A',
+      implyLeading: implyLeading,
+    );
+    navigatorKey.currentState!.push(MaterialPageRoute(builder: (_) => form));
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('GtVirtualKeypadForm implies a back button on a pushed route', (
+    tester,
+  ) async {
+    await pushLockForm(tester);
+
+    expect(find.byType(GtBackButton), findsOneWidget);
+  });
+
+  testWidgets('GtVirtualKeypadForm drops the back button when implyLeading '
+      'is false', (tester) async {
+    await pushLockForm(tester, implyLeading: false);
+
+    expect(find.byType(GtBackButton), findsNothing);
+  });
 }

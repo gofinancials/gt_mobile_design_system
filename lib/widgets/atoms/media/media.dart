@@ -5,4 +5,5 @@ export 'gt_icon.dart';
 export 'gt_image.dart';
 export 'gt_memory_image.dart';
 export 'gt_network_image.dart';
+export 'gt_qr_code.dart';
 export 'gt_svg.dart';

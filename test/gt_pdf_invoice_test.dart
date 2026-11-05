@@ -7,6 +7,14 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 import 'package:pdf/pdf.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  late GtPdfTypeface typeface;
+
+  setUpAll(() async {
+    typeface = await GtPdfTypeface.load();
+  });
+
   const item = GtPdfInvoiceItem(
     description: 'Design',
     price: '₦300,000',
@@ -168,7 +176,10 @@ void main() {
     });
 
     test('lays the reference invoice out on a single page', () async {
-      final document = const GtPdfInvoiceBuilder().build(reference);
+      final document = const GtPdfInvoiceBuilder().build(
+        reference,
+        typeface: typeface,
+      );
       await document.save();
 
       expect(document.document.pdfPageList.pages, hasLength(1));
@@ -194,7 +205,10 @@ void main() {
         poweredBy: reference.poweredBy,
       );
 
-      final document = const GtPdfInvoiceBuilder().build(long);
+      final document = const GtPdfInvoiceBuilder().build(
+        long,
+        typeface: typeface,
+      );
       await document.save();
 
       expect(document.document.pdfPageList.pages.length, greaterThan(1));
@@ -216,7 +230,10 @@ void main() {
         poweredBy: reference.poweredBy,
       );
 
-      final document = const GtPdfInvoiceBuilder().build(noted);
+      final document = const GtPdfInvoiceBuilder().build(
+        noted,
+        typeface: typeface,
+      );
       await document.save();
 
       // The reference fills its page, so the note opens a second one.
@@ -238,7 +255,10 @@ void main() {
         poweredBy: reference.poweredBy,
       );
 
-      final document = const GtPdfInvoiceBuilder().build(long);
+      final document = const GtPdfInvoiceBuilder().build(
+        long,
+        typeface: typeface,
+      );
       await document.save();
 
       expect(document.document.pdfPageList.pages.length, greaterThan(1));

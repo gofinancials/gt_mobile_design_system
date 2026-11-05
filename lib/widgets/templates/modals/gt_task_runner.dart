@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
@@ -45,7 +46,7 @@ final class GtTaskRunner with GtBottomModalMixin {
   /// * [controller] hands ownership of the modal to the caller. A screen whose
   ///   task can outlive it creates the controller, passes it here, and disposes
   ///   it in its own `dispose` — which takes the modal down with the screen
-  ///   rather than leaving a blocking spinner over whatever replaced it. The
+  ///   rather than leaving a blocking spinner over whatever replaced it.
   ///   Disposing it also stops the outcome being reported, so a screen that
   ///   has moved on is not driven by a task it no longer wants. The
   ///   runner disposes only a controller it created itself, and reads the
@@ -54,19 +55,25 @@ final class GtTaskRunner with GtBottomModalMixin {
   ///   [completeDelay] and [keepOpenOnFailure]. A supplied controller's own
   ///   `onComplete` runs in addition to [onSuccess] and [onError], so leave it
   ///   unset unless both are wanted.
-  /// * [onlyWhenVisible] skips the callbacks when the screen that started the
-  ///   task is no longer where the customer is — it has been closed, or a route
-  ///   the customer navigated to now covers it. This runner's own modal does
-  ///   not count as covering it, so it composes with [keepOpenOnFailure].
-  ///   Flows that must report their outcome wherever the customer ended up turn
-  ///   this off.
+  /// * [onlyWhenVisible] reports the outcome where the customer is: on the
+  ///   screen that started the task. An outcome that lands while a route
+  ///   covers that screen — an app's re-authentication lock, say — is held
+  ///   until the route is popped, and dropped only if the screen leaves the
+  ///   navigator first. This runner's own modal does not count as covering
+  ///   it, so it composes with [keepOpenOnFailure]. Covering is judged within
+  ///   the starting screen's navigator, so a route pushed over it on another
+  ///   navigator does not hold the outcome. Flows that must report their
+  ///   outcome wherever the customer ended up turn this off.
   ///
   /// The modal is removed in place when something was pushed over it while the
   /// task ran, so a confirmation or re-authentication route opened mid-task is
   /// never the thing that closes.
   ///
   /// Returns the task's [TaskResponse], resolving once the modal is gone and
-  /// the callbacks have run. A [task] that throws is reported as a
+  /// the callbacks have run — or, under [onlyWhenVisible], once the outcome
+  /// has been dropped. It waits while the starting screen is covered, so a
+  /// caller that navigates on the result does so from that screen rather than
+  /// from under whatever covered it. A [task] that throws is reported as a
   /// [TaskFailure] rather than propagating.
   static Future<TaskResponse<T>> run<T>(
     BuildContext context, {
@@ -129,12 +136,16 @@ final class GtTaskRunner with GtBottomModalMixin {
     // caller disposed the controller because its screen went away.
     await resolved.settled;
 
-    if (context.mounted &&
-        _shouldReport(
+    final shouldReport =
+        context.mounted &&
+        await _whenReportable(
+          context,
           owner: owner,
           controller: resolved,
           onlyWhenVisible: onlyWhenVisible,
-        )) {
+        );
+
+    if (shouldReport) {
       switch (result) {
         case TaskSuccess<T>(data: final data):
           onSuccess(data);
@@ -153,7 +164,49 @@ final class GtTaskRunner with GtBottomModalMixin {
     return result;
   }
 
-  /// Whether the task's outcome should still be reported to the caller.
+  /// Resolves to whether the task's outcome should be reported, holding it
+  /// while the screen that started the task is covered.
+  ///
+  /// A route pushed over the modal while the task ran — an app's
+  /// re-authentication lock — sees the modal removed from under it, and once
+  /// it is popped the customer is back on [owner] with nothing on screen.
+  /// Deciding once, at settlement, would drop the outcome they came back for,
+  /// so this checks again after every frame until [owner] is current or has
+  /// left the navigator. A post-frame callback schedules no frames of its
+  /// own, so a screen that stays covered costs nothing, and the pop that
+  /// uncovers it produces the frame that reports.
+  static Future<bool> _whenReportable<T>(
+    BuildContext context, {
+    required ModalRoute<dynamic>? owner,
+    required GtBottomModalController<T> controller,
+    required bool onlyWhenVisible,
+  }) {
+    final decision = Completer<bool>();
+
+    void check() {
+      // Checked before [_shouldReport], which also refuses a disposed
+      // controller — and would hold its outcome forever rather than drop it.
+      if (!context.mounted ||
+          controller.isDisposed ||
+          owner?.isActive == false) {
+        decision.complete(false);
+      } else if (_shouldReport(
+        owner: owner,
+        controller: controller,
+        onlyWhenVisible: onlyWhenVisible,
+      )) {
+        decision.complete(true);
+      } else {
+        SchedulerBinding.instance.addPostFrameCallback((_) => check());
+      }
+    }
+
+    // The first check runs now, so an uncovered screen hears straight away.
+    check();
+    return decision.future;
+  }
+
+  /// Whether the task's outcome can be reported to the caller right now.
   ///
   /// The runner's own modal counts as part of the screen that started the
   /// task: [GtBottomModalController.keepOpenOnFailure] holds it on top of

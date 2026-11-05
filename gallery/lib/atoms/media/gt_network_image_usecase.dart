@@ -8,7 +8,14 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 Widget playgroundGtNetworkImageUseCase(BuildContext context) {
   final urlOption = context.knobs.object.dropdown(
     label: 'Image URL',
-    options: ['Avatar', 'Savings Illustration', 'Debit Card Mockup'],
+    options: [
+      'Avatar',
+      'Savings Illustration',
+      'Debit Card Mockup',
+      'Broken URL',
+      'Broken SVG URL',
+      'Malformed Data URI',
+    ],
     initialOption: 'Avatar',
   );
 
@@ -18,6 +25,12 @@ Widget playgroundGtNetworkImageUseCase(BuildContext context) {
         return GtNetworkImages.savings;
       case 'Debit Card Mockup':
         return GtNetworkImages.debitCard;
+      case 'Broken URL':
+        return GalleryBrokenImages.url;
+      case 'Broken SVG URL':
+        return GalleryBrokenImages.svgUrl;
+      case 'Malformed Data URI':
+        return GalleryBrokenImages.dataUri;
       default:
         return GtNetworkImages.sampleAvatar1;
     }
@@ -54,6 +67,11 @@ Widget playgroundGtNetworkImageUseCase(BuildContext context) {
     labelBuilder: (value) => value.$1,
   );
 
+  final passErrorWidget = context.knobs.boolean(
+    label: 'Pass errorWidget',
+    initialValue: false,
+  );
+
   final codeSnippet =
       '''
 GtNetworkImage(
@@ -61,18 +79,32 @@ GtNetworkImage(
   width: $width,
   height: $height,
   fit: BoxFit.${fit.name},
-  alignment: ${alignment.$2}
+  alignment: ${alignment.$2},${passErrorWidget ? '\n  errorWidget: const MyFallback(),' : ''}
 )''';
 
   return GtWidgetDocPage(
     title: 'GtNetworkImage',
     description: '''
 <b>GtNetworkImage</b> renders images from URLs with placeholder and error handling.
+When an image fails it draws <b>errorWidget</b>, or an empty box of its size without one.
 
 <b>Related:</b>
 • <b>GtAssetImage:</b> For bundled assets
 • <b>GtImage:</b> General-purpose image dispatcher''',
     code: codeSnippet,
-    child: GtNetworkImage(selectedUrl, width: width, height: height, fit: fit),
+    child: DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border.all(color: context.palette.stroke.soft),
+      ),
+      child: GtNetworkImage(
+        selectedUrl,
+        width: width,
+        height: height,
+        fit: fit,
+        errorWidget: passErrorWidget
+            ? GalleryErrorFallback(size: width < height ? width : height)
+            : null,
+      ),
+    ),
   );
 }

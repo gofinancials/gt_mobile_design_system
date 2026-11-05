@@ -26,22 +26,22 @@ Widget playgroundGtBillCardUseCase(BuildContext context) {
   if (mode == 'tile') {
     cardWidget = GtBillCard.tile(
       name: name,
-      icon: GtSvg(GtVectorIllustrations.building, width: 34),
+      icon: GtSvg(GtVectorIllustrations.building.adapt(context), width: 34),
     );
     codeSnippet =
         '''GtBillCard.tile(
   name: "$name",
-  icon: GtSvg(GtVectorIllustrations.building),
+  icon: GtSvg(GtVectorIllustrations.building.adapt(context)),
 )''';
   } else {
     cardWidget = GtBillCard(
       name: name,
-      icon: GtSvg(GtVectorIllustrations.building, width: 34),
+      icon: GtSvg(GtVectorIllustrations.building.adapt(context), width: 34),
     );
     codeSnippet =
         '''GtBillCard(
   name: "$name",
-  icon: GtSvg(GtVectorIllustrations.building),
+  icon: GtSvg(GtVectorIllustrations.building.adapt(context)),
 )''';
   }
 

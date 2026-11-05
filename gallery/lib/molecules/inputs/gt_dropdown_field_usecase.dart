@@ -12,6 +12,10 @@ Widget playgroundGtDropdownFieldUseCase(BuildContext context) {
     initialValue: 'Select an Option',
   );
   final isEnabled = context.knobs.boolean(label: 'Enabled', initialValue: true);
+  final showSearch = context.knobs.boolean(
+    label: 'Show Search',
+    initialValue: true,
+  );
   final decoration = context.knobs.object.dropdown<(String, GtInputDecoration)>(
     label: 'Input Style',
     options: context.inputStyles.all,
@@ -30,6 +34,7 @@ GtDropdownField<String>(
   label: "$label",
   sheetTitle: "$sheetTitle",
   isEnabled: $isEnabled,
+  showSearch: $showSearch,
   decoration: /* Selected: ${decoration.$1} */,
 )''';
 
@@ -47,6 +52,7 @@ GtDropdownField<String>(
       label: label,
       sheetTitle: sheetTitle.isEmpty ? null : sheetTitle,
       isEnabled: isEnabled,
+      showSearch: showSearch,
       decoration: decoration.$2,
     ),
   );

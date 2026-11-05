@@ -169,7 +169,7 @@ class GtAdvertCard extends GtStatelessWidget {
                     overflow: .ellipsis,
                     style: GtTextStyleOverrides.resolve(
                       titleStyle,
-                      context.textStyles.subHeadS(
+                      context.textStyles.labelS(
                         color: txtColor,
                         weight: .w600,
                         heightPx: 16,
@@ -187,7 +187,7 @@ class GtAdvertCard extends GtStatelessWidget {
                     overflow: .ellipsis,
                     style: GtTextStyleOverrides.resolve(
                       subtitleStyle,
-                      context.textStyles.subHeadXs(color: txtColor),
+                      context.textStyles.bodyXs(color: txtColor, weight: .w500),
                       subtitleColor,
                     ),
                   ),

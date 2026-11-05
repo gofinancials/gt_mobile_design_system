@@ -29,7 +29,30 @@ class GtButtonPill extends GtStatelessWidget {
   final bool showShadow;
 
   /// The overall size configuration of the button pill.
+  ///
+  /// Sets the default padding: 6 all round for [GtPillSize.normal], 8 for
+  /// [GtPillSize.larger]. [padding] overrides it.
   final GtPillSize size;
+
+  /// Overrides the padding that [size] would otherwise set.
+  ///
+  /// Taken as given, so build it with `context.insets` to keep it scaled to
+  /// the device — e.g. `context.insets.symmetricDp(horizontal: 6.px,
+  /// vertical: 4.px)`.
+  final EdgeInsetsGeometry? padding;
+
+  /// Replaces the label style, which defaults to [GtTextStyles.buttonXs].
+  ///
+  /// Only its size, weight and other non-colour properties are used. Its
+  /// colour is always replaced by [textColor], or by the [variant]'s text
+  /// colour when [textColor] is `null` — so `context.textStyles.button2s()`
+  /// can be passed as is.
+  final TextStyle? textStyle;
+
+  /// Overrides the [variant]'s text colour for the label and the icons.
+  ///
+  /// Also wins over any colour carried by [textStyle].
+  final Color? textColor;
 
   /// An alternative accessibility label for the button.
   final String? semanticsLabel;
@@ -48,6 +71,9 @@ class GtButtonPill extends GtStatelessWidget {
     this.onTap,
     this.showShadow = false,
     this.size = .normal,
+    this.padding,
+    this.textStyle,
+    this.textColor,
     this.semanticsLabel,
     this.semanticHint,
   });
@@ -55,21 +81,26 @@ class GtButtonPill extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final textColor = variant.getTextColor(palette);
+    final txtColor = textColor ?? variant.getTextColor(palette);
     final bgColor = variant.getBgColor(palette);
+    final labelStyle = GtTextStyleOverrides.resolve(
+      textStyle,
+      context.textStyles.buttonXs(color: txtColor),
+      txtColor,
+    );
 
     Widget? iconWidget;
     Widget? trailingWidget;
 
     if (icon != null) {
-      iconWidget = GtIcon.withColor(icon!, color: textColor, size: 14);
+      iconWidget = GtIcon.withColor(icon!, color: txtColor, size: 14);
     }
 
     if (trailing != null) {
-      trailingWidget = GtIcon.withColor(trailing!, color: textColor, size: 14);
+      trailingWidget = GtIcon.withColor(trailing!, color: txtColor, size: 14);
     }
 
-    final padding = switch (size) {
+    final paddingPx = switch (size) {
       .larger => 8.px,
       _ => 6.px,
     };
@@ -79,8 +110,9 @@ class GtButtonPill extends GtStatelessWidget {
       bgColor: bgColor,
       borderColor: bgColor,
       icon: iconWidget,
-      textColor: textColor,
-      padding: context.insets.allDp(padding),
+      textColor: txtColor,
+      textStyle: labelStyle,
+      padding: padding ?? context.insets.allDp(paddingPx),
       trailing: trailingWidget,
       alignment: alignment,
       showShadow: showShadow,
@@ -180,6 +212,10 @@ class GtCopyPill extends GtStatelessWidget {
 ///
 /// Variants without the `Trailing` suffix place the copy icon before the
 /// account number. Their `Trailing` counterparts place it after the number.
+///
+/// The resolvers read product primitives that have no dark values, so pass
+/// them [GtPaletteRawColors.light] in both modes, as [GtAccountCopyPill] does.
+/// A dark [GtPaletteRawColors] returns the inverted colors.
 enum GtAccountCopyPillVariant {
   /// Personal-account colors with a trailing copy icon.
   personalTrailing,
@@ -288,6 +324,10 @@ enum GtAccountCopyPillVariant {
 /// icon sits before or after the text. The whole pill is a button-sized tap
 /// target that writes [accountNumber] to the clipboard.
 ///
+/// The [variant]'s colors are the product's own and stay the same in light and
+/// dark mode: the pill resolves them from [GtPaletteRawColors.light] rather
+/// than the active palette's [GtPalette.raw].
+///
 /// **What is shown and what is copied are separate.** [accountNumber] is always
 /// what lands on the clipboard; [label] only changes what is drawn. Surfaces
 /// that want a decorated caption — `"Savings • 0123456789"` — must pass the
@@ -349,15 +389,12 @@ class GtAccountCopyPill extends GtStatelessWidget {
   /// invisible — set this together with [borderStyle] to draw an outline.
   final Color? borderColor;
 
-  /// Overrides the [variant]'s text color.
+  /// Overrides the [variant]'s text and copy-icon color.
   ///
-  /// Ignored by the text once [style] carries a color of its own, since [style]
-  /// replaces the default text style wholesale.
-  ///
-  /// *Note: the copy icon is painted with this field directly rather than the
-  /// color resolved from [variant], so leaving it `null` gives the icon the
-  /// default strong icon color instead of the product color the text uses. Set
-  /// it explicitly, or [showIcon] to `false`, wherever that mismatch shows.*
+  /// Defaults to the [variant]'s product color, resolved from the light
+  /// primitives so it stays the same in dark mode. The copy icon always takes
+  /// the resolved color, but the text ignores it once [style] carries a color
+  /// of its own, since [style] replaces the default text style wholesale.
   final Color? textColor;
 
   /// Replaces the text style outright.
@@ -409,15 +446,17 @@ class GtAccountCopyPill extends GtStatelessWidget {
   Widget build(BuildContext context) {
     Widget? leading, trailing;
 
-    final palette = context.palette;
-    final txtColor = textColor ?? variant.textColor(palette.raw);
-    final bgColor = backgroundColor ?? variant.bgColor(palette.raw);
-    final shadows = showShadow ? variant.shadows(palette.raw) : null;
+    // The product primitives have no dark values, so `palette.raw` would
+    // invert them in dark mode. Resolve them from the light tokens instead.
+    const raw = GtPaletteRawColors.light();
+    final txtColor = textColor ?? variant.textColor(raw);
+    final bgColor = backgroundColor ?? variant.bgColor(raw);
+    final shadows = showShadow ? variant.shadows(raw) : null;
 
     final icon = GtIcon.withColor(
       GtIcons.copyFilled,
       size: context.dp(14.px),
-      color: textColor,
+      color: txtColor,
     );
 
     if (variant.isTrailing && showIcon) trailing = icon;

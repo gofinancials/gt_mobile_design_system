@@ -5,3 +5,6 @@ export 'gt_pdf_receipt_builder.dart';
 export 'gt_pdf_receipt_data.dart';
 export 'gt_pdf_receipt_exporter.dart';
 export 'gt_pdf_receipt_theme.dart';
+export 'gt_pdf_statement_builder.dart';
+export 'gt_pdf_statement_data.dart';
+export 'gt_pdf_statement_exporter.dart';
