@@ -195,10 +195,13 @@ class GtVectorIllustrations {
   static const settings = "$_basePath/settings.svg";
 
   /// Path to the sheild SVG.
-  static const sheild = "$_basePath/sheild.svg";
+  static const sheild = "$_basePath/shield.svg";
 
   /// Path to the sheild2 SVG.
-  static const sheild2 = "$_basePath/sheild_2.svg";
+  static const sheild2 = "$_basePath/shield_2.svg";
+
+  /// Path to the sheild3 SVG.
+  static const sheild3 = "$_basePath/shield_3.svg";
 
   /// Path to the shopping SVG.
   static const shopping = "$_basePath/shopping.svg";
@@ -362,6 +365,7 @@ class GtVectorIllustrations {
     (label: 'settings', value: settings),
     (label: 'sheild', value: sheild),
     (label: 'sheild2', value: sheild2),
+    (label: 'sheild3', value: sheild3),
     (label: 'shopping', value: shopping),
     (label: 'signature', value: signature),
     (label: 'success', value: success),
@@ -458,6 +462,7 @@ class GtVectorIllustrations {
     settings,
     sheild,
     sheild2,
+    sheild3,
     shopping,
     signature,
     success,
