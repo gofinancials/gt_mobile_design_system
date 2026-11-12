@@ -4,7 +4,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Sheet chrome for a [GtSuccessRateBody].
 ///
-/// Pairs the body with a [GtModalAppBar] carrying an optional refresh action on
+/// Pairs the body with a [GtAppBar] carrying an optional refresh action on
 /// the left, a centred [title], and the app bar's built-in cancel button on the
 /// right. Designed to be presented via `GtBottomSheetMixin.showDraggableSheet`.
 ///
@@ -90,6 +90,7 @@ class GtSuccessRateModal extends GtStatelessWidget {
           leading: leading,
           title: title ?? "transferSuccessRate".utr(),
           trailing: GtCancelButton(size: .xLarge),
+          primary: false,
         ),
         body: body,
       ),

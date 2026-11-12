@@ -23,8 +23,8 @@ GtLessonCard(
     child: GtSizedBox(
       height: 300,
       child: GtLessonCard(
-        illustration: const AppImageData(
-          GtVectorIllustrations.savingsCat,
+        illustration: AppImageData(
+          GtVectorIllustrations.savingsCat.adapt(context),
         ), // use real asset
         title: "Introduction to Saving",
         description: "Learn the basics of saving money.",

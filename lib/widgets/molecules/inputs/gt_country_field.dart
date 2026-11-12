@@ -80,6 +80,14 @@ class GtCountryField extends GtStatefulWidget {
   /// Defaults to a large vertical gap ([GtGap.yLg()]).
   final GtGap optionsGap;
 
+  /// When the field is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// Under [AutovalidateMode.onUserInteraction], set here or on the enclosing
+  /// [GtForm], the error shows as the value changes and clears once it is
+  /// valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a dropdown field with the provided [options].
   const GtCountryField({
     super.key,
@@ -103,6 +111,7 @@ class GtCountryField extends GtStatefulWidget {
     this.emptyWidget,
     this.loadingWidget,
     this.errorWidget,
+    this.autovalidateMode = .disabled,
   }) : assert(
          optionBuilder == null || optionsBuilder == null,
          'Cannot provide both optionBuilder and optionsBuilder.',
@@ -168,6 +177,7 @@ class _GtCountryFieldState extends State<GtCountryField>
         }
 
         return GtDropdownField<Country>(
+          autovalidateMode: widget.autovalidateMode,
           controller: controller,
           decoration: widget.decoration,
           options: options,

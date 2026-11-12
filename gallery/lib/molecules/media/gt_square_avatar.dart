@@ -15,6 +15,7 @@ const _images = [
   ('Texture', GtNetworkImages.avatarTexture1, 'GtNetworkImages.avatarTexture1'),
   ('3D Template', GtNetworkImages.avatar3d1, 'GtNetworkImages.avatar3d1'),
   ('Blank URL', '', "''"),
+  ('Broken URL', GalleryBrokenImages.url, 'GalleryBrokenImages.url'),
   ('None', null, null),
 ];
 
@@ -105,6 +106,10 @@ class _SquareAvatarPlayground extends GtStatelessWidget {
       label: 'Show Loading Indicator',
       initialValue: false,
     );
+    final passErrorWidget = context.knobs.boolean(
+      label: 'Pass errorWidget',
+      initialValue: false,
+    );
     final isEditable = context.knobs.boolean(
       label: 'Editable (onEdit)',
       initialValue: true,
@@ -140,7 +145,7 @@ GtSquareAvatar(
   isUserAvatar: $isUserAvatar,
   size: $size,
   fit: BoxFit.${fit.name},
-  showLoadingIndicator: $showLoadingIndicator,
+  showLoadingIndicator: $showLoadingIndicator,${passErrorWidget ? '\n  errorWidget: const GalleryErrorFallback(size: $size),' : ''}
   alignment: ${alignment.$2},
   showBorder: $showBorder,
   showGradient: $showGradient,${radius.$3 == null ? '' : '\n  borderRadius: ${radius.$3},'}${_colorArg('bgColor', bgColor)}${_colorArg('initialsColor', initialsColor)}${initialsStyle.$3 == null ? '' : '\n  initialsStyle: ${initialsStyle.$3},'}${userIconSize == null ? '' : '\n  userIconSize: $userIconSize,'}${editPenSize == null ? '' : '\n  editPenSize: $editPenSize,'}${isEditable ? '\n  onEdit: () {},\n  semanticsLabel: "$semanticsLabel",' : ''}
@@ -165,6 +170,9 @@ GtSquareAvatar(
               userIconSize: userIconSize,
               editPenSize: editPenSize,
               showLoadingIndicator: showLoadingIndicator,
+              errorWidget: passErrorWidget
+                  ? GalleryErrorFallback(size: size)
+                  : null,
               onEdit: isEditable ? () {} : null,
               semanticsLabel: semanticsLabel,
             ),
@@ -197,6 +205,48 @@ GtSquareAvatar(
               ),
               ('User glyph', GtSquareAvatar(isUserAvatar: true, size: 72)),
               ('Default artwork', GtSquareAvatar(size: 72)),
+            ],
+          ),
+          const GtGap.ySectionSm(),
+          _Showcase(
+            title: 'When the image fails',
+            caption:
+                'Without an errorWidget a failed image falls back like an '
+                'empty avatar: initials, then the user glyph on a user avatar, '
+                'then the default artwork.',
+            items: [
+              (
+                'Initials',
+                GtSquareAvatar(
+                  avatar: AppImageData(GalleryBrokenImages.url),
+                  initials: 'JD',
+                  size: 72,
+                ),
+              ),
+              (
+                'User avatar',
+                GtSquareAvatar(
+                  avatar: AppImageData(GalleryBrokenImages.url),
+                  isUserAvatar: true,
+                  size: 72,
+                ),
+              ),
+              (
+                'Neither',
+                GtSquareAvatar(
+                  avatar: AppImageData(GalleryBrokenImages.url),
+                  size: 72,
+                ),
+              ),
+              (
+                'errorWidget',
+                GtSquareAvatar(
+                  avatar: AppImageData(GalleryBrokenImages.url),
+                  initials: 'JD',
+                  size: 72,
+                  errorWidget: GalleryErrorFallback(size: 72),
+                ),
+              ),
             ],
           ),
           const GtGap.ySectionSm(),

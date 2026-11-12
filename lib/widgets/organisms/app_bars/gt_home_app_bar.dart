@@ -118,7 +118,9 @@ class GtHomeAppBar extends GtStatelessWidget implements PreferredSizeWidget {
       alignment: .centerLeft,
       initials: AppHelpers.getInitials(userFullName),
       bgColor: avatarColor,
-      initialsColor: context.palette.text.white,
+      // White on the brand fill in both modes. text.white turns near-black
+      // in dark palettes, where it is meant for fills that invert too.
+      initialsColor: context.palette.staticColors.white,
       forceGradiant: false,
       onPressed: onClickAvatar,
       size: context.dp(42.px),

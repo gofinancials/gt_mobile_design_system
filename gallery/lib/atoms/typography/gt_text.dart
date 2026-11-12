@@ -44,6 +44,11 @@ Widget playgroundGtTextUseCase(BuildContext context) {
     labelBuilder: (val) => val == null ? 'None' : val.toString(),
   );
 
+  final middleEllipsis = context.knobs.boolean(
+    label: "Middle ellipsis",
+    initialValue: false,
+  );
+
   final alignment = context.knobs.listOrNull<TextAlign?>(
     label: "Text Alignment",
     initialOption: null,
@@ -70,6 +75,7 @@ GtText(
   maxLines: $maxLines,
   textAlign: $alignment,
   textDirection: $direction,
+  middleEllipsis: $middleEllipsis,
 )
 ''',
     child: GtText(
@@ -79,6 +85,103 @@ GtText(
       textDirection: direction,
       maxLines: maxLines,
       textAlign: alignment,
+      middleEllipsis: middleEllipsis,
+    ),
+  );
+}
+
+@widgetbook.UseCase(name: 'Middle ellipsis', type: GtText)
+Widget playgroundGtTextMiddleEllipsisUseCase(BuildContext context) {
+  final width = context.knobs.double.slider(
+    label: "Width",
+    initialValue: 180,
+    min: 60,
+    max: 360,
+  );
+  final maxLines = context.knobs.object.dropdown<int>(
+    label: "Max Lines",
+    options: [1, 2],
+    initialOption: 1,
+    labelBuilder: (value) => value.toString(),
+  );
+  final value = context.knobs.string(
+    label: "Custom Value",
+    initialValue: "Domiciliary Account • 3456789012",
+  );
+
+  final samples = [
+    value,
+    "GB29NWBK60161331926819",
+    "TRX24072983910527NGN",
+    "usd account · 1020293939",
+  ];
+  final palette = context.palette;
+  final caption = context.textStyles.bodyXs(color: palette.text.sub);
+  final style = context.textStyles.labelS(weight: .w500);
+
+  Widget row(String label, String text, bool middle) {
+    return Row(
+      spacing: context.spacingMd,
+      children: [
+        SizedBox(width: 48, child: GtText(label, style: caption)),
+        Container(
+          width: width,
+          color: palette.bg.weak,
+          child: GtText(
+            text,
+            style: style,
+            maxLines: maxLines,
+            overflow: .ellipsis,
+            middleEllipsis: middle,
+          ),
+        ),
+      ],
+    );
+  }
+
+  return GtWidgetDocPage(
+    title: 'Middle ellipsis',
+    description:
+        'Each value drawn in the same width with the default end ellipsis and '
+        'with middleEllipsis. Drag "Width" to watch the cut move: the end '
+        'ellipsis loses the account number or reference that tells values '
+        'apart, the middle ellipsis keeps it. Screen readers hear the whole '
+        'value either way.',
+    code:
+        '''
+GtText(
+  "$value",
+  maxLines: $maxLines,
+  middleEllipsis: true,
+)
+
+GtSummaryTileData(label: "From", value: "...", middleEllipsis: true)
+GtAppBar(title: "...", titleMiddleEllipsis: true)
+''',
+    child: Column(
+      crossAxisAlignment: .start,
+      spacing: context.spacingLg,
+      children: [
+        for (final sample in samples)
+          Column(
+            crossAxisAlignment: .start,
+            spacing: context.spacingXs,
+            children: [row("End", sample, false), row("Middle", sample, true)],
+          ),
+        for (final middle in [false, true])
+          SizedBox(
+            width: width + 48 + context.spacingMd,
+            child: GtSummaryCardShell(
+              child: GtSummaryTile(
+                GtSummaryTileData(
+                  label: middle ? "Middle" : "End",
+                  value: value,
+                  middleEllipsis: middle,
+                ),
+              ),
+            ),
+          ),
+      ],
     ),
   );
 }

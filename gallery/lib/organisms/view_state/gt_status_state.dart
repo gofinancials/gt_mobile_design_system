@@ -29,7 +29,13 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
     label: 'Use Custom Graphic',
     initialValue: false,
   );
+  final showLeading = context.knobs.boolean(
+    label: 'Action Leading Icon',
+    initialValue: false,
+  );
   final graphic = useCustomGraphic ? const GtSpinner(size: 64) : null;
+  final actionLeading = showLeading ? GtIcons.plus : null;
+  final leadingCode = showLeading ? '  actionLeading: GtIcons.plus,\n' : '';
   final graphicCode = useCustomGraphic
       ? '  graphic: const GtSpinner(size: 64),\n'
       : '';
@@ -43,6 +49,7 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
       subtitle: subtitle,
       graphic: graphic,
       actionLabel: actionLabel,
+      actionLeading: actionLeading,
       actionSize: .small,
       actionAlignment: .center,
       onActionPressed: () {},
@@ -52,7 +59,7 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
   title: "$title",
   subtitle: "$subtitle",
 $graphicCode  actionLabel: "$actionLabel",
-  actionSize: .small,
+$leadingCode  actionSize: .small,
   actionAlignment: .center,
   onActionPressed: () {},
 )''';
@@ -62,6 +69,7 @@ $graphicCode  actionLabel: "$actionLabel",
       subtitle: subtitle,
       graphic: graphic,
       actionLabel: actionLabel,
+      actionLeading: actionLeading,
       actionSize: .small,
       actionAlignment: .center,
       onActionPressed: () {},
@@ -73,7 +81,7 @@ $graphicCode  actionLabel: "$actionLabel",
 $graphicCode  actionSize: .small,
   actionAlignment: .center,
   actionLabel: "$actionLabel",
-  onActionPressed: () {},
+$leadingCode  onActionPressed: () {},
 )''';
   } else {
     statusWidget = GtStatusState.custom(
@@ -81,22 +89,23 @@ $graphicCode  actionSize: .small,
       subtitle: subtitle,
       icon: useCustomGraphic
           ? null
-          : AppImageData(GtVectorIllustrations.maintenance),
+          : AppImageData(GtVectorIllustrations.maintenance.adapt(context)),
       graphic: graphic,
       actionSize: .small,
       actionAlignment: .center,
       actionLabel: actionLabel,
+      actionLeading: actionLeading,
       onActionPressed: () {},
     );
     codeSnippet =
         '''GtStatusState.custom(
   title: "$title",
   subtitle: "$subtitle",
-  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData(GtVectorIllustrations.maintenance),'}
+  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData(GtVectorIllustrations.maintenance.adapt(context)),'}
   actionSize: .small,
   actionAlignment: .center,
   actionLabel: "$actionLabel",
-  onActionPressed: () {},
+$leadingCode  onActionPressed: () {},
 )''';
   }
 

@@ -145,11 +145,18 @@ void main() {
       );
 
       final title = tester.widget<Text>(find.text('YOUR CARD'));
-      final subtitle = tester.widget<Text>(find.text('Spend Anywhere'));
+      final subtitle = tester.widget<Text>(find.text('Spend anywhere'));
       expect(title.textAlign, TextAlign.center);
       expect(title.style!.fontSize, 19);
       expect(subtitle.textAlign, TextAlign.center);
       expect(subtitle.style!.fontSize, 16);
+    });
+
+    testWidgets('keeps the subtitle in the casing it is given', (tester) async {
+      await tester.pumpWidget(screen());
+
+      expect(find.text('Spend anywhere'), findsOneWidget);
+      expect(find.text('Spend Anywhere'), findsNothing);
     });
 
     testWidgets('paints the background image behind the content', (
@@ -177,7 +184,7 @@ void main() {
 
       final context = tester.element(find.text('YOUR CARD'));
       final gap =
-          tester.getTopLeft(find.text('Spend Anywhere')).dy -
+          tester.getTopLeft(find.text('Spend anywhere')).dy -
           tester.getBottomLeft(find.text('YOUR CARD')).dy;
       expect(gap, context.dp(12.px));
     });
@@ -262,14 +269,28 @@ void main() {
   });
 
   group('GtTextStyles.d3_5', () {
-    testWidgets('sets Youth 40 on a 40 line with no tracking', (tester) async {
+    testWidgets('scales Momo 40 down on a 40 line with no tracking', (
+      tester,
+    ) async {
       await tester.pumpWidget(app(const SizedBox()));
 
       final context = tester.element(find.byType(SizedBox));
       final style = context.textStyles.d3_5();
-      expect(style.fontSize, 40);
-      expect(style.height, 1);
+      expect(style.fontSize, closeTo(36.8, 1e-9));
+      expect(style.fontSize! * style.height!, closeTo(40, 1e-9));
       expect(style.letterSpacing, 0);
+    });
+
+    testWidgets('scales Momo buttons too, but leaves Open Runde alone', (
+      tester,
+    ) async {
+      await tester.pumpWidget(app(const SizedBox()));
+
+      final context = tester.element(find.byType(SizedBox));
+      final textStyles = context.textStyles;
+      expect(textStyles.button().fontSize, closeTo(16.56, 1e-9));
+      expect(textStyles.button(family: context.fonts.body).fontSize, 18);
+      expect(textStyles.bodyM().fontSize, 16);
     });
   });
 

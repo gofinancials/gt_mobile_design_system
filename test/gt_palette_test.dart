@@ -48,6 +48,31 @@ void main() {
       final lerped = GtPaletteBrandColors.lerp(brand, other, 0.5);
       expect(lerped.base, Color.lerp(brand.base, other.base, 0.5));
       expect(lerped.dark, Color.lerp(brand.dark, other.dark, 0.5));
+      expect(lerped.ink, isNull);
+    });
+
+    test('holds an ink set on only one side of a lerp', () {
+      final inked = brand.copyWith(ink: const Color(0xFF01CBEA));
+
+      expect(inked.all, hasLength(7));
+      expect(inked, isNot(equals(brand)));
+      expect(
+        GtPaletteBrandColors.lerp(brand, inked, 0.3).ink,
+        isSameColorAs(inked.ink!),
+      );
+      expect(
+        GtPaletteBrandColors.lerp(inked, brand, 0.7).ink,
+        isSameColorAs(inked.ink!),
+      );
+    });
+
+    test('copyWith replaces only the given colors', () {
+      final copy = brand.copyWith(base: const Color(0xFF444444));
+
+      expect(copy.base, const Color(0xFF444444));
+      expect(copy.dark, brand.dark);
+      expect(copy.ink, isNull);
+      expect(brand.copyWith(), equals(brand));
     });
   });
 
@@ -185,6 +210,15 @@ void main() {
       expect(bg, equals(same));
       expect(bg.hashCode, equals(same.hashCode));
       expect(GtPaletteBgColors.lerp(bg, same, 0.5).surface, bg.surface);
+    });
+
+    test('copyWith replaces only the given colors', () {
+      final copy = bg.copyWith(warm: const Color(0xFF111111));
+
+      expect(copy.warm, const Color(0xFF111111));
+      expect(copy.strong, bg.strong);
+      expect(copy.sky, bg.sky);
+      expect(bg.copyWith(), equals(bg));
     });
   });
 
@@ -416,6 +450,51 @@ void main() {
       final palette = PersonalLightPalette();
       expect(palette.copyWith(), same(palette));
     });
+
+    test('usesRedIllustration defaults to false', () {
+      expect(PersonalLightPalette().usesRedIllustration, isFalse);
+      expect(PersonalDarkPalette().usesRedIllustration, isFalse);
+    });
+
+    test('lerp switches usesRedIllustration at the midpoint', () {
+      final personal = PersonalLightPalette();
+      final pro = SterlingProLightPalette();
+
+      final before = personal.lerp(pro, 0.4) as GtPalette;
+      final after = personal.lerp(pro, 0.5) as GtPalette;
+      expect(before.usesRedIllustration, isFalse);
+      expect(after.usesRedIllustration, isTrue);
+    });
+
+    test('usesRedIllustration takes part in equality', () {
+      final plain = PersonalLightPalette();
+      final redPersonal = GtPalette(
+        primary: plain.primary,
+        coverColors: plain.coverColors,
+        staticColors: plain.staticColors,
+        cardColors: plain.cardColors,
+        bg: plain.bg,
+        fill: plain.fill,
+        text: plain.text,
+        stroke: plain.stroke,
+        icon: plain.icon,
+        faded: plain.faded,
+        information: plain.information,
+        warning: plain.warning,
+        error: plain.error,
+        success: plain.success,
+        away: plain.away,
+        feature: plain.feature,
+        verified: plain.verified,
+        highlighted: plain.highlighted,
+        stable: plain.stable,
+        infoAlt: plain.infoAlt,
+        usesRedIllustration: true,
+      );
+
+      expect(redPersonal, isNot(equals(plain)));
+      expect(redPersonal.hashCode, isNot(equals(plain.hashCode)));
+    });
   });
 
   group('App Flavor Palettes', () {
@@ -425,7 +504,10 @@ void main() {
 
       expect(light.primary.darker, GtColors.tealBlue800.value);
       expect(light.primary.base, GtColors.tealBlue600.value);
-      expect(dark.primary.base, GtColors.tealBlue600.value);
+      expect(dark.primary.darker, GtColors.tealBlue700.value);
+      expect(dark.primary.dark, GtColors.tealBlue750.value);
+      expect(dark.primary.base, GtColors.tealBlue725.value);
+      expect(dark.bg.warm, GtColors.neutral0.dark);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
     });
@@ -435,7 +517,11 @@ void main() {
       final dark = KidsDarkPalette();
 
       expect(light.primary.base, GtColors.purple600.value);
-      expect(dark.primary.base, GtColors.purple600.value);
+      expect(dark.primary.darker, GtColors.purple700.value);
+      expect(dark.primary.dark, GtColors.purple600.value);
+      expect(dark.primary.base, GtColors.purple500.value);
+      expect(dark.bg.warm, GtColors.neutral0.dark);
+      expect(dark.bg.strong, GtDarkPalette.defaultBg.strong);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
     });
@@ -445,7 +531,11 @@ void main() {
       final dark = FlexDarkPalette();
 
       expect(light.primary.base, GtColors.green600.value);
-      expect(dark.primary.base, GtColors.green600.value);
+      expect(dark.primary.darker, GtColors.green700.value);
+      expect(dark.primary.dark, GtColors.green800.value);
+      expect(dark.primary.base, GtColors.green750.value);
+      expect(dark.bg.warm, GtColors.neutral0.dark);
+      expect(dark.bg.strong, GtDarkPalette.defaultBg.strong);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
     });
@@ -455,7 +545,12 @@ void main() {
       final dark = GotechDarkPalette();
 
       expect(light.primary.base, GtColors.teal700.value);
-      expect(dark.primary.base, GtColors.teal700.value);
+      expect(light.primary.alpha24, GtColors.tealAlpha24.value);
+      expect(dark.primary.darker, GtColors.teal800.value);
+      expect(dark.primary.dark, GtColors.teal850.value);
+      expect(dark.primary.base, GtColors.teal750.value);
+      expect(dark.primary.alpha24, GtColors.tealAlpha24.value);
+      expect(dark.bg.warm, GtColors.neutral0.dark);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
     });
@@ -465,9 +560,57 @@ void main() {
       final dark = SterlingProDarkPalette();
 
       expect(light.primary.base, GtColors.maroon600.value);
-      expect(dark.primary.base, GtColors.maroon600.value);
+      expect(dark.primary.darker, GtColors.maroon700.value);
+      expect(dark.primary.dark, GtColors.maroon600.value);
+      expect(dark.primary.base, GtColors.red700.value);
+      expect(dark.bg.warm, GtColors.neutral0.dark);
+      expect(dark.bg.strong, GtDarkPalette.defaultBg.strong);
       expect(light.raw.isDark, isFalse);
       expect(dark.raw.isDark, isTrue);
+      expect(light.usesRedIllustration, isTrue);
+      expect(dark.usesRedIllustration, isTrue);
+    });
+
+    double contrast(Color a, Color b) {
+      final [hi, lo] = [a.computeLuminance(), b.computeLuminance()]
+        ..sort((x, y) => y.compareTo(x));
+      return (hi + 0.05) / (lo + 0.05);
+    }
+
+    final darkPalettes = <String, GtPalette>{
+      'Personal': PersonalDarkPalette(),
+      'Kids': KidsDarkPalette(),
+      'Flex': FlexDarkPalette(),
+      'GoTech': GotechDarkPalette(),
+      'Sterling Pro': SterlingProDarkPalette(),
+    };
+
+    for (final MapEntry(key: name, value: palette) in darkPalettes.entries) {
+      test('$name dark brand ink reads at AA on the page backgrounds', () {
+        final ink = palette.opPrimaryInk;
+
+        expect(ink, isNot(palette.primary.base));
+        expect(contrast(ink, palette.bg.white), greaterThanOrEqualTo(4.5));
+        expect(contrast(ink, palette.bg.weak), greaterThanOrEqualTo(4.5));
+      });
+    }
+
+    test('light palettes keep the darker tone as brand ink', () {
+      final light = PersonalLightPalette();
+
+      expect(light.primary.ink, isNull);
+      expect(light.opPrimaryInk, light.primary.darker);
+    });
+
+    test('a lerp carries each side\'s brand ink', () {
+      final light = PersonalLightPalette();
+      final dark = PersonalDarkPalette();
+
+      final start = light.lerp(dark, 0) as GtPalette;
+      final end = light.lerp(dark, 1) as GtPalette;
+
+      expect(start.opPrimaryInk, isSameColorAs(light.opPrimaryInk));
+      expect(end.opPrimaryInk, isSameColorAs(dark.opPrimaryInk));
     });
   });
 

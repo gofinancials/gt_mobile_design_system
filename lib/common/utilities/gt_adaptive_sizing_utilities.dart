@@ -10,15 +10,19 @@ import 'package:flutter/widgets.dart'
         Overlay,
         Rect,
         RenderBox,
+        SafeArea,
         Size;
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A utility class that extracts and caches common [MediaQuery] properties
 /// for the given context, simplifying access to screen dimensions, pixel ratios,
-/// and view insets.
+/// view insets and system padding.
 final class GtMediaQueryData {
   /// The view insets, from [MediaQuery.viewInsetsOf].
   late final EdgeInsets _insetsData;
+
+  /// The system padding, from [MediaQuery.paddingOf].
+  late final EdgeInsets _paddingData;
 
   /// The screen size, from [MediaQuery.sizeOf].
   late final Size _sizeData;
@@ -29,21 +33,36 @@ final class GtMediaQueryData {
   /// Creates a [GtMediaQueryData] from the [MediaQuery] above [context].
   GtMediaQueryData(BuildContext context) {
     _insetsData = MediaQuery.viewInsetsOf(context);
+    _paddingData = MediaQuery.paddingOf(context);
     _pxData = MediaQuery.devicePixelRatioOf(context);
     _sizeData = MediaQuery.sizeOf(context);
   }
 
   /// The top view inset, from [MediaQuery.viewInsetsOf].
   ///
-  /// This is not the status bar. Use [MediaQuery.paddingOf] for that.
+  /// This is not the status bar. Use [topPadding] for that.
   double get topInset => _insetsData.top;
 
   /// The bottom view inset, typically the on-screen keyboard, from
   /// [MediaQuery.viewInsetsOf].
   ///
   /// This is not the navigation bar or other system bottom inset. Use
-  /// [MediaQuery.paddingOf] for that.
+  /// [bottomPadding] for that.
   double get bottomInset => _insetsData.bottom;
+
+  /// The top system padding, typically the status bar, from
+  /// [MediaQuery.paddingOf].
+  ///
+  /// Only what is left at this point in the tree: an app bar or a [SafeArea]
+  /// above removes it.
+  double get topPadding => _paddingData.top;
+
+  /// The bottom system padding, typically the navigation bar or home
+  /// indicator, from [MediaQuery.paddingOf].
+  ///
+  /// Only what is left at this point in the tree: a bottom navigation bar or a
+  /// [SafeArea] above removes it.
+  double get bottomPadding => _paddingData.bottom;
 
   /// The shortest side of the screen (typically width on mobile portrait).
   double get shortestSide => _sizeData.shortestSide;

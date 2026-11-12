@@ -22,7 +22,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// rendered.
 ///
 /// Like [GtReceiptBody], it reserves trailing space for the floating bottom
-/// bar of [GtTransferDetailScaffold]. The [amount] is formatted by
+/// bar of [GtTransferDetailScaffold], unless an enclosing
+/// [GtReceiptBottomBarScope] reports that no bar is drawn. The [amount] is formatted by
 /// [GtBalanceText]; timestamps and row values are never formatted here, so
 /// callers pass presentation-ready strings for those.
 ///
@@ -150,6 +151,7 @@ class GtTransferDetailBody extends GtStatelessWidget {
     );
 
     final cardRadius = context.borderRadiusXl;
+    final hasBottomBar = GtReceiptBottomBarScope.maybeOf(context) ?? true;
 
     return ListView(
       physics: physics ?? const ClampingScrollPhysics(),
@@ -214,7 +216,10 @@ class GtTransferDetailBody extends GtStatelessWidget {
           const GtGap.yLg(),
         ],
         ?footer,
-        const GtGap.ySection4xl(),
+        if (hasBottomBar)
+          const GtGap.ySection4xl(key: Key('transfer-detail-bottom-bar-space'))
+        else
+          SizedBox(height: MediaQuery.paddingOf(context).bottom),
       ],
     );
   }
@@ -253,7 +258,7 @@ class _TransferDetailHeader extends GtStatelessWidget {
   /// The label announced for [amount]: [amountSemanticsLabel] when supplied,
   /// otherwise the `transferAmountIs` translation.
   String get amountLabel {
-    final display = AppTextFormatter.formatCurrency(amount, symbol: '');
+    final display = AppTextFormatter.formatCurrency(amount.abs(), symbol: '');
     return amountSemanticsLabel ??
         'transferAmountIs'.tr({
           'amount': '${sign ?? ''}$display',
@@ -297,13 +302,15 @@ class _TransferDetailHeader extends GtStatelessWidget {
           children: [
             GtText(
               recipient.title,
-              style: context.textStyles.subHeadS(),
+              style: context.textStyles.labelS(weight: .w600),
               textAlign: .center,
               key: const Key('transfer-detail-recipient'),
             ),
             GtBalanceText(
               key: const Key('transfer-detail-amount'),
-              amount: amount,
+              // [isCredit] carries the direction; the formatter keeps a minus
+              // sign since Foundation v0.0.73.
+              amount: amount.abs(),
               currencySymbol: currency,
               sign: sign,
               showVisibilityIcon: false,

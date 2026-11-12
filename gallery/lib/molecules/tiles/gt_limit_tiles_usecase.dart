@@ -126,6 +126,11 @@ Widget playgroundGtGoalProgressListTileUseCase(BuildContext context) {
     initialValue: false,
   );
 
+  final obscureBalance = context.knobs.boolean(
+    label: 'Obscure Balance',
+    initialValue: false,
+  );
+
   return GtWidgetDocPage(
     title: 'GtGoalProgressListTile',
     description:
@@ -140,7 +145,7 @@ GtGoalProgressListTile(
   onEdit: ${showEdit ? '() {}' : 'null'},
   buttonVariant: GtButtonVariant.${buttonVariant.name},
   ${buttonTextColor == null ? '' : 'buttonTextColor: Color(0x${buttonTextColor.toARGB32().toRadixString(16)}),'}
-  asCard: $asCard,
+  asCard: $asCard,${obscureBalance ? '\n  obscureBalance: true,' : ''}
 )''',
     child: isSkeleton
         ? GtGoalProgressListTile.skeleton(asCard: asCard)
@@ -152,6 +157,7 @@ GtGoalProgressListTile(
             buttonVariant: buttonVariant,
             buttonTextColor: buttonTextColor,
             asCard: asCard,
+            obscureBalance: obscureBalance,
           ),
   );
 }

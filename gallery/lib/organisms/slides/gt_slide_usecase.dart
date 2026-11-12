@@ -15,7 +15,7 @@ GtWelcomeSlide(
   slide: GtSlideData(
     title: "Welcome to Sterling",
     subtitle: "Your financial partner",
-    image: const AppImageData(GtVectorIllustrations.announcement),
+    image: AppImageData(GtVectorIllustrations.announcement.adapt(context)),
     backgroundColor: context.palette.primary.base,
     textColor: context.palette.text.white,
   ),
@@ -24,7 +24,7 @@ GtWelcomeSlide(
       slide: GtSlideData(
         title: "Welcome to Sterling",
         subtitle: "Your financial partner",
-        image: const AppImageData(GtVectorIllustrations.announcement),
+        image: AppImageData(GtVectorIllustrations.announcement.adapt(context)),
         backgroundColor: context.palette.primary.base,
         textColor: context.palette.text.white,
       ),

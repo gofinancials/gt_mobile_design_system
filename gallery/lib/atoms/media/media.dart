@@ -6,3 +6,4 @@ export 'gt_file_image_usecase.dart';
 export 'gt_memory_image_usecase.dart';
 export 'gt_svg_usecase.dart';
 export 'gt_media_gallery_usecase.dart';
+export 'gt_image_error_fallback_usecase.dart';

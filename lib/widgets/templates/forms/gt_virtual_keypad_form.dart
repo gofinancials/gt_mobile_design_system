@@ -76,6 +76,12 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
   /// [errorText] itself.
   final bool clearErrorOnEdit;
 
+  /// Whether the app bar adds a back button when the route can pop.
+  ///
+  /// Defaults to true. Set to false on screens the user must not leave by
+  /// going back, such as a session lock behind a `PopScope(canPop: false)`.
+  final bool implyLeading;
+
   /// Creates a standard virtual keypad form.
   ///
   /// Use this constructor when you need a simple title and subtitle layout
@@ -98,6 +104,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.color,
     this.inactiveColor,
     this.clearErrorOnEdit = true,
+    this.implyLeading = true,
     OnPressed? onBioAuth,
     this.bioIcon,
   }) : _subtitle = subtitle,
@@ -131,6 +138,7 @@ class GtVirtualKeypadForm extends GtStatefulWidget {
     this.color,
     this.inactiveColor,
     this.clearErrorOnEdit = true,
+    this.implyLeading = true,
     this.headerQuestionButton,
     this.initials,
   }) : _subtitle = null,
@@ -200,7 +208,10 @@ class _GtVirtualKeypadFormState extends State<GtVirtualKeypadForm> {
     return GtForm(
       formKey: widget.formKey,
       child: Scaffold(
-        appBar: GtActionAppBar(trailing: trailing),
+        appBar: GtActionAppBar(
+          trailing: trailing,
+          implyLeading: widget.implyLeading,
+        ),
         key: Key("gt-virtual-keypad-form"),
         body: Padding(
           padding: context.insets.defaultAllInsets,

@@ -24,8 +24,8 @@ Column(
         children: [
           GtAdvertCard(
             color: palette.feature.base,
-            illustration: const AppImageData.asset(
-              GtVectorIllustrations.emptyState,
+            illustration: AppImageData.asset(
+              GtVectorIllustrations.emptyState.adapt(context),
             ),
             title: 'Send money',
             subtitle: 'Pay someone, buy something, or sort your bills',
@@ -35,8 +35,8 @@ Column(
           ),
           GtAdvertCard(
             color: palette.success.darker,
-            illustration: const AppImageData.asset(
-              GtVectorIllustrations.date,
+            illustration: AppImageData.asset(
+              GtVectorIllustrations.date.adapt(context),
             ),
             title: 'And more...',
             subtitle:
@@ -60,8 +60,8 @@ Column(
           children: [
             GtAdvertCard(
               color: palette.feature.base,
-              illustration: const AppImageData.asset(
-                GtVectorIllustrations.emptyState,
+              illustration: AppImageData.asset(
+                GtVectorIllustrations.emptyState.adapt(context),
               ),
               title: 'Send money',
               subtitle: 'Pay someone, buy something, or sort your bills',
@@ -71,8 +71,8 @@ Column(
             ),
             GtAdvertCard(
               color: palette.success.base,
-              illustration: const AppImageData.asset(
-                GtVectorIllustrations.date,
+              illustration: AppImageData.asset(
+                GtVectorIllustrations.date.adapt(context),
               ),
               title: 'And more...',
               subtitle:

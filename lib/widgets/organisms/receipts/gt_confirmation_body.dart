@@ -10,8 +10,8 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// - The [date] and [time] the transaction was completed.
 /// - One card per [GtConfirmationSection], each headed by a [GtSectionHeader]
 ///   and filled with [GtReceiptDetailTile] rows.
-/// - An optional [footer] carrying fine print, a closing note and a trailing
-///   image such as a QR code.
+/// - An optional [footer] carrying fine print, a closing note and a QR code
+///   or other trailing image.
 ///
 /// Unlike [GtReceiptBody], which models a fixed sender/recipient/details shape,
 /// this body is section-driven: callers supply arbitrary titled groups of
@@ -43,7 +43,7 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 ///   footer: const GtConfirmationFooter(
 ///     disclaimer: "Your transfer has been processed successfully...",
 ///     note: "Please reach out to support for more information.",
-///     trailing: AppImageData(GtVectors.qrCode),
+///     qrData: "TRX24072983910527NGN",
 ///   ),
 /// )
 /// ```
@@ -92,7 +92,7 @@ class GtConfirmationBody extends GtStatelessWidget {
 
   /// Optional closing block rendered beneath the final section.
   ///
-  /// Carries the fine print, an optional trailing image such as a QR code, and
+  /// Carries the fine print, an optional QR code or other trailing image, and
   /// a short closing note. Typed rather than a free widget slot so the block is
   /// styled consistently across every screen that uses this body.
   ///
@@ -226,10 +226,11 @@ class GtConfirmationBody extends GtStatelessWidget {
 
 /// The closing block of a [GtConfirmationBody].
 ///
-/// Lays the [GtConfirmationFooter.disclaimer] out beside
-/// [GtConfirmationFooter.trailing] — typically a QR code — and stacks
-/// [GtConfirmationFooter.note] beneath the pair. Any of the three may be
-/// absent, in which case the remaining content closes up around it.
+/// Lays the [GtConfirmationFooter.disclaimer] out beside a [GtQrCode] painted
+/// from [GtConfirmationFooter.qrData], or [GtConfirmationFooter.trailing] in
+/// its place, and stacks [GtConfirmationFooter.note] beneath the pair. Any of
+/// the three may be absent, in which case the remaining content closes up
+/// around it.
 class _ConfirmationFooter extends GtStatelessWidget {
   /// The content of the closing block.
   final GtConfirmationFooter footer;
@@ -280,6 +281,13 @@ class _ConfirmationFooter extends GtStatelessWidget {
             height: trailingSize,
             semanticsLabel: footer.displayTrailingLabel,
             key: const Key('confirmation-footer-trailing'),
+          )
+        else if (footer.qrData case String data when data.hasValue)
+          GtQrCode(
+            data,
+            size: trailingSize,
+            semanticsLabel: footer.displayTrailingLabel,
+            key: const Key('confirmation-footer-qr'),
           ),
       ],
     );

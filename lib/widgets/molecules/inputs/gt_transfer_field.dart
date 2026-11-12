@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
@@ -18,6 +17,10 @@ class GtTransferField extends GtStatefulWidget {
   final GtInputController noteController;
 
   /// The controller that manages the category of the transfer.
+  ///
+  /// Seed it with a stored category to show that category when the field
+  /// opens. The caller owns it and disposes it; when null, the category field
+  /// creates and disposes its own.
   final GtTransactionCategoryController? categoryController;
 
   /// The hint text displayed inside the note input field.
@@ -33,12 +36,24 @@ class GtTransferField extends GtStatefulWidget {
   final OnChanged<GtTransactionCategory?>? onCategoryChanged;
 
   /// Whether the transfer field is interactive and can be modified. Defaults to true.
+  ///
+  /// This covers the amount and, unless [isNoteEnabled] is set, the note.
   final bool isEnabled;
+
+  /// Whether the note input is interactive and can be modified.
+  ///
+  /// Set it to keep the note editable while [isEnabled] locks the amount,
+  /// such as on a fixed price. When null, the note follows [isEnabled].
+  final bool? isNoteEnabled;
 
   /// The minimum allowable amount for the transfer.
   final num? min;
 
   /// The maximum allowable amount for the transfer.
+  ///
+  /// When set, this is the ceiling even if it is above the validated
+  /// participant's balance, such as a balance plus overdraft headroom. When
+  /// null, the amount is capped at that balance.
   final num? max;
 
   /// The icon to display between the two participants.
@@ -49,6 +64,17 @@ class GtTransferField extends GtStatefulWidget {
 
   /// The second participant in the transfer.
   final GtTransferParticipantData secondParticipant;
+
+  /// When the amount is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// When this or the enclosing [GtForm] sets a mode other than
+  /// [AutovalidateMode.disabled], every change to the amount marks it as
+  /// changed for its [Form] before [onAmountChanged] runs. So
+  /// [AutovalidateMode.onUserInteraction] shows the error as the amount
+  /// changes and clears it once the amount is valid again. Defaults to
+  /// [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
 
   /// Creates a new [GtTransferField].
   const GtTransferField({
@@ -63,9 +89,11 @@ class GtTransferField extends GtStatefulWidget {
     this.onNoteChanged,
     this.onCategoryChanged,
     this.isEnabled = true,
+    this.isNoteEnabled,
     this.max,
     this.min,
     this.middleIcon,
+    this.autovalidateMode = .disabled,
   });
 
   @override
@@ -74,6 +102,46 @@ class GtTransferField extends GtStatefulWidget {
 
 /// The state for [GtTransferField].
 class _GtTransferFieldState extends State<GtTransferField> {
+  /// The key of the [FormField] that validates the amount.
+  final _fieldKey = GlobalKey<FormFieldState<TextEditingController>>();
+
+  /// The amount last reported to the [FormField].
+  late String _reportedAmount;
+
+  /// The text controller of [GtTransferField.amountController].
+  TextEditingController get _amountCtrl => widget.amountController.controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _reportedAmount = _amountCtrl.text;
+    _amountCtrl.addListener(_reportChange);
+  }
+
+  @override
+  void didUpdateWidget(covariant GtTransferField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final oldCtrl = oldWidget.amountController.controller;
+    if (oldCtrl == _amountCtrl) return;
+    oldCtrl.removeListener(_reportChange);
+    _reportedAmount = _amountCtrl.text;
+    _amountCtrl.addListener(_reportChange);
+  }
+
+  @override
+  void dispose() {
+    _amountCtrl.removeListener(_reportChange);
+    super.dispose();
+  }
+
+  /// Reports an edit of the amount to the [FormField], which re-validates it
+  /// under [AutovalidateMode.onUserInteraction].
+  void _reportChange() {
+    if (_amountCtrl.text == _reportedAmount) return;
+    _reportedAmount = _amountCtrl.text;
+    _fieldKey.currentState?.notifyChanged(_amountCtrl);
+  }
+
   /// The balance of the participant being validated, or zero if neither is.
   double get balance {
     final first = widget.firstParticipant;
@@ -92,6 +160,14 @@ class _GtTransferFieldState extends State<GtTransferField> {
         widget.secondParticipant.validate;
   }
 
+  /// Whether the participant being validated masks its balance.
+  bool get isBalanceObscured {
+    final first = widget.firstParticipant;
+    final second = widget.secondParticipant;
+    if (second.validate) return second.obscureBalance;
+    return first.validate && first.obscureBalance;
+  }
+
   @override
   Widget build(BuildContext context) {
     final first = widget.firstParticipant;
@@ -102,15 +178,25 @@ class _GtTransferFieldState extends State<GtTransferField> {
       isDecorative: true,
     );
 
-    return FormField(
-      initialValue: widget.amountController.controller,
+    return FormField<TextEditingController>(
+      key: _fieldKey,
+      initialValue: _amountCtrl,
+      autovalidateMode: widget.autovalidateMode,
+      // The amount field clears itself on a reset, which is not an edit.
+      onReset: () => _reportedAmount = '',
       validator: (text) {
         if (!isValidated) return null;
+        if (widget.max == null && isBalanceObscured) {
+          // The balance is the ceiling here. Checking it on its own reports
+          // insufficient funds rather than quoting the masked balance.
+          return AppValidators.balanceValidator(text?.text, balance: balance) ??
+              AppValidators.amountValidator(text?.text, minAmount: widget.min);
+        }
         if (widget.min != null || widget.max != null) {
           return AppValidators.amountValidator(
             text?.text,
             minAmount: widget.min,
-            maxAmount: min(balance, widget.max ?? balance),
+            maxAmount: widget.max ?? balance,
           );
         }
         return AppValidators.balanceValidator(
@@ -145,6 +231,7 @@ class _GtTransferFieldState extends State<GtTransferField> {
           onChanged: widget.onAmountChanged,
           autofillHints: const [AutofillHints.transactionAmount],
           autoCorrect: false,
+          scaleToFit: true,
         );
 
         return Column(
@@ -219,7 +306,7 @@ class _GtTransferFieldState extends State<GtTransferField> {
               leading: GtTextField(
                 controller: widget.noteController,
                 hintText: widget.noteHint,
-                isEnabled: widget.isEnabled,
+                isEnabled: widget.isNoteEnabled ?? widget.isEnabled,
                 decoration: context.inputStyles.plainDecoration(),
                 onChanged: widget.onNoteChanged,
               ),
@@ -243,6 +330,10 @@ class GtFxTransferField extends GtStatefulWidget {
   final GtInputController noteController;
 
   /// The controller that manages the category of the transfer.
+  ///
+  /// Seed it with a stored category to show that category when the field
+  /// opens. The caller owns it and disposes it; when null, the category field
+  /// creates and disposes its own.
   final GtTransactionCategoryController? categoryController;
 
   /// The hint text displayed inside the note input field.
@@ -261,12 +352,24 @@ class GtFxTransferField extends GtStatefulWidget {
   final OnChanged<GtTransactionCategory?>? onCategoryChanged;
 
   /// Whether the transfer field is interactive and can be modified. Defaults to true.
+  ///
+  /// This covers the amount and, unless [isNoteEnabled] is set, the note.
   final bool isEnabled;
+
+  /// Whether the note input is interactive and can be modified.
+  ///
+  /// Set it to keep the note editable while [isEnabled] locks the amount,
+  /// such as on a fixed price. When null, the note follows [isEnabled].
+  final bool? isNoteEnabled;
 
   /// The minimum allowable amount for the transfer.
   final num? min;
 
   /// The maximum allowable amount for the transfer.
+  ///
+  /// When set, this is the ceiling even if it is above the validated
+  /// participant's balance, such as a balance plus overdraft headroom. When
+  /// null, the amount is capped at that balance.
   final num? max;
 
   /// The icon to display between the two participants.
@@ -280,6 +383,17 @@ class GtFxTransferField extends GtStatefulWidget {
 
   /// The content to display between the two participants.
   final Widget? child;
+
+  /// When the source amount is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// When this or the enclosing [GtForm] sets a mode other than
+  /// [AutovalidateMode.disabled], every change to either amount marks the
+  /// source amount as changed for its [Form] before [onSourceAmountChanged]
+  /// or [onTargetAmountChanged] runs. So [AutovalidateMode.onUserInteraction]
+  /// shows the error as the amounts change and clears it once the source
+  /// amount is valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
 
   /// Creates a new [GtFxTransferField].
   const GtFxTransferField({
@@ -296,10 +410,12 @@ class GtFxTransferField extends GtStatefulWidget {
     this.onTargetAmountChanged,
     this.onNoteChanged,
     this.isEnabled = true,
+    this.isNoteEnabled,
     this.max,
     this.min,
     this.middleIcon,
     this.child,
+    this.autovalidateMode = .disabled,
   });
 
   @override
@@ -308,6 +424,75 @@ class GtFxTransferField extends GtStatefulWidget {
 
 /// The state for [GtFxTransferField].
 class _GtFxTransferFieldState extends State<GtFxTransferField> {
+  /// The key of the [FormField] that validates the source amount.
+  final _fieldKey = GlobalKey<FormFieldState<TextEditingController>>();
+
+  /// The source amount last reported to the [FormField].
+  late String _reportedSource;
+
+  /// The target amount last reported to the [FormField].
+  late String _reportedTarget;
+
+  /// The text controller of [GtFxTransferField.sourceAmountController].
+  TextEditingController get _sourceCtrl {
+    return widget.sourceAmountController.controller;
+  }
+
+  /// The text controller of [GtFxTransferField.targetAmountController].
+  TextEditingController get _targetCtrl {
+    return widget.targetAmountController.controller;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _reportedSource = _sourceCtrl.text;
+    _reportedTarget = _targetCtrl.text;
+    _sourceCtrl.addListener(_reportSourceChange);
+    _targetCtrl.addListener(_reportTargetChange);
+  }
+
+  @override
+  void didUpdateWidget(covariant GtFxTransferField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final oldSource = oldWidget.sourceAmountController.controller;
+    final oldTarget = oldWidget.targetAmountController.controller;
+    if (oldSource != _sourceCtrl) {
+      oldSource.removeListener(_reportSourceChange);
+      _reportedSource = _sourceCtrl.text;
+      _sourceCtrl.addListener(_reportSourceChange);
+    }
+    if (oldTarget != _targetCtrl) {
+      oldTarget.removeListener(_reportTargetChange);
+      _reportedTarget = _targetCtrl.text;
+      _targetCtrl.addListener(_reportTargetChange);
+    }
+  }
+
+  @override
+  void dispose() {
+    _sourceCtrl.removeListener(_reportSourceChange);
+    _targetCtrl.removeListener(_reportTargetChange);
+    super.dispose();
+  }
+
+  /// Reports an edit of the source amount to the [FormField], which
+  /// re-validates it under [AutovalidateMode.onUserInteraction].
+  void _reportSourceChange() {
+    if (_sourceCtrl.text == _reportedSource) return;
+    _reportedSource = _sourceCtrl.text;
+    _fieldKey.currentState?.notifyChanged(_sourceCtrl);
+  }
+
+  /// Reports an edit of the target amount to the [FormField], which
+  /// re-validates the source amount it is converted from.
+  void _reportTargetChange() {
+    if (_targetCtrl.text == _reportedTarget) return;
+    _reportedTarget = _targetCtrl.text;
+    // The validator reads the source amount, whichever amount was edited.
+    _fieldKey.currentState?.notifyChanged(_sourceCtrl);
+  }
+
   /// The balance of the participant being validated, or zero if neither is.
   double get balance {
     final first = widget.firstParticipant;
@@ -326,6 +511,14 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
         widget.secondParticipant.validate;
   }
 
+  /// Whether the participant being validated masks its balance.
+  bool get isBalanceObscured {
+    final first = widget.firstParticipant;
+    final second = widget.secondParticipant;
+    if (second.validate) return second.obscureBalance;
+    return first.validate && first.obscureBalance;
+  }
+
   @override
   Widget build(BuildContext context) {
     final first = widget.firstParticipant;
@@ -336,15 +529,28 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
       isDecorative: true,
     );
 
-    return FormField(
-      initialValue: widget.sourceAmountController.controller,
+    return FormField<TextEditingController>(
+      key: _fieldKey,
+      initialValue: _sourceCtrl,
+      autovalidateMode: widget.autovalidateMode,
+      // The amount fields clear themselves on a reset, which is not an edit.
+      onReset: () {
+        _reportedSource = '';
+        _reportedTarget = '';
+      },
       validator: (text) {
         if (!isValidated) return null;
+        if (widget.max == null && isBalanceObscured) {
+          // The balance is the ceiling here. Checking it on its own reports
+          // insufficient funds rather than quoting the masked balance.
+          return AppValidators.balanceValidator(text?.text, balance: balance) ??
+              AppValidators.amountValidator(text?.text, minAmount: widget.min);
+        }
         if (widget.min != null || widget.max != null) {
           return AppValidators.amountValidator(
             text?.text,
             minAmount: widget.min,
-            maxAmount: min(balance, widget.max ?? balance),
+            maxAmount: widget.max ?? balance,
           );
         }
         return AppValidators.balanceValidator(
@@ -380,6 +586,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
           onChanged: widget.onSourceAmountChanged,
           autofillHints: const [AutofillHints.transactionAmount],
           autoCorrect: false,
+          scaleToFit: true,
         );
 
         final targetField = GtTextField(
@@ -394,6 +601,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
           onChanged: widget.onTargetAmountChanged,
           autofillHints: const [AutofillHints.transactionAmount],
           autoCorrect: false,
+          scaleToFit: true,
         );
 
         return Column(
@@ -494,7 +702,7 @@ class _GtFxTransferFieldState extends State<GtFxTransferField> {
               leading: GtTextField(
                 controller: widget.noteController,
                 hintText: widget.noteHint,
-                isEnabled: widget.isEnabled,
+                isEnabled: widget.isNoteEnabled ?? widget.isEnabled,
                 decoration: context.inputStyles.plainDecoration(),
                 onChanged: widget.onNoteChanged,
               ),
@@ -542,8 +750,18 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
     final titleStyle = style.title2xs(color: palette.text.disabled);
     final hasFooter = footerSuffix.hasValue && balance.hasValue;
     Widget? tag;
+    Widget? errorWidget;
 
     if (data.tag != null) tag = GtImage(image: data.tag!, isDecorative: true);
+
+    if (data.errorImage case AppImageData fallback) {
+      errorWidget = GtImage(
+        image: fallback,
+        width: imageSize,
+        height: imageSize,
+        isDecorative: true,
+      );
+    }
 
     return GtInkWell(
       role: .button,
@@ -564,12 +782,14 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
             width: imageSize,
             height: imageSize,
             isDecorative: true,
+            errorWidget: errorWidget,
           ),
           _ => GtAvatar(
             avatar: data.image,
             size: imageSize,
             initials: data.name.initials,
             tag: tag,
+            errorWidget: errorWidget,
           ),
         },
         subtitle: switch ((balance.hasValue, footerSuffix.hasValue)) {
@@ -584,6 +804,7 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
         },
         subStyle: footerStyle,
         maxLines: maxLines,
+        titleMiddleEllipsis: data.middleEllipsis,
       ),
     );
   }
@@ -592,6 +813,10 @@ class _GtTransferParticipantWidget extends GtStatelessWidget {
 /// A dropdown widget for selecting a transaction category.
 class GtTransferCategoryField extends GtStatefulWidget {
   /// The controller that manages the category of the transfer.
+  ///
+  /// Seed it with a stored category to show that category when the field
+  /// opens. The caller owns it and disposes it; when null, the field creates
+  /// and disposes its own.
   final GtTransactionCategoryController? controller;
 
   /// Callback invoked whenever the category changes.
@@ -628,13 +853,14 @@ class GtTransferCategoryField extends GtStatefulWidget {
 /// The state for [GtTransferCategoryField].
 class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     with GtBottomSheetMixin, GtTransactionCategoryMixin {
-  /// The category controller, created locally if none is given.
+  /// The category controller, either [GtTransferCategoryField.controller] or
+  /// one this state created and disposes.
   late final GtTransactionCategoryController controller;
 
   @override
   void initState() {
     super.initState();
-    final defaultCtrl = GtTransactionCategoryController(
+    late final defaultCtrl = GtTransactionCategoryController(
       defaultInputCategories.first,
       categories: defaultInputCategories,
     );
@@ -643,15 +869,16 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
     if (!controller.categories.hasValue) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         controller.categories = defaultInputCategories;
+        if (controller.value == null) {
+          controller.select(defaultInputCategories.first);
+        }
       });
     }
   }
 
   @override
   void dispose() {
-    if (widget.controller != null) {
-      controller.dispose();
-    }
+    if (widget.controller == null) controller.dispose();
     super.dispose();
   }
 
@@ -741,7 +968,7 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
                 mainAxisSize: .min,
                 children: [
                   GtImage(
-                    image: category.image,
+                    image: category.image.adapt(context),
                     width: size,
                     height: size,
                     isDecorative: true,

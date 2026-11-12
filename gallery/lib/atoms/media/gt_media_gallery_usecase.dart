@@ -46,7 +46,10 @@ class _MediaGalleryPageState extends State<_MediaGalleryPage> {
   Widget build(BuildContext context) {
     final iconFonts = GtIcons.all;
     final vectors = GtVectors.all;
-    final illustrations = GtVectorIllustrations.all;
+    final illustrations = [
+      for (final item in GtVectorIllustrations.all)
+        (label: item.label, value: item.value.adapt(context)),
+    ];
     final networkImages = GtNetworkImages.all;
     final assetImages = GtAssetImages.all;
 

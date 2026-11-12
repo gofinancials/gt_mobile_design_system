@@ -7,6 +7,11 @@ import 'package:gt_mobile_foundation/foundation.dart';
 /// [filterDelegate] to control how a search query matches this entry, or leave
 /// it null to fall back to a case-insensitive match against [name].
 ///
+/// An institution with no known rate, such as one the gateway's availability
+/// list leaves out or one whose rates failed to load, is still listed: leave
+/// [rate] null and its row reads "N/A". While the rates are being fetched, set
+/// [isLoading] so the row draws a placeholder pill instead.
+///
 /// Example usage:
 /// ```dart
 /// GtSuccessRateData(
@@ -17,16 +22,34 @@ import 'package:gt_mobile_foundation/foundation.dart';
 ///       "Sterling Bank".includes(query) || "STL".includes(query),
 /// )
 /// ```
+///
+/// The recipient's bank while its rate loads, then with none to show:
+/// ```dart
+/// GtSuccessRateData(name: "Sterling Bank", isLoading: true)
+/// GtSuccessRateData(name: "Sterling Bank")
+/// ```
 class GtSuccessRateData extends AppEquatable {
   /// The institution name displayed on the tile.
   final String name;
 
-  /// The success rate as a fraction between `0.0` and `1.0`.
+  /// The success rate as a fraction between `0.0` and `1.0`, or null when no
+  /// rate is available for this institution.
   ///
   /// Rendered as a percentage pill whose colour band is derived by
   /// [GtSuccessRateTile]: `>= .9` stable, `>= .8` away, `>= .7` warning,
-  /// anything lower error.
-  final double rate;
+  /// anything lower error. A null rate renders a neutral "N/A" pill.
+  final double? rate;
+
+  /// Whether the rate is still being fetched. Defaults to false.
+  ///
+  /// Only the pill is drawn as a skeleton; the name and logo stay real, so the
+  /// row holds its place while the rates load.
+  final bool isLoading;
+
+  /// What is announced while [isLoading] is set, such as "Loading rate".
+  ///
+  /// See [GtSkeleton.semanticsLabel].
+  final String? loadingSemanticsLabel;
 
   /// The institution logo displayed at the leading edge.
   final AppImageData? logo;
@@ -39,7 +62,9 @@ class GtSuccessRateData extends AppEquatable {
   /// Creates a [GtSuccessRateData].
   const GtSuccessRateData({
     required this.name,
-    required this.rate,
+    this.rate,
+    this.isLoading = false,
+    this.loadingSemanticsLabel,
     this.logo,
     this.onTap,
     AppSearchDelegate<bool>? filterDelegate,
@@ -55,5 +80,5 @@ class GtSuccessRateData extends AppEquatable {
   }
 
   @override
-  List<Object?> get props => [name, rate, logo];
+  List<Object?> get props => [name, rate, isLoading, logo];
 }

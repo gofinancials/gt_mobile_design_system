@@ -67,7 +67,7 @@ Widget playgroundGtIllustratedStepTileUseCase(BuildContext context) {
 GtIllustratedStepTile(
   title: '$title',
   subtitle: '$subtitle',
-  illustration: AppImageData(GtVectorIllustrations.security),
+  illustration: AppImageData(GtVectorIllustrations.security.adapt(context)),
   isDone: $isDone,
 )''',
     child: Center(
@@ -77,7 +77,9 @@ GtIllustratedStepTile(
         child: GtIllustratedStepTile(
           title: title,
           subtitle: subtitle,
-          illustration: AppImageData(GtVectorIllustrations.security),
+          illustration: AppImageData(
+            GtVectorIllustrations.security.adapt(context),
+          ),
           isDone: isDone,
         ),
       ),

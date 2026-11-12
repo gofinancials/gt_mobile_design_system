@@ -15,11 +15,13 @@ class GtDropdownData<T> extends AppEquatable {
   /// The optional leading widget for the item.
   final AppImageData? leading;
 
+  /// The optional size of the [leading] image.
   final double? leadingSize;
 
   /// An optional builder to dynamically compute the label from the [value].
   final MapCallback<String, T>? labelBuilder;
 
+  /// The optional matcher that replaces the default label search in [filter].
   final AppSearchDelegate<bool>? _filterDelegate;
 
   /// Creates a new [GtDropdownData] item.
@@ -67,8 +69,10 @@ class GtInputValue<T> {
   /// The focus node that controls the focus state of the input.
   late final FocusNode focusNode;
 
+  /// The notifier that holds the currently selected dropdown item.
   final GtDropdownDataNotifier<T> _selection;
 
+  /// Whether setting [selection] also writes its label to [controller].
   final bool _updateControllerWithSelection;
 
   /// Creates a [GtInputValue] with the provided [controller] and [focusNode].
@@ -250,16 +254,29 @@ typedef GtAutocompleteItem<T> = GtDropdownData<T>;
 /// A controller for managing the state of a date of birth field.
 ///
 /// This controller handles date selection logic, age calculations, and bounds
-/// constraints for a date of birth input.
+/// constraints for a date of birth input. Ages are counted in whole calendar
+/// years, birthday to birthday, so leap days count and someone born on
+/// 29 February turns a year older on 1 March in common years.
 class GtDobController extends ChangeNotifier {
-  /// The maximum allowed age for the date of birth.
+  /// The exclusive maximum age for the date of birth.
+  ///
+  /// `maxAge: 18` means "under 18": someone whose 18th birthday is today is
+  /// rejected.
   final int maxAge;
 
-  /// The minimum allowed age for the date of birth.
+  /// The inclusive minimum age for the date of birth.
+  ///
+  /// `minAge: 18` accepts someone whose 18th birthday is today. `minAge: 0`
+  /// accepts a newborn born today.
   final int minAge;
 
+  /// The selected year, or null while it is unset.
   int? _year;
+
+  /// The selected month (1-12), or null while it is unset.
   int? _month;
+
+  /// The selected day (1-31), or null while it is unset.
   int? _day;
 
   /// Gets the currently selected date of birth, or null if the date is incomplete.
@@ -268,33 +285,56 @@ class GtDobController extends ChangeNotifier {
     return DateTime(year!, month!, day!);
   }
 
-  /// Calculates the exact current age in years based on the selected [dob].
+  /// Calculates the current age in whole calendar years from the selected
+  /// [dob], birthday to birthday.
   ///
   /// Returns `0` if the date of birth is incomplete.
   int get age {
-    if (dob == null) return 0;
-    final today = _now;
-    int calculatedAge = today.year - dob!.year;
-    if (today.month < dob!.month ||
-        (today.month == dob!.month && today.day < dob!.day)) {
-      calculatedAge--;
-    }
-    return calculatedAge;
+    final birthday = dob;
+    if (birthday == null) return 0;
+    return birthday.yearsUntil(_today);
   }
 
-  DateTime get _now => DateTime.now();
+  /// The start of the current local day.
+  DateTime get _today => DateTime.now().startOfDay;
 
-  /// The most recent allowed date based on [minAge].
-  DateTime get minDate => _now.subtract(365.days * minAge);
+  /// Returns the latest date of birth that is [years] old today.
+  ///
+  /// When today's day doesn't exist in that year (29 February in a common
+  /// year), this is the last day of the month, since someone born on 1 March
+  /// isn't [years] old until tomorrow.
+  DateTime _latestBirthdayFor(int years) {
+    final today = _today;
+    final year = today.year - years;
+    final anniversary = DateTime(year, today.month, today.day);
+    final isInSameMonth = anniversary.month == today.month;
+    if (isInSameMonth) return anniversary;
+    return DateTime(year, today.month + 1, 0);
+  }
 
-  /// The oldest allowed date based on [maxAge].
-  DateTime get maxDate => _now.subtract(365.days * maxAge);
+  /// The most recent allowed date of birth, inclusive: the latest date that
+  /// is [minAge] years old today.
+  DateTime get minDate => _latestBirthdayFor(minAge);
 
-  /// Returns whether the currently selected date is complete and within the
-  /// allowed age bounds ([maxAge] and [minAge]).
+  /// The oldest allowed date of birth, inclusive: the day after the latest
+  /// date that is [maxAge] years old today, since [maxAge] is exclusive.
+  DateTime get maxDate {
+    final latestTooOld = _latestBirthdayFor(maxAge);
+    final nextDay = latestTooOld.day + 1;
+    return DateTime(latestTooOld.year, latestTooOld.month, nextDay);
+  }
+
+  /// Returns whether the currently selected date is complete, not in the
+  /// future, at least [minAge] years old and under [maxAge].
   bool get hasValidDate {
-    if (dob == null) return false;
-    return dob! >= maxDate && dob! <= minDate;
+    final birthday = dob;
+    if (birthday == null) return false;
+    final today = _today;
+    final currentAge = birthday.yearsUntil(today);
+    final isInFuture = birthday.isAfter(today);
+    final isOldEnough = currentAge >= minAge;
+    final isYoungEnough = currentAge < maxAge;
+    return !isInFuture && isOldEnough && isYoungEnough;
   }
 
   /// The currently selected year.
@@ -306,13 +346,14 @@ class GtDobController extends ChangeNotifier {
   /// The currently selected day (1-31).
   int? get day => _day;
 
-  /// Generates a list of valid year suggestions based on age constraints.
+  /// Generates the valid birth years, oldest first, from the year of
+  /// [maxDate] through the year of [minDate], both inclusive.
   List<GtAutocompleteItem<int>> get yearSuggestions {
-    final gap = minDate.difference(maxDate).inYears;
-    return List.generate(
-      gap.abs(),
-      (it) => GtAutocompleteItem(value: (maxDate.year + it)),
-    );
+    final oldestYear = maxDate.year;
+    final latestYear = minDate.year;
+    final yearCount = latestYear - oldestYear + 1;
+    final years = List.generate(yearCount, (it) => oldestYear + it);
+    return years.mapList((it) => GtAutocompleteItem(value: it));
   }
 
   /// Generates a list of valid day suggestions for the selected [month].

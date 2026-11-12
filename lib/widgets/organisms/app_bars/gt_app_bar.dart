@@ -51,11 +51,33 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
   /// palette-derived default knows nothing about and so cannot contrast with.
   final Color? titleColor;
 
-  /// The optional height of the app bar.
+  /// An optional [Hero] tag, so the bar flies between routes that share it.
   final String? heroTag;
 
   /// The size of the back button.
   final GtBackButtonSize backButtonSize;
+
+  /// Whether a title too long for its two lines is shortened from the middle,
+  /// keeping its head and tail, rather than clipped at the end of its second
+  /// line. Defaults to false.
+  ///
+  /// Set it for titles whose end tells screens apart, such as a recipient's
+  /// name followed by their account number. See [GtText.middleEllipsis].
+  final bool titleMiddleEllipsis;
+
+  /// Whether the bar heads a routed page, at the top of the screen. Defaults
+  /// to true.
+  ///
+  /// A primary bar clears the status bar and sets its row 24 below it, where
+  /// Figma's page frames draw the header. Pass false when the bar heads a
+  /// sheet, which spaces its own top.
+  final bool primary;
+
+  /// The insets around the bar's row, replacing its default 16 on either side
+  /// and, on a [primary] bar, 24 above.
+  ///
+  /// A [primary] bar still clears the status bar on top of these.
+  final EdgeInsetsGeometry? padding;
 
   /// Creates a [GtAppBar].
   const GtAppBar({
@@ -68,13 +90,22 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     this.backButtonSize = .large,
     this.heroTag,
     this.titleColor,
+    this.titleMiddleEllipsis = false,
+    this.primary = true,
+    this.padding,
   });
 
   bool get _hasLeading => leading != null;
 
   @override
   Widget build(BuildContext context) {
-    final toolbarHeight = MediaQuery.paddingOf(context).top;
+    double statusBarHeight = 0;
+    if (primary) statusBarHeight = MediaQuery.paddingOf(context).top;
+
+    EdgeInsetsGeometry barPadding = context.insets.defaultHorizontalInsets;
+    if (primary) barPadding = barPadding.add(context.insets.onlyDp(top: 24.px));
+    if (padding != null) barPadding = padding!;
+
     final canImplyLeading = (context.canPop && implyLeading);
 
     Widget? leadingWidget = leading;
@@ -84,16 +115,17 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     }
 
     Widget child = Container(
-      padding: (context.insets.defaultHorizontalInsets).add(
-        EdgeInsets.only(top: toolbarHeight),
-      ),
+      padding: barPadding.add(EdgeInsets.only(top: statusBarHeight)),
       color: Colors.transparent,
       child: Table(
         defaultVerticalAlignment: .middle,
+        // The actions are pinned to 32 dp, so their columns are too: the title
+        // takes everything between them and, the sides being equal, stays
+        // centred on the screen.
         columnWidths: const {
-          0: FlexColumnWidth(4),
-          1: FlexColumnWidth(10),
-          2: FlexColumnWidth(4),
+          0: FixedColumnWidth(32),
+          1: FlexColumnWidth(),
+          2: FixedColumnWidth(32),
         },
         children: [
           TableRow(
@@ -107,6 +139,7 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
                 style: titleSize.getStyle(context, color: titleColor),
                 textAlign: .center,
                 maxLines: 2,
+                middleEllipsis: titleMiddleEllipsis,
                 // The screen's own title, and the anchor a screen reader user
                 // jumps to when moving by heading.
                 headingLevel: 1,
@@ -128,8 +161,14 @@ class GtAppBar extends GtStatelessWidget implements PreferredSizeWidget {
     return Material(type: .transparency, child: child);
   }
 
+  /// The tallest the bar grows below the status bar: its vertical insets plus a
+  /// title on both of its 32-high lines. [Scaffold] treats it as a ceiling and
+  /// lays its body where the bar actually ends.
   @override
   Size get preferredSize {
-    return Size.fromHeight(kToolbarHeight);
+    double verticalInset = 0;
+    if (primary) verticalInset = 24;
+    if (padding != null) verticalInset = padding!.vertical;
+    return Size.fromHeight(verticalInset + 2 * 32);
   }
 }

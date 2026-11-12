@@ -45,6 +45,19 @@ class GtImage extends GtStatelessWidget {
   /// already painted behind the image; see [GtNetworkImage.showLoadingIndicator].
   final bool showLoadingIndicator;
 
+  /// An optional widget to display if the image fails to load.
+  ///
+  /// Forwarded to whichever widget draws [image], so it covers a failed
+  /// download, an unreachable SVG, a missing asset or file, and bytes that
+  /// cannot be decoded. Give it the same footprint as the image, since it is
+  /// laid out where the image would have been.
+  ///
+  /// If null, a failed image draws the same empty placeholder box as a
+  /// missing one. It does not stand in for a missing [image] either way: with
+  /// no valid data there is nothing to fail. Ignored for icon data, which
+  /// cannot fail.
+  final Widget? errorWidget;
+
   /// A description of what this image conveys, for screen readers.
   ///
   /// Supply this whenever the image carries information the surrounding text
@@ -75,6 +88,7 @@ class GtImage extends GtStatelessWidget {
     this.color,
     this.useDefaultSize = true,
     this.showLoadingIndicator = true,
+    this.errorWidget,
     this.semanticsLabel,
     this.isDecorative = false,
   });
@@ -82,6 +96,18 @@ class GtImage extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final defaultSize = useDefaultSize ? context.dp(40.px) : null;
+    final emptyBox = Align(
+      alignment: alignment,
+      child: FittedBox(
+        fit: fit ?? BoxFit.cover,
+        child: SizedBox(
+          width: width ?? defaultSize,
+          height: height ?? defaultSize,
+        ),
+      ),
+    );
+    final fallback = errorWidget ?? emptyBox;
+
     return Align(
       alignment: alignment,
       child: Builder(
@@ -95,6 +121,7 @@ class GtImage extends GtStatelessWidget {
               fit: fit ?? BoxFit.cover,
               color: color,
               showLoadingIndicator: showLoadingIndicator,
+              errorWidget: fallback,
               semanticsLabel: semanticsLabel,
               isDecorative: isDecorative,
             );
@@ -107,6 +134,7 @@ class GtImage extends GtStatelessWidget {
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
               color: color,
+              errorWidget: fallback,
               semanticsLabel: semanticsLabel,
               isDecorative: isDecorative,
             );
@@ -119,6 +147,7 @@ class GtImage extends GtStatelessWidget {
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
               color: color,
+              errorWidget: fallback,
               semanticsLabel: semanticsLabel,
               isDecorative: isDecorative,
             );
@@ -140,20 +169,12 @@ class GtImage extends GtStatelessWidget {
               height: height ?? defaultSize,
               fit: fit ?? BoxFit.cover,
               color: color,
+              errorWidget: fallback,
               semanticsLabel: semanticsLabel,
               isDecorative: isDecorative,
             );
           }
-          return Align(
-            alignment: alignment,
-            child: FittedBox(
-              fit: fit ?? BoxFit.cover,
-              child: SizedBox(
-                width: width ?? defaultSize,
-                height: height ?? defaultSize,
-              ),
-            ),
-          );
+          return emptyBox;
         },
       ),
     );

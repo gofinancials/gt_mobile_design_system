@@ -72,6 +72,7 @@ Gradient _getCustomFadeGradient(BuildContext context) {
 GtWheelScrollGroup _buildConfiguredWheelScrollBody({
   required int year,
   required GtWheelScrollSize size,
+  required GtWheelScrollAlignment alignment,
   required bool showLabel,
   required bool isEnabled,
   required TextStyle? selectedStyle,
@@ -87,6 +88,7 @@ GtWheelScrollGroup _buildConfiguredWheelScrollBody({
         label: showLabel ? "Year" : null,
         semanticsLabel: "Year",
         size: size,
+        alignment: alignment,
         isEnabled: isEnabled,
         selectedStyle: selectedStyle,
         selectedDecoration: selectedDecoration,
@@ -125,6 +127,12 @@ class _WheelScrollPreviewState extends State<_WheelScrollPreview> {
       initialOption: GtWheelScrollSize.large,
       labelBuilder: (value) => value.name.capitalise(),
     );
+    final alignment = context.knobs.object.dropdown(
+      label: "Alignment",
+      options: GtWheelScrollAlignment.values,
+      initialOption: GtWheelScrollAlignment.center,
+      labelBuilder: (value) => value.name.capitalise(),
+    );
     final showLabel = context.knobs.boolean(
       label: "Show Label",
       initialValue: false,
@@ -153,6 +161,7 @@ GtWheelScrollGroup(
       value: $_year,${showLabel ? '\n      label: "Year",' : ''}
       semanticsLabel: "Year",
       size: .${size.name},
+      alignment: .${alignment.name},
       isEnabled: $isEnabled,
       // Set custom to false (or omit these inputs) for the original defaults.
       selectedStyle: $custom
@@ -189,6 +198,7 @@ GtWheelScrollGroup(
           _buildConfiguredWheelScrollBody(
             year: _year,
             size: size,
+            alignment: alignment,
             showLabel: showLabel,
             isEnabled: isEnabled,
             selectedStyle: custom

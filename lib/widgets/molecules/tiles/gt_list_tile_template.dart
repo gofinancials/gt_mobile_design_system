@@ -173,7 +173,7 @@ class GtStandardTextTileTemplate extends GtStatelessWidget {
 
   /// Optional custom style override for the [title].
   ///
-  /// Defaults to [GtTextStyles.subHeadS].
+  /// Defaults to [GtTextStyles.labelS] at weight 600, Figma Title/XS.
   final TextStyle? titleStyle;
 
   /// Optional custom style override for the [subtitle].
@@ -240,7 +240,7 @@ class GtStandardTextTileTemplate extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final defaultTitleStyle = context.textStyles.subHeadS();
+    final defaultTitleStyle = context.textStyles.labelS(weight: .w600);
     final defaultSubStyle = context.textStyles.bodyXs(
       color: context.palette.text.sub,
     );
