@@ -75,6 +75,12 @@ class GtTabPill<T> extends GtStatelessWidget {
   /// the selected text and semantics treatment.
   final bool showSelectedBackground;
 
+  /// Whether the pill stretches to the width it is given, with its content
+  /// centred, rather than hugging its content.
+  ///
+  /// Tab bars that split the row between their tabs set this.
+  final bool fill;
+
   /// Creates a [GtTabPill].
   const GtTabPill({
     super.key,
@@ -89,6 +95,7 @@ class GtTabPill<T> extends GtStatelessWidget {
     this.style,
     this.autoScroll = false,
     this.showSelectedBackground = true,
+    this.fill = false,
   });
 
   /// Creates a specialized selection variant of the tab pill.
@@ -105,6 +112,7 @@ class GtTabPill<T> extends GtStatelessWidget {
     GtTabPillStyle? style,
     bool autoScroll,
     bool showSelectedBackground,
+    bool fill,
   }) = GtSelectionPill<T>;
 
   GtPillVariant get effectiveVariant => style?.variant ?? variant ?? .strong;
@@ -176,9 +184,15 @@ class GtTabPill<T> extends GtStatelessWidget {
       isSelected: isSelected,
       onTap: () => onSelect(value),
       child: GtPill(
+        // A new pill when [fill] flips, because its container cannot animate
+        // a minimum width between a finite value and infinity.
+        key: ValueKey(fill),
         text: text.upper,
         bgColor: bgColor,
-        constraints: const BoxConstraints(minHeight: 32),
+        constraints: BoxConstraints(
+          minHeight: 32,
+          minWidth: fill ? double.infinity : 0,
+        ),
         borderStyle: .none,
         textStyle: textStyle ?? context.textStyles.buttonS(color: textColor),
         icon: iconWidget,
@@ -210,6 +224,7 @@ class GtSelectionPill<T> extends GtTabPill<T> {
     super.style,
     super.autoScroll,
     super.showSelectedBackground,
+    super.fill,
   });
 
   @override
@@ -260,10 +275,15 @@ class GtSelectionPill<T> extends GtTabPill<T> {
       isSelected: isSelected,
       onTap: () => onSelect(value),
       child: GtPill(
+        // See GtTabPill: the container cannot animate into an infinite width.
+        key: ValueKey(fill),
         text: text.capitalise(),
         bgColor: bgColor,
         borderStyle: .none,
         borderRadius: context.borderRadiusMd,
+        constraints: fill
+            ? const BoxConstraints(minWidth: double.infinity)
+            : null,
         textStyle:
             textStyle ??
             context.textStyles.labelS(color: textColor, weight: .w500),

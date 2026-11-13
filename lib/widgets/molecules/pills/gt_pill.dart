@@ -278,8 +278,11 @@ class _GtPillContent extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Centred so a pill stretched wider than its content, as a filling tab
+    // is, keeps the label in the middle. A hugging pill is unaffected.
     return Row(
       mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: .center,
       spacing: spacing,
       children: [
         ?icon,

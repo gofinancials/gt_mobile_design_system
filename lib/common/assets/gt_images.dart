@@ -164,6 +164,119 @@ class GtNetworkImages {
   static const String avatarTexture5 =
       '$_baseUrl/avatar_templates/texture_5.webp';
 
+  // Stash image templates
+
+  /// The folder of hosted illustration templates. Each one is a DS
+  /// illustration drawn on its own tile background.
+  static const String _illustrationTemplates =
+      '$_baseUrl/avatar_templates/illustrations';
+
+  /// The folder of the red illustration templates, which mirrors
+  /// [_illustrationTemplates] for palettes that use red illustrations.
+  static const String _redIllustrationTemplates = '$_illustrationTemplates/red';
+
+  /// Illustration template: a savings jar.
+  static const String avatarSavingsCat =
+      '$_illustrationTemplates/savings_cat.webp';
+
+  /// Illustration template: a food bowl.
+  static const String avatarFoodCat = '$_illustrationTemplates/food_cat.webp';
+
+  /// Illustration template: a popcorn tub.
+  static const String avatarMovies = '$_illustrationTemplates/movies.webp';
+
+  /// Illustration template: a map pin.
+  static const String avatarLocation = '$_illustrationTemplates/location.webp';
+
+  /// Illustration template: a gift box.
+  static const String avatarGiftCat = '$_illustrationTemplates/gift_cat.webp';
+
+  /// Illustration template: a shopping basket.
+  static const String avatarBasket = '$_illustrationTemplates/basket.webp';
+
+  /// Illustration template: a house.
+  static const String avatarHouse = '$_illustrationTemplates/house.webp';
+
+  /// Illustration template: a beach umbrella.
+  static const String avatarHolidayCat =
+      '$_illustrationTemplates/holiday_cat.webp';
+
+  /// Illustration template: a shopping bags.
+  static const String avatarShoppingCat =
+      '$_illustrationTemplates/shopping_cat.webp';
+
+  /// Illustration template: a charity ribbon.
+  static const String avatarCharityCat =
+      '$_illustrationTemplates/charity_cat.webp';
+
+  /// Illustration template: a graduation cap.
+  static const String avatarEducationCat =
+      '$_illustrationTemplates/education_cat.webp';
+
+  /// Illustration template: a car.
+  static const String avatarTransportCat =
+      '$_illustrationTemplates/transport_cat.webp';
+
+  /// Illustration template: a fire extinguisher.
+  static const String avatarEmergencyCat =
+      '$_illustrationTemplates/emergency_cat.webp';
+
+  /// Illustration template: a health heart.
+  static const String avatarHealthCat =
+      '$_illustrationTemplates/health_cat.webp';
+
+  /// Illustration template: a family.
+  static const String avatarFamilyCat =
+      '$_illustrationTemplates/family_cat.webp';
+
+  /// Photo template 1.
+  static const String avatarPhoto1 =
+      '$_baseUrl/avatar_templates/photos/photo_1.webp';
+
+  /// Photo template 2.
+  static const String avatarPhoto2 =
+      '$_baseUrl/avatar_templates/photos/photo_2.webp';
+
+  /// Photo template 3.
+  static const String avatarPhoto3 =
+      '$_baseUrl/avatar_templates/photos/photo_3.webp';
+
+  /// Photo template 4.
+  static const String avatarPhoto4 =
+      '$_baseUrl/avatar_templates/photos/photo_4.webp';
+
+  /// Photo template 5.
+  static const String avatarPhoto5 =
+      '$_baseUrl/avatar_templates/photos/photo_5.webp';
+
+  /// Photo template 6.
+  static const String avatarPhoto6 =
+      '$_baseUrl/avatar_templates/photos/photo_6.webp';
+
+  /// Photo template 7.
+  static const String avatarPhoto7 =
+      '$_baseUrl/avatar_templates/photos/photo_7.webp';
+
+  /// Photo template 8.
+  static const String avatarPhoto8 =
+      '$_baseUrl/avatar_templates/photos/photo_8.webp';
+
+  /// Photo template 9.
+  static const String avatarPhoto9 =
+      '$_baseUrl/avatar_templates/photos/photo_9.webp';
+
+  /// Photo template 10.
+  static const String avatarPhoto10 =
+      '$_baseUrl/avatar_templates/photos/photo_10.webp';
+
+  /// Photo template 11.
+  static const String avatarPhoto11 =
+      '$_baseUrl/avatar_templates/photos/photo_11.webp';
+
+  /// Photo template 12.
+  static const String avatarPhoto12 =
+      '$_baseUrl/avatar_templates/photos/photo_12.webp';
+
   /// Debit card
   static const String debitCard = '$_baseUrl/DebitCard.webp';
 
@@ -249,6 +362,54 @@ class GtNetworkImages {
     (label: 'avatarTexture5', value: avatarTexture5),
   ];
 
+  /// The illustration templates, in the order the Stash image picker shows
+  /// them. Pass each through [GtIllustrationExtension.adapt] to get the
+  /// variant that suits the palette.
+  static List<({String label, String value})> get illustrationTemplates => [
+    (label: 'avatarSavingsCat', value: avatarSavingsCat),
+    (label: 'avatarFoodCat', value: avatarFoodCat),
+    (label: 'avatarMovies', value: avatarMovies),
+    (label: 'avatarLocation', value: avatarLocation),
+    (label: 'avatarGiftCat', value: avatarGiftCat),
+    (label: 'avatarBasket', value: avatarBasket),
+    (label: 'avatarHouse', value: avatarHouse),
+    (label: 'avatarHolidayCat', value: avatarHolidayCat),
+    (label: 'avatarShoppingCat', value: avatarShoppingCat),
+    (label: 'avatarCharityCat', value: avatarCharityCat),
+    (label: 'avatarEducationCat', value: avatarEducationCat),
+    (label: 'avatarTransportCat', value: avatarTransportCat),
+    (label: 'avatarEmergencyCat', value: avatarEmergencyCat),
+    (label: 'avatarHealthCat', value: avatarHealthCat),
+    (label: 'avatarFamilyCat', value: avatarFamilyCat),
+  ];
+
+  /// The photo templates, in the order the Stash image picker shows them.
+  static List<({String label, String value})> get photoTemplates => [
+    (label: 'avatarPhoto1', value: avatarPhoto1),
+    (label: 'avatarPhoto2', value: avatarPhoto2),
+    (label: 'avatarPhoto3', value: avatarPhoto3),
+    (label: 'avatarPhoto4', value: avatarPhoto4),
+    (label: 'avatarPhoto5', value: avatarPhoto5),
+    (label: 'avatarPhoto6', value: avatarPhoto6),
+    (label: 'avatarPhoto7', value: avatarPhoto7),
+    (label: 'avatarPhoto8', value: avatarPhoto8),
+    (label: 'avatarPhoto9', value: avatarPhoto9),
+    (label: 'avatarPhoto10', value: avatarPhoto10),
+    (label: 'avatarPhoto11', value: avatarPhoto11),
+    (label: 'avatarPhoto12', value: avatarPhoto12),
+  ];
+
+  /// The red variant of the illustration template [url], or null when [url]
+  /// is not an illustration template.
+  ///
+  /// A red template is returned as it is, so adapting twice is harmless.
+  static String? redIllustrationTemplate(String url) {
+    if (url.startsWith('$_redIllustrationTemplates/')) return url;
+    final isTemplate = illustrationTemplates.any((it) => it.value == url);
+    if (!isTemplate) return null;
+    return url.replaceFirst(_illustrationTemplates, _redIllustrationTemplates);
+  }
+
   static List<({String label, String value})> get personalOnboardingSlides => [
     (label: 'personalSlide1Bg', value: personalSlide1Bg),
     (label: 'personalSlide2Bg', value: personalSlide2Bg),
@@ -309,6 +470,8 @@ class GtNetworkImages {
     (label: 'virtualCard', value: virtualCard),
     (label: 'virtualCardBg', value: virtualCardBg),
     ...allAvatars,
+    ...illustrationTemplates,
+    ...photoTemplates,
     ...personalOnboardingSlides,
   ];
 }

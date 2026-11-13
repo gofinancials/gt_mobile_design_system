@@ -257,6 +257,8 @@ import 'package:gallery/organisms/headers/gt_transaction_group_header_usecase.da
     as _gallery_organisms_headers_gt_transaction_group_header_usecase;
 import 'package:gallery/organisms/listeners/gt_listeners_usecases.dart'
     as _gallery_organisms_listeners_gt_listeners_usecases;
+import 'package:gallery/organisms/media/gt_image_template_picker_usecase.dart'
+    as _gallery_organisms_media_gt_image_template_picker_usecase;
 import 'package:gallery/organisms/media/gt_video_player_usecase.dart'
     as _gallery_organisms_media_gt_video_player_usecase;
 import 'package:gallery/organisms/menus/gt_context_menu_usecase.dart'
@@ -2237,6 +2239,27 @@ final directories = <_widgetbook.WidgetbookNode>[
           _widgetbook.WidgetbookFolder(
             name: 'media',
             children: [
+              _widgetbook.WidgetbookComponent(
+                name: 'GtImageTemplatePicker',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'In a sheet',
+                    builder:
+                        _gallery_organisms_media_gt_image_template_picker_usecase
+                            .gtImageTemplatePickerSheetUseCase,
+                    designLink:
+                        'https://www.figma.com/design/EE0KNJdpCKsQGoLFyLrC2v/Personal?node-id=36847-92874',
+                  ),
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'Inline',
+                    builder:
+                        _gallery_organisms_media_gt_image_template_picker_usecase
+                            .gtImageTemplatePickerUseCase,
+                    designLink:
+                        'https://www.figma.com/design/EE0KNJdpCKsQGoLFyLrC2v/Personal?node-id=36847-92874',
+                  ),
+                ],
+              ),
               _widgetbook.WidgetbookComponent(
                 name: 'GtVideoPlayer',
                 useCases: [

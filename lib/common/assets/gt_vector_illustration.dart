@@ -503,11 +503,14 @@ extension GtIllustrationExtension on String {
   /// This illustration in the variant that suits the palette of [context].
   ///
   /// Under a palette with [GtPalette.usesRedIllustration] set, an illustration
-  /// that has a red variant becomes that variant. Any other path, such as an
-  /// icon, a network URL or an illustration without a red variant, is
-  /// returned unchanged.
+  /// that has a red variant becomes that variant, and so does a hosted
+  /// illustration template from [GtNetworkImages.illustrationTemplates]. Any
+  /// other path, such as an icon, another network URL or an illustration
+  /// without a red variant, is returned unchanged.
   String adapt(BuildContext context) {
     if (!context.palette.usesRedIllustration) return this;
+    final template = GtNetworkImages.redIllustrationTemplate(this);
+    if (template != null) return template;
     if (!GtVectorIllustrations._redVariants.contains(this)) return this;
     return replaceFirst(
       GtVectorIllustrations._basePath,
