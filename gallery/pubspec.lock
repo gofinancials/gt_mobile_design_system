@@ -689,8 +689,8 @@ packages:
     dependency: transitive
     description:
       path: "packages/gt_device_integrity"
-      ref: "7053bb46a1626f4c8a27ecaf43359d89cc712e26"
-      resolved-ref: "7053bb46a1626f4c8a27ecaf43359d89cc712e26"
+      ref: cd5b6d1f20b71fa591749d1d0315e6d500a483b7
+      resolved-ref: cd5b6d1f20b71fa591749d1d0315e6d500a483b7
       url: "https://github.com/gofinancials/gt_mobile_foundation.git"
     source: git
     version: "0.0.1"
@@ -698,8 +698,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.0.83"
-      resolved-ref: "7053bb46a1626f4c8a27ecaf43359d89cc712e26"
+      ref: "v0.0.84"
+      resolved-ref: cd5b6d1f20b71fa591749d1d0315e6d500a483b7
       url: "https://github.com/gofinancials/gt_mobile_foundation.git"
     source: git
     version: "0.0.1"
