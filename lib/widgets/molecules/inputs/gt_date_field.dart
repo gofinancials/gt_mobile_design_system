@@ -50,13 +50,30 @@ class GtDateField extends GtStatefulWidget {
   /// The field built with the default constructor reports a change to
   /// [GtCalendarValue.day]. The field built with [GtDateField.range] reports a
   /// change to [GtCalendarValue.range] and ignores a change to the day alone,
-  /// such as the month or year picked from the calendar header. After the
-  /// first tap of a range the value holds a one-day range, matching the text
-  /// the field shows, until the end date is picked.
+  /// such as the month or year picked from the calendar header.
+  /// [GtCalendarValue.range] changes only once a range is finished: the first
+  /// tap sets [GtCalendarValue.pendingRangeStart] and reports nothing, and
+  /// the field keeps showing the last finished range until the second tap.
+  /// Closing the sheet between the two taps drops the pending start.
   ///
   /// This also fires when the [controller]'s value is set from outside the
   /// field.
   final OnChanged<GtCalendarValue?>? onChanged;
+
+  /// The caption over the start of the range in the calendar sheet, already
+  /// localised, such as "Start" or "From".
+  ///
+  /// Only [GtDateField.range] uses it. With [rangeEndLabel] also set, the
+  /// sheet shows the start and end above the calendar as they are picked and
+  /// outlines the end the next tap sets. See
+  /// [GtCalendarModal.rangeStartLabel].
+  final String? rangeStartLabel;
+
+  /// The caption over the end of the range in the calendar sheet, already
+  /// localised, such as "End" or "To".
+  ///
+  /// See [rangeStartLabel].
+  final String? rangeEndLabel;
 
   /// The current selection mode of the field.
   final GtCalendarSelectionMode _selectionMode;
@@ -86,7 +103,9 @@ class GtDateField extends GtStatefulWidget {
     this.label,
     this.focusNode,
     this.autovalidateMode = .disabled,
-  }) : _selectionMode = .day;
+  }) : _selectionMode = .day,
+       rangeStartLabel = null,
+       rangeEndLabel = null;
 
   /// Creates a date field configured for date range selection.
   const GtDateField.range({
@@ -105,6 +124,8 @@ class GtDateField extends GtStatefulWidget {
     this.label,
     this.focusNode,
     this.autovalidateMode = .disabled,
+    this.rangeStartLabel,
+    this.rangeEndLabel,
   }) : _selectionMode = .range;
 
   @override
@@ -209,7 +230,7 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
     if (!widget.isEnabled) return;
     final title = widget.calendarTitle ?? widget.label ?? widget.hintText;
 
-    showDraggableSheet(
+    showDraggableSheet<void>(
       context,
       useRootNavigator: false,
       builder: (controller) => GtCalendarModal(
@@ -217,10 +238,16 @@ class _GtDateFieldState extends State<GtDateField> with GtBottomSheetMixin {
         controller: _calendarController,
         title: title ?? defaultHint,
         selectionMode: widget.selectionMode,
+        rangeStartLabel: widget.rangeStartLabel,
+        rangeEndLabel: widget.rangeEndLabel,
+        dateFormat: widget.dateFormat,
         onSelectDay: (_) => _pop(context),
         onSelectRange: (_) => _pop(context),
       ),
-    );
+    ).then((_) {
+      // A start picked without an end is not a value the field can show.
+      if (mounted) _calendarController.cancelRangePick();
+    });
   }
 
   /// The hint shown when neither [GtDateField.hintText] nor
