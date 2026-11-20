@@ -123,6 +123,8 @@ import 'package:gallery/molecules/inputs/gt_signature_pad_usecase.dart'
     as _gallery_molecules_inputs_gt_signature_pad_usecase;
 import 'package:gallery/molecules/inputs/gt_text_field_usecase.dart'
     as _gallery_molecules_inputs_gt_text_field_usecase;
+import 'package:gallery/molecules/inputs/gt_time_field_usecase.dart'
+    as _gallery_molecules_inputs_gt_time_field_usecase;
 import 'package:gallery/molecules/inputs/gt_transfer_field_usecase.dart'
     as _gallery_molecules_inputs_gt_transfer_field_usecase;
 import 'package:gallery/molecules/inputs/gt_url_field_usecase.dart'
@@ -1122,6 +1124,26 @@ final directories = <_widgetbook.WidgetbookNode>[
                     name: 'GtTextField',
                     builder: _gallery_molecules_inputs_gt_text_field_usecase
                         .playgroundGtTextFieldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTimeField',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTimeField',
+                    builder: _gallery_molecules_inputs_gt_time_field_usecase
+                        .playgroundGtTimeFieldUseCase,
+                  ),
+                ],
+              ),
+              _widgetbook.WidgetbookComponent(
+                name: 'GtTimeWheelScroll',
+                useCases: [
+                  _widgetbook.WidgetbookUseCase(
+                    name: 'GtTimeWheelScroll',
+                    builder: _gallery_molecules_inputs_gt_time_field_usecase
+                        .playgroundGtTimeWheelScrollUseCase,
                   ),
                 ],
               ),
