@@ -26,13 +26,12 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// A route pushed from inside it does not: it is built from the navigator's
 /// context, so it needs its own scope.
 ///
-/// Note that [GtTheme.materialLight] and [GtTheme.materialDark] call
-/// [SystemChrome.setSystemUIOverlayStyle] as a side effect of being read. This
-/// widget only reads them when [theme] or the resolved brightness changes, but
-/// the style it sets is global and sticky: it stays on the scoped brand after
-/// the scope is gone. A screen that cares about the status bar outside the
-/// scope sets it back through `AppBar.systemOverlayStyle` or an
-/// [AnnotatedRegion].
+/// The scope also colors the system bars for its brand while it is on
+/// screen: it wraps [child] in an [AnnotatedRegion] of
+/// [GtTheme.systemOverlayStyle], so a scoped screen without an [AppBar] gets
+/// the scoped brand's status and navigation bars too. An [AppBar] inside it
+/// annotates its own region from the scoped [Theme], which matches. Once the
+/// scope leaves the screen the bars follow whatever is on screen instead.
 class GtThemedScope extends StatefulWidget {
   /// Creates a scope that brands [child] with [theme].
   const GtThemedScope({
@@ -73,6 +72,9 @@ class _GtThemedScopeState extends State<GtThemedScope> {
   /// The Material theme installed above [GtThemedScope.child].
   late ThemeData _data;
 
+  /// The system bar style annotated over [GtThemedScope.child].
+  late SystemUiOverlayStyle _overlayStyle;
+
   @override
   Widget build(BuildContext context) {
     final brightness = widget.brightness ?? Theme.brightnessOf(context);
@@ -83,11 +85,15 @@ class _GtThemedScopeState extends State<GtThemedScope> {
         .dark => widget.theme.materialDark,
         .light => widget.theme.materialLight,
       };
+      _overlayStyle = widget.theme.systemOverlayStyle(brightness);
     }
 
-    return Theme(
-      data: _data,
-      child: GtThemeProvider(theme: widget.theme, child: widget.child),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: _overlayStyle,
+      child: Theme(
+        data: _data,
+        child: GtThemeProvider(theme: widget.theme, child: widget.child),
+      ),
     );
   }
 }
