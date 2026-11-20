@@ -54,18 +54,39 @@ Widget playgroundGtSelectionListTileUseCase(BuildContext context) {
     label: 'Skeleton',
     initialValue: false,
   );
+  final tickColorName = context.knobs.object.dropdown<String>(
+    label: 'Tick Color',
+    options: const ['Default (success)', 'Primary'],
+    initialOption: 'Default (success)',
+  );
+  final tickColor = tickColorName == 'Primary'
+      ? context.palette.primary.base
+      : null;
+  final tickSize = context.knobs.double.slider(
+    label: 'Tick Size',
+    initialValue: 28,
+    min: 16,
+    max: 32,
+    divisions: 16,
+  );
+  final tickSnippet =
+      '${tickColor == null ? '' : '\n  tickColor: context.palette.primary.base,'}'
+      '${tickSize == 28 ? '' : '\n  tickSize: ${tickSize.toStringAsFixed(0)},'}';
 
   return GtWidgetDocPage(
     title: 'GtSelectionListTile',
     description:
-        'A generic selection list tile displaying a prominent checkmark when active.',
+        'A generic selection list tile displaying a prominent checkmark when '
+        'active. The tick defaults to the palette\'s success color at 28; '
+        'tickColor and tickSize restyle it, such as primary to match a design '
+        'that draws the tick in the brand color.',
     code: isSkeleton
         ? "GtSelectionListTile<String>.skeleton(value: '')"
         : '''
 GtSelectionListTile<String>(
   "savings",
   text: "$title",
-  isSelected: $isSelected,
+  isSelected: $isSelected,$tickSnippet
   onSelect: (val) {},
 )''',
     child: Center(
@@ -78,6 +99,8 @@ GtSelectionListTile<String>(
                 title,
                 value: 'savings',
                 isSelected: isSelected,
+                tickColor: tickColor,
+                tickSize: tickSize,
                 onSelect: (val) {},
               ),
       ),
@@ -102,18 +125,38 @@ Widget playgroundGtSelectionColumnListTileUseCase(BuildContext context) {
     label: 'Is Selected',
     initialValue: true,
   );
+  final tickColorName = context.knobs.object.dropdown<String>(
+    label: 'Tick Color',
+    options: const ['Default (success)', 'Primary'],
+    initialOption: 'Default (success)',
+  );
+  final tickColor = tickColorName == 'Primary'
+      ? context.palette.primary.base
+      : null;
+  final tickSize = context.knobs.double.slider(
+    label: 'Tick Size',
+    initialValue: 24,
+    min: 16,
+    max: 32,
+    divisions: 16,
+  );
+  final tickSnippet =
+      '${tickColor == null ? '' : '\n  tickColor: context.palette.primary.base,'}'
+      '${tickSize == 24 ? '' : '\n  tickSize: ${tickSize.toStringAsFixed(0)},'}';
 
   return GtWidgetDocPage(
     title: 'GtSelectionColumnListTile',
     description:
-        'A selection tile displaying a checkbox alongside stacked title and description columns.',
+        'A selection tile displaying a tick alongside stacked title and '
+        'description columns. The tick defaults to the palette\'s success '
+        'color at 24; tickColor and tickSize restyle it.',
     code:
         '''
 GtSelectionColumnListTile<String>(
   "$title",
   description: "$description",
   value: "head_office",
-  isSelected: $isSelected,
+  isSelected: $isSelected,$tickSnippet
   onSelect: (val) {},
 )''',
     child: Center(
@@ -125,6 +168,8 @@ GtSelectionColumnListTile<String>(
           description: description,
           value: 'head_office',
           isSelected: isSelected,
+          tickColor: tickColor,
+          tickSize: tickSize,
           onSelect: (val) {},
         ),
       ),

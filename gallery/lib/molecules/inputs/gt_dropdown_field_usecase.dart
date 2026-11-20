@@ -16,6 +16,10 @@ Widget playgroundGtDropdownFieldUseCase(BuildContext context) {
     label: 'Show Search',
     initialValue: true,
   );
+  final primaryTick = context.knobs.boolean(
+    label: 'Primary Tick',
+    initialValue: false,
+  );
   final decoration = context.knobs.object.dropdown<(String, GtInputDecoration)>(
     label: 'Input Style',
     options: context.inputStyles.all,
@@ -34,14 +38,17 @@ GtDropdownField<String>(
   label: "$label",
   sheetTitle: "$sheetTitle",
   isEnabled: $isEnabled,
-  showSearch: $showSearch,
+  showSearch: $showSearch,${primaryTick ? '\n  tickColor: context.palette.primary.base,' : ''}
   decoration: /* Selected: ${decoration.$1} */,
 )''';
 
   return GtWidgetDocPage(
     title: 'GtDropdownField',
     description:
-        'A text input field that provides a dropdown selection interface via a draggable bottom sheet.',
+        'A text input field that provides a dropdown selection interface via '
+        'a draggable bottom sheet. The chosen option\'s tick defaults to the '
+        'palette\'s success color; tickColor restyles it, such as primary to '
+        'match a design that draws it in the brand color.',
     code: codeSnippet,
     child: GtDropdownField<String>(
       controller: GtDropdownInputController(),
@@ -53,6 +60,7 @@ GtDropdownField<String>(
       sheetTitle: sheetTitle.isEmpty ? null : sheetTitle,
       isEnabled: isEnabled,
       showSearch: showSearch,
+      tickColor: primaryTick ? context.palette.primary.base : null,
       decoration: decoration.$2,
     ),
   );

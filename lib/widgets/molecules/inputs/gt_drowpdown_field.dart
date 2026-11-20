@@ -118,6 +118,14 @@ class GtDropdownField<T> extends GtStatefulWidget {
   /// valid again. Defaults to [AutovalidateMode.disabled].
   final AutovalidateMode autovalidateMode;
 
+  /// The color of the tick on the selected option in the sheet. Defaults to
+  /// the palette's success color.
+  ///
+  /// Applies to the sheet's own [GtSelectionListTile]s, not to options drawn
+  /// by [optionBuilder] or [optionsBuilder]. See
+  /// [GtSelectionListTile.tickColor].
+  final Color? tickColor;
+
   /// Creates a dropdown field with the provided [options].
   const GtDropdownField({
     super.key,
@@ -145,6 +153,7 @@ class GtDropdownField<T> extends GtStatefulWidget {
     this.dropdownSemanticLabel,
     this.showSearch = true,
     this.autovalidateMode = .disabled,
+    this.tickColor,
   }) : assert(
          optionBuilder == null || optionsBuilder == null,
          'Cannot provide both optionBuilder and optionsBuilder.',
@@ -199,6 +208,7 @@ class _GtDropdownFieldState<T> extends State<GtDropdownField<T>>
         loadingWidget: widget.loadingWidget,
         errorWidget: widget.errorWidget,
         showSearch: widget.showSearch,
+        tickColor: widget.tickColor,
       ),
     );
   }
@@ -299,6 +309,13 @@ class GtDropDownModal<T> extends GtStatefulWidget {
   /// cancel button, on its own in the search field's place.
   final bool showSearch;
 
+  /// The color of the tick on the selected option. Defaults to the palette's
+  /// success color.
+  ///
+  /// Applies to the modal's own [GtSelectionListTile]s, not to options drawn
+  /// by [builder] or [listBuilder]. See [GtSelectionListTile.tickColor].
+  final Color? tickColor;
+
   /// Creates a [GtDropDownModal].
   const GtDropDownModal(
     this.scrollController, {
@@ -315,6 +332,7 @@ class GtDropDownModal<T> extends GtStatefulWidget {
     required this.autoFocus,
     this.gap = const GtGap.yLg(),
     this.showSearch = true,
+    this.tickColor,
   });
 
   @override
@@ -487,6 +505,7 @@ class _GtDropDownModalState<T> extends State<GtDropDownModal<T>>
                         value: value,
                         isSelected: isSelected,
                         leading: leading,
+                        tickColor: widget.tickColor,
                         onSelect: (value) {
                           widget.controller.selection = value;
                           context.maybePop();
