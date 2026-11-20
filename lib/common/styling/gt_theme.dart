@@ -34,17 +34,18 @@ class GtTheme {
 
   /// The system bar style for this theme at [brightness].
   ///
-  /// The status bar takes the palette's darker primary color with light
-  /// icons, and the navigation bar takes the palette's background with icons
-  /// that contrast with it. Android paints these colors on phones that do not
-  /// draw edge to edge; iOS and edge-to-edge phones draw the app under the
-  /// bars and use only the icon brightness.
+  /// Both bars contrast with the screen's background, `bg.white`: dark icons
+  /// in light mode and light icons in dark mode. The status bar is
+  /// transparent, because iOS and edge-to-edge Android (enforced from
+  /// Android 15) draw the app under it anyway, and on older Android phones a
+  /// transparent bar shows the screen behind it, so the icons sit on the same
+  /// background everywhere. The navigation bar takes the palette's background.
   ///
   /// It is not applied globally. [materialLight] and [materialDark] put it in
-  /// their [AppBarTheme.systemOverlayStyle], so every [AppBar] annotates its
-  /// own region with the theme it is drawn in, and [GtThemedScope] annotates
-  /// its subtree. A screen with neither, such as the app's root without an
-  /// app bar, can annotate itself:
+  /// their [AppBarTheme.systemOverlayStyle], which a Material [AppBar] uses,
+  /// and [GtThemedScope] annotates its subtree. The design system's own app
+  /// bars, such as [GtAppBar] and [GtTitleAppBar], annotate nothing, so an
+  /// app should annotate its root:
   ///
   /// ```dart
   /// MaterialApp(
@@ -61,17 +62,18 @@ class GtTheme {
       .dark => darkPalette,
       .light => lightPalette,
     };
-    final navigationIconBrightness = switch (brightness) {
+    // Android's icon brightness names the icons' color; iOS's status bar
+    // brightness names the background's, so the two are opposites.
+    final iconBrightness = switch (brightness) {
       .dark => Brightness.light,
       .light => Brightness.dark,
     };
     return SystemUiOverlayStyle(
-      statusBarColor: palette.primary.darker,
-      // Light icons on the darker primary; on iOS, a dark status bar.
-      statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.light,
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: iconBrightness,
+      statusBarBrightness: brightness,
       systemNavigationBarColor: palette.bg.white,
-      systemNavigationBarIconBrightness: navigationIconBrightness,
+      systemNavigationBarIconBrightness: iconBrightness,
     );
   }
 

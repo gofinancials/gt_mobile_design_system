@@ -9,15 +9,21 @@ void main() {
   setUpAll(registerTestAppConfig);
 
   group('GtTheme.systemOverlayStyle', () {
-    test('colors the bars from the palette of the given brightness', () {
+    test('the status bar is transparent with icons that contrast with the '
+        'screen in each mode', () {
       final light = kFlexTheme.systemOverlayStyle(Brightness.light);
-      expect(light.statusBarColor, kFlexTheme.lightPalette.primary.darker);
-      expect(light.statusBarIconBrightness, Brightness.light);
+      expect(light.statusBarColor, Colors.transparent);
+      // Dark icons on the white screen: Android names the icons, iOS the
+      // background.
+      expect(light.statusBarIconBrightness, Brightness.dark);
+      expect(light.statusBarBrightness, Brightness.light);
       expect(light.systemNavigationBarColor, kFlexTheme.lightPalette.bg.white);
       expect(light.systemNavigationBarIconBrightness, Brightness.dark);
 
       final dark = kFlexTheme.systemOverlayStyle(Brightness.dark);
-      expect(dark.statusBarColor, kFlexTheme.darkPalette.primary.darker);
+      expect(dark.statusBarColor, Colors.transparent);
+      expect(dark.statusBarIconBrightness, Brightness.light);
+      expect(dark.statusBarBrightness, Brightness.dark);
       expect(dark.systemNavigationBarColor, kFlexTheme.darkPalette.bg.white);
       expect(dark.systemNavigationBarIconBrightness, Brightness.light);
     });
@@ -63,10 +69,14 @@ void main() {
 
   /// Mounts an app in [themeMode] with light and dark themes of the Personal
   /// brand around [home], and returns the bar style applied after a frame.
+  ///
+  /// With [annotateRoot], the app annotates its root from its theme, as the
+  /// [GtTheme.systemOverlayStyle] doc comment shows.
   Future<SystemUiOverlayStyle?> barsFor(
     WidgetTester tester,
     Widget home, {
     ThemeMode themeMode = .light,
+    bool annotateRoot = false,
   }) async {
     await tester.pumpWidget(
       GtThemeProvider(
@@ -75,6 +85,14 @@ void main() {
           theme: kPersonalTheme.materialLight,
           darkTheme: kPersonalTheme.materialDark,
           themeMode: themeMode,
+          builder: annotateRoot
+              ? (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+                  value: kPersonalTheme.systemOverlayStyle(
+                    Theme.brightnessOf(context),
+                  ),
+                  child: child!,
+                )
+              : null,
           home: home,
         ),
       ),
@@ -83,57 +101,75 @@ void main() {
     return SystemChrome.latestStyle;
   }
 
-  testWidgets('an app bar in light mode gets the light palette, though the '
-      'dark theme is read too', (tester) async {
+  testWidgets('a GtTitleAppBar screen under an annotated root has dark status '
+      'bar icons in light mode', (tester) async {
     final style = await barsFor(
+      tester,
+      const Scaffold(appBar: GtTitleAppBar(title: 'Statements')),
+      annotateRoot: true,
+    );
+
+    expect(style?.statusBarColor, Colors.transparent);
+    expect(style?.statusBarIconBrightness, Brightness.dark);
+    expect(style?.statusBarBrightness, Brightness.light);
+    expect(
+      style?.systemNavigationBarColor,
+      kPersonalTheme.lightPalette.bg.white,
+    );
+  });
+
+  testWidgets('and light status bar icons in dark mode', (tester) async {
+    final style = await barsFor(
+      tester,
+      const Scaffold(appBar: GtTitleAppBar(title: 'Statements')),
+      annotateRoot: true,
+      themeMode: .dark,
+    );
+
+    expect(style?.statusBarIconBrightness, Brightness.light);
+    expect(style?.statusBarBrightness, Brightness.dark);
+    expect(
+      style?.systemNavigationBarColor,
+      kPersonalTheme.darkPalette.bg.white,
+    );
+  });
+
+  testWidgets('a Material app bar follows the mode on screen, though the dark '
+      'theme is read too', (tester) async {
+    final light = await barsFor(
       tester,
       Scaffold(appBar: AppBar(title: const Text('Stash'))),
     );
+    expect(light?.statusBarIconBrightness, Brightness.dark);
 
-    expect(style?.statusBarColor, kPersonalTheme.lightPalette.primary.darker);
-  });
-
-  testWidgets('an app bar in dark mode gets the dark palette', (tester) async {
-    final style = await barsFor(
+    final dark = await barsFor(
       tester,
       Scaffold(appBar: AppBar(title: const Text('Stash'))),
       themeMode: .dark,
     );
-
-    expect(style?.statusBarColor, kPersonalTheme.darkPalette.primary.darker);
+    expect(dark?.statusBarIconBrightness, Brightness.light);
   });
 
-  testWidgets('a scoped screen without an app bar gets its own brand\'s bars', (
-    tester,
-  ) async {
+  testWidgets('a scoped screen gets its own brand\'s bars', (tester) async {
     final style = await barsFor(
       tester,
       GtThemedScope(
         theme: kFlexTheme,
         child: const Scaffold(body: SizedBox.expand()),
       ),
+      annotateRoot: true,
     );
 
-    final flex = kFlexTheme.systemOverlayStyle(Brightness.light);
-    expect(style?.statusBarColor, flex.statusBarColor);
-    expect(style?.systemNavigationBarColor, flex.systemNavigationBarColor);
-    expect(
-      style?.statusBarColor,
-      isNot(kPersonalTheme.lightPalette.primary.darker),
+    expect(style?.statusBarIconBrightness, Brightness.dark);
+    expect(style?.systemNavigationBarColor, kFlexTheme.lightPalette.bg.white);
+    final region = tester.widget<AnnotatedRegion<SystemUiOverlayStyle>>(
+      find
+          .descendant(
+            of: find.byType(GtThemedScope),
+            matching: find.byType(AnnotatedRegion<SystemUiOverlayStyle>),
+          )
+          .first,
     );
-  });
-
-  testWidgets('an app bar inside a scope takes the scoped brand', (
-    tester,
-  ) async {
-    final style = await barsFor(
-      tester,
-      GtThemedScope(
-        theme: kFlexTheme,
-        child: Scaffold(appBar: AppBar(title: const Text('Stash'))),
-      ),
-    );
-
-    expect(style?.statusBarColor, kFlexTheme.lightPalette.primary.darker);
+    expect(region.value, kFlexTheme.systemOverlayStyle(Brightness.light));
   });
 }
