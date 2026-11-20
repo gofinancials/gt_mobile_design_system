@@ -17,25 +17,34 @@ Widget playgroundGtDashboardScaffoldUseCase(BuildContext context) {
     label: 'Loading',
     initialValue: false,
   );
+  final hideNavigation = context.knobs.boolean(
+    label: 'Hide Bottom Navigation',
+    initialValue: false,
+  );
 
   return GtWidgetDocPage(
     title: 'GtDashboardScaffold',
     description:
-        'A complete dashboard scaffold that coordinates pages, app bars, and bottom navigation states.',
+        'A complete dashboard scaffold that coordinates pages, app bars, and '
+        'bottom navigation states. The bottom navigation shows for two or '
+        'more pages and hides for one; showBottomNavigation: false hides it '
+        'for any number of pages, such as for a customer whose role restricts '
+        'navigation. Without the bar, navItem may be left out, the page clears '
+        'the bottom system inset, and the page controller still switches pages.',
     code:
         '''
 GtDashboardScaffold(
   pageController: pageController,
-  bottomNavigationStyle: GtBottomNavigationStyle.${style.name},
+  bottomNavigationStyle: GtBottomNavigationStyle.${style.name},${hideNavigation ? '\n  showBottomNavigation: false,' : ''}
   data: [
     GtDashboardPageData(
       page: HomePage(),
-      ${isLoading ? "isLoading: true,\n      loadingSemanticsLabel: 'Loading your accounts',\n      appBar: GtHomeAppBar(isLoading: true)," : 'appBar: GtHomeAppBar(),'}
+      ${isLoading ? "isLoading: true,\n      loadingSemanticsLabel: 'Loading your accounts',\n      appBar: GtHomeAppBar(isLoading: true)," : 'appBar: GtHomeAppBar(),'}${hideNavigation ? '' : '''
       navItem: GtBottomNavigationItem(
         selectedIcon: GtIcons.homeFilled,
         unselectedIcon: GtIcons.home,
         label: 'Home',
-      ),
+      ),'''}
     ),
   ],
 )''',
@@ -153,7 +162,6 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
               hidden: _hidden,
               onToggleHide: _toggleHidden,
               actions: GtActionButtonBar(
-                padding: context.insets.symmetricDp(horizontal: 26.5.px),
                 buttons: [
                   GtActionButton(
                     icon: GtIcons.circleInfo,
@@ -261,8 +269,14 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       initialValue: false,
     );
 
+    final hideNavigation = context.knobs.boolean(
+      label: 'Hide Bottom Navigation',
+      initialValue: false,
+    );
+
     return GtDashboardScaffold(
       onClickHelp: () {},
+      showBottomNavigation: hideNavigation ? false : null,
       data: _getData(isLoading: isLoading),
       pageController: _pageController,
       bottomNavigationStyle: context.knobs.object

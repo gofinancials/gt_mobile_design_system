@@ -56,6 +56,18 @@ class GtPhoneField extends GtStatefulWidget {
   /// Defaults to a success check shown once ten digits are entered.
   final Widget? suffix;
 
+  /// When the number is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// When this or the enclosing [GtForm] sets a mode other than
+  /// [AutovalidateMode.disabled], every change to the number marks it as
+  /// changed for its [Form] before [onChange] runs, and a new country
+  /// re-validates a number already changed. So
+  /// [AutovalidateMode.onUserInteraction] shows the error as the number
+  /// changes and clears it once the number is valid again. Defaults to
+  /// [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a new [GtPhoneField].
   const GtPhoneField({
     super.key,
@@ -74,6 +86,7 @@ class GtPhoneField extends GtStatefulWidget {
     this.validator,
     this.autofillHints = const [AutofillHints.telephoneNumberNational],
     this.suffix,
+    this.autovalidateMode = .disabled,
   });
   @override
   State<GtPhoneField> createState() => _GtPhoneFieldState();
@@ -84,16 +97,35 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
   /// The number and country controller, created locally if none is given.
   late final GtInputController<Country> controller;
 
+  /// The key of the [FormField] that validates the number.
+  final _fieldKey = GlobalKey<FormFieldState<GtInputValue<Country>>>();
+
+  /// The number last reported to the [FormField].
+  late String _reportedText;
+
   @override
   void initState() {
     super.initState();
     controller = widget.controller ?? GtInputController<Country>();
+    _reportedText = controller.text;
+    // Only the number is an edit: the country is also set when the field
+    // resolves its default, before the customer has touched anything.
+    controller.controller.addListener(_reportChange);
   }
 
   @override
   void dispose() {
+    controller.controller.removeListener(_reportChange);
     if (widget.controller == null) controller.dispose();
     super.dispose();
+  }
+
+  /// Reports an edit of the number to the [FormField], which re-validates it
+  /// under [AutovalidateMode.onUserInteraction].
+  void _reportChange() {
+    if (controller.text == _reportedText) return;
+    _reportedText = controller.text;
+    _fieldKey.currentState?.notifyChanged(controller.value);
   }
 
   /// Validates [value], or the current text when null, using
@@ -162,10 +194,15 @@ class _GtPhoneFieldState extends State<GtPhoneField> {
         keyboardType: TextInputType.phone,
         onChanged: widget.onChange,
         autofillHints: widget.autofillHints,
+        autovalidateMode: widget.autovalidateMode,
       ),
       builder: (context, child) {
-        return FormField(
+        return FormField<GtInputValue<Country>>(
+          key: _fieldKey,
           initialValue: controller.value,
+          autovalidateMode: widget.autovalidateMode,
+          // The number field clears itself on a reset, which is not an edit.
+          onReset: () => _reportedText = '',
           validator: (value) => _validator(),
           builder: (state) {
             Widget error = Text.rich(

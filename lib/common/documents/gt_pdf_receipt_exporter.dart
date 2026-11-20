@@ -31,8 +31,12 @@ class GtPdfReceiptExporter {
   /// otherwise the design system's light theme is used.
   const GtPdfReceiptExporter({this.builder = const GtPdfReceiptBuilder()});
 
-  /// Creates an exporter whose documents are themed from the live app
-  /// [palette], so an exported receipt matches the screen it came from.
+  /// Creates an exporter whose documents are themed from [palette].
+  ///
+  /// The page takes the palette's own background, so pass the brand's light
+  /// palette (`context.themeData.lightPalette`) for a white document in the
+  /// brand's colours. Passing the live `context.palette` makes the receipt
+  /// follow the app into dark mode, and should only be done on purpose.
   GtPdfReceiptExporter.fromPalette(GtPalette palette)
     : builder = GtPdfReceiptBuilder(
         theme: GtPdfReceiptTheme.fromPalette(palette),

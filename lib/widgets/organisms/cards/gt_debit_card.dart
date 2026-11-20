@@ -310,6 +310,15 @@ enum GtDebitCardIssuer {
     verve => AppImageData(GtVectors.verveCard),
     afrigo => AppImageData(GtVectors.afrigoCard),
   };
+
+  /// How many times [GtDebitCardDimension.issuerLogoHeight] this logo is
+  /// drawn. The premium mark sets its wordmark beneath the circles, which
+  /// fill 29.8 of its 37.1 height, so it is drawn taller to give its circles
+  /// the plain Mastercard mark's size.
+  double get logoHeightFactor => switch (this) {
+    premiumMastercard => 37.1 / 29.8,
+    _ => 1,
+  };
 }
 
 /// Represents standardized dimensional presets for debit card widgets.
@@ -472,6 +481,7 @@ class GtDebitCard extends GtStatelessWidget {
   Widget build(BuildContext context) {
     ImageProvider? bgImage = backgroundImage ?? type.backgroundImage;
     AppImageData defaultCardLogo = issuer.logo;
+    double logoHeightFactor = cardLogo == null ? issuer.logoHeightFactor : 1;
     AppImageData defaultBankLogo = AppImageData(GtVectors.sterling);
     Color? defaultBgColor = type.backgroundColor(context.palette);
     Color? defaultTextColor = type.textColor(context.palette);
@@ -570,7 +580,9 @@ class GtDebitCard extends GtStatelessWidget {
                         alignment: .centerRight,
                         useDefaultSize: false,
                         isDecorative: true,
-                        height: context.dp(dimension.issuerLogoHeight),
+                        height:
+                            context.dp(dimension.issuerLogoHeight) *
+                            logoHeightFactor,
                       ),
                     ],
                   ),
@@ -711,7 +723,11 @@ class _FrozenCardOverlay extends GtStatelessWidget {
             "frozen".ctr(),
             style: GtTextStyleOverrides.resolve(
               style,
-              context.textStyles.subHeadXs(color: color, heightPx: lineHeight),
+              context.textStyles.bodyXs(
+                color: color,
+                heightPx: lineHeight,
+                weight: .w500,
+              ),
               textColor,
             ),
             textAlign: .center,

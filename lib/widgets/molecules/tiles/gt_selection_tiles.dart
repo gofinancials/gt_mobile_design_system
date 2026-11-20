@@ -49,7 +49,7 @@ class GtMenuListTile<T> extends StatelessWidget {
             Expanded(
               child: GtText(
                 text,
-                style: titleStyle ?? context.textStyles.subHeadS(),
+                style: titleStyle ?? context.textStyles.labelS(weight: .w600),
               ),
             ),
             GtIcon.withColor(
@@ -86,6 +86,17 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
   /// Overrides title style. Null preserves the current default.
   final TextStyle? titleStyle;
 
+  /// The color of the tick on the selected tile. Defaults to the palette's
+  /// success color.
+  ///
+  /// Pass the palette's primary color, for example, to match a design that
+  /// draws the tick in the brand color.
+  final Color? tickColor;
+
+  /// The size of the tick on the selected tile. Defaults to 28 on this tile
+  /// and 24 on [GtSelectionColumnListTile].
+  final double? tickSize;
+
   /// Creates a standard [GtSelectionListTile].
   const GtSelectionListTile(
     this.text, {
@@ -95,6 +106,8 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
     required this.onSelect,
     this.leading,
     this.titleStyle,
+    this.tickColor,
+    this.tickSize,
   });
 
   /// Creates a skeleton of this tile, standing in for an option that is still
@@ -122,6 +135,8 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
     Widget? leading,
     TextStyle? titleStyle,
     TextStyle? descriptionStyle,
+    Color? tickColor,
+    double? tickSize,
   }) = GtSelectionColumnListTile;
 
   /// Creates a [GtRoleSelectionListTile] specifically designed for assigning
@@ -170,12 +185,7 @@ class GtSelectionListTile<T> extends GtStatelessWidget {
               maintainAnimation: true,
               maintainSize: true,
               maintainState: true,
-              child: GtIcon(
-                GtIcons.checkSolid,
-                variant: .success,
-                size: 28,
-                alignment: Alignment.centerRight,
-              ),
+              child: _GtSelectionTick(color: tickColor, size: tickSize ?? 28),
             ),
           ),
         ],
@@ -204,14 +214,17 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
     super.leading,
     super.titleStyle,
     this.descriptionStyle,
+    super.tickColor,
+    super.tickSize,
   });
 
   @override
   Widget build(BuildContext context) {
     final textStyles = context.textStyles;
     TextStyle textStyle = textStyles.h7();
-    TextStyle descriptionStyle = textStyles.subHeadS(
+    TextStyle descriptionStyle = textStyles.labelS(
       color: context.palette.text.sub,
+      weight: .w500,
     );
 
     Widget child = Row(
@@ -222,7 +235,7 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
             crossAxisAlignment: .stretch,
             spacing: context.spacingBase,
             children: [
-              GtText(text.upper, style: titleStyle ?? textStyle),
+              GtText(text, style: titleStyle ?? textStyle),
               GtText(
                 description,
                 style: this.descriptionStyle ?? descriptionStyle,
@@ -237,11 +250,7 @@ class GtSelectionColumnListTile<T> extends GtSelectionListTile<T> {
             maintainAnimation: true,
             maintainSize: true,
             maintainState: true,
-            child: GtIcon(
-              GtIcons.checkSolid,
-              size: 24,
-              alignment: Alignment.centerRight,
-            ),
+            child: _GtSelectionTick(color: tickColor, size: tickSize ?? 24),
           ),
         ),
       ],
@@ -330,7 +339,7 @@ class GtRoleSelectionListTile<T> extends GtSelectionListTile<T> {
   @override
   Widget build(BuildContext context) {
     final textStyles = context.textStyles;
-    TextStyle textStyle = textStyles.subHeadM();
+    TextStyle textStyle = textStyles.labelM(weight: .w600);
     TextStyle descriptionStyle = textStyles.bodyS(
       color: context.palette.text.sub,
     );
@@ -468,6 +477,29 @@ class GtCountrySelectionListTile extends GtStatelessWidget {
             GtIcon(GtIcons.checkSolid, alignment: Alignment.centerRight),
         ],
       ),
+    );
+  }
+}
+
+/// A private tick marking the selected [GtSelectionListTile] or
+/// [GtSelectionColumnListTile].
+class _GtSelectionTick extends GtStatelessWidget {
+  /// The color of the tick, or null for the palette's success color.
+  final Color? color;
+
+  /// The size of the tick.
+  final double size;
+
+  /// Creates a [_GtSelectionTick].
+  const _GtSelectionTick({required this.color, required this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return GtIcon.withColor(
+      GtIcons.checkSolid,
+      color: color ?? context.palette.success.base,
+      size: size,
+      alignment: Alignment.centerRight,
     );
   }
 }

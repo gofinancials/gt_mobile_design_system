@@ -108,10 +108,14 @@ GtLessonSlideHeader _header(int index) {
   return GtLessonSlideHeader(title: title, subTitle: subTitle);
 }
 
-GtLessonSlideData _imageSlide(int index, _SlideStyle style) {
+GtLessonSlideData _imageSlide(
+  int index,
+  _SlideStyle style,
+  List<String> illustrations,
+) {
   return GtLessonSlideData.withImage(
     title: 'LESSON ${index + 1}',
-    data: AppImageData(_illustrations[index % _illustrations.length]),
+    data: AppImageData(illustrations[index % illustrations.length]),
     alignment: style.imageAlignment,
     imageSize: style.imageSize,
     header: _header(index),
@@ -181,22 +185,23 @@ List<GtLessonSlideData> _buildDeck({
   required _LessonDeck deck,
   required int count,
   required _SlideStyle style,
+  required List<String> illustrations,
 }) {
   return List.generate(count, (index) {
     if (deck.isAudioVisual) return _avSlide(index, deck, style);
 
     return switch (deck) {
-      _LessonDeck.images => _imageSlide(index, style),
+      _LessonDeck.images => _imageSlide(index, style, illustrations),
       _LessonDeck.text => _textSlide(index, style),
       _LessonDeck.headerOnly => _headerSlide(index, style),
       _LessonDeck.overflow => _overflowSlide(index, style),
       // Cycles the three static slide shapes so one deck covers all of them.
       _LessonDeck.mixed => switch (index % 3) {
-        0 => _imageSlide(index, style),
+        0 => _imageSlide(index, style, illustrations),
         1 => _textSlide(index, style),
         _ => _headerSlide(index, style),
       },
-      _ => _imageSlide(index, style),
+      _ => _imageSlide(index, style, illustrations),
     };
   });
 }
@@ -213,7 +218,7 @@ GtLessonSlides(
     slides: [
       GtLessonSlideData.withImage(
         title: "LESSON 1",
-        data: AppImageData(GtVectorIllustrations.vault),
+        data: AppImageData(GtVectorIllustrations.vault.adapt(context)),
         alignment: Alignment.center,
         header: GtLessonSlideHeader(
           title: "WHAT IS SAVING",
@@ -325,6 +330,10 @@ Widget playgroundGtLessonSlidesUseCase(BuildContext context) {
     imageSize: imageSize,
   );
 
+  final illustrations = [
+    for (final illustration in _illustrations) illustration.adapt(context),
+  ];
+
   return _LessonSlidesHost(
     // Rebuilding the host on any knob change gives each configuration a fresh
     // controller and disposes the previous one. That also makes this page a
@@ -340,9 +349,15 @@ Widget playgroundGtLessonSlidesUseCase(BuildContext context) {
         gradient,
         imageAlignment,
         imageSize,
+        ...illustrations,
       ]),
     ),
-    slides: _buildDeck(deck: deck, count: count, style: style),
+    slides: _buildDeck(
+      deck: deck,
+      count: count,
+      style: style,
+      illustrations: illustrations,
+    ),
     indicatorColor: indicatorColor,
   );
 }

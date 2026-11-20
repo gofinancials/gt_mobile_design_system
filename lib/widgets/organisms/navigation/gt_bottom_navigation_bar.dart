@@ -466,7 +466,9 @@ class GtBottomNavIcon extends GtStatelessWidget {
       duration: enableSelectionAnimation ? GtMotion.normal.inMilliseconds : 0,
       beginScale: GtMotion.iconPressScale,
       switchInCurve: GtSpringCurves.bouncy,
-      switchOutCurve: Curves.easeOutCubic,
+      // A filled glyph shows through its outline for as long as both are on
+      // screen, which reads as a dark flash on the tab being left.
+      crossFade: false,
       child: GtIcon.withColor(
         icon,
         key: ValueKey((icon, selected)),

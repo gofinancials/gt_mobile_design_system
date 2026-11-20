@@ -69,6 +69,15 @@ class GtPinInput extends GtStatefulWidget {
   /// Autofill hints for the input field.
   final List<String>? autofillHints;
 
+  /// When the PIN is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// Every digit entered marks the PIN as changed for its [Form]. So
+  /// [AutovalidateMode.onUserInteraction], set here or on the enclosing
+  /// [GtForm], shows the error as the PIN changes and clears it once the PIN
+  /// is valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a [GtPinInput].
   const GtPinInput({
     super.key,
@@ -92,6 +101,7 @@ class GtPinInput extends GtStatefulWidget {
     this.hapticFeedbackType = .light,
     this.completionHapticFeedbackType,
     this.autofillHints,
+    this.autovalidateMode = .disabled,
   });
 
   @override
@@ -144,6 +154,7 @@ class _GtPinInputState extends State<GtPinInput> {
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       scrollPadding: .zero,
       autofillHints: widget.autofillHints,
+      autovalidateMode: widget.autovalidateMode,
       autoFocus: widget.autoFocus,
       textInputAction: TextInputAction.done,
       enableHapticFeedback: widget.enableHapticFeedback,

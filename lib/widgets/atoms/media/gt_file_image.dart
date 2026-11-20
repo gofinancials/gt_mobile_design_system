@@ -15,9 +15,15 @@ class GtFileImage extends GtStatelessWidget {
   final File? imageFile;
 
   /// The optional width to constrain the image.
+  ///
+  /// With [height], it also sets the size the file is decoded at, so a large
+  /// image costs only the memory of the space it is drawn in. See
+  /// [GtImageDecodeSize].
   final double? width;
 
   /// The optional height to constrain the image.
+  ///
+  /// See [width] for how it sizes the decode.
   final double? height;
 
   /// How the image should be inscribed into the space allocated during layout.
@@ -28,6 +34,11 @@ class GtFileImage extends GtStatelessWidget {
 
   /// An optional color filter to apply to the image.
   final Color? color;
+
+  /// An optional widget to display if the image fails to load or decode.
+  ///
+  /// If null, the blank space drawn for a null [imageFile] stands in.
+  final Widget? errorWidget;
 
   /// A description of what this image conveys, for screen readers.
   ///
@@ -53,28 +64,34 @@ class GtFileImage extends GtStatelessWidget {
     this.width,
     this.height,
     this.color,
+    this.errorWidget,
     this.semanticsLabel,
     this.isDecorative = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (imageFile == null) {
-      return Align(
-        alignment: alignment,
-        child: FittedBox(
-          fit: fit ?? BoxFit.contain,
-          child: SizedBox(height: height, width: width),
-        ),
-      );
-    }
+    final emptyBox = Align(
+      alignment: alignment,
+      child: FittedBox(
+        fit: fit ?? BoxFit.contain,
+        child: SizedBox(height: height, width: width),
+      ),
+    );
+
+    if (imageFile == null) return emptyBox;
+
+    final decode = context.imageDecodeSize(width: width, height: height);
     Widget image = Image.file(
       imageFile!,
+      cacheWidth: decode.width,
+      cacheHeight: decode.height,
       fit: fit,
       alignment: alignment,
       width: width,
       height: height,
       color: color,
+      errorBuilder: (_, _, _) => errorWidget ?? emptyBox,
       semanticLabel: semanticsLabel,
       // Image defaults to contributing an "image" node even with no label.
       // Excluding unlabelled images keeps them from becoming empty stops.

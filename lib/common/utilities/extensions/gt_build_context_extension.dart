@@ -377,10 +377,10 @@ extension NavigatorExtension on BuildContext {
 
 extension BuildContextCopyExtension on BuildContext {
   /// Copies the provided [value] to the system clipboard.
-  void copyText(String? value) {
+  void copyText(String? value, {GtPillVariant variant = .primary}) {
     if (!value.hasValue) return;
     Clipboard.setData(ClipboardData(text: value!));
-    showToast("copiedToClipboard".tr({"value": value}), type: .info);
+    showToast("copiedToClipboard".tr({"value": value}), type: variant);
   }
 }
 

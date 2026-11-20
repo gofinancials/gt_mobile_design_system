@@ -50,6 +50,14 @@ class GtAmountField extends GtStatefulWidget {
   /// The hint text to display for the input field.
   final String? hintText;
 
+  /// When the field is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// Under [AutovalidateMode.onUserInteraction], set here or on the enclosing
+  /// [GtForm], the error shows as the value changes and clears once it is
+  /// valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a new [GtAmountField].
   const GtAmountField({
     super.key,
@@ -66,6 +74,7 @@ class GtAmountField extends GtStatefulWidget {
     this.textAlign = .start,
     this.hintText,
     this.autofillHints = const [AutofillHints.transactionAmount],
+    this.autovalidateMode = .disabled,
   });
   @override
   State<GtAmountField> createState() => _GtAmountFieldState();
@@ -76,6 +85,7 @@ class _GtAmountFieldState extends State<GtAmountField> {
   @override
   Widget build(BuildContext context) {
     return GtTextField(
+      autovalidateMode: widget.autovalidateMode,
       decoration: widget.decoration ?? context.inputStyles.transferInputStyle(),
       isEnabled: widget.isEnabled,
       label: widget.label,

@@ -3,12 +3,30 @@ import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// A card widget that displays an empty state message, typically used when there is no data to show.
+///
+/// From the top: an [icon] or [image], an optional bold [title], the grey
+/// [description], and an optional [footer] such as a button. With a [title],
+/// the title and description sit together as one block, 4dp apart, as in the
+/// Flex invoicing lists' "You don't have any item" card.
 class GtEmptyStateCard extends GtStatelessWidget {
   /// Overrides background color. Null preserves the current default.
   final Color? backgroundColor;
 
   /// Overrides description color. Null preserves the current default.
   final Color? descriptionColor;
+
+  /// An optional heading drawn between the [icon] or [image] and the
+  /// [description], such as "You don't have any item". If null, no title is
+  /// shown and the card looks as it does without one.
+  final String? title;
+
+  /// The text style to apply to the [title]. Defaults to
+  /// [GtTextStyles.labelS] at weight 600, as [GtActionableEmptyStateCard]
+  /// draws its title.
+  final TextStyle? titleStyle;
+
+  /// Overrides title color. Null preserves the current default.
+  final Color? titleColor;
 
   /// Overrides icon color. Null preserves the current default.
   final Color? iconColor;
@@ -32,10 +50,18 @@ class GtEmptyStateCard extends GtStatelessWidget {
   /// The space between the icon and the description. Defaults to [context.spacingBase].
   final double? spacing;
 
+  /// The space between the description and the [footer]. Defaults to
+  /// [spacing], so a card that sets only [spacing] keeps one gap throughout.
+  ///
+  /// Set it where the design separates the button more than the icon, such as
+  /// the Flex invoicing lists' empty cards: 8dp under the icon and 12dp above
+  /// the button.
+  final double? footerSpacing;
+
   /// The padding to apply to the card. Defaults to [context.insets.symmetricDp(vertical: 24.px, horizontal: 16.px)].
   final EdgeInsetsGeometry? padding;
 
-  /// The text style to apply to the description. Defaults to [context.textStyles.subHeadXs(color: context.palette.text.sub)].
+  /// The text style to apply to the description. Defaults to [GtTextStyles.bodyXs] at weight 500, in the palette's sub text colour.
   final TextStyle? style;
 
   /// The size of the icon. Defaults to 24.
@@ -48,6 +74,7 @@ class GtEmptyStateCard extends GtStatelessWidget {
     required this.description,
     this.variant = .normal,
     this.spacing,
+    this.footerSpacing,
     this.padding,
     this.footer,
     this.iconSize,
@@ -55,13 +82,18 @@ class GtEmptyStateCard extends GtStatelessWidget {
     this.backgroundColor,
     this.descriptionColor,
     this.iconColor,
+    this.title,
+    this.titleStyle,
+    this.titleColor,
   }) : image = null;
 
+  /// Creates a [GtEmptyStateCard] headed by [image] instead of an icon.
   const GtEmptyStateCard.image({
     super.key,
     required this.image,
     required this.description,
     this.spacing,
+    this.footerSpacing,
     this.padding,
     this.variant = .normal,
     this.footer,
@@ -69,6 +101,9 @@ class GtEmptyStateCard extends GtStatelessWidget {
     this.backgroundColor,
     this.descriptionColor,
     this.iconColor,
+    this.title,
+    this.titleStyle,
+    this.titleColor,
   }) : icon = null,
        iconSize = null;
 
@@ -78,38 +113,73 @@ class GtEmptyStateCard extends GtStatelessWidget {
       vertical: 24.px,
       horizontal: 16.px,
     );
-    final defaultStyle = context.textStyles.subHeadXs(
+    final defaultStyle = context.textStyles.bodyXs(
       color: context.palette.text.sub,
+      weight: .w500,
     );
     final defaultIconSize = context.dp(24.px);
+    final gap = spacing ?? context.spacingBase;
+
+    Widget text = GtText(
+      description,
+      style: GtTextStyleOverrides.resolve(
+        style,
+        defaultStyle,
+        descriptionColor,
+      ),
+      textAlign: .center,
+    );
+    if (title case final String title) {
+      // The title and description read as one block, closer to each other
+      // than to the icon above or the footer below.
+      text = Column(
+        spacing: context.spacingSm,
+        mainAxisSize: .min,
+        children: [
+          GtText(
+            title,
+            style: GtTextStyleOverrides.resolve(
+              titleStyle,
+              context.textStyles.labelS(weight: .w600),
+              titleColor,
+            ),
+            textAlign: .center,
+          ),
+          text,
+        ],
+      );
+    }
+
+    final content = <Widget>[
+      if (icon != null)
+        iconColor == null
+            ? GtIcon(icon!, size: iconSize ?? defaultIconSize)
+            : GtIcon.withColor(
+                icon!,
+                color: iconColor!,
+                size: iconSize ?? defaultIconSize,
+              ),
+      ?image,
+      text,
+    ];
 
     return GtCard(
       variant: variant,
       color: backgroundColor,
       padding: padding ?? defaultPadding,
+      // Gaps are laid explicitly rather than through the column's spacing,
+      // so the one above the footer can differ from the rest.
       child: Column(
-        spacing: spacing ?? context.spacingBase,
         mainAxisAlignment: .center,
         children: [
-          if (icon != null)
-            iconColor == null
-                ? GtIcon(icon!, size: iconSize ?? defaultIconSize)
-                : GtIcon.withColor(
-                    icon!,
-                    color: iconColor!,
-                    size: iconSize ?? defaultIconSize,
-                  ),
-          ?image,
-          GtText(
-            description,
-            style: GtTextStyleOverrides.resolve(
-              style,
-              defaultStyle,
-              descriptionColor,
-            ),
-            textAlign: .center,
-          ),
-          ?footer,
+          for (final (index, child) in content.indexed) ...[
+            if (index > 0) SizedBox(height: gap),
+            child,
+          ],
+          if (footer case final footer?) ...[
+            SizedBox(height: footerSpacing ?? gap),
+            footer,
+          ],
         ],
       ),
     );
@@ -216,7 +286,7 @@ class GtActionableEmptyStateCard extends GtStatelessWidget {
             title,
             style: GtTextStyleOverrides.resolve(
               titleStyle,
-              context.textStyles.subHeadS(),
+              context.textStyles.labelS(weight: .w600),
               titleColor,
             ),
             textAlign: .center,

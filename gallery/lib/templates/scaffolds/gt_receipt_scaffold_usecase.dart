@@ -301,6 +301,8 @@ class _ReceiptScaffoldPreviewState extends State<_ReceiptScaffoldPreview>
     required String footerType,
     required String physicsChoice,
     required bool isLoading,
+    required bool showReportProblem,
+    required bool isReportProblemDisabled,
   }) {
     showDraggableSheet(
       context,
@@ -313,9 +315,10 @@ class _ReceiptScaffoldPreviewState extends State<_ReceiptScaffoldPreview>
           isLoading: isLoading,
           loadingSemanticsLabel: 'Loading receipt',
           onClose: () => GtRouter.forcePopView(),
-          onReportProblem: () {
-            GtToast.of(context).show("Report problem tapped");
-          },
+          isButtonDisabled: isReportProblemDisabled,
+          onReportProblem: showReportProblem
+              ? () => GtToast.of(context).show("Report problem tapped")
+              : null,
           body: _buildConfiguredReceiptBody(
             context: context,
             controller: controller,
@@ -510,6 +513,16 @@ class _ReceiptScaffoldPreviewState extends State<_ReceiptScaffoldPreview>
       initialValue: false,
     );
 
+    final showReportProblem = context.knobs.boolean(
+      label: 'Show Report a Problem',
+      initialValue: true,
+    );
+
+    final isReportProblemDisabled = context.knobs.boolean(
+      label: 'Disable Report a Problem',
+      initialValue: false,
+    );
+
     return GtWidgetDocPage(
       title: 'GtReceiptScaffold',
       description:
@@ -522,7 +535,7 @@ showDraggableSheet(
     return GtReceiptScaffold(
       ${isLoading ? "isLoading: true,\n      loadingSemanticsLabel: 'Loading receipt'," : ''}
       onClose: () => Navigator.of(context).pop(),
-      onReportProblem: () => handleReportProblem(),
+      ${showReportProblem ? "onReportProblem: () => handleReportProblem(),${isReportProblemDisabled ? '\n      isButtonDisabled: true,' : ''}" : '// No onReportProblem: no bottom bar is drawn.'}
       body: GtReceiptBody(
         controller: controller,
         amount: "$amount",
@@ -599,6 +612,8 @@ showDraggableSheet(
           footerType: footerType,
           physicsChoice: physicsChoice,
           isLoading: isLoading,
+          showReportProblem: showReportProblem,
+          isReportProblemDisabled: isReportProblemDisabled,
         ),
       ),
     );

@@ -121,7 +121,7 @@ class GtPill extends GtStatelessWidget {
   final Widget? trailing;
 
   /// The internal padding of the pill. Defaults to 4 pixels on all sides if not provided.
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
 
   /// The fill or background color of the pill's container.
   final Color bgColor;
@@ -278,8 +278,11 @@ class _GtPillContent extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Centred so a pill stretched wider than its content, as a filling tab
+    // is, keeps the label in the middle. A hugging pill is unaffected.
     return Row(
       mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: .center,
       spacing: spacing,
       children: [
         ?icon,
@@ -289,6 +292,7 @@ class _GtPillContent extends GtStatelessWidget {
             maxLines: 1,
             overflow: .ellipsis,
             semanticsLabel: semanticsLabel,
+            middleEllipsis: true,
             style: textStyle,
           ),
         ),

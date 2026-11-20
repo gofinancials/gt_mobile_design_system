@@ -19,7 +19,7 @@ class GtDebitCardScreen extends GtStatelessWidget {
   /// The main heading shown beneath the [image].
   final String title;
 
-  /// Supporting description shown below [title].
+  /// Supporting description shown below [title], in the caller's casing.
   final String subtitle;
 
   /// Primary call-to-action button rendered at the bottom of the content stack.
@@ -181,7 +181,7 @@ class GtDebitCardScreen extends GtStatelessWidget {
                     titleGap,
                     // Subtitle block.
                     GtText(
-                      subtitle.capitalise(),
+                      subtitle,
                       textAlign: textAlign,
                       style: GtTextStyleOverrides.resolve(
                         subtitleStyle,

@@ -30,7 +30,7 @@ GtSvg.asIcon(
 
 // Render standard SVG illustration
 GtSvg(
-  GtVectorIllustrations.referral,
+  GtVectorIllustrations.referral.adapt(context),
   width: $size,
   height: $size,
 )''';
@@ -53,7 +53,7 @@ GtSvg(
             GtSvg.asIcon(GtVectors.tapRight, size: size, variant: variant),
             const SizedBox(width: 8),
             GtSvg(
-              GtVectorIllustrations.announcement,
+              GtVectorIllustrations.announcement.adapt(context),
               width: size,
               height: size,
             ),

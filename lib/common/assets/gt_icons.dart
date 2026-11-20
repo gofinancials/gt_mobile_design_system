@@ -720,6 +720,13 @@ class GtIcons {
   static const coins = IconData(0xf189, fontFamily: _f, fontPackage: _p);
   static const addCircle = IconData(0xf18a, fontFamily: _f, fontPackage: _p);
 
+  /// Two arrows turning around a pair of circles, for swapping one thing for
+  /// another, such as converting a foreign currency balance to naira.
+  ///
+  /// A plain outline, so it takes the colour of the surrounding text or
+  /// [IconTheme], like the rest of the font.
+  static const swap = IconData(0xf18b, fontFamily: _f, fontPackage: _p);
+
   /// A list containing all available [IconData] constants defined in [GtIcons].
   ///
   /// This is particularly useful for cataloging, testing, or building
@@ -1033,6 +1040,7 @@ class GtIcons {
     (label: 'stopwatch', value: stopwatch),
     (label: 'subscription', value: subscription),
     (label: 'suitcase', value: suitcase),
+    (label: 'swap', value: swap),
     (label: 'switchOutline', value: switchOutline),
     (label: 'tag', value: tag),
     (label: 'tags', value: tags),

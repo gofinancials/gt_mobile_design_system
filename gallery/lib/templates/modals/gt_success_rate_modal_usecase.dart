@@ -27,6 +27,7 @@ const _banks = [
   GtSuccessRateData(name: "GTBank", rate: .98),
   GtSuccessRateData(name: "Moniepoint", rate: 0),
   GtSuccessRateData(name: "Zenith Bank", rate: .98),
+  GtSuccessRateData(name: "Unity Bank"),
 ];
 
 List<GtSuccessRateData> _withLogos(BuildContext context, bool interactive) {

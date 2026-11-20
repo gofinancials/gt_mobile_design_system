@@ -70,6 +70,10 @@ class GtViewStateWidget extends GtStatelessWidget {
   /// The text to display on the call-to-action button.
   final String? actionText;
 
+  /// An optional icon drawn before [actionText] on the call-to-action button,
+  /// such as a plus on a "New invoice" action.
+  final IconData? actionLeading;
+
   /// The spacing between the graphic or icon and the title.
   ///
   /// Defaults to `GtGap.yLg()`. Can be customized with a [GtViewStateSpacer].
@@ -108,6 +112,12 @@ class GtViewStateWidget extends GtStatelessWidget {
   /// Defines the text capitalization behavior for the title.
   final GtTextCase titleCase;
 
+  /// The most lines the title wraps onto before it is cut with an ellipsis.
+  ///
+  /// Defaults to 2. Raise it where a long title sits in a large style, such as
+  /// an outcome sheet's h4 headline on a narrow phone; null never cuts it.
+  final int? titleMaxLines;
+
   /// The visual variant of the call-to-action button.
   ///
   /// Defaults to `GtButtonVariant.primary`.
@@ -140,8 +150,14 @@ class GtViewStateWidget extends GtStatelessWidget {
     this.actionSize,
     this.actionVariant,
     this.actionText,
+    this.actionLeading,
     this.titleCase = .upper,
+    this.titleMaxLines = 2,
   }) : assert(
+         titleMaxLines == null || titleMaxLines > 0,
+         'titleMaxLines must be positive',
+       ),
+       assert(
          (onActionPressed == null) == (actionText == null),
          'onActionPressed and actionText must be provided together',
        );
@@ -186,7 +202,7 @@ class GtViewStateWidget extends GtStatelessWidget {
             casedTitle,
             style: titleStyle ?? context.textStyles.h6(),
             textAlign: .center,
-            maxLines: 2,
+            maxLines: titleMaxLines,
             overflow: .ellipsis,
           ),
           if (description != null) ...[
@@ -203,6 +219,7 @@ class GtViewStateWidget extends GtStatelessWidget {
             GtRaisedButton(
               onPressed: onActionPressed!,
               text: actionText ?? "",
+              leading: actionLeading,
               variant: actionVariant ?? .primary,
               size: actionSize ?? .xsmall,
               alignment: actionAlignment,

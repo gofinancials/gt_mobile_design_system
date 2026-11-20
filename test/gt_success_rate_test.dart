@@ -62,6 +62,94 @@ void main() {
     });
   });
 
+  group('GtSuccessRateTile', () {
+    Widget buildTile({
+      double? successRate,
+      String? unavailableText,
+      bool isLoading = false,
+    }) {
+      return GtThemeProvider(
+        theme: kPersonalTheme,
+        child: MaterialApp(
+          home: Builder(
+            builder: (context) => MediaQuery(
+              data: MediaQuery.of(context).copyWith(disableAnimations: true),
+              child: Scaffold(
+                body: GtSuccessRateTile(
+                  leading: const SizedBox.square(dimension: 24),
+                  text: 'Sterling Bank',
+                  successRate: successRate,
+                  unavailableText: unavailableText,
+                  isLoading: isLoading,
+                  loadingSemanticsLabel: 'Loading rate',
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    testWidgets('a null rate reads a neutral, localised N/A pill', (
+      tester,
+    ) async {
+      await tester.pumpWidget(buildTile());
+      await tester.pumpAndSettle();
+
+      final pill = tester.widget<GtPill>(find.byType(GtPill));
+      final palette = tester.element(find.byType(GtPill)).palette;
+      expect(pill.text, 'notAvailable'.utr());
+      expect(pill.variant, GtPillVariant.neutral);
+      expect(pill.bgColor, GtPillVariant.neutral.getBgColor(palette));
+      expect(pill.textColor, palette.text.sub);
+      expect(find.text('Sterling Bank'), findsOneWidget);
+    });
+
+    testWidgets('unavailableText replaces the N/A label', (tester) async {
+      await tester.pumpWidget(buildTile(unavailableText: 'N/A'));
+      await tester.pumpAndSettle();
+
+      expect(pillLabels(tester), ['N/A']);
+    });
+
+    testWidgets('a known rate still reads a banded percentage', (tester) async {
+      await tester.pumpWidget(buildTile(successRate: .75));
+      await tester.pumpAndSettle();
+
+      final pill = tester.widget<GtPill>(find.byType(GtPill));
+      expect(pill.text, '75%');
+      expect(pill.variant, GtPillVariant.warning);
+    });
+
+    testWidgets('isLoading draws only the pill as a skeleton', (tester) async {
+      await tester.pumpWidget(buildTile(isLoading: true));
+      await tester.pumpAndSettle();
+
+      final skeleton = find.byType(GtSkeleton);
+      expect(skeleton, findsOneWidget);
+      expect(
+        tester.widget<GtSkeleton>(skeleton).semanticsLabel,
+        'Loading rate',
+      );
+      expect(
+        find.descendant(of: skeleton, matching: find.byType(GtPill)),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: skeleton, matching: find.text('Sterling Bank')),
+        findsNothing,
+      );
+      expect(find.text('Sterling Bank'), findsOneWidget);
+    });
+
+    testWidgets('draws no skeleton when not loading', (tester) async {
+      await tester.pumpWidget(buildTile(successRate: 1));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(GtSkeleton), findsNothing);
+    });
+  });
+
   group('GtSuccessRateBody', () {
     testWidgets('renders a row per entry in a lazily built list', (
       tester,
@@ -128,6 +216,49 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(pillLabels(tester), ['100%', '99%', '98%', '87%', '0%']);
+    });
+
+    testWidgets('keeps the row of an entry with no rate, reading N/A', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          const GtSuccessRateBody(
+            rates: [
+              GtSuccessRateData(name: 'Sterling Bank', rate: 1),
+              GtSuccessRateData(name: 'Unity Bank'),
+            ],
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Unity Bank'), findsOneWidget);
+      expect(pillLabels(tester), ['100%', 'notAvailable'.utr()]);
+    });
+
+    testWidgets('passes an entry\'s loading state to its tile', (tester) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          const GtSuccessRateBody(
+            rates: [
+              GtSuccessRateData(
+                name: 'Sterling Bank',
+                isLoading: true,
+                loadingSemanticsLabel: 'Loading rate',
+              ),
+            ],
+          ),
+        ),
+      );
+      await tester.pump();
+
+      final tile = tester.widget<GtSuccessRateTile>(
+        find.byType(GtSuccessRateTile),
+      );
+      expect(tile.isLoading, isTrue);
+      expect(tile.loadingSemanticsLabel, 'Loading rate');
+      expect(tile.successRate, isNull);
     });
 
     testWidgets('renders the description when one is supplied', (tester) async {

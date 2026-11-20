@@ -29,7 +29,22 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
     label: 'Use Custom Graphic',
     initialValue: false,
   );
+  final showLeading = context.knobs.boolean(
+    label: 'Action Leading Icon',
+    initialValue: false,
+  );
+  final titleMaxLines = context.knobs.int.slider(
+    label: 'Title Max Lines',
+    initialValue: 2,
+    min: 1,
+    max: 5,
+  );
   final graphic = useCustomGraphic ? const GtSpinner(size: 64) : null;
+  final actionLeading = showLeading ? GtIcons.plus : null;
+  final leadingCode = showLeading ? '  actionLeading: GtIcons.plus,\n' : '';
+  final linesCode = titleMaxLines == 2
+      ? ''
+      : '  titleMaxLines: $titleMaxLines,\n';
   final graphicCode = useCustomGraphic
       ? '  graphic: const GtSpinner(size: 64),\n'
       : '';
@@ -40,9 +55,11 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
   if (mode == 'success') {
     statusWidget = GtStatusState.success(
       title: title,
+      titleMaxLines: titleMaxLines,
       subtitle: subtitle,
       graphic: graphic,
       actionLabel: actionLabel,
+      actionLeading: actionLeading,
       actionSize: .small,
       actionAlignment: .center,
       onActionPressed: () {},
@@ -50,18 +67,20 @@ Widget playgroundGtStatusStateUseCase(BuildContext context) {
     codeSnippet =
         '''GtStatusState.success(
   title: "$title",
-  subtitle: "$subtitle",
+$linesCode  subtitle: "$subtitle",
 $graphicCode  actionLabel: "$actionLabel",
-  actionSize: .small,
+$leadingCode  actionSize: .small,
   actionAlignment: .center,
   onActionPressed: () {},
 )''';
   } else if (mode == 'error') {
     statusWidget = GtStatusState.error(
       title: title,
+      titleMaxLines: titleMaxLines,
       subtitle: subtitle,
       graphic: graphic,
       actionLabel: actionLabel,
+      actionLeading: actionLeading,
       actionSize: .small,
       actionAlignment: .center,
       onActionPressed: () {},
@@ -69,34 +88,36 @@ $graphicCode  actionLabel: "$actionLabel",
     codeSnippet =
         '''GtStatusState.error(
   title: "$title",
-  subtitle: "$subtitle",
+$linesCode  subtitle: "$subtitle",
 $graphicCode  actionSize: .small,
   actionAlignment: .center,
   actionLabel: "$actionLabel",
-  onActionPressed: () {},
+$leadingCode  onActionPressed: () {},
 )''';
   } else {
     statusWidget = GtStatusState.custom(
       title: title,
+      titleMaxLines: titleMaxLines,
       subtitle: subtitle,
       icon: useCustomGraphic
           ? null
-          : AppImageData(GtVectorIllustrations.maintenance),
+          : AppImageData(GtVectorIllustrations.maintenance.adapt(context)),
       graphic: graphic,
       actionSize: .small,
       actionAlignment: .center,
       actionLabel: actionLabel,
+      actionLeading: actionLeading,
       onActionPressed: () {},
     );
     codeSnippet =
         '''GtStatusState.custom(
   title: "$title",
-  subtitle: "$subtitle",
-  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData(GtVectorIllustrations.maintenance),'}
+$linesCode  subtitle: "$subtitle",
+  ${useCustomGraphic ? 'graphic: const GtSpinner(size: 64),' : 'icon: AppImageData(GtVectorIllustrations.maintenance.adapt(context)),'}
   actionSize: .small,
   actionAlignment: .center,
   actionLabel: "$actionLabel",
-  onActionPressed: () {},
+$leadingCode  onActionPressed: () {},
 )''';
   }
 

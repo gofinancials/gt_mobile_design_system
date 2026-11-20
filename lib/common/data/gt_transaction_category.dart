@@ -213,11 +213,11 @@ mixin GtTransactionCategoryMixin {
     ),
     GtTransactionCategory(
       label: "card".ctr(),
-      image: AppImageData(GtVectorIllustrations.debitCardsCat),
+      image: AppImageData(GtVectorIllustrations.debitCards),
     ),
     GtTransactionCategory(
       label: "household".ctr(),
-      image: AppImageData(GtVectorIllustrations.houseCat),
+      image: AppImageData(GtVectorIllustrations.house),
     ),
     GtTransactionCategory(
       label: "health".ctr(),
@@ -249,7 +249,7 @@ mixin GtTransactionCategoryMixin {
     ),
     GtTransactionCategory(
       label: "refund".ctr(),
-      image: AppImageData(GtVectorIllustrations.detailsCat),
+      image: AppImageData(GtVectorIllustrations.details),
     ),
     GtTransactionCategory(
       label: "books".ctr(),

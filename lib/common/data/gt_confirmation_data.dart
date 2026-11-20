@@ -52,9 +52,13 @@ class GtConfirmationSection extends AppEquatable {
 /// [GtConfirmationBody].
 ///
 /// Models the closing block of a transaction confirmation screen: a
-/// [disclaimer] paragraph laid out beside an optional [trailing] image
-/// (typically a QR code linking to the digital receipt), followed by a short
-/// closing [note].
+/// [disclaimer] paragraph laid out beside an optional QR code linking to the
+/// digital receipt, followed by a short closing [note].
+///
+/// The QR code is painted from [qrData], the same input
+/// [GtPdfReceiptFooter.qrData] takes, so the screen and the exported PDF show
+/// the same scannable code. A [trailing] image takes its place for callers who
+/// mint their own codes or want some other image there.
 ///
 /// Every field is optional so callers can render any subset, but a footer with
 /// no content at all renders nothing — see [hasContent].
@@ -67,7 +71,7 @@ class GtConfirmationSection extends AppEquatable {
 ///       "delivered. However, there may be interruptions or delays from "
 ///       "third party services.",
 ///   note: "Please reach out to support for more information.",
-///   trailing: AppImageData(GtVectors.qrCode),
+///   qrData: "TRX24072983910527NGN",
 /// )
 /// ```
 class GtConfirmationFooter extends AppEquatable {
@@ -77,13 +81,22 @@ class GtConfirmationFooter extends AppEquatable {
   /// A short closing line rendered beneath the [disclaimer].
   final String? note;
 
-  /// An image rendered opposite the [disclaimer], typically a QR code.
+  /// The payload encoded into a QR code rendered opposite the [disclaimer].
   ///
-  /// Because a QR code carries meaning it is announced to screen readers using
-  /// [trailingLabel] rather than being marked decorative.
+  /// Painted by [GtQrCode]. Ignored when [trailing] is supplied.
+  final String? qrData;
+
+  /// An image rendered opposite the [disclaimer] in place of the code painted
+  /// from [qrData].
+  ///
+  /// Takes precedence over [qrData], for callers who mint their own codes.
   final AppImageData? trailing;
 
-  /// The accessibility label announced for [trailing].
+  /// The accessibility label announced for [trailing] or the code painted from
+  /// [qrData].
+  ///
+  /// Because a QR code carries meaning it is announced to screen readers
+  /// rather than being marked decorative.
   ///
   /// Defaults to a localised "receiptQrCode" string when omitted.
   final String? trailingLabel;
@@ -92,17 +105,28 @@ class GtConfirmationFooter extends AppEquatable {
   const GtConfirmationFooter({
     this.disclaimer,
     this.note,
+    this.qrData,
     this.trailing,
     this.trailingLabel,
   });
 
   /// Whether this footer carries anything worth rendering.
-  bool get hasContent =>
-      disclaimer.hasValue || note.hasValue || trailing != null;
+  bool get hasContent => disclaimer.hasValue || note.hasValue || hasTrailing;
 
-  /// The accessibility label used for [trailing].
+  /// Whether anything should be drawn opposite the [disclaimer], from either
+  /// [trailing] or [qrData].
+  bool get hasTrailing => trailing != null || qrData.hasValue;
+
+  /// The accessibility label used for [trailing] or the code painted from
+  /// [qrData].
   String get displayTrailingLabel => trailingLabel ?? 'receiptQrCode'.ctr();
 
   @override
-  List<Object?> get props => [disclaimer, note, trailing, trailingLabel];
+  List<Object?> get props => [
+    disclaimer,
+    note,
+    qrData,
+    trailing,
+    trailingLabel,
+  ];
 }
