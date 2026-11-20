@@ -97,6 +97,12 @@ class GtStatusState extends GtStatelessWidget {
   /// Defines the text capitalization behavior for the title.
   final GtTextCase titleCase;
 
+  /// The most lines [title] wraps onto before it is cut with an ellipsis.
+  ///
+  /// Defaults to 2. Raise it where a long title sits in a large style, such as
+  /// an outcome sheet's h4 headline on a narrow phone; null never cuts it.
+  final int? titleMaxLines;
+
   /// The spacing between the title and the subtitle.
   ///
   /// Defaults to `GtGap.yMd()`. Can be customized with a [GtViewStateSpacer].
@@ -129,6 +135,7 @@ class GtStatusState extends GtStatelessWidget {
     this.subtitleStyle,
     this.titleCase = .upper,
     this.iconSize,
+    this.titleMaxLines = 2,
   }) : assert(
          variant != .custom || statusIcon != null || graphic != null,
          'statusIcon or graphic is required when variant is '
@@ -159,6 +166,7 @@ class GtStatusState extends GtStatelessWidget {
     this.subtitleStyle,
     this.titleCase = .upper,
     this.iconSize,
+    this.titleMaxLines = 2,
   }) : variant = .success,
        statusIcon = null,
        assert(
@@ -186,6 +194,7 @@ class GtStatusState extends GtStatelessWidget {
     this.subtitleStyle,
     this.titleCase = .upper,
     this.iconSize,
+    this.titleMaxLines = 2,
   }) : variant = .error,
        statusIcon = null,
        assert(
@@ -216,6 +225,7 @@ class GtStatusState extends GtStatelessWidget {
     this.subtitleStyle,
     this.titleCase = .upper,
     this.iconSize,
+    this.titleMaxLines = 2,
   }) : variant = .custom,
        statusIcon = icon,
        assert(
@@ -261,6 +271,7 @@ class GtStatusState extends GtStatelessWidget {
       titleStyle: titleStyle,
       descriptionStyle: subtitleStyle,
       titleCase: titleCase,
+      titleMaxLines: titleMaxLines,
     );
   }
 }

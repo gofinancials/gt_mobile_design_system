@@ -112,6 +112,12 @@ class GtViewStateWidget extends GtStatelessWidget {
   /// Defines the text capitalization behavior for the title.
   final GtTextCase titleCase;
 
+  /// The most lines the title wraps onto before it is cut with an ellipsis.
+  ///
+  /// Defaults to 2. Raise it where a long title sits in a large style, such as
+  /// an outcome sheet's h4 headline on a narrow phone; null never cuts it.
+  final int? titleMaxLines;
+
   /// The visual variant of the call-to-action button.
   ///
   /// Defaults to `GtButtonVariant.primary`.
@@ -146,7 +152,12 @@ class GtViewStateWidget extends GtStatelessWidget {
     this.actionText,
     this.actionLeading,
     this.titleCase = .upper,
+    this.titleMaxLines = 2,
   }) : assert(
+         titleMaxLines == null || titleMaxLines > 0,
+         'titleMaxLines must be positive',
+       ),
+       assert(
          (onActionPressed == null) == (actionText == null),
          'onActionPressed and actionText must be provided together',
        );
@@ -191,7 +202,7 @@ class GtViewStateWidget extends GtStatelessWidget {
             casedTitle,
             style: titleStyle ?? context.textStyles.h6(),
             textAlign: .center,
-            maxLines: 2,
+            maxLines: titleMaxLines,
             overflow: .ellipsis,
           ),
           if (description != null) ...[
