@@ -17,7 +17,45 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// the screen. See [GtImageDecodeSize].
 ///
 /// Inside an enabled [GtSkeleton] the image is painted as a [GtBone] block.
+///
+/// A picture replaced at the same address, such as a new profile photo, stays
+/// cached until [evict] is called for that address.
 class GtNetworkImage extends GtStatelessWidget {
+  /// The sizes each address has been decoded at, so [evict] can find every
+  /// resized copy in the [ImageCache].
+  static final Map<String, Set<GtImageDecodeSize>> _decodeSizes = {};
+
+  /// Counts the evictions of each address, which rebuilds the images drawing
+  /// it.
+  static final _GtNetworkImageEvictions _evictions = _GtNetworkImageEvictions();
+
+  /// Forgets the picture at [url], so every [GtNetworkImage] showing it, and
+  /// any built later, downloads it again.
+  ///
+  /// Call this after replacing the picture behind an address that does not
+  /// change, such as after a profile photo upload. It deletes the downloaded
+  /// file, removes each copy decoded in memory, whatever size it was decoded
+  /// at, and reloads the images on screen that draw [url].
+  ///
+  /// Covers raster images, the ones drawn through [CachedNetworkImage] from
+  /// its default cache manager. SVG addresses and data URIs are not cached
+  /// here.
+  static Future<void> evict(String url) async {
+    await CachedNetworkImageProvider.defaultCacheManager.removeFile(url);
+
+    final provider = CachedNetworkImageProvider(url);
+    await provider.evict();
+    for (final decode in _decodeSizes.remove(url) ?? const {}) {
+      await ResizeImage.resizeIfNeeded(
+        decode.width,
+        decode.height,
+        provider,
+      ).evict();
+    }
+
+    _evictions.bump(url);
+  }
+
   /// An optional local asset path to display while the network image is loading.
   ///
   /// Takes precedence over [showLoadingIndicator]: supplied artwork stands in
@@ -146,15 +184,27 @@ class GtNetworkImage extends GtStatelessWidget {
           }
 
           final decode = context.imageDecodeSize(width: width, height: height);
-          return _annotate(context, _cachedImage(decode));
+          _decodeSizes.putIfAbsent(imageUrl, () => {}).add(decode);
+          return _annotate(
+            context,
+            ListenableBuilder(
+              listenable: _evictions,
+              builder: (_, _) => _cachedImage(decode),
+            ),
+          );
         },
       ),
     );
   }
 
   /// The [CachedNetworkImage] for [imageUrl], decoded at [decode].
+  ///
+  /// Keyed on how often [imageUrl] has been evicted. The image only loads
+  /// again when its provider changes, and an evicted address has the same
+  /// provider as before, so a new key is what makes it load the new picture.
   Widget _cachedImage(GtImageDecodeSize decode) {
     return CachedNetworkImage(
+      key: ValueKey((imageUrl, _evictions.countOf(imageUrl))),
       imageUrl: imageUrl,
       height: height,
       width: width,
@@ -205,5 +255,21 @@ class GtNetworkImage extends GtStatelessWidget {
     }
 
     return GtSemantics(role: .image, label: semanticsLabel, child: image);
+  }
+}
+
+/// A private notifier that counts the evictions of each address, for
+/// [GtNetworkImage.evict].
+class _GtNetworkImageEvictions extends ChangeNotifier {
+  /// The number of evictions of each address evicted at least once.
+  final Map<String, int> _counts = {};
+
+  /// How often [url] has been evicted.
+  int countOf(String url) => _counts[url] ?? 0;
+
+  /// Counts an eviction of [url] and notifies listeners.
+  void bump(String url) {
+    _counts[url] = countOf(url) + 1;
+    notifyListeners();
   }
 }

@@ -180,4 +180,160 @@ void main() {
 
     expect(tester.takeException(), isAssertionError);
   });
+
+  group('page lifetime', () {
+    testWidgets('a page stays mounted as its skeleton lifts', (tester) async {
+      final probe = _Probe();
+      GtDashboardScaffold scaffold({required bool isLoading}) {
+        return GtDashboardScaffold(
+          onClickHelp: () {},
+          data: [
+            GtDashboardPageData(
+              page: _Counted(probe: probe),
+              navItem: navItems[0],
+              isLoading: isLoading,
+            ),
+            payments(),
+          ],
+        );
+      }
+
+      await pump(tester, scaffold(isLoading: true));
+      await pump(tester, scaffold(isLoading: false));
+
+      expect(probe.mounts, 1);
+      expect(probe.disposals, 0);
+    });
+
+    testWidgets('two pages of one class do not share state', (tester) async {
+      final first = _Probe();
+      final second = _Probe();
+      final controller = ValueNotifier(0);
+      addTearDown(controller.dispose);
+
+      await pump(
+        tester,
+        GtDashboardScaffold(
+          onClickHelp: () {},
+          pageController: controller,
+          data: [
+            GtDashboardPageData(
+              page: _Counted(probe: first),
+              navItem: navItems[0],
+            ),
+            GtDashboardPageData(
+              page: _Counted(probe: second),
+              navItem: navItems[1],
+            ),
+          ],
+        ),
+      );
+
+      controller.value = 1;
+      await tester.pumpAndSettle();
+
+      expect(first.disposals, 1);
+      expect(second.mounts, 1);
+    });
+
+    testWidgets('pages are rebuilt on each visit by default', (tester) async {
+      final probe = _Probe();
+      final controller = ValueNotifier(0);
+      addTearDown(controller.dispose);
+
+      await pump(
+        tester,
+        GtDashboardScaffold(
+          onClickHelp: () {},
+          pageController: controller,
+          data: [
+            GtDashboardPageData(
+              page: _Counted(probe: probe),
+              navItem: navItems[0],
+            ),
+            payments(),
+          ],
+        ),
+      );
+
+      controller.value = 1;
+      await tester.pumpAndSettle();
+      controller.value = 0;
+      await tester.pumpAndSettle();
+
+      expect(probe.mounts, 2);
+      expect(probe.disposals, 1);
+    });
+
+    testWidgets('keepPagesAlive keeps a visited page and builds the rest on '
+        'first visit', (tester) async {
+      final home = _Probe();
+      final cards = _Probe();
+      final controller = ValueNotifier(0);
+      addTearDown(controller.dispose);
+
+      await pump(
+        tester,
+        GtDashboardScaffold(
+          onClickHelp: () {},
+          pageController: controller,
+          keepPagesAlive: true,
+          data: [
+            GtDashboardPageData(
+              page: _Counted(probe: home),
+              navItem: navItems[0],
+              showGradient: true,
+            ),
+            GtDashboardPageData(
+              page: _Counted(probe: cards),
+              navItem: navItems[1],
+            ),
+          ],
+        ),
+      );
+      expect(cards.mounts, 0);
+
+      controller.value = 1;
+      await tester.pumpAndSettle();
+      controller.value = 0;
+      await tester.pumpAndSettle();
+
+      expect(home.mounts, 1);
+      expect(home.disposals, 0);
+      expect(cards.mounts, 1);
+      expect(cards.disposals, 0);
+    });
+  });
+}
+
+/// Counts how often a [_Counted] page is mounted and disposed.
+class _Probe {
+  int mounts = 0;
+  int disposals = 0;
+}
+
+class _Counted extends StatefulWidget {
+  final _Probe probe;
+
+  const _Counted({required this.probe});
+
+  @override
+  State<_Counted> createState() => _CountedState();
+}
+
+class _CountedState extends State<_Counted> {
+  @override
+  void initState() {
+    super.initState();
+    widget.probe.mounts++;
+  }
+
+  @override
+  void dispose() {
+    widget.probe.disposals++;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => const SizedBox.expand();
 }

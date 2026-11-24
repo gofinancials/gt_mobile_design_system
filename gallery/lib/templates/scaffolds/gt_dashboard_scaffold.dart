@@ -274,9 +274,21 @@ class _DashboardScaffoldPreviewState extends State<_DashboardScaffoldPreview> {
       initialValue: false,
     );
 
+    final frosted = context.knobs.boolean(
+      label: 'Frosted Bottom Navigation',
+      initialValue: true,
+    );
+
+    final keepPagesAlive = context.knobs.boolean(
+      label: 'Keep Pages Alive',
+      initialValue: false,
+    );
+
     return GtDashboardScaffold(
       onClickHelp: () {},
       showBottomNavigation: hideNavigation ? false : null,
+      bottomNavigationFrosted: frosted,
+      keepPagesAlive: keepPagesAlive,
       data: _getData(isLoading: isLoading),
       pageController: _pageController,
       bottomNavigationStyle: context.knobs.object

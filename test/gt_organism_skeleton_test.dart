@@ -356,6 +356,12 @@ void main() {
       );
     }
 
+    // The page stays under a disabled skeleton once loaded, so it is not
+    // remounted as the skeleton lifts.
+    final enabledSkeleton = find.byWidgetPredicate(
+      (widget) => widget is GtSkeleton && widget.enabled,
+    );
+
     testWidgets('a loading page bones only its body', (tester) async {
       final handle = tester.ensureSemantics();
       var helpTaps = 0;
@@ -378,7 +384,7 @@ void main() {
       await tester.tap(find.bySemanticsLabel(RegExp('Payments')).first);
       await tester.pumpAndSettle();
       expect(find.text('Payments page'), findsOneWidget);
-      expect(find.byType(GtSkeleton), findsNothing);
+      expect(enabledSkeleton, findsNothing);
       handle.dispose();
     });
 
@@ -388,7 +394,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(GtSkeleton), findsNothing);
+      expect(enabledSkeleton, findsNothing);
       expect(find.byType(GtBone), findsNothing);
     });
 

@@ -51,6 +51,10 @@ class _BottomNavPlaygroundState extends State<_BottomNavPlayground> {
       label: 'Enable Selection Animation',
       initialValue: true,
     );
+    final frosted = context.knobs.boolean(
+      label: 'Frosted (iOS style)',
+      initialValue: true,
+    );
 
     return GtWidgetDocPage(
       title: 'GtBottomNavigationBar',
@@ -92,6 +96,7 @@ GtBottomNavigationBar(
       child: GtBottomNavigationBar(
         currentIndex: _currentIndex,
         enableSelectionAnimation: enableSelectionAnimation,
+        frosted: frosted,
         onIndexChanged: (index) {
           setState(() {
             _currentIndex = index;

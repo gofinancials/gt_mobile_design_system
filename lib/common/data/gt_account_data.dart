@@ -143,9 +143,41 @@ class GtAccountDataController<T> extends ChangeNotifier {
   /// The accounts being switched between, in display order.
   ///
   /// An unmodifiable view: mutating it throws, and the only ways to change the
-  /// list are [addAccount], [addAccounts] and [removeAccount], each of which
-  /// notifies listeners.
+  /// list are this setter, [addAccount], [addAccounts] and [removeAccount],
+  /// each of which notifies listeners.
   List<GtAccountData<T>> get accounts => UnmodifiableListView(_accounts);
+
+  /// Replaces every account in place and notifies listeners, such as after a
+  /// refresh brings new balances.
+  ///
+  /// Prefer this to building a new controller: while the number of accounts
+  /// is unchanged, a [GtAccountDetailSlides] over this controller repaints the
+  /// balances without remounting its page view, so a swipe in progress is not
+  /// cut short.
+  ///
+  /// [next] is copied, like the constructor's list. The selection follows the
+  /// account it was on, matched by [GtAccountData.id], even if that account
+  /// moved. When it is gone the index stays where it was, clamped into the new
+  /// list. Always notifies, since a field outside [GtAccountData.props], such
+  /// as [GtAccountData.subTitle], may be what changed.
+  set accounts(List<GtAccountData<T>> next) {
+    final selected = selectedAccount;
+    final resized = next.length != _accounts.length;
+    _accounts = List.of(next);
+
+    final restored = selected == null
+        ? _activeIndex
+        : _accounts.indexWhere((item) => item.id == selected.id);
+    _activeIndex = _clampIndex(restored < 0 ? _activeIndex : restored, count);
+
+    // A page view over a different number of accounts is remounted, and opens
+    // on activeIndex. Jumping the old one first could land past its last page
+    // and report that clamped page back as the selection.
+    if (!resized) {
+      _syncPage(animate: false);
+    }
+    notifyListeners();
+  }
 
   /// Index into [accounts] of the current selection.
   ///

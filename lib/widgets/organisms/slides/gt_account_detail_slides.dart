@@ -44,6 +44,10 @@ class GtAccountDetailSlides<T> extends GtStatelessWidget {
   /// Passing a different controller remounts the page view, which then opens
   /// on the new controller's [GtAccountDataController.activeIndex] rather than
   /// keeping the page the previous controller was on.
+  ///
+  /// To show new balances, set [GtAccountDataController.accounts] on the same
+  /// controller rather than passing a new one: the page view then repaints
+  /// without remounting while the number of accounts is unchanged.
   final GtAccountDataController<T> controller;
 
   /// Called when the page in view changes, with the new index and the

@@ -51,4 +51,60 @@ void main() {
       expect(tester.getRect(tabs).bottom, closeTo(812 - 48 - 12, 1));
     },
   );
+
+  Future<void> pumpIos(
+    WidgetTester tester, {
+    bool? frosted,
+    TargetPlatform platform = TargetPlatform.iOS,
+  }) async {
+    await tester.pumpWidget(
+      GtThemeProvider(
+        theme: kPersonalTheme,
+        child: MaterialApp(
+          theme: ThemeData(platform: platform),
+          home: Scaffold(
+            bottomNavigationBar: GtBottomNavigationBar(
+              style: .ios,
+              frosted: frosted,
+              currentIndex: 0,
+              onIndexChanged: (_) {},
+              items: const [
+                GtBottomNavigationItem(
+                  selectedIcon: Icons.home,
+                  unselectedIcon: Icons.home_outlined,
+                  label: 'Home',
+                ),
+                GtBottomNavigationItem(
+                  selectedIcon: Icons.person,
+                  unselectedIcon: Icons.person_outline,
+                  label: 'Profile',
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('the iOS glass blurs by default off Android', (tester) async {
+    await pumpIos(tester);
+    expect(find.byType(BackdropFilter), findsOneWidget);
+  });
+
+  testWidgets('the iOS glass does not blur by default on Android', (
+    tester,
+  ) async {
+    await pumpIos(tester, platform: TargetPlatform.android);
+    expect(find.byType(BackdropFilter), findsNothing);
+  });
+
+  testWidgets('frosted overrides the platform default', (tester) async {
+    await pumpIos(tester, frosted: true, platform: TargetPlatform.android);
+    expect(find.byType(BackdropFilter), findsOneWidget);
+
+    await pumpIos(tester, frosted: false);
+    expect(find.byType(BackdropFilter), findsNothing);
+  });
 }

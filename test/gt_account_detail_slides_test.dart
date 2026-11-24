@@ -156,4 +156,89 @@ void main() {
       expect(updates, [(1, 'dollar')]);
     });
   });
+
+  group('GtAccountDataController.accounts', () {
+    testWidgets('a balance change repaints without remounting the pager', (
+      tester,
+    ) async {
+      final controller = GtAccountDataController<String>(
+        accounts: const [_naira, _dollar, _other],
+        activeIndex: 1,
+      );
+      addTearDown(controller.dispose);
+      await pumpSlides(tester, controller);
+      final pager = tester.state(find.byType(Scrollable));
+
+      controller.accounts = const [
+        _naira,
+        GtAccountData<String>(
+          id: 'dollar',
+          type: 'Domiciliary',
+          accountNumber: '0000000002',
+          balance: 75,
+          currency: r'$',
+          data: 'dollar',
+        ),
+        _other,
+      ];
+      await tester.pumpAndSettle();
+
+      expect(tester.state(find.byType(Scrollable)), same(pager));
+      expect(controller.activeIndex, 1);
+      expect(controller.selectedAccount?.balance, 75);
+      expectPageMatches(controller);
+    });
+
+    testWidgets('the selection follows its account when the order changes', (
+      tester,
+    ) async {
+      final controller = GtAccountDataController<String>(
+        accounts: const [_naira, _dollar, _other],
+        activeIndex: 1,
+      );
+      addTearDown(controller.dispose);
+      await pumpSlides(tester, controller);
+
+      controller.accounts = const [_dollar, _naira, _other];
+      await tester.pumpAndSettle();
+
+      expect(controller.activeIndex, 0);
+      expectPageMatches(controller);
+      expect(pillFor(_dollar), findsOneWidget);
+    });
+
+    testWidgets('a longer list keeps the selected account in view', (
+      tester,
+    ) async {
+      final controller = GtAccountDataController<String>(
+        accounts: const [_naira, _dollar],
+        activeIndex: 1,
+      );
+      addTearDown(controller.dispose);
+      await pumpSlides(tester, controller);
+
+      controller.accounts = const [_naira, _other, _dollar];
+      await tester.pumpAndSettle();
+
+      expect(controller.activeIndex, 2);
+      expectPageMatches(controller);
+      expect(pillFor(_dollar), findsOneWidget);
+    });
+
+    test('a removed selection clamps the index it was at', () {
+      final controller = GtAccountDataController<String>(
+        accounts: const [_naira, _dollar, _other],
+        activeIndex: 2,
+      );
+      addTearDown(controller.dispose);
+      var notified = 0;
+      controller.addListener(() => notified++);
+
+      controller.accounts = const [_naira, _dollar];
+
+      expect(controller.activeIndex, 1);
+      expect(controller.selectedAccount, _dollar);
+      expect(notified, 1);
+    });
+  });
 }
