@@ -209,7 +209,7 @@ mixin GtTransactionCategoryMixin {
     ),
     GtTransactionCategory(
       label: "bills".ctr(),
-      image: AppImageData(GtVectorIllustrations.cashCat),
+      image: AppImageData(GtVectorIllustrations.cash),
     ),
     GtTransactionCategory(
       label: "card".ctr(),
@@ -225,7 +225,7 @@ mixin GtTransactionCategoryMixin {
     ),
     GtTransactionCategory(
       label: "gift".ctr(),
-      image: AppImageData(GtVectorIllustrations.giftCat),
+      image: AppImageData(GtVectorIllustrations.gift),
     ),
     GtTransactionCategory(
       label: "charity".ctr(),

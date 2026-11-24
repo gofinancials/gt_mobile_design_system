@@ -263,6 +263,67 @@ void main() {
     });
   });
 
+  group('GtTransferCategoryField under a red palette', () {
+    const red = 'packages/gt_mobile_ui/assets/images/vector/illustrations/red/';
+
+    /// Mounts [field] under the Pro theme, whose palette uses red
+    /// illustrations.
+    Future<void> mount(WidgetTester tester, Widget field) async {
+      await tester.pumpWidget(
+        GtThemeProvider(
+          theme: kProTheme,
+          child: MaterialApp(
+            theme: kProTheme.materialLight,
+            home: Scaffold(body: Center(child: field)),
+          ),
+        ),
+      );
+      await tester.pump();
+    }
+
+    /// The illustration paths of the [GtImage]s under [of].
+    List<Object?> shownPaths(WidgetTester tester, Finder of) {
+      final images = find.descendant(of: of, matching: find.byType(GtImage));
+      return [
+        for (final image in tester.widgetList<GtImage>(images))
+          image.image?.imageData,
+      ];
+    }
+
+    testWidgets('the field and every row of its sheet show red icons, and a '
+        'pick keeps the original image', (tester) async {
+      final controller = GtTransactionCategoryController(null, categories: []);
+      addTearDown(controller.dispose);
+
+      await mount(tester, GtTransferCategoryField(controller: controller));
+      expect(
+        shownPaths(tester, find.byType(GtTransferCategoryField)),
+        everyElement(startsWith(red)),
+      );
+
+      await tester.tap(find.byType(GtTransferCategoryField));
+      await tester.pumpAndSettle();
+
+      final rows = find.byType(
+        GtSelectionListTile<GtDropdownData<GtTransactionCategory>>,
+      );
+      expect(rows, findsWidgets);
+      expect(shownPaths(tester, rows), everyElement(startsWith(red)));
+
+      final second = rows.at(1);
+      final picked = tester
+          .widget<GtSelectionListTile<GtDropdownData<GtTransactionCategory>>>(
+            second,
+          )
+          .value;
+      await tester.tap(second);
+      await tester.pumpAndSettle();
+
+      expect(controller.value?.image.imageData, isNot(startsWith(red)));
+      expect(controller.value, picked.value);
+    });
+  });
+
   group('note enablement', () {
     Future<void> pump(WidgetTester tester, Widget field) {
       return tester.pumpWidget(

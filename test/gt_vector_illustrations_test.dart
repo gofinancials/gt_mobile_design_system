@@ -55,6 +55,13 @@ void main() {
       expect(GtVectors.logo.adapt(context), GtVectors.logo);
     });
 
+    test('no two illustrations share a path', () {
+      final paths = <String>{};
+      for (final (:label, :value) in GtVectorIllustrations.all) {
+        expect(paths.add(value), isTrue, reason: '$label repeats a path');
+      }
+    });
+
     testWidgets('every red variant exists on disk', (tester) async {
       final context = await _contextFor(tester, SterlingProLightPalette());
       for (final (:label, :value) in GtVectorIllustrations.all) {

@@ -238,8 +238,9 @@ class GtVectorIllustrations {
 
   // CATEGORY ILLUSTRATIONS
 
-  /// Path to the cashCat SVG.
-  static const cashCat = "$_basePath/cash_cat.svg";
+  /// The [cash] illustration, which this category used a scaled copy of.
+  @Deprecated('Use GtVectorIllustrations.cash, the same drawing.')
+  static const cashCat = cash;
 
   /// Path to the charityCat SVG.
   static const charityCat = "$_basePath/charity_cat.svg";
@@ -259,8 +260,9 @@ class GtVectorIllustrations {
   /// Path to the foodCat SVG.
   static const foodCat = "$_basePath/food_cat.svg";
 
-  /// Path to the giftCat SVG.
-  static const giftCat = "$_basePath/gift_cat.svg";
+  /// The [gift] illustration, which this category used a scaled copy of.
+  @Deprecated('Use GtVectorIllustrations.gift, the same drawing.')
+  static const giftCat = gift;
 
   /// Path to the healthCat SVG.
   static const healthCat = "$_basePath/health_cat.svg";
@@ -283,8 +285,9 @@ class GtVectorIllustrations {
   /// Path to the transportCat SVG.
   static const transportCat = "$_basePath/transport_cat.svg";
 
-  /// Path to the walletCat SVG.
-  static const walletCat = "$_basePath/wallet_cat.svg";
+  /// The [wallet] illustration, which this category used a scaled copy of.
+  @Deprecated('Use GtVectorIllustrations.wallet, the same drawing.')
+  static const walletCat = wallet;
 
   /// Path to the fx SVG.
   static const fx = "$_basePath/fx.svg";
@@ -377,14 +380,12 @@ class GtVectorIllustrations {
     (label: 'vault', value: vault),
     (label: 'verification', value: verification),
     (label: 'wallet', value: wallet),
-    (label: 'cashCat', value: cashCat),
     (label: 'charityCat', value: charityCat),
     (label: 'educationCat', value: educationCat),
     (label: 'emergencyCat', value: emergencyCat),
     (label: 'familyCat', value: familyCat),
     (label: 'fitnessCat', value: fitnessCat),
     (label: 'foodCat', value: foodCat),
-    (label: 'giftCat', value: giftCat),
     (label: 'healthCat', value: healthCat),
     (label: 'holidayCat', value: holidayCat),
     (label: 'payrollCat', value: payrollCat),
@@ -392,7 +393,6 @@ class GtVectorIllustrations {
     (label: 'shoppingCat', value: shoppingCat),
     (label: 'transferCat', value: transferCat),
     (label: 'transportCat', value: transportCat),
-    (label: 'walletCat', value: walletCat),
     (label: 'secureCard', value: secureCard),
     (label: 'fx', value: fx),
   ];
@@ -474,14 +474,12 @@ class GtVectorIllustrations {
     vault,
     verification,
     wallet,
-    cashCat,
     charityCat,
     educationCat,
     emergencyCat,
     familyCat,
     fitnessCat,
     foodCat,
-    giftCat,
     healthCat,
     holidayCat,
     payrollCat,
@@ -489,7 +487,6 @@ class GtVectorIllustrations {
     shoppingCat,
     transferCat,
     transportCat,
-    walletCat,
     announcement2,
     overdraft,
     savings,

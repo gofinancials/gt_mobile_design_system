@@ -920,7 +920,7 @@ class _GtTransferCategoryFieldState extends State<GtTransferCategoryField>
             value: value,
             isSelected: value == value2.selection,
             leading: GtImage(
-              image: value.value.image,
+              image: value.value.image.adapt(context),
               width: context.dp(32.px),
               height: context.dp(32.px),
               isDecorative: true,

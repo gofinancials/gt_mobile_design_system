@@ -9,6 +9,10 @@ import 'helpers/test_app_config.dart';
 
 const _svgFolder = 'assets/images/vector/illustrations';
 
+/// Templates whose hosted name differs from the illustration they were drawn
+/// from: gift_cat.svg was a scaled copy of gift.svg and was folded into it.
+const _drawnFrom = {'gift_cat': 'gift'};
+
 Widget _app(GtTheme theme, Widget child) => GtThemeProvider(
   theme: theme,
   child: MaterialApp(
@@ -55,7 +59,8 @@ void main() {
   group('illustration templates', () {
     test('each one is drawn from a DS illustration of the same name', () {
       for (final (:label, :value) in GtNetworkImages.illustrationTemplates) {
-        final name = value.split('/').last.replaceFirst('.webp', '');
+        final template = value.split('/').last.replaceFirst('.webp', '');
+        final name = _drawnFrom[template] ?? template;
         expect(
           File('$_svgFolder/$name.svg').existsSync(),
           isTrue,
