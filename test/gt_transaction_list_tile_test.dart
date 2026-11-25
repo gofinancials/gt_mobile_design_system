@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -110,6 +111,76 @@ void main() {
       find.textContaining('1,500'),
     ]) {
       expect(tester.widget<Text>(text).style, override);
+    }
+  });
+
+  group('subtitle alignment', () {
+    const short = 'Transfer';
+    const long = '000001261123185443565532414245 | Overdraft OneBank';
+
+    /// Pumps [tile] on a 375 wide phone with a 16 gutter.
+    Future<void> pumpTile(WidgetTester tester, Widget tile) async {
+      tester.view.physicalSize = const Size(375, 812);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(
+        buildTestWidget(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: tile,
+          ),
+        ),
+      );
+    }
+
+    /// Where the first glyph of [text] is drawn, from the screen's left edge.
+    double firstGlyphLeft(WidgetTester tester, String text) {
+      final paragraph = tester.renderObject<RenderParagraph>(find.text(text));
+      final box = paragraph
+          .getBoxesForSelection(
+            const TextSelection(baseOffset: 0, extentOffset: 1),
+          )
+          .first;
+      return paragraph.localToGlobal(Offset(box.left, 0)).dx;
+    }
+
+    for (final subtitle in [short, long]) {
+      testWidgets('GtTransactionListTile starts "$subtitle" under the name', (
+        tester,
+      ) async {
+        await pumpTile(
+          tester,
+          GtTransactionListTile(
+            'Boluwatife Kolawole',
+            subtitle: subtitle,
+            amount: 20000,
+            isDebit: true,
+          ),
+        );
+
+        expect(
+          firstGlyphLeft(tester, subtitle),
+          moreOrLessEquals(firstGlyphLeft(tester, 'Boluwatife Kolawole')),
+        );
+      });
+
+      testWidgets('GtPaymentListTile starts "$subtitle" under the title', (
+        tester,
+      ) async {
+        await pumpTile(
+          tester,
+          GtPaymentListTile(
+            'Boluwatife Kolawole',
+            subtitle: subtitle,
+            amount: '${AppStrings.naira}20,000.00',
+          ),
+        );
+
+        expect(
+          firstGlyphLeft(tester, subtitle),
+          moreOrLessEquals(firstGlyphLeft(tester, 'Boluwatife Kolawole')),
+        );
+      });
     }
   });
 

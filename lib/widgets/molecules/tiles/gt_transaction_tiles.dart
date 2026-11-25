@@ -345,7 +345,7 @@ class GtTransactionListTile extends GtStatelessWidget {
                   GtText(
                     subtitle,
                     style: subtitleStyle ?? subStyle,
-                    textAlign: TextAlign.end,
+                    textAlign: .start,
                     maxLines: 1,
                   ),
                 ],
@@ -507,7 +507,7 @@ class GtPaymentListTile extends GtStatelessWidget {
                             subStyle,
                             subtitleColor,
                           ),
-                          textAlign: TextAlign.end,
+                          textAlign: .start,
                         ),
                       ],
                     ),
