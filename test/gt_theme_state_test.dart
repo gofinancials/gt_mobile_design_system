@@ -162,4 +162,61 @@ void main() {
       expect(state.themeSetting.theme, same(kids));
     });
   });
+
+  group('initial mode', () {
+    test('starts on system by default', () async {
+      final state = GtThemeState(AppMockStorageService(), kPersonalTheme);
+      addTearDown(state.dispose);
+      await Future<void>.delayed(Duration.zero);
+
+      expect(state.themeSetting.mode, ThemeMode.system);
+    });
+
+    test('starts on the given mode and does not persist it', () async {
+      final storage = AppMockStorageService();
+      final state = GtThemeState(
+        storage,
+        kPersonalTheme,
+        initialMode: ThemeMode.light,
+      );
+      addTearDown(state.dispose);
+      await Future<void>.delayed(Duration.zero);
+
+      expect(state.themeSetting.mode, ThemeMode.light);
+      expect(await storage.getItem(AppStorageKey.themeMode), isNull);
+    });
+
+    test('gives way to a stored mode, system included', () async {
+      final storage = AppMockStorageService();
+      await storage.setItem(AppStorageKey.themeMode, ThemeMode.system.name);
+      final state = GtThemeState(
+        storage,
+        kPersonalTheme,
+        initialMode: ThemeMode.light,
+      );
+      addTearDown(state.dispose);
+      await Future<void>.delayed(Duration.zero);
+
+      expect(state.themeSetting.mode, ThemeMode.system);
+    });
+
+    test('gives way to a mode the customer picks later', () async {
+      final storage = _WatchableStorageService();
+      final state = GtThemeState(
+        storage,
+        kPersonalTheme,
+        initialMode: ThemeMode.light,
+      );
+      addTearDown(state.dispose);
+      await Future<void>.delayed(Duration.zero);
+
+      await state.changeMode(ThemeMode.dark);
+
+      expect(state.themeSetting.mode, ThemeMode.dark);
+      expect(
+        await storage.getItem(AppStorageKey.themeMode),
+        ThemeMode.dark.name,
+      );
+    });
+  });
 }

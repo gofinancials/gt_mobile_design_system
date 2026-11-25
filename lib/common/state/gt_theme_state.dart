@@ -28,21 +28,30 @@ class GtThemeState extends StateModel {
   /// The active theme and mode, replaced whenever either one changes.
   late GtThemeSetting _themeSetting;
 
-  /// Creates a [GtThemeState] that starts on [initialTheme] and then restores the
-  /// preferences persisted in the storage service.
+  /// Creates a [GtThemeState] that starts on [initialTheme] and [initialMode]
+  /// and then restores the preferences persisted in the storage service.
   ///
   /// A persisted theme name is resolved against [themes], which defaults to
   /// [kAllThemes]. When several themes share a name, the first one wins.
   /// [initialTheme] must be one of [themes], otherwise a persisted name could
   /// never resolve back to it.
-  GtThemeState(this._service, GtTheme initialTheme, {List<GtTheme>? themes})
-    : _themes = List.unmodifiable(themes ?? kAllThemes) {
+  ///
+  /// [initialMode] is the mode used until the customer picks one, such as
+  /// [ThemeMode.light] for an app that opens light whatever the phone's
+  /// setting. Like [initialTheme], it is never persisted, so a customer who
+  /// later picks [ThemeMode.system] keeps following the phone.
+  GtThemeState(
+    this._service,
+    GtTheme initialTheme, {
+    List<GtTheme>? themes,
+    ThemeMode initialMode = .system,
+  }) : _themes = List.unmodifiable(themes ?? kAllThemes) {
     assert(
       _themes.contains(initialTheme),
       'initialTheme "${initialTheme.name}" is not in themes. Pass the same '
       'instances GtThemeState resolves stored names against.',
     );
-    _themeSetting = GtThemeSetting(theme: initialTheme, mode: .system);
+    _themeSetting = GtThemeSetting(theme: initialTheme, mode: initialMode);
     _seedSetting();
     _observeTheme();
   }
