@@ -225,6 +225,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  cryptography:
+    dependency: transitive
+    description:
+      name: cryptography
+      sha256: "3eda3029d34ec9095a27a198ac9785630fe525c0eb6a49f3d575272f8e792ef0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.9.0"
   csslib:
     dependency: transitive
     description:
@@ -689,8 +697,8 @@ packages:
     dependency: transitive
     description:
       path: "packages/gt_device_integrity"
-      ref: "2108fbdc287781a5a1a7f4b8f7b69234c81d8d5b"
-      resolved-ref: "2108fbdc287781a5a1a7f4b8f7b69234c81d8d5b"
+      ref: ba24e36d753a4b33cfc71e13ad21b1030120a762
+      resolved-ref: ba24e36d753a4b33cfc71e13ad21b1030120a762
       url: "https://github.com/gofinancials/gt_mobile_foundation.git"
     source: git
     version: "0.0.1"
@@ -698,8 +706,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v0.0.87"
-      resolved-ref: "2108fbdc287781a5a1a7f4b8f7b69234c81d8d5b"
+      ref: "v0.0.88"
+      resolved-ref: ba24e36d753a4b33cfc71e13ad21b1030120a762
       url: "https://github.com/gofinancials/gt_mobile_foundation.git"
     source: git
     version: "0.0.1"
