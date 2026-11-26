@@ -734,6 +734,9 @@ class GtPaletteRawColors {
   /// The cream color, resolved for this palette's mode.
   Color get cream => _resolve(GtColors.cream);
 
+  /// The mist color, a pale blue-grey, resolved for this palette's mode.
+  Color get mist => _resolve(GtColors.mist);
+
   /// The black color, resolved for this palette's mode.
   Color get black => _resolve(GtColors.black);
 

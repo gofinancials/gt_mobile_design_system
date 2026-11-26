@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
+import 'gt_slide_backdrop.dart';
+
 /// A stateful widget that displays a carousel of onboarding slides.
 ///
 /// This widget uses a [PageView] to display a list of [GtOnboardingSlideData] objects.
@@ -256,7 +258,7 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides>
                     : null,
                 allowImplicitScrolling: true,
                 onPageChanged: _updateSlide,
-                itemBuilder: (_, index) => _GtOnboardingBackgroundSlide(
+                itemBuilder: (_, index) => GtSlideBackground(
                   image: widget.slides[index % widget.slides.length].image,
                   showBlurredBackground: isWideLayout,
                 ),
@@ -285,7 +287,7 @@ class _GtOnboardingSlidesState extends State<GtOnboardingSlides>
                     mainAxisSize: .min,
                     children: [
                       IgnorePointer(
-                        child: _GtOnboardingContentTransition(
+                        child: GtSlideContentTransition(
                           duration: GtMotion.adaptiveDuration(
                             context,
                             GtMotion.fluid,
@@ -411,206 +413,6 @@ class _GtOnboardingProgress extends GtStatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-/// A private widget that draws one slide's background image.
-///
-/// On wide layouts the contained image sits over a blurred, full-bleed copy of
-/// itself, so the sides of the screen are not left empty.
-class _GtOnboardingBackgroundSlide extends GtStatelessWidget {
-  /// The slide's background image.
-  final ImageProvider image;
-
-  /// Whether to fill the screen behind the image with a blurred copy of it.
-  final bool showBlurredBackground;
-
-  /// Creates a [_GtOnboardingBackgroundSlide].
-  const _GtOnboardingBackgroundSlide({
-    required this.image,
-    required this.showBlurredBackground,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final foreground = DecoratedBox(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: image,
-          fit: .contain,
-          alignment: .topCenter,
-        ),
-      ),
-    );
-
-    if (!showBlurredBackground) {
-      return RepaintBoundary(child: foreground);
-    }
-
-    // Blur only the full-bleed copy. A BackdropFilter also samples the
-    // foreground and adjacent PageView pages while they overlap, which makes
-    // the contained image flash out of focus during an index change.
-    return RepaintBoundary(
-      child: Stack(
-        fit: .expand,
-        children: [
-          ClipRect(
-            child: ImageFiltered(
-              imageFilter: context.backdropFilters.imageBackdrop(),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: image,
-                    fit: .cover,
-                    alignment: .topCenter,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          foreground,
-        ],
-      ),
-    );
-  }
-}
-
-/// A private widget that fades between slides' titles and content images.
-///
-/// It fades through rather than across: the outgoing content is gone by the
-/// halfway point and the incoming content only appears after it, so two titles
-/// are never drawn over each other. Both are anchored to the bottom by
-/// [_GtBottomAnchoredCrossFadeLayout], while the height between them animates.
-class _GtOnboardingContentTransition extends GtStatefulWidget {
-  /// The content to show, keyed by its slide so a change of slide is told
-  /// apart from a rebuild of the same one.
-  final Widget child;
-
-  /// How long a change of slide takes.
-  final Duration duration;
-
-  /// The easing applied to the fades and the change in height.
-  final Curve curve;
-
-  /// Creates a [_GtOnboardingContentTransition].
-  const _GtOnboardingContentTransition({
-    required this.child,
-    required this.duration,
-    required this.curve,
-  });
-
-  @override
-  State<_GtOnboardingContentTransition> createState() =>
-      _GtOnboardingContentTransitionState();
-}
-
-/// The state for [_GtOnboardingContentTransition].
-///
-/// Alternates the incoming content between the cross-fade's two slots, so
-/// each change of slide fades from whatever is showing.
-class _GtOnboardingContentTransitionState
-    extends State<_GtOnboardingContentTransition> {
-  /// The content in the cross-fade's first slot.
-  late Widget _firstChild;
-
-  /// The content in the cross-fade's second slot.
-  Widget _secondChild = const SizedBox.shrink();
-
-  /// Whether the first slot is the one showing.
-  bool _showFirst = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _firstChild = widget.child;
-  }
-
-  @override
-  void didUpdateWidget(covariant _GtOnboardingContentTransition oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.child.key == widget.child.key) {
-      if (_showFirst) {
-        _firstChild = widget.child;
-      } else {
-        _secondChild = widget.child;
-      }
-      return;
-    }
-
-    if (_showFirst) {
-      _secondChild = widget.child;
-    } else {
-      _firstChild = widget.child;
-    }
-    _showFirst = !_showFirst;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedCrossFade(
-      duration: widget.duration,
-      reverseDuration: widget.duration,
-      firstCurve: Interval(0, 0.5, curve: widget.curve),
-      secondCurve: Interval(0.5, 1, curve: widget.curve),
-      sizeCurve: widget.curve,
-      alignment: Alignment.bottomCenter,
-      layoutBuilder: _GtBottomAnchoredCrossFadeLayout.new,
-      crossFadeState: _showFirst ? .showFirst : .showSecond,
-      firstChild: _firstChild,
-      secondChild: _secondChild,
-    );
-  }
-}
-
-/// A private widget that lays out an [AnimatedCrossFade]'s two children with
-/// both anchored to the bottom.
-///
-/// The cross-fade's default layout pins the outgoing child to the top. The
-/// design anchors every title the same distance above the buttons, so when the
-/// next slide is taller — one with an image above its title — the outgoing
-/// title would ride up the screen with the growing box's top edge. Anchored
-/// here, it stays put while it fades.
-///
-/// Its constructor matches [AnimatedCrossFadeBuilder], so it is handed to the
-/// cross-fade as a tear-off.
-class _GtBottomAnchoredCrossFadeLayout extends GtStatelessWidget {
-  /// The child fading in, which sizes the layout.
-  final Widget topChild;
-
-  /// The key the cross-fade gives [topChild]'s slot.
-  final Key topChildKey;
-
-  /// The child fading out.
-  final Widget bottomChild;
-
-  /// The key the cross-fade gives [bottomChild]'s slot.
-  final Key bottomChildKey;
-
-  /// Creates a [_GtBottomAnchoredCrossFadeLayout].
-  const _GtBottomAnchoredCrossFadeLayout(
-    this.topChild,
-    this.topChildKey,
-    this.bottomChild,
-    this.bottomChildKey,
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: .none,
-      alignment: .bottomCenter,
-      children: [
-        Positioned(
-          key: bottomChildKey,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: bottomChild,
-        ),
-        Positioned(key: topChildKey, child: topChild),
-      ],
     );
   }
 }

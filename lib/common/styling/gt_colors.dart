@@ -10,6 +10,7 @@ enum GtColors {
   night(ColorSet(0xFF1A1A1A)),
   white(ColorSet(0xFFFFFFFF)),
   cream(ColorSet(0xFFDCDDDE)),
+  mist(ColorSet(0xFFCFD8D9)),
   black(ColorSet(0xFF000000)),
   tertiaryText(ColorSet(0xFF7A7A7A)),
   transparent(ColorSet(0x00000000)),

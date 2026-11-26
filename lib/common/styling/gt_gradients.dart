@@ -123,4 +123,26 @@ class GtGradients {
       stops: [.4547, .9871],
     );
   }
+
+  /// The scrim over the welcome screen's photograph: black at the bottom
+  /// behind the buttons, mirrored more faintly at the top behind the header,
+  /// and clear between.
+  ///
+  /// The stops place Figma's two 525px scrims on an 812px screen, so the
+  /// photograph shows through the middle third.
+  Gradient welcomeScreenGradient() {
+    final black = context.palette.staticColors.black;
+    return LinearGradient(
+      begin: .topCenter,
+      end: .bottomCenter,
+      colors: [
+        black.setOpacity(.81),
+        black.setOpacity(0),
+        black.setOpacity(0),
+        black,
+        black,
+      ],
+      stops: [0, .277, .362, .706, 1],
+    );
+  }
 }

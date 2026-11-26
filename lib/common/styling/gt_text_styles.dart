@@ -243,6 +243,32 @@ class GtTextStyles {
     );
   }
 
+  /// Generates the welcome screen headline text style: Momo at 31/36 with
+  /// -0.55 tracking, set in mixed case.
+  TextStyle welcomeHeadline({
+    double? heightPx,
+    Color? color,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    double? decorationThickness,
+    TextDecorationStyle? decorationStyle,
+    TextOverflow? overflow,
+  }) {
+    return buildStyle(
+      family: fonts.title,
+      size: 31,
+      heightPx: heightPx ?? 36,
+      widthPct: -1.774,
+      weight: .bold,
+      color: color,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationThickness: decorationThickness,
+      decorationStyle: decorationStyle,
+      overflow: overflow,
+    );
+  }
+
   /// Generates the Heading 1 (H1) text style.
   TextStyle h1({
     double? heightPx,
