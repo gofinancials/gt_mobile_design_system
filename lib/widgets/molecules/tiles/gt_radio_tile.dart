@@ -55,6 +55,12 @@ class GtRadioTile<T> extends GtStatelessWidget {
   /// Overrides subtitle style. Null preserves the current default.
   final TextStyle? subtitleStyle;
 
+  /// The most lines the [title] may take, after which it ends in an
+  /// ellipsis.
+  ///
+  /// When `null`, the default, the title wraps onto as many lines as it needs.
+  final int? titleMaxLines;
+
   /// Creates a standard [GtRadioTile] that compares [value] against [groupValue].
   const GtRadioTile(
     this.title, {
@@ -71,6 +77,7 @@ class GtRadioTile<T> extends GtStatelessWidget {
     this.padding,
     this.titleStyle,
     this.subtitleStyle,
+    this.titleMaxLines,
   }) : condition = null;
 
   /// Creates a [GtRadioTile] whose active state is directly controlled by [condition].
@@ -89,6 +96,7 @@ class GtRadioTile<T> extends GtStatelessWidget {
     this.padding,
     this.titleStyle,
     this.subtitleStyle,
+    this.titleMaxLines,
   }) : groupValue = null;
 
   @override
@@ -104,6 +112,7 @@ class GtRadioTile<T> extends GtStatelessWidget {
       icon: leading,
       footer: footer,
       titleStyle: titleStyle,
+      titleMaxLines: titleMaxLines,
       subtitleStyle: subtitleStyle,
       trailing: Builder(
         builder: (context) {

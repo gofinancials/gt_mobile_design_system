@@ -48,6 +48,12 @@ class GtSwitchTile extends GtStatelessWidget {
   /// Custom text style to apply to the [subtitle].
   final TextStyle? subtitleStyle;
 
+  /// The most lines the [title] may take, after which it ends in an
+  /// ellipsis.
+  ///
+  /// When `null`, the default, the title wraps onto as many lines as it needs.
+  final int? titleMaxLines;
+
   /// Creates a [GtSwitchTile].
   const GtSwitchTile(
     this.title, {
@@ -63,6 +69,7 @@ class GtSwitchTile extends GtStatelessWidget {
     this.padding,
     this.titleStyle,
     this.subtitleStyle,
+    this.titleMaxLines,
   });
 
   @override
@@ -75,6 +82,7 @@ class GtSwitchTile extends GtStatelessWidget {
       padding: padding,
       title,
       titleStyle: titleStyle,
+      titleMaxLines: titleMaxLines,
       subtitle: subtitle,
       subtitleStyle: subtitleStyle,
       icon: leading,
