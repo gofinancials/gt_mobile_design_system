@@ -43,6 +43,12 @@ class GtIndicatorTile extends GtStatelessWidget {
   /// Custom padding to apply to the tile.
   final EdgeInsetsGeometry? padding;
 
+  /// The most lines the [title] may take, after which it ends in an
+  /// ellipsis.
+  ///
+  /// When `null`, the default, the title wraps onto as many lines as it needs.
+  final int? titleMaxLines;
+
   /// Horizontal gap between [icon], the title and [trailing], in **design
   /// pixels**.
   ///
@@ -63,6 +69,7 @@ class GtIndicatorTile extends GtStatelessWidget {
     this.subtitleStyle,
     this.padding,
     this.spacingPx,
+    this.titleMaxLines,
   });
 
   @override
@@ -74,8 +81,9 @@ class GtIndicatorTile extends GtStatelessWidget {
 
     final text = GtText(
       title,
-      style: titleStyle ?? context.textStyles.subHeadS(),
-      maxLines: 1,
+      style: titleStyle ?? context.textStyles.labelS(weight: .w600),
+      maxLines: titleMaxLines,
+      overflow: titleMaxLines == null ? null : .ellipsis,
       textAlign: TextAlign.start,
     );
 

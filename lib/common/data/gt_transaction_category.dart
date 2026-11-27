@@ -209,15 +209,15 @@ mixin GtTransactionCategoryMixin {
     ),
     GtTransactionCategory(
       label: "bills".ctr(),
-      image: AppImageData(GtVectorIllustrations.cashCat),
+      image: AppImageData(GtVectorIllustrations.cash),
     ),
     GtTransactionCategory(
       label: "card".ctr(),
-      image: AppImageData(GtVectorIllustrations.debitCardsCat),
+      image: AppImageData(GtVectorIllustrations.debitCards),
     ),
     GtTransactionCategory(
       label: "household".ctr(),
-      image: AppImageData(GtVectorIllustrations.houseCat),
+      image: AppImageData(GtVectorIllustrations.house),
     ),
     GtTransactionCategory(
       label: "health".ctr(),
@@ -225,7 +225,7 @@ mixin GtTransactionCategoryMixin {
     ),
     GtTransactionCategory(
       label: "gift".ctr(),
-      image: AppImageData(GtVectorIllustrations.giftCat),
+      image: AppImageData(GtVectorIllustrations.gift),
     ),
     GtTransactionCategory(
       label: "charity".ctr(),
@@ -249,7 +249,7 @@ mixin GtTransactionCategoryMixin {
     ),
     GtTransactionCategory(
       label: "refund".ctr(),
-      image: AppImageData(GtVectorIllustrations.detailsCat),
+      image: AppImageData(GtVectorIllustrations.details),
     ),
     GtTransactionCategory(
       label: "books".ctr(),

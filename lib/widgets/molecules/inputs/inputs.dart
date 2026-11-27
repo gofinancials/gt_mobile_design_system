@@ -14,6 +14,8 @@ export 'gt_pin_input.dart';
 export 'gt_search_field.dart';
 export 'gt_signature_pad.dart';
 export 'gt_text_field.dart';
+export 'gt_time_field.dart';
+export 'gt_time_wheel_scroll.dart';
 export 'gt_transfer_field.dart';
 export 'gt_url_field.dart';
 export 'gt_wheel_scroll.dart';

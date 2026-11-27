@@ -10,6 +10,7 @@ enum GtColors {
   night(ColorSet(0xFF1A1A1A)),
   white(ColorSet(0xFFFFFFFF)),
   cream(ColorSet(0xFFDCDDDE)),
+  mist(ColorSet(0xFFCFD8D9)),
   black(ColorSet(0xFF000000)),
   tertiaryText(ColorSet(0xFF7A7A7A)),
   transparent(ColorSet(0x00000000)),
@@ -100,6 +101,7 @@ enum GtColors {
   green925(ColorSet(0xFF155653)),
   green900(ColorSet(0xFF16643B)),
   green800(ColorSet(0xFF1A7544)),
+  green750(ColorSet(0xFF16834A)),
   green700(ColorSet(0xFF178C4E)),
   green600(ColorSet(0xFF1DAF61)),
   green500(ColorSet(0xFF1FC16B)),
@@ -160,7 +162,9 @@ enum GtColors {
   // ---------------------------------------------------------------------------
   teal950(ColorSet(0xFF0B463E)),
   teal900(ColorSet(0xFF006255)),
+  teal850(ColorSet(0xFF16695E)),
   teal800(ColorSet(0xFF1A7569)),
+  teal750(ColorSet(0xFF14806F)),
   teal700(ColorSet(0xFF178C7D)),
   teal600(ColorSet(0xFF1DAF9C)),
   teal500(ColorSet(0xFF22D3BB)),
@@ -174,6 +178,8 @@ enum GtColors {
   // VIBRANTS - TEAL BLUE
   // ---------------------------------------------------------------------------
   tealBlue800(ColorSet(0xFF0C3B48)),
+  tealBlue750(ColorSet(0xFF1D6F86)),
+  tealBlue725(ColorSet(0xFF0B7891)),
   tealBlue700(ColorSet(0xFF2787A1)),
   tealBlue600(ColorSet(0xFF01CBEA)),
 

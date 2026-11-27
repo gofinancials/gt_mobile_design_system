@@ -105,11 +105,13 @@ Widget playgroundGtActionButtonBarUseCase(BuildContext context) {
     title: 'GtActionButtonBar',
     description:
         'A horizontal strip of GtActionButtons — the quick-action row under a '
-        'balance card. The bar measures its own box: while the tiles fit within '
-        '80% of that width it spreads them edge to edge with spaceBetween, and '
-        'past that it becomes a horizontally scrolling strip. Narrow the '
-        'Viewport addon to a phone frame, or raise the button count, to cross '
-        'the threshold.',
+        'balance card. The bar shares its width out as one equal slot per '
+        'button and centres each button in its slot, so four sit edge to edge '
+        'as Home\'s quick actions do, and two or three spread evenly about the '
+        'centre, with no padding needed. When a tile or caption no longer fits '
+        'its slot, it becomes a horizontally scrolling strip instead. Change '
+        'the button count to see the spacing follow, or raise it, or narrow '
+        'the Viewport addon, to reach the scrolling layout.',
     code:
         '''
 GtActionButtonBar(
@@ -129,8 +131,8 @@ ${actions.map((a) => '''    GtActionButton(
           'holds regardless of the button size chosen here.',
       'With labels hidden the buttons are icon-only — give each one an '
           'accessible name through the surrounding semantics.',
-      'Captions are capped at a single line, so check the bar at larger text '
-          'scales with the Accessibility addon.',
+      'Captions wrap onto at most two lines before the bar scrolls, so check '
+          'it at larger text scales with the Accessibility addon.',
       'The tile colours here are illustrative; verify icon contrast against '
           'each background before reusing this palette in product.',
     ],
@@ -139,15 +141,10 @@ ${actions.map((a) => '''    GtActionButton(
       variant: GtCardVariant.normal,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          // Mirrors the estimate GtActionButtonBar makes in build(), against
-          // the same box the bar itself is handed.
-          final scrolling = size * actions.length > constraints.maxWidth * .8;
-
           return Column(
             crossAxisAlignment: .stretch,
             children: [
               GtText(
-                '${scrolling ? 'Scrolling' : 'Fitted'} layout · '
                 '${actions.length} buttons · '
                 '${constraints.maxWidth.toStringAsFixed(0)}px available',
                 style: context.textStyles.subHeadS(),

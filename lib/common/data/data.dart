@@ -14,6 +14,7 @@ export 'gt_status_step_data.dart';
 export 'gt_success_rate_data.dart';
 export 'gt_summary_data.dart';
 export 'gt_theme_setting.dart';
+export 'gt_time_data.dart';
 export 'gt_transaction_category.dart';
 export 'gt_transfer_detail_data.dart';
 export 'gt_transfer_participant_data.dart';

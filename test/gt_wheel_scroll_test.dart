@@ -195,6 +195,63 @@ void main() {
         gradient.createShader,
       );
     });
+
+    testWidgets('top alignment shows the band and one shorter row below', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          GtWheelScroll<int>(
+            items: years,
+            value: 2023,
+            size: .large,
+            alignment: .top,
+          ),
+        ),
+      );
+
+      final context = tester.element(find.byType(GtWheelScroll<int>));
+      final band = context.dp(48.px);
+      final wheel = tester.getRect(find.byType(GtWheelScroll<int>));
+      final stack = find
+          .ancestor(of: find.byType(ShaderMask), matching: find.byType(Stack))
+          .first;
+      final bandBox = find
+          .descendant(of: stack, matching: find.byType(DecoratedBox))
+          .first;
+
+      expect(wheel.height, band + context.dp(32.px));
+      expect(tester.getRect(bandBox).top, wheel.top);
+      expect(tester.getCenter(find.text('2023')).dy - wheel.top, band / 2);
+      expect(
+        tester.getCenter(find.text('2024')).dy - wheel.top,
+        // The wheel's slight curve nudges the row by a fraction of a pixel.
+        closeTo(band + context.dp(4.px) + context.dp(28.px) / 2, 1),
+      );
+      expect(tester.getCenter(find.text('2022')).dy, lessThan(wheel.top));
+    });
+
+    testWidgets('top alignment scrolls and reports the next item', (
+      tester,
+    ) async {
+      final changes = <int>[];
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          GtWheelScroll<int>(
+            items: years,
+            value: 2020,
+            size: .large,
+            alignment: .top,
+            onChanged: (item) => changes.add(item.data),
+          ),
+        ),
+      );
+
+      await scrollByRows(tester, find.byType(ListWheelScrollView), 1);
+
+      expect(changes, [2021]);
+    });
   });
 
   group('GtWheelScrollGroup', () {

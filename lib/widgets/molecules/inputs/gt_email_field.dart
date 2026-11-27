@@ -38,6 +38,14 @@ class GtEmailField extends GtStatefulWidget {
   /// The validator to use for the input field.
   final OnValidate<String?>? validator;
 
+  /// When the field is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// Under [AutovalidateMode.onUserInteraction], set here or on the enclosing
+  /// [GtForm], the error shows as the value changes and clears once it is
+  /// valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a new [GtEmailField].
   const GtEmailField({
     super.key,
@@ -51,6 +59,7 @@ class GtEmailField extends GtStatefulWidget {
     this.onFieldSubmitted,
     this.decoration,
     this.autofillHints = const [AutofillHints.email],
+    this.autovalidateMode = .disabled,
   });
 
   @override
@@ -61,6 +70,7 @@ class _GtEmailFieldState extends State<GtEmailField> {
   @override
   Widget build(BuildContext context) {
     return GtTextField(
+      autovalidateMode: widget.autovalidateMode,
       autoCorrect: false,
       decoration: widget.decoration,
       autoFocus: widget.autoFocus,

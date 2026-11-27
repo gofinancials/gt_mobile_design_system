@@ -19,6 +19,17 @@ class _CalendarPreview extends GtStatefulWidget {
 
 class _CalendarPreviewState extends State<_CalendarPreview> {
   final _calendarCtrl = GtCalendarController(GtCalendarValue());
+  String _appliedLimits = _limitOptions.first;
+
+  /// Applies [option]'s limits after this frame, as setting them notifies
+  /// the calendar mid-build otherwise.
+  void _applyLimits(String option) {
+    if (option == _appliedLimits) return;
+    _appliedLimits = option;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _calendarCtrl.dateRange = _limitsFor(option);
+    });
+  }
 
   @override
   void dispose() {
@@ -34,14 +45,28 @@ class _CalendarPreviewState extends State<_CalendarPreview> {
       initialOption: GtCalendarSelectionMode.day,
       labelBuilder: (value) => value.name.capitalise(),
     );
+    final limits = context.knobs.object.dropdown<String>(
+      label: 'Date Limits',
+      options: _limitOptions,
+      initialOption: _limitOptions.first,
+    );
+    _applyLimits(limits);
 
     return GtWidgetDocPage(
       title: 'GtCalendar',
-      description: 'Documentation for GtCalendar',
+      description:
+          'A month calendar for picking a day or a range. In range mode the '
+          'first tap marks a start, held as pendingRangeStart, and the second '
+          'finishes the range whichever way round; tapping the start again '
+          'picks a single day. onSelectRange fires only for a finished range. '
+          'Days outside the controller\'s dateRange are drawn disabled and '
+          'ignore taps, and dateRange can be set again when the limits change.',
       code:
           '''
+final controller = GtCalendarController(GtCalendarValue());${_limitsFor(limits) == null ? '' : '\ncontroller.dateRange = DateTimeRange(start: ..., end: ...); // $limits'}
+
 GtCalendar(
-  controller: GtCalendarController(GtCalendarValue()),
+  controller: controller,
   selectionMode: .${selectionMode.name},
 ),
 ''',
@@ -54,15 +79,18 @@ GtCalendar(
             builder: (data) {
               final day =
                   data.day?.format("EEE, dd MMM yyyy") ?? "No day selected";
-              final range = selectionMode != .day ? data.range : null;
+              if (selectionMode == .day) {
+                return GtText("Selected day is: $day", textAlign: .center);
+              }
               final start =
-                  range?.start.format("dd MMM yyyy") ?? "No start selected";
-              final end = range?.end.format("dd MMM yyyy") ?? "No endselected";
+                  data.rangeStart?.format("dd MMM yyyy") ?? "No start selected";
+              final end = switch (data.rangeEnd) {
+                final end? => end.format("dd MMM yyyy"),
+                _ when data.isPickingRangeEnd => "Tap an end date",
+                _ => "No end selected",
+              };
 
-              return GtText(
-                "Selected day is: $day, selected range is $start - $end",
-                textAlign: .center,
-              );
+              return GtText("Range: $start - $end", textAlign: .center);
             },
           ),
           const GtGap.yLg(),
@@ -76,3 +104,22 @@ GtCalendar(
     );
   }
 }
+
+/// The date limits a preview can apply, by knob label.
+DateTimeRange? _limitsFor(String option) {
+  final now = DateTime.now();
+  final today = DateTime(now.year, now.month, now.day);
+  return switch (option) {
+    'Past year, up to today' => DateTimeRange(
+      start: today.subtract(const Duration(days: 365)),
+      end: today,
+    ),
+    'Next 30 days' => DateTimeRange(
+      start: today,
+      end: today.add(const Duration(days: 30)),
+    ),
+    _ => null,
+  };
+}
+
+const _limitOptions = ['None', 'Past year, up to today', 'Next 30 days'];

@@ -42,6 +42,17 @@ class GtDotFormField extends GtStatefulWidget {
   /// Whether the dots should be filled with color when inactive, or just outlined.
   final bool filled;
 
+  /// When the input is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// When this or the enclosing [GtForm] sets a mode other than
+  /// [AutovalidateMode.disabled], every change to [controller], such as a key
+  /// on a virtual keypad, marks the input as changed for its [Form]. So
+  /// [AutovalidateMode.onUserInteraction] shows the error as the input
+  /// changes and clears it once the input is valid again. Defaults to
+  /// [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a [GtDotFormField].
   const GtDotFormField({
     super.key,
@@ -55,13 +66,52 @@ class GtDotFormField extends GtStatefulWidget {
     this.color,
     this.inactiveColor,
     required this.length,
+    this.autovalidateMode = .disabled,
   });
 
   @override
   State<GtDotFormField> createState() => _GtDotFormFieldState();
 }
 
+/// The state for [GtDotFormField].
 class _GtDotFormFieldState extends State<GtDotFormField> {
+  /// The key of the [FormField] that validates the input.
+  final _fieldKey = GlobalKey<FormFieldState<TextEditingController>>();
+
+  /// The text last reported to the [FormField].
+  late String _reportedText;
+
+  @override
+  void initState() {
+    super.initState();
+    _reportedText = widget.controller.text;
+    widget.controller.addListener(_reportChange);
+  }
+
+  @override
+  void didUpdateWidget(covariant GtDotFormField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller == widget.controller) return;
+    oldWidget.controller.removeListener(_reportChange);
+    _reportedText = widget.controller.text;
+    widget.controller.addListener(_reportChange);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_reportChange);
+    super.dispose();
+  }
+
+  /// Reports an edit of the input to the [FormField], which re-validates it
+  /// under [AutovalidateMode.onUserInteraction].
+  void _reportChange() {
+    final text = widget.controller.text;
+    if (text == _reportedText) return;
+    _reportedText = text;
+    _fieldKey.currentState?.notifyChanged(widget.controller);
+  }
+
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
@@ -74,6 +124,7 @@ class _GtDotFormFieldState extends State<GtDotFormField> {
           final text = widget.controller.text;
 
           return FormField<TextEditingController>(
+            key: _fieldKey,
             forceErrorText: widget.errorText,
             builder: (formState) {
               final hasErrorText = widget.errorText.hasValue;
@@ -112,10 +163,15 @@ class _GtDotFormFieldState extends State<GtDotFormField> {
                 ],
               );
             },
-            onReset: () => widget.controller.clear(),
+            onReset: () {
+              // A reset leaves the input untouched, so clearing it is not an
+              // edit to report.
+              _reportedText = '';
+              widget.controller.clear();
+            },
             validator: (value) => widget.validator?.call(value?.text),
             initialValue: widget.controller,
-            autovalidateMode: .disabled,
+            autovalidateMode: widget.autovalidateMode,
             enabled: widget.isEnabled,
           );
         },

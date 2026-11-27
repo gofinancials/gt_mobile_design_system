@@ -52,7 +52,9 @@ class GtLessonCompleteScreen extends GtStatelessWidget {
           title: title,
           description: subtitle,
           gapToTitle: const GtViewStateGapSpacer(GtGap.ySectionSm()),
-          icon: image ?? AppImageData(GtVectorIllustrations.celebration),
+          icon:
+              image ??
+              AppImageData(GtVectorIllustrations.celebration.adapt(context)),
           titleStyle: styles.h4(),
           descriptionStyle: styles.bodyS(),
         ),

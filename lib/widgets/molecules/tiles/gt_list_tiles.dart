@@ -77,7 +77,7 @@ class GtListTile extends GtStatelessWidget {
                 text,
                 style: GtTextStyleOverrides.resolve(
                   style,
-                  context.textStyles.subHeadS(),
+                  context.textStyles.labelS(weight: .w600),
                   textColor,
                 ),
               ),
@@ -223,7 +223,7 @@ class GtIconListTile extends GtStatelessWidget {
               children: [
                 GtText(
                   title,
-                  style: titleStyle ?? context.textStyles.subHeadS(),
+                  style: titleStyle ?? context.textStyles.labelS(weight: .w600),
                 ),
                 if (subtitle.hasValue)
                   GtText(

@@ -53,6 +53,8 @@ void main() {
   final cardSkeletons = <String, Widget Function()>{
     'GtSectionHeader': () => GtSectionHeader.skeleton(),
     'GtTransactionGroupHeader': () => GtTransactionGroupHeader.skeleton(),
+    'GtProfileHeader': () => GtProfileHeader.skeleton(),
+    'GtProfileHeroHeader': () => GtProfileHeroHeader.skeleton(),
     'GtInboxCard': () => GtInboxCard.skeleton(),
     'GtBillCard': () => GtBillCard.skeleton(),
     'GtBillCard.tile': GtBillCard.tileSkeleton,
@@ -354,6 +356,12 @@ void main() {
       );
     }
 
+    // The page stays under a disabled skeleton once loaded, so it is not
+    // remounted as the skeleton lifts.
+    final enabledSkeleton = find.byWidgetPredicate(
+      (widget) => widget is GtSkeleton && widget.enabled,
+    );
+
     testWidgets('a loading page bones only its body', (tester) async {
       final handle = tester.ensureSemantics();
       var helpTaps = 0;
@@ -376,7 +384,7 @@ void main() {
       await tester.tap(find.bySemanticsLabel(RegExp('Payments')).first);
       await tester.pumpAndSettle();
       expect(find.text('Payments page'), findsOneWidget);
-      expect(find.byType(GtSkeleton), findsNothing);
+      expect(enabledSkeleton, findsNothing);
       handle.dispose();
     });
 
@@ -386,7 +394,7 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(GtSkeleton), findsNothing);
+      expect(enabledSkeleton, findsNothing);
       expect(find.byType(GtBone), findsNothing);
     });
 
@@ -416,6 +424,11 @@ void main() {
       expect(find.byType(GtBalanceText), findsOneWidget);
       expect(find.byType(GtAccountCopyPill), findsOneWidget);
       expect(find.byType(GtBone), findsWidgets);
+
+      // The balance row is the Personal Home's 65 frame, not a bare H3 line.
+      final row = tester.getSize(find.byKey(ValueKey((controller, 1))));
+      final context = tester.element(find.byType(GtAccountDetailSlides<int>));
+      expect(row.height, closeTo(context.dp(65.px), 0.5));
     });
 
     testWidgets('a loading home app bar bones only its avatar', (tester) async {

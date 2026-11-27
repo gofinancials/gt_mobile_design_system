@@ -50,7 +50,10 @@ class GtLimitInfoListTile extends GtStatelessWidget {
                     labelStyle ??
                     context.textStyles.bodyXs(color: context.palette.text.sub),
               ),
-              GtText(value, style: valueStyle ?? context.textStyles.subHeadM()),
+              GtText(
+                value,
+                style: valueStyle ?? context.textStyles.labelM(weight: .w500),
+              ),
             ],
           ),
         ),
@@ -109,8 +112,9 @@ class GtLimitEditListTile extends GtStatelessWidget {
   /// for the progress bar.
   double get _fraction => min((value / max), 1);
 
-  /// Calculates the remaining available amount of the limit.
-  num get _remainder => max - value;
+  /// Calculates the remaining available amount of the limit, never below zero:
+  /// the formatter keeps a minus sign since Foundation v0.0.73.
+  num get _remainder => (max - value).clamp(0, double.infinity);
 
   /// The localized, currency-formatted string of the current utilized value.
   String get _formattedValue => AppTextFormatter.formatCurrency(value);
@@ -137,7 +141,7 @@ class GtLimitEditListTile extends GtStatelessWidget {
         ],
         recognizer: TapGestureRecognizer()..onTap = onTapInfo,
       ),
-      style: categoryStyle ?? context.textStyles.subHeadM(),
+      style: categoryStyle ?? context.textStyles.labelM(weight: .w600),
     );
 
     if (context.inSkeleton) {

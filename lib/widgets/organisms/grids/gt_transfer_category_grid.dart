@@ -86,7 +86,7 @@ class GtTransferCategoryGrid extends GtStatelessWidget
                   onSelect: controller.select,
                   variant: category.variant ?? .featured,
                   child: GtImage(
-                    image: category.image,
+                    image: category.image.adapt(context),
                     width: 48,
                     height: 48,
                     isDecorative: true,

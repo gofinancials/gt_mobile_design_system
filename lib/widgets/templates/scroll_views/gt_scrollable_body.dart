@@ -58,6 +58,23 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// is the same behaviour, laid out by the viewport itself. Reach for that when
 /// the screen is already a [CustomScrollView]; reach for this when it is not.
 ///
+/// ## The system navigation bar
+///
+/// A [ListView] pads itself by the [MediaQuery] padding along its axis; a
+/// [SingleChildScrollView] does not. On a phone drawing edge to edge, a body
+/// on a [Scaffold] with no bottom bar would then end under the system
+/// navigation bar, its last row out of reach. So a vertical body adds
+/// [GtMediaQueryData.bottomPadding] to its own bottom padding, then removes
+/// it from the [MediaQuery] its child sees, so a nested list or [SafeArea]
+/// does not add it a second time.
+///
+/// This only ever adds what is left of the inset at this point in the tree. A
+/// [Scaffold] with a `bottomNavigationBar` or `persistentFooterButtons`
+/// already removes it from its body, and a [SafeArea] above uses it up, so a
+/// body under either keeps exactly its own padding. A horizontal strip never
+/// adds it: bottom padding would only push its row up inside a fixed-height
+/// box.
+///
 /// ## Horizontal strips
 ///
 /// [fillViewport] has no horizontal counterpart — a [ConstrainedBox] with a
@@ -77,6 +94,10 @@ class GtScrollableBody extends GtStatelessWidget {
   /// page body wants the design system's gutter far more often than it wants
   /// none. Pass [EdgeInsets.zero] where an ancestor already pads, or where a
   /// row inside the body bleeds to both screen edges.
+  ///
+  /// A vertical body adds the system's bottom inset on top of this, whether
+  /// it is the default or the caller's own. See "The system navigation bar"
+  /// above.
   final EdgeInsetsGeometry? padding;
 
   /// The controller driving the scroll position.
@@ -139,15 +160,29 @@ class GtScrollableBody extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final insets = padding ?? context.insets.defaultAllInsets;
+    EdgeInsets deviceInset = .zero;
+
+    if (scrollDirection == .vertical) {
+      // Device pixels, so a raw EdgeInsets: GtInsets would scale them as dp.
+      deviceInset = .only(bottom: context.mediaQueryData.bottomPadding);
+    }
+    // Always wrapped, even when there is no padding to remove: a wrapper that
+    // came and went with the inset would remount the child as the keyboard
+    // opens, closing a focused field's input connection.
+    final content = MediaQuery.removePadding(
+      context: context,
+      removeBottom: scrollDirection == .vertical,
+      child: child,
+    );
 
     if (!fillViewport) {
       return SingleChildScrollView(
         scrollDirection: scrollDirection,
         controller: controller,
         physics: physics,
-        padding: insets,
+        padding: insets.add(deviceInset),
         clipBehavior: clipBehavior,
-        child: child,
+        child: content,
       );
     }
 
@@ -170,7 +205,7 @@ class GtScrollableBody extends GtStatelessWidget {
             // then part of the height being filled, so a short body measures
             // exactly one viewport and does not scroll by its own gutter.
             child: IntrinsicHeight(
-              child: Padding(padding: insets, child: child),
+              child: Padding(padding: insets.add(deviceInset), child: content),
             ),
           ),
         );

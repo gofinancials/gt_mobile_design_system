@@ -28,7 +28,7 @@ class GtInfoListTile extends GtStatelessWidget {
 
   /// Optional custom [TextStyle] for the [text].
   ///
-  /// If null, defaults to [GtTextStyles.subHeadS].
+  /// If null, defaults to [GtTextStyles.subHead3M].
   final TextStyle? textStyle;
 
   /// Optional custom [TextStyle] for the [label].
@@ -324,7 +324,7 @@ class GtInputListTile extends GtStatelessWidget {
 
   /// Optional custom [TextStyle] for the [text].
   ///
-  /// If null, defaults to [GtTextStyles.subHeadS].
+  /// If null, defaults to [GtTextStyles.labelS] at weight 500, Figma Body/M.
   final TextStyle? textStyle;
 
   /// Optional custom [TextStyle] for the [label].
@@ -371,7 +371,7 @@ class GtInputListTile extends GtStatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = textStyle ?? context.textStyles.subHeadS();
+    final style = textStyle ?? context.textStyles.labelS(weight: .w500);
     final hintStyle =
         (labelStyle ??
         context.textStyles.bodyXs(color: context.palette.text.sub));
@@ -502,14 +502,16 @@ class GtCopyTile extends GtStatelessWidget {
             child: GtText(
               label,
               textAlign: TextAlign.start,
-              style: labelStyle ?? styles.subHeadXs(color: textColors.sub),
+              style:
+                  labelStyle ??
+                  styles.bodyXs(color: textColors.sub, weight: .w500),
             ),
           ),
           Expanded(
             child: GtText(
               value,
               textAlign: TextAlign.end,
-              style: valueStyle ?? styles.subHeadXs(),
+              style: valueStyle ?? styles.bodyXs(weight: .w500),
             ),
           ),
           GtIcon(
@@ -622,7 +624,7 @@ class GtStackedCopyTile extends GtStatelessWidget {
   Widget build(BuildContext context) {
     final styles = context.textStyles;
     final textColors = context.palette.text;
-    final style = styles.subHeadXs(color: textColors.sub);
+    final style = styles.bodyXs(color: textColors.sub, weight: .w500);
     final icon = GtIcon(
       GtIcons.copyFilled,
       size: copyIconSize ?? context.dp(20.px),
@@ -652,7 +654,7 @@ class GtStackedCopyTile extends GtStatelessWidget {
                   GtText(label, style: labelStyle ?? style),
                   GtText(
                     subtitle,
-                    style: subtitleStyle ?? styles.subHeadS(weight: .w600),
+                    style: subtitleStyle ?? styles.labelS(weight: .w600),
                   ),
                 ],
               ),
@@ -784,8 +786,21 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   ///Maximum number of lines for the label.
   final int labelMaxLines;
 
-  ///Maximum number of lines for the value.
-  final int valueMaxLines;
+  /// Maximum number of lines for the value. Defaults to 2.
+  ///
+  /// Null lets the value wrap over as many lines as it needs, for a value
+  /// that must be read in full, such as a charge the customer agrees to pay.
+  /// [valueMiddleEllipsis] keeps a null value to one line, so a value meant to
+  /// wrap leaves it off.
+  final int? valueMaxLines;
+
+  /// How a [value] longer than [valueMaxLines] ends. Defaults to
+  /// [TextOverflow.ellipsis].
+  ///
+  /// Ignored when [valueMiddleEllipsis] is set, which always shortens from the
+  /// middle; leave that off for any other overflow to apply. Also ignored
+  /// when [valueMaxLines] is null, since a value with no cap never overflows.
+  final TextOverflow valueOverflow;
 
   /// Whether to emphasize the [value] text over the [label].
   ///
@@ -814,6 +829,15 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
   /// Defaults to false.
   final bool fitColumnsToContent;
 
+  /// Whether a [value] too long for its column is shortened from the middle,
+  /// keeping its head and tail, rather than from the end. Defaults to false.
+  ///
+  /// Set it for values whose end carries their meaning, such as an account
+  /// number or an IBAN. See [GtText.middleEllipsis]. Like the end ellipsis,
+  /// it has no effect under [fitColumnsToContent], where the value column is
+  /// not width-constrained.
+  final bool valueMiddleEllipsis;
+
   /// Creates a [GtDoubleColumnListTile].
   const GtDoubleColumnListTile(
     this.label, {
@@ -830,6 +854,8 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     this.labelTextStyle,
     this.padding,
     this.fitColumnsToContent = false,
+    this.valueMiddleEllipsis = false,
+    this.valueOverflow = .ellipsis,
   }) : assert(
          highlightValue || (valueTextStyle == null && labelTextStyle == null),
          'valueTextStyle and labelTextStyle must be null if highlightValue is false',
@@ -840,8 +866,8 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
     final palette = context.palette.text;
     final textStyles = context.textStyles;
     TextStyle labelStyle =
-        labelTextStyle ?? textStyles.subHeadXs(color: palette.sub);
-    TextStyle valueStyle = valueTextStyle ?? textStyles.subHeadXs();
+        labelTextStyle ?? textStyles.bodyXs(color: palette.sub, weight: .w500);
+    TextStyle valueStyle = valueTextStyle ?? textStyles.bodyXs(weight: .w500);
 
     if (!highlightValue) {
       labelStyle = labelStyle.copyWith(color: palette.strong);
@@ -865,6 +891,13 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
       );
     }
 
+    // An ellipsis drops every line after the first that overflows, even with
+    // no cap on the lines, so a value that wraps without one is clipped
+    // instead, which a wrapping value never needs. Leaving it null would let
+    // an ambient DefaultTextStyle bring an ellipsis back.
+    TextOverflow overflow = valueOverflow;
+    if (valueMaxLines == null) overflow = .clip;
+
     final valueChild = Row(
       mainAxisAlignment: .end,
       mainAxisSize: .min,
@@ -876,8 +909,9 @@ class GtDoubleColumnListTile extends GtStatelessWidget {
             value,
             style: valueStyle,
             textAlign: TextAlign.end,
-            overflow: .ellipsis,
+            overflow: overflow,
             maxLines: valueMaxLines,
+            middleEllipsis: valueMiddleEllipsis,
           ),
         ),
         ?valueSuffix,
@@ -968,6 +1002,10 @@ class GtSimpleInfoTile extends GtStatelessWidget {
 /// Dynamically formats the [successRate] percentage (0.0 to 1.0) and applies semantic color
 /// variants (stable for >= 90%, away for >= 80%, warning for >= 70%, and error below 70%).
 ///
+/// A null [successRate] draws a neutral pill reading [unavailableText], so an
+/// institution with no known rate keeps its row. While [isLoading] is set the
+/// pill is drawn as a skeleton and the [leading] and [text] stay real.
+///
 /// {@category molecules}
 /// {@category tiles}
 class GtSuccessRateTile extends GtStatelessWidget {
@@ -998,15 +1036,33 @@ class GtSuccessRateTile extends GtStatelessWidget {
   /// The informational text content, typically the bank or service name.
   final String text;
 
-  /// The success rate of the transaction as a decimal between 0.0 and 1.0.
-  final double successRate;
+  /// The success rate of the transaction as a decimal between 0.0 and 1.0, or
+  /// null when no rate is available.
+  final double? successRate;
+
+  /// The label of the pill when [successRate] is null.
+  ///
+  /// If null, defaults to localized `"notAvailable"`.
+  final String? unavailableText;
+
+  /// Whether the rate is still being fetched, drawing the pill as a skeleton.
+  /// Defaults to false.
+  final bool isLoading;
+
+  /// What is announced while [isLoading] is set, such as "Loading rate".
+  ///
+  /// See [GtSkeleton.semanticsLabel].
+  final String? loadingSemanticsLabel;
 
   /// Creates a [GtSuccessRateTile].
   const GtSuccessRateTile({
     super.key,
     required this.leading,
     required this.text,
-    required this.successRate,
+    this.successRate,
+    this.unavailableText,
+    this.isLoading = false,
+    this.loadingSemanticsLabel,
     this.textStyle,
     this.textColor,
     this.horizontalSpacing,
@@ -1022,18 +1078,43 @@ class GtSuccessRateTile extends GtStatelessWidget {
     final style = context.textStyles;
 
     GtPillVariant variant = switch (successRate) {
+      null => .neutral,
       >= .9 => .stable,
       >= .8 => .away,
       >= .7 => .warning,
       _ => .error,
     };
-    final percentage = (100 * successRate.clamp(0, 1)).round();
+    final label = switch (successRate) {
+      double rate => "${(100 * rate.clamp(0, 1)).round()}%",
+      null => unavailableText ?? "notAvailable".utr(),
+    };
     final textColor = switch (variant) {
+      .neutral => palette.text.sub,
       .stable => palette.stable.dark,
       .away => palette.away.dark,
       .warning => palette.warning.dark,
       _ => palette.error.dark,
     };
+
+    Widget pill = GtPill(
+      text: label,
+      variant: variant,
+      bgColor: percentageBackgroundColor ?? variant.getBgColor(context.palette),
+      textColor: percentageColor ?? textColor,
+      textStyle: GtTextStyleOverrides.resolve(
+        percentageStyle,
+        style.ratePill(color: textColor),
+        percentageColor,
+      ),
+      borderRadius: context.borderRadius4Xl,
+      padding:
+          percentagePadding?.resolve(Directionality.of(context)) ??
+          context.insets.symmetricDp(vertical: 4.px, horizontal: 8.px),
+      alignment: .centerRight,
+    );
+    if (isLoading) {
+      pill = GtSkeleton(semanticsLabel: loadingSemanticsLabel, child: pill);
+    }
 
     return Row(
       spacing: horizontalSpacing ?? context.spacingBase,
@@ -1044,30 +1125,14 @@ class GtSuccessRateTile extends GtStatelessWidget {
             text,
             style: GtTextStyleOverrides.resolve(
               textStyle,
-              style.subHeadS(weight: .w600),
+              style.labelS(weight: .w600),
               this.textColor,
             ),
             maxLines: 1,
             overflow: .ellipsis,
           ),
         ),
-        GtPill(
-          text: "$percentage%",
-          variant: variant,
-          bgColor:
-              percentageBackgroundColor ?? variant.getBgColor(context.palette),
-          textColor: percentageColor ?? textColor,
-          textStyle: GtTextStyleOverrides.resolve(
-            percentageStyle,
-            style.ratePill(color: textColor),
-            percentageColor,
-          ),
-          borderRadius: context.borderRadius4Xl,
-          padding:
-              percentagePadding?.resolve(Directionality.of(context)) ??
-              context.insets.symmetricDp(vertical: 4.px, horizontal: 8.px),
-          alignment: .centerRight,
-        ),
+        pill,
       ],
     );
   }

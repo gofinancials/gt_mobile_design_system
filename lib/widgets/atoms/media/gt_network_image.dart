@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,50 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 /// - SVG URLs (ending with ".svg") are routed to [GtSvg].
 /// - Standard image URLs are handled by [CachedNetworkImage] for efficient caching.
 ///
+/// Raster images are decoded at the size they are drawn, not at their full
+/// resolution: from [width] and [height] when given, or else no wider than
+/// the screen. See [GtImageDecodeSize].
+///
 /// Inside an enabled [GtSkeleton] the image is painted as a [GtBone] block.
+///
+/// A picture replaced at the same address, such as a new profile photo, stays
+/// cached until [evict] is called for that address.
 class GtNetworkImage extends GtStatelessWidget {
+  /// The sizes each address has been decoded at, so [evict] can find every
+  /// resized copy in the [ImageCache].
+  static final Map<String, Set<GtImageDecodeSize>> _decodeSizes = {};
+
+  /// Counts the evictions of each address, which rebuilds the images drawing
+  /// it.
+  static final _GtNetworkImageEvictions _evictions = _GtNetworkImageEvictions();
+
+  /// Forgets the picture at [url], so every [GtNetworkImage] showing it, and
+  /// any built later, downloads it again.
+  ///
+  /// Call this after replacing the picture behind an address that does not
+  /// change, such as after a profile photo upload. It deletes the downloaded
+  /// file, removes each copy decoded in memory, whatever size it was decoded
+  /// at, and reloads the images on screen that draw [url].
+  ///
+  /// Covers raster images, the ones drawn through [CachedNetworkImage] from
+  /// its default cache manager. SVG addresses and data URIs are not cached
+  /// here.
+  static Future<void> evict(String url) async {
+    await CachedNetworkImageProvider.defaultCacheManager.removeFile(url);
+
+    final provider = CachedNetworkImageProvider(url);
+    await provider.evict();
+    for (final decode in _decodeSizes.remove(url) ?? const {}) {
+      await ResizeImage.resizeIfNeeded(
+        decode.width,
+        decode.height,
+        provider,
+      ).evict();
+    }
+
+    _evictions.bump(url);
+  }
+
   /// An optional local asset path to display while the network image is loading.
   ///
   /// Takes precedence over [showLoadingIndicator]: supplied artwork stands in
@@ -40,12 +83,19 @@ class GtNetworkImage extends GtStatelessWidget {
   final String imageUrl;
 
   /// The optional width to constrain the image.
+  ///
+  /// With [height], it also sets the size a raster image is decoded at. When
+  /// both are null, the decode is capped at the screen's width instead. Pass
+  /// the drawn size wherever it is known, above all in lists, so the decode
+  /// matches it. See [GtImageDecodeSize].
   final double? width;
 
   /// An optional color filter to apply to the image.
   final Color? color;
 
   /// The optional height to constrain the image.
+  ///
+  /// See [width] for how it sizes the decode.
   final double? height;
 
   /// How the image should be inscribed into the space allocated during layout.
@@ -55,7 +105,10 @@ class GtNetworkImage extends GtStatelessWidget {
   final Alignment alignment;
 
   /// An optional widget to display if the image fails to load.
-  /// If null, an empty [SizedBox] is rendered.
+  ///
+  /// Covers every source this widget handles: a failed download, an SVG that
+  /// cannot be fetched or compiled, and a base64 data URI that cannot be
+  /// decoded. If null, an empty [SizedBox] of [width] by [height] stands in.
   final Widget? errorWidget;
 
   /// A description of what this image conveys, for screen readers.
@@ -98,12 +151,19 @@ class GtNetworkImage extends GtStatelessWidget {
 
           if (imageUrl.startsWith("data:")) {
             final base64String = imageUrl.replaceAll("data:", "");
+            final Uint8List bytes;
+            try {
+              bytes = base64Decode(base64String);
+            } on FormatException {
+              return _annotate(context, _errorBox);
+            }
             return GtMemoryImage(
-              base64Decode(base64String),
+              bytes,
               height: height,
               width: width,
               alignment: alignment,
               fit: fit,
+              errorWidget: errorWidget,
               semanticsLabel: semanticsLabel,
               isDecorative: isDecorative,
             );
@@ -117,55 +177,99 @@ class GtNetworkImage extends GtStatelessWidget {
               alignment: alignment,
               fit: fit ?? BoxFit.contain,
               color: color,
+              errorWidget: errorWidget,
               semanticsLabel: semanticsLabel,
               isDecorative: isDecorative,
             );
           }
 
-          Widget image = CachedNetworkImage(
-            imageUrl: imageUrl,
-            height: height,
-            width: width,
-            alignment: alignment,
-            fit: fit,
-            color: color,
-            errorWidget: (_, message, data) {
-              return errorWidget ?? SizedBox(height: height, width: width);
-            },
-            placeholder: (context, _) {
-              if (placeHolderPath == null) {
-                if (!showLoadingIndicator) {
-                  return SizedBox(height: height, width: width);
-                }
-                return GtImageShimmer(width: width, height: height);
-              }
-              return GtAssetImage(
-                placeHolderPath!,
-                width: width,
-                height: height,
-                alignment: alignment,
-                // The placeholder stands in for the real image and must not
-                // announce itself alongside it.
-                isDecorative: true,
-              );
-            },
+          final decode = context.imageDecodeSize(width: width, height: height);
+          _decodeSizes.putIfAbsent(imageUrl, () => {}).add(decode);
+          return _annotate(
+            context,
+            ListenableBuilder(
+              listenable: _evictions,
+              builder: (_, _) => _cachedImage(decode),
+            ),
           );
-
-          if (context.inSkeleton) {
-            image = GtBone(child: image);
-          }
-
-          // CachedNetworkImage exposes no semantics parameters of its own, so
-          // the annotation has to be applied from outside. An unlabelled image
-          // is decoration as far as the user is concerned; announcing it as an
-          // anonymous image only adds a stop with no payload.
-          if (isDecorative || semanticsLabel == null) {
-            return ExcludeSemantics(child: image);
-          }
-
-          return GtSemantics(role: .image, label: semanticsLabel, child: image);
         },
       ),
     );
+  }
+
+  /// The [CachedNetworkImage] for [imageUrl], decoded at [decode].
+  ///
+  /// Keyed on how often [imageUrl] has been evicted. The image only loads
+  /// again when its provider changes, and an evicted address has the same
+  /// provider as before, so a new key is what makes it load the new picture.
+  Widget _cachedImage(GtImageDecodeSize decode) {
+    return CachedNetworkImage(
+      key: ValueKey((imageUrl, _evictions.countOf(imageUrl))),
+      imageUrl: imageUrl,
+      height: height,
+      width: width,
+      memCacheWidth: decode.width,
+      memCacheHeight: decode.height,
+      alignment: alignment,
+      fit: fit,
+      color: color,
+      errorWidget: (_, _, _) => _errorBox,
+      placeholder: (context, _) {
+        if (placeHolderPath == null) {
+          if (!showLoadingIndicator) {
+            return SizedBox(height: height, width: width);
+          }
+          return GtImageShimmer(width: width, height: height);
+        }
+        return GtAssetImage(
+          placeHolderPath!,
+          width: width,
+          height: height,
+          alignment: alignment,
+          // The placeholder stands in for the real image and must not
+          // announce itself alongside it.
+          isDecorative: true,
+        );
+      },
+    );
+  }
+
+  /// What stands in for an image that fails: [errorWidget], or an empty box
+  /// holding the image's place.
+  Widget get _errorBox => errorWidget ?? SizedBox(height: height, width: width);
+
+  /// Wraps [image] in the skeleton bone and semantics the other image atoms
+  /// apply themselves, for children that cannot: [CachedNetworkImage], and
+  /// the [_errorBox] drawn when a data URI cannot be decoded.
+  Widget _annotate(BuildContext context, Widget image) {
+    if (context.inSkeleton) {
+      image = GtBone(child: image);
+    }
+
+    // CachedNetworkImage exposes no semantics parameters of its own, so
+    // the annotation has to be applied from outside. An unlabelled image
+    // is decoration as far as the user is concerned; announcing it as an
+    // anonymous image only adds a stop with no payload.
+    if (isDecorative || semanticsLabel == null) {
+      return ExcludeSemantics(child: image);
+    }
+
+    return GtSemantics(role: .image, label: semanticsLabel, child: image);
+  }
+}
+
+/// A private notifier that counts the evictions of each address, for
+/// [GtNetworkImage.evict].
+class _GtNetworkImageEvictions extends ChangeNotifier {
+  /// The number of evictions of each address evicted at least once.
+  final Map<String, int> _counts = {};
+
+  /// How often [url] has been evicted.
+  int countOf(String url) => _counts[url] ?? 0;
+
+  /// Counts an eviction of [url] and notifies listeners.
+  void bump(String url) {
+    _counts[url] = countOf(url) + 1;
+    notifyListeners();
   }
 }

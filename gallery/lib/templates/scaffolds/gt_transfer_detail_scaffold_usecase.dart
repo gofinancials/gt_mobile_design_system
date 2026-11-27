@@ -301,6 +301,8 @@ class _TransferDetailScaffoldPreviewState
     required bool showFeeInfo,
     required bool showDownload,
     required bool isLoading,
+    required bool showReportProblem,
+    required bool isReportProblemDisabled,
   }) {
     showDraggableSheet(
       context,
@@ -313,9 +315,10 @@ class _TransferDetailScaffoldPreviewState
           isLoading: isLoading,
           loadingSemanticsLabel: 'Loading transfer',
           onClose: () => GtRouter.forcePopView(),
-          onReportProblem: () {
-            GtToast.of(context).show("Report problem tapped");
-          },
+          isButtonDisabled: isReportProblemDisabled,
+          onReportProblem: showReportProblem
+              ? () => GtToast.of(context).show("Report problem tapped")
+              : null,
           onDownload: showDownload
               ? () => GtToast.of(context).show("Download tapped")
               : null,
@@ -391,6 +394,16 @@ class _TransferDetailScaffoldPreviewState
       initialValue: false,
     );
 
+    final showReportProblem = context.knobs.boolean(
+      label: 'Show Report a Problem',
+      initialValue: true,
+    );
+
+    final isReportProblemDisabled = context.knobs.boolean(
+      label: 'Disable Report a Problem',
+      initialValue: false,
+    );
+
     return GtWidgetDocPage(
       title: 'GtTransferDetailScaffold',
       description:
@@ -403,7 +416,7 @@ showDraggableSheet(
     return GtTransferDetailScaffold(
       ${isLoading ? "isLoading: true,\n      loadingSemanticsLabel: 'Loading transfer'," : ''}
       onClose: () => GtRouter.popView(),
-      onReportProblem: () => handleReportProblem(),
+      ${showReportProblem ? "onReportProblem: () => handleReportProblem(),${isReportProblemDisabled ? '\n      isButtonDisabled: true,' : ''}" : '// No onReportProblem: no bottom bar is drawn.'}
       body: GtTransferDetailBody(
         controller: controller,
         amount: $amount,
@@ -440,6 +453,8 @@ showDraggableSheet(
           showFeeInfo: showFeeInfo,
           showDownload: showDownload,
           isLoading: isLoading,
+          showReportProblem: showReportProblem,
+          isReportProblemDisabled: isReportProblemDisabled,
         ),
       ),
     );

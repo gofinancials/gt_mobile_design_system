@@ -99,6 +99,67 @@ void main() {
     });
   });
 
+  group('avatar initials', () {
+    Widget inMode(ThemeData theme, Widget child) {
+      return GtThemeProvider(
+        theme: kPersonalTheme,
+        child: MaterialApp(
+          theme: theme,
+          home: Scaffold(body: child),
+        ),
+      );
+    }
+
+    for (final (mode, theme) in [
+      ('light', kPersonalTheme.materialLight),
+      ('dark', kPersonalTheme.materialDark),
+    ]) {
+      testWidgets('the home app bar draws them white in $mode mode', (
+        tester,
+      ) async {
+        await tester.pumpWidget(inMode(theme, buildAppBar()));
+
+        final avatar = tester.widget<GtAvatar>(find.byType(GtAvatar));
+        expect(avatar.initialsColor, palette(tester).staticColors.white);
+      });
+
+      testWidgets('the Pro app bar draws them white in $mode mode', (
+        tester,
+      ) async {
+        await tester.pumpWidget(
+          inMode(
+            theme,
+            GtProAppBar(
+              fullName: 'Alex Lobaloba',
+              businessName: 'Lobaloba Ventures',
+              onClickStat: () {},
+              onClickProfile: () {},
+              onClickNotification: () {},
+            ),
+          ),
+        );
+
+        final avatar = tester.widget<GtAvatar>(find.byType(GtAvatar));
+        expect(avatar.initialsColor, palette(tester).staticColors.white);
+      });
+    }
+
+    testWidgets('dark text.white is not white, so it cannot stand in', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        inMode(kPersonalTheme.materialDark, buildAppBar()),
+      );
+
+      // The reason the initials stopped using text.white: in a dark palette
+      // it is near-black, meant for fills that invert with it.
+      expect(
+        palette(tester).text.white,
+        isNot(palette(tester).staticColors.white),
+      );
+    });
+  });
+
   testWidgets('leaves buttons flat unless glass is enabled', (tester) async {
     await tester.pumpWidget(
       buildTestWidget(

@@ -33,6 +33,10 @@ class GtTabbar<T> extends GtStatefulWidget {
   /// Whether the shared active indicator glides between selected tabs.
   final bool enableIndicatorAnimation;
 
+  /// Whether the tabs share the full width equally instead of hugging their
+  /// labels in a scrolling row. Defaults to false.
+  final bool fill;
+
   /// Creates a [GtTabbar].
   const GtTabbar({
     super.key,
@@ -44,6 +48,7 @@ class GtTabbar<T> extends GtStatefulWidget {
     this.padding,
     this.autoScroll = false,
     this.enableIndicatorAnimation = true,
+    this.fill = false,
   }) : assert(tabs.length > 0);
 
   @override
@@ -62,6 +67,7 @@ class _GtTabbarState<T> extends State<GtTabbar<T>> {
       padding: widget.padding,
       autoScroll: widget.autoScroll,
       enableIndicatorAnimation: widget.enableIndicatorAnimation,
+      fill: widget.fill,
     );
   }
 }

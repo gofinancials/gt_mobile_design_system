@@ -4,12 +4,19 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 
 /// Represents a single page within the dashboard, coupling a [page] widget
 /// with its corresponding [navItem] configuration for the bottom navigation bar.
+///
+/// [navItem] may be left out when the dashboard draws no bottom navigation:
+/// a single-page dashboard, or one with
+/// [GtDashboardScaffold.showBottomNavigation] set to false.
 class GtDashboardPageData extends AppEquatable {
   /// The widget to be displayed as the page content.
   final Widget page;
 
   /// The navigation item configuration for this page in the bottom navigation bar.
-  final GtBottomNavigationItem navItem;
+  ///
+  /// Required for every page while the bar is shown; see
+  /// [GtDashboardScaffold.showBottomNavigation].
+  final GtBottomNavigationItem? navItem;
 
   /// Whether to show the gradient background.
   final bool showGradient;
@@ -41,7 +48,7 @@ class GtDashboardPageData extends AppEquatable {
   /// Creates a [GtDashboardPageData] for [page], reached through [navItem].
   const GtDashboardPageData({
     required this.page,
-    required this.navItem,
+    this.navItem,
     this.showGradient = false,
     this.appBar,
     this.backgroundColor,
@@ -63,8 +70,10 @@ class GtDashboardPageData extends AppEquatable {
 /// Utility extension on a list of [GtDashboardPageData] to easily extract
 /// all [navItems] and [pages].
 extension GtDashboardPageDataList on List<GtDashboardPageData> {
-  /// Returns a list of all [GtBottomNavigationItem]s from the page data.
-  List<GtBottomNavigationItem> get navItems => mapList((e) => e.navItem);
+  /// Returns the [GtBottomNavigationItem]s of the pages that carry one.
+  List<GtBottomNavigationItem> get navItems => [
+    for (final e in this) ?e.navItem,
+  ];
 
   /// Returns a list of all page [Widget]s from the page data.
   List<Widget> get pages => mapList((e) => e.page);
@@ -74,11 +83,20 @@ extension GtDashboardPageDataList on List<GtDashboardPageData> {
 ///
 /// This scaffold provides a standardized layout including a [GtHomeAppBar],
 /// an integrated [GtBottomNavigationBar] (derived from [data]), and a styled
-/// background using [GtHomeGradientPainter]. It also manages a [PageView] to
-/// handle navigation between the provided dashboard pages.
+/// background using [GtHomeGradientPainter]. It also switches between the
+/// provided dashboard pages as the bar's tabs are tapped.
 ///
 /// A page whose [GtDashboardPageData.isLoading] is set is drawn as a skeleton
-/// of itself, inside the same gradient, app bar and bottom navigation.
+/// of itself, inside the same gradient, app bar and bottom navigation. The page
+/// stays mounted as the skeleton lifts, so its state and loads carry over.
+///
+/// Only the open page is built unless [keepPagesAlive] is set, in which case
+/// every page visited keeps its state while another is open.
+///
+/// A dashboard of a single page draws no bottom navigation, and
+/// [showBottomNavigation] hides it for any number of pages. Without the bar the
+/// page keeps its gradient, skeleton and root pop scope, its [SafeArea] clears
+/// the bottom system inset, and [pageController] still switches pages.
 ///
 /// @category Templates
 class GtDashboardScaffold extends GtStatefulWidget {
@@ -112,6 +130,34 @@ class GtDashboardScaffold extends GtStatefulWidget {
   /// Optional icon for the trailing action button (**iOS only**).
   final IconData trailingIcon;
 
+  /// Whether the bottom navigation bar is drawn.
+  ///
+  /// Defaults to null, which shows the bar when there are two or more pages
+  /// in [data] and hides it for one. Pass false to hide it whatever the number
+  /// of pages, such as for a customer whose role restricts navigation, or true
+  /// to insist on it, which needs two or more pages.
+  ///
+  /// While the bar is shown, every page must carry a
+  /// [GtDashboardPageData.navItem].
+  final bool? showBottomNavigation;
+
+  /// Whether the [GtBottomNavigationStyle.ios] bar blurs the page scrolling
+  /// beneath it. See [GtBottomNavigationBar.frosted].
+  ///
+  /// Defaults to null, which blurs everywhere except Android.
+  final bool? bottomNavigationFrosted;
+
+  /// Whether pages stay mounted after the customer leaves them. Defaults to
+  /// false.
+  ///
+  /// While false only the open page is built, and opening a page builds it
+  /// afresh: its `initState` and loads run again. While true each page is
+  /// built the first time it is opened and then kept, offstage and with its
+  /// animations paused, until the dashboard is disposed, so returning to it
+  /// shows it as it was left. Keeping pages costs the memory of every page
+  /// visited, and hidden pages still rebuild when what they listen to changes.
+  final bool keepPagesAlive;
+
   /// Creates a [GtDashboardScaffold].
   const GtDashboardScaffold({
     super.key,
@@ -124,7 +170,18 @@ class GtDashboardScaffold extends GtStatefulWidget {
     this.trailingSemanticsLabel,
     this.enableSelectionAnimation = true,
     this.trailingIcon = GtIcons.helpInfo,
-  }) : assert(data.length >= 2, "Data must be at least 2");
+    this.showBottomNavigation,
+    this.bottomNavigationFrosted,
+    this.keepPagesAlive = false,
+  }) : assert(data.length > 0, 'GtDashboardScaffold requires a page'),
+       assert(
+         showBottomNavigation != true || data.length >= 2,
+         'A bottom navigation bar needs two or more pages',
+       );
+
+  /// Whether the bottom navigation bar is drawn: [showBottomNavigation] when
+  /// set, otherwise whether there are two or more pages.
+  bool get showsBottomNavigation => showBottomNavigation ?? data.length >= 2;
 
   @override
   State<GtDashboardScaffold> createState() => _GtDashboardScaffoldState();
@@ -136,12 +193,17 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
   /// one is supplied, otherwise one owned and disposed here.
   late final ValueNotifier<int> _pageController;
 
+  /// The indexes of the pages opened so far, which
+  /// [GtDashboardScaffold.keepPagesAlive] keeps mounted.
+  final Set<int> _visited = {};
+
   @override
   void initState() {
     super.initState();
     _pageController =
         widget.pageController ?? ValueNotifier(widget.initialIndex);
     _pageController.addListener(_pageListener);
+    _visited.add(_pageController.value);
   }
 
   @override
@@ -153,15 +215,21 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
     super.dispose();
   }
 
-  /// Reports a page change through [GtDashboardScaffold.onPageChanged].
+  /// Records the page opened and reports it through
+  /// [GtDashboardScaffold.onPageChanged].
   void _pageListener() {
+    _visited.add(_pageController.value);
     widget.onPageChanged?.call(_pageController.value);
   }
 
   @override
   Widget build(BuildContext context) {
-    final pages = widget.data.pages;
     final navItems = widget.data.navItems;
+    final showsNavigation = widget.showsBottomNavigation;
+    assert(
+      !showsNavigation || navItems.length == widget.data.length,
+      'Every page needs a navItem while the bottom navigation bar is shown',
+    );
     final gradiantStart = switch (context.isInDarkMode) {
       true => context.palette.primary.darker,
       _ => context.palette.primary.base,
@@ -177,23 +245,61 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
           final appBar = data.appBar;
           final bgColor = data.backgroundColor;
 
-          Widget page = pages[index];
-          if (data.isLoading) {
-            page = GtSkeleton(
-              semanticsLabel: data.loadingSemanticsLabel,
-              child: page,
+          Widget content = _GtDashboardPage(
+            key: ValueKey(index),
+            data: data,
+            active: true,
+          );
+          if (widget.keepPagesAlive) {
+            content = IndexedStack(
+              index: index,
+              sizing: .expand,
+              children: [
+                for (final (i, page) in widget.data.indexed)
+                  if (_visited.contains(i))
+                    _GtDashboardPage(
+                      key: ValueKey(i),
+                      data: page,
+                      active: i == index,
+                    )
+                  else
+                    const SizedBox.shrink(),
+              ],
             );
           }
 
-          Widget body = SafeArea(child: page);
-
+          GtHomeGradientPainter? gradient;
           if (data.showGradient) {
-            body = CustomPaint(
-              painter: GtHomeGradientPainter(
-                color: gradiantStart,
-                endColor: context.palette.bg.warm,
-              ),
-              child: body,
+            gradient = GtHomeGradientPainter(
+              color: gradiantStart,
+              endColor: context.palette.bg.warm,
+            );
+          }
+
+          // The body keeps one shape across pages, with or without a
+          // gradient, so pages kept alive are not remounted by the switch.
+          final body = CustomPaint(
+            painter: gradient,
+            child: SafeArea(child: content),
+          );
+
+          // Without a bar the body's SafeArea clears the bottom system inset,
+          // since nothing else in the scaffold claims it.
+          Widget? navigationBar;
+          if (showsNavigation) {
+            navigationBar = GtBottomNavigationBar(
+              items: navItems,
+              style: widget.bottomNavigationStyle,
+              currentIndex: index,
+              enableSelectionAnimation: widget.enableSelectionAnimation,
+              frosted: widget.bottomNavigationFrosted,
+              onIndexChanged: (index) {
+                if (navItems[index].onSelected != null) {
+                  navItems[index].onSelected!(index);
+                  return;
+                }
+                _pageController.value = index;
+              },
             );
           }
 
@@ -203,21 +309,38 @@ class _GtDashboardScaffoldState extends State<GtDashboardScaffold> {
             extendBody: true,
             appBar: appBar,
             body: body,
-            bottomNavigationBar: GtBottomNavigationBar(
-              items: navItems,
-              style: widget.bottomNavigationStyle,
-              currentIndex: index,
-              enableSelectionAnimation: widget.enableSelectionAnimation,
-              onIndexChanged: (index) {
-                if (navItems[index].onSelected != null) {
-                  navItems[index].onSelected!(index);
-                  return;
-                }
-                _pageController.value = index;
-              },
-            ),
+            bottomNavigationBar: navigationBar,
           );
         },
+      ),
+    );
+  }
+}
+
+/// A private widget that draws one dashboard page, boned while its
+/// [GtDashboardPageData.isLoading] is set.
+///
+/// The page sits under a [GtSkeleton] whether or not it is loading, so the
+/// tree keeps its shape and the page stays mounted as the skeleton lifts.
+class _GtDashboardPage extends GtStatelessWidget {
+  /// The page to draw and whether it is loading.
+  final GtDashboardPageData data;
+
+  /// Whether this is the open page. A page kept alive offstage has its
+  /// animations paused.
+  final bool active;
+
+  /// Creates a [_GtDashboardPage].
+  const _GtDashboardPage({super.key, required this.data, required this.active});
+
+  @override
+  Widget build(BuildContext context) {
+    return TickerMode(
+      enabled: active,
+      child: GtSkeleton(
+        enabled: data.isLoading,
+        semanticsLabel: data.loadingSemanticsLabel,
+        child: data.page,
       ),
     );
   }

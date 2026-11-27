@@ -38,6 +38,10 @@ class GtSelectionTabbar<T> extends GtStatefulWidget {
   /// Whether the shared active indicator glides between selected tabs.
   final bool enableIndicatorAnimation;
 
+  /// Whether the tabs share the full width equally instead of hugging their
+  /// labels in a scrolling row. Defaults to false.
+  final bool fill;
+
   /// Creates a [GtSelectionTabbar].
   const GtSelectionTabbar({
     super.key,
@@ -49,6 +53,7 @@ class GtSelectionTabbar<T> extends GtStatefulWidget {
     this.padding,
     this.autoScroll = false,
     this.enableIndicatorAnimation = true,
+    this.fill = false,
   }) : assert(tabs.length > 0);
 
   @override
@@ -190,66 +195,81 @@ class _GtSelectionTabbarState<T> extends State<GtSelectionTabbar<T>> {
 
     _scheduleIndicatorMeasure();
 
+    final pills = [
+      for (final (index, tab) in tabs.indexed)
+        KeyedSubtree(
+          key: _tabKeys[index],
+          child: widget.useAlternateStyle
+              ? GtTabPill.selection(
+                  text: tab.label,
+                  style: widget.style,
+                  value: tab,
+                  activeValue: value,
+                  icon: tab.icon,
+                  autoScroll: widget.autoScroll,
+                  showSelectedBackground: indicatorRect == null,
+                  onSelect: _handleTabSelected,
+                  variant: variant,
+                  fill: widget.fill,
+                )
+              : GtTabPill(
+                  text: tab.label,
+                  style: widget.style,
+                  value: tab,
+                  activeValue: value,
+                  icon: tab.icon,
+                  autoScroll: widget.autoScroll,
+                  showSelectedBackground: indicatorRect == null,
+                  onSelect: _handleTabSelected,
+                  variant: variant,
+                  fill: widget.fill,
+                ),
+        ),
+    ];
+
+    final row = Stack(
+      key: _tabRowKey,
+      children: [
+        if (indicatorRect != null)
+          AnimatedPositioned(
+            key: const Key('gt_selection_tab_indicator'),
+            duration: widget.enableIndicatorAnimation
+                ? GtMotion.adaptiveDuration(context, GtMotion.fluid)
+                : Duration.zero,
+            curve: GtSpringCurves.snappy,
+            left: indicatorRect.left,
+            top: indicatorRect.top,
+            width: indicatorRect.width,
+            height: indicatorRect.height,
+            child: _GtTabIndicator(
+              variant: variant,
+              style: widget.style,
+              borderRadius: isAlt
+                  ? context.borderRadiusMd
+                  : context.borderRadiusSm,
+            ),
+          ),
+        Row(
+          spacing: spacing,
+          crossAxisAlignment: .center,
+          children: [
+            for (final pill in pills)
+              widget.fill ? Expanded(child: pill) : pill,
+          ],
+        ),
+      ],
+    );
+
+    // Filling tabs divide a bounded width, so they cannot sit in a
+    // horizontal scroll view, whose width is unbounded.
+    if (widget.fill) {
+      return Padding(padding: widget.padding ?? .zero, child: row);
+    }
+
     return SingleChildScrollView(
       scrollDirection: .horizontal,
       padding: widget.padding ?? .zero,
-      child: Stack(
-        key: _tabRowKey,
-        children: [
-          if (indicatorRect != null)
-            AnimatedPositioned(
-              key: const Key('gt_selection_tab_indicator'),
-              duration: widget.enableIndicatorAnimation
-                  ? GtMotion.adaptiveDuration(context, GtMotion.fluid)
-                  : Duration.zero,
-              curve: GtSpringCurves.snappy,
-              left: indicatorRect.left,
-              top: indicatorRect.top,
-              width: indicatorRect.width,
-              height: indicatorRect.height,
-              child: _GtTabIndicator(
-                variant: variant,
-                style: widget.style,
-                borderRadius: isAlt
-                    ? context.borderRadiusMd
-                    : context.borderRadiusSm,
-              ),
-            ),
-          Row(
-            spacing: spacing,
-            crossAxisAlignment: .center,
-            children: [
-              for (final (index, tab) in tabs.indexed)
-                KeyedSubtree(
-                  key: _tabKeys[index],
-                  child: widget.useAlternateStyle
-                      ? GtTabPill.selection(
-                          text: tab.label,
-                          style: widget.style,
-                          value: tab,
-                          activeValue: value,
-                          icon: tab.icon,
-                          autoScroll: widget.autoScroll,
-                          showSelectedBackground: indicatorRect == null,
-                          onSelect: _handleTabSelected,
-                          variant: variant,
-                        )
-                      : GtTabPill(
-                          text: tab.label,
-                          style: widget.style,
-                          value: tab,
-                          activeValue: value,
-                          icon: tab.icon,
-                          autoScroll: widget.autoScroll,
-                          showSelectedBackground: indicatorRect == null,
-                          onSelect: _handleTabSelected,
-                          variant: variant,
-                        ),
-                ),
-            ],
-          ),
-        ],
-      ),
+      child: row,
     );
   }
 }

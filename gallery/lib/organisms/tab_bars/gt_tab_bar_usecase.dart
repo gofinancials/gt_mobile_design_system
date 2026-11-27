@@ -61,6 +61,7 @@ class _TabbarPlaygroundState extends State<_TabbarPlayground> {
       label: 'Auto Scroll',
       initialValue: false,
     );
+    final fill = context.knobs.boolean(label: 'Fill', initialValue: false);
 
     return GtWidgetDocPage(
       title: 'GtTabbar',
@@ -72,6 +73,7 @@ GtTabbar<String>(
   controller: tabController,
   useAlternateStyle: $useAlternateStyle,
   autoScroll: $autoScroll,
+  fill: $fill,
   tabs: [
     GtTabData(label: "Tab 1", value: "tab1"),
     GtTabData(label: "Tab 2", value: "tab2"),
@@ -85,6 +87,7 @@ GtTabbar<String>(
             controller: _controller,
             useAlternateStyle: useAlternateStyle,
             autoScroll: autoScroll,
+            fill: fill,
             tabs: _tabs,
           ),
           const GtGap.yMd(),

@@ -32,14 +32,14 @@ GtAlertBanner(
   title: "$title",
   subtitle: "$subtitle",
   variant: GtCardVariant.${variant.name},
-  icon: GtSvg(GtVectorIllustrations.fuel),
+  icon: GtSvg(GtVectorIllustrations.fuel.adapt(context)),
   onClose: () {},
 )''',
     child: GtAlertBanner(
       title: title,
       subtitle: subtitle,
       variant: variant,
-      icon: GtSvg(GtVectorIllustrations.fuel),
+      icon: GtSvg(GtVectorIllustrations.fuel.adapt(context)),
       onClose: () {},
     ),
   );

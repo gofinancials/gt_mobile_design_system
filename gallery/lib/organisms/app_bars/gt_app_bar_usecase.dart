@@ -27,6 +27,10 @@ Widget playgroundGtAppBarUseCase(BuildContext context) {
     label: 'Has Trailing Action',
     initialValue: true,
   );
+  final titleMiddleEllipsis = context.knobs.boolean(
+    label: 'Title Middle Ellipsis',
+    initialValue: false,
+  );
 
   return GtWidgetDocPage(
     title: 'GtAppBar',
@@ -38,7 +42,7 @@ GtAppBar(
   title: "$title",
   implyLeading: $implyLeading,
   titleSize: GtAppBarTitleSize.${titleSize.name},
-  backButtonSize: GtBackButtonSize.${backButtonSize.name},${hasTrailing ? '\n  trailing: GtIconButton(icon: GtIcons.magnifier, onPressed: () {}),' : ''}
+  backButtonSize: GtBackButtonSize.${backButtonSize.name},${titleMiddleEllipsis ? '\n  titleMiddleEllipsis: true,' : ''}${hasTrailing ? '\n  trailing: GtIconButton(icon: GtIcons.magnifier, onPressed: () {}),' : ''}
 )''',
     child: GtAppBar(
       title: title,
@@ -49,6 +53,7 @@ GtAppBar(
       ),
       titleSize: titleSize,
       backButtonSize: backButtonSize,
+      titleMiddleEllipsis: titleMiddleEllipsis,
       trailing: hasTrailing
           ? GtIconButton(icon: GtIcons.magnifier, onPressed: () {})
           : null,

@@ -87,6 +87,7 @@ class TestAppConfig extends AppConfig {
       invalidPhone: "Invalid phone number",
       invalidDate: "Invalid date",
       mustBeNYears: "Must be at least %s years old",
+      mustBeUnderNYears: "Must be under %s years old",
       invalidUrl: "Invalid URL",
       invalidAmount: "Invalid amount",
       amountMinimum: "Amount is below minimum",

@@ -30,7 +30,7 @@ Widget? _getLeading(
     ),
     'Avatar' => const GtAvatar(initials: 'TS', size: 40),
     'Illustration' => GtSvg(
-      GtVectorIllustrations.cash,
+      GtVectorIllustrations.cash.adapt(context),
       width: context.dp(56.px),
       height: context.dp(56.px),
     ),
@@ -41,7 +41,7 @@ Widget? _getLeading(
 Widget? _getTrailing(String preset, BuildContext context) {
   return switch (preset) {
     'Illustration' => GtSvg(
-      GtVectorIllustrations.overdraft,
+      GtVectorIllustrations.overdraft.adapt(context),
       width: 80,
     ),
     'Chevron' => GtIcon.withColor(
@@ -220,7 +220,7 @@ Widget playgroundGtProductInfoCardUseCase(BuildContext context) {
     'Icon' => 'GtIcon.withColor(GtIcons.target, color: iconColor, size: 32)',
     'Avatar' => "GtAvatar(initials: 'TS', size: 40)",
     'Illustration' =>
-      'GtSvg(GtVectorIllustrations.cash, width: 56, height: 56)',
+      'GtSvg(GtVectorIllustrations.cash.adapt(context), width: 56, height: 56)',
     _ => null,
   };
   final trailingSource = switch (trailingPreset) {

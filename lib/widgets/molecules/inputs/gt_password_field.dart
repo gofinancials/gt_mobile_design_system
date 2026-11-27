@@ -40,6 +40,14 @@ class GtPasswordField extends GtStatefulWidget {
 
   final List<String>? autofillHints;
 
+  /// When the field is validated without the app calling
+  /// [FormState.validate].
+  ///
+  /// Under [AutovalidateMode.onUserInteraction], set here or on the enclosing
+  /// [GtForm], the error shows as the value changes and clears once it is
+  /// valid again. Defaults to [AutovalidateMode.disabled].
+  final AutovalidateMode autovalidateMode;
+
   /// Creates a new [GtPasswordField].
   const GtPasswordField({
     required this.controller,
@@ -54,6 +62,7 @@ class GtPasswordField extends GtStatefulWidget {
     super.key,
     this.decoration,
     this.autofillHints = const [AutofillHints.password],
+    this.autovalidateMode = .disabled,
   });
 
   @override
@@ -82,6 +91,7 @@ class _GtPasswordFieldState extends State<GtPasswordField> {
       builder: (passwordHidden) {
         final icon = passwordHidden ? GtIcons.eyeOpen : GtIcons.eyeClosed;
         return GtTextField(
+          autovalidateMode: widget.autovalidateMode,
           decoration: widget.decoration,
           autoCorrect: false,
           label: widget.label,

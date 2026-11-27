@@ -9,7 +9,10 @@ import 'package:gt_mobile_ui/gt_mobile_ui.dart';
 Widget playgroundIconsUseCase(BuildContext context) {
   final allIcons = GtVectors.all;
   final allIconFonts = GtIcons.all;
-  final allIllustrations = GtVectorIllustrations.all;
+  final allIllustrations = [
+    for (final item in GtVectorIllustrations.all)
+      (label: item.label, value: item.value.adapt(context)),
+  ];
   final variant = context.knobs.object.dropdown<(String, GtIconVariant)>(
     label: "Icon Variant",
     initialOption: ("Strong", GtIconVariant.strong),

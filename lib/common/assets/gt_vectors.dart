@@ -18,6 +18,11 @@ class GtVectors {
   /// Path to the whiteLogo SVG.
   static const whiteLogo = "$_basePath/logo_white.svg";
 
+  /// Path to the white "OneBank by Sterling" lockup SVG, 144 by 44: the mark
+  /// and "OneBank" with "by Sterling" beneath, as on the welcome screen.
+  static const whiteOneBankBySterlingLockup =
+      "$_basePath/white_one_bank_by_sterling_lockup.svg";
+
   /// Path to the clock SVG.
   static const clock = "$_basePath/clock.svg";
 
@@ -104,5 +109,6 @@ class GtVectors {
     (label: 'afrigoCard', value: afrigoCard),
     (label: 'simChip', value: simChip),
     (label: 'premiumChip', value: premiumChip),
+    (label: 'whiteOneBankBySterlingLockup', value: whiteOneBankBySterlingLockup),
   ];
 }

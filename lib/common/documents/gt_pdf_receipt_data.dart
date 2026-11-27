@@ -71,7 +71,17 @@ enum GtPdfReceiptSectionLayout {
   split,
 }
 
-/// A titled block of a PDF receipt.
+/// A block of the body of a [GtPdfReceiptData].
+///
+/// Either a [GtPdfReceiptSection] of label/value entries or a
+/// [GtPdfReceiptProse] of running text. The two can be mixed freely, so a
+/// contract can open with its facility details and continue with its clauses.
+sealed class GtPdfReceiptBlock extends AppEquatable {
+  /// Creates a [GtPdfReceiptBlock].
+  const GtPdfReceiptBlock();
+}
+
+/// A titled block of label/value entries in a PDF receipt.
 ///
 /// Mirrors [GtConfirmationSection], the on-screen equivalent, so the same
 /// transaction can be rendered to a screen and to a document without the two
@@ -88,7 +98,7 @@ enum GtPdfReceiptSectionLayout {
 ///   ],
 /// )
 /// ```
-class GtPdfReceiptSection extends AppEquatable {
+class GtPdfReceiptSection extends GtPdfReceiptBlock {
   /// The section heading, uppercased when rendered.
   final String title;
 
@@ -137,6 +147,50 @@ class GtPdfReceiptSection extends AppEquatable {
 
   @override
   List<Object?> get props => [title, heading, entries, layout, columns];
+}
+
+/// A block of running text in a PDF document, such as the opening letter or a
+/// clause of an agreement.
+///
+/// Set at [GtPdfReceiptTheme.bodySize] across the full page width, with the
+/// optional [heading] in [GtPdfReceiptTheme.textStrong] and the [paragraphs]
+/// in [GtPdfReceiptTheme.textSub], a blank line apart. Long text breaks across
+/// pages between lines.
+///
+/// Consecutive prose blocks run on a blank line apart, like the paragraphs
+/// within one. A [title] opens a new part of the document instead, set off by
+/// a hairline and an uppercased heading exactly as a [GtPdfReceiptSection] is.
+///
+/// Example usage:
+/// ```dart
+/// const GtPdfReceiptProse(
+///   heading: "1. Overdraft Facility",
+///   paragraphs: [
+///     "1.1 The Overdraft allows you to spend beyond your available balance.",
+///     "1.2 The limit is set out in the facility details above.",
+///   ],
+/// )
+/// ```
+class GtPdfReceiptProse extends GtPdfReceiptBlock {
+  /// An optional section heading, uppercased when rendered and preceded by a
+  /// hairline, that opens a new part of the document.
+  final String? title;
+
+  /// An optional heading set directly above the [paragraphs], such as a
+  /// clause title.
+  final String? heading;
+
+  /// The paragraphs of running text, in order.
+  ///
+  /// Each is set as one block of wrapping text; a line break inside one is
+  /// kept as written.
+  final List<String> paragraphs;
+
+  /// Creates a [GtPdfReceiptProse].
+  const GtPdfReceiptProse({required this.paragraphs, this.title, this.heading});
+
+  @override
+  List<Object?> get props => [title, heading, paragraphs];
 }
 
 /// The closing block of a PDF receipt.
@@ -264,13 +318,14 @@ class GtPdfReceiptData extends AppEquatable {
   /// Whether to fall back to the built-in brand mark when [logo] is null.
   final bool showBrandMark;
 
-  /// The titled blocks that make up the body of the receipt.
+  /// The blocks that make up the body of the document, in order: entry
+  /// [GtPdfReceiptSection]s, running-text [GtPdfReceiptProse], or both.
   ///
-  /// Must contain at least one section; asserted by [GtPdfReceiptBuilder] at
+  /// Must contain at least one block; asserted by [GtPdfReceiptBuilder] at
   /// render time rather than here, because `List.length` is not const-evaluable
   /// and asserting on it would prevent callers from declaring this data
   /// `const`.
-  final List<GtPdfReceiptSection> sections;
+  final List<GtPdfReceiptBlock> sections;
 
   /// The optional closing block.
   final GtPdfReceiptFooter? footer;

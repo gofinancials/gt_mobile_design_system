@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gt_mobile_foundation/foundation.dart';
 import 'package:gt_mobile_ui/gt_mobile_ui.dart';
@@ -71,4 +72,66 @@ void main() {
       });
     });
   }
+
+  group('GtDoubleColumnListTile value', () {
+    const charges = '₦6,000 or \$25 or €20 or £15 at the prevailing rates';
+
+    Future<RenderParagraph> pumpRow(
+      WidgetTester tester,
+      GtDoubleColumnListTile tile,
+    ) async {
+      await tester.pumpWidget(
+        buildTestWidget(
+          DefaultTextStyle.merge(
+            overflow: .ellipsis,
+            child: SizedBox(width: 343, child: tile),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      return tester.renderObject<RenderParagraph>(find.text(tile.value));
+    }
+
+    testWidgets('keeps to two lines with an end ellipsis by default', (
+      tester,
+    ) async {
+      final paragraph = await pumpRow(
+        tester,
+        const GtDoubleColumnListTile('Telex Charge', value: charges),
+      );
+
+      expect(paragraph.maxLines, 2);
+      expect(paragraph.overflow, TextOverflow.ellipsis);
+    });
+
+    testWidgets('wraps without a cap when valueMaxLines is null', (
+      tester,
+    ) async {
+      final paragraph = await pumpRow(
+        tester,
+        const GtDoubleColumnListTile(
+          'Telex Charge',
+          value: '$charges $charges',
+          valueMaxLines: null,
+        ),
+      );
+
+      expect(paragraph.maxLines, isNull);
+      expect(paragraph.didExceedMaxLines, isFalse);
+    });
+
+    testWidgets('ends a long value with valueOverflow', (tester) async {
+      final paragraph = await pumpRow(
+        tester,
+        const GtDoubleColumnListTile(
+          'Telex Charge',
+          value: charges,
+          valueMaxLines: 1,
+          valueOverflow: .clip,
+        ),
+      );
+
+      expect(paragraph.overflow, TextOverflow.clip);
+    });
+  });
 }

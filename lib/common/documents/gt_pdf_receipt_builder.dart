@@ -84,8 +84,9 @@ const _lastLatin1Rune = 0xff;
 
 /// Rewrites [value] into text the receipt typeface can actually set.
 ///
-/// Documents are typeset in the `pdf` package's default family — see
-/// [GtPdfReceiptTheme] — which carries no glyph above `U+00FF`. Shipping a
+/// Documents are typeset in the faces of [GtPdfTypeface], which the package
+/// ships cut down to Latin-1, and fall back to the `pdf` package's default
+/// family, which carries no glyph above `U+00FF` either. Shipping a full
 /// Unicode face for a receipt is not worth the megabytes, so
 /// [GtPdfReceiptBuilder] runs every string it renders through this instead, and
 /// the font's limits are handled once where the font is chosen rather than
@@ -134,12 +135,16 @@ String gtPdfSafeText(String value) {
 /// the [theme]. Delivering the finished document to the user — sharing it,
 /// saving it — is [GtPdfReceiptExporter]'s job.
 ///
-/// Spacing is tuned so an ordinary transfer receipt — a details block plus a
-/// sender and a recipient, closed by a footer — lands on a single page, with
-/// one more grid row of headroom before it spills. Longer receipts
-/// still flow onto as many pages as they need: the document is laid out with
-/// `MultiPage`, so a section that will not fit breaks across the page boundary
-/// rather than being clipped.
+/// Sections of label/value entries and [GtPdfReceiptProse] running text can
+/// be mixed in one document, so the same builder sets a transfer receipt and
+/// an agreement that opens with its facility details.
+///
+/// Spacing is tuned so an ordinary receipt — a details grid of up to ten
+/// entries plus a sender and a recipient, closed by a footer — lands on a
+/// single A4 page, with room left for a value that wraps onto a second line.
+/// Longer receipts still flow onto as many pages as they need: the document is
+/// laid out with `MultiPage`, so a section that will not fit breaks across the
+/// page boundary rather than being clipped.
 ///
 /// Example usage:
 /// ```dart
@@ -163,10 +168,10 @@ class GtPdfReceiptBuilder {
   static const _sectionHeadingGap = 14.0;
 
   /// The gap between the last entry of a section and the next hairline.
-  static const _sectionBottomGap = 40.0;
+  static const _sectionBottomGap = 32.0;
 
   /// The gap between an entry label and its value.
-  static const _entryGap = 5.0;
+  static const _entryGap = 2.0;
 
   /// The gap between stacked entries, in both layouts.
   static const _entryStackGap = 16.0;
@@ -180,18 +185,28 @@ class GtPdfReceiptBuilder {
   /// The gap between the disclaimer and the closing note.
   static const _noteGap = 10.0;
 
-  /// Builds the document without serialising it.
+  /// Builds the document without serialising it, set in [typeface].
   ///
   /// Useful when the receipt is one part of a larger PDF, or when the caller
-  /// wants to inspect or extend the document before saving.
-  pw.Document build(GtPdfReceiptData data) {
+  /// wants to inspect or extend the document before saving. Pass the faces
+  /// from [GtPdfTypeface.load] to match the design; without them the document
+  /// falls back to the `pdf` package's default family.
+  pw.Document build(GtPdfReceiptData data, {GtPdfTypeface? typeface}) {
     assert(
       data.sections.hasValue,
       'GtPdfReceiptData requires at least one section',
     );
     assert(
-      data.sections.every((section) => section.columns > 0),
+      data.sections.whereType<GtPdfReceiptSection>().every(
+        (section) => section.columns > 0,
+      ),
       'Every GtPdfReceiptSection requires at least one column',
+    );
+    assert(
+      data.sections.whereType<GtPdfReceiptProse>().every(
+        (prose) => prose.paragraphs.hasValue,
+      ),
+      'Every GtPdfReceiptProse requires at least one paragraph',
     );
 
     final document = pw.Document(title: data.title);
@@ -212,7 +227,7 @@ class GtPdfReceiptBuilder {
         pageTheme: pw.PageTheme(
           pageFormat: theme.pageFormat,
           margin: theme.pagePadding,
-          theme: theme.pdfTheme,
+          theme: theme.pdfTheme(typeface),
           buildBackground: (_) => pw.FullPage(
             ignoreMargins: true,
             child: pw.Container(color: theme.pageColor),
@@ -221,7 +236,14 @@ class GtPdfReceiptBuilder {
         build: (_) => [
           _header(data),
           pw.SizedBox(height: _headerGap),
-          for (final section in data.sections) ..._section(section),
+          for (final (index, block) in data.sections.indexed) ...[
+            if (index > 0)
+              pw.SizedBox(height: _blockGap(data.sections[index - 1], block)),
+            ...switch (block) {
+              GtPdfReceiptSection section => _section(section),
+              GtPdfReceiptProse prose => _prose(prose),
+            },
+          ],
         ],
       ),
     );
@@ -229,8 +251,12 @@ class GtPdfReceiptBuilder {
     return document;
   }
 
-  /// Builds the document and serialises it to bytes ready for export.
-  Future<Uint8List> render(GtPdfReceiptData data) => build(data).save();
+  /// Builds the document in the design system's [GtPdfTypeface] and
+  /// serialises it to bytes ready for export.
+  Future<Uint8List> render(GtPdfReceiptData data) async {
+    final typeface = await GtPdfTypeface.load();
+    return build(data, typeface: typeface).save();
+  }
 
   /// The document title, issue date and institution mark.
   pw.Widget _header(GtPdfReceiptData data) {
@@ -289,23 +315,75 @@ class GtPdfReceiptBuilder {
     );
   }
 
-  /// A titled block, preceded by the hairline that separates it from whatever
-  /// came before.
-  List<pw.Widget> _section(GtPdfReceiptSection section) {
+  /// The height of one blank line of running text, the gap between the
+  /// heading and paragraphs of a [GtPdfReceiptProse].
+  double get _paragraphGap => theme.bodySize * 1.4;
+
+  /// The gap between [previous] and the [next] block.
+  ///
+  /// Running text runs on from running text a blank line apart; anything else
+  /// leads into the next hairline, or out of a section's entries. Gaps only
+  /// ever separate blocks, so the last never trails one: empty space at the
+  /// foot of the document must never be what pushes `MultiPage` onto a page of
+  /// its own, repeating the footer beneath nothing.
+  double _blockGap(GtPdfReceiptBlock previous, GtPdfReceiptBlock next) {
+    return switch ((previous, next)) {
+      (GtPdfReceiptProse(), GtPdfReceiptProse(:final title))
+          when !title.hasValue =>
+        _paragraphGap,
+      _ => _sectionBottomGap,
+    };
+  }
+
+  /// The hairline and uppercased heading that open a block.
+  List<pw.Widget> _sectionTitle(String title) {
     return [
       pw.Divider(color: theme.divider, thickness: 0.6, height: 0.6),
       pw.SizedBox(height: _sectionTopGap),
-      pw.Text(
-        gtPdfSafeText(section.title.upper),
-        style: theme.sectionTitleStyle,
-      ),
+      pw.Text(gtPdfSafeText(title.upper), style: theme.sectionTitleStyle),
       pw.SizedBox(height: _sectionHeadingGap),
+    ];
+  }
+
+  /// A titled block of entries, preceded by the hairline that separates it
+  /// from whatever came before.
+  List<pw.Widget> _section(GtPdfReceiptSection section) {
+    return [
+      ..._sectionTitle(section.title),
       switch (section.resolvedLayout) {
         .split => _splitSection(section),
         .grid => _gridSection(section),
       },
-      pw.SizedBox(height: _sectionBottomGap),
     ];
+  }
+
+  /// Running text: an optional title and heading over paragraphs a blank line
+  /// apart, each free to break across pages between lines.
+  List<pw.Widget> _prose(GtPdfReceiptProse prose) {
+    final paragraphs = [
+      if (prose.heading case String heading when heading.hasValue)
+        _paragraph(heading, theme.bodyHeadingStyle),
+      for (final paragraph in prose.paragraphs)
+        _paragraph(paragraph, theme.bodyStyle),
+    ];
+
+    return [
+      if (prose.title case String title when title.hasValue)
+        ..._sectionTitle(title),
+      for (final (index, paragraph) in paragraphs.indexed) ...[
+        if (index > 0) pw.SizedBox(height: _paragraphGap),
+        paragraph,
+      ],
+    ];
+  }
+
+  /// A single block of running text that breaks across pages between lines.
+  pw.Widget _paragraph(String text, pw.TextStyle style) {
+    return pw.Text(
+      gtPdfSafeText(text),
+      style: style,
+      overflow: pw.TextOverflow.span,
+    );
   }
 
   /// Entries flowing row-major across [GtPdfReceiptSection.columns] columns.

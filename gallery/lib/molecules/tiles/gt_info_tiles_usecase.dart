@@ -486,17 +486,35 @@ Widget playgroundGtDoubleColumnListTileUseCase(BuildContext context) {
     label: 'Highlight Value',
     initialValue: true,
   );
+  final valueMiddleEllipsis = context.knobs.boolean(
+    label: 'Value Middle Ellipsis',
+    initialValue: false,
+  );
+  final valueMaxLines = context.knobs.intOrNull.input(
+    label: 'Value Max Lines (empty wraps)',
+    initialValue: 2,
+  );
+  final valueOverflow = context.knobs.object.dropdown<TextOverflow>(
+    label: 'Value Overflow',
+    options: TextOverflow.values,
+    initialOption: TextOverflow.ellipsis,
+    labelBuilder: (value) => value.name,
+  );
 
   return GtWidgetDocPage(
     title: 'GtDoubleColumnListTile',
     description:
-        'A list tile displaying balanced label (left) and value (right) layout.',
+        'A list tile displaying balanced label (left) and value (right) '
+        'layout. The value keeps to two lines with an end ellipsis by '
+        'default; valueMaxLines: null lets it wrap in full, and valueOverflow '
+        'chooses how a capped value ends. A middle ellipsis keeps to one line '
+        'and ignores valueOverflow.',
     code:
         '''
 GtDoubleColumnListTile(
   "$label",
   value: "$value",
-  highlightValue: $highlightValue,
+  highlightValue: $highlightValue,${valueMiddleEllipsis ? '\n  valueMiddleEllipsis: true,' : ''}${valueMaxLines == 2 ? '' : '\n  valueMaxLines: $valueMaxLines,'}${valueOverflow == TextOverflow.ellipsis ? '' : '\n  valueOverflow: TextOverflow.${valueOverflow.name},'}
 )''',
     child: Center(
       child: GtCard(
@@ -506,6 +524,9 @@ GtDoubleColumnListTile(
           label,
           value: value,
           highlightValue: highlightValue,
+          valueMiddleEllipsis: valueMiddleEllipsis,
+          valueMaxLines: valueMaxLines,
+          valueOverflow: valueOverflow,
         ),
       ),
     ),
@@ -548,10 +569,17 @@ Widget playgroundGtSuccessRateTileUseCase(BuildContext context) {
     min: 0.0,
     max: 1.0,
   );
+  final rateState = context.knobs.object.dropdown<String>(
+    label: 'Rate State',
+    options: ['Known', 'Unavailable', 'Loading'],
+    initialOption: 'Known',
+  );
   final asCard = context.knobs.boolean(
     label: 'Wrap in Card',
     initialValue: true,
   );
+  final rate = rateState == 'Known' ? successRate : null;
+  final isLoading = rateState == 'Loading';
 
   final widget = GtSuccessRateTile(
     leading: const GtImage(
@@ -560,13 +588,15 @@ Widget playgroundGtSuccessRateTileUseCase(BuildContext context) {
       height: 24,
     ),
     text: text,
-    successRate: successRate,
+    successRate: rate,
+    isLoading: isLoading,
+    loadingSemanticsLabel: 'Loading rate',
   );
 
   return GtWidgetDocPage(
     title: 'GtSuccessRateTile',
     description:
-        'Displays service/bank names alongside semantic success rate percentage pills (stable for ≥90%, away for ≥80%, warning for ≥70%, error below 70%).',
+        'Displays service/bank names alongside semantic success rate percentage pills (stable for ≥90%, away for ≥80%, warning for ≥70%, error below 70%). A null rate reads a neutral "N/A" pill, and isLoading draws the pill as a skeleton.',
     code:
         '''
 GtSuccessRateTile(
@@ -575,7 +605,7 @@ GtSuccessRateTile(
     size: 32,
   ),
   text: "$text",
-  successRate: $successRate,
+  successRate: $rate,${isLoading ? '\n  isLoading: true,' : ''}
 )''',
     child: Center(
       child: asCard

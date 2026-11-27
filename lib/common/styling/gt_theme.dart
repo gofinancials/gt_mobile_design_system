@@ -32,18 +32,57 @@ class GtTheme {
   /// Useful for debugging, analytics, or displaying theme options in a UI.
   final String name;
 
+  /// The system bar style for this theme at [brightness].
+  ///
+  /// Both bars contrast with the screen's background, `bg.white`: dark icons
+  /// in light mode and light icons in dark mode. The status bar is
+  /// transparent, because iOS and edge-to-edge Android (enforced from
+  /// Android 15) draw the app under it anyway, and on older Android phones a
+  /// transparent bar shows the screen behind it, so the icons sit on the same
+  /// background everywhere. The navigation bar takes the palette's background.
+  ///
+  /// It is not applied globally. [materialLight] and [materialDark] put it in
+  /// their [AppBarTheme.systemOverlayStyle], which a Material [AppBar] uses,
+  /// and [GtThemedScope] annotates its subtree. The design system's own app
+  /// bars, such as [GtAppBar] and [GtTitleAppBar], annotate nothing, so an
+  /// app should annotate its root:
+  ///
+  /// ```dart
+  /// MaterialApp(
+  ///   theme: theme.materialLight,
+  ///   darkTheme: theme.materialDark,
+  ///   builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+  ///     value: theme.systemOverlayStyle(Theme.brightnessOf(context)),
+  ///     child: child!,
+  ///   ),
+  /// )
+  /// ```
+  SystemUiOverlayStyle systemOverlayStyle(Brightness brightness) {
+    final palette = switch (brightness) {
+      .dark => darkPalette,
+      .light => lightPalette,
+    };
+    // Android's icon brightness names the icons' color; iOS's status bar
+    // brightness names the background's, so the two are opposites.
+    final iconBrightness = switch (brightness) {
+      .dark => Brightness.light,
+      .light => Brightness.dark,
+    };
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: iconBrightness,
+      statusBarBrightness: brightness,
+      systemNavigationBarColor: palette.bg.white,
+      systemNavigationBarIconBrightness: iconBrightness,
+    );
+  }
+
   /// The compiled Material [ThemeData] for dark mode.
+  ///
+  /// Reading it has no side effect: the system bar colors live in its
+  /// [AppBarTheme.systemOverlayStyle]. See [systemOverlayStyle].
   ThemeData get materialDark {
     final base = ThemeData.dark();
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarIconBrightness: Brightness.light,
-        statusBarColor: darkPalette.primary.darker,
-        systemNavigationBarColor: darkPalette.bg.white,
-      ),
-    );
     return base.copyWith(
       primaryTextTheme: base.primaryTextTheme.apply(fontFamily: fonts.body),
       primaryColorLight: darkPalette.primary.dark,
@@ -107,7 +146,7 @@ class GtTheme {
       scaffoldBackgroundColor: darkPalette.bg.white,
       primaryColor: darkPalette.primary.darker,
       appBarTheme: AppBarTheme(
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        systemOverlayStyle: systemOverlayStyle(Brightness.dark),
         iconTheme: IconThemeData(color: darkPalette.text.strong),
         backgroundColor: darkPalette.bg.white,
       ),
@@ -161,17 +200,11 @@ class GtTheme {
   }
 
   /// The compiled Material [ThemeData] for light mode.
+  ///
+  /// Reading it has no side effect: the system bar colors live in its
+  /// [AppBarTheme.systemOverlayStyle]. See [systemOverlayStyle].
   ThemeData get materialLight {
     final base = ThemeData.light();
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarColor: lightPalette.primary.darker,
-        systemNavigationBarColor: lightPalette.bg.white,
-      ),
-    );
     return base.copyWith(
       primaryTextTheme: base.primaryTextTheme.apply(fontFamily: fonts.body),
       primaryColorLight: lightPalette.primary.dark,
@@ -235,7 +268,7 @@ class GtTheme {
       scaffoldBackgroundColor: lightPalette.bg.white,
       primaryColor: lightPalette.primary.darker,
       appBarTheme: AppBarTheme(
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        systemOverlayStyle: systemOverlayStyle(Brightness.light),
         iconTheme: IconThemeData(color: lightPalette.text.strong),
         backgroundColor: lightPalette.bg.white,
       ),

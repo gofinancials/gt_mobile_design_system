@@ -78,6 +78,44 @@ class GtOnboardingSlideData {
   });
 }
 
+/// A data class that represents one slide of a `GtPhotoWelcomeScreen`: a
+/// full-bleed photograph with a headline and an optional description.
+class GtPhotoWelcomeSlideData {
+  /// The headline, shown in mixed case as given.
+  final String title;
+
+  /// An optional line beneath the [title].
+  final String? description;
+
+  /// The photograph that fills the slide.
+  final ImageProvider image;
+
+  /// The color of the [title].
+  ///
+  /// If null, it defaults to white.
+  final Color? titleColor;
+
+  /// The color of the [description].
+  ///
+  /// If null, it defaults to [GtColors.mist].
+  final Color? descriptionColor;
+
+  /// The alignment of the [title] and [description].
+  ///
+  /// Defaults to `.center`.
+  final TextAlign textAlign;
+
+  /// Creates a [GtPhotoWelcomeSlideData] instance.
+  const GtPhotoWelcomeSlideData({
+    required this.title,
+    required this.image,
+    this.description,
+    this.titleColor,
+    this.descriptionColor,
+    this.textAlign = .center,
+  });
+}
+
 /// Represents the current playback or display state of a slide.
 enum GtLessonSlideState {
   /// The slide is currently being displayed or played.

@@ -22,6 +22,12 @@ enum GtStatusStateVariant {
 // Status screen
 // -----------------------------------------------------------------------------
 
+/// A status screen: an illustration, a title, a subtitle and an optional
+/// action, for the outcome of an operation or a state with nothing to show.
+///
+/// [GtStatusState.success] and [GtStatusState.error] resolve their own
+/// illustration from [variant]; [GtStatusState.custom] takes one. All of them
+/// lay out through [GtViewStateWidget].
 class GtStatusState extends GtStatelessWidget {
   /// Success, error, or custom state — controls icon resolution behavior.
   final GtStatusStateVariant variant;
@@ -49,6 +55,10 @@ class GtStatusState extends GtStatelessWidget {
 
   /// Invoked when the footer button is pressed.
   final OnPressed? onActionPressed;
+
+  /// An optional icon drawn before [actionLabel] on the footer button, such
+  /// as the plus on an empty list's "New invoice" action.
+  final IconData? actionLeading;
 
   /// Optional variant for the footer button; defaults to [GtButtonVariant.primary].
   final GtButtonVariant actionVariant;
@@ -87,6 +97,12 @@ class GtStatusState extends GtStatelessWidget {
   /// Defines the text capitalization behavior for the title.
   final GtTextCase titleCase;
 
+  /// The most lines [title] wraps onto before it is cut with an ellipsis.
+  ///
+  /// Defaults to 2. Raise it where a long title sits in a large style, such as
+  /// an outcome sheet's h4 headline on a narrow phone; null never cuts it.
+  final int? titleMaxLines;
+
   /// The spacing between the title and the subtitle.
   ///
   /// Defaults to `GtGap.yMd()`. Can be customized with a [GtViewStateSpacer].
@@ -107,6 +123,7 @@ class GtStatusState extends GtStatelessWidget {
     this.graphic,
     this.actionLabel,
     this.onActionPressed,
+    this.actionLeading,
     this.actionVariant = .primary,
     this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
@@ -118,6 +135,7 @@ class GtStatusState extends GtStatelessWidget {
     this.subtitleStyle,
     this.titleCase = .upper,
     this.iconSize,
+    this.titleMaxLines = 2,
   }) : assert(
          variant != .custom || statusIcon != null || graphic != null,
          'statusIcon or graphic is required when variant is '
@@ -136,6 +154,7 @@ class GtStatusState extends GtStatelessWidget {
     this.graphic,
     this.actionLabel,
     this.onActionPressed,
+    this.actionLeading,
     this.actionVariant = .primary,
     this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
@@ -147,6 +166,7 @@ class GtStatusState extends GtStatelessWidget {
     this.subtitleStyle,
     this.titleCase = .upper,
     this.iconSize,
+    this.titleMaxLines = 2,
   }) : variant = .success,
        statusIcon = null,
        assert(
@@ -162,6 +182,7 @@ class GtStatusState extends GtStatelessWidget {
     this.graphic,
     this.actionLabel,
     this.onActionPressed,
+    this.actionLeading,
     this.actionVariant = .primary,
     this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
@@ -173,6 +194,7 @@ class GtStatusState extends GtStatelessWidget {
     this.subtitleStyle,
     this.titleCase = .upper,
     this.iconSize,
+    this.titleMaxLines = 2,
   }) : variant = .error,
        statusIcon = null,
        assert(
@@ -191,6 +213,7 @@ class GtStatusState extends GtStatelessWidget {
     this.graphic,
     this.actionLabel,
     this.onActionPressed,
+    this.actionLeading,
     this.actionVariant = .primary,
     this.gapToTitle,
     this.gapToSubtitle = const GtViewStateGapSpacer(GtGap.yMd()),
@@ -202,6 +225,7 @@ class GtStatusState extends GtStatelessWidget {
     this.subtitleStyle,
     this.titleCase = .upper,
     this.iconSize,
+    this.titleMaxLines = 2,
   }) : variant = .custom,
        statusIcon = icon,
        assert(
@@ -216,11 +240,12 @@ class GtStatusState extends GtStatelessWidget {
   /// Resolves the status illustration shown above the titles.
   ///
   /// Uses [statusIcon] when provided, otherwise falls back to
-  /// the default asset mapped from [variant].
-  AppImageData? get _statusIcon {
+  /// the default asset mapped from [variant], adapted to the palette of
+  /// [context].
+  AppImageData? _statusIcon(BuildContext context) {
     return switch (variant) {
-      .success => AppImageData(GtVectorIllustrations.success),
-      .error => AppImageData(GtVectorIllustrations.failed),
+      .success => AppImageData(GtVectorIllustrations.success.adapt(context)),
+      .error => AppImageData(GtVectorIllustrations.failed.adapt(context)),
       .custom => statusIcon,
     };
   }
@@ -230,10 +255,11 @@ class GtStatusState extends GtStatelessWidget {
     return GtViewStateWidget(
       title: title,
       description: subtitle,
-      icon: _statusIcon,
+      icon: _statusIcon(context),
       graphic: graphic,
       iconSize: iconSize,
       actionText: actionLabel,
+      actionLeading: actionLeading,
       onActionPressed: onActionPressed,
       actionVariant: actionVariant,
       actionSize: actionSize,
@@ -245,6 +271,7 @@ class GtStatusState extends GtStatelessWidget {
       titleStyle: titleStyle,
       descriptionStyle: subtitleStyle,
       titleCase: titleCase,
+      titleMaxLines: titleMaxLines,
     );
   }
 }

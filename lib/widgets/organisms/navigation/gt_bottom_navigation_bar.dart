@@ -60,11 +60,26 @@ class GtBottomNavigationBar extends GtStatelessWidget {
   /// Called with the index of the tab the user taps.
   final ValueChanged<int> onIndexChanged;
 
-  /// Defaults to [GtBottomNavigationStyle.ios].
+  /// The bar's look. Defaults to null, which draws
+  /// [GtBottomNavigationStyle.android] on Android and
+  /// [GtBottomNavigationStyle.ios] everywhere else.
   final GtBottomNavigationStyle? style;
 
   /// Whether the selection highlight and icon change should animate.
   final bool enableSelectionAnimation;
+
+  /// Whether the [GtBottomNavigationStyle.ios] glass blurs what scrolls
+  /// beneath it.
+  ///
+  /// The blur is redrawn on every frame while content moves under the bar,
+  /// which mid-range Android devices cannot always afford. Without it the
+  /// glass keeps its shape, edge highlight and shadow, over a near-opaque
+  /// fill so content passing beneath does not show through the labels.
+  ///
+  /// Defaults to null, which blurs everywhere except Android. Pass true or
+  /// false to choose for every platform. The [GtBottomNavigationStyle.android]
+  /// bar is opaque and ignores this.
+  final bool? frosted;
 
   /// Creates a [GtBottomNavigationBar].
   const GtBottomNavigationBar({
@@ -74,6 +89,7 @@ class GtBottomNavigationBar extends GtStatelessWidget {
     required this.onIndexChanged,
     this.style,
     this.enableSelectionAnimation = true,
+    this.frosted,
   }) : assert(
          items.length >= 2,
          'GtBottomNavigationBar needs at least 2 items',
@@ -88,6 +104,7 @@ class GtBottomNavigationBar extends GtStatelessWidget {
         currentIndex: currentIndex,
         onIndexChanged: onIndexChanged,
         enableSelectionAnimation: enableSelectionAnimation,
+        frosted: frosted ?? !context.isAndroid,
       ),
       .android => GtAndroidBottomNavigationBar(
         items: items,
@@ -245,12 +262,17 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
   /// Whether the selection pill and icon change should animate.
   final bool enableSelectionAnimation;
 
+  /// Whether the glass blurs what scrolls beneath it. See
+  /// [GtBottomNavigationBar.frosted].
+  final bool frosted;
+
   /// Creates a [_GtIosFloatingBottomNavigationBar].
   const _GtIosFloatingBottomNavigationBar({
     required this.items,
     required this.currentIndex,
     required this.onIndexChanged,
     required this.enableSelectionAnimation,
+    required this.frosted,
   });
 
   @override
@@ -271,6 +293,7 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
         child: SizedBox(
           height: context.dp(_barHeight.px),
           child: _GtBottomNavigationGlass(
+            frosted: frosted,
             child: Padding(
               padding: context.insets.symmetricDp(
                 horizontal: _glassInsetX.px,
@@ -298,17 +321,46 @@ class _GtIosFloatingBottomNavigationBar extends GtStatelessWidget {
 /// fill over a blurred backdrop, an inner highlight along the edge, and a soft
 /// drop shadow. Every layer resolves through the palette, so the surface
 /// inverts with the theme instead of staying light in dark mode.
+///
+/// Unless [frosted], the backdrop is not blurred and the fill rises to 92% so
+/// content passing beneath stays behind the tabs rather than through them.
 class _GtBottomNavigationGlass extends GtStatelessWidget {
   /// The content painted on the glass.
   final Widget child;
 
+  /// Whether the backdrop is blurred. See [GtBottomNavigationBar.frosted].
+  final bool frosted;
+
   /// Creates a [_GtBottomNavigationGlass].
-  const _GtBottomNavigationGlass({required this.child});
+  const _GtBottomNavigationGlass({required this.child, required this.frosted});
 
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
     final radius = context.borderRadiusFull;
+
+    double fillOpacity = .92;
+    if (frosted) {
+      fillOpacity = .65;
+    }
+
+    Widget glass = DecoratedBox(
+      decoration: BoxDecoration(
+        color: palette.bg.white.setOpacity(fillOpacity),
+        borderRadius: radius,
+        boxShadow: context.shadows.bottomNavInnerGlass(),
+      ),
+      child: child,
+    );
+    if (frosted) {
+      glass = ClipRRect(
+        borderRadius: radius,
+        child: BackdropFilter(
+          filter: context.backdropFilters.bottomNavFrost(),
+          child: glass,
+        ),
+      );
+    }
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -317,20 +369,7 @@ class _GtBottomNavigationGlass extends GtStatelessWidget {
             ? context.shadows.md(palette.bg.weak)
             : context.shadows.bottomNavShadow(),
       ),
-      child: ClipRRect(
-        borderRadius: radius,
-        child: BackdropFilter(
-          filter: context.backdropFilters.bottomNavFrost(),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: palette.bg.white.setOpacity(.65),
-              borderRadius: radius,
-              boxShadow: context.shadows.bottomNavInnerGlass(),
-            ),
-            child: child,
-          ),
-        ),
-      ),
+      child: glass,
     );
   }
 }
@@ -466,7 +505,9 @@ class GtBottomNavIcon extends GtStatelessWidget {
       duration: enableSelectionAnimation ? GtMotion.normal.inMilliseconds : 0,
       beginScale: GtMotion.iconPressScale,
       switchInCurve: GtSpringCurves.bouncy,
-      switchOutCurve: Curves.easeOutCubic,
+      // A filled glyph shows through its outline for as long as both are on
+      // screen, which reads as a dark flash on the tab being left.
+      crossFade: false,
       child: GtIcon.withColor(
         icon,
         key: ValueKey((icon, selected)),

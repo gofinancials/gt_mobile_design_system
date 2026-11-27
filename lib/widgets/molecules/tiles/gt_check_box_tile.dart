@@ -63,6 +63,12 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
   /// Overrides subtitle style. Null preserves the current default.
   final TextStyle? subtitleStyle;
 
+  /// The most lines the [title] may take, after which it ends in an
+  /// ellipsis.
+  ///
+  /// When `null`, the default, the title wraps onto as many lines as it needs.
+  final int? titleMaxLines;
+
   /// Creates a [GtCheckBoxTile].
   const GtCheckBoxTile(
     this.title, {
@@ -81,6 +87,7 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
     this.subtitleStyle,
     this.indicatorPosition = GtIndicatorPosition.trailing,
     this.spacingPx,
+    this.titleMaxLines,
   });
 
   @override
@@ -122,6 +129,7 @@ class GtCheckBoxTile<T> extends GtStatelessWidget {
       icon: icon,
       footer: footer,
       titleStyle: titleStyle,
+      titleMaxLines: titleMaxLines,
       subtitleStyle: subtitleStyle,
       trailing: trailing,
       spacingPx: spacingPx,

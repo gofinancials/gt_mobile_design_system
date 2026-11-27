@@ -48,7 +48,7 @@ class GtActionCard extends GtStatelessWidget {
 
   /// Optional style override for the [title].
   ///
-  /// Defaults to [GtTextStyles.subHeadS].
+  /// Defaults to [GtTextStyles.labelS] at weight 600, Figma Title/XS.
   final TextStyle? titleStyle;
 
   /// Optional style override for the [subtitle].
@@ -245,7 +245,7 @@ class GtActionCard extends GtStatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final mainStyle = context.textStyles.subHeadS();
+    final mainStyle = context.textStyles.labelS(weight: .w600);
     final subStyle = context.textStyles.bodyS(color: palette.text.sub);
     final iconColor = switch (variant) {
       .away => palette.away.darker,
